@@ -34,8 +34,8 @@ export const TOKENS_MAINNET: TokenConstants = {
   },
   Addresses: {
     nativeAsset: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-    wNativeAsset: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-    WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    wNativeAsset: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
+    WETH: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
     BAL: '0xba100000625a3754423978a60c9317c58a424e3d',
     bbaUSD: '0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2',
   },
@@ -82,7 +82,7 @@ export const TOKENS_KOVAN: TokenConstants = {
      * [kovan address]: mainnet address
      */
     '0xdfcea9088c8a88a76ff74892c1457c17dfeef9c1':
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
     '0x1c8e3bcb3378a443cc591f154c5ce0ebb4da9648':
       '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
     // '0x41286bb1d3e870f3f750eb7e1c25d7e48c8a1ac7':
@@ -133,7 +133,7 @@ export const TOKENS_GOERLI: TokenConstants = {
      * [goerli address]: mainnet address
      */
     '0xdfcea9088c8a88a76ff74892c1457c17dfeef9c1':
-      '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
     '0x37f03a12241e9fd3658ad6777d289c3fb8512bc9':
       '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
     '0xfa8449189744799ad2ace7e0ebac8bb7575eff47':

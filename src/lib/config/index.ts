@@ -1,6 +1,7 @@
 import { Network } from '@balancer-labs/sdk';
 
 import arbitrum from './arbitrum.json';
+import aurora from './aurora.json';
 import docker from './docker.json';
 import goerli from './goerli.json';
 import homestead from './homestead.json';
@@ -89,6 +90,7 @@ const config: Record<Network | number, Config> = {
   [Network.RINKEBY]: rinkeby,
   [Network.POLYGON]: polygon,
   [Network.ARBITRUM]: arbitrum,
+  [Network.AURORA]: aurora,
   12345: test,
   // @ts-ignore
   17: docker,

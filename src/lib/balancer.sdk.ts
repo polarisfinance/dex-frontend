@@ -14,6 +14,9 @@ const network = ((): Network => {
       return Network.POLYGON;
     case '42161':
       return Network.ARBITRUM;
+    case '1313161554':
+      return Network.AURORA;
+
     default:
       return Network.MAINNET;
   }

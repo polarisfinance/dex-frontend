@@ -66,19 +66,19 @@ type PluginState = {
   walletState: WalletState;
 };
 
-async function isSanctionedAddress(address: string): Promise<boolean | null> {
-  try {
-    const response = await axios.post(SANCTIONS_ENDPOINT, [
-      {
-        address: address.toLowerCase(),
-      },
-    ]);
-    const isSanctioned = response.data[0].isSanctioned;
-    return isSanctioned;
-  } catch {
-    return null;
-  }
-}
+// async function isSanctionedAddress(address: string): Promise<boolean | null> {
+//   try {
+//     const response = await axios.post(SANCTIONS_ENDPOINT, [
+//       {
+//         address: address.toLowerCase(),
+//       },
+//     ]);
+//     const isSanctioned = response.data[0].isSanctioned;
+//     return isSanctioned;
+//   } catch {
+//     return null;
+//   }
+// }
 
 export default {
   install: async app => {
@@ -194,18 +194,18 @@ export default {
         // need to store address to pre-load that connection
         if (account.value) {
           // fetch sanctioned status
-          let _isSanctioned = await isSanctionedAddress(account.value);
-          if (_isSanctioned === null) {
-            // await disconnectWallet();
-            // throw new Error(
-            //   `Could not receive an appropriate response from the Sanctions API. Aborting.`
-            // );
-            _isSanctioned = false;
-          }
-          isSanctioned.value = _isSanctioned;
-          if (_isSanctioned) {
-            disconnectWallet();
-          }
+          // let _isSanctioned = await isSanctionedAddress(account.value);
+          // if (_isSanctioned === null) {
+          //   // await disconnectWallet();
+          //   // throw new Error(
+          //   //   `Could not receive an appropriate response from the Sanctions API. Aborting.`
+          //   // );
+          //   _isSanctioned = false;
+          // }
+          // isSanctioned.value = _isSanctioned;
+          // if (_isSanctioned) {
+          //   disconnectWallet();
+          // }
           lsSet('connectedWallet', account.value);
           lsSet('connectedProvider', wallet);
           pluginState.walletState = 'connected';

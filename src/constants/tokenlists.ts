@@ -67,4 +67,13 @@ export const TOKEN_LIST_MAP: TokenListMapByNetwork = {
     },
     External: ['https://tracer.finance/tokens'],
   },
+  '1313161554': {
+    Balancer: {
+      Default:
+        'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.listed.tokenlist.json',
+      Vetted:
+        'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.vetted.tokenlist.json',
+    },
+    External: ['https://aurora.dev/tokens.json'],
+  },
 };

@@ -437,10 +437,10 @@ export default {
      */
     onBeforeMount(async () => {
       const tokensToInject = compact([
-        configService.network.addresses.stETH,
-        configService.network.addresses.wstETH,
-        configService.network.addresses.veBAL,
-        TOKENS.Addresses.BAL,
+        // configService.network.addresses.stETH,
+        // configService.network.addresses.wstETH,
+        // configService.network.addresses.veBAL,
+        // TOKENS.Addresses.BAL,
         TOKENS.Addresses.wNativeAsset,
       ]);
 
