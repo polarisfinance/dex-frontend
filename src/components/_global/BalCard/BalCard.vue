@@ -75,7 +75,7 @@ export default defineComponent({
       return {
         'rounded-lg': !props.square,
         'overflow-hidden': !props.exposeOverflow,
-        [`bg-white dark:bg-gray-${props.darkBgColor}`]: true,
+        // [`bg-[#50d71e]`]: true,
         [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,
         [borderClasses.value]: !props.noBorder,
         'h-full': props.hFull,
@@ -84,7 +84,7 @@ export default defineComponent({
 
     const headerClasses = computed(() => {
       return {
-        'p-4 pb-0': !props.noPad,
+        'p-0.5 pb-0': !props.noPad,
       };
     });
 
@@ -96,7 +96,7 @@ export default defineComponent({
 
     const contentClasses = computed(() => {
       return {
-        'p-4': !props.noPad && !props.noContentPad,
+        'p-2': !props.noPad && !props.noContentPad,
         'flex-grow': props.growContent,
       };
     });
@@ -104,7 +104,7 @@ export default defineComponent({
     const footerClasses = computed(() => {
       return {
         'rounded-b-lg': !props.square,
-        'p-4 pt-0': !props.noPad,
+        'p-2 pt-0': !props.noPad,
       };
     });
 
@@ -127,6 +127,10 @@ export default defineComponent({
 <style scoped>
 .bal-card {
   @apply flex flex-col;
+  background-color: #130719;
+  box-shadow: inset 0px 0px 2px #fbaaff;
+  border-radius: 22px;
+  box-sizing: border-box;
 }
 
 .card-container {

@@ -1,8 +1,8 @@
 <template>
   <BalCard class="relative card-container" :shadow="tradeCardShadow" noBorder>
     <template #header>
-      <div class="flex justify-between items-center w-full">
-        <h4>{{ title }}</h4>
+      <div class="flex mx-1 justify-between items-center w-full header">
+        <h4 class="title">{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
           :isGasless="trading.tradeGasless.value"
@@ -52,14 +52,21 @@
         "
         block
       />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
+      <button
+        v-else-if="account"
         :disabled="tradeDisabled"
-        color="gradient"
-        block
         @click.prevent="handlePreviewButton"
-      />
+        class="swap-button"
+      >
+        Swap
+      </button>
+      <button
+        v-else
+        class="connect-wallet"
+        @click="startConnectWithInjectedProvider"
+      >
+        Connect Wallet
+      </button>
       <div
         v-if="trading.isGnosisSupportedOnNetwork.value"
         class="flex items-center mt-5 h-8 text-sm"
@@ -202,6 +209,8 @@ export default defineComponent({
     const { fNum2 } = useNumbers();
     const { appNetworkConfig } = useWeb3();
     const { nativeAsset } = useTokens();
+    const { account, startConnectWithInjectedProvider } = useWeb3();
+
     const {
       tokenInAddress,
       tokenOutAddress,
@@ -270,7 +279,7 @@ export default defineComponent({
       if (trading.wrapType.value === WrapType.Unwrap) {
         return `${t('unwrap')} ${trading.tokenOut.value.symbol}`;
       }
-      return t('trade');
+      return t('Swap');
     });
 
     const error = computed(() => {
@@ -443,11 +452,26 @@ export default defineComponent({
       trade,
       switchToWETH,
       handleErrorButtonClick,
+      startConnectWithInjectedProvider,
     };
   },
 });
 </script>
 <style scoped>
+.header {
+  margin-left: 1em !important;
+  margin-right: 0em !important;
+  margin-bottom: 0 !important;
+  margin-top: 0.5em !important;
+}
+
+.title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+}
+
 /* This is needed because the trade settings popover overflows */
 .card-container {
   overflow: unset;
@@ -467,5 +491,74 @@ export default defineComponent({
 
 .signature-symbol::before {
   content: '✍️';
+}
+
+.connect-wallet {
+  padding: 12px 0px;
+  gap: 12px;
+  left: 10px;
+  top: 226px;
+
+  background: linear-gradient(
+    94.14deg,
+    #391b40 23.11%,
+    rgba(57, 27, 64, 0.81) 81.52%
+  );
+  border-radius: 12px;
+  width: 100%;
+}
+
+.connect-wallet:hover {
+  background: linear-gradient(
+    94.14deg,
+    rgba(45, 20, 51, 0.7) 23.11%,
+    rgba(57, 28, 65, 0.567) 81.52%
+  );
+  border-radius: 12px;
+}
+
+.connect-wallet:active {
+  background: linear-gradient(
+    94.14deg,
+    rgba(47, 22, 53, 0.5) 23.11%,
+    rgba(52, 25, 58, 0.405) 81.52%
+  );
+  border-radius: 12px;
+}
+
+.swap-button {
+  padding: 12px 0px;
+  gap: 12px;
+  left: 10px;
+  top: 259px;
+
+  background: radial-gradient(
+      49.66% 488.58% at 50% 30%,
+      #7b307f 0%,
+      rgba(123, 48, 127, 0.81) 100%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 12px;
+  width: 100%;
+}
+
+.swap-button:hover {
+  background: radial-gradient(
+      49.66% 488.58% at 50% 30%,
+      rgba(123, 48, 127, 0.7) 0%,
+      rgba(123, 48, 127, 0.567) 100%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 12px;
+}
+
+.swap-button:active {
+  background: radial-gradient(
+      49.66% 488.58% at 50% 30%,
+      rgba(123, 48, 127, 0.5) 0%,
+      rgba(123, 48, 127, 0.405) 100%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 12px;
 }
 </style>

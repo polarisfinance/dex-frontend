@@ -1,5 +1,5 @@
 <template>
-  <img src="./TwitterIcon.svg" width="24" height="24" class="mr-2" />
+  <img src="./SettingsIcon.svg" width="24" height="24" class="mr-2" />
 </template>
 
 <script>
@@ -8,6 +8,6 @@ export default {};
 
 <style scoped>
 .social-icon:hover .bg {
-  fill: #be95c0;
+  fill: rgb(26 137 23 / 100%);
 }
 </style>

@@ -51,16 +51,16 @@ onMounted(() => {
 
 <template>
   <Col3Layout offsetGutters mobileHideGutters class="mt-8">
-    <template #gutterLeft>
+    <!-- <template #gutterLeft>
       <MyWallet />
       <TrendingPairs class="mt-4" />
-    </template>
+    </template> -->
 
     <BalLoadingBlock v-if="appLoading" class="h-96" />
     <template v-else>
       <TradeCard />
     </template>
-    <div class="p-4 sm:p-0 lg:p-0 mt-8">
+    <!-- <div class="p-4 sm:p-0 lg:p-0 mt-8">
       <BalAccordion
         v-if="upToLargeBreakpoint"
         class="w-full"
@@ -84,7 +84,7 @@ onMounted(() => {
 
     <template #gutterRight>
       <PairPriceGraph :toggleModal="togglePairPriceGraphModal" />
-    </template>
+    </template> -->
   </Col3Layout>
 
   <teleport to="#modal">

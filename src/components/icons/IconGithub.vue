@@ -1,5 +1,5 @@
 <template>
-  <svg
+  <!-- <svg
     id="github"
     class="social-icon"
     width="32"
@@ -21,7 +21,8 @@
         fill="#000"
       />
     </g>
-  </svg>
+  </svg> -->
+  <img src="./GithubIcon.svg" width="24" height="24" class="mr-2" />
 </template>
 
 <script>
@@ -30,6 +31,6 @@ export default {};
 
 <style scoped>
 .social-icon:hover .bg {
-  fill: #444;
+  fill: #be95c0;
 }
 </style>

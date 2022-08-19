@@ -11,6 +11,7 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Rajdhani', sans-serif !important;
 }
 
 @media only screen and (max-width: 600px) {
@@ -28,6 +29,27 @@ input {
 }
 
 #app {
+  /* background-image: linear-gradient(
+    to bottom,
+    #08061f,
+    #1b1464,
+    #00395e,
+    #00544e,
+    #000000
+  ); */
+  /* background: radial-gradient(
+      ellipse at top,
+      rgba(144, 40, 141, 1) 0%,
+      transparent 80%
+    ),
+    radial-gradient(ellipse at bottom, rgba(8, 2, 43, 1) 0%, transparent 80%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 0%),
+    url(https://polarisfinance.io/logo.svg) no-repeat center center fixed; */
+  background: radial-gradient(
+    50% 57.91% at 50% 48.1%,
+    #39183e 0%,
+    #130719 100%
+  );
   @apply text-gray-900 dark:text-gray-50;
 }
 

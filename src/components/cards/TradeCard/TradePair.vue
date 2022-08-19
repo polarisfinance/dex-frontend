@@ -155,15 +155,17 @@ watchEffect(() => {
       @update:address="handleInputTokenChange"
     />
 
-    <div class="flex items-center my-2">
-      <TradePairToggle @toggle="handleTokenSwitch" />
-      <div class="flex-grow mx-2 h-px bg-gray-100 dark:bg-gray-700" />
+    <div class="flex justify-center my-1 align-middle">
+      <div class="absolute toggle">
+        <TradePairToggle @toggle="handleTokenSwitch" />
+      </div>
+      <!-- <div class="flex-grow mx-2 h-px bg-gray-100 dark:bg-gray-700" />
       <div
         v-if="rateLabel"
         class="flex items-center text-xs text-gray-600 dark:text-gray-400 cursor-pointer"
         @click="isInRate = !isInRate"
         v-html="rateLabel"
-      />
+      /> -->
     </div>
 
     <TokenInput
@@ -180,3 +182,9 @@ watchEffect(() => {
     />
   </div>
 </template>
+
+<style>
+.toggle {
+  transform: translateY(-50%);
+}
+</style>

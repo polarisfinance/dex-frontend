@@ -1,5 +1,5 @@
 <template>
-  <svg
+  <!-- <svg
     id="medium"
     class="social-icon"
     width="32"
@@ -23,7 +23,8 @@
         />
       </g>
     </g>
-  </svg>
+  </svg> -->
+  <img src="./MediumIcon.svg" width="24" height="24" class="mr-2" />
 </template>
 
 <script>
@@ -32,6 +33,6 @@ export default {};
 
 <style scoped>
 .social-icon:hover .bg {
-  fill: rgb(26 137 23 / 100%);
+  fill: #be95c0;
 }
 </style>
