@@ -28,6 +28,10 @@ const classes = computed(() => ({
   @apply h-full flex-col justify-center cursor-pointer flex relative
     overflow-hidden p-0 transition-all
     ease-in-out duration-500;
+
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 31px;
 }
 
 .desktop-link-item:hover {

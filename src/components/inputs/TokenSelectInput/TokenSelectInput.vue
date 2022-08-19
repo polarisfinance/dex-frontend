@@ -138,7 +138,7 @@ function toggleModal(): void {
 
     <div
       v-else
-      class="token-select-input unselected selectable"
+      class="token-select-input unselected selectable no-token"
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
@@ -186,5 +186,21 @@ function toggleModal(): void {
 
 .selected {
   @apply bg-gray-50 dark:bg-gray-700 text-black dark:text-white;
+}
+
+.no-token {
+  padding: 4px 4px 4px 16px;
+  gap: 6px;
+
+  background: #7b307f !important;
+  border-radius: 16px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.no-token:hover {
+  background: rgba(123, 48, 127, 0.7) !important;
 }
 </style>

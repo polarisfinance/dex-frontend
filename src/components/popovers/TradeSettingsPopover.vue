@@ -3,7 +3,6 @@
     <template #activator>
       <BalBtn
         circle
-        color="white"
         size="sm"
         class="icon-spin-anim settings-button"
         @click="onActivatorClick"
@@ -165,7 +164,6 @@ export default defineComponent({
 .settings-button {
   background: none;
   background-color: #130719 !important;
-  color: white;
   margin: 0 !important;
   padding: 0 !important;
 }

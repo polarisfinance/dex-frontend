@@ -436,6 +436,7 @@ export default defineComponent({
       alwaysShowRoutes,
       exactIn,
       trading,
+      account,
 
       // computed
       title,

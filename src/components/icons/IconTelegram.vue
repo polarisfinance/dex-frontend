@@ -1,13 +1,32 @@
 <template>
-  <img src="./TelegramIcon.svg" width="24" height="24" class="mr-2" />
+  <img
+    :src="pictureHover"
+    @mouseover="hover = true"
+    @mouseleave="hover = false"
+    width="24"
+    height="24"
+    class="mr-2"
+  />
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'HelloWorld',
+  data() {
+    return {
+      picture: require('./TelegramIcon.svg'),
+      hoveredPicture: require('./HoveredTelegramIcon.svg'),
+      hover: false,
+    };
+  },
+  computed: {
+    pictureHover() {
+      if (this.hover == false) {
+        return this.picture;
+      } else {
+        return this.hoveredPicture;
+      }
+    },
+  },
+};
 </script>
-
-<style scoped>
-.social-icon:hover .bg {
-  fill: #444;
-}
-</style>
