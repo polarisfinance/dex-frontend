@@ -169,12 +169,26 @@ export const TOKENS_GENERIC: TokenConstants = {
   },
 };
 
+export const TOKENS_AURORA: TokenConstants = {
+  Popular: {
+    Symbols: ['WBTC', 'DAI', 'USDC', 'WETH'],
+  },
+  Addresses: {
+    nativeAsset: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    wNativeAsset: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
+    WETH: '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB',
+    BAL: '0x0000000000000000000000000000000000000000',
+  },
+  PriceChainMap: {},
+};
+
 const TOKENS_MAP = {
   [Network.KOVAN]: TOKENS_KOVAN,
   [Network.GOERLI]: TOKENS_GOERLI,
   [Network.MAINNET]: TOKENS_MAINNET,
   [Network.POLYGON]: TOKENS_POLYGON,
   [Network.ARBITRUM]: TOKENS_ARBITRUM,
+  [Network.AURORA]: TOKENS_AURORA,
 };
 
 export const TOKENS: TokenConstants = TOKENS_MAP[networkId.value]
