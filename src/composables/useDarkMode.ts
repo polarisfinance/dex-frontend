@@ -17,16 +17,16 @@ function setDarkMode(val: boolean): void {
   if (darkMode.value) {
     document.documentElement.classList.add('dark');
   } else {
-    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('dark');
   }
 }
 
 // INIT
-setDarkMode(darkMode.value);
+setDarkMode(true);
 
 export default function useDarkMode() {
   function toggleDarkMode(): void {
-    setDarkMode(!darkMode.value);
+    setDarkMode(true);
   }
 
   return {
