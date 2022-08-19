@@ -65,20 +65,12 @@ const setTradePair = (pair: TrendingPair[]) => {
 </script>
 
 <template>
-  <BalCard
-    :square="upToLargeBreakpoint"
-    noPad
-    growContent
-    :noBorder="upToLargeBreakpoint"
-    shadow="none"
-  >
+  <div class="container">
     <div class="trending-pairs">
-      <div
-        v-if="!upToLargeBreakpoint"
-        class="flex justify-between p-3 lg:border-b dark:border-gray-700"
-      >
-        <h6>{{ $t('trendingPairs') }}</h6>
+      <div v-if="!upToLargeBreakpoint" class="flex justify-between p-3">
+        <h6 class="title">{{ $t('trendingPairs') }}</h6>
       </div>
+      <div class="border" />
       <div class="flex flex-wrap gap-3 lg:p-3 px-1">
         <button
           v-for="(pair, i) in trendingPairs"
@@ -91,10 +83,25 @@ const setTradePair = (pair: TrendingPair[]) => {
         </button>
       </div>
     </div>
-  </BalCard>
+  </div>
 </template>
 
 <style scoped>
+.title {
+  color: #be95c0;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+  margin-left: 0.8em !important;
+  margin-right: 0.8em !important;
+}
+
+.container {
+  background: #231928;
+  border-radius: 12px;
+}
+
 .trending-pairs {
   @apply flex flex-col bg-transparent;
 
