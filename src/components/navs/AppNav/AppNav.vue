@@ -51,7 +51,7 @@ onUnmounted(() => {
 <template>
   <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
   <nav id="app-nav" ref="appNav" class="top-0 lg:px-6 pr-1 pl-4 h-20">
-    <div class="flex justify-between items-center h-full">
+    <div class="flex w-full justify-between items-center h-full">
       <router-link
         :to="{ name: 'home' }"
         @click="trackGoal(Goals.ClickNavLogo)"
@@ -60,7 +60,7 @@ onUnmounted(() => {
         <AppLogo v-else />
       </router-link>
 
-      <DesktopLinks v-if="isDesktop" class="ml-8 font-medium" />
+      <DesktopLinks v-if="isDesktop" class="ml-8 font-medium flex" />
 
       <AppNavActions />
     </div>

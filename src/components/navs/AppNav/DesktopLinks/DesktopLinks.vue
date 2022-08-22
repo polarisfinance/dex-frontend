@@ -23,20 +23,26 @@ function isActive(page: string): boolean {
 
 <template>
   <div class="desktop-links">
-    <DesktopLinkItem to="/" :active="isActive('home')">
-      {{ $t('invest') }}
-    </DesktopLinkItem>
     <DesktopLinkItem to="/trade" :active="isActive('trade')">
-      {{ $t('swap') }}
+      {{ $t('Swap') }}
+    </DesktopLinkItem>
+    <DesktopLinkItem to="/" :active="isActive('home')">
+      {{ $t('Dawn') }}
     </DesktopLinkItem>
     <!-- <DesktopLinkItem v-if="isGoerli" to="/faucet" :active="isActive('faucet')">
       Faucet
     </DesktopLinkItem> -->
     <DesktopLinkItem to="/portfolio" :active="isActive('portfolio')">
-      {{ $t('portfolio') }}
+      {{ $t('Sunrise') }}
     </DesktopLinkItem>
     <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
-      veBAL
+      Bond
+    </DesktopLinkItem>
+    <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
+      Portfolio
+    </DesktopLinkItem>
+    <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
+      vexPolar
     </DesktopLinkItem>
     <!-- <DesktopLinkItem to="/claim" :active="isActive('claim')">
       <div class="flex items-center">

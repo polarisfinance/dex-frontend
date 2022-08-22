@@ -53,9 +53,16 @@
         block
       />
       <button
+        v-else-if="tokenInAmount == 0 && tokenOutAmount == 0 && account"
+        :disabled="true"
+        class="amount-button"
+      >
+        Enter an amount
+      </button>
+      <button
         v-else-if="account"
         :disabled="tradeDisabled"
-        @click.prevent="handlePreviewButton"
+        @click="handlePreviewButton"
         class="swap-button"
       >
         Swap
@@ -396,7 +403,8 @@ export default defineComponent({
         assetOut = getAddress(assetOut);
       }
       setTokenInAddress(assetIn || store.state.trade.inputAsset);
-      setTokenOutAddress(assetOut || store.state.trade.outputAsset);
+      // setTokenOutAddress(assetOut || store.state.trade.outputAsset);
+      setTokenOutAddress('');
     }
 
     function switchToWETH() {
@@ -459,6 +467,17 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.amount-button {
+  background: #231928;
+  border-radius: 12px;
+  width: 100%;
+  padding: 12px 0px;
+  gap: 12px;
+  left: 10px;
+  top: 259px;
+  color: #b9babb;
+}
+
 .header {
   margin-left: 1em !important;
   margin-right: 0em !important;

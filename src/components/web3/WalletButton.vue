@@ -1,13 +1,13 @@
 <template>
   <button class="wallet-connect-btn" @click="handleClick">
-    <div class="flex items-center" style="width: 70%">
-      <img
-        :src="require(`@/assets/images/connectors/${wallet}.svg`)"
-        class="mr-4 w-10 h-10"
-      />
+    <div class="flex items-center justify-between" style="width: 100%">
       <h5 class="text-base text-gray-700 dark:text-white">
         <span class="capitalize">{{ WalletNameMap[wallet] }}</span>
       </h5>
+      <img
+        :src="require(`@/assets/images/connectors/${wallet}.svg`)"
+        class="w-10 h-10"
+      />
     </div>
   </button>
 </template>
@@ -41,8 +41,13 @@ export default defineComponent({
 <style>
 .wallet-connect-btn {
   @apply transition-all;
-  @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800;
-  @apply border dark:border-gray-900;
-  @apply p-4 flex justify-start items-center w-full h-14 rounded-md mb-3 shadow-lg;
+  /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */
+  /* @apply border dark:border-gray-900; */
+  @apply flex justify-start items-center w-full h-14 rounded-md shadow-lg;
+  background: #2e2433;
+  box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
+  border-radius: 16px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 </style>

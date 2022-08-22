@@ -111,17 +111,20 @@ defineExpose({ hide });
 
 .modal-bg {
   @apply absolute h-full w-full bg-black bg-opacity-90;
+  box-shadow: inset 0px 0px 2px #130719 !important;
 }
 
 .modal-card {
-  @apply mx-auto h-full rounded-b-none sm:rounded-b-lg dark:border-0;
+  @apply mx-auto h-full dark:border-0;
+  background: #231928;
+  border-radius: 22px;
 }
 
 .dark .bal-modal .content::before {
-  background-blend-mode: soft-light, soft-light, normal;
+  /* background-blend-mode: soft-light, soft-light, normal;
   background: radial-gradient(circle at left, yellow, transparent),
     radial-gradient(circle at bottom right, blue, transparent),
-    radial-gradient(circle at top, red, transparent);
+    radial-gradient(circle at top, red, transparent); */
   content: '';
   display: block;
   width: 100%;
