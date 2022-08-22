@@ -85,12 +85,7 @@ function toggleModal(): void {
           })
         }}
       </span>
-      <BalIcon
-        v-if="!fixed"
-        name="chevron-down"
-        size="sm"
-        class="ml-2 text-blue-600 group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-yellow-500 transition-colors"
-      />
+      <BalIcon v-if="!fixed" name="chevron-down" size="sm" />
     </div>
     <BalDropdown
       v-else-if="hasToken && fixed && options.length > 0"
@@ -143,7 +138,7 @@ function toggleModal(): void {
 
     <div
       v-else
-      class="token-select-input unselected selectable"
+      class="token-select-input unselected selectable no-token"
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
@@ -164,6 +159,16 @@ function toggleModal(): void {
 </template>
 
 <style scoped>
+.group {
+  background-color: #2e2433 !important;
+  border-radius: 16px !important;
+}
+
+.group:hover {
+  background-color: #3e3045 !important;
+  border-radius: 16px !important;
+}
+
 .token-select-input {
   @apply shadow rounded-lg flex items-center h-10 px-2 whitespace-nowrap;
   @apply text-sm;
@@ -181,5 +186,21 @@ function toggleModal(): void {
 
 .selected {
   @apply bg-gray-50 dark:bg-gray-700 text-black dark:text-white;
+}
+
+.no-token {
+  padding: 4px 4px 4px 16px;
+  gap: 6px;
+
+  background: #7b307f !important;
+  border-radius: 16px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.no-token:hover {
+  background: rgba(123, 48, 127, 0.7) !important;
 }
 </style>

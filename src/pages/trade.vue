@@ -51,53 +51,19 @@ onMounted(() => {
 
 <template>
   <Col3Layout offsetGutters mobileHideGutters class="mt-8">
-    <template #gutterLeft>
+    <!-- <template #gutterLeft>
       <MyWallet />
       <TrendingPairs class="mt-4" />
-    </template>
+    </template> -->
 
     <BalLoadingBlock v-if="appLoading" class="h-96" />
     <template v-else>
       <TradeCard />
     </template>
-    <div class="p-4 sm:p-0 lg:p-0 mt-8">
-      <BalAccordion
-        v-if="upToLargeBreakpoint"
-        class="w-full"
-        :sections="[
-          { title: 'My wallet', id: 'my-wallet' },
-          { title: 'Trending pairs', id: 'trending-pairs' },
-          { title: 'Price chart', id: 'price-chart' },
-        ]"
-      >
-        <template #my-wallet>
-          <MyWallet />
-        </template>
-        <template #trending-pairs>
-          <TrendingPairs />
-        </template>
-        <template #price-chart>
-          <PairPriceGraph :toggleModal="togglePairPriceGraphModal" />
-        </template>
-      </BalAccordion>
-    </div>
-
-    <template #gutterRight>
+    <!-- <template #gutterRight>
       <PairPriceGraph :toggleModal="togglePairPriceGraphModal" />
-    </template>
+    </template> -->
   </Col3Layout>
-
-  <teleport to="#modal">
-    <BalModal :show="showPriceGraphModal" @close="onPriceGraphModalClose">
-      <div class="graph-modal">
-        <PairPriceGraph
-          :toggleModal="togglePairPriceGraphModal"
-          isModal
-          :onCloseModal="onPriceGraphModalClose"
-        />
-      </div>
-    </BalModal>
-  </teleport>
 </template>
 
 <style scoped>

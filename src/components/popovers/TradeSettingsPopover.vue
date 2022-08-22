@@ -3,12 +3,12 @@
     <template #activator>
       <BalBtn
         circle
-        color="white"
         size="sm"
-        class="mb-2 text-secondary icon-spin-anim"
+        class="icon-spin-anim settings-button"
         @click="onActivatorClick"
       >
-        <BalIcon name="settings" size="sm" />
+        <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
+        <IconSettings />
       </BalBtn>
     </template>
 
@@ -85,6 +85,7 @@ import useFathom from '@/composables/useFathom';
 import useNumbers from '@/composables/useNumbers';
 import { ethereumTxTypeOptions } from '@/constants/options';
 import useWeb3 from '@/services/web3/useWeb3';
+import IconSettings from '@/components/icons/SettingsIcon.vue';
 
 export enum TradeSettingsContext {
   trade,
@@ -96,6 +97,7 @@ export default defineComponent({
 
   components: {
     AppSlippageForm,
+    IconSettings,
   },
 
   props: {
@@ -155,11 +157,22 @@ export default defineComponent({
 </script>
 
 <style>
+.icon {
+  width: '20px';
+}
+
+.settings-button {
+  background: none;
+  background-color: #130719 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 .trade-settings-option:hover {
-  @apply text-blue-500 border-blue-500;
+  /* @apply text-blue-500 border-blue-500; */
 }
 
 .trade-settings-option.active {
-  @apply text-blue-500 border-blue-500;
+  /* @apply text-blue-500 border-blue-500; */
 }
 </style>

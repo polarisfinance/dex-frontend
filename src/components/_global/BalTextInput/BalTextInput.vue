@@ -172,6 +172,9 @@ onMounted(() => {
 <style scoped>
 .input-container {
   @apply transition-colors;
+  background-color: #231928;
+  border-radius: 16px;
+  border: none;
 }
 
 .input-group {

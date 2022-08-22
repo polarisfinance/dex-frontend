@@ -5,8 +5,8 @@
     :detached="isMobile ? true : undefined"
   >
     <template #activator>
-      <BalBtn
-        class="text-base"
+      <button
+        class="text-base btn"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
         :loadingLabel="upToLargeBreakpoint ? '' : $t('connecting')"
@@ -14,11 +14,11 @@
         :size="upToLargeBreakpoint ? 'md' : 'sm'"
         :circle="upToLargeBreakpoint"
       >
-        <Avatar
+        <!-- <Avatar
           :iconURI="profile?.avatar"
           :address="account"
           :size="avatarSize"
-        />
+        /> -->
         <span
           v-if="profile && profile.ens"
           class="hidden lg:inline-block pl-2"
@@ -29,7 +29,7 @@
           class="hidden lg:inline-block pl-2 eth-address"
           v-text="_shorten(account)"
         />
-      </BalBtn>
+      </button>
     </template>
     <AppNavSettings />
   </BalPopover>
@@ -79,3 +79,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.btn {
+  padding: 10px 25px;
+  background: #231928;
+  border-radius: 16px;
+  color: #be95c0;
+}
+</style>

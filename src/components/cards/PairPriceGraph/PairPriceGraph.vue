@@ -257,34 +257,26 @@ const chartGrid = computed(() => {
         'h-112': isModal,
       }"
     />
-    <BalCard
-      v-else
-      :square="upToLargeBreakpoint"
-      shadow="none"
-      hFull
-      growContent
-      noPad
-      :noBorder="upToLargeBreakpoint || isModal"
-    >
+    <div v-else class="container">
       <div class="relative p-4 h-full bg-transparent">
-        <button
+        <!-- <button
           v-if="!failedToLoadPriceData && !(isLoadingPriceData || appLoading)"
           class="flex justify-center items-center p-2 m-4 rounded-full shadow-lg maximise"
           @click="toggle"
         >
           <BalIcon v-if="!isModal" name="maximize-2" class="text-secondary" />
           <BalIcon v-if="isModal" name="x" class="text-secondary" />
-        </button>
+        </button> -->
         <div
           v-if="!failedToLoadPriceData && !(isLoadingPriceData || appLoading)"
           class="flex"
         >
-          <h6 class="font-medium">{{ outputSym }}/{{ inputSym }}</h6>
-          <BalTooltip class="ml-2" :text="$t('coingeckoPricingTooltip')">
+          <h6 class="font-medium title">{{ outputSym }}/{{ inputSym }}</h6>
+          <!-- <BalTooltip class="ml-2" :text="$t('coingeckoPricingTooltip')">
             <template #activator>
               <img class="h-5" src="@/assets/images/icons/coingecko.svg" />
             </template>
-          </BalTooltip>
+          </BalTooltip> -->
         </div>
         <div
           v-if="failedToLoadPriceData && tokenOutAddress"
@@ -385,7 +377,7 @@ const chartGrid = computed(() => {
           </template>
         </div>
       </div>
-    </BalCard>
+    </div>
   </div>
 </template>
 
@@ -395,5 +387,14 @@ const chartGrid = computed(() => {
 
   right: 0;
   top: 0;
+}
+
+.container {
+  background: #231928;
+  border-radius: 12px;
+}
+
+.title {
+  color: #be95c0;
 }
 </style>

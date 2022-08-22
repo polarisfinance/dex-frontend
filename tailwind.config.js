@@ -166,6 +166,7 @@ module.exports = {
           800: '#92400e',
           900: '#78350f',
         },
+        polarisgreen: '#4ade80',
       },
     },
   },

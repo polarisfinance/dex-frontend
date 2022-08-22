@@ -25,20 +25,20 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
 
 <template>
   <div class="grid grid-rows-1 grid-flow-col gap-2">
-    <DarkModeToggle v-if="isDesktop" />
-    <AppNavActivityBtn v-if="account" />
+    <!-- <DarkModeToggle v-if="isDesktop" /> -->
+    <!-- <AppNavActivityBtn v-if="account" /> -->
     <AppNavAccountBtn v-if="account" />
-    <BalBtn
+    <button
+      class="btn"
       v-else
-      color="white"
       :size="isMobile ? 'md' : 'sm'"
       @click="startConnectWithInjectedProvider"
     >
-      <WalletIcon class="mr-2" />
+      <!-- <WalletIcon class="mr-2" /> -->
       <span class="hidden lg:inline-block" v-text="$t('connectWallet')" />
       <span class="lg:hidden" v-text="$t('connect')" />
-    </BalBtn>
-    <AppNavNetworkSelect v-if="!hideNetworkSelect" />
+    </button>
+    <!-- <AppNavNetworkSelect v-if="!hideNetworkSelect" /> -->
     <BalBtn
       v-if="isMobile"
       color="white"
@@ -50,3 +50,44 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
     </BalBtn>
   </div>
 </template>
+
+<style>
+button {
+  background: linear-gradient(
+    94.14deg,
+    #391b40 23.11%,
+    rgba(57, 27, 64, 0.81) 81.52%
+  );
+  border-radius: 16px;
+  padding: 10px 25px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #fbaaff;
+}
+
+.btn:hover {
+  background: linear-gradient(
+    94.14deg,
+    #391b40 23.11%,
+    rgba(57, 27, 64, 0.81) 81.52%
+  );
+  border: 0.5px solid #ffffff;
+  box-shadow: inset 0px 0px 1px rgba(255, 247, 247, 0.25);
+  border-radius: 16px;
+  padding: 10px 25px;
+}
+
+.btn:active {
+  background: linear-gradient(
+    94.14deg,
+    #391b40 23.11%,
+    rgba(57, 27, 64, 0.81) 81.52%
+  );
+  border: 1px solid #ffffff;
+  box-shadow: inset 0px 0px 1px rgba(255, 247, 247, 0.25);
+  border-radius: 16px;
+}
+</style>

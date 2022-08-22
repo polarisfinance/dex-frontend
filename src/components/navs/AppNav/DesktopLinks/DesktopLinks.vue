@@ -27,28 +27,28 @@ function isActive(page: string): boolean {
       {{ $t('invest') }}
     </DesktopLinkItem>
     <DesktopLinkItem to="/trade" :active="isActive('trade')">
-      {{ $t('trade') }}
+      {{ $t('swap') }}
     </DesktopLinkItem>
-    <DesktopLinkItem v-if="isGoerli" to="/faucet" :active="isActive('faucet')">
+    <!-- <DesktopLinkItem v-if="isGoerli" to="/faucet" :active="isActive('faucet')">
       Faucet
-    </DesktopLinkItem>
+    </DesktopLinkItem> -->
     <DesktopLinkItem to="/portfolio" :active="isActive('portfolio')">
       {{ $t('portfolio') }}
     </DesktopLinkItem>
     <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
       veBAL
     </DesktopLinkItem>
-    <DesktopLinkItem to="/claim" :active="isActive('claim')">
+    <!-- <DesktopLinkItem to="/claim" :active="isActive('claim')">
       <div class="flex items-center">
         {{ $t('claim') }}
         <StarsIcon class="ml-0.5 w-3.5 h-5" />
       </div>
-    </DesktopLinkItem>
+    </DesktopLinkItem> -->
   </div>
 </template>
 
 <style scoped>
 .desktop-links {
-  @apply grid gap-6 grid-flow-col grid-rows-1 h-full content-center;
+  @apply grid gap-x-6 grid-flow-col grid-rows-1 h-full content-center;
 }
 </style>
