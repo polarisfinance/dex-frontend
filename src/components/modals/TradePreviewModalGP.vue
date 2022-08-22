@@ -1,414 +1,26 @@
 <template>
-  <BalModal show :title="labels.modalTitle" @close="onClose">
-    <div>
-      <BalCard noPad class="overflow-auto relative mb-6">
-        <template #header>
-          <div
-            class="p-3 w-full text-sm bg-gray-50 dark:bg-gray-800 rounded-t-lg border-b dark:border-gray-800"
-          >
-            <span>
-              {{ $t('effectivePrice') }}
-              {{
-                trading.exactIn.value
-                  ? trading.effectivePriceMessage.value.tokenIn
-                  : trading.effectivePriceMessage.value.tokenOut
-              }}
-            </span>
-          </div>
-        </template>
-        <div>
-          <div
-            class="relative p-3 border-b border-gray-100 dark:border-gray-900"
-          >
-            <div class="flex items-center">
-              <div class="mr-3">
-                <BalAsset :address="trading.tokenIn.value.address" :size="36" />
-              </div>
-              <div>
-                <div class="font-medium">
-                  {{
-                    fNum2(trading.tokenInAmountInput.value, FNumFormats.token)
-                  }}
-                  {{ trading.tokenIn.value.symbol }}
-                </div>
-                <div class="text-sm text-secondary">
-                  {{ tokenInFiatValue }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="arrow-down">
-            <ArrowDownIcon />
-          </div>
-          <div class="p-3">
-            <div class="flex items-center">
-              <div class="mr-3">
-                <BalAsset
-                  :address="trading.tokenOut.value.address"
-                  :size="36"
-                />
-              </div>
-              <div>
-                <div class="font-medium">
-                  {{
-                    fNum2(trading.tokenOutAmountInput.value, FNumFormats.token)
-                  }}
-                  {{ trading.tokenOut.value.symbol }}
-                </div>
-                <div class="text-sm text-secondary">
-                  {{ tokenOutFiatValue }}
-                  <span
-                    v-if="
-                      trading.isBalancerTrade.value ||
-                      trading.isWrapUnwrapTrade.value
-                    "
-                  >
-                    / {{ $t('priceImpact') }}:
-                    {{
-                      fNum2(trading.sor.priceImpact.value, FNumFormats.percent)
-                    }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </BalCard>
-      <BalCard noPad shadow="none" class="mb-3">
-        <template #header>
-          <div
-            class="flex justify-between items-center p-3 w-full border-b dark:border-gray-900"
-          >
-            <div class="font-semibold">
-              {{ labels.tradeSummary.title }}
-            </div>
-            <div class="flex text-xs uppercase divide-x dark:divide-gray-500">
-              <div
-                :class="[
-                  'pr-2 cursor-pointer font-medium',
-                  { 'text-blue-600': !showSummaryInFiat },
-                ]"
-                @click="showSummaryInFiat = false"
-              >
-                {{ $t('tokens') }}
-              </div>
-              <div
-                :class="[
-                  'pl-2 cursor-pointer font-medium uppercase',
-                  { 'text-blue-600': showSummaryInFiat },
-                ]"
-                @click="showSummaryInFiat = true"
-              >
-                {{ FiatCurrency.usd }}
-              </div>
-            </div>
-          </div>
-        </template>
-        <div class="p-3 text-sm">
-          <div class="summary-item-row">
-            <div>
-              {{ labels.tradeSummary.totalBeforeFees }}
-            </div>
-            <div v-html="summary.amountBeforeFees" />
-          </div>
-          <div v-if="trading.isGnosisTrade.value" class="summary-item-row">
-            <div>{{ $t('tradeSummary.gasCosts') }}</div>
-            <div class="text-green-400">-{{ zeroFee }}</div>
-          </div>
-          <div class="summary-item-row">
-            <div>{{ labels.tradeSummary.tradeFees }}</div>
-            <div
-              v-html="
-                trading.isWrapUnwrapTrade.value
-                  ? zeroFee
-                  : trading.isGnosisTrade.value
-                  ? trading.exactIn.value
-                    ? `-${summary.tradeFees}`
-                    : `+${summary.tradeFees}`
-                  : summary.tradeFees
-              "
-            />
-          </div>
-        </div>
-        <template #footer>
-          <div
-            class="p-3 w-full text-sm bg-white dark:bg-gray-800 rounded-b-lg"
-          >
-            <div class="font-medium summary-item-row">
-              <div class="w-64">
-                {{ labels.tradeSummary.totalAfterFees }}
-              </div>
-              <div v-html="summary.totalWithoutSlippage" />
-            </div>
-            <div class="summary-item-row text-secondary">
-              <div class="w-64">
-                {{ labels.tradeSummary.totalWithSlippage }}
-              </div>
-              <div
-                v-html="
-                  trading.isWrapUnwrapTrade.value
-                    ? ''
-                    : summary.totalWithSlippage
-                "
-              />
-            </div>
-          </div>
-        </template>
-      </BalCard>
-      <BalAlert
-        v-if="showPriceUpdateError"
-        class="p-3 mb-4"
-        type="error"
-        size="md"
-        :title="$t('priceUpdatedAlert.title')"
-        :description="
-          $t('priceUpdatedAlert.description', [
-            fNum2(PRICE_UPDATE_THRESHOLD, FNumFormats.percent),
-          ])
-        "
-        :actionLabel="$t('priceUpdatedAlert.actionLabel')"
-        block
-        @action-click="cofirmPriceUpdate"
-      />
-      <div
-        v-if="totalRequiredTransactions > 1"
-        class="flex justify-center items-center my-5"
-      >
-        <template v-if="showGnosisRelayerApprovalStep">
-          <BalTooltip :disabled="!requiresGnosisRelayerApproval" width="64">
-            <template #activator>
-              <div
-                :class="[
-                  'step',
-                  {
-                    'step-active':
-                      activeTransactionType === 'gnosisRelayerApproval',
-                    'step-approved': !requiresGnosisRelayerApproval,
-                  },
-                ]"
-              >
-                <BalIcon
-                  v-if="!requiresGnosisRelayerApproval"
-                  name="check"
-                  class="text-green-500"
-                />
-                <template v-else> 1 </template>
-              </div>
-            </template>
-            <div>
-              <div class="mb-2 font-semibold">
-                <div>
-                  {{
-                    $t(
-                      'tradeSummary.transactionTypesTooltips.gnosisRelayerApproval.title'
-                    )
-                  }}
-                </div>
-              </div>
-              <div>
-                {{
-                  $t(
-                    'tradeSummary.transactionTypesTooltips.gnosisRelayerApproval.content'
-                  )
-                }}
-              </div>
-            </div>
-          </BalTooltip>
-          <div class="step-seperator" />
-        </template>
-        <template v-else-if="showLidoRelayerApprovalStep">
-          <BalTooltip :disabled="!requiresLidoRelayerApproval" width="64">
-            <template #activator>
-              <div
-                :class="[
-                  'step',
-                  {
-                    'step-active':
-                      activeTransactionType === 'lidoRelayerApproval',
-                    'step-approved': !requiresLidoRelayerApproval,
-                  },
-                ]"
-              >
-                <BalIcon
-                  v-if="!requiresLidoRelayerApproval"
-                  name="check"
-                  class="text-green-500"
-                />
-                <template v-else> 1 </template>
-              </div>
-            </template>
-            <div>
-              <div class="mb-2 font-semibold">
-                <div>
-                  {{
-                    $t(
-                      'tradeSummary.transactionTypesTooltips.lidoRelayerApproval.title'
-                    )
-                  }}
-                </div>
-              </div>
-              <div>
-                {{
-                  $t(
-                    'tradeSummary.transactionTypesTooltips.lidoRelayerApproval.content'
-                  )
-                }}
-              </div>
-            </div>
-          </BalTooltip>
-          <div class="step-seperator" />
-        </template>
-        <template v-if="showTokenApprovalStep">
-          <BalTooltip
-            v-if="showTokenApprovalStep"
-            :disabled="!requiresTokenApproval"
-            width="64"
-          >
-            <template #activator>
-              <div
-                :class="[
-                  'step',
-                  {
-                    'step-active': activeTransactionType === 'tokenApproval',
-                    'step-approved': !requiresTokenApproval,
-                  },
-                ]"
-              >
-                <BalIcon
-                  v-if="!requiresTokenApproval"
-                  name="check"
-                  class="text-green-500"
-                />
-                <template v-else>
-                  {{
-                    showGnosisRelayerApprovalStep || showLidoRelayerApprovalStep
-                      ? 2
-                      : 1
-                  }}
-                </template>
-              </div>
-            </template>
-            <div>
-              <div class="mb-2 font-semibold">
-                {{
-                  $t(
-                    'tradeSummary.transactionTypesTooltips.tokenApproval.title',
-                    [trading.tokenIn.value.symbol]
-                  )
-                }}
-              </div>
-              <div>
-                {{
-                  $t(
-                    'tradeSummary.transactionTypesTooltips.tokenApproval.content'
-                  )
-                }}
-              </div>
-            </div>
-          </BalTooltip>
-          <div class="step-seperator" />
-        </template>
-        <BalTooltip width="64">
-          <template #activator>
-            <div
-              :class="[
-                'step',
-                {
-                  'step-active': activeTransactionType === 'trade',
-                },
-              ]"
-            >
-              {{ totalRequiredTransactions }}
-            </div>
-          </template>
-          <div>
-            <div class="mb-2 font-semibold">
-              {{
-                trading.isGnosisTrade.value
-                  ? $t('tradeSummary.transactionTypesTooltips.sign.title')
-                  : $t('tradeSummary.transactionTypesTooltips.trade.title')
-              }}
-            </div>
-            <div>
-              {{
-                trading.isGnosisTrade.value
-                  ? $t('tradeSummary.transactionTypesTooltips.sign.content')
-                  : $t('tradeSummary.transactionTypesTooltips.trade.content')
-              }}
-            </div>
-          </div>
-        </BalTooltip>
+  <div>
+    <div noPad class="overflow-auto relative mb-2">
+      <div class="flex justify-between my-0.5 mx-2">
+        <div class="summary">Minimum Received</div>
+        <div class="summary-stat">{{ summary.totalWithSlippage }}</div>
       </div>
-      <BalBtn
-        v-if="requiresGnosisRelayerApproval"
-        color="gradient"
-        block
-        :loading="
-          gnosisRelayerApproval.init.value ||
-          gnosisRelayerApproval.approving.value
-        "
-        :loadingLabel="`${$t('approvingGnosisRelayer')}...`"
-        @click.prevent="gnosisRelayerApproval.approve"
-      >
-        {{ $t('approveGnosisRelayer') }}
-      </BalBtn>
-      <BalBtn
-        v-else-if="requiresLidoRelayerApproval"
-        color="gradient"
-        block
-        :loading="
-          lidoRelayerApproval.init.value || lidoRelayerApproval.approving.value
-        "
-        :loadingLabel="`${$t('approvingLidoRelayer')}...`"
-        @click.prevent="lidoRelayerApproval.approve"
-      >
-        {{ $t('approveLidoRelayer') }}
-      </BalBtn>
-      <BalBtn
-        v-else-if="requiresTokenApproval"
-        :loading="tokenApproval.approving.value"
-        :loadingLabel="`${$t('approving')} ${trading.tokenIn.value.symbol}...`"
-        color="gradient"
-        block
-        @click.prevent="approveToken"
-      >
-        {{ `${$t('approve')} ${trading.tokenIn.value.symbol}` }}
-      </BalBtn>
-      <BalBtn
-        v-else
-        color="gradient"
-        block
-        :loading="trading.isConfirming.value"
-        :loadingLabel="$t('confirming')"
-        :disabled="tradeDisabled"
-        class="relative"
-        @click.prevent="trade"
-      >
-        {{ labels.confirmTrade }}
-      </BalBtn>
-      <BalAlert
-        v-if="trading.submissionError.value != null"
-        class="p-3 mt-4"
-        type="error"
-        size="md"
-        :title="$t('tradeSubmissionError.title')"
-        :description="trading.submissionError.value"
-        block
-        :actionLabel="$t('tradeSubmissionError.actionLabel')"
-        @action-click="trading.resetSubmissionError"
-      />
+      <div class="flex justify-between my-0.5 mx-2">
+        <div class="summary">Price Impact</div>
+        <div class="slippage">
+          {{ summary.slippage.split(' ')[0] + ' %' }}
+        </div>
+      </div>
+      <div class="flex justify-between my-0.5 mx-2">
+        <div class="summary">Liquidity Provider Fee</div>
+        <div class="summary-stat">{{ summary.tradeFees }}</div>
+      </div>
+      <div class="flex justify-between my-0.5 mx-2">
+        <div class="summary">Routed Via</div>
+        <div class="routed">Standard AMM</div>
+      </div>
     </div>
-    <TradeRoute
-      v-if="showTradeRoute"
-      :addressIn="trading.tokenIn.value.address"
-      :amountIn="trading.tokenInAmountInput.value"
-      :addressOut="trading.tokenOut.value.address"
-      :amountOut="trading.tokenOutAmountInput.value"
-      :pools="trading.sor.pools.value"
-      :sorReturn="trading.sor.sorReturn.value"
-      class="mt-3"
-    />
-  </BalModal>
+  </div>
 </template>
 
 <script lang="ts">
@@ -503,6 +115,7 @@ export default defineComponent({
         tradeFees: '',
         totalWithoutSlippage: '',
         totalWithSlippage: '',
+        slippage: '',
       };
 
       const exactIn = props.trading.exactIn.value;
@@ -518,6 +131,7 @@ export default defineComponent({
         summaryItems.tradeFees = '0';
         summaryItems.totalWithoutSlippage = tokenInAmountInput;
         summaryItems.totalWithSlippage = tokenInAmountInput;
+        summaryItems.totalWithSlippage = '0';
       } else {
         const quote = props.trading.getQuote();
 
@@ -552,6 +166,12 @@ export default defineComponent({
             tokenIn.decimals
           );
         }
+        summaryItems.slippage = (
+          Number(summaryItems.totalWithSlippage) /
+          Number(summaryItems.totalWithoutSlippage)
+        )
+          .toFixed(2)
+          .toString();
       }
 
       if (showSummaryInFiat.value) {
@@ -905,5 +525,37 @@ export default defineComponent({
 
 .step-approved {
   @apply border-green-500 dark:border-green-500;
+}
+
+.summary {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b9babb;
+}
+
+.summary-stat {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #ffffff;
+}
+
+.slippage {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #20b961;
+}
+
+.routed {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #f2994a;
 }
 </style>

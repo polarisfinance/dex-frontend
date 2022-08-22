@@ -43,6 +43,22 @@
         :description="warning.body"
         block
       />
+      <div
+        v-if="
+          tokenInAddress &&
+          tokenOutAddress &&
+          tokenInAmount > 0 &&
+          tokenOutAmount > 0
+        "
+        class="price"
+      >
+        Price:
+        {{
+          trading.exactIn.value
+            ? trading.effectivePriceMessage.value.tokenIn
+            : trading.effectivePriceMessage.value.tokenOut
+        }}
+      </div>
       <BalBtn
         v-if="trading.isLoading.value"
         loading
@@ -61,7 +77,7 @@
       </button>
       <button
         v-else-if="account"
-        :disabled="tradeDisabled"
+        :disabled="false"
         @click="handlePreviewButton"
         class="swap-button"
       >
@@ -75,98 +91,52 @@
         Connect Wallet
       </button>
       <div
-        v-if="trading.isGnosisSupportedOnNetwork.value"
-        class="flex items-center mt-5 h-8 text-sm"
+        v-if="
+          tokenInAddress &&
+          tokenOutAddress &&
+          tokenInAmount > 0 &&
+          tokenOutAmount > 0
+        "
+        class="stats"
       >
-        <Transition name="fade" mode="out-in">
-          <div
-            v-if="trading.isGaslessTradingDisabled.value"
-            class="text-secondary"
-          >
-            <div class="flex gap-2 items-center">
-              <span class="text-lg">⛽</span>
-              <Transition name="fade" mode="out-in">
-                <p v-if="trading.isWrap.value">
-                  {{ $t('tradeToggle.wrapEth') }}
-                </p>
-                <p v-else-if="trading.isUnwrap.value">
-                  {{ $t('tradeToggle.unwrapEth') }}
-                </p>
-                <p v-else>
-                  {{ $t('tradeToggle.fromEth') }}
-                </p>
-              </Transition>
-            </div>
+        <div>
+          <TradePreviewModalGP
+            :trading="trading"
+            @trade="trade"
+            @close="handlePreviewModalClose"
+          />
+          <!-- <div class="flex justify-between">
+            <div>Minimum Received</div>
+            <div>1</div>
           </div>
-
-          <div v-else>
-            <div class="flex items-center trade-gasless">
-              <BalTooltip
-                width="64"
-                :disabled="!trading.isGaslessTradingDisabled.value"
-              >
-                <template #activator>
-                  <BalToggle
-                    name="tradeGasless"
-                    :checked="trading.tradeGasless.value"
-                    :disabled="trading.isGaslessTradingDisabled.value"
-                    @toggle="trading.toggleTradeGasless"
-                  />
-                </template>
-                <div
-                  v-text="
-                    trading.isWrapUnwrapTrade.value
-                      ? $t('tradeGaslessToggle.disabledTooltip.wrapUnwrap')
-                      : $t('tradeGaslessToggle.disabledTooltip.eth')
-                  "
-                />
-              </BalTooltip>
-              <Transition name="fade" mode="out-in">
-                <span
-                  v-if="trading.tradeGasless.value"
-                  class="pl-2 text-sm text-gray-600 dark:text-gray-400"
-                  >{{ $t('tradeToggle.tradeGasless') }}</span
-                >
-                <span
-                  v-else
-                  class="pl-2 text-sm text-gray-600 dark:text-gray-400"
-                  >{{ $t('tradeToggle.tradeWithGas') }}</span
-                >
-              </Transition>
-              <BalTooltip width="64">
-                <template #activator>
-                  <BalIcon
-                    name="info"
-                    size="xs"
-                    class="flex ml-1 text-gray-400"
-                  />
-                </template>
-                <div v-html="$t('tradeGaslessToggle.tooltip')" />
-              </BalTooltip>
-            </div>
+          <div class="flex justify-between">
+            <div>Price Impact</div>
+            <div>{{ a }}</div>
           </div>
-        </Transition>
+          <div class="flex justify-between">
+            <div>Liquidity Provider Fee</div>
+            <div>1</div>
+          </div>
+          <div class="flex justify-between">
+            <div>Routed Via</div>
+            <div>1</div>
+          </div> -->
+        </div>
+        <div class="border" />
+        <div class="px-1">
+          <TradeRoute
+            :addressIn="trading.tokenIn.value.address"
+            :amountIn="trading.tokenInAmountInput.value"
+            :addressOut="trading.tokenOut.value.address"
+            :amountOut="trading.tokenOutAmountInput.value"
+            :pools="trading.sor.pools.value"
+            :sorReturn="trading.sor.sorReturn.value"
+            class="mt-2"
+          />
+        </div>
       </div>
-      <TradeRoute
-        v-if="alwaysShowRoutes"
-        :addressIn="trading.tokenIn.value.address"
-        :amountIn="trading.tokenInAmountInput.value"
-        :addressOut="trading.tokenOut.value.address"
-        :amountOut="trading.tokenOutAmountInput.value"
-        :pools="trading.sor.pools.value"
-        :sorReturn="trading.sor.sorReturn.value"
-        class="mt-4"
-      />
     </div>
   </BalCard>
-  <teleport to="#modal">
-    <TradePreviewModalGP
-      v-if="modalTradePreviewIsOpen"
-      :trading="trading"
-      @trade="trade"
-      @close="handlePreviewModalClose"
-    />
-  </teleport>
 </template>
 
 <script lang="ts">
@@ -580,5 +550,25 @@ export default defineComponent({
     )
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   border-radius: 12px;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+  margin-left: 0.55em !important;
+  margin-right: 0.55em !important;
+}
+
+.price {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b9babb;
+  padding-bottom: 1em;
+  padding-left: 1em;
+}
+
+.stats {
+  margin-top: 1em !important;
 }
 </style>

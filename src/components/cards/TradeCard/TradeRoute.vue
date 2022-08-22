@@ -1,16 +1,13 @@
 <template>
-  <BalCard v-if="routes.length > 0" shadow="none">
-    <div
-      class="flex items-center cursor-pointer text-secondary"
-      @click="toggleVisibility"
-    >
+  <div v-if="routes.length > 0" shadow="none" class="p-1 title">
+    <div class="flex items-center cursor-pointer text-secondary">
       <div class="mr-2">
         {{ $t('tradeRoute') }}
       </div>
-      <BalIcon v-if="visible" name="chevron-up" size="sm" />
-      <BalIcon v-else name="chevron-down" size="sm" />
+      <!-- <BalIcon v-if="visible" name="chevron-up" size="sm" />
+      <BalIcon v-else name="chevron-down" size="sm" /> -->
     </div>
-    <div v-if="visible" class="mt-5">
+    <div class="mt-2">
       <div
         v-if="routes.length === 0"
         class="mt-5 text-sm text-secondary"
@@ -20,26 +17,24 @@
         <div>
           <div class="flex justify-between text-xs">
             <div>
-              <div class="font-semibold">
+              <div class="token-amount">
                 {{ input.amount }}
               </div>
-              <div>
+              <div class="token-symbol">
                 {{ input.symbol }}
               </div>
             </div>
             <div class="flex flex-col items-end">
-              <div class="font-semibold">
+              <div class="token-amount">
                 {{ output.amount }}
               </div>
-              <div>
+              <div class="token-symbol">
                 {{ output.symbol }}
               </div>
             </div>
           </div>
           <div class="relative mt-2">
-            <div
-              class="absolute mx-9 h-1/2 border-b border-gray-500 border-dashed pair-line"
-            />
+            <div class="absolute mx-9 h-1/2 border-b pair-line dotted-border" />
             <div class="flex relative z-10 justify-between">
               <BalAsset :address="input.address" :size="36" />
               <BalAsset :address="output.address" :size="36" />
@@ -50,18 +45,20 @@
           class="flex justify-between"
           :style="{ margin: `8px ${12 + routes.length}px` }"
         >
-          <BalIcon
+          <!-- <BalIcon
             name="triangle"
             size="xxs"
             :filled="true"
             class="transform rotate-180 text-secondary"
-          />
-          <BalIcon
+          /> -->
+          <ArrowDown />
+          <ArrowUp />
+          <!-- <BalIcon
             name="triangle"
             size="xxs"
             :filled="true"
             class="text-secondary"
-          />
+          /> -->
         </div>
         <div class="relative my-1.5 mx-4">
           <div
@@ -72,7 +69,7 @@
               width: `calc(100% - ${4 * (routes.length - index - 1)}px + 1px)`,
               margin: `0 ${2 * (routes.length - index - 1) - 1}px`,
             }"
-            class="absolute rounded-b-md border-r border-b border-l border-gray-500"
+            class="absolute rounded-b-md border-r border-b border-l border-design"
           />
           <div class="relative z-10">
             <div
@@ -81,18 +78,18 @@
               class="flex justify-between mt-9 first:mt-0"
             >
               <div class="flex items-center ml-4 w-4">
-                <BalIcon
+                <!-- <BalIcon
                   name="triangle"
                   size="xxs"
                   :filled="true"
                   class="transform rotate-90 text-secondary"
-                />
+                /> -->
               </div>
               <div class="flex">
                 <div
                   v-for="hop in route.hops"
                   :key="hop?.pool?.address"
-                  class="flex ml-4 first:ml-0 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-xl border border-gray-100 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-400 shadow transition-colors"
+                  class="flex ml-4 first:ml-0 route"
                 >
                   <a
                     class="flex p-1.5"
@@ -102,14 +99,14 @@
                     <BalAsset
                       v-for="token in hop.pool.tokens"
                       :key="token.address"
-                      class="ml-1.5 first:ml-0"
+                      class="ml-1.5 first:ml-0 w-24 h-24"
                       :address="token.address"
                       :size="20"
                     />
                   </a>
                 </div>
               </div>
-              <div class="mr-4 w-10 text-xs text-right text-secondary">
+              <div class="mr-4 w-10 text-xs text-right percentage">
                 {{ formatShare(route.share) }}
               </div>
             </div>
@@ -117,7 +114,7 @@
         </div>
       </div>
     </div>
-  </BalCard>
+  </div>
 </template>
 
 <script lang="ts">
@@ -135,6 +132,9 @@ import { NATIVE_ASSET_ADDRESS } from '@/constants/tokens';
 import { isSameAddress } from '@/lib/utils';
 import { SorReturn } from '@/lib/utils/balancer/helpers/sor/sorManager';
 import useWeb3 from '@/services/web3/useWeb3';
+import Check from './check.vue';
+import ArrowUp from './ArrowUp.vue';
+import ArrowDown from './ArrowDown.vue';
 
 interface Route {
   share: number;
@@ -157,6 +157,11 @@ interface Asset {
 }
 
 export default defineComponent({
+  components: {
+    Check,
+    ArrowUp,
+    ArrowDown,
+  },
   props: {
     addressIn: {
       type: String,
@@ -396,5 +401,59 @@ export default defineComponent({
 <style scoped>
 .pair-line {
   width: calc(100% - 72px);
+}
+
+.title {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b9babb;
+}
+
+.token-amount {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #ffffff;
+}
+
+.token-symbol {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b9babb;
+}
+
+.dotted-border {
+  border-bottom: 0.5px dashed #be95c0;
+  box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
+  opacity: 0.7;
+}
+
+.border-design {
+  border-bottom: 0.5px solid #be95c0;
+  border-left: 0.5px solid #be95c0;
+  border-right: 0.5px solid #be95c0;
+  opacity: 0.7;
+}
+
+.percentage {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b9babb;
+}
+
+.route {
+  padding: 4px 6px;
+  gap: 6px;
+
+  background: #2e2433;
+  box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
 }
 </style>
