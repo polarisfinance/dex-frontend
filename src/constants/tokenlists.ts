@@ -74,6 +74,9 @@ export const TOKEN_LIST_MAP: TokenListMapByNetwork = {
       Vetted:
         'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.vetted.tokenlist.json',
     },
-    External: ['https://aurora.dev/tokens.json'],
+    External: [
+      'https://aurora.dev/tokens.json',
+      'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json',
+    ],
   },
 };
