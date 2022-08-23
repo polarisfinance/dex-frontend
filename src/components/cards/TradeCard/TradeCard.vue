@@ -105,25 +105,7 @@
             @trade="trade"
             @close="handlePreviewModalClose"
           />
-          <!-- <div class="flex justify-between">
-            <div>Minimum Received</div>
-            <div>1</div>
-          </div>
-          <div class="flex justify-between">
-            <div>Price Impact</div>
-            <div>{{ a }}</div>
-          </div>
-          <div class="flex justify-between">
-            <div>Liquidity Provider Fee</div>
-            <div>1</div>
-          </div>
-          <div class="flex justify-between">
-            <div>Routed Via</div>
-            <div>1</div>
-          </div> -->
-        </div>
-        <div class="border" />
-        <div class="px-1">
+          <div class="border" />
           <TradeRoute
             :addressIn="trading.tokenIn.value.address"
             :amountIn="trading.tokenInAmountInput.value"
@@ -137,6 +119,14 @@
       </div>
     </div>
   </BalCard>
+  <teleport to="#modal">
+    <ConfirmSwapModal
+      v-if="modalTradePreviewIsOpen"
+      :trading="trading"
+      @trade="trade"
+      @close="handlePreviewModalClose"
+    />
+  </teleport>
 </template>
 
 <script lang="ts">
@@ -169,12 +159,15 @@ import useWeb3 from '@/services/web3/useWeb3';
 import TradePair from './TradePair.vue';
 import TradeRoute from './TradeRoute.vue';
 
+import ConfirmSwapModal from './ConfirmSwapModal.vue';
+
 export default defineComponent({
   components: {
     TradePair,
     TradePreviewModalGP,
     TradeRoute,
     TradeSettingsPopover,
+    ConfirmSwapModal,
   },
 
   setup() {

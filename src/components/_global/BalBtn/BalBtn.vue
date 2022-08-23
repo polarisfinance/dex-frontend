@@ -1,7 +1,7 @@
 <template>
   <component
     :is="tag"
-    :class="['bal-btn', btnClasses]"
+    :class="['bal-btn confirm-button', btnClasses]"
     :disabled="disabled || loading"
   >
     <div v-if="loading" class="flex justify-center items-center">
@@ -243,5 +243,36 @@ export default defineComponent({
 
 .content {
   @apply flex justify-center items-center w-full h-full;
+}
+
+.confirm-button {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    #7b307f 0%,
+    rgba(123, 48, 127, 0.81) 100%
+  );
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.confirm-button:hover {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.7) 0%,
+    rgba(123, 48, 127, 0.567) 100%
+  );
+  border-radius: 12px;
+}
+
+.confirm-button:active {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.5) 0%,
+    rgba(123, 48, 127, 0.405) 100%
+  );
+  border-radius: 12px;
 }
 </style>
