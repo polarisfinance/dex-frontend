@@ -12,24 +12,24 @@
       </BalBtn>
     </template>
 
-    <div>
-      <div class="flex items-baseline">
+    <div class="pl-2">
+      <div class="flex items-baseline ">
         <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
-        <BalTooltip>
+        <BalTooltip class="p-2 ml-2">
           <template #activator>
-            <BalIcon name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
+            <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-html="$t('marketConditionsWarning')" />
         </BalTooltip>
       </div>
       <AppSlippageForm class="mt-1" />
     </div>
-    <div v-if="isEIP1559SupportedNetwork" class="mt-6">
+    <div v-if="isEIP1559SupportedNetwork" class="mt-3 pl-2 pb-2">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('transactionType')" />
-        <BalTooltip>
+        <BalTooltip class="p-2 ml-2">
           <template #activator>
-            <BalIcon name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
+            <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-text="$t('ethereumTxTypeTooltip')" />
         </BalTooltip>

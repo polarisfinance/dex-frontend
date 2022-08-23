@@ -25,25 +25,16 @@ import { rpcProviderService } from '../rpc-provider/rpc-provider.service';
 import { Connector, ConnectorId } from './connectors/connector';
 import { web3Service } from './web3.service';
 
-export type Wallet =
-  | 'metamask'
-  | 'walletconnect'
-  | 'gnosis'
-  | 'walletlink'
-  | 'tally';
+export type Wallet = 'metamask' | 'walletconnect' | 'gnosis';
 export const SupportedWallets = [
   'metamask',
   'walletconnect',
-  'tally',
   'gnosis',
-  'walletlink',
 ] as Wallet[];
 export const WalletNameMap: Record<Wallet, string> = {
   metamask: 'Metamask',
   walletconnect: 'WalletConnect',
   gnosis: 'Gnosis Safe',
-  walletlink: 'Coinbase Wallet',
-  tally: 'Tally',
 };
 
 export const Web3ProviderSymbol = Symbol('WEB3_PROVIDER');

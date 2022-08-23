@@ -36,7 +36,7 @@ export default defineComponent({
   emits: ['close'],
   setup() {
     return {
-      wallets: SupportedWallets.filter(id => id !== 'gnosis' && id !== 'tally'),
+      wallets: SupportedWallets.filter(id => id !== 'gnosis'),
       EXTERNAL_LINKS,
     };
   },

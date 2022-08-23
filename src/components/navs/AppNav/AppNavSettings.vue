@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <div class="hidden px-4 mt-4">
+    <!-- <div class="hidden px-4 mt-4">
       <span class="mb-2 font-medium" v-text="$t('theme')" />
       <div class="flex mt-1">
         <div
@@ -96,13 +96,13 @@
           <BalIcon name="moon" size="sm" />
         </div>
       </div>
-    </div>
-    <div class="px-4 mt-4">
+    </div> -->
+    <!-- <div class="px-4 mt-4">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
-        <BalTooltip>
+        <BalTooltip class="p-2 ml-2">
           <template #activator>
-            <BalIcon name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
+            <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-html="$t('marketConditionsWarning')" />
         </BalTooltip>
@@ -112,9 +112,9 @@
     <div v-if="isEIP1559SupportedNetwork" class="px-4 mt-6">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('transactionType')" />
-        <BalTooltip>
+        <BalTooltip class="p-2 ml-2">
           <template #activator>
-            <BalIcon name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
+            <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-text="$t('ethereumTxTypeTooltip')" />
         </BalTooltip>
@@ -124,9 +124,9 @@
         :options="ethereumTxTypeOptions"
         @update:model-value="setEthereumTxType"
       />
-    </div>
+    </div> -->
     <div
-      class="p-4 mt-4 text-sm rounded-b-xl border-t dark:border-gray-900 network"
+      class="p-4 text-sm rounded-b-xl network"
     >
       <div v-text="$t('network')" />
       <div class="flex items-baseline">
