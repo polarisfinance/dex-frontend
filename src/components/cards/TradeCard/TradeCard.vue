@@ -1,5 +1,10 @@
 <template>
-  <BalCard class="relative card-container" :shadow="tradeCardShadow" noBorder>
+  <BalCard
+    v-if="!modalTradePreviewIsOpen"
+    class="relative card-container"
+    :shadow="tradeCardShadow"
+    noBorder
+  >
     <template #header>
       <div class="flex mx-1 justify-between items-center w-full header">
         <h4 class="title">{{ title }}</h4>

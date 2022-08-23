@@ -110,7 +110,7 @@ defineExpose({ hide });
 }
 
 .modal-bg {
-  @apply absolute h-full w-full bg-black bg-opacity-90;
+  @apply absolute h-full w-full bg-transparent;
   box-shadow: inset 0px 0px 2px #130719 !important;
 }
 

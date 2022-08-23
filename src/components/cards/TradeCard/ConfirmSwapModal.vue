@@ -850,9 +850,7 @@ watch(blockNumber, () => {
 }
 
 .confirm-swap {
-  background: #231928;
-  box-shadow: inset 0px 0px 2px #130719;
-  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .token-input {

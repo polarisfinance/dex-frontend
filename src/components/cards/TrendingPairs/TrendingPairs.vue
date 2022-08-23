@@ -75,11 +75,12 @@ const setTradePair = (pair: TrendingPair[]) => {
         <button
           v-for="(pair, i) in trendingPairs"
           :key="`trendingPair-${i}`"
-          class="py-1 px-2 text-sm font-medium lg:font-normal hover:text-white bg-transparent hover:bg-blue-500 dark:hover:bg-blue-400 rounded-lg border dark:border-gray-800 shadow-sm transition-colors"
+          class="flex items-center py-1 px-2 text-sm font-medium lg:font-normal hover:text-white bg-transparent hover:bg-blue-500 dark:hover:bg-blue-400 rounded-lg border dark:border-gray-800 shadow-sm transition-colors pair"
           @click="setTradePair(pair)"
         >
-          {{ pair[0].symbol }} <span class="relative -top-px text-xs">-></span>
-          {{ pair[1].symbol }}
+          <div>{{ pair[0].symbol }}&nbsp;</div>
+          <img src="./leftarrow.svg" />
+          <div>&nbsp;{{ pair[1].symbol }}</div>
         </button>
       </div>
     </div>
@@ -106,5 +107,15 @@ const setTradePair = (pair: TrendingPair[]) => {
   @apply flex flex-col bg-transparent;
 
   min-height: 200px;
+}
+
+.pair {
+  background: #2e2433;
+  border-radius: 16px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #ffffff;
 }
 </style>
