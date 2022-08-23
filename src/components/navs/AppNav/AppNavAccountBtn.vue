@@ -14,11 +14,12 @@
         :size="upToLargeBreakpoint ? 'md' : 'sm'"
         :circle="upToLargeBreakpoint"
       >
-        <!-- <Avatar
+        <Avatar
           :iconURI="profile?.avatar"
           :address="account"
           :size="avatarSize"
-        /> -->
+          :class="'-mb-6 -ml-5'"
+        />
         <span
           v-if="profile && profile.ens"
           class="hidden lg:inline-block pl-2"
