@@ -123,7 +123,7 @@ export default defineComponent({
 
 <template>
   <div id="modal" />
-  <div id="app">
+  <div id="app" class="relative">
     <div class="absolute bar hidden lg:block">
       <img src="./Bar.svg" />
       <div class="absolute sidebar w-full">
@@ -157,6 +157,11 @@ export default defineComponent({
 
 .bar {
   right: 0;
+  height: 100%;
+}
+
+img {
+  height: 100%;
 }
 
 .my-wallet {
