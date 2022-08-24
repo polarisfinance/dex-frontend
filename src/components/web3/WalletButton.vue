@@ -6,7 +6,7 @@
       </h5>
       <img
         :src="require(`@/assets/images/connectors/${wallet}.svg`)"
-        class="w-10 h-10"
+        class="w-[24px] h-[24px]"
       />
     </div>
   </button>
@@ -49,5 +49,7 @@ export default defineComponent({
   border-radius: 16px;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 </style>

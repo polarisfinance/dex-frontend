@@ -71,10 +71,10 @@ function toggleModal(): void {
       :class="['token-select-input selected group', { selectable: !fixed }]"
       @click="toggleModal"
     >
-      <div class="w-8">
+      <div class="px-[6px] grid content-center">
         <BalAsset :address="token?.address" class="shadow" />
       </div>
-      <span class="text-base font-medium">
+      <span class="text-base font-semibold text-[20px]">
         {{ token?.symbol }}
       </span>
       <span v-if="Number(weight) > 0" class="ml-2 text-secondary">
@@ -85,7 +85,12 @@ function toggleModal(): void {
           })
         }}
       </span>
-      <BalIcon v-if="!fixed" name="chevron-down" size="sm" />
+      <BalIcon
+        v-if="!fixed"
+        name="chevron-down"
+        size="sm"
+        class="pl-[6px] pr-[4px]"
+      />
     </div>
     <BalDropdown
       v-else-if="hasToken && fixed && options.length > 0"
@@ -170,10 +175,11 @@ function toggleModal(): void {
 }
 
 .token-select-input {
-  @apply shadow rounded-lg flex items-center h-10 px-2 whitespace-nowrap;
+  @apply shadow rounded-lg flex items-center whitespace-nowrap;
   @apply text-sm;
 
   font-variation-settings: 'wght' 700;
+  height: 36.49px;
 }
 
 .selectable {

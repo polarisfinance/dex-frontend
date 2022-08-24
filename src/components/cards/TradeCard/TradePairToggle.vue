@@ -6,7 +6,6 @@
       @mouseleave="hover = false"
       width="45"
       height="45"
-      class="mr-2"
     />
   </div>
 </template>

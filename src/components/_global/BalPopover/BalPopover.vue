@@ -40,7 +40,7 @@ const popoverActivatorWrapperClasses = computed(() => ({
   relative: !props.detached,
 }));
 
-const activatorWidth = computed(() => activatorWrapper.value?.clientWidth || 0);
+const activatorWidth = computed(() => 24);
 
 const activatorWidthPx = computed(() => `${activatorWidth.value}px`);
 

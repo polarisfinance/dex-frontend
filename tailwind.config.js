@@ -1,5 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
+  mode: 'jit',
   purge: {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     options: {
@@ -22,23 +23,8 @@ module.exports = {
   darkMode: 'class', // false or 'media' or 'class'
   theme: {
     fontFamily: {
-      body: [
-        'Inter-Variable',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Helvetica',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-      ],
-      display: [
-        '"Tiempos Headline Medium"',
-        'Times',
-        '"Times New Roman"',
-        'serif',
-      ],
+      body: ['Rajdhani', 'sans-serif'],
+      display: ['Rajdhani', 'sans-serif'],
     },
     boxShadow: {
       sm: '0 2px 4px 0 rgba(0,0,0,0.05)',

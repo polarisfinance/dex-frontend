@@ -50,7 +50,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Col3Layout offsetGutters mobileHideGutters class="mt-8">
+  <Col3Layout offsetGutters mobileHideGutters class="mt-[150px]">
     <!-- <template #gutterLeft>
       <MyWallet />
       <TrendingPairs class="mt-4" />

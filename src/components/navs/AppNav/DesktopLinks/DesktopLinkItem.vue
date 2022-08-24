@@ -27,11 +27,7 @@ const classes = computed(() => ({
   /* @apply h-full flex-col justify-center cursor-pointer hover:text-green-400 dark:hover:text-green-400 flex relative */
   @apply h-full flex-col justify-center cursor-pointer flex relative
     overflow-hidden p-0 transition-all
-    ease-in-out duration-500;
-
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 31px;
+    ease-in-out duration-500 text-[20px] font-semibold;
 }
 
 .desktop-link-item:hover {
@@ -41,7 +37,7 @@ const classes = computed(() => ({
 .desktop-link-item::before {
   content: '';
 
-  @apply top-0 left-0 w-full block absolute overflow-hidden transition-all;
+  @apply top-0 left-0 w-full block absolute overflow-hidden transition-all font-semibold;
 
   /* border-top: 4px solid theme('colors.purple.600'); */
   transform: translate3d(0%, -101%, 0);

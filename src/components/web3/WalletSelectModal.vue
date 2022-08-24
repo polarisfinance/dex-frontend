@@ -1,7 +1,7 @@
 <template>
   <BalModal :show="isVisible" @close="$emit('close')">
-    <div>
-      <div class="header">
+    <div class="p-[12px]">
+      <div class="header px-[8px]">
         <div class="title">Connect a wallet</div>
         <X v-on:click="$emit('close')" />
       </div>
@@ -45,7 +45,6 @@ export default defineComponent({
 
 <style>
 .header {
-  margin: 0.6em !important;
   display: flex;
   justify-content: space-between;
 }
@@ -55,4 +54,6 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 }
+
+
 </style>

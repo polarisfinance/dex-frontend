@@ -6,7 +6,7 @@
   >
     <div v-if="loading" class="flex justify-center items-center">
       <BalLoadingIcon :size="size" :color="iconColor" />
-      <span v-if="loadingLabel" class="ml-2">
+      <span v-if="loadingLabel">
         {{ loadingLabel }}
       </span>
     </div>
@@ -76,7 +76,7 @@ export default defineComponent({
         case 'xs':
           return 'px-2 h-6 text-xs';
         case 'sm':
-          return 'px-3 h-9 text-base';
+          return 'px-3 text-base';
         case 'lg':
           return 'px-5 h-18 text-lg md:text-2xl';
         default:
@@ -89,7 +89,7 @@ export default defineComponent({
         case 'xs':
           return 'w-6 h-6 text-sm';
         case 'sm':
-          return 'w-9 h-9 text-lg';
+          return 'w-9 text-lg';
         case 'md':
           return 'w-12 h-12 text-lg';
         case 'lg':
@@ -246,33 +246,9 @@ export default defineComponent({
 }
 
 .confirm-button {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    #7b307f 0%,
-    rgba(123, 48, 127, 0.81) 100%
-  );
-  border-radius: 12px;
   color: #ffffff;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 26px;
-}
-
-.confirm-button:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
-  border-radius: 12px;
-}
-
-.confirm-button:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  );
-  border-radius: 12px;
 }
 </style>

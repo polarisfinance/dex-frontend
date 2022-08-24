@@ -5,7 +5,7 @@
     @mouseleave="hover = false"
     width="24"
     height="24"
-    class="mr-2"
+    class=""
   />
 </template>
 

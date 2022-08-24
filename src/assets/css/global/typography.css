@@ -24,11 +24,7 @@ h3 {
   font-variation-settings: 'wght' 600;
 }
 
-h4 {
-  @apply text-xl tracking-tight;
 
-  font-variation-settings: 'wght' 600;
-}
 
 h5 {
   @apply text-lg;

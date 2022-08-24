@@ -1,8 +1,12 @@
 <template>
-  <BalCard class="relative card-container" :shadow="tradeCardShadow" noBorder>
+  <BalCard
+    class="relative card-container px-[10px] py-[12px]"
+    :shadow="tradeCardShadow"
+    noBorder
+  >
     <template #header>
-      <div class="flex mx-1 justify-between items-center w-full header">
-        <h4 class="title">{{ title }}</h4>
+      <div class="flex justify-between items-center w-full header mb-[12px]">
+        <h4 class="title ml-[10px]">{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
           :isGasless="trading.tradeGasless.value"
@@ -20,12 +24,12 @@
           trading.isBalancerTrade.value ? trading.isLoading.value : false
         "
         :effectivePriceMessage="trading.effectivePriceMessage"
-        class="mb-4"
+        class="mb-[12px]"
         @amount-change="trading.handleAmountChange"
       />
       <BalAlert
         v-if="error"
-        class="p-3 mb-4"
+        class="p-3 mb-[12px]"
         type="error"
         size="sm"
         :title="error.header"
@@ -36,7 +40,7 @@
       />
       <BalAlert
         v-else-if="warning"
-        class="p-3 mb-4"
+        class="p-3 mb-[12px]"
         type="warning"
         size="sm"
         :title="warning.header"
@@ -66,12 +70,13 @@
         :loadingLabel="
           trading.isGnosisTrade.value ? $t('loadingBestPrice') : $t('loading')
         "
+        class="font-semibold"
         block
       />
       <button
         v-else-if="tokenInAmount == 0 && tokenOutAmount == 0 && account"
         :disabled="true"
-        class="amount-button"
+        class="amount-button font-semibold"
       >
         Enter an amount
       </button>
@@ -79,13 +84,13 @@
         v-else-if="account"
         :disabled="false"
         @click="handlePreviewButton"
-        class="swap-button"
+        class="swap-button font-semibold text-[16px]"
       >
         Swap
       </button>
       <button
         v-else
-        class="connect-wallet"
+        class="connect-wallet font-semibold"
         @click="startConnectWithInjectedProvider"
       >
         Connect Wallet
@@ -441,13 +446,6 @@ export default defineComponent({
   color: #b9babb;
 }
 
-.header {
-  margin-left: 1em !important;
-  margin-right: 0em !important;
-  margin-bottom: 0 !important;
-  margin-top: 0.5em !important;
-}
-
 .title {
   font-style: normal;
   font-weight: 600;
@@ -458,6 +456,8 @@ export default defineComponent({
 /* This is needed because the trade settings popover overflows */
 .card-container {
   overflow: unset;
+  height: 282px;
+  width: 480px;
 }
 
 .trade-gasless :deep(.bal-toggle) {
@@ -513,7 +513,6 @@ export default defineComponent({
   padding: 12px 0px;
   gap: 12px;
   left: 10px;
-  top: 259px;
 
   background: radial-gradient(
       49.66% 488.58% at 50% 30%,

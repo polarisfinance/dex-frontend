@@ -137,7 +137,7 @@ onMounted(() => {
           </span>
         </slot>
       </div>
-      <div :class="['input-group', inputGroupClasses]">
+      <div :class="['input-group']">
         <div v-if="$slots.prepend" :class="['prepend', prependClasses]">
           <slot name="prepend" />
         </div>
@@ -175,14 +175,17 @@ onMounted(() => {
   background-color: #231928;
   border-radius: 16px;
   border: none;
+  height: 80px;
+  font-weight: 500;
 }
 
 .input-group {
-  @apply flex;
+  @apply flex pt-[16px] px-[12px];
 }
 
 .input {
   @apply flex-grow bg-transparent overflow-hidden;
+  font-weight: 500;
 }
 
 .label {
