@@ -1,19 +1,14 @@
 <template>
   <BalPopover>
     <template #activator>
-      <BalBtn
-        circle
-        size="sm"
-        class="icon-spin-anim settings-button"
-        @click="onActivatorClick"
-      >
+      <button class="icon-spin-anim settings-button" @click="onActivatorClick">
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
-        <IconSettings />
-      </BalBtn>
+        <IconSettings class="mt-1" />
+      </button>
     </template>
 
     <div class="pl-2">
-      <div class="flex items-baseline ">
+      <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
         <BalTooltip class="p-2 ml-2">
           <template #activator>

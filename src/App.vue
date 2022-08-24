@@ -117,7 +117,7 @@ export default defineComponent({
 
 <template>
   <div id="modal" />
-  <div id="app">
+  <div id="app" class="relative">
     <component :is="layout" />
     <VueQueryDevTools />
     <WalletSelectModal
