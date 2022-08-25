@@ -50,20 +50,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <Col3Layout offsetGutters mobileHideGutters class="mt-[150px]">
+  <Col3Layout offsetGutters mobileHideGutters class="mt-8">
     <!-- <template #gutterLeft>
       <MyWallet />
       <TrendingPairs class="mt-4" />
     </template> -->
 
-    <div class="absolute bar hidden lg:block">
-      <img src="../Bar.svg" />
+    <!-- <div class="absolute bar hidden lg:block">
+      <img src="./Bar.svg" />
       <div class="absolute sidebar w-full">
         <MyWallet class="sidebar-component" />
         <TrendingPairs class="sidebar-component" />
         <PairPriceGraph class="sidebar-component" />
       </div>
-    </div>
+    </div> -->
 
     <BalLoadingBlock v-if="appLoading" class="h-96" />
     <template v-else>
