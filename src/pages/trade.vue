@@ -11,6 +11,7 @@ import TrendingPairs from '@/components/cards/TrendingPairs/TrendingPairs.vue';
 import Col3Layout from '@/components/layouts/Col3Layout.vue';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useBreakpoints from '@/composables/useBreakpoints';
+const { isMobile } = useBreakpoints();
 
 /**
  * STATE
@@ -69,6 +70,12 @@ onMounted(() => {
     <template v-else>
       <TradeCard />
     </template>
+
+    <div v-if="isMobile" class="px-6 mt-8">
+      <MyWallet class="mt-2" />
+      <TrendingPairs class="mt-2" />
+      <PairPriceGraph class="mt-2" />
+    </div>
     <!-- <template #gutterRight>
       <PairPriceGraph :toggleModal="togglePairPriceGraphModal" />
     </template> -->

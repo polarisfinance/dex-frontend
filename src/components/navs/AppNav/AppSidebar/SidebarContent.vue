@@ -10,6 +10,22 @@ import useDarkMode from '@/composables/useDarkMode';
 import { sleep } from '@/lib/utils';
 import useWeb3 from '@/services/web3/useWeb3';
 
+import AppNavAccountBtn from '../AppNavAccountBtn.vue';
+
+import useBreakpoints from '@/composables/useBreakpoints';
+const { isMobile, isDesktop } = useBreakpoints();
+
+import swapImg from './swap.svg';
+import investImg from './invest.svg';
+import portfolioImg from './portfolio.svg';
+import vexpolarImg from './vexPolar.svg';
+import aboutImg from './about.svg';
+import helpImg from './help.svg';
+import discordImg from './discord.svg';
+import docsImg from './docs.svg';
+import legalImg from './legal.svg';
+import kycImg from './kyc.svg';
+
 /**
  * PROPS & EMITS
  */
@@ -24,6 +40,7 @@ const { networkConfig } = useConfig();
 const { version } = useApp();
 const { t } = useI18n();
 const router = useRouter();
+const { account, connector, startConnectWithInjectedProvider } = useWeb3();
 
 /**
  * STATE
@@ -31,35 +48,43 @@ const router = useRouter();
 const blockIcon = ref<HTMLDivElement>();
 
 const navLinks = [
-  { label: t('invest'), path: '/' },
-  { label: t('trade'), path: '/trade' },
-  { label: t('portfolio'), path: '/portfolio' },
-  { label: 'veBAL', path: '/vebal' },
-  { label: t('claim'), path: '/claim' },
+  { label: t('swap'), path: '/trade', img: swapImg },
+  { label: t('invest'), path: '/', img: investImg },
+  { label: t('portfolio'), path: '/portfolio', img: portfolioImg },
+  { label: 'vexPOLAR', path: '/vebal', img: vexpolarImg },
+  // { label: t('claim'), path: '/claim' },
 ];
 
 const ecosystemLinks = [
-  { label: t('build'), url: 'https://balancer.fi/build' },
-  { label: t('blog'), url: 'https://medium.com/balancer-protocol' },
-  { label: t('docs'), url: 'https://docs.balancer.fi/' },
-  { label: t('governance'), url: 'https://vote.balancer.fi/#/' },
-  { label: t('analytics'), url: 'https://dune.xyz/balancerlabs' },
-  { label: t('forum'), url: 'https://forum.balancer.fi/' },
+  { label: t('About'), url: 'https://balancer.fi/build', img: aboutImg },
   {
-    label: t('grants'),
-    url: 'http://grants.balancer.community',
+    label: t('Help Center'),
+    url: 'https://medium.com/balancer-protocol',
+    img: helpImg,
   },
+  { label: t('Discord'), url: 'https://docs.balancer.fi/', img: discordImg },
+  { label: t('Docs'), url: 'https://vote.balancer.fi/#/', img: docsImg },
+  {
+    label: t('Legal & Privacy'),
+    url: 'https://dune.xyz/balancerlabs',
+    img: legalImg,
+  },
+  { label: t('KYC'), url: 'https://forum.balancer.fi/', img: kycImg },
+  // {
+  //   label: t('grants'),
+  //   url: 'http://grants.balancer.community',
+  // },
 ];
 
 const socialLinks = [
-  { component: 'TwitterIcon', url: 'https://twitter.com/BalancerLabs' },
-  { component: 'DiscordIcon', url: 'https://discord.balancer.fi/' },
-  { component: 'MediumIcon', url: 'https://medium.com/balancer-protocol' },
-  {
-    component: 'YoutubeIcon',
-    url: 'https://www.youtube.com/channel/UCBRHug6Hu3nmbxwVMt8x_Ow',
-  },
-  { component: 'GithubIcon', url: 'https://github.com/balancer-labs/' },
+  // { component: 'TwitterIcon', url: 'https://twitter.com/BalancerLabs' },
+  // { component: 'DiscordIcon', url: 'https://discord.balancer.fi/' },
+  // { component: 'MediumIcon', url: 'https://medium.com/balancer-protocol' },
+  // {
+  //   component: 'YoutubeIcon',
+  //   url: 'https://www.youtube.com/channel/UCBRHug6Hu3nmbxwVMt8x_Ow',
+  // },
+  // { component: 'GithubIcon', url: 'https://github.com/balancer-labs/' },
 ];
 
 /**
@@ -81,48 +106,53 @@ watch(blockNumber, async () => {
 </script>
 
 <template>
-  <div class="opacity-0 fade-in-delay">
-    <div
+  <div class="opacity-0 fade-in-delay w-full">
+    <!-- <div
       class="flex flex-col justify-center px-4 h-20 border-b border-gray-800"
     >
       <AppLogo forceDark />
-    </div>
+    </div> -->
 
-    <div class="grid mt-2 text-lg grid-col-1">
+    <div class="link-container">
       <div
         v-for="link in navLinks"
         :key="link.label"
-        class="side-bar-link"
+        class="side-bar-link flex justify-between"
         @click="navTo(link.path)"
       >
-        {{ link.label }}
+        <div>
+          {{ link.label }}
+        </div>
+        <img :src="link.img" />
       </div>
     </div>
 
-    <div class="grid mt-5 text-sm grid-col-1">
-      <span class="px-4 pb-1 font-medium text-secondary">Ecosystem</span>
+    <div class="link-container mt-[66px]">
+      <!-- <span class="px-4 pb-1 font-medium text-secondary">Ecosystem</span> -->
       <BalLink
         v-for="link in ecosystemLinks"
         :key="link.url"
         :href="link.url"
-        class="flex items-center side-bar-link"
+        class="flex items-center side-bar-link justify-between"
         external
         noStyle
       >
-        {{ link.label }}
-        <BalIcon name="arrow-up-right" size="sm" class="ml-1 text-secondary" />
+        <div>
+          {{ link.label }}
+        </div>
+        <img :src="link.img" />
       </BalLink>
     </div>
 
-    <div class="px-4 mt-6">
+    <!-- <div class="px-4 mt-6">
       <div class="mt-2 side-bar-btn" @click="toggleDarkMode">
         <MoonIcon v-if="!darkMode" class="mr-2" />
         <SunIcon v-else class="mr-2" />
         <span>{{ darkMode ? 'Light' : 'Dark' }} mode</span>
       </div>
-    </div>
+    </div> -->
 
-    <div class="grid grid-rows-1 grid-flow-col auto-cols-min gap-2 px-4 mt-4">
+    <!-- <div class="grid grid-rows-1 grid-flow-col auto-cols-min gap-2 px-4 mt-4">
       <BalLink
         v-for="link in socialLinks"
         :key="link.component"
@@ -161,13 +191,33 @@ watch(blockNumber, async () => {
         App: v{{ version }}
         <BalIcon name="arrow-up-right" size="xs" class="ml-1" />
       </BalLink>
-    </div>
+    </div> -->
+  </div>
+  <div class="px-[24px] py-[44px]">
+    <AppNavAccountBtn v-if="account" />
+    <button class="btn" v-else @click="startConnectWithInjectedProvider">
+      Connect Wallet
+    </button>
   </div>
 </template>
 
 <style scoped>
+.link-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 .side-bar-link {
-  @apply transition duration-300 p-4 py-1.5 hover:bg-gray-850 cursor-pointer;
+  @apply transition duration-300 cursor-pointer;
+  padding-left: 24px;
+  padding-right: 26px;
+  row-gap: 32px;
+
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+  color: #ffffff;
 }
 
 .side-bar-btn {
@@ -192,5 +242,14 @@ watch(blockNumber, async () => {
 
 .block-change {
   box-shadow: 0 0 6px 4px theme('colors.green.500');
+}
+
+.btn {
+  background: #7b307f;
+  border-radius: 16px;
+  padding: 10px 25px;
+  color: #ffffff;
+
+  width: 100%;
 }
 </style>

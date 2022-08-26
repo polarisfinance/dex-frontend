@@ -457,7 +457,7 @@ export default defineComponent({
 .card-container {
   overflow: unset;
   height: 282px;
-  width: 480px;
+  /* width: 480px; */
 }
 
 .trade-gasless :deep(.bal-toggle) {
