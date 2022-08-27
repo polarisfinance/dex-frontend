@@ -101,6 +101,7 @@ const setTradePair = (pair: TrendingPair[]) => {
 .container {
   background: #231928;
   border-radius: 12px;
+  max-height: 135px;
 }
 
 .trending-pairs {

@@ -392,6 +392,7 @@ const chartGrid = computed(() => {
 .container {
   background: #231928;
   border-radius: 12px;
+  max-height: 150px;
 }
 
 .title {

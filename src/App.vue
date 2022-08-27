@@ -23,6 +23,12 @@ import { useSidebar } from './composables/useSidebar';
 import useExploitWatcher from './composables/watchers/useExploitWatcher';
 import useGlobalQueryWatchers from './composables/watchers/useGlobalQueryWatchers';
 import usePoolCreationWatcher from './composables/watchers/usePoolCreationWatcher';
+import useBreakpoints from '@/composables/useBreakpoints';
+import MyWallet from '@/components/cards/MyWallet/MyWallet.vue';
+import PairPriceGraph from '@/components/cards/PairPriceGraph/PairPriceGraph.vue';
+import TrendingPairs from '@/components/cards/TrendingPairs/TrendingPairs.vue';
+
+const { isMobile } = useBreakpoints();
 
 BigNumber.config({ DECIMAL_PLACES: DEFAULT_TOKEN_DECIMALS });
 
@@ -38,6 +44,9 @@ export default defineComponent({
     Notifications,
     AppSidebar,
     GlobalModalContainer,
+    MyWallet,
+    PairPriceGraph,
+    TrendingPairs,
   },
 
   setup() {
@@ -132,6 +141,20 @@ export default defineComponent({
     />
     <AppSidebar v-if="sidebarOpen" />
     <Notifications />
+
+    <!-- <template #gutterLeft>
+      <MyWallet />
+      <TrendingPairs class="mt-4" />
+    </template> -->
+
+    <div class="absolute bar hidden lg:block" v-show="$route.name == 'trade'">
+      <img src="./Bar.svg" />
+      <div class="absolute sidebar w-full">
+        <MyWallet class="sidebar-component" />
+        <TrendingPairs class="sidebar-component" />
+        <PairPriceGraph class="sidebar-component" />
+      </div>
+    </div>
   </div>
   <GlobalModalContainer />
 </template>
@@ -139,5 +162,38 @@ export default defineComponent({
 <style>
 .VueQueryDevtoolsPanel + button {
   @apply text-black bg-gray-100 p-2 rounded text-sm;
+}
+
+.bar {
+  right: 0;
+  top: 0;
+  height: 100%;
+}
+
+img {
+  height: 100%;
+}
+
+.my-wallet {
+  right: 0;
+  width: 100%;
+}
+
+.sidebar {
+  top: 0;
+  max-height: 500px;
+  margin-top: auto;
+  margin-bottom: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.sidebar-component {
+  margin-top: 0.5em;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

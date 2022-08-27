@@ -64,7 +64,7 @@ onUnmounted(() => {
       <img src="./AuroraLogo.svg" v-if="isMobile" />
       <DesktopLinks v-if="isDesktop" class="ml-8 font-medium flex" />
 
-      <AppNavActions />
+      <AppNavActions class="actions" />
     </div>
   </nav>
 </template>
@@ -76,5 +76,9 @@ onUnmounted(() => {
   @apply border-b border-transparent;
 
   transition: all 0.2s ease-in-out;
+}
+
+.actions {
+  z-index: 999;
 }
 </style>

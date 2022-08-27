@@ -52,20 +52,6 @@ onMounted(() => {
 
 <template>
   <Col3Layout offsetGutters mobileHideGutters class="mt-8">
-    <!-- <template #gutterLeft>
-      <MyWallet />
-      <TrendingPairs class="mt-4" />
-    </template> -->
-
-    <!-- <div class="absolute bar hidden lg:block">
-      <img src="./Bar.svg" />
-      <div class="absolute sidebar w-full">
-        <MyWallet class="sidebar-component" />
-        <TrendingPairs class="sidebar-component" />
-        <PairPriceGraph class="sidebar-component" />
-      </div>
-    </div> -->
-
     <BalLoadingBlock v-if="appLoading" class="h-96" />
     <template v-else>
       <TradeCard />
@@ -85,32 +71,5 @@ onMounted(() => {
 <style scoped>
 .graph-modal {
   height: 450px;
-}
-
-.bar {
-  right: 0;
-  top: 0;
-  height: 100%;
-}
-
-img {
-  height: 100%;
-}
-
-.my-wallet {
-  right: 0;
-  width: 100%;
-}
-
-.sidebar {
-  top: 0;
-  margin-top: 11em;
-}
-
-.sidebar-component {
-  margin-top: 0.5em;
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
 }
 </style>
