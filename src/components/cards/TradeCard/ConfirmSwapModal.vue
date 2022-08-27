@@ -376,7 +376,7 @@ watch(blockNumber, () => {
     <div class="p-0.5">
       <div class="flex justify-between items-center px-1.5 header">
         <div>Confirm Swap</div>
-        <div><X /></div>
+        <div><X @click="onClose" /></div>
       </div>
       <div class="token-input flex justify-between p-4">
         <div class="flex items-center">
@@ -429,6 +429,18 @@ watch(blockNumber, () => {
           @trade="trade"
           @close="handlePreviewModalClose"
         />
+      </div>
+      <div
+        class="flex accept-update items-center justify-between"
+        v-if="priceUpdated.value"
+      >
+        <div class="flex items-center">
+          <img src="./price-updated.svg" class="mr-[8px]" />
+          <div>Price updated</div>
+        </div>
+        <button @click="confirmPriceUpdate" class="confirm-update-btn">
+          Accept
+        </button>
       </div>
     </div>
 
@@ -890,5 +902,30 @@ watch(blockNumber, () => {
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
   padding: 0.5em 0.3em;
+}
+
+.accept-update {
+  background: rgba(46, 36, 51, 0.5);
+  border-radius: 12px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #be95c0;
+
+  padding: 12px;
+}
+
+.confirm-update-btn {
+  background: #6e2d72;
+  border-radius: 8px;
+  padding: 4px 12px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
 }
 </style>

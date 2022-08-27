@@ -1,6 +1,5 @@
 <template>
   <div class="flex items-center">
-    <BalIcon name="search" size="sm" class="mr-2 text-gray-500" />
     <input
       ref="searchInput"
       :value="modelValue"
@@ -8,7 +7,7 @@
       type="text"
       autocorrect="off"
       autocapitalize="none"
-      class="flex-auto w-full bg-transparent border-0 input"
+      class="flex-auto w-full search"
       @input="handleInput"
     />
   </div>
@@ -35,3 +34,22 @@ export default {
   },
 };
 </script>
+
+<style>
+.search {
+  background: rgba(46, 36, 51, 0.5);
+  box-shadow: inset 0px 0px 1px #6f4773;
+  border-radius: 12px;
+
+  padding-left: 8px;
+  padding-top: 12px;
+  padding-bottom: 11px;
+}
+
+.search::placeholder {
+  color: #be95c0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+}
+</style>

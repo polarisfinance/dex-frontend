@@ -1,8 +1,8 @@
 <template>
   <BalModal show noContentPad @close="$emit('close')">
-    <template #header>
+    <div class="modal">
       <div class="flex justify-between items-center w-full">
-        <div class="flex items-center">
+        <div class="flex items-center p-[24px] w-full">
           <BalBtn
             v-if="selectTokenList"
             color="gray"
@@ -14,15 +14,18 @@
           >
             <BalIcon name="arrow-left" size="sm" />
           </BalBtn>
-          <h5>{{ title }}</h5>
+          <div class="flex w-full justify-between">
+            <h5>Select a token</h5>
+            <x @click="$emit('close')" />
+          </div>
         </div>
-        <div
+        <!-- <div
           v-if="!selectTokenList"
           class="group flex items-center cursor-pointer"
           @click="toggleSelectTokenList"
-        >
-          <span class="text-xs text-secondary">{{ $t('tokenLists') }}</span>
-          <div class="flex items-center ml-2">
+        > -->
+        <!-- <span class="text-xs text-secondary">{{ $t('tokenLists') }}</span> -->
+        <!-- <div class="flex items-center ml-2">
             <span class="mr-1">
               <img
                 v-for="(tokenlist, i) in activeTokenLists"
@@ -36,72 +39,115 @@
               size="sm"
               class="ml-1 text-blue-500 group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
             />
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
       </div>
-    </template>
-    <template v-if="selectTokenList">
-      <Search
-        v-model="query"
-        :placeholder="$t('searchByName')"
-        class="flex-auto py-3 px-4 border-b dark:border-gray-700"
-      />
-      <div>
-        <div
-          v-if="Object.keys(tokenLists).length > 0"
-          class="overflow-y-scroll h-96"
-        >
-          <TokenListsListItem
-            v-for="(tokenList, uri) in tokenLists"
-            :key="uri"
-            :isActive="isActiveList(uri)"
-            :tokenlist="tokenList"
-            :uri="uri"
-            @toggle="onToggleList(uri)"
-          />
-        </div>
-        <div
-          v-else
-          class="flex justify-center items-center h-96"
-          v-text="$t('errorNoLists')"
-        />
-      </div>
-    </template>
-    <template v-else>
-      <div class="flex border-b dark:border-gray-700">
+      <template v-if="selectTokenList">
         <Search
           v-model="query"
-          :placeholder="$t('searchBy')"
-          class="flex-auto py-3 px-4"
+          :placeholder="$t('Search name or paste address')"
+          class="flex-auto px-[16px]"
         />
-      </div>
-      <div class="overflow-hidden rounded-lg">
-        <RecycleScroller
-          v-if="tokens.length > 0"
-          v-slot="{ item: token }"
-          class="overflow-y-scroll h-96"
-          :items="tokens"
-          :itemSize="64"
-          keyField="address"
-          :buffer="100"
-        >
-          <a @click="onSelectToken(token.address)">
-            <TokenListItem
-              :token="token"
-              :balanceLoading="dynamicDataLoading"
+        <div>
+          <div
+            v-if="Object.keys(tokenLists).length > 0"
+            class="overflow-y-scroll h-96 py-[24px]"
+          >
+            <TokenListsListItem
+              v-for="(tokenList, uri) in tokenLists"
+              :key="uri"
+              :isActive="isActiveList(uri)"
+              :tokenlist="tokenList"
+              :uri="uri"
+              @toggle="onToggleList(uri)"
             />
-          </a>
-        </RecycleScroller>
-        <div v-else-if="loading" class="flex justify-center items-center h-96">
-          <BalLoadingIcon />
+          </div>
+          <div
+            v-else
+            class="flex justify-center items-center h-96"
+            v-text="$t('errorNoLists')"
+          />
         </div>
-        <div
-          v-else
-          class="p-12 h-96 text-center text-secondary"
-          v-text="$t('errorNoTokens')"
-        />
-      </div>
-    </template>
+      </template>
+      <template v-else>
+        <div class="flex">
+          <Search
+            v-model="query"
+            :placeholder="$t('Search name or paste address')"
+            class="flex-auto px-[16px]"
+          />
+        </div>
+        <div class="px-[24px] py-[12px]">
+          <div class="common-bases-title mb-[12px]">Common bases</div>
+          <div class="flex gap-[8px]">
+            <a @click="onSelectToken(tokens[0].address)">
+              <div class="common-asset flex items-center">
+                <BalAsset
+                  :address="tokens[0].address"
+                  :iconURI="tokens[0].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[0].name }}</div>
+              </div>
+            </a>
+            <a @click="onSelectToken(tokens[1].address)">
+              <div class="common-asset flex items-center">
+                <BalAsset
+                  :address="tokens[1].address"
+                  :iconURI="tokens[1].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[1].name }}</div>
+              </div>
+            </a>
+            <a @click="onSelectToken(tokens[2].address)">
+              <div class="common-asset flex items-center">
+                <BalAsset
+                  :address="tokens[2].address"
+                  :iconURI="tokens[2].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[2].name }}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="m-[12px] border" />
+
+        <div class="overflow-hidden rounded-lg">
+          <RecycleScroller
+            v-if="tokens.length > 0"
+            v-slot="{ item: token }"
+            class="overflow-y-scroll h-96 py-[24px]"
+            :items="tokens"
+            :itemSize="64"
+            keyField="address"
+            :buffer="100"
+          >
+            <a @click="onSelectToken(token.address)">
+              <TokenListItem
+                :token="token"
+                :balanceLoading="dynamicDataLoading"
+              />
+            </a>
+          </RecycleScroller>
+          <div
+            v-else-if="loading"
+            class="flex justify-center items-center h-96"
+          >
+            <BalLoadingIcon />
+          </div>
+          <div
+            v-else
+            class="h-96 text-center text-secondary"
+            v-text="$t('errorNoTokens')"
+          />
+        </div>
+      </template>
+    </div>
   </BalModal>
 </template>
 
@@ -127,6 +173,8 @@ import { TokenInfoMap } from '@/types/TokenList';
 
 import Search from './Search.vue';
 
+import x from './x.vue';
+
 interface ComponentState {
   loading: boolean;
   selectTokenList: boolean;
@@ -139,6 +187,7 @@ export default defineComponent({
     TokenListItem,
     TokenListsListItem,
     Search,
+    x,
   },
 
   props: {
@@ -286,3 +335,37 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.modal {
+  background: #231928;
+  border-radius: 44px;
+}
+
+.common-bases-title {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #b9babb;
+}
+
+.common-asset {
+  background: #2e2433;
+  border-radius: 16px;
+  padding: 4px 8px;
+}
+
+.token-name {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #ffffff;
+}
+
+.border {
+  height: 0;
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+</style>

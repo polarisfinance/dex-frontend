@@ -1,21 +1,20 @@
 <template>
-  <div
-    ref="animateRef"
-    class="flex items-center py-3 px-4 text-base leading-5 opacity-0 highlight"
-  >
+  <div ref="animateRef" class="flex items-center px-[24px] text-base opacity-0">
     <BalAsset
       :address="token.address"
       :iconURI="token.logoURI"
       :size="34"
-      class="mr-3"
+      class="mr-[12px]"
     />
     <div class="flex-auto">
-      {{ token.symbol }}
-      <div class="w-40 md:w-60 text-sm truncate text-gray">
+      <div class="token-name">
         {{ token.name }}
       </div>
+      <div class="token-symbol">
+        {{ token.symbol }}
+      </div>
     </div>
-    <span class="flex flex-col items-end font-medium text-right">
+    <span class="flex flex-col items-end font-medium text-right token-amount">
       <BalLoadingNumber v-if="balanceLoading" type="token" />
       <template v-else>
         <template v-if="balance > 0">
@@ -24,10 +23,10 @@
           </template>
           <template v-else> &#60; 0.0001 </template>
         </template>
-        <template v-else>-</template>
+        <template v-else>0</template>
       </template>
 
-      <BalLoadingNumber
+      <!-- <BalLoadingNumber
         v-if="balanceLoading"
         type="fiat"
         numberWidth="2"
@@ -38,8 +37,8 @@
         <template v-if="value > 0">
           {{ fNum2(value, FNumFormats.fiat) }}
         </template>
-        <template v-else>-</template>
-      </div>
+        <template v-else>0</template>
+      </div> -->
     </span>
   </div>
 </template>
@@ -109,3 +108,29 @@ export default {
   },
 };
 </script>
+
+<style>
+.token-amount {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.token-name {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: #b9babb;
+}
+
+.token-symbol {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+</style>

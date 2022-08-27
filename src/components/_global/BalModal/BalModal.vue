@@ -2,6 +2,9 @@
 import { ref, watch } from 'vue';
 
 import BalCard from '../BalCard/BalCard.vue';
+import useBreakpoints from '@/composables/useBreakpoints';
+
+const { isMobile, isDesktop } = useBreakpoints();
 
 /**
  * TYPES
@@ -69,7 +72,10 @@ defineExpose({ hide });
     </transition>
     <div class="content-container">
       <Transition name="modal" @after-leave="$emit('close')">
-        <div v-if="showContent" class="content">
+        <div
+          v-if="showContent"
+          :class="{ contentMobile: isMobile, content: isDesktop }"
+        >
           <BalCard
             :title="title"
             shadow="lg"
@@ -103,20 +109,26 @@ defineExpose({ hide });
 }
 
 .content {
-  @apply relative w-full h-3/4 sm:h-auto max-h-screen;
+  @apply absolute w-full h-3/4 sm:h-auto max-h-screen;
 
   max-width: 450px;
   transform-style: preserve-3d;
 }
 
+.contentMobile {
+  botttom: 0;
+  width: 100%;
+}
+
 .modal-bg {
   @apply absolute h-full w-full bg-black bg-opacity-40;
-  box-shadow: inset 0px 0px 2px #130719 !important;
+  /* box-shadow: inset 0px 0px 2px #130719 !important; */
 }
 
 .modal-card {
-  @apply mx-auto h-full dark:border-0;
-  background: #231928;
+  @apply mx-auto h-full;
+  background: transparent;
+  box-shadow: none;
   border-radius: 22px;
 }
 

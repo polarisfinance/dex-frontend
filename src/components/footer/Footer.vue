@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div class="flex justify-center gap-5">
+    <div class="flex justify-center gap-[24px] pb-[44px]">
       <BalLink :href="EXTERNAL_LINKS.Balancer.Social.Discord" external noStyle>
         <IconDiscord />
       </BalLink>
