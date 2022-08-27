@@ -36,7 +36,7 @@ export default defineComponent({
   emits: ['close'],
   setup() {
     return {
-      wallets: SupportedWallets.filter(id => id !== 'gnosis'),
+      wallets: SupportedWallets,
       EXTERNAL_LINKS,
     };
   },
@@ -54,6 +54,4 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 }
-
-
 </style>

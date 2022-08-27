@@ -87,12 +87,12 @@ export default function useInputStyles(
   }));
 
   const footerClasses = computed(() => ({
-    [intPaddingClass()]: true,
+    [intPaddingClass()]: false,
   }));
 
   const inputClasses = computed(() => ({
-    [inputHeightClass()]: true,
-    [inputTextSize()]: true,
+    [inputHeightClass()]: false,
+    'text-[24px]': true,
     'text-right': props.inputAlignRight,
     'font-numeric': props.type === 'number',
     'text-red-500': isInvalid.value,
@@ -100,7 +100,7 @@ export default function useInputStyles(
   }));
 
   const prependClasses = computed(() => ({
-    [inputHeightClass()]: true,
+    [inputHeightClass()]: false,
   }));
 
   const appendClasses = computed(() => ({

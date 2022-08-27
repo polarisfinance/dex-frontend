@@ -260,7 +260,11 @@ watchEffect(() => {
           class="flex justify-between items-center text-sm leading-none text-gray-600 dark:text-gray-400"
         >
           <div v-if="!isWalletReady || disableBalance" />
-          <div v-else class="flex items-center cursor-pointer" @click="setMax">
+          <div
+            v-else
+            class="flex items-center cursor-pointer ml-[12px] mb-[11px]"
+            @click="setMax"
+          >
             {{ balanceLabel ? balanceLabel : $t('balance') }}:
 
             <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />

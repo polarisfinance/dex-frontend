@@ -1,98 +1,78 @@
 <template>
   <div>
     <div class="p-4 bal-card">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-[20px]">
         <h5
           class="tracking-tight leading-none font-semibold text-[16px]"
           v-text="$t('account')"
         />
 
-        <div class="flex gap-2 items-center">
-          <X v-on:click="$emit('close')" />
+        <div class="flex gap-2 items-center pr-[8px]">
+          <X v-on:click="$emit('hide')" />
         </div>
       </div>
       <div class="box">
         <div
-          class="grid grid-cols-2 gap-5 grid-rows-1 justify-between items-center text-sm leading-none text-gray-600 dark:text-gray-400 w-full"
+          class="grid grid-cols-2 gap-5 grid-rows-1 justify-between items-center text-sm leading-none text-gray-600 dark:text-gray-400 w-ful h-[22px] mt-[12px] font-[500px]"
         >
-          Connected with MetaMask
-          <div class="grid grid-cols-2 gap-1 place-items-end">
-            <div v-if="!hideDisconnect">
-              <BalBtn
-                outline
-                color="gray"
-                size="xs"
-                class="capitalize h-[22px] w-[86px] text-[14px]"
-                @click="disconnectWallet"
-              >
-                {{ $t('disconnect') }}
-              </BalBtn>
-            </div>
-            <BalBtn
-              color="gray"
-              size="xs"
-              @click="toggleWalletSelectModal"
-              class="h-[22px] w-[68px] text-[14px]"
+          Connected with {{ connectorName }}
+          <div class="flex flex-row gap-[8px] justify-end">
+            <button
+              class="h-[22px] w-[86px] py-[2px] px-[12px] border"
+              @click="disconnectWallet"
             >
-              {{ $t('change') }}
-            </BalBtn>
+              <div
+                class="text-center text-[#FBAAFF] text-[14px] leading-[18px]"
+                v-text="$t('disconnect')"
+              />
+            </button>
+            <button
+              class="h-[22px] w-[68px] py-[2px] px-[12px] bg-[#231928] bg-none"
+              @click="toggleWalletSelectModal"
+            >
+              <div
+                class="text-center text-[#BE95C0] text-[14px] leading-[18px]"
+                v-text="$t('change')"
+              />
+            </button>
           </div>
         </div>
-        <div>
-          <!-- <div class="relative">
-            <Avatar :iconURI="profile?.avatar" :address="account" :size="44" />
-            <div class="connector-icon-wrapper">
-              <img
-                :src="connectorLogo"
-                class="flex absolute right-0 bottom-0 justify-center items-center p-0.5 w-5 h-5 bg-white rounded-full"
-              />
-            </div>
-          </div> -->
+        <div class="flex flex-row">
+          <Avatar :iconURI="profile?.avatar" :address="account" :size="24" />
           <div
-            class="font-bold text-black dark:text-white"
+            class="font-bold text-black dark:text-white pl-[10px]"
             v-text="_shorten(account)"
           />
         </div>
 
-        <div class="ml-2">
-          <div class="flex items-baseline address">
-            <div class="flex ml-3">
-              <BalTooltip width="auto">
-                <template #activator>
-                  <BalBtn
-                    circle
-                    color="gray"
-                    size="xs"
-                    flat
-                    @click="copyAddress"
-                  >
-                    <BalIcon v-if="copiedAddress" name="check" size="xs" />
-                    <BalIcon v-else name="clipboard" size="xs" />
-                  </BalBtn>
-                </template>
-                <div
-                  class="text-center"
-                  v-text="copiedAddress ? $t('copied') : $t('copyAddress')"
-                />
-              </BalTooltip>
-              <BalBtn
-                circle
-                flat
-                color="gray"
-                size="xs"
-                tag="a"
-                :href="explorer.addressLink(account)"
-                target="_blank"
-                rel="noreferrer"
-                class="ml-2"
-              >
-                <BalIcon name="arrow-up-right" size="xs" />
-              </BalBtn>
+        <div class="flex address justify-start mb-[12px]">
+          <button class="p-0 button">
+            <div
+              class="flex flex-row gap-[8px] justify-start align-baseline"
+              @click="copyAddress"
+            >
+              <IconCheck v-if="copiedAddress" />
+              <IconCopy v-else />
+              <div
+                class="text-center text-[#be95c0]"
+                v-text="copiedAddress ? $t('copied') : $t('copyAddress')"
+              />
             </div>
-            <div class="text-sm">
-              {{ connectorName }}
-            </div>
-          </div>
+          </button>
+
+          <component
+            :is="'a'"
+            :href="explorer.addressLink(account)"
+            target="_blank"
+            rel="noreferrer"
+            class="flex flex-row gap-[8px] justify-start align-baseline ml-[16px]"
+          >
+            <IconExplorer />
+            <div
+              class="text-center text-[#B9BABB] font-semibold leading-[20px]"
+              v-text="'View on explorer'"
+            />
+          </component>
         </div>
       </div>
     </div>
@@ -171,12 +151,17 @@ import {
   getConnectorName,
 } from '@/services/web3/web3.plugin';
 import X from '../../web3/x.vue';
-
+import IconCheck from '@/components/icons/IconCheck.vue';
+import IconCopy from '@/components/icons/IconCopy.vue';
+import IconExplorer from '@/components/icons/IconExplorer.vue';
 export default defineComponent({
   components: {
     AppSlippageForm,
     Avatar,
     X,
+    IconCheck,
+    IconCopy,
+    IconExplorer,
   },
 
   setup() {
@@ -321,14 +306,23 @@ export default defineComponent({
   @apply transition-all;
   /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */
   /* @apply border dark:border-gray-900; */
-  @apply grid rounded-md grid-rows-3 gap-[10px];
+  @apply flex rounded-md flex-col gap-[10px];
   background: #2e2433;
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
   padding-left: 12px;
   padding-right: 12px;
   width: 100% !important;
+}
+
+.button {
+  background: #ffffff00 !important;
+}
+
+.border {
+  background: #391c41 !important;
+  border: 1px solid #be95c0 !important;
+  box-shadow: inset 0px 0px 1px #be95c0 !important;
+  border-radius: 12px !important;
 }
 </style>

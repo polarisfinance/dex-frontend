@@ -234,6 +234,8 @@ export default defineComponent({
   transition: all 0.2s ease;
   text-decoration: none !important;
   line-height: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .bal-btn:focus,

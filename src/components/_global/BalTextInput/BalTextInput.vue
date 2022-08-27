@@ -171,11 +171,11 @@ onMounted(() => {
 
 <style scoped>
 .input-container {
-  @apply transition-colors;
+  @apply transition-colors flex flex-col;
   background-color: #231928;
   border-radius: 16px;
   border: none;
-  height: 80px;
+  height: 86px;
   font-weight: 500;
 }
 
@@ -194,5 +194,8 @@ onMounted(() => {
 
 .error {
   @apply text-xs text-red-500 mt-1 ml-1;
+}
+.footer {
+  @apply justify-end;
 }
 </style>

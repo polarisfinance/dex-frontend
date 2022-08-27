@@ -456,7 +456,6 @@ export default defineComponent({
 /* This is needed because the trade settings popover overflows */
 .card-container {
   overflow: unset;
-  height: 282px;
   width: 480px;
 }
 

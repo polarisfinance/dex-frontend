@@ -1,4 +1,4 @@
-<template>
+<template v-slot="{ hidePopover }">
   <BalPopover
     noPad
     :align="isMobile ? 'center' : undefined"
@@ -6,7 +6,7 @@
   >
     <template #activator>
       <button
-        class="text-base btn"
+        class="text-base btn flex flex-row"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
         :loadingLabel="upToLargeBreakpoint ? '' : $t('connecting')"
@@ -18,21 +18,21 @@
           :iconURI="profile?.avatar"
           :address="account"
           :size="avatarSize"
-          :class="'-mb-6 -ml-5'"
         />
         <span
           v-if="profile && profile.ens"
-          class="hidden lg:inline-block pl-2"
+          class="hidden lg:inline-block pl-2 leading-[20px]"
           v-text="profile && profile.ens"
         />
         <span
           v-else
-          class="hidden lg:inline-block pl-2 eth-address"
+          class="hidden lg:inline-block pl-2 eth-address leading-[20px]"
           v-text="_shorten(account)"
         />
       </button>
     </template>
     <AppNavSettings />
+    <div @hide="hidePopover"></div>
   </BalPopover>
 </template>
 
