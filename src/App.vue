@@ -188,6 +188,7 @@ img {
   left: 0;
   bottom: 0;
   right: 0;
+  transform: translateY(10%);
 }
 
 .sidebar-component {
