@@ -24,13 +24,13 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
 </script>
 
 <template>
-  <div class="grid grid-rows-1 grid-flow-col gap-2">
+  <div class="grid grid-rows-1 grid-flow-col gap-2 items-grid">
     <!-- <DarkModeToggle v-if="isDesktop" /> -->
     <!-- <AppNavActivityBtn v-if="account" /> -->
     <AppNavAccountBtn v-if="account" />
     <button
       class="btn"
-      v-else
+      v-else-if="isDesktop"
       :size="isMobile ? 'md' : 'sm'"
       @click="startConnectWithInjectedProvider"
     >
@@ -39,15 +39,9 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
       <span class="lg:hidden" v-text="$t('connect')" />
     </button>
     <!-- <AppNavNetworkSelect v-if="!hideNetworkSelect" /> -->
-    <BalBtn
-      v-if="isMobile"
-      color="white"
-      flat
-      circle
-      @click="setSidebarOpen(true)"
-    >
+    <button v-if="isMobile" @click="setSidebarOpen(true)" class="menu-btn">
       <BalIcon name="menu" size="lg" />
-    </BalBtn>
+    </button>
   </div>
 </template>
 
@@ -66,6 +60,11 @@ button {
   line-height: 20px;
 
   color: #fbaaff;
+}
+
+.menu-btn {
+  background: none;
+  color: white;
 }
 
 .btn:hover {

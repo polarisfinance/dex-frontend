@@ -456,7 +456,12 @@ export default defineComponent({
 /* This is needed because the trade settings popover overflows */
 .card-container {
   overflow: unset;
+<<<<<<< HEAD
   width: 480px;
+=======
+  height: 282px;
+  /* width: 480px; */
+>>>>>>> 17959016fc29bb0d75266fef773edbdadb543dc9
 }
 
 .trade-gasless :deep(.bal-toggle) {

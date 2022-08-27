@@ -10,6 +10,7 @@ import useFathom from '@/composables/useFathom';
 import AppNavActions from './AppNavActions.vue';
 import AppNavAlert from './AppNavAlert.vue';
 import DesktopLinks from './DesktopLinks/DesktopLinks.vue';
+import useWeb3 from '@/services/web3/useWeb3';
 
 /**
  * STATE
@@ -19,7 +20,7 @@ const appNav = ref<HTMLDivElement>();
 /**
  * COMPOSABLES
  */
-const { bp, isDesktop } = useBreakpoints();
+const { bp, isDesktop, isMobile } = useBreakpoints();
 const { trackGoal, Goals } = useFathom();
 const { currentAlert } = useAlerts();
 
@@ -60,6 +61,7 @@ onUnmounted(() => {
         <AppLogo v-else />
       </router-link>
 
+      <img src="./AuroraLogo.svg" v-if="isMobile" />
       <DesktopLinks v-if="isDesktop" class="ml-8 font-medium flex" />
 
       <AppNavActions />
