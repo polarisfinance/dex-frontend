@@ -8,7 +8,7 @@
         />
 
         <div class="flex gap-2 items-center pr-[8px]">
-          <X v-on:click="$emit('hide')" />
+          <X v-on:click="close" />
         </div>
       </div>
       <div class="box">
@@ -149,6 +149,9 @@ import IconCheck from '@/components/icons/IconCheck.vue';
 import IconCopy from '@/components/icons/IconCopy.vue';
 import IconExplorer from '@/components/icons/IconExplorer.vue';
 export default defineComponent({
+  props: {
+    close: { type: Function },
+  },
   components: {
     AppSlippageForm,
     Avatar,

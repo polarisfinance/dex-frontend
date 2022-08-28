@@ -20,7 +20,38 @@ function onClickConnect() {
 </script>
 
 <template>
-  <BalBtn :color="darkMode ? 'blue' : 'white'" @click="onClickConnect">
+  <button class="connect-wallet-button" @click="onClickConnect">
     {{ $t('connectWallet') }}
-  </BalBtn>
+  </button>
 </template>
+
+<style>
+.connect-wallet-button {
+  padding: 10px 25px;
+
+  background: #772f7b;
+  border-radius: 16px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+}
+
+.connect-wallet-button:hover {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.7) 0%,
+    rgba(123, 48, 127, 0.567) 100%
+  );
+}
+
+.connect-wallet-button:active {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.5) 0%,
+    rgba(123, 48, 127, 0.405) 100%
+  );
+}
+</style>

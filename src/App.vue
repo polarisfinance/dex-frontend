@@ -151,8 +151,8 @@ export default defineComponent({
       <img src="./Bar.svg" />
       <div class="absolute sidebar w-full">
         <MyWallet class="sidebar-component" />
-        <TrendingPairs class="sidebar-component" />
         <PairPriceGraph class="sidebar-component" />
+        <TrendingPairs class="sidebar-component" />
       </div>
     </div>
   </div>

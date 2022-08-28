@@ -25,23 +25,22 @@ const classes = computed(() => ({
 
 <template>
   <AppHero :class="classes">
-    <h1 class="headline" v-text="$t('ammPlatform')" />
+    <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
+    <h1 class="home-title">Automated portfolio manager</h1>
+    <h1 class="home-subtitle">and trading platform</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
-      <div class="flex justify-center mt-4">
-        <HeroConnectWalletButton class="mr-4" />
+      <div class="flex justify-center mt-[60px] w-full">
+        <HeroConnectWalletButton class="mr-[16px]" />
 
-        <BalBtn
-          tag="a"
+        <a
           :href="EXTERNAL_LINKS.Balancer.Home"
           target="_blank"
           rel="noreferrer"
-          color="white"
-          outline
           @click="trackGoal(Goals.ClickHeroLearnMore)"
+          class="learn-more-button"
         >
-          {{ $t('learnMore') }}
-          <BalIcon name="arrow-up-right" size="sm" class="ml-1" />
-        </BalBtn>
+          Learn more
+        </a>
       </div>
     </template>
   </AppHero>
@@ -53,5 +52,56 @@ const classes = computed(() => ({
 
   font-weight: 600;
   font-variation-settings: 'wght' 700;
+}
+
+.home-title {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 51px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.home-subtitle {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 51px;
+  text-align: center;
+
+  color: #be95c0;
+}
+
+.learn-more-button {
+  padding: 10px 25px;
+
+  background: linear-gradient(
+    94.14deg,
+    #391b40 23.11%,
+    rgba(57, 27, 64, 0.81) 81.52%
+  );
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fbaaff;
+}
+
+.learn-more-button:hover {
+  background: linear-gradient(
+    94.14deg,
+    rgba(45, 20, 51, 0.7) 23.11%,
+    rgba(57, 28, 65, 0.567) 81.52%
+  );
+}
+
+.learn-more-button:active {
+  background: linear-gradient(
+    94.14deg,
+    rgba(47, 22, 53, 0.5) 23.11%,
+    rgba(52, 25, 58, 0.405) 81.52%
+  );
 }
 </style>

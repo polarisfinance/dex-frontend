@@ -6,6 +6,7 @@
   >
     <template #activator>
       <button
+        @click="toggleModal"
         class="text-base btn flex flex-row"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
@@ -31,7 +32,7 @@
         />
       </button>
     </template>
-    <AppNavSettings />
+    <AppNavSettings v-if="showModal" :close="closeModal" />
     <div @hide="hidePopover"></div>
   </BalPopover>
 </template>
@@ -47,6 +48,21 @@ import AppNavSettings from './AppNavSettings.vue';
 
 export default defineComponent({
   name: 'AppNavAccountBtn',
+
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+
+  methods: {
+    toggleModal() {
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+    },
+  },
 
   components: {
     AppNavSettings,

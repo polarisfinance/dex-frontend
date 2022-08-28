@@ -225,12 +225,12 @@ watch(
 <template>
   <div
     :class="[
-      'max-w-full whitespace-nowrap overflow-hidden',
+      'max-w-full whitespace-nowrap overflow-hidden ',
       { 'rounded-lg': !square },
     ]"
   >
     <div ref="headerRef" class="overflow-hidden">
-      <table class="w-full whitespace-normal table-fixed">
+      <table class="w-full whitespace-normal table-fixed bg-[#231928]">
         <!-- header width handled by colgroup  -->
         <colgroup>
           <col
@@ -240,13 +240,13 @@ watch(
           />
         </colgroup>
         <!-- header is rendered as a row - seperated by columns -->
-        <thead class="z-10 bg-white dark:bg-gray-900">
+        <thead class="z-10">
           <th
             v-for="(column, columnIndex) in filteredColumns"
             :key="`header-${column.id}`"
             :ref="setHeaderRef(columnIndex)"
             :class="[
-              'p-6 bg-white dark:bg-gray-850 headingShadow border-b dark:border-gray-900',
+              'p-6 headingShadow border-b dark:border-gray-900 bg-[#231928]',
               column.className,
               getHorizontalStickyClass(columnIndex),
               isColumnStuck ? 'isSticky' : '',
