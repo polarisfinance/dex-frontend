@@ -329,4 +329,8 @@ export default defineComponent({
 .link:hover {
   @apply text-[#be95c0] font-semibold leading-[20px] no-underline fill-[#be95c0];
 }
+
+.link:focus {
+  @apply text-[#be95c0] font-semibold leading-[20px] no-underline fill-[#be95c0];
+}
 </style>
