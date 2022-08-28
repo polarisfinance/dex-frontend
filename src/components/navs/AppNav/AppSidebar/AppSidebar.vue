@@ -42,7 +42,7 @@ const { setSidebarOpen } = useSidebar();
   padding-bottom: 47px;
 
   @apply fixed top-0 left-0 h-full w-full cursor-pointer flex;
-  justify-content: end;
+  justify-content: flex-end;
   background: rgba(0, 0, 0, 0.7);
 }
 

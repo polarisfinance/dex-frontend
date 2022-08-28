@@ -126,9 +126,8 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full;
-  background: transparent;
-  box-shadow: none;
+  @apply mx-auto h-full dark:border-0;
+  background: #231928;
   border-radius: 22px;
 }
 

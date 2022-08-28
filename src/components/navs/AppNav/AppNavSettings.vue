@@ -17,21 +17,18 @@
         >
           Connected with {{ connectorName }}
           <div class="flex flex-row gap-[8px] justify-end">
-            <button
-              class="h-[22px] w-[86px] py-[2px] px-[12px] border"
-              @click="disconnectWallet"
-            >
+            <button class="h-[22px] w-[86px] border" @click="disconnectWallet">
               <div
-                class="text-center text-[#FBAAFF] text-[14px] leading-[18px]"
+                class="text-center text-[14px] leading-[18px]"
                 v-text="$t('disconnect')"
               />
             </button>
             <button
-              class="h-[22px] w-[68px] py-[2px] px-[12px] bg-[#231928] bg-none"
+              class="h-[22px] w-[68px] border"
               @click="toggleWalletSelectModal"
             >
               <div
-                class="text-center text-[#BE95C0] text-[14px] leading-[18px]"
+                class="text-center text-[14px] leading-[18px]"
                 v-text="$t('change')"
               />
             </button>
@@ -48,13 +45,13 @@
         <div class="flex address justify-start mb-[12px]">
           <button class="p-0 button">
             <div
-              class="flex flex-row gap-[8px] justify-start align-baseline"
+              class="flex flex-row gap-[8px] justify-start align-baseline link"
               @click="copyAddress"
             >
-              <IconCheck v-if="copiedAddress" />
+              <IconCheck v-if="copiedAddress" class="mt-0.5" />
               <IconCopy v-else />
               <div
-                class="text-center text-[#be95c0]"
+                class="text-center"
                 v-text="copiedAddress ? $t('copied') : $t('copyAddress')"
               />
             </div>
@@ -65,13 +62,10 @@
             :href="explorer.addressLink(account)"
             target="_blank"
             rel="noreferrer"
-            class="flex flex-row gap-[8px] justify-start align-baseline ml-[16px]"
+            class="flex flex-row gap-[8px] justify-start align-baseline ml-[16px] link"
           >
             <IconExplorer />
-            <div
-              class="text-center text-[#B9BABB] font-semibold leading-[20px]"
-              v-text="'View on explorer'"
-            />
+            <div class="text-center" v-text="'View on explorer'" />
           </component>
         </div>
       </div>
@@ -320,9 +314,19 @@ export default defineComponent({
 }
 
 .border {
+  @apply py-[2px] px-[12px] bg-[#231928] bg-none border-transparent text-[#BE95C0];
+}
+.border:hover {
+  @apply text-[#FBAAFF];
   background: #391c41 !important;
-  border: 1px solid #be95c0 !important;
-  box-shadow: inset 0px 0px 1px #be95c0 !important;
+  border: 1px solid #552162 !important;
   border-radius: 12px !important;
+}
+
+.link {
+  @apply text-[#B9BABB] font-semibold leading-[20px] fill-[B9BABB];
+}
+.link:hover {
+  @apply text-[#be95c0] font-semibold leading-[20px] no-underline fill-[#be95c0];
 }
 </style>

@@ -155,7 +155,7 @@ watchEffect(() => {
       @update:address="handleInputTokenChange"
     />
 
-    <div class="flex justify-center my-1 align-middle">
+    <div class="flex justify-center my-[2px] align-middle">
       <div class="absolute toggle">
         <TradePairToggle @toggle="handleTokenSwitch" />
       </div>

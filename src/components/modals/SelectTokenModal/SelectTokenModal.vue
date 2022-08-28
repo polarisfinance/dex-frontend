@@ -365,7 +365,6 @@ export default defineComponent({
 }
 
 .border {
-  height: 0;
   border: 0.5px solid rgba(111, 71, 115, 0.4);
 }
 </style>

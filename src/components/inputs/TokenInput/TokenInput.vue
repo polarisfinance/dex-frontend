@@ -178,7 +178,7 @@ const bufferPercentage = computed(() => {
 });
 
 const barColor = computed(() =>
-  amountExceedsTokenBalance.value ? 'red' : 'green'
+  amountExceedsTokenBalance.value ? 'red' : '#fbaaff'
 );
 
 const priceImpactSign = computed(() => (props.priceImpact >= 0 ? '-' : '+'));
@@ -254,10 +254,10 @@ watchEffect(() => {
     <template v-if="!hideFooter" #footer>
       <div
         v-if="isWalletReady || (hasAmount && hasToken)"
-        class="flex flex-col pt-1"
+        class="flex flex-col pt-[4.51px]"
       >
         <div
-          class="flex justify-between items-center text-sm leading-none text-gray-600 dark:text-gray-400"
+          class="flex justify-between items-center text-sm leading-[18px] text-gray-600 dark:text-gray-400"
         >
           <div v-if="!isWalletReady || disableBalance" />
           <div
@@ -265,31 +265,33 @@ watchEffect(() => {
             class="flex items-center cursor-pointer ml-[12px] mb-[11px]"
             @click="setMax"
           >
+            <template v-if="hasBalance && !noMax && !disableMax">
+              <span
+                v-if="!isMaxed"
+                class="transition-colors pr-[4px] bg-[#391C41] rounded-xl pl-[7px] pr-[7px] text-[12px] mr-[4px] leading-[15px] pt-[1px] text-[#FBAAFF]"
+              >
+                MAX
+              </span>
+              <span
+                v-else
+                class="text-gray-400 dark:text-gray-600 cursor-not-allowed pr-[4px] transition-colors pr-[4px] bg-[#391C41] rounded-xl pl-[7px] pr-[7px] text-[12px] mr-[4px] leading-[15px] pt-[1px]"
+              >
+                MAXED
+              </span>
+            </template>
             {{ balanceLabel ? balanceLabel : $t('balance') }}:
 
             <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />
             <span v-else class="mx-1">
               {{ fNum2(tokenBalance, FNumFormats.token) }}
             </span>
-
-            <template v-if="hasBalance && !noMax && !disableMax">
-              <span
-                v-if="!isMaxed"
-                class="text-blue-600 hover:text-purple-600 focus:text-purple-600 dark:text-blue-400 dark:hover:text-yellow-500 dark:focus:text-yellow-500 transition-colors"
-              >
-                {{ $t('max') }}
-              </span>
-              <span
-                v-else
-                class="text-gray-400 dark:text-gray-600 cursor-not-allowed"
-              >
-                {{ $t('maxed') }}
-              </span>
-            </template>
           </div>
           <div>
             <template v-if="hasAmount && hasToken">
-              {{ fNum2(tokenValue, FNumFormats.fiat) }}
+              <div class="pr-[12px]">
+                {{ fNum2(tokenValue, FNumFormats.fiat) }}
+              </div>
+
               <span v-if="priceImpact" :class="priceImpactClass">
                 ({{
                   priceImpactSign + fNum2(priceImpact, FNumFormats.percent)
@@ -311,9 +313,9 @@ watchEffect(() => {
           :width="maxPercentage"
           :bufferWidth="bufferPercentage"
           :color="barColor"
-          class="mt-2"
+          class="mt-[2px]"
         />
-        <div
+        <!-- <div
           v-if="shouldShowTxBufferMessage"
           class="mt-2 text-xs text-orange-600 dark:text-orange-400"
         >
@@ -323,7 +325,7 @@ watchEffect(() => {
               nativeAsset.symbol,
             ])
           }}
-        </div>
+        </div> -->
       </div>
     </template>
   </BalTextInput>
