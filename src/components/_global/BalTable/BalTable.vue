@@ -71,6 +71,7 @@ type Props = {
   // eslint-disable-next-line vue/require-default-prop -- TODO: Define default prop
   pin?: DataPinState | null;
   getTableRowClass?: (rowData: Data, rowIndex: number) => string | undefined;
+  title: String;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -229,6 +230,7 @@ watch(
       { 'rounded-lg': !square },
     ]"
   >
+    <div v-if="title" class="mb-[24px]">{{ title }}</div>
     <div ref="headerRef" class="overflow-hidden">
       <table class="w-full whitespace-normal table-fixed bg-[#231928]">
         <!-- header width handled by colgroup  -->
@@ -246,14 +248,12 @@ watch(
             :key="`header-${column.id}`"
             :ref="setHeaderRef(columnIndex)"
             :class="[
-              'p-6 headingShadow border-b dark:border-gray-900 bg-[#231928]',
+              'headingShadow bg-[#231928]',
               column.className,
               getHorizontalStickyClass(columnIndex),
               isColumnStuck ? 'isSticky' : '',
               column.sortKey ? 'cursor-pointer' : '',
-              currentSortColumn === column.id && currentSortDirection
-                ? 'text-blue-600 hover:text-blue-500 focus:text-purple-600 dark:text-blue-400 dark:hover:text-blue-600 dark:focus:text-blue-600 transition-colors'
-                : 'text-gray-800 hover:text-purple-600 focus:text-blue-500 dark:text-gray-100 dark:hover:text-yellow-500 dark:focus:text-yellow-500 transition-colors',
+              currentSortColumn === column.id && currentSortDirection,
             ]"
             @click="handleSort(column.id)"
           >

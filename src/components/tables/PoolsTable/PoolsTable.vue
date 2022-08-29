@@ -363,82 +363,90 @@ function iconAddresses(pool: PoolWithShares) {
       v-for="(pool, idx) in data"
       :key="idx"
     >
-      <div class="flex items-center w-full">
-        <BalAssetSet :size="36" :addresses="iconAddresses(pool)" :width="100" />
-        <div v-if="POOLS.Metadata[pool.id]" class="text-left">
-          {{ POOLS.Metadata[pool.id].name }}
-        </div>
-        <div v-else>
-          <TokenPills
-            :tokens="
-              orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-            "
-            :isStablePool="isStableLike(pool.poolType)"
-            :selectedTokens="selectedTokens"
-          />
-        </div>
-      </div>
-      <div class="flex gap-[70px] justify-end w-full">
-        <div>
-          <BalLoadingBlock
-            v-if="!pool?.apr?.total?.unstaked"
-            class="w-12 h-4"
-          />
-          <template v-else>
-            <div class="w-12 h-4">
-              {{ aprLabelFor(pool) }}
-              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+      <router-link :to="'/pool/' + pool.id" class="flex items-center w-full">
+        <div class="flex items-center w-full">
+          <div class="flex items-center w-full">
+            <BalAssetSet
+              :size="36"
+              :addresses="iconAddresses(pool)"
+              :width="100"
+            />
+            <div v-if="POOLS.Metadata[pool.id]" class="text-left">
+              {{ POOLS.Metadata[pool.id].name }}
             </div>
-          </template>
-        </div>
-        <div>
-          <BalLoadingBlock
-            v-if="!pool?.apr?.total?.unstaked"
-            class="w-12 h-4"
-          />
-          <template v-else>
-            <div class="w-12 h-4">
-              {{ aprLabelFor(pool) }}
-              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+            <div v-else>
+              <TokenPills
+                :tokens="
+                  orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+                "
+                :isStablePool="isStableLike(pool.poolType)"
+                :selectedTokens="selectedTokens"
+              />
             </div>
-          </template>
-        </div>
-        <div>
-          <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
-          <span v-else class="text-right w-12 h-4">
-            {{
-              fNum2(pool?.volumeSnapshot, {
-                style: 'currency',
-                maximumFractionDigits: 0,
-              })
-            }}
-          </span>
-        </div>
-        <div>
-          <BalLoadingBlock
-            v-if="!pool?.apr?.total?.unstaked"
-            class="w-12 h-4"
-          />
-          <template v-else>
-            <div class="w-12 h-4">
-              {{ aprLabelFor(pool) }}
-              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+          </div>
+          <div class="flex gap-[70px] justify-end w-full text-left">
+            <div>
+              <BalLoadingBlock
+                v-if="!pool?.apr?.total?.unstaked"
+                class="w-12 h-4"
+              />
+              <template v-else>
+                <div class="w-12 h-4">
+                  {{ aprLabelFor(pool) }}
+                  <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+                </div>
+              </template>
             </div>
-          </template>
-        </div>
-        <div>
-          <BalLoadingBlock
-            v-if="!pool?.apr?.total?.unstaked"
-            class="w-12 h-4"
-          />
-          <template v-else>
-            <div class="w-12 h-4">
-              {{ aprLabelFor(pool) }}
-              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+            <div>
+              <BalLoadingBlock
+                v-if="!pool?.apr?.total?.unstaked"
+                class="w-12 h-4"
+              />
+              <template v-else>
+                <div class="w-12 h-4">
+                  {{ aprLabelFor(pool) }}
+                  <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+                </div>
+              </template>
             </div>
-          </template>
+            <div>
+              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
+              <span v-else class="text-right w-12 h-4">
+                {{
+                  fNum2(pool?.volumeSnapshot, {
+                    style: 'currency',
+                    maximumFractionDigits: 0,
+                  })
+                }}
+              </span>
+            </div>
+            <div>
+              <BalLoadingBlock
+                v-if="!pool?.apr?.total?.unstaked"
+                class="w-12 h-4"
+              />
+              <template v-else>
+                <div class="w-12 h-4">
+                  {{ aprLabelFor(pool) }}
+                  <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+                </div>
+              </template>
+            </div>
+            <div>
+              <BalLoadingBlock
+                v-if="!pool?.apr?.total?.unstaked"
+                class="w-12 h-4"
+              />
+              <template v-else>
+                <div class="w-12 h-4">
+                  {{ aprLabelFor(pool) }}
+                  <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+                </div>
+              </template>
+            </div>
+          </div>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
   <!-- <BalCard
