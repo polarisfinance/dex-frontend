@@ -17,11 +17,30 @@ export default defineComponent({
 
 <template>
   <div class="featured-protocols">
-    <h3 class="mb-4">
-      {{ $t('featuredProtocols.title') }}
-    </h3>
+    <div class="mb-[20px]">
+      <h3 class="medium-title">
+        {{ $t('What are we working on...') }}
+      </h3>
+      <h3 class="medium-subtitle">Medium articles</h3>
+    </div>
     <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 xs:col-span-6 lg:col-span-3">
+      <div class="col-span-12 xs:col-span-6 lg:col-span-3 card">
+        <div class="hover:shadow-xl transition-shadow">
+          <img src="/images/banners/element.jpg" />
+        </div>
+        <div class="mx-[16px] mb-[16px]">
+          <div class="mt-[16px]">Element Finance</div>
+          <p class="my-[12px]">
+            {{ $t('featuredProtocols.Element') }}
+          </p>
+          <a target="_blank" :href="EXTERNAL_LINKS.Element.Home"
+            ><div class="flex items-center">
+              <div class="mr-[12px] learn-more-text">Learn more</div>
+              <img src="./learn-more.svg" /></div
+          ></a>
+        </div>
+      </div>
+      <!-- <div class="col-span-12 xs:col-span-6 lg:col-span-3">
         <BalCard
           title="Element Finance"
           imgSrc="/images/banners/element.jpg"
@@ -109,8 +128,7 @@ export default defineComponent({
               />
             </BalLink>
           </template>
-        </BalCard>
-      </div>
+        </BalCard> -->
     </div>
   </div>
 </template>
@@ -122,5 +140,39 @@ export default defineComponent({
 
 .featured-protocols :deep(.feature) {
   height: 8rem;
+}
+
+.medium-title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #fdfdfd;
+}
+
+.medium-subtitle {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.card {
+  background: #231928;
+  border-radius: 24px;
+}
+
+img {
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+}
+
+.learn-more-text {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #be95c0;
 }
 </style>

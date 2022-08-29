@@ -29,6 +29,8 @@ import { POOLS } from '@/constants/pools';
 import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
 import TokenPills from './TokenPills/TokenPills.vue';
 
+const { isMobile, isDesktop } = useBreakpoints();
+
 /**
  * TYPES
  */
@@ -43,6 +45,8 @@ type Props = {
   hiddenColumns?: string[];
   showBoost?: boolean;
   columnStates?: Record<string, string>;
+  title: String;
+  img;
 };
 
 /**
@@ -239,7 +243,205 @@ function iconAddresses(pool: PoolWithShares) {
 </script>
 
 <template>
-  <BalCard
+  <div v-if="isMobile" class="pool-table-mobile mb-[24px]">
+    <div class="mb-[15px]">
+      {{ title }}
+    </div>
+    <div class="flex table-title items-center w-full">
+      <div class="flex w-full items-center">
+        <img :src="img" class="mr-[12px] w-[24px] h-[14px]" />
+        <div>Pool name</div>
+      </div>
+      <div class="justify-end w-full text-right">TVL & APR</div>
+    </div>
+    <div class="mt-[12px]border w-full" />
+    <div
+      class="flex items-center w-full"
+      v-for="(pool, idx) in data"
+      :key="idx"
+    >
+      <div class="flex-column mt-[20px] w-full">
+        <BalAssetSet :size="36" :addresses="iconAddresses(pool)" :width="100" />
+        <div v-if="POOLS.Metadata[pool.id]" class="text-left mt-[8px]">
+          {{ POOLS.Metadata[pool.id].name }}
+        </div>
+        <div v-else class="mt-[8px]">
+          <TokenPills
+            :tokens="
+              orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+            "
+            :isStablePool="isStableLike(pool.poolType)"
+            :selectedTokens="selectedTokens"
+          />
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-column w-full gap-[4px]">
+          <div>
+            <BalLoadingBlock
+              v-if="!pool?.apr?.total?.unstaked"
+              class="w-12 h-4"
+            />
+            <template v-else>
+              <div class="w-12 h-4">
+                {{ aprLabelFor(pool) }}
+                <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+              </div>
+            </template>
+          </div>
+          <div>
+            <BalLoadingBlock
+              v-if="!pool?.apr?.total?.unstaked"
+              class="w-12 h-4"
+            />
+            <template v-else>
+              <div class="w-12 h-4">
+                {{ aprLabelFor(pool) }}
+                <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+              </div>
+            </template>
+          </div>
+          <div>
+            <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
+            <span v-else class="text-right w-12 h-4">
+              {{
+                fNum2(pool?.volumeSnapshot, {
+                  style: 'currency',
+                  maximumFractionDigits: 0,
+                })
+              }}
+            </span>
+          </div>
+          <div>
+            <BalLoadingBlock
+              v-if="!pool?.apr?.total?.unstaked"
+              class="w-12 h-4"
+            />
+            <template v-else>
+              <div class="w-12 h-4">
+                {{ aprLabelFor(pool) }}
+                <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+              </div>
+            </template>
+          </div>
+          <div>
+            <BalLoadingBlock
+              v-if="!pool?.apr?.total?.unstaked"
+              class="w-12 h-4"
+            />
+            <template v-else>
+              <div class="w-12 h-4">
+                {{ aprLabelFor(pool) }}
+                <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pool-table mb-[40px]" v-if="isDesktop">
+    <div>
+      {{ title }}
+    </div>
+    <div class="mt-[48px] table-title flex w-full">
+      <div class="flex w-full mr-[200px] items-center">
+        <img :src="img" class="mr-[12px]" />
+        <div>Pool name</div>
+      </div>
+      <div class="flex w-full gap-[70px] justify-end items-center">
+        <div class="mr w-12 h-4">Daily</div>
+        <div class="mr w-12 h-4">APR</div>
+        <div class="mr w-12 h-4">TVL</div>
+        <div class="mr w-12 h-4">Volume (24h)</div>
+        <div>To Claim</div>
+      </div>
+    </div>
+    <div class="mt-[24px] border w-full" />
+    <div
+      class="mt-[24px] flex items-center w-full"
+      v-for="(pool, idx) in data"
+      :key="idx"
+    >
+      <div class="flex items-center w-full">
+        <BalAssetSet :size="36" :addresses="iconAddresses(pool)" :width="100" />
+        <div v-if="POOLS.Metadata[pool.id]" class="text-left">
+          {{ POOLS.Metadata[pool.id].name }}
+        </div>
+        <div v-else>
+          <TokenPills
+            :tokens="
+              orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+            "
+            :isStablePool="isStableLike(pool.poolType)"
+            :selectedTokens="selectedTokens"
+          />
+        </div>
+      </div>
+      <div class="flex gap-[70px] justify-end w-full">
+        <div>
+          <BalLoadingBlock
+            v-if="!pool?.apr?.total?.unstaked"
+            class="w-12 h-4"
+          />
+          <template v-else>
+            <div class="w-12 h-4">
+              {{ aprLabelFor(pool) }}
+              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+            </div>
+          </template>
+        </div>
+        <div>
+          <BalLoadingBlock
+            v-if="!pool?.apr?.total?.unstaked"
+            class="w-12 h-4"
+          />
+          <template v-else>
+            <div class="w-12 h-4">
+              {{ aprLabelFor(pool) }}
+              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+            </div>
+          </template>
+        </div>
+        <div>
+          <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
+          <span v-else class="text-right w-12 h-4">
+            {{
+              fNum2(pool?.volumeSnapshot, {
+                style: 'currency',
+                maximumFractionDigits: 0,
+              })
+            }}
+          </span>
+        </div>
+        <div>
+          <BalLoadingBlock
+            v-if="!pool?.apr?.total?.unstaked"
+            class="w-12 h-4"
+          />
+          <template v-else>
+            <div class="w-12 h-4">
+              {{ aprLabelFor(pool) }}
+              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+            </div>
+          </template>
+        </div>
+        <div>
+          <BalLoadingBlock
+            v-if="!pool?.apr?.total?.unstaked"
+            class="w-12 h-4"
+          />
+          <template v-else>
+            <div class="w-12 h-4">
+              {{ aprLabelFor(pool) }}
+              <APRTooltip v-if="pool?.apr?.total?.unstaked" :pool="pool" />
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <BalCard
     shadow="lg"
     :square="upToLargeBreakpoint"
     :noBorder="upToLargeBreakpoint"
@@ -355,5 +557,53 @@ function iconAddresses(pool: PoolWithShares) {
         />
       </template>
     </BalTable>
-  </BalCard>
+  </BalCard> -->
 </template>
+
+<style>
+.pool-table {
+  background: #231928;
+  border-radius: 16px;
+  padding: 24px 60px;
+
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.table-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #be95c0;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+
+.pool-table-mobile {
+  background: #231928;
+  box-shadow: 0px 0.949153px 1.89831px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+
+  padding: 8px 12px;
+}
+
+.table-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #be95c0;
+}
+</style>

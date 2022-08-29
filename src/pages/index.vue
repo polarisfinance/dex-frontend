@@ -12,6 +12,10 @@ import useBreakpoints from '@/composables/useBreakpoints';
 import useTokens from '@/composables/useTokens';
 import useWeb3 from '@/services/web3/useWeb3';
 
+import segniorageImg from './segniorage.svg';
+import singleStakingImg from './single-staking.svg';
+import classicImg from './classic.svg';
+
 // COMPOSABLES
 const router = useRouter();
 const { appNetworkConfig } = useWeb3();
@@ -64,9 +68,17 @@ function navigateToCreatePool() {
               class="pool-types flex gap-[8px] items-center pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
             >
               <div class="mr-[12px] favourites-text">Favourites</div>
-              <div class="segniorage-btn">Segniorage Pools</div>
-              <div class="pool-type-btn">Single Staking</div>
-              <div class="pool-type-btn">Classic Pools</div>
+              <a href="#segniorage"
+                ><div class="segniorage-btn cursor-pointer">
+                  Segniorage Pools
+                </div></a
+              >
+              <a href="#singlestaking">
+                <div class="pool-type-btn cursor-pointer">Single Staking</div>
+              </a>
+              <a href="#classicpools">
+                <div class="pool-type-btn cursor-pointer">Classic Pools</div>
+              </a>
             </div>
           </div>
 
@@ -100,18 +112,54 @@ function navigateToCreatePool() {
           </button>
         </div>
       </div>
-      <PoolsTable
-        :data="investmentPools"
-        :noPoolsLabel="$t('noPoolsFound')"
-        :isLoadingMore="isLoadingMore"
-        :selectedTokens="selectedTokens"
-        class="mb-8"
-        :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-        :columnStates="dataStates"
-        :isPaginated="true"
-        :isLoading="isInvestmentPoolsTableLoading"
-        @load-more="loadMore"
-      />
+      <div id="segniorage">
+        <PoolsTable
+          :data="investmentPools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="selectedTokens"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Segniorage Pools'"
+          :img="segniorageImg"
+        />
+      </div>
+      <div id="singlestaking">
+        <PoolsTable
+          :data="investmentPools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="selectedTokens"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Single Staking'"
+          :img="singleStakingImg"
+        />
+      </div>
+      <div id="classicpools">
+        <PoolsTable
+          :data="investmentPools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="selectedTokens"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Classic Pools'"
+          :img="classicImg"
+        />
+      </div>
       <div v-if="isElementSupported" class="p-4 xl:p-0 mt-16">
         <FeaturedProtocols />
       </div>

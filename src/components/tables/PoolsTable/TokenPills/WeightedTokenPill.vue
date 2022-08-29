@@ -9,6 +9,7 @@ type Props = {
   weight: string;
   isSelected: boolean;
   token: PoolToken;
+  lastToken: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -18,7 +19,19 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <BalTooltip
+  <div class="flex-col">
+    <div class="flex">
+      {{ symbol }}
+      <div v-if="!lastToken" class="mx-[3px]">-</div>
+    </div>
+    <div
+      :class="{ isMobile: weightMobile, isDesktop: weight }"
+      class="weight text-center"
+    >
+      {{ weight }}
+    </div>
+  </div>
+  <!-- <BalTooltip
     :disabled="!hasBalance"
     class="mr-2 last:mr-0 leading-normal cursor-pointer"
     textAlign="left"
@@ -50,7 +63,7 @@ withDefaults(defineProps<Props>(), {
       </div>
     </template>
     <BalanceTooltip :token="token" :symbol="symbol" />
-  </BalTooltip>
+  </BalTooltip> -->
 </template>
 
 <style scoped>
@@ -78,5 +91,20 @@ withDefaults(defineProps<Props>(), {
 .pill-hoverable:hover,
 .pill-hoverable:focus {
   @apply bg-gray-200 dark:bg-gray-900;
+}
+
+.weight {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.weightMobile {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
 }
 </style>

@@ -72,13 +72,14 @@ const MAX_PILLS = 11;
     </template>
     <template v-else>
       <WeightedTokenPill
-        v-for="token in visibleTokens"
+        v-for="(token, idx) in visibleTokens"
         :key="token.address"
         :hasBalance="hasBalance(token.address)"
         :symbol="symbolFor(token)"
         :weight="weightFor(token)"
         :token="token"
         :isSelected="includesAddress(selectedTokens, token.address)"
+        :lastToken="idx == visibleTokens.length - 1"
       />
       <HiddenTokensPills
         v-if="hiddenTokens.length > 0"
