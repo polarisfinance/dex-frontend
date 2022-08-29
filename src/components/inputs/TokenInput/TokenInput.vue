@@ -313,7 +313,7 @@ watchEffect(() => {
           :width="maxPercentage"
           :bufferWidth="bufferPercentage"
           :color="barColor"
-          class="mt-[2px]"
+          class="my-[2px]"
         />
         <!-- <div
           v-if="shouldShowTxBufferMessage"

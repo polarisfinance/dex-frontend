@@ -103,5 +103,9 @@ export default defineComponent({
   background: #231928;
   border-radius: 16px;
   color: #be95c0;
+  border: 1px solid #ffffff00;
+}
+.btn:hover{
+  border: 1px solid #552162 !important;
 }
 </style>

@@ -8,7 +8,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 import AppNavAccountBtn from './AppNavAccountBtn.vue';
 import AppNavActivityBtn from './AppNavActivityBtn/AppNavActivityBtn.vue';
-import AppNavNetworkSelect from './AppNavNetworkSelect.vue';
+import AppNavMenu from './AppNavMenu.vue';
 
 /**
  * COMPOSABLES
@@ -38,7 +38,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
       <span class="hidden lg:inline-block" v-text="$t('connectWallet')" />
       <span class="lg:hidden" v-text="$t('connect')" />
     </button>
-    <!-- <AppNavNetworkSelect v-if="!hideNetworkSelect" /> -->
+    <AppNavMenu /> 
     <button v-if="isMobile" @click="setSidebarOpen(true)" class="menu-btn">
       <BalIcon name="menu" size="lg" />
     </button>

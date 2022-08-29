@@ -8,7 +8,7 @@
       <div class="flex justify-between my-0.5 mx-2">
         <div class="summary">Price Impact</div>
         <div class="slippage">
-          {{ summary.slippage.split(' ')[0] + ' %' }}
+          {{ fNum2(trading.sor.priceImpact.value, FNumFormats.percent) }}
         </div>
       </div>
       <div class="flex justify-between my-0.5 mx-2">
@@ -454,7 +454,7 @@ export default defineComponent({
     watch(blockNumber, () => {
       handlePriceUpdate();
     });
-
+    console.log(summary);
     return {
       // constants
       FiatCurrency,

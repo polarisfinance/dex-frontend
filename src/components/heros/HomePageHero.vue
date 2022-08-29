@@ -37,7 +37,7 @@ const classes = computed(() => ({
           target="_blank"
           rel="noreferrer"
           @click="trackGoal(Goals.ClickHeroLearnMore)"
-          class="learn-more-button"
+          class="learn-more-button font-semibold"
         >
           Learn more
         </a>
