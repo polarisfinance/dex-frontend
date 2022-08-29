@@ -382,7 +382,7 @@ export default defineComponent({
 
       return `https://${prefix}balancer.fi/#/pool/${id}`;
     }
-
+    console.log("routes",routes)
     return {
       visible,
       toggleVisibility,

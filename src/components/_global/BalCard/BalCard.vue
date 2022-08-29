@@ -83,7 +83,9 @@ export default defineComponent({
     });
 
     const headerClasses = computed(() => {
-      return {};
+      return {
+        'p-4 pb-0': !props.noPad,
+      };
     });
 
     const headerContentClasses = computed(() => {
@@ -94,6 +96,7 @@ export default defineComponent({
 
     const contentClasses = computed(() => {
       return {
+        'p-4': !props.noPad && !props.noContentPad,
         'flex-grow': props.growContent,
       };
     });

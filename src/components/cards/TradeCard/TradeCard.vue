@@ -1,5 +1,6 @@
 <template>
   <BalCard
+    noPad
     class="relative card-container px-[10px] py-[12px]"
     :shadow="tradeCardShadow"
     noBorder

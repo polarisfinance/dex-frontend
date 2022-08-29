@@ -70,62 +70,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="hidden px-4 mt-4">
-      <span class="mb-2 font-medium" v-text="$t('theme')" />
-      <div class="flex mt-1">
-        <div
-          class="flex justify-center items-center py-1.5 mr-2 w-16 rounded-xl border cursor-pointer option"
-          :class="{ active: !appDarkMode }"
-          @click="setDarkMode(false)"
-        >
-          <BalIcon name="sun" size="sm" />
-        </div>
-        <div
-          class="flex justify-center items-center py-1.5 mr-2 w-16 rounded-xl border cursor-pointer option"
-          :class="{ active: appDarkMode }"
-          @click="setDarkMode(true)"
-        >
-          <BalIcon name="moon" size="sm" />
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="px-4 mt-4">
-      <div class="flex items-baseline">
-        <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
-        <BalTooltip class="p-2 ml-2">
-          <template #activator>
-            <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
-          </template>
-          <div v-html="$t('marketConditionsWarning')" />
-        </BalTooltip>
-      </div>
-      <AppSlippageForm class="mt-1" />
-    </div>
-    <div v-if="isEIP1559SupportedNetwork" class="px-4 mt-6">
-      <div class="flex items-baseline">
-        <span class="mb-2 font-medium" v-text="$t('transactionType')" />
-        <BalTooltip class="p-2 ml-2">
-          <template #activator>
-            <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
-          </template>
-          <div v-text="$t('ethereumTxTypeTooltip')" />
-        </BalTooltip>
-      </div>
-      <BalBtnGroup
-        v-model="ethereumTxType"
-        :options="ethereumTxTypeOptions"
-        @update:model-value="setEthereumTxType"
-      />
-    </div> -->
-    <!-- <div
-      class="p-4 text-sm rounded-b-xl network"
-    >
-      <div v-text="$t('network')" />
-      <div class="flex items-baseline">
-        <div :class="['w-2 h-2 mr-1 rounded-full', networkColorClass]" />
-        {{ isUnsupportedNetwork ? $t('unsupportedNetwork') : networkName }}
-      </div>
-    </div> -->
   </div>
 </template>
 

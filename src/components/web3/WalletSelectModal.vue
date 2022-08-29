@@ -1,5 +1,5 @@
 <template>
-  <BalModal :show="isVisible" @close="$emit('close')">
+  <BalModal :show="isVisible" noPad @close="$emit('close')">
     <div class="p-[12px]">
       <div class="header px-[8px]">
         <div class="title">Connect a wallet</div>
