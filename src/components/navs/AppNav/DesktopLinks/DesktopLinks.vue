@@ -35,7 +35,7 @@ function isActive(page: string): boolean {
     <DesktopLinkItem to="/sunrise" :active="isActive('sunrise')">
       {{ $t('Sunrise') }}
     </DesktopLinkItem>
-    <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
+    <DesktopLinkItem to="/bond" :active="isActive('bond')">
       Bond
     </DesktopLinkItem>
     <DesktopLinkItem to="/vebal" :active="isActive('vebal')">

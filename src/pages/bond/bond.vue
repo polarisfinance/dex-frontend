@@ -31,8 +31,8 @@ onMounted(() => {});
 <template>
   <div class="sunrise-title py-10">
     <div class="flex-column">
-      <div class="sunrise-title-text">Sunrise</div>
-      <div class="sunrise-subtitle-text">The right place for your $SPOLAR</div>
+      <div class="sunrise-title-text">Bond</div>
+      <div class="sunrise-subtitle-text">Earn premiums upon redemption</div>
     </div>
   </div>
   <div
@@ -47,17 +47,17 @@ onMounted(() => {});
       :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
     >
       <img :src="logo[sunrise.name]" class="logo" />
-      <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
+      <div class="sunrise-name mt-[34px]">
+        <span>{{ sunrise.name }}</span> BOND
+      </div>
       <div class="sunrise-description mt-[12px]">
         <p>
-          Stake your $SPOLAR to earn
+          Bond room for
           <span class="uppercase">{{ '$' + sunrise.name }}</span>
         </p>
       </div>
       <button class="view-and-stake mt-[34px]">
-        <router-link :to="'/sunrise/' + sunrise.name">
-          View and Stake
-        </router-link>
+        <router-link :to="'/bond/' + sunrise.name"> View and Bond </router-link>
       </button>
     </div>
   </div>

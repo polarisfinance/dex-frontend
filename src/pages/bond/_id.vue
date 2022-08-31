@@ -2,21 +2,11 @@
   <div class="sunrise-title py-10">
     <div class="flex-column">
       <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
-      <div class="sunrise-subtitle-text">Sunrise</div>
-    </div>
-  </div>
-  <div
-    class="flex justify-center"
-    :class="{ sunriseWarning: isDesktop, sunriseWarningMobile: isMobile }"
-  >
-    <img src="./alert.svg" class="mr-[12px]" />
-    <div>
-      As we are in recovery mode, it is important to not sell your reward.
-      Please stake your ETHERNAL in the DAWIN single stake.
+      <div class="sunrise-subtitle-text">Bond</div>
     </div>
   </div>
   <div :class="{ info: isDesktop, infoMobile: isMobile }">
-    Staked SPOLARs can only be withdrawn after 3 epochs since deposit.
+    Buy & Redeem Bonds. Earn premiums upon redemption
   </div>
 
   <div
@@ -24,50 +14,66 @@
     class="text-center justify-center"
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <img class="logo" src="./spolar.svg" />
-      <div class="num-tokens">100</div>
-      <div class="details">$832.32</div>
-      <div class="details">SPOLAR Staked</div>
+      <div class="bond-title">Purchase {{ sunrise.bond }}</div>
+      <div
+        class="flex justify-between items-center mt-[40px]"
+        :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
+      >
+        <div class="flex-column">
+          <img :src="logo[sunrise.name]" />
+          <div class="token-name uppercase mt-[8px]">{{ sunrise.name }}</div>
+        </div>
+        <img src="./arrow.svg" />
+        <div class="flex-column">
+          <img :src="logo[sunrise.name]" />
+          <div class="token-name uppercase mt-[8px]">{{ sunrise.bond }}</div>
+        </div>
+      </div>
+      <div class="details mt-[32px]">
+        {{ sunrise.bond }} is available for purchase
+      </div>
       <div class="flex justify-center mt-[24px] gap-[12px]">
         <button class="claim-btn">Deposit</button>
         <button class="withdraw-btn">Withdraw</button>
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
-      <div class="data-text text-right">
-        <div>Next Epoch:</div>
-        <div>Current Epoch:</div>
-        <div>ETHERNAL Price (TWAP):</div>
-        <div>Previous Epoch (TWAP):</div>
-        <div>TWAP to print:</div>
-        <div>APR:</div>
-        <div>SPOLARS Staked</div>
+      <div>
+        <div class="bond-h1">ETHERNAL = 0.6681 WETH</div>
+        <div class="bond-h2">Last-Hour TWAP Price</div>
       </div>
-      <div class="data-text">
-        <div>05:51:38</div>
-        <div>134</div>
-        <div>0.6034</div>
-        <div>0.6030</div>
-        <div>0.6000</div>
-        <div>429%</div>
-        <div>11234.4966</div>
+      <div>
+        <div class="bond-h1">ETHERNAL = 0.6681 WETH</div>
+        <div class="bond-h2">Previous Epoch TWAP Price</div>
+      </div>
+      <div>
+        <div class="bond-h1">EBOND = 0.6681 WETH</div>
+        <div class="bond-h2">Current Price: (Ethernal)^2</div>
       </div>
     </div>
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <img class="logo" :src="logo[sunrise.name]" />
-      <div class="num-tokens">0.85</div>
-      <div class="details">$980.2</div>
-      <div class="details">
-        <span class="uppercase">{{ sunrise.name }}</span> Earned
+      <div class="bond-title">Purchase {{ sunrise.bond }}</div>
+      <div
+        class="flex justify-between items-center px-[70px] mt-[40px]"
+        :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
+      >
+        <div class="flex-column">
+          <img :src="logo[sunrise.name]" />
+          <div class="token-name uppercase mt-[8px]">{{ sunrise.name }}</div>
+        </div>
+        <img src="./arrow.svg" />
+        <div class="flex-column">
+          <img :src="logo[sunrise.name]" />
+          <div class="token-name uppercase mt-[8px]">{{ sunrise.bond }}</div>
+        </div>
       </div>
-      <div class="flex justify-center mt-[24px] gap-[12px]">
-        <button class="claim-btn">Claim</button>
-        <button class="single-stake-btn">
-          <div class="single-stake-btn-text">Single Stake</div>
+      <div class="details mt-[32px]">0.0000 {{ sunrise.bond }} Redeemable</div>
+      <div class="flex justify-center mt-[24px]">
+        <button class="claim-btn">
+          Enable when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
       </div>
     </div>
-    <button class="claim-btn" text-center>Claim and withdraw</button>
   </div>
 </template>
 
@@ -103,6 +109,7 @@ export default defineComponent({
       binaris: binarisImg,
       tripolar: orbitalImg,
     };
+
     const data = reactive<PoolPageData>({
       id: route.params.id as string,
     });
@@ -188,7 +195,7 @@ export default defineComponent({
   text-align: center;
   margin-left: 380px;
   margin-right: 380px;
-  margin-top: 12px;
+  margin-top: 100px;
 }
 
 .infoMobile {
@@ -201,6 +208,8 @@ export default defineComponent({
   font-size: 20px;
   line-height: 26px;
   text-align: center;
+
+  margin-top: 40px;
 
   color: rgba(245, 225, 255, 0.7);
 }
@@ -247,14 +256,16 @@ export default defineComponent({
   flex: 1 1 30%;
   max-width: 30%;
   display: flex;
-  gap: 50px;
+  flex-direction: column;
+  gap: 32px;
   justify-content: center;
 }
 
 .dataMobile {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  flex-direction: column;
+  gap: 32px;
 }
 
 .num-tokens {
@@ -279,17 +290,18 @@ export default defineComponent({
 }
 
 .claim-btn {
-  background: #772f7b;
+  background: #362d3b;
   border-radius: 12px;
   padding: 10px 35px;
+
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 
-  color: #ffffff;
+  color: #b9babb;
 }
 
-.claim-btn:hover {
+/* .claim-btn:hover {
   background: radial-gradient(
     49.66% 488.58% at 50% 30%,
     rgba(123, 48, 127, 0.7) 0%,
@@ -303,7 +315,7 @@ export default defineComponent({
     rgba(123, 48, 127, 0.5) 0%,
     rgba(123, 48, 127, 0.405) 100%
   );
-}
+} */
 
 .withdraw-btn {
   background: #231928;
@@ -350,5 +362,47 @@ export default defineComponent({
 
   color: #ffffff;
   gap: 24px;
+}
+
+.bond-h1 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #ffffff;
+}
+
+.bond-h2 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.bond-title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.token-name {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #ffffff;
+}
+
+.tokenTransition {
+  padding-left: 70px;
+  padding-right: 70px;
+}
+
+.tokenTransitionMobile {
+  padding-left: 30px;
+  padding-right: 30px;
 }
 </style>
