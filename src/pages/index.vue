@@ -99,9 +99,15 @@ function navigateToCreatePool() {
             <input type="text" placeholder="Filter by token" class="input" />
           </div>
           <div class="flex gap-[8px] justify-center mt-[8px]">
-            <div class="segniorage mobile-pool-btn">Segniorage Pools</div>
-            <div class="mobile-pool-btn">Single Staking</div>
-            <div class="mobile-pool-btn">Classic Pools</div>
+            <a href="#segniorage">
+              <div class="segniorage mobile-pool-btn">Segniorage Pools</div>
+            </a>
+            <a href="#singlestaking">
+              <div class="mobile-pool-btn">Single Staking</div>
+            </a>
+            <a href="#classicpools">
+              <div class="mobile-pool-btn">Classic Pools</div>
+            </a>
           </div>
           <button
             class="create-pool-btn-mobile flex items-center justify-center w-full mt-[8px]"

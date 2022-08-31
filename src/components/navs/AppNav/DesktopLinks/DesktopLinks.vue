@@ -32,7 +32,7 @@ function isActive(page: string): boolean {
     <!-- <DesktopLinkItem v-if="isGoerli" to="/faucet" :active="isActive('faucet')">
       Faucet
     </DesktopLinkItem> -->
-    <DesktopLinkItem to="/portfolio" :active="isActive('portfolio')">
+    <DesktopLinkItem to="/sunrise" :active="isActive('sunrise')">
       {{ $t('Sunrise') }}
     </DesktopLinkItem>
     <DesktopLinkItem to="/vebal" :active="isActive('vebal')">

@@ -42,6 +42,11 @@ const FaucetPage = () =>
 const PortfolioPage = () =>
   import(/* webpackChunkName: "PortfolioPage" */ '@/pages/portfolio.vue');
 
+const SunrisesPage = () =>
+  import(/* webpackChunkName: "SunrisePage" */ '@/pages/sunrise/sunrise.vue');
+const SunrisePage = () =>
+  import(/* webpackChunkName: "SunrisePage" */ '@/pages/sunrise/_id.vue');
+
 declare module 'vue-router' {
   interface RouteMeta {
     layout?: string;
@@ -85,6 +90,16 @@ const routes: RouteRecordRaw[] = [
     name: 'invest',
     component: PoolInvestPage,
     meta: { layout: 'PoolTransferLayout' },
+  },
+  {
+    path: '/sunrise',
+    name: 'sunrises',
+    component: SunrisesPage,
+  },
+  {
+    path: '/sunrise/:id',
+    name: 'sunrise',
+    component: SunrisePage,
   },
   {
     path: '/pool/:id/withdraw',
