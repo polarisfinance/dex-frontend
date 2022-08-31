@@ -7,7 +7,6 @@ import orbitalImg from './orbital.svg';
 import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
-import tripolarImg from './tripolar.svg';
 
 const logo = {
   polar: polarImg,
@@ -87,7 +86,7 @@ onMounted(() => {});
   background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  padding: 24px 52px;
+  padding: 24px 0px;
   flex: 1 1 30%;
   max-width: 30%;
   text-align: center;
@@ -127,7 +126,7 @@ onMounted(() => {});
 .sunrise-name {
   font-style: normal;
   font-weight: 600;
-  font-size: 40px;
+  font-size: 30px;
   line-height: 51px;
 
   color: #ffffff;

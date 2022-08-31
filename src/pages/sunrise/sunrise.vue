@@ -87,7 +87,7 @@ onMounted(() => {});
   background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  padding: 24px 52px;
+  padding: 24px 0px;
   flex: 1 1 30%;
   max-width: 30%;
   text-align: center;
