@@ -21,11 +21,11 @@ import useWeb3 from '@/services/web3/useWeb3';
  */
 type Props = {
   loadingPool: boolean;
-  loadingApr: boolean;
+  // loadingApr: boolean;
   noInitLiquidity: boolean;
   isStableLikePool: boolean;
   pool: Pool;
-  poolApr: PoolAPRs;
+  // poolApr: PoolAPRs;
   titleTokens: [string, OnchainTokenData][];
   missingPrices: boolean;
   isLiquidityBootstrappingPool: boolean;
@@ -34,10 +34,10 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   loadingPool: true,
-  loadingApr: true,
+  // loadingApr: false,
   noInitLiquidity: false,
 });
-
+console.log(props.loadingPool);
 /**
  * COMPOSABLES
  */
@@ -158,12 +158,12 @@ const poolTypeLabel = computed(() => {
           </span>
         </div>
         <BalChipNew v-if="pool?.isNew" class="mt-2 mr-2" />
-        <APRTooltip
+        <!-- <APRTooltip
           v-if="!loadingApr"
           :pool="pool"
           :poolApr="poolApr"
           class="mt-1 -ml-1"
-        />
+        /> -->
         <BalLink
           :href="explorer.addressLink(pool?.address || '')"
           external

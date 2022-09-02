@@ -2,19 +2,18 @@
   <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
     <div
       class="grid grid-cols-1 lg:grid-cols-3 gap-x-0 lg:gap-x-4 xl:gap-x-8 gap-y-8"
-    >
-      <PoolPageHeader
+    > 
+    <!-- this shit doesnt work for some reason :( -->
+      <!-- <PoolPageHeader
         :loadingPool="loadingPool"
-        :loadingApr="loadingApr"
         :pool="pool"
-        :poolApr="poolApr"
         :isStableLikePool="isStableLikePool"
         :noInitLiquidity="noInitLiquidity"
         :titleTokens="titleTokens"
         :missingPrices="missingPrices"
         :isLiquidityBootstrappingPool="isLiquidityBootstrappingPool"
         :isStablePhantomPool="isLiquidityBootstrappingPool"
-      />
+      /> -->
       <div class="hidden lg:block" />
       <div class="order-2 lg:order-1 col-span-2">
         <div class="grid grid-cols-1 gap-y-8">
@@ -30,12 +29,12 @@
             />
           </div>
           <div class="px-4 lg:px-0 mb-4">
-            <PoolStatCards
+            <!-- <PoolStatCards
               :pool="pool"
               :poolApr="poolApr"
               :loading="loadingPool"
-              :loadingApr="loadingApr"
-            />
+              :loadingApr="loadingPool"
+            /> -->
             <ApyVisionPoolLink
               v-if="!loadingPool"
               :poolId="pool?.id"
@@ -60,7 +59,7 @@
         v-if="!isLiquidityBootstrappingPool"
         class="order-1 lg:order-2 px-4 lg:px-0"
       >
-        <StakingProvider :poolAddress="getAddressFromPoolId(id)">
+        <!-- <StakingProvider :poolAddress="getAddressFromPoolId(id)">
           <BalStack vertical>
             <BalLoadingBlock
               v-if="loadingPool"
@@ -83,7 +82,7 @@
               class="staking-incentives"
             />
           </BalStack>
-        </StakingProvider>
+        </StakingProvider> -->
       </div>
     </div>
   </div>
@@ -107,7 +106,7 @@ import * as PoolPageComponents from '@/components/contextual/pages/pool';
 import StakingIncentivesCard from '@/components/contextual/pages/pool/StakingIncentivesCard/StakingIncentivesCard.vue';
 import ApyVisionPoolLink from '@/components/links/ApyVisionPoolLink.vue';
 import PoolPageHeader from '@/components/pool/PoolPageHeader.vue';
-import usePoolAprQuery from '@/composables/queries/usePoolAprQuery';
+// import usePoolAprQuery from '@/composables/queries/usePoolAprQuery';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import usePoolSnapshotsQuery from '@/composables/queries/usePoolSnapshotsQuery';
 import useAlerts, { AlertPriority, AlertType } from '@/composables/useAlerts';
@@ -117,7 +116,7 @@ import { usePoolWarning } from '@/composables/usePoolWarning';
 import useTokens from '@/composables/useTokens';
 import { POOLS } from '@/constants/pools';
 import { getAddressFromPoolId, includesAddress } from '@/lib/utils';
-import StakingProvider from '@/providers/local/staking/staking.provider';
+// import StakingProvider from '@/providers/local/staking/staking.provider';
 import useWeb3 from '@/services/web3/useWeb3';
 
 interface PoolPageData {
@@ -128,7 +127,7 @@ export default defineComponent({
   components: {
     ...PoolPageComponents,
     StakingIncentivesCard,
-    StakingProvider,
+    // StakingProvider,
     ApyVisionPoolLink,
     PoolPageHeader,
   },
@@ -188,14 +187,14 @@ export default defineComponent({
     //#endregion
 
     //#region APR query
-    const aprQuery = usePoolAprQuery(route.params.id as string);
-    const loadingApr = computed(
-      () =>
-        aprQuery.isLoading.value ||
-        aprQuery.isIdle.value ||
-        Boolean(aprQuery.error.value)
-    );
-    const poolApr = computed(() => aprQuery.data.value);
+    // const aprQuery = usePoolAprQuery(route.params.id as string);
+    // const loadingApr = computed(
+    //   () =>
+    //     aprQuery.isLoading.value ||
+    //     aprQuery.isIdle.value ||
+    //     Boolean(aprQuery.error.value)
+    // );
+    // const poolApr = computed(() => aprQuery.data.value);
     //#endregion
 
     //#region Intersection Observer
@@ -311,8 +310,8 @@ export default defineComponent({
       titleTokens,
       // methods
       getAddressFromPoolId,
-      poolApr,
-      loadingApr,
+      // poolApr,
+      // loadingApr,
     };
   },
 });

@@ -34,11 +34,12 @@ export default function usePoolQuery(
   const { appLoading } = useApp();
   const { account } = useWeb3();
   const { currency } = useUserSettings();
-  const { data: subgraphGauges } = useGaugesQuery();
+  // const { data: subgraphGauges } = useGaugesQuery();
   const { tokens } = useTokens();
-  const gaugeAddresses = computed(() =>
-    (subgraphGauges.value || []).map(gauge => gauge.id)
-  );
+  // const gaugeAddresses = computed(() =>
+  //   (subgraphGauges.value || []).map(gauge => gauge.id)
+  // );
+  const gaugeAddresses = computed(() => []);
 
   /**
    * COMPUTED
