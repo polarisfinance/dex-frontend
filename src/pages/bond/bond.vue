@@ -18,7 +18,7 @@ const logo = {
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
-import { sunriseDefinitions } from './config.js';
+import { sunriseDefinitions } from '../../config';
 
 const sunrises = computed(() =>
   Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired)
