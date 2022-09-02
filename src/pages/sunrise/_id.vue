@@ -84,6 +84,9 @@ import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
 
+import PF from '../../services/polaris-finance';
+import cfg from '../../config';
+
 interface PoolPageData {
   id: string;
 }
@@ -94,6 +97,8 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
+
+    const polarisFinance = new PF(cfg);
 
     const logo = {
       polar: polarImg,

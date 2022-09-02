@@ -137,5 +137,9 @@
     "*.{css,vue}": "stylelint --fix"
   },
   "license": "MIT",
-  "repository": "balancer-labs/frontend-v2"
+  "repository": "balancer-labs/frontend-v2",
+  "dependencies": {
+    "@trisolaris/sdk": "^1.9.0",
+    "moment": "^2.29.4"
+  }
 }
