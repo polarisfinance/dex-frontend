@@ -12,6 +12,9 @@ import { bnum } from '@/lib/utils';
 import { PoolActivity, PoolActivityType } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 
+import plus from './plus.svg';
+import minus from './minus.svg';
+
 /**
  * TYPES
  */
@@ -42,6 +45,8 @@ type Props = {
   isPaginated?: boolean;
   noResultsLabel?: string;
 };
+
+const { isMobile, isDesktop } = useBreakpoints();
 
 /**
  * PROPS & EMITS
@@ -161,16 +166,30 @@ function getJoinExitDetails(amounts: PoolActivity['amounts']) {
     };
   });
 }
+
+// var len = Math.min(5, activityRows.value.length);
+var len = 0;
+function load_more() {
+  if (len + 5 >= activityRows.value.length) {
+    len = activityRows.value.length;
+  } else {
+    len += 5;
+  }
+}
+
+const getRows = computed<ActivityRow[]>(() => {
+  return activityRows.value.slice(0, len);
+});
 </script>
 
 <template>
-  <BalCard
-    class="overflow-x-auto"
+  <div
+    class="overflow-x-auto table-container"
     :square="upToLargeBreakpoint"
     :noBorder="upToLargeBreakpoint"
     noPad
   >
-    <BalTable
+    <!-- <BalTable
       :columns="columns"
       :data="activityRows"
       :isLoading="isLoading"
@@ -184,8 +203,8 @@ function getJoinExitDetails(amounts: PoolActivity['amounts']) {
         sortDirection: 'desc',
       }"
       @load-more="emit('loadMore')"
-    >
-      <template #actionCell="action">
+    > -->
+    <!-- <template #actionCell="action">
         <div class="py-2 px-6">
           <div class="flex items-center">
             <div class="flex mr-3 center">
@@ -245,6 +264,109 @@ function getJoinExitDetails(amounts: PoolActivity['amounts']) {
           </div>
         </div>
       </template>
-    </BalTable>
-  </BalCard>
+    </BalTable> -->
+    <div class="flex items-center justify-between">
+      <div>Action</div>
+      <div class="flex items-center gap-[40px] w-full justify-center">
+        <div>Value</div>
+        <div>Tokens</div>
+      </div>
+      <div>Time</div>
+    </div>
+    <div class="border my-[24px]" />
+    <div v-for="(action, index) in activityRows" :key="index">
+      <a :href="explorerLinks.txLink(action.tx)" target="_blank">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <img :src="plus" v-if="action.label == 'Invest'" />
+            <img :src="minus" v-else />
+            <div class="ml-[12px]">
+              {{ action.label }}
+            </div>
+          </div>
+          <div
+            class="flex gap-[40px] width-[50px] items-center w-full justify-center"
+          >
+            <div class="value-text w-[50px] text-right">
+              {{ action.formattedValue }}
+            </div>
+            <div class="flex items-center w-[50px] gap-[12px]">
+              <div v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
+                <div
+                  v-if="tokenAmount.amount !== '0'"
+                  class="token-card text-center"
+                >
+                  <BalAsset
+                    :size="16"
+                    :address="tokenAmount.address"
+                    class="flex-shrink-0"
+                  />
+                  <div class="font-numeric">{{ tokenAmount.amount }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="value-text" v-if="isDesktop">
+            {{ action.formattedDate }}
+          </div>
+        </div>
+        <div class="flex justify-end value-text mt-[8px]" v-if="isMobile">
+          {{ action.formattedDate }}
+        </div>
+      </a>
+    </div>
+    <!-- <div class="w-full flex justify-center">
+      <button class="load-more">
+        <div class="flex items-center">
+          <div>Load more</div>
+          <img src="./load-more.svg" />
+        </div>
+      </button>
+    </div> -->
+  </div>
 </template>
+
+<style>
+.table-container {
+  background: #231928;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #fdfdfd;
+  padding-bottom: 0;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+
+.value-text {
+  color: rgba(245, 225, 255, 0.7);
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.token-card {
+  display: flex;
+  align-items: center;
+  background: #2e2433;
+  border-radius: 10px;
+  padding: 2px 4px;
+  gap: 8px;
+}
+
+.load-more {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #be95c0;
+  background: #231928;
+}
+</style>

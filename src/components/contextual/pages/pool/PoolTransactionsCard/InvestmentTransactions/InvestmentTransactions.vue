@@ -67,12 +67,10 @@ const activeTab = ref(tabs.value[0].value);
   <div>
     <div>
       <h4
-        class="px-4 lg:px-0 mb-5"
+        class="px-4 lg:px-0 mb-[12px] table-title"
         v-text="$t('poolTransactions.tabs.allInvestments')"
       />
-      <div
-        class="flex justify-between items-end mx-4 lg:mx-0 mb-6 border-b dark:border-gray-900"
-      >
+      <div class="flex justify-between items-end mx-4 lg:mx-0 mb-[14px]">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="-mb-px" />
       </div>
     </div>
@@ -109,3 +107,13 @@ const activeTab = ref(tabs.value[0].value);
     </template>
   </div>
 </template>
+
+<style>
+.table-title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+</style>

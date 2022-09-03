@@ -10,7 +10,7 @@ const configurations: { [env: string]: Configuration } = {
     ftmscanUrl: 'https://aurorascan.dev/',
     defaultProvider: 'https://rpc.polarisfinance.io/',
     defaultWssProvider: 'https://rpc.polarisfinance.io/',
-    deployments: require('./polaris-finance/deployments/deployments.mainnet.json'),
+    deployments: require('./services/polaris-finance/deployments/deployments.mainnet.json'),
     externalTokens: {
       NEAR: ['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', 24],
       USDC: ['0xB12BFcA5A55806AaF64E99521918A4bf0fC40802', 6], // This is actually usdc on mainnet not fusdt

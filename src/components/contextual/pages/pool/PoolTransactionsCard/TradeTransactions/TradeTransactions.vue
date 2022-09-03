@@ -62,7 +62,10 @@ function loadMorePoolSwaps() {
 
 <template>
   <div>
-    <h4 class="px-4 lg:px-0 mb-5" v-text="$t('poolTransactions.tabs.trades')" />
+    <h4
+      class="px-4 lg:px-0 mb-[12px] title"
+      v-text="$t('poolTransactions.tabs.trades')"
+    />
 
     <Table
       :tokens="pool ? pool.tokensList : []"
@@ -75,3 +78,13 @@ function loadMorePoolSwaps() {
     />
   </div>
 </template>
+
+<style>
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+</style>

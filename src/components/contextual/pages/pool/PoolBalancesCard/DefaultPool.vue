@@ -1,5 +1,5 @@
 <template>
-  <BalCard
+  <!-- <BalCard
     class="overflow-x-auto whitespace-nowrap"
     :square="upToLargeBreakpoint"
     :noBorder="upToLargeBreakpoint"
@@ -17,7 +17,7 @@
       }"
     >
       <template #tokenColumnCell="token">
-        <div class="flex flex-row py-4 px-6">
+        <div class="flex flex-row py-4 px-6 bg-[#231928]">
           <BalLink
             :href="explorer.addressLink(token.address)"
             external
@@ -41,22 +41,57 @@
         </div>
       </template>
       <template #tokenWeightCell="token">
-        <div class="py-4 px-6 text-right font-numeric">
+        <div class="py-4 px-6 text-right font-numeric bg-[#231928]">
           {{ weightFor(token.address) }}
         </div>
       </template>
       <template #tokenBalanceCell="token">
-        <div class="py-4 px-6 text-right font-numeric">
+        <div class="py-4 px-6 text-right font-numeric bg-[#231928]">
           {{ balanceFor(token.address) }}
         </div>
       </template>
       <template #tokenValueCell="token">
-        <div class="py-4 px-6 text-right font-numeric">
+        <div class="py-4 px-6 text-right font-numeric bg-[#231928]">
           {{ fiatValueFor(token.address) }}
         </div>
       </template>
     </BalTable>
-  </BalCard>
+  </BalCard> -->
+  <div class="table-container">
+    <div class="flex w-full justify-between">
+      <div>Token</div>
+      <div :class="{ gapMobile: isMobile, gapDesktop: isDesktop }">
+        <div>Weight</div>
+        <div>Balance</div>
+        <div>Value</div>
+      </div>
+    </div>
+    <div class="border mt-[24px]" />
+    <div v-for="(token, index) in tableData" :key="index">
+      <a :href="explorer.addressLink(token.address)">
+        <div class="flex items-center justify-between mt-[24px]">
+          <div class="flex items-center">
+            <BalAsset :address="token.address" :size="33" />
+            <div class="ml-[13.5px] token-name">
+              {{ symbolFor(token.address) }}
+            </div>
+            <img :src="arrow" class="ml-[12px]" />
+          </div>
+          <div :class="{ gapMobile: isMobile, gapDesktop: isDesktop }">
+            <div class="token-detail w-[45px] text-center">
+              {{ weightFor(token.address) }}
+            </div>
+            <div class="token-detail w-[45px] text-center">
+              {{ balanceFor(token.address) }}
+            </div>
+            <div class="token-detail w-[45px] text-center">
+              {{ fiatValueFor(token.address) }}
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -71,6 +106,8 @@ import useTokens from '@/composables/useTokens';
 import { shortenLabel } from '@/lib/utils';
 import { Pool } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
+
+import arrow from './table-arrow.svg';
 
 export default defineComponent({
   props: {
@@ -95,6 +132,8 @@ export default defineComponent({
     const { upToLargeBreakpoint } = useBreakpoints();
     const { priceFor } = useTokens();
     const { isStableLikePool } = usePool(pool);
+
+    const { isMobile, isDesktop } = useBreakpoints();
 
     /**
      * COMPUTED
@@ -185,7 +224,56 @@ export default defineComponent({
       columns,
       tableData,
       upToLargeBreakpoint,
+      arrow,
+      isMobile,
+      isDesktop,
     };
   },
 });
 </script>
+
+<style>
+.table-container {
+  background: #231928;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+
+  padding: 24px !important;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+
+.token-name {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #fdfdfd;
+}
+
+.token-detail {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.gapMobile {
+  display: flex;
+  gap: 50px;
+}
+
+.gapDesktop {
+  display: flex;
+  gap: 70px;
+}
+</style>
