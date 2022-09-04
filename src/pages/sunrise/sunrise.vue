@@ -8,6 +8,7 @@ import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
+import { sunriseDefinitions }  from './config';
 
 const logo = {
   polar: polarImg,
@@ -19,7 +20,7 @@ const logo = {
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
-import { sunriseDefinitions } from '../../config';
+
 
 const sunrises = computed(() =>
   Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired)

@@ -1,5 +1,5 @@
 import Web3 from 'web3';
-import { defaultEthereumConfig, EthereumConfig } from './config';
+import { defaultEthereumConfig, EthereumConfig } from './configTypes';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { BigNumber } from 'ethers';
 

@@ -44,7 +44,9 @@
         <div>SPOLARS Staked</div>
       </div>
       <div class="data-text">
-        <div>05:51:38</div>
+        <div>
+          <!-- {{ time }} -->
+        </div>
         <div>134</div>
         <div>0.6034</div>
         <div>0.6030</div>
@@ -74,8 +76,9 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
-import { sunriseDefinitions } from './config.js';
+import { sunriseDefinitions } from './config';
 import useBreakpoints from '@/composables/useBreakpoints';
+import usePolarisFinance from '@/composables/usePolarisFinance';
 
 import polarImg from './polar.svg';
 import orbitalImg from './orbital.svg';
@@ -83,9 +86,6 @@ import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
-
-import PF from '../../services/polaris-finance';
-import cfg from '../../config';
 
 interface PoolPageData {
   id: string;
@@ -97,8 +97,6 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
-
-    const polarisFinance = new PF(cfg);
 
     const logo = {
       polar: polarImg,
@@ -119,6 +117,12 @@ export default defineComponent({
       return undefined;
     });
 
+    const PolarisFinance = usePolarisFinance().pf;
+    // doesnt work as it can be undefined
+    // const time = usePolarisFinance().pf.value.getTreasuryNextAllocationTime(
+    //   sunrise.value
+    // );
+
     return {
       // data
       ...toRefs(data),
@@ -128,8 +132,14 @@ export default defineComponent({
 
       // computed
       sunrise,
+      PolarisFinance,
+      // time,
     };
   },
+  // async mounted() {
+  //   const PolarisFinance = usePolarisFinance();
+  //   return { PolarisFinance };
+  // },
 });
 </script>
 

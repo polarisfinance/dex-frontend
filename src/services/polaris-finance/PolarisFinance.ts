@@ -1,6 +1,6 @@
 // import { Fetcher, Route, Token } from '@uniswap/sdk';
-import { Fetcher, Route, Token } from '@trisolaris/sdk';
-import { Configuration } from './config';
+// import { Fetcher, Route, Token } from '@trisolaris/sdk';
+import { Configuration } from './configTypes';
 import {
   ContractName,
   TokenStat,
@@ -20,9 +20,9 @@ import {
   getFullDisplayBalance,
   getDisplayBalance,
 } from '../utils/formatBalance';
-import { getDefaultProvider } from '../utils/provider';
+import useWeb3 from '../web3/useWeb3';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
-import config, { bankDefinitions, sunriseDefinitions } from '../../config';
+import config, { bankDefinitions, sunriseDefinitions } from './config';
 import moment from 'moment';
 import { parseUnits } from 'ethers/lib/utils';
 import {
@@ -43,14 +43,12 @@ function numberWithSpaces(x: Number) {
 
 export class PolarisFinance {
   myAccount: string;
-  provider: ethers.providers.Web3Provider;
+  provider: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider;
   signer?: ethers.Signer;
   config: Configuration;
   contracts: { [name: string]: Contract };
   externalTokens: { [name: string]: ERC20 };
   externalTokensMetamask: { [name: string]: ERC20 };
-
-  contract: Deployments;
 
   POLARWFTM_LP: Contract;
   POLAR_METAMASK: ERC20;
@@ -91,9 +89,23 @@ export class PolarisFinance {
   BBOND: ERC20;
   BBOND_METAMASK: ERC20;
 
-  constructor(cfg: Configuration) {
+  constructor(web3: ReturnType<typeof useWeb3>) {
+    console.log('PolarisFinance constructor');
+    const cfg: Configuration = config;
+    console.log(cfg);
+    console.log(web3);
+    this.myAccount = web3.account.value;
+
     const { externalTokens } = cfg;
-    const provider = getDefaultProvider();
+    if (web3.isWalletReady.value) {
+      console.log('wallet ready');
+    }
+    console.log(web3.chainId.value);
+    const provider = new ethers.providers.JsonRpcBatchProvider(
+      'https://rpc.polarisfinance.io/',
+      web3.chainId.value
+    );
+    console.log(provider);
 
     // loads contracts from deployments
     const context = require.context('./deployments', true, /.json$/);
@@ -113,20 +125,7 @@ export class PolarisFinance {
         );
       }
     });
-    /* //old type of contracts
-    this.contracts = {};
-    for (const [name, deployment] of Object.entries(deployments)) {
-      this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
-    }*/
-    //test
-    /*var result = {};
-    var keys = Object.keys(this.all);
-    for (var key in this.contracts) {
-      if (!keys.includes(key)) {
-        result[key] = this.contracts[key];
-      }
-    }
-    console.log(result);*/
+
     this.externalTokens = {};
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
       this.externalTokens[symbol] = new ERC20(
@@ -217,6 +216,36 @@ export class PolarisFinance {
 
     this.config = cfg;
     this.provider = provider;
+
+    this.signer = web3.getSigner();
+    console.log(this.signer);
+
+    for (const [name, contract] of Object.entries(this.contracts)) {
+      this.contracts[name + 'metamask'] = contract.connect(this.signer);
+    }
+
+    const tokens = [
+      this.POLAR_METAMASK,
+      this.SPOLAR_METAMASK,
+      this.PBOND_METAMASK,
+      this.LUNAR_METAMASK,
+      this.LBOND_METAMASK,
+      this.TRIPOLAR_METAMASK,
+      this.TRIBOND_METAMASK,
+      this.ETHERNAL_METAMASK,
+      this.EBOND_METAMASK,
+      this.ORBITAL_METAMASK,
+      this.OBOND_METAMASK,
+      this.USP_METAMASK,
+      this.USPBOND_METAMASK,
+      this.BINARIS_METAMASK,
+      this.BBOND_METAMASK,
+      ...Object.values(this.externalTokensMetamask),
+    ];
+
+    for (const token of tokens) {
+      token.connect(this.signer);
+    }
   }
 
   /**
@@ -332,318 +361,326 @@ export class PolarisFinance {
     return true;
   }
 
-  async getTokenPrice(
-    tokenContract1: ERC20,
-    tokenContract2: ERC20
-  ): Promise<string> {
-    const { chainId } = this.config;
+  // async getTokenPrice(
+  //   tokenContract1: ERC20,
+  //   tokenContract2: ERC20
+  // ): Promise<string> {
+  //   const { chainId } = this.config;
 
-    const token1 = new Token(
-      chainId,
-      tokenContract1.address,
-      tokenContract1.decimal,
-      tokenContract1.symbol
-    );
-    const token2 = new Token(
-      chainId,
-      tokenContract2.address,
-      tokenContract2.decimal,
-      tokenContract2.symbol
-    );
+  //   const token1 = new Token(
+  //     chainId,
+  //     tokenContract1.address,
+  //     tokenContract1.decimal,
+  //     tokenContract1.symbol
+  //   );
+  //   const token2 = new Token(
+  //     chainId,
+  //     tokenContract2.address,
+  //     tokenContract2.decimal,
+  //     tokenContract2.symbol
+  //   );
 
-    try {
-      const token1ToToken2 = await Fetcher.fetchPairData(
-        token1,
-        token2,
-        this.provider
-      );
-      const priceInToken2 = new Route([token1ToToken2], token1);
-      return priceInToken2.midPrice.toFixed(4);
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract1.symbol} in ${tokenContract2.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     const token1ToToken2 = await Fetcher.fetchPairData(
+  //       token1,
+  //       token2,
+  //       this.provider
+  //     );
+  //     const priceInToken2 = new Route([token1ToToken2], token1);
+  //     return priceInToken2.midPrice.toFixed(4);
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract1.symbol} in ${tokenContract2.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceFromPancakeswap(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { NEAR } = this.config.externalTokens;
+  // async getTokenPriceFromPancakeswap(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { NEAR } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, NEAR[0], NEAR[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, NEAR[0], NEAR[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      if (tokenContract.symbol === 'PBOND') {
-        const { Treasury } = this.contracts;
-        const [tombStat, bondTombRatioBN] = await Promise.all([
-          this.getStat('POLAR'),
-          Treasury.gepbondPremiumRate(),
-        ]);
-        const modifier =
-          bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
-        const priceOfTBondInDollars = (
-          (Number(tombStat.priceInDollars) * modifier) /
-          10
-        ).toFixed(2);
-        return priceOfTBondInDollars;
-      } else {
-        const wftmToToken = await Fetcher.fetchPairData(
-          wftm,
-          token,
-          this.provider
-        );
-        const priceInBUSD = new Route([wftmToToken], token);
-        return priceInBUSD.midPrice.toFixed(4);
-      }
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     if (tokenContract.symbol === 'PBOND') {
+  //       const { Treasury } = this.contracts;
+  //       const [tombStat, bondTombRatioBN] = await Promise.all([
+  //         this.getStat('POLAR'),
+  //         Treasury.gepbondPremiumRate(),
+  //       ]);
+  //       const modifier =
+  //         bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
+  //       const priceOfTBondInDollars = (
+  //         (Number(tombStat.priceInDollars) * modifier) /
+  //         10
+  //       ).toFixed(2);
+  //       return priceOfTBondInDollars;
+  //     } else {
+  //       const wftmToToken = await Fetcher.fetchPairData(
+  //         wftm,
+  //         token,
+  //         this.provider
+  //       );
+  //       const priceInBUSD = new Route([wftmToToken], token);
+  //       return priceInBUSD.midPrice.toFixed(4);
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceLunar(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { LUNA } = this.config.externalTokens;
+  // async getTokenPriceLunar(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { LUNA } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, LUNA[0], LUNA[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, LUNA[0], LUNA[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      if (tokenContract.symbol === 'LBOND') {
-        const { lunarTreasury } = this.contracts;
-        const [lunarStat, bondLunarRatioBN] = await Promise.all([
-          this.getStat('LUNAR'),
-          lunarTreasury.gepbondPremiumRate(),
-        ]);
-        const modifier =
-          bondLunarRatioBN / 1e18 > 1 ? bondLunarRatioBN / 1e18 : 1;
-        const priceOfLBondInDollars = (
-          (Number(lunarStat.priceInDollars) * modifier) /
-          10
-        ).toFixed(2);
-        return priceOfLBondInDollars;
-      } else {
-        const wftmToToken = await Fetcher.fetchPairData(
-          wftm,
-          token,
-          this.provider
-        );
-        const priceInBUSD = new Route([wftmToToken], token);
-        return priceInBUSD.midPrice.toFixed(4);
-      }
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     if (tokenContract.symbol === 'LBOND') {
+  //       const { lunarTreasury } = this.contracts;
+  //       const [lunarStat, bondLunarRatioBN] = await Promise.all([
+  //         this.getStat('LUNAR'),
+  //         lunarTreasury.gepbondPremiumRate(),
+  //       ]);
+  //       const modifier =
+  //         bondLunarRatioBN / 1e18 > 1 ? bondLunarRatioBN / 1e18 : 1;
+  //       const priceOfLBondInDollars = (
+  //         (Number(lunarStat.priceInDollars) * modifier) /
+  //         10
+  //       ).toFixed(2);
+  //       return priceOfLBondInDollars;
+  //     } else {
+  //       const wftmToToken = await Fetcher.fetchPairData(
+  //         wftm,
+  //         token,
+  //         this.provider
+  //       );
+  //       const priceInBUSD = new Route([wftmToToken], token);
+  //       return priceInBUSD.midPrice.toFixed(4);
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceTripolar(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { TRI } = this.config.externalTokens;
+  // async getTokenPriceTripolar(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { TRI } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, TRI[0], TRI[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, TRI[0], TRI[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      if (tokenContract.symbol === 'TRIBOND') {
-        const { tripolarTreasury } = this.contracts;
-        const [tripolarStat, bondTripolarRatioBN] = await Promise.all([
-          this.getStat('TRIPOLAR'),
-          tripolarTreasury.getBondPremiumRate(),
-        ]);
-        const modifier =
-          bondTripolarRatioBN / 1e18 > 1 ? bondTripolarRatioBN / 1e18 : 1;
-        const priceOfTriBondInDollars = (
-          (Number(tripolarStat.priceInDollars) * modifier) /
-          10
-        ).toFixed(2);
-        return priceOfTriBondInDollars;
-      } else {
-        const wftmToToken = await Fetcher.fetchPairData(
-          wftm,
-          token,
-          this.provider
-        );
-        const priceInBUSD = new Route([wftmToToken], token);
-        return priceInBUSD.midPrice.toFixed(4);
-      }
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     if (tokenContract.symbol === 'TRIBOND') {
+  //       const { tripolarTreasury } = this.contracts;
+  //       const [tripolarStat, bondTripolarRatioBN] = await Promise.all([
+  //         this.getStat('TRIPOLAR'),
+  //         tripolarTreasury.getBondPremiumRate(),
+  //       ]);
+  //       const modifier =
+  //         bondTripolarRatioBN / 1e18 > 1 ? bondTripolarRatioBN / 1e18 : 1;
+  //       const priceOfTriBondInDollars = (
+  //         (Number(tripolarStat.priceInDollars) * modifier) /
+  //         10
+  //       ).toFixed(2);
+  //       return priceOfTriBondInDollars;
+  //     } else {
+  //       const wftmToToken = await Fetcher.fetchPairData(
+  //         wftm,
+  //         token,
+  //         this.provider
+  //       );
+  //       const priceInBUSD = new Route([wftmToToken], token);
+  //       return priceInBUSD.midPrice.toFixed(4);
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceEthernal(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { WETH } = this.config.externalTokens;
+  // async getTokenPriceEthernal(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { WETH } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, WETH[0], WETH[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, WETH[0], WETH[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      if (tokenContract.symbol === 'EBOND') {
-        const { ethernalTreasury } = this.contracts;
-        const [tripolarStat, bondTripolarRatioBN] = await Promise.all([
-          this.getStat('EBOND'),
-          ethernalTreasury.getBondPremiumRate(),
-        ]);
-        const modifier =
-          bondTripolarRatioBN / 1e18 > 1 ? bondTripolarRatioBN / 1e18 : 1;
-        const priceOfTriBondInDollars = (
-          (Number(tripolarStat.priceInDollars) * modifier) /
-          10
-        ).toFixed(2);
-        return priceOfTriBondInDollars;
-      } else {
-        const wftmToToken = await Fetcher.fetchPairData(
-          wftm,
-          token,
-          this.provider
-        );
-        const priceInBUSD = new Route([wftmToToken], token);
-        return priceInBUSD.midPrice.toFixed(4);
-      }
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     if (tokenContract.symbol === 'EBOND') {
+  //       const { ethernalTreasury } = this.contracts;
+  //       const [tripolarStat, bondTripolarRatioBN] = await Promise.all([
+  //         this.getStat('EBOND'),
+  //         ethernalTreasury.getBondPremiumRate(),
+  //       ]);
+  //       const modifier =
+  //         bondTripolarRatioBN / 1e18 > 1 ? bondTripolarRatioBN / 1e18 : 1;
+  //       const priceOfTriBondInDollars = (
+  //         (Number(tripolarStat.priceInDollars) * modifier) /
+  //         10
+  //       ).toFixed(2);
+  //       return priceOfTriBondInDollars;
+  //     } else {
+  //       const wftmToToken = await Fetcher.fetchPairData(
+  //         wftm,
+  //         token,
+  //         this.provider
+  //       );
+  //       const priceInBUSD = new Route([wftmToToken], token);
+  //       return priceInBUSD.midPrice.toFixed(4);
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceOrbital(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { WBTC } = this.config.externalTokens;
+  // async getTokenPriceOrbital(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { WBTC } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, WBTC[0], WBTC[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, WBTC[0], WBTC[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      if (tokenContract.symbol === 'OBOND') {
-        const { orbitalTreasury } = this.contracts;
-        const [tombStat, bondTombRatioBN] = await Promise.all([
-          this.getStat('ORBITAL'),
-          orbitalTreasury.getBondPremiumRate(),
-        ]);
-        const modifier =
-          bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
-        const priceOfTBondInDollars = (
-          (Number(tombStat.priceInDollars) * modifier) /
-          10
-        ).toFixed(2);
-        return priceOfTBondInDollars;
-      } else {
-        const wftmToToken = await Fetcher.fetchPairData(
-          wftm,
-          token,
-          this.provider
-        );
-        const priceInBUSD = new Route([wftmToToken], token);
-        return priceInBUSD.midPrice.toFixed(4);
-      }
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     if (tokenContract.symbol === 'OBOND') {
+  //       const { orbitalTreasury } = this.contracts;
+  //       const [tombStat, bondTombRatioBN] = await Promise.all([
+  //         this.getStat('ORBITAL'),
+  //         orbitalTreasury.getBondPremiumRate(),
+  //       ]);
+  //       const modifier =
+  //         bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
+  //       const priceOfTBondInDollars = (
+  //         (Number(tombStat.priceInDollars) * modifier) /
+  //         10
+  //       ).toFixed(2);
+  //       return priceOfTBondInDollars;
+  //     } else {
+  //       const wftmToToken = await Fetcher.fetchPairData(
+  //         wftm,
+  //         token,
+  //         this.provider
+  //       );
+  //       const priceInBUSD = new Route([wftmToToken], token);
+  //       return priceInBUSD.midPrice.toFixed(4);
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceUsp(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { USDC } = this.config.externalTokens;
+  // async getTokenPriceUsp(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { USDC } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, USDC[0], USDC[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, USDC[0], USDC[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      if (tokenContract.symbol === 'USPBOND') {
-        const { orbitalTreasury } = this.contracts;
-        const [tombStat, bondTombRatioBN] = await Promise.all([
-          this.getStat('USP'),
-          orbitalTreasury.getBondPremiumRate(),
-        ]);
-        const modifier =
-          bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
-        const priceOfTBondInDollars = (
-          (Number(tombStat.priceInDollars) * modifier) /
-          10
-        ).toFixed(2);
-        return priceOfTBondInDollars;
-      } else {
-        const wftmToToken = await Fetcher.fetchPairData(
-          wftm,
-          token,
-          this.provider
-        );
-        const priceInBUSD = new Route([wftmToToken], token);
-        return priceInBUSD.midPrice.toFixed(4);
-      }
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     if (tokenContract.symbol === 'USPBOND') {
+  //       const { orbitalTreasury } = this.contracts;
+  //       const [tombStat, bondTombRatioBN] = await Promise.all([
+  //         this.getStat('USP'),
+  //         orbitalTreasury.getBondPremiumRate(),
+  //       ]);
+  //       const modifier =
+  //         bondTombRatioBN / 1e18 > 1 ? bondTombRatioBN / 1e18 : 1;
+  //       const priceOfTBondInDollars = (
+  //         (Number(tombStat.priceInDollars) * modifier) /
+  //         10
+  //       ).toFixed(2);
+  //       return priceOfTBondInDollars;
+  //     } else {
+  //       const wftmToToken = await Fetcher.fetchPairData(
+  //         wftm,
+  //         token,
+  //         this.provider
+  //       );
+  //       const priceInBUSD = new Route([wftmToToken], token);
+  //       return priceInBUSD.midPrice.toFixed(4);
+  //     }
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
-  async getTokenPriceBinaris(tokenContract: ERC20): Promise<string> {
-    const { chainId } = this.config;
-    const { BNB } = this.config.externalTokens;
+  // async getTokenPriceBinaris(tokenContract: ERC20): Promise<string> {
+  //   const { chainId } = this.config;
+  //   const { BNB } = this.config.externalTokens;
 
-    const wftm = new Token(chainId, BNB[0], BNB[1]);
-    const token = new Token(
-      chainId,
-      tokenContract.address,
-      tokenContract.decimal,
-      tokenContract.symbol
-    );
+  //   const wftm = new Token(chainId, BNB[0], BNB[1]);
+  //   const token = new Token(
+  //     chainId,
+  //     tokenContract.address,
+  //     tokenContract.decimal,
+  //     tokenContract.symbol
+  //   );
 
-    try {
-      const wftmToToken = await Fetcher.fetchPairData(
-        wftm,
-        token,
-        this.provider
-      );
-      const priceInBUSD = new Route([wftmToToken], token);
-      return priceInBUSD.midPrice.toFixed(4);
-    } catch (err) {
-      console.error(
-        `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
-      );
-    }
-  }
+  //   try {
+  //     const wftmToToken = await Fetcher.fetchPairData(
+  //       wftm,
+  //       token,
+  //       this.provider
+  //     );
+  //     const priceInBUSD = new Route([wftmToToken], token);
+  //     return priceInBUSD.midPrice.toFixed(4);
+  //   } catch (err) {
+  //     console.error(
+  //       `Failed to fetch token price of ${tokenContract.symbol}: ${err}`
+  //     );
+  //     return 'undefined';
+  //   }
+  // }
 
   async getWFTMPriceFromPancakeswap(): Promise<string> {
     const { NEAR, USDC } = this.externalTokens;
@@ -662,6 +699,7 @@ export class PolarisFinance {
       return (usdc_amount / near_amount).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of WFTM: ${err}`);
+      return 'undefined';
     }
   }
 
@@ -690,6 +728,7 @@ export class PolarisFinance {
       return (near_price * luna_price).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of LUNA: ${err}`);
+      return 'undefined';
     }
   }
 
@@ -729,6 +768,7 @@ export class PolarisFinance {
       return (near_price * stnear_price * tri_price).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of xTRI: ${err}`);
+      return 'undefined';
     }
   }
   async getEthPrice(): Promise<string> {
@@ -756,6 +796,7 @@ export class PolarisFinance {
       return (near_price * luna_price).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of ETH: ${err}`);
+      return 'undefined';
     }
   }
 
@@ -784,16 +825,17 @@ export class PolarisFinance {
       return (near_price * luna_price).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of BTC: ${err}`);
+      return 'undefined';
     }
   }
 
-  async getBnbPrice(): Promise<string> {
-    const [uspPrice, binarisUspPrice] = await Promise.all([
-      this.getTokenPriceUsp(this.USP),
-      this.getTokenPrice(this.BINARIS, this.USP),
-    ]);
-    return (Number(uspPrice) * Number(binarisUspPrice)).toFixed(4);
-  }
+  // async getBnbPrice(): Promise<string> {
+  //   const [uspPrice, binarisUspPrice] = await Promise.all([
+  //     this.getTokenPriceUsp(this.USP),
+  //     this.getTokenPrice(this.BINARIS, this.USP),
+  //   ]);
+  //   return (Number(uspPrice) * Number(binarisUspPrice)).toFixed(4);
+  // }
 
   async earnedFromBank(
     poolName: ContractName,
@@ -842,99 +884,99 @@ export class PolarisFinance {
    * @param token
    * @returns
    */
-  async getDepositTokenPriceInDollars(tokenName: string, token: ERC20) {
-    let tokenPrice;
-    let priceOfOneFtmInDollars;
-    if (tokenName === 'NEAR') {
-      priceOfOneFtmInDollars = await this.getWFTMPriceFromPancakeswap();
-      tokenPrice = priceOfOneFtmInDollars;
-    } else {
-      if (tokenName === 'POLAR-NEAR-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.POLAR);
-      } else if (tokenName === 'SPOLAR-NEAR-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.SPOLAR);
-      } else if (tokenName === 'LUNAR-LUNA-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.LUNAR);
-      } else if (tokenName === 'POLAR-STNEAR-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.POLAR);
-      } else if (
-        tokenName === 'TRIPOLAR-xTRI-LP' ||
-        tokenName === 'TRIPOLAR-TRI-LP'
-      ) {
-        tokenPrice = await this.getLPTokenPrice(token, this.TRIPOLAR);
-      } else if (tokenName === 'USP-USDC-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.USP);
-      } else if (tokenName === 'POLAR-USP-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.USP);
-      } else if (tokenName === 'ETHERNAL-USP-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.USP);
-      } else if (tokenName === 'ORBITAL-USP-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.USP);
-      } else if (tokenName === 'POLAR-LUNAR-LP') {
-        tokenPrice = await this.getLPTokenPricePolarLunar(
-          token,
-          this.POLAR,
-          this.LUNAR
-        );
-      } else if (tokenName === 'ETHERNAL-ETH-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.ETHERNAL);
-      } else if (tokenName === 'ORBITAL-BTC-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.ORBITAL);
-      } else if (tokenName === 'BINARIS-BNB-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.BINARIS);
-      } else if (tokenName === 'BINARIS-USP-LP') {
-        tokenPrice = await this.getLPTokenPrice(token, this.BINARIS);
-      } else if (tokenName === 'PBOND') {
-        const getBondPrice = await this.getStat('PBOND');
-        tokenPrice = getBondPrice.priceInDollars;
-      } else if (tokenName === 'EBOND') {
-        const getBondPrice = await this.getStat('EBOND');
-        tokenPrice = getBondPrice.priceInDollars;
-      } else if (tokenName === 'OBOND') {
-        const getBondPrice = await this.getStat('OBOND');
-        tokenPrice = getBondPrice.priceInDollars;
-      } else if (tokenName === 'USPBOND') {
-        const getBondPrice = await this.getStat('USPBOND');
-        tokenPrice = getBondPrice.priceInDollars;
-      } else if (tokenName === 'ETHERNAL') {
-        const price = await this.getStat('ETHERNAL');
-        tokenPrice = price.priceInDollars;
-      } else if (tokenName === 'ORBITAL') {
-        const price = await this.getStat('ORBITAL');
-        tokenPrice = price.priceInDollars;
-      } else if (tokenName === 'SPOLAR') {
-        const price = await this.getStat('SPOLAR');
-        tokenPrice = price.priceInDollars;
-      } else if (tokenName === 'BNB') {
-        const price = await this.getBnbPrice();
-        tokenPrice = price;
-      } else if (tokenName === 'USP') {
-        const price = await this.getStat('USP');
-        tokenPrice = price.priceInDollars;
-      } else if (tokenName === 'BINARIS') {
-        const price = await this.getStat('BINARIS');
-        tokenPrice = price.priceInDollars;
-      } else if (tokenName === 'BBOND') {
-        const price = await this.getStat('BBOND');
-        tokenPrice = price.priceInDollars;
-      } else if (
-        tokenName === 'USDC' ||
-        tokenName === 'USDT' ||
-        tokenName === 'USN'
-      ) {
-        tokenPrice = '1';
-      } else {
-        [tokenPrice, priceOfOneFtmInDollars] = await Promise.all([
-          this.getTokenPriceFromPancakeswap(token),
-          this.getWFTMPriceFromPancakeswap(),
-        ]);
-        tokenPrice = (
-          Number(tokenPrice) * Number(priceOfOneFtmInDollars)
-        ).toString();
-      }
-    }
-    return tokenPrice;
-  }
+  // async getDepositTokenPriceInDollars(tokenName: string, token: ERC20) {
+  //   let tokenPrice;
+  //   let priceOfOneFtmInDollars;
+  //   if (tokenName === 'NEAR') {
+  //     priceOfOneFtmInDollars = await this.getWFTMPriceFromPancakeswap();
+  //     tokenPrice = priceOfOneFtmInDollars;
+  //   } else {
+  //     if (tokenName === 'POLAR-NEAR-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.POLAR);
+  //     } else if (tokenName === 'SPOLAR-NEAR-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.SPOLAR);
+  //     } else if (tokenName === 'LUNAR-LUNA-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.LUNAR);
+  //     } else if (tokenName === 'POLAR-STNEAR-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.POLAR);
+  //     } else if (
+  //       tokenName === 'TRIPOLAR-xTRI-LP' ||
+  //       tokenName === 'TRIPOLAR-TRI-LP'
+  //     ) {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.TRIPOLAR);
+  //     } else if (tokenName === 'USP-USDC-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.USP);
+  //     } else if (tokenName === 'POLAR-USP-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.USP);
+  //     } else if (tokenName === 'ETHERNAL-USP-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.USP);
+  //     } else if (tokenName === 'ORBITAL-USP-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.USP);
+  //     } else if (tokenName === 'POLAR-LUNAR-LP') {
+  //       tokenPrice = await this.getLPTokenPricePolarLunar(
+  //         token,
+  //         this.POLAR,
+  //         this.LUNAR
+  //       );
+  //     } else if (tokenName === 'ETHERNAL-ETH-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.ETHERNAL);
+  //     } else if (tokenName === 'ORBITAL-BTC-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.ORBITAL);
+  //     } else if (tokenName === 'BINARIS-BNB-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.BINARIS);
+  //     } else if (tokenName === 'BINARIS-USP-LP') {
+  //       tokenPrice = await this.getLPTokenPrice(token, this.BINARIS);
+  //     } else if (tokenName === 'PBOND') {
+  //       const getBondPrice = await this.getStat('PBOND');
+  //       tokenPrice = getBondPrice.priceInDollars;
+  //     } else if (tokenName === 'EBOND') {
+  //       const getBondPrice = await this.getStat('EBOND');
+  //       tokenPrice = getBondPrice.priceInDollars;
+  //     } else if (tokenName === 'OBOND') {
+  //       const getBondPrice = await this.getStat('OBOND');
+  //       tokenPrice = getBondPrice.priceInDollars;
+  //     } else if (tokenName === 'USPBOND') {
+  //       const getBondPrice = await this.getStat('USPBOND');
+  //       tokenPrice = getBondPrice.priceInDollars;
+  //     } else if (tokenName === 'ETHERNAL') {
+  //       const price = await this.getStat('ETHERNAL');
+  //       tokenPrice = price.priceInDollars;
+  //     } else if (tokenName === 'ORBITAL') {
+  //       const price = await this.getStat('ORBITAL');
+  //       tokenPrice = price.priceInDollars;
+  //     } else if (tokenName === 'SPOLAR') {
+  //       const price = await this.getStat('SPOLAR');
+  //       tokenPrice = price.priceInDollars;
+  //     } else if (tokenName === 'BNB') {
+  //       const price = await this.getBnbPrice();
+  //       tokenPrice = price;
+  //     } else if (tokenName === 'USP') {
+  //       const price = await this.getStat('USP');
+  //       tokenPrice = price.priceInDollars;
+  //     } else if (tokenName === 'BINARIS') {
+  //       const price = await this.getStat('BINARIS');
+  //       tokenPrice = price.priceInDollars;
+  //     } else if (tokenName === 'BBOND') {
+  //       const price = await this.getStat('BBOND');
+  //       tokenPrice = price.priceInDollars;
+  //     } else if (
+  //       tokenName === 'USDC' ||
+  //       tokenName === 'USDT' ||
+  //       tokenName === 'USN'
+  //     ) {
+  //       tokenPrice = '1';
+  //     } else {
+  //       [tokenPrice, priceOfOneFtmInDollars] = await Promise.all([
+  //         this.getTokenPriceFromPancakeswap(token),
+  //         this.getWFTMPriceFromPancakeswap(),
+  //       ]);
+  //       tokenPrice = (
+  //         Number(tokenPrice) * Number(priceOfOneFtmInDollars)
+  //       ).toString();
+  //     }
+  //   }
+  //   return tokenPrice;
+  // }
 
   /**
    * Method to return the amount of tokens the pool yields per second
@@ -1196,249 +1238,254 @@ export class PolarisFinance {
    * CirculatingSupply (always equal to total supply for bonds)
    */
 
-  async getStat(token: string): Promise<TokenStat> {
-    let supply: BigNumber,
-      rewardPoolSupply: BigNumber,
-      rewardPoolSupply2: BigNumber,
-      priceInToken: string,
-      priceOfOneToken: string,
-      circulatingSupply: BigNumber,
-      priceInDollars: string;
+  // async getStat(token: string): Promise<TokenStat> {
+  //   let supply: BigNumber,
+  //     rewardPoolSupply: BigNumber,
+  //     rewardPoolSupply2: BigNumber,
+  //     priceInToken: string,
+  //     priceOfOneToken: string,
+  //     circulatingSupply: BigNumber,
+  //     priceInDollars: string;
 
-    if (token === 'POLAR') {
-      const { PolarAuroraGenesisRewardPool, PolarNearLpPolarRewardPool } =
-        this.contracts;
-      [
-        supply,
-        rewardPoolSupply,
-        rewardPoolSupply2,
-        priceInToken,
-        priceOfOneToken,
-      ] = await Promise.all([
-        this.POLAR.totalSupply(),
-        this.POLAR.balanceOf(PolarAuroraGenesisRewardPool.address),
-        this.POLAR.balanceOf(PolarNearLpPolarRewardPool.address),
-        this.getTokenPriceFromPancakeswap(this.POLAR),
-        this.getWFTMPriceFromPancakeswap(),
-      ]);
-      circulatingSupply = supply.sub(rewardPoolSupply).sub(rewardPoolSupply2);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        2
-      );
-    }
+  //   if (token === 'POLAR') {
+  //     const { PolarAuroraGenesisRewardPool, PolarNearLpPolarRewardPool } =
+  //       this.contracts;
+  //     [
+  //       supply,
+  //       rewardPoolSupply,
+  //       rewardPoolSupply2,
+  //       priceInToken,
+  //       priceOfOneToken,
+  //     ] = await Promise.all([
+  //       this.POLAR.totalSupply(),
+  //       this.POLAR.balanceOf(PolarAuroraGenesisRewardPool.address),
+  //       this.POLAR.balanceOf(PolarNearLpPolarRewardPool.address),
+  //       this.getTokenPriceFromPancakeswap(this.POLAR),
+  //       this.getWFTMPriceFromPancakeswap(),
+  //     ]);
+  //     circulatingSupply = supply.sub(rewardPoolSupply).sub(rewardPoolSupply2);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       2
+  //     );
+  //   }
 
-    if (token === 'PBOND') {
-      const { Treasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.PBOND.totalSupply(),
-        this.getStat('POLAR'),
-        Treasury.gepbondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'PBOND') {
+  //     const { Treasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.PBOND.totalSupply(),
+  //       this.getStat('POLAR'),
+  //       Treasury.gepbondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'LUNAR') {
-      const { LunarLunaGenesisRewardPool } = this.contracts;
-      [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
-        await Promise.all([
-          this.LUNAR.totalSupply(),
-          this.LUNAR.balanceOf(LunarLunaGenesisRewardPool.address),
-          this.getTokenPriceLunar(this.LUNAR),
-          this.getLUNAPrice(),
-        ]);
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        2
-      );
-    }
+  //   if (token === 'LUNAR') {
+  //     const { LunarLunaGenesisRewardPool } = this.contracts;
+  //     [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
+  //       await Promise.all([
+  //         this.LUNAR.totalSupply(),
+  //         this.LUNAR.balanceOf(LunarLunaGenesisRewardPool.address),
+  //         this.getTokenPriceLunar(this.LUNAR),
+  //         this.getLUNAPrice(),
+  //       ]);
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       2
+  //     );
+  //   }
 
-    if (token === 'LBOND') {
-      const { lunarTreasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.LBOND.totalSupply(),
-        this.getStat('LUNAR'),
-        lunarTreasury.gepbondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'LBOND') {
+  //     const { lunarTreasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.LBOND.totalSupply(),
+  //       this.getStat('LUNAR'),
+  //       lunarTreasury.gepbondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'TRIPOLAR') {
-      const { TripolarXtriGenesisRewardPool } = this.contracts;
-      [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
-        await Promise.all([
-          this.TRIPOLAR.totalSupply(),
-          this.TRIPOLAR.balanceOf(TripolarXtriGenesisRewardPool.address),
-          this.getTokenPriceTripolar(this.TRIPOLAR),
-          this.getTriPrice(),
-        ]);
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        18
-      );
-    }
+  //   if (token === 'TRIPOLAR') {
+  //     const { TripolarXtriGenesisRewardPool } = this.contracts;
+  //     [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
+  //       await Promise.all([
+  //         this.TRIPOLAR.totalSupply(),
+  //         this.TRIPOLAR.balanceOf(TripolarXtriGenesisRewardPool.address),
+  //         this.getTokenPriceTripolar(this.TRIPOLAR),
+  //         this.getTriPrice(),
+  //       ]);
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       18
+  //     );
+  //   }
 
-    if (token === 'TRIBOND') {
-      const { tripolarTreasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.TRIBOND.totalSupply(),
-        this.getStat('TRIPOLAR'),
-        tripolarTreasury.getBondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'TRIBOND') {
+  //     const { tripolarTreasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.TRIBOND.totalSupply(),
+  //       this.getStat('TRIPOLAR'),
+  //       tripolarTreasury.getBondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'ETHERNAL') {
-      const { EthernalEthGenesisRewardPool } = this.contracts;
-      [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
-        await Promise.all([
-          this.ETHERNAL.totalSupply(),
-          this.ETHERNAL.balanceOf(EthernalEthGenesisRewardPool.address),
-          this.getTokenPriceEthernal(this.ETHERNAL),
-          this.getEthPrice(),
-        ]);
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        2
-      );
-    }
+  //   if (token === 'ETHERNAL') {
+  //     const { EthernalEthGenesisRewardPool } = this.contracts;
+  //     [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
+  //       await Promise.all([
+  //         this.ETHERNAL.totalSupply(),
+  //         this.ETHERNAL.balanceOf(EthernalEthGenesisRewardPool.address),
+  //         this.getTokenPriceEthernal(this.ETHERNAL),
+  //         this.getEthPrice(),
+  //       ]);
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       2
+  //     );
+  //   }
 
-    if (token === 'EBOND') {
-      const { ethernalTreasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.EBOND.totalSupply(),
-        this.getStat('ETHERNAL'),
-        ethernalTreasury.getBondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'EBOND') {
+  //     const { ethernalTreasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.EBOND.totalSupply(),
+  //       this.getStat('ETHERNAL'),
+  //       ethernalTreasury.getBondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'ORBITAL') {
-      const { OrbitalBtcGenesisRewardPool } = this.contracts;
-      [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
-        await Promise.all([
-          this.ORBITAL.totalSupply(),
-          this.ORBITAL.balanceOf(OrbitalBtcGenesisRewardPool.address),
-          this.getTokenPriceOrbital(this.ORBITAL),
-          this.getBtcPrice(),
-        ]);
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        2
-      );
-    }
+  //   if (token === 'ORBITAL') {
+  //     const { OrbitalBtcGenesisRewardPool } = this.contracts;
+  //     [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
+  //       await Promise.all([
+  //         this.ORBITAL.totalSupply(),
+  //         this.ORBITAL.balanceOf(OrbitalBtcGenesisRewardPool.address),
+  //         this.getTokenPriceOrbital(this.ORBITAL),
+  //         this.getBtcPrice(),
+  //       ]);
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       2
+  //     );
+  //   }
 
-    if (token === 'OBOND') {
-      const { orbitalTreasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.OBOND.totalSupply(),
-        this.getStat('ORBITAL'),
-        orbitalTreasury.getBondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'OBOND') {
+  //     const { orbitalTreasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.OBOND.totalSupply(),
+  //       this.getStat('ORBITAL'),
+  //       orbitalTreasury.getBondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'USP') {
-      const { UspSpolarGenesisRewardPool } = this.contracts;
-      [supply, rewardPoolSupply, priceInToken] = await Promise.all([
-        this.USP.totalSupply(),
-        this.USP.balanceOf(UspSpolarGenesisRewardPool.address),
-        this.getTokenPriceUsp(this.USP),
-      ]);
-      priceOfOneToken = '1';
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        2
-      );
-    }
-    if (token === 'USPBOND') {
-      const { uspTreasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.USPBOND.totalSupply(),
-        this.getStat('USP'),
-        uspTreasury.getBondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'USP') {
+  //     const { UspSpolarGenesisRewardPool } = this.contracts;
+  //     [supply, rewardPoolSupply, priceInToken] = await Promise.all([
+  //       this.USP.totalSupply(),
+  //       this.USP.balanceOf(UspSpolarGenesisRewardPool.address),
+  //       this.getTokenPriceUsp(this.USP),
+  //     ]);
+  //     priceOfOneToken = '1';
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       2
+  //     );
+  //   }
+  //   if (token === 'USPBOND') {
+  //     const { uspTreasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.USPBOND.totalSupply(),
+  //       this.getStat('USP'),
+  //       uspTreasury.getBondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'BINARIS') {
-      const { SpolarBinarisGenesisRewardPool } = this.contracts;
-      let priceInUsp: string;
-      let priceOfUsp: string;
-      [supply, rewardPoolSupply, priceInToken, priceOfUsp, priceInUsp] =
-        await Promise.all([
-          this.BINARIS.totalSupply(),
-          this.BINARIS.balanceOf(SpolarBinarisGenesisRewardPool.address),
-          this.getTokenPriceBinaris(this.BINARIS),
-          this.getTokenPriceUsp(this.USP),
-          this.getTokenPrice(this.BINARIS, this.USP),
-        ]);
-      priceOfOneToken = (
-        Number(priceOfUsp) *
-        Number(priceInUsp) *
-        Number(priceInToken)
-      ).toFixed(2);
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceOfUsp) * Number(priceInUsp)).toFixed(2);
-    }
-    if (token === 'BBOND') {
-      const { binarisTreasury } = this.contracts;
-      let stat: TokenStat, ratio: number;
-      [supply, stat, ratio] = await Promise.all([
-        this.BBOND.totalSupply(),
-        this.getStat('BINARIS'),
-        binarisTreasury.getBondPremiumRate(),
-      ]);
-      const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
-      priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
-      priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
-      circulatingSupply = supply;
-    }
+  //   if (token === 'BINARIS') {
+  //     const { SpolarBinarisGenesisRewardPool } = this.contracts;
+  //     let priceInUsp: string;
+  //     let priceOfUsp: string;
+  //     [supply, rewardPoolSupply, priceInToken, priceOfUsp, priceInUsp] =
+  //       await Promise.all([
+  //         this.BINARIS.totalSupply(),
+  //         this.BINARIS.balanceOf(SpolarBinarisGenesisRewardPool.address),
+  //         this.getTokenPriceBinaris(this.BINARIS),
+  //         this.getTokenPriceUsp(this.USP),
+  //         this.getTokenPrice(this.BINARIS, this.USP),
+  //       ]);
+  //     priceOfOneToken = (
+  //       Number(priceOfUsp) *
+  //       Number(priceInUsp) *
+  //       Number(priceInToken)
+  //     ).toFixed(2);
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceOfUsp) * Number(priceInUsp)).toFixed(2);
+  //   }
+  //   if (token === 'BBOND') {
+  //     const { binarisTreasury } = this.contracts;
+  //     let stat: TokenStat, ratio: number;
+  //     [supply, stat, ratio] = await Promise.all([
+  //       this.BBOND.totalSupply(),
+  //       this.getStat('BINARIS'),
+  //       binarisTreasury.getBondPremiumRate(),
+  //     ]);
+  //     const modifier = ratio / 1e18 > 1 ? ratio / 1e18 : 1;
+  //     priceInToken = (Number(stat.tokenInFtm) * modifier).toFixed(2);
+  //     priceInDollars = (Number(stat.priceInDollars) * modifier).toFixed(2);
+  //     circulatingSupply = supply;
+  //   }
 
-    if (token === 'SPOLAR') {
-      const { PolarNearLpSpolarRewardPool } = this.contracts;
-      [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
-        await Promise.all([
-          this.SPOLAR.totalSupply(),
-          this.SPOLAR.balanceOf(PolarNearLpSpolarRewardPool.address),
-          this.getTokenPriceFromPancakeswap(this.SPOLAR),
-          this.getWFTMPriceFromPancakeswap(),
-        ]);
-      circulatingSupply = supply.sub(rewardPoolSupply);
-      priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
-        2
-      );
-    }
-    return {
-      tokenInFtm: priceInToken,
-      priceInDollars: priceInDollars,
-      totalSupply: getDisplayBalance(supply, 18, 0),
-      circulatingSupply: getDisplayBalance(circulatingSupply, 18, 0),
-    };
-  }
+  //   if (token === 'SPOLAR') {
+  //     const { PolarNearLpSpolarRewardPool } = this.contracts;
+  //     [supply, rewardPoolSupply, priceInToken, priceOfOneToken] =
+  //       await Promise.all([
+  //         this.SPOLAR.totalSupply(),
+  //         this.SPOLAR.balanceOf(PolarNearLpSpolarRewardPool.address),
+  //         this.getTokenPriceFromPancakeswap(this.SPOLAR),
+  //         this.getWFTMPriceFromPancakeswap(),
+  //       ]);
+  //     circulatingSupply = supply.sub(rewardPoolSupply);
+  //     priceInDollars = (Number(priceInToken) * Number(priceOfOneToken)).toFixed(
+  //       2
+  //     );
+  //   } else {
+  //     priceInToken = '0';
+  //     priceInDollars = '0';
+  //     supply = BigNumber.from(0);
+  //     circulatingSupply = BigNumber.from(0);
+  //   }
+  //   return {
+  //     tokenInFtm: priceInToken,
+  //     priceInDollars: priceInDollars,
+  //     totalSupply: getDisplayBalance(supply, 18, 0),
+  //     circulatingSupply: getDisplayBalance(circulatingSupply, 18, 0),
+  //   };
+  // }
 
   /* ALL BELLOW CODE IS FUNCTIONAL */
 
@@ -1447,31 +1494,31 @@ export class PolarisFinance {
    * @param name of the LP token to load stats for
    * @returns
    */
-  async getLPStat(name: string): Promise<LPStat> {
-    const lpToken = this.externalTokens[name];
-    const lpTokenSupplyBN = await lpToken.totalSupply();
-    const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
-    const token0 = name.startsWith('POLAR') ? this.POLAR : this.SPOLAR;
-    const tokenAmountBN = await token0.balanceOf(lpToken.address);
-    const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
+  // async getLPStat(name: string): Promise<LPStat> {
+  //   const lpToken = this.externalTokens[name];
+  //   const lpTokenSupplyBN = await lpToken.totalSupply();
+  //   const lpTokenSupply = getDisplayBalance(lpTokenSupplyBN, 18);
+  //   const token0 = name.startsWith('POLAR') ? this.POLAR : this.SPOLAR;
+  //   const tokenAmountBN = await token0.balanceOf(lpToken.address);
+  //   const tokenAmount = getDisplayBalance(tokenAmountBN, 18);
 
-    const ftmAmountBN = await this.FTM.balanceOf(lpToken.address);
-    const ftmAmount = getDisplayBalance(ftmAmountBN, 24);
-    const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
-    const ftmAmountInOneLP = Number(ftmAmount) / Number(lpTokenSupply);
-    const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0);
-    const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(4).toString();
-    const liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice))
-      .toFixed(4)
-      .toString();
-    return {
-      tokenAmount: tokenAmountInOneLP.toFixed(4).toString(),
-      ftmAmount: ftmAmountInOneLP.toFixed(4).toString(),
-      priceOfOne: lpTokenPriceFixed,
-      totalLiquidity: liquidity,
-      totalSupply: Number(lpTokenSupply).toFixed(4).toString(),
-    };
-  }
+  //   const ftmAmountBN = await this.FTM.balanceOf(lpToken.address);
+  //   const ftmAmount = getDisplayBalance(ftmAmountBN, 24);
+  //   const tokenAmountInOneLP = Number(tokenAmount) / Number(lpTokenSupply);
+  //   const ftmAmountInOneLP = Number(ftmAmount) / Number(lpTokenSupply);
+  //   const lpTokenPrice = await this.getLPTokenPrice(lpToken, token0);
+  //   const lpTokenPriceFixed = Number(lpTokenPrice).toFixed(4).toString();
+  //   const liquidity = (Number(lpTokenSupply) * Number(lpTokenPrice))
+  //     .toFixed(4)
+  //     .toString();
+  //   return {
+  //     tokenAmount: tokenAmountInOneLP.toFixed(4).toString(),
+  //     ftmAmount: ftmAmountInOneLP.toFixed(4).toString(),
+  //     priceOfOne: lpTokenPriceFixed,
+  //     totalLiquidity: liquidity,
+  //     totalSupply: Number(lpTokenSupply).toFixed(4).toString(),
+  //   };
+  // }
 
   async getTokenEstimatedTWAP(sunrise: Sunrise): Promise<string> {
     let expectedPrice: BigNumber;
@@ -1512,71 +1559,73 @@ export class PolarisFinance {
    * @param bank
    * @returns
    */
-  async getPoolAPRs(bank: Bank): Promise<PoolStats> {
-    if (this.myAccount === undefined) return;
-    const depositToken = bank.depositToken;
-    const poolContract = this.contracts[bank.contract];
-    const depositTokenPrice = await this.getDepositTokenPriceInDollars(
-      bank.depositTokenName,
-      depositToken
-    );
-    const stakeInPool = await depositToken.balanceOf(bank.address);
-    const TVL =
-      Number(depositTokenPrice) *
-      Number(getDisplayBalance(stakeInPool, depositToken.decimal, 18));
-    const stat = await this.getStat(bank.earnTokenName);
+  // async getPoolAPRs(bank: Bank): Promise<PoolStats> {
+  //   if (this.myAccount === undefined)
+  //     return { TVL: '0', yearlyAPR: '0', dailyAPR: '0' };
+  //   const depositToken = bank.depositToken;
+  //   const poolContract = this.contracts[bank.contract];
+  //   const depositTokenPrice = await this.getDepositTokenPriceInDollars(
+  //     bank.depositTokenName,
+  //     depositToken
+  //   );
+  //   const stakeInPool = await depositToken.balanceOf(bank.address);
+  //   const TVL =
+  //     Number(depositTokenPrice) *
+  //     Number(getDisplayBalance(stakeInPool, depositToken.decimal, 18));
+  //   const stat = await this.getStat(bank.earnTokenName);
 
-    const tokenPerSecond = await this.getTokenPerSecond(
-      bank.earnTokenName,
-      bank.contract,
-      poolContract,
-      bank.depositTokenName
-    );
+  //   const tokenPerSecond = await this.getTokenPerSecond(
+  //     bank.earnTokenName,
+  //     bank.contract,
+  //     poolContract,
+  //     bank.depositTokenName
+  //   );
 
-    const tokenPerHour = tokenPerSecond.mul(60).mul(60);
-    const totalRewardPricePerYear =
-      Number(stat.priceInDollars) *
-      Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
-    const totalRewardPricePerDay =
-      Number(stat.priceInDollars) *
-      Number(getDisplayBalance(tokenPerHour.mul(24)));
-    const totalStakingTokenInPool =
-      Number(depositTokenPrice) *
-      Number(getDisplayBalance(stakeInPool, depositToken.decimal, 18));
-    const dailyAPR = (totalRewardPricePerDay / totalStakingTokenInPool) * 100;
-    const yearlyAPR = (totalRewardPricePerYear / totalStakingTokenInPool) * 100;
-    return {
-      dailyAPR: dailyAPR.toFixed(2).toString(),
-      yearlyAPR: yearlyAPR.toFixed(2).toString(),
-      TVL: numberWithSpaces(Number(TVL.toFixed(2))),
-    };
-  }
+  //   const tokenPerHour = tokenPerSecond.mul(60).mul(60);
+  //   const totalRewardPricePerYear =
+  //     Number(stat.priceInDollars) *
+  //     Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
+  //   const totalRewardPricePerDay =
+  //     Number(stat.priceInDollars) *
+  //     Number(getDisplayBalance(tokenPerHour.mul(24)));
+  //   const totalStakingTokenInPool =
+  //     Number(depositTokenPrice) *
+  //     Number(getDisplayBalance(stakeInPool, depositToken.decimal, 18));
+  //   const dailyAPR = (totalRewardPricePerDay / totalStakingTokenInPool) * 100;
+  //   const yearlyAPR = (totalRewardPricePerYear / totalStakingTokenInPool) * 100;
+  //   return {
+  //     dailyAPR: dailyAPR.toFixed(2).toString(),
+  //     yearlyAPR: yearlyAPR.toFixed(2).toString(),
+  //     TVL: numberWithSpaces(Number(TVL.toFixed(2))),
+  //   };
+  // }
 
-  async getVaultStats(bank: Bank, acBank: AcBank): Promise<PoolStats> {
-    if (this.myAccount === undefined) return;
-    const depositToken = bank.depositToken;
-    const poolContract = this.contracts[bank.contract];
-    const acContract = this.contracts[acBank.contract];
-    const strategy = await acContract.strategy();
-    const depositTokenPrice = await this.getDepositTokenPriceInDollars(
-      bank.depositTokenName,
-      depositToken
-    );
-    const stakeInPool = await poolContract.userInfo(bank.poolId, strategy);
-    const TVL =
-      Number(depositTokenPrice) *
-      Number(getDisplayBalance(stakeInPool.amount, depositToken.decimal, 18));
+  // async getVaultStats(bank: Bank, acBank: AcBank): Promise<PoolStats> {
+  //   if (this.myAccount === undefined)
+  //     return { TVL: '0', yearlyAPR: '0', dailyAPR: '0' };
+  //   const depositToken = bank.depositToken;
+  //   const poolContract = this.contracts[bank.contract];
+  //   const acContract = this.contracts[acBank.contract];
+  //   const strategy = await acContract.strategy();
+  //   const depositTokenPrice = await this.getDepositTokenPriceInDollars(
+  //     bank.depositTokenName,
+  //     depositToken
+  //   );
+  //   const stakeInPool = await poolContract.userInfo(bank.poolId, strategy);
+  //   const TVL =
+  //     Number(depositTokenPrice) *
+  //     Number(getDisplayBalance(stakeInPool.amount, depositToken.decimal, 18));
 
-    const poolStats = await this.getPoolAPRs(bank);
-    const dailyAPR = poolStats.dailyAPR;
-    const yearlyAPY =
-      100 * ((1 + Number(poolStats.yearlyAPR) / 100 / 8760) ** 8760 - 1);
-    return {
-      dailyAPR: dailyAPR,
-      yearlyAPR: yearlyAPY.toFixed(2).toString(),
-      TVL: numberWithSpaces(Number(TVL.toFixed(2))),
-    };
-  }
+  //   const poolStats = await this.getPoolAPRs(bank);
+  //   const dailyAPR = poolStats.dailyAPR;
+  //   const yearlyAPY =
+  //     100 * ((1 + Number(poolStats.yearlyAPR) / 100 / 8760) ** 8760 - 1);
+  //   return {
+  //     dailyAPR: dailyAPR,
+  //     yearlyAPR: yearlyAPY.toFixed(2).toString(),
+  //     TVL: numberWithSpaces(Number(TVL.toFixed(2))),
+  //   };
+  // }
 
   //===================================================================
   //===================== GET ASSET STATS =============================
@@ -1613,69 +1662,70 @@ export class PolarisFinance {
     );
   }
 
-  async getTotalValueLocked(): Promise<Number> {
-    let [
-      totalValue,
-      bankListPrice,
-      bankListBalance,
-      bankListNames,
-      bankDictPrice,
-      bankDictBalance,
-      sunriseListBalance,
-    ] = [0, [], [], [], {}, {}, []];
-    for (const bankInfo of Object.values(bankDefinitions)) {
-      const pool = this.contracts[bankInfo.contract];
-      if (bankInfo.closedForStaking === true) continue;
-      const token = this.externalTokens[bankInfo.depositTokenName];
-      bankListPrice.push(
-        this.getDepositTokenPriceInDollars(bankInfo.depositTokenName, token)
-      );
-      bankListBalance.push(token.balanceOf(pool.address));
-      bankListNames.push(bankInfo.contract);
-    }
-    for (const sunrise of Object.values(sunriseDefinitions)) {
-      if (sunrise.coming === true || sunrise.retired === true) continue;
-      sunriseListBalance.push(
-        this.SPOLAR.balanceOf(this.contracts[sunrise.contract].address)
-      );
-    }
-    let bankListPricePromise = Promise.all(bankListPrice);
-    let bankListBalancePromise = Promise.all(bankListBalance);
-    let sunriseListBalancePromise = Promise.all(sunriseListBalance);
-    let [bankPrice, bankBalance, sunriseBalance, priceInNEAR, priceOfOneNEAR] =
-      await Promise.all([
-        bankListPricePromise,
-        bankListBalancePromise,
-        sunriseListBalancePromise,
-        this.getTokenPriceFromPancakeswap(this.SPOLAR),
-        this.getWFTMPriceFromPancakeswap(),
-      ]);
-    for (let i = 0; i < bankListNames.length; i++) {
-      bankDictPrice[bankListNames[i]] = bankPrice[i];
-      bankDictBalance[bankListNames[i]] = bankBalance[i];
-    }
-    for (const bankInfo of Object.values(bankDefinitions)) {
-      if (bankInfo.closedForStaking === true) continue;
-      const token = this.externalTokens[bankInfo.depositTokenName];
-      const tokenPrice = bankDictPrice[bankInfo.contract];
-      const tokenAmountInPool = bankDictBalance[bankInfo.contract];
-      const value =
-        Number(getDisplayBalance(tokenAmountInPool, token.decimal)) *
-        Number(tokenPrice);
-      const poolValue = Number.isNaN(value) ? 0 : value;
-      totalValue += poolValue;
-    }
-    const SPOLARPrice = (Number(priceInNEAR) * Number(priceOfOneNEAR)).toFixed(
-      2
-    );
-    for (const balance of sunriseBalance) {
-      totalValue +=
-        Number(getDisplayBalance(balance, this.SPOLAR.decimal)) *
-        Number(SPOLARPrice);
-    }
+  // async getTotalValueLocked(): Promise<Number> {
+  //   let [
+  //     totalValue,
+  //     bankListPrice,
+  //     bankListBalance,
+  //     bankListNames,
+  //     bankDictPrice,
+  //     bankDictBalance,
+  //     sunriseListBalance,
+  //   ]: any[] = [0, [], [], [], {}, {}, []];
+  //   for (const bankInfo of Object.values(bankDefinitions)) {
+  //     const pool = this.contracts[bankInfo.contract];
+  //     if (bankInfo.closedForStaking === true) continue;
+  //     const token = this.externalTokens[bankInfo.depositTokenName];
+  //     bankListPrice.push(
+  //       this.getDepositTokenPriceInDollars(bankInfo.depositTokenName, token)
+  //     );
+  //     bankListBalance.push(token.balanceOf(pool.address));
+  //     bankListNames.push(bankInfo.contract);
+  //   }
+  //   for (const sunrise of Object.values(sunriseDefinitions)) {
+  //     if (sunrise.coming === true || sunrise.retired === true) continue;
+  //     sunriseListBalance.push(
+  //       this.SPOLAR.balanceOf(this.contracts[sunrise.contract].address)
+  //     );
+  //   }
+  //   let bankListPricePromise = Promise.all(bankListPrice);
+  //   let bankListBalancePromise = Promise.all(bankListBalance);
+  //   let sunriseListBalancePromise: Promise<BigNumber[]> =
+  //     Promise.all(sunriseListBalance);
+  //   let [bankPrice, bankBalance, sunriseBalance, priceInNEAR, priceOfOneNEAR] =
+  //     await Promise.all([
+  //       bankListPricePromise,
+  //       bankListBalancePromise,
+  //       sunriseListBalancePromise,
+  //       this.getTokenPriceFromPancakeswap(this.SPOLAR),
+  //       this.getWFTMPriceFromPancakeswap(),
+  //     ]);
+  //   for (let i = 0; i < bankListNames.length; i++) {
+  //     bankDictPrice[bankListNames[i]] = bankPrice[i];
+  //     bankDictBalance[bankListNames[i]] = bankBalance[i];
+  //   }
+  //   for (const bankInfo of Object.values(bankDefinitions)) {
+  //     if (bankInfo.closedForStaking === true) continue;
+  //     const token = this.externalTokens[bankInfo.depositTokenName];
+  //     const tokenPrice = bankDictPrice[bankInfo.contract];
+  //     const tokenAmountInPool = bankDictBalance[bankInfo.contract];
+  //     const value =
+  //       Number(getDisplayBalance(tokenAmountInPool, token.decimal)) *
+  //       Number(tokenPrice);
+  //     const poolValue = Number.isNaN(value) ? 0 : value;
+  //     totalValue += poolValue;
+  //   }
+  //   const SPOLARPrice = (Number(priceInNEAR) * Number(priceOfOneNEAR)).toFixed(
+  //     2
+  //   );
+  //   for (const balance of sunriseBalance) {
+  //     totalValue +=
+  //       Number(getDisplayBalance(balance, this.SPOLAR.decimal)) *
+  //       Number(SPOLARPrice);
+  //   }
 
-    return totalValue;
-  }
+  //   return totalValue;
+  // }
 
   /**
    * Calculates the price of an LP token
@@ -1685,58 +1735,58 @@ export class PolarisFinance {
    * @param isTomb sanity check for usage of tomb token or tShare
    * @returns price of the LP token
    */
-  async getLPTokenPrice(lpToken: ERC20, token: ERC20): Promise<string> {
-    const [lpTokenSupply, tokenBalance] = await Promise.all([
-      lpToken.totalSupply(),
-      token.balanceOf(lpToken.address),
-    ]);
-    const totalSupply = getFullDisplayBalance(lpTokenSupply, lpToken.decimal);
-    //Get amount of tokenA
-    const tokenSupply = getFullDisplayBalance(tokenBalance, token.decimal);
+  // async getLPTokenPrice(lpToken: ERC20, token: ERC20): Promise<string> {
+  //   const [lpTokenSupply, tokenBalance] = await Promise.all([
+  //     lpToken.totalSupply(),
+  //     token.balanceOf(lpToken.address),
+  //   ]);
+  //   const totalSupply = getFullDisplayBalance(lpTokenSupply, lpToken.decimal);
+  //   //Get amount of tokenA
+  //   const tokenSupply = getFullDisplayBalance(tokenBalance, token.decimal);
 
-    const stat = await this.getStat(token.symbol);
+  //   const stat = await this.getStat(token.symbol);
 
-    const priceOfToken = stat.priceInDollars;
-    const tokenInLP = Number(tokenSupply) / Number(totalSupply);
-    const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
-      .toString();
-    return tokenPrice;
-  }
+  //   const priceOfToken = stat.priceInDollars;
+  //   const tokenInLP = Number(tokenSupply) / Number(totalSupply);
+  //   const tokenPrice = (Number(priceOfToken) * tokenInLP * 2) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
+  //     .toString();
+  //   return tokenPrice;
+  // }
 
-  async getLPTokenPricePolarLunar(
-    lpToken: ERC20,
-    token0: ERC20,
-    token1: ERC20
-  ): Promise<string> {
-    const [
-      lpTokenSupply,
-      token0Balance,
-      token1Balance,
-      statToken0,
-      statToken1,
-    ] = await Promise.all([
-      lpToken.totalSupply(),
-      token0.balanceOf(lpToken.address),
-      token1.balanceOf(lpToken.address),
-      this.getStat(token0.symbol),
-      this.getStat(token1.symbol),
-    ]);
-    const totalSupply = getFullDisplayBalance(lpTokenSupply, lpToken.decimal);
-    //Get amount of tokenA
-    const token0Supply = getFullDisplayBalance(token0Balance, token0.decimal);
-    const token1Supply = getFullDisplayBalance(token1Balance, token1.decimal);
+  // async getLPTokenPricePolarLunar(
+  //   lpToken: ERC20,
+  //   token0: ERC20,
+  //   token1: ERC20
+  // ): Promise<string> {
+  //   const [
+  //     lpTokenSupply,
+  //     token0Balance,
+  //     token1Balance,
+  //     statToken0,
+  //     statToken1,
+  //   ] = await Promise.all([
+  //     lpToken.totalSupply(),
+  //     token0.balanceOf(lpToken.address),
+  //     token1.balanceOf(lpToken.address),
+  //     this.getStat(token0.symbol),
+  //     this.getStat(token1.symbol),
+  //   ]);
+  //   const totalSupply = getFullDisplayBalance(lpTokenSupply, lpToken.decimal);
+  //   //Get amount of tokenA
+  //   const token0Supply = getFullDisplayBalance(token0Balance, token0.decimal);
+  //   const token1Supply = getFullDisplayBalance(token1Balance, token1.decimal);
 
-    const priceOfToken0 = statToken0.priceInDollars;
-    const priceOfToken1 = statToken1.priceInDollars;
-    const token0InLP = Number(token0Supply) / Number(totalSupply);
-    const token1InLP = Number(token1Supply) / Number(totalSupply);
-    const tokenPrice = (
-      Number(priceOfToken0) * token0InLP +
-      Number(priceOfToken1) * token1InLP
-    ) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
-      .toString();
-    return tokenPrice;
-  }
+  //   const priceOfToken0 = statToken0.priceInDollars;
+  //   const priceOfToken1 = statToken1.priceInDollars;
+  //   const token0InLP = Number(token0Supply) / Number(totalSupply);
+  //   const token1InLP = Number(token1Supply) / Number(totalSupply);
+  //   const tokenPrice = (
+  //     Number(priceOfToken0) * token0InLP +
+  //     Number(priceOfToken1) * token1InLP
+  //   ) //We multiply by 2 since half the price of the lp token is the price of each piece of the pair. So twice gives the total
+  //     .toString();
+  //   return tokenPrice;
+  // }
 
   async stakedBalanceOnBank(
     poolName: ContractName,
@@ -1878,36 +1928,36 @@ export class PolarisFinance {
   //===================================================================
   //===================================================================
 
-  async getSunriseAPR(sunrise: Sunrise) {
-    let latestSnapshotIndex: BigNumber,
-      lastHistory: BigNumber,
-      SPOLARPrice: TokenStat,
-      tokenPricePromise: Promise<TokenStat>,
-      tokenPrice: TokenStat;
-    const token = sunrise.earnTokenName;
-    const contract = this.contracts[sunrise.contract];
-    tokenPricePromise = this.getStat(token);
-    latestSnapshotIndex = await contract.latestSnapshotIndex();
-    [lastHistory, SPOLARPrice, tokenPrice] = await Promise.all([
-      contract.masonryHistory(latestSnapshotIndex),
-      this.getStat('SPOLAR'),
-      tokenPricePromise,
-    ]);
-    const lastRewardsReceived = lastHistory[1];
-    const epochRewardsPerShare = lastRewardsReceived / 1e18;
+  // async getSunriseAPR(sunrise: Sunrise) {
+  //   let latestSnapshotIndex: BigNumber,
+  //     lastHistory: BigNumber,
+  //     SPOLARPrice: TokenStat,
+  //     tokenPricePromise: Promise<TokenStat>,
+  //     tokenPrice: TokenStat;
+  //   const token = sunrise.earnTokenName;
+  //   const contract = this.contracts[sunrise.contract];
+  //   tokenPricePromise = this.getStat(token);
+  //   latestSnapshotIndex = await contract.latestSnapshotIndex();
+  //   [lastHistory, SPOLARPrice, tokenPrice] = await Promise.all([
+  //     contract.masonryHistory(latestSnapshotIndex),
+  //     this.getStat('SPOLAR'),
+  //     tokenPricePromise,
+  //   ]);
+  //   const lastRewardsReceived = lastHistory[1];
+  //   const epochRewardsPerShare = lastRewardsReceived / 1e18;
 
-    //Mgod formula
-    const amountOfRewardsPerDay =
-      epochRewardsPerShare * Number(tokenPrice.priceInDollars) * 4;
-    const masonrytShareBalanceOf = await this.SPOLAR.balanceOf(
-      contract.address
-    );
-    const masonryTVL =
-      Number(getDisplayBalance(masonrytShareBalanceOf, this.SPOLAR.decimal)) *
-      Number(SPOLARPrice.priceInDollars);
-    const realAPR = ((amountOfRewardsPerDay * 100) / masonryTVL) * 365;
-    return realAPR;
-  }
+  //   //Mgod formula
+  //   const amountOfRewardsPerDay =
+  //     epochRewardsPerShare * Number(tokenPrice.priceInDollars) * 4;
+  //   const masonrytShareBalanceOf = await this.SPOLAR.balanceOf(
+  //     contract.address
+  //   );
+  //   const masonryTVL =
+  //     Number(getDisplayBalance(masonrytShareBalanceOf, this.SPOLAR.decimal)) *
+  //     Number(SPOLARPrice.priceInDollars);
+  //   const realAPR = ((amountOfRewardsPerDay * 100) / masonryTVL) * 365;
+  //   return realAPR;
+  // }
 
   /**
    * Checks if the user is allowed to retrieve their reward from the Masonry
@@ -2118,64 +2168,64 @@ export class PolarisFinance {
   /**
    * @returns an array of the regulation events till the most up to date epoch
    */
-  async listenForRegulationsEvents(): Promise<any> {
-    const { Treasury } = this.contracts;
+  // async listenForRegulationsEvents(): Promise<any> {
+  //   const { Treasury } = this.contracts;
 
-    const treasuryDaoFundedFilter = Treasury.filters.DaoFundFunded();
-    const treasuryDevFundedFilter = Treasury.filters.DevFundFunded();
-    const treasuryMasonryFundedFilter = Treasury.filters.MasonryFunded();
-    const boughtBondsFilter = Treasury.filters.BoughtBonds();
-    const redeemBondsFilter = Treasury.filters.RedeemedBonds();
+  //   const treasuryDaoFundedFilter = Treasury.filters.DaoFundFunded();
+  //   const treasuryDevFundedFilter = Treasury.filters.DevFundFunded();
+  //   const treasuryMasonryFundedFilter = Treasury.filters.MasonryFunded();
+  //   const boughtBondsFilter = Treasury.filters.BoughtBonds();
+  //   const redeemBondsFilter = Treasury.filters.RedeemedBonds();
 
-    let epochBlocksRanges: any[] = [];
-    let masonryFundEvents = await Treasury.queryFilter(
-      treasuryMasonryFundedFilter
-    );
-    var events: any[] = [];
-    masonryFundEvents.forEach(function callback(value, index) {
-      events.push({ epoch: index + 1 });
-      events[index].masonryFund = getDisplayBalance(value.args[1]);
-      if (index === 0) {
-        epochBlocksRanges.push({
-          index: index,
-          startBlock: value.blockNumber,
-          boughBonds: 0,
-          redeemedBonds: 0,
-        });
-      }
-      if (index > 0) {
-        epochBlocksRanges.push({
-          index: index,
-          startBlock: value.blockNumber,
-          boughBonds: 0,
-          redeemedBonds: 0,
-        });
-        epochBlocksRanges[index - 1].endBlock = value.blockNumber;
-      }
-    });
+  //   let epochBlocksRanges: any[] = [];
+  //   let masonryFundEvents = await Treasury.queryFilter(
+  //     treasuryMasonryFundedFilter
+  //   );
+  //   var events: any[] = [];
+  //   masonryFundEvents.forEach(function callback(value, index) {
+  //     events.push({ epoch: index + 1 });
+  //     events[index].masonryFund = getDisplayBalance(value.args[1]);
+  //     if (index === 0) {
+  //       epochBlocksRanges.push({
+  //         index: index,
+  //         startBlock: value.blockNumber,
+  //         boughBonds: 0,
+  //         redeemedBonds: 0,
+  //       });
+  //     }
+  //     if (index > 0) {
+  //       epochBlocksRanges.push({
+  //         index: index,
+  //         startBlock: value.blockNumber,
+  //         boughBonds: 0,
+  //         redeemedBonds: 0,
+  //       });
+  //       epochBlocksRanges[index - 1].endBlock = value.blockNumber;
+  //     }
+  //   });
 
-    epochBlocksRanges.forEach(async (value, index) => {
-      events[index].bondsBought = await this.getBondsWithFilterForPeriod(
-        boughtBondsFilter,
-        value.startBlock,
-        value.endBlock
-      );
-      events[index].bondsRedeemed = await this.getBondsWithFilterForPeriod(
-        redeemBondsFilter,
-        value.startBlock,
-        value.endBlock
-      );
-    });
-    let DEVFundEvents = await Treasury.queryFilter(treasuryDevFundedFilter);
-    DEVFundEvents.forEach(function callback(value, index) {
-      events[index].devFund = getDisplayBalance(value.args[1]);
-    });
-    let DAOFundEvents = await Treasury.queryFilter(treasuryDaoFundedFilter);
-    DAOFundEvents.forEach(function callback(value, index) {
-      events[index].daoFund = getDisplayBalance(value.args[1]);
-    });
-    return events;
-  }
+  //   epochBlocksRanges.forEach(async (value, index) => {
+  //     events[index].bondsBought = await this.getBondsWithFilterForPeriod(
+  //       boughtBondsFilter,
+  //       value.startBlock,
+  //       value.endBlock
+  //     );
+  //     events[index].bondsRedeemed = await this.getBondsWithFilterForPeriod(
+  //       redeemBondsFilter,
+  //       value.startBlock,
+  //       value.endBlock
+  //     );
+  //   });
+  //   let DEVFundEvents = await Treasury.queryFilter(treasuryDevFundedFilter);
+  //   DEVFundEvents.forEach(function callback(value, index) {
+  //     events[index].devFund = getDisplayBalance(value.args[1]);
+  //   });
+  //   let DAOFundEvents = await Treasury.queryFilter(treasuryDaoFundedFilter);
+  //   DAOFundEvents.forEach(function callback(value, index) {
+  //     events[index].daoFund = getDisplayBalance(value.args[1]);
+  //   });
+  //   return events;
+  // }
 
   /**
    * Helper method
@@ -2262,6 +2312,7 @@ export class PolarisFinance {
       return getDisplayBalance(estimateBN, 18, 6);
     } catch (err) {
       console.error(`Failed to fetch estimate tshare amount: ${err}`);
+      return 'undefined';
     }
   }
 
