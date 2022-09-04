@@ -35,7 +35,7 @@ function getHorizontalStickyClass(index: number) {
 <template>
   <tr
     :class="[
-      'bg-white z-10 row-bg group',
+      'bg-white z-10 row-bg group bg-[#231928]',
       {
         'cursor-pointer': handleRowClick,
         'border-b dark:border-gray-700': pinned,
@@ -54,6 +54,7 @@ function getHorizontalStickyClass(index: number) {
     >
       <router-link
         v-if="link"
+        class="bg-[#231928]"
         :to="{
           name: link.to,
           params: link.getParams(data),
@@ -64,7 +65,7 @@ function getHorizontalStickyClass(index: number) {
           v-else
           :class="
             compact([
-              'px-6 py-4',
+              'px-6 py-4 bg-[#231928]',
               column.align === 'right' ? 'text-right' : 'text-left',
               column.cellClassName,
             ])
@@ -83,7 +84,7 @@ function getHorizontalStickyClass(index: number) {
           v-else
           :class="
             compact([
-              'px-6 py-4',
+              'px-6 py-4 bg-[#231928]',
               column.align === 'right' ? 'text-right' : 'text-left',
               column.cellClassName,
             ])

@@ -77,22 +77,48 @@ const stats = computed(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+  <div
+    class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-[12px] pb-[12px]"
+  >
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading" class="h-24" />
-      <BalCard v-else>
-        <div class="flex mb-2 text-sm font-medium text-secondary">
-          <span>{{ stat.label }}</span>
-          <APRTooltip
+      <div class="card-container" v-else>
+        <div class="flex mb-[12px] text-sm font-medium text-secondary">
+          <div class="label">{{ stat.label }}</div>
+          <!-- <APRTooltip
             v-if="stat.id === 'apr'"
             :pool="pool"
             :poolApr="poolApr"
-          />
+          /> -->
         </div>
-        <div class="flex items-center text-xl font-medium truncate">
+        <div class="flex items-center text-xl font-medium truncate funds">
           {{ stat.value }}
         </div>
-      </BalCard>
+      </div>
     </template>
   </div>
 </template>
+
+<style>
+.card-container {
+  background: #231928;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #be95c0;
+}
+
+.funds {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+</style>

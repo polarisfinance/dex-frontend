@@ -257,7 +257,7 @@ watch(
             ]"
             @click="handleSort(column.id)"
           >
-            <div :class="['flex', getAlignProperty(column.align)]">
+            <div :class="['flex bg-[#231928]', getAlignProperty(column.align)]">
               <slot
                 v-if="column.Header"
                 v-bind="column"

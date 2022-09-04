@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div :class="['bal-tab-container text-secondary', containerClasses]">
+    <div :class="['bal-tab-container', containerClasses]">
       <div
         v-for="(tab, i) in tabs"
         :key="i"
-        :class="['bal-tab font-medium', stateClasses(tab)]"
+        :class="['bal-tab', stateClasses(tab)]"
         @click="onClick(tab)"
       >
         {{ tab.label }}
@@ -53,10 +53,8 @@ export default defineComponent({
 
     function stateClasses(tab: Tab): Record<string, boolean> {
       return {
-        'border-b-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:border-blue-500 font-semibold':
-          isActiveTab(tab),
-        'hover:text-purple-600 dark:hover:text-yellow-500 dark:border-gray-700 transition-colors':
-          !isActiveTab(tab),
+        'tab-selected': isActiveTab(tab),
+        'tab-unselected': !isActiveTab(tab),
       };
     }
 
@@ -75,11 +73,29 @@ export default defineComponent({
   @apply -mb-px mr-6 py-3 cursor-pointer;
 }
 
+.tab-selected {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #fbaaff;
+
+  border-bottom: 1px solid #fbaaff;
+}
+
+.tab-unselected {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
 .bal-tab:last-child {
   @apply mr-0;
 }
 
 .bal-tab-container {
-  @apply flex border-b dark:border-gray-700;
+  @apply flex;
 }
 </style>

@@ -1,10 +1,114 @@
 <template>
-  <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
-    <div
-      class="grid grid-cols-1 lg:grid-cols-3 gap-x-0 lg:gap-x-4 xl:gap-x-8 gap-y-8"
-    > 
-    <!-- this shit doesnt work for some reason :( -->
-      <!-- <PoolPageHeader
+  <div class="flex">
+    <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
+      <div class="flex justify-between mb-[24px]">
+        <div class="flex-column">
+          <div class="pool-title">Segniorage Pool</div>
+          <div class="pool-subtitle">Dynamic swap fees: Currently 0.3%</div>
+        </div>
+        <div class="flex items-center" v-if="isDesktop">
+          <div class="flex items-center mr-[12px]">
+            <div
+              v-for="(token, idx) in tableData"
+              :key="idx"
+              class="flex token-name"
+            >
+              <div>
+                {{ symbolFor(token.address) }}
+              </div>
+              <div v-if="idx < tableData.length - 1">-</div>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div v-for="(token, idx) in tableData" :key="idx">
+              <BalAsset :address="token.address" :size="33" />
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="flex items-center">
+            <div v-for="(token, idx) in tableData" :key="idx">
+              <BalAsset :address="token.address" :size="33" />
+            </div>
+          </div>
+          <div class="flex items-center mr-[12px]">
+            <div
+              v-for="(token, idx) in tableData"
+              :key="idx"
+              class="flex token-name"
+            >
+              <div>
+                {{ symbolFor(token.address) }}
+              </div>
+              <div v-if="idx < tableData.length - 1">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="my-pool-container" v-if="isMobile">
+        <div class="my-pool-upper">
+          <div>My pool balance</div>
+          <div class="border my-[12px]" />
+          <div>
+            <div
+              v-for="(token, idx) in tableData"
+              :key="idx"
+              class="flex token-name items-center justify-between mb-[12px]"
+            >
+              <div class="flex items-center">
+                <BalAsset
+                  :address="token.address"
+                  :size="32"
+                  class="mr-[12px]"
+                />
+                <div class="flex-column">
+                  <div>
+                    {{ symbolFor(token.address) }}
+                  </div>
+                  <div class="token-subtitle">
+                    {{ symbolFor(token.address) }}
+                  </div>
+                </div>
+              </div>
+              <div>-</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#2E2433] p-[12px]">
+          <div class="small-text">Based on pool tokens in your wallet</div>
+          <div class="mb-[12px]">You can invest</div>
+          <button class="w-full connect-btn-pool">Connect Wallet</button>
+        </div>
+      </div>
+      <div class="AC-container my-[16px]" v-if="isMobile">
+        <div>Auto Compounder</div>
+        <div class="brd my-[12px]" />
+        <div class="deposit mb-[16px]">
+          Deposit SPOLAR-NEAR-LP to an autocompounder
+        </div>
+        <div class="flex gap-[50px] justify-center">
+          <div class="flex-col gap-[8px] text-right">
+            <div>APY</div>
+            <div>Daily APY</div>
+            <div>Deposit Fee</div>
+            <div>Withdraw Fee</div>
+            <div>On Profits Fee</div>
+          </div>
+          <div class="flex-col gap-[8px] text-right">
+            <div>372.8%</div>
+            <div>0.23%</div>
+            <div>0%</div>
+            <div>0.1%</div>
+            <div>3.5%</div>
+          </div>
+        </div>
+        <button class="mt-[16px] w-full approve-btn-placeholder">
+          <div class="approve-btn">Approve LP</div>
+        </button>
+      </div>
+      <div class="">
+        <!-- this shit doesnt work for some reason :( -->
+        <!-- <PoolPageHeader
         :loadingPool="loadingPool"
         :pool="pool"
         :isStableLikePool="isStableLikePool"
@@ -14,75 +118,142 @@
         :isLiquidityBootstrappingPool="isLiquidityBootstrappingPool"
         :isStablePhantomPool="isLiquidityBootstrappingPool"
       /> -->
-      <div class="hidden lg:block" />
-      <div class="order-2 lg:order-1 col-span-2">
-        <div class="grid grid-cols-1 gap-y-8">
-          <div class="px-4 lg:px-0">
-            <PoolChart
-              :pool="pool"
-              :historicalPrices="historicalPrices"
-              :snapshots="snapshots"
-              :loading="isLoadingSnapshots"
-              :totalLiquidity="pool?.totalLiquidity"
-              :tokensList="pool?.tokensList"
-              :poolType="pool?.poolType"
-            />
-          </div>
-          <div class="px-4 lg:px-0 mb-4">
-            <!-- <PoolStatCards
-              :pool="pool"
-              :poolApr="poolApr"
-              :loading="loadingPool"
-              :loadingApr="loadingPool"
-            /> -->
-            <ApyVisionPoolLink
+        <div class="hidden lg:block" />
+        <div class="order-2 lg:order-1 col-span-2">
+          <div class="grid grid-cols-1 gap-y-8">
+            <div class="px-4 lg:px-0">
+              <PoolChart
+                :pool="pool"
+                :historicalPrices="historicalPrices"
+                :snapshots="snapshots"
+                :loading="isLoadingSnapshots"
+                :totalLiquidity="pool?.totalLiquidity"
+                :tokensList="pool?.tokensList"
+                :poolType="pool?.poolType"
+              />
+            </div>
+            <div class="px-4 lg:px-0 mb-[70px]">
+              <PoolStatCards
+                :pool="pool"
+                :poolApr="poolApr"
+                :loading="loadingPool"
+                :loadingApr="loadingPool"
+              />
+              <!-- <ApyVisionPoolLink
               v-if="!loadingPool"
               :poolId="pool?.id"
               :titleTokens="titleTokens"
+            /> -->
+            </div>
+            <div class="mb-4">
+              <h4
+                class="px-4 lg:px-0 mb-[12px] table-title"
+                v-text="$t('poolComposition')"
+              />
+              <PoolBalancesCard :pool="pool" :loading="loadingPool" />
+            </div>
+
+            <div ref="intersectionSentinel" />
+            <PoolTransactionsCard
+              v-if="isSentinelIntersected"
+              :pool="pool"
+              :loading="loadingPool"
             />
           </div>
-          <div class="mb-4">
-            <h4 class="px-4 lg:px-0 mb-4" v-text="$t('poolComposition')" />
-            <PoolBalancesCard :pool="pool" :loading="loadingPool" />
-          </div>
+        </div>
 
-          <div ref="intersectionSentinel" />
-          <PoolTransactionsCard
-            v-if="isSentinelIntersected"
-            :pool="pool"
-            :loading="loadingPool"
-          />
+        <div
+          v-if="!isLiquidityBootstrappingPool"
+          class="order-1 lg:order-2 px-4 lg:px-0"
+        >
+          <StakingProvider :poolAddress="getAddressFromPoolId(id)">
+            <BalStack vertical>
+              <BalLoadingBlock
+                v-if="loadingPool"
+                class="mb-4 h-60 pool-actions-card"
+              />
+              <MyPoolBalancesCard
+                v-else-if="!noInitLiquidity"
+                :pool="pool"
+                :missingPrices="missingPrices"
+                class="mb-4"
+              />
+
+              <BalLoadingBlock
+                v-if="loadingPool"
+                class="h-40 pool-actions-card"
+              />
+              <StakingIncentivesCard
+                v-if="isStakablePool && !loadingPool"
+                :pool="pool"
+                class="staking-incentives"
+              />
+            </BalStack>
+          </StakingProvider>
         </div>
       </div>
-
-      <div
-        v-if="!isLiquidityBootstrappingPool"
-        class="order-1 lg:order-2 px-4 lg:px-0"
-      >
-        <!-- <StakingProvider :poolAddress="getAddressFromPoolId(id)">
-          <BalStack vertical>
-            <BalLoadingBlock
-              v-if="loadingPool"
-              class="mb-4 h-60 pool-actions-card"
-            />
-            <MyPoolBalancesCard
-              v-else-if="!noInitLiquidity"
-              :pool="pool"
-              :missingPrices="missingPrices"
-              class="mb-4"
-            />
-
-            <BalLoadingBlock
-              v-if="loadingPool"
-              class="h-40 pool-actions-card"
-            />
-            <StakingIncentivesCard
-              v-if="isStakablePool && !loadingPool"
-              :pool="pool"
-              class="staking-incentives"
-            />
-          </BalStack>
-        </StakingProvider> -->
+    </div>
+    <div class="pt-28">
+      <div class="my-pool-container" v-if="isDesktop">
+        <div class="my-pool-upper">
+          <div>My pool balance</div>
+          <div class="border my-[12px]" />
+          <div>
+            <div
+              v-for="(token, idx) in tableData"
+              :key="idx"
+              class="flex token-name items-center justify-between mb-[12px]"
+            >
+              <div class="flex items-center">
+                <BalAsset
+                  :address="token.address"
+                  :size="32"
+                  class="mr-[12px]"
+                />
+                <div class="flex-column">
+                  <div>
+                    {{ symbolFor(token.address) }}
+                  </div>
+                  <div class="token-subtitle">
+                    {{ symbolFor(token.address) }}
+                  </div>
+                </div>
+              </div>
+              <div>-</div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#2E2433] p-[12px]">
+          <div class="small-text">Based on pool tokens in your wallet</div>
+          <div class="mb-[12px]">You can invest</div>
+          <button class="w-full connect-btn-pool">Connect Wallet</button>
+        </div>
+      </div>
+      <div class="AC-container my-[16px]" v-if="isDesktop">
+        <div>Auto Compounder</div>
+        <div class="brd my-[12px]" />
+        <div class="deposit mb-[16px]">
+          Deposit SPOLAR-NEAR-LP to an autocompounder
+        </div>
+        <div class="flex gap-[50px] justify-center">
+          <div class="flex-col gap-[8px] text-right">
+            <div>APY</div>
+            <div>Daily APY</div>
+            <div>Deposit Fee</div>
+            <div>Withdraw Fee</div>
+            <div>On Profits Fee</div>
+          </div>
+          <div class="flex-col gap-[8px] text-right">
+            <div>372.8%</div>
+            <div>0.23%</div>
+            <div>0%</div>
+            <div>0.1%</div>
+            <div>3.5%</div>
+          </div>
+        </div>
+        <button class="mt-[16px] w-full approve-btn-placeholder">
+          <div class="approve-btn">Approve LP</div>
+        </button>
       </div>
     </div>
   </div>
@@ -118,6 +289,8 @@ import { POOLS } from '@/constants/pools';
 import { getAddressFromPoolId, includesAddress } from '@/lib/utils';
 // import StakingProvider from '@/providers/local/staking/staking.provider';
 import useWeb3 from '@/services/web3/useWeb3';
+import { shortenLabel } from '@/lib/utils';
+import useBreakpoints from '@/composables/useBreakpoints';
 
 interface PoolPageData {
   id: string;
@@ -142,6 +315,22 @@ export default defineComponent({
     const { prices } = useTokens();
     const { addAlert, removeAlert } = useAlerts();
     const { isAffected, warnings } = usePoolWarning(route.params.id as string);
+
+    const { isMobile, isDesktop } = useBreakpoints();
+
+    const tableData = computed(() => {
+      const onchainTokens = pool.value?.onchain?.tokens || [];
+      return Object.keys(onchainTokens).map((address, index) => ({
+        address,
+        index,
+      }));
+    });
+
+    function symbolFor(address: string) {
+      if (!pool || !pool.value) return '-';
+      const symbol = pool.value?.onchain?.tokens?.[address]?.symbol;
+      return symbol ? symbol : shortenLabel(address);
+    }
 
     /**
      * STATE
@@ -310,8 +499,12 @@ export default defineComponent({
       titleTokens,
       // methods
       getAddressFromPoolId,
+      tableData,
+      symbolFor,
       // poolApr,
       // loadingApr,
+      isMobile,
+      isDesktop,
     };
   },
 });
@@ -330,5 +523,158 @@ export default defineComponent({
 
 .staking-incentives :deep(.active-section) {
   @apply border-transparent;
+}
+
+.table-title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.pool-title {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 31px;
+
+  color: #ffffff;
+}
+
+.pool-subtitle {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.token-name {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #ffffff;
+}
+
+.my-pool-balance {
+  background: #231928;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+}
+
+.my-pool-container {
+  background: #231928;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #ffffff;
+}
+
+.my-pool-upper {
+  padding: 12px;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+
+.token-subtitle {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.small-text {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.connect-btn-pool {
+  background: #7b307f;
+  border-radius: 12px;
+  padding: 12px 0px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #fdfdfd;
+}
+
+.connect-btn-pool:hover {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.7) 0%,
+    rgba(123, 48, 127, 0.567) 100%
+  );
+}
+
+.connect-btn-pool:active {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.5) 0%,
+    rgba(123, 48, 127, 0.405) 100%
+  );
+}
+
+.AC-container {
+  background: linear-gradient(#180a1e, #180a1e) padding-box,
+    linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box;
+  border: 1px solid transparent;
+  border-radius: 22px;
+
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #ffffff;
+
+  padding: 12px 24px;
+}
+
+.brd {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+
+.deposit {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.approve-btn {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  background: linear-gradient(
+    90.64deg,
+    #fbaaff -20.45%,
+    #f89c35 36.77%,
+    #7b307f 100.27%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.approve-btn-placeholder {
+  background: #2e2433;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
 }
 </style>
