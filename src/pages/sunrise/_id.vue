@@ -12,7 +12,7 @@
     <img src="./alert.svg" class="mr-[12px]" />
     <div>
       As we are in recovery mode, it is important to not sell your reward.
-      Please stake your ETHERNAL in the DAWIN single stake.
+      Please stake your ETHERNAL in the DAWN single stake.
     </div>
   </div>
   <div :class="{ info: isDesktop, infoMobile: isMobile }">
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue';
+import { computed, defineComponent, reactive, toRefs, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { sunriseDefinitions } from './config';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -117,11 +117,7 @@ export default defineComponent({
       return undefined;
     });
 
-    const PolarisFinance = usePolarisFinance().pf;
-    // doesnt work as it can be undefined
-    // const time = usePolarisFinance().pf.value.getTreasuryNextAllocationTime(
-    //   sunrise.value
-    // );
+    usePolarisFinance();
 
     return {
       // data
@@ -132,7 +128,6 @@ export default defineComponent({
 
       // computed
       sunrise,
-      PolarisFinance,
       // time,
     };
   },
