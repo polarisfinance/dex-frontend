@@ -56,6 +56,9 @@ const poolActivities = computed(() =>
       )
     : []
 );
+
+console.log(poolActivities);
+
 const isLoadingPoolActivities = computed(
   () => poolActivitiesQuery.isLoading.value
 );

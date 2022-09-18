@@ -10,8 +10,5 @@ export default function usePolarisFinance() {
     console.log(web3.isWalletReady.value);
     console.log('Wallet is ready ' + web3.isWalletReady.value);
     setWeb3(web3);
-    console.log('TEST');
-    console.log(pf.value);
-    console.log('TEST');
   });
 }

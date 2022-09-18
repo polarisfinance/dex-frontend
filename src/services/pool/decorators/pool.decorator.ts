@@ -46,20 +46,22 @@ export class PoolDecorator {
 
     const poolMulticaller = new PoolMulticaller(processedPools);
 
-    const [
-      poolSnapshots,
-      rawOnchainDataMap,
-      [protocolFeePercentage, gaugeBALAprs, gaugeRewardTokenAprs],
-    ] = await Promise.all([
-      this.getSnapshots(),
-      poolMulticaller.fetch(),
-      this.getData(prices, gauges, tokens, processedPools, includeAprs),
-    ]);
+    // const [
+    //   poolSnapshots,
+    //   rawOnchainDataMap,
+    //   [protocolFeePercentage, gaugeBALAprs, gaugeRewardTokenAprs],
+    // ] = await Promise.all([
+    //   this.getSnapshots(),
+    //   poolMulticaller.fetch(),
+    //   this.getData(prices, gauges, tokens, processedPools, includeAprs),
+    // ]);
+    const poolSnapshots = await this.getSnapshots();
+    const rawOnchainDataMap = await poolMulticaller.fetch();
 
-    const setAprCondition =
-      gaugeBALAprs &&
-      gaugeRewardTokenAprs &&
-      typeof protocolFeePercentage === 'number';
+    // const setAprCondition =
+    //   gaugeBALAprs &&
+    //   gaugeRewardTokenAprs &&
+    //   typeof protocolFeePercentage === 'number';
 
     const promises = processedPools.map(async pool => {
       const poolSnapshot = poolSnapshots.find(p => p.id === pool.id);
@@ -70,16 +72,28 @@ export class PoolDecorator {
       poolService.setVolumeSnapshot(poolSnapshot);
       await poolService.setLinearPools();
 
-      if (setAprCondition) {
-        await poolService.setAPR(
-          poolSnapshot,
-          prices,
-          currency,
-          protocolFeePercentage,
-          gaugeBALAprs[pool.id],
-          gaugeRewardTokenAprs[pool.id]
-        );
-      }
+      const protocolFeePercentage =
+        await this.balancerContracts.vault.protocolFeesCollector.getSwapFeePercentage();
+
+      await poolService.setAPR(
+        poolSnapshot,
+        prices,
+        currency,
+        protocolFeePercentage,
+        { min: '0', max: '0' },
+        '0'
+      );
+
+      // if (setAprCondition) {
+      //   await poolService.setAPR(
+      //     poolSnapshot,
+      //     prices,
+      //     currency,
+      //     protocolFeePercentage,
+      //     gaugeBALAprs[pool.id],
+      //     gaugeRewardTokenAprs[pool.id]
+      //   );
+      // }
 
       return poolService.pool;
     });

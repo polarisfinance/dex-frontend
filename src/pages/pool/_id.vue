@@ -4,7 +4,10 @@
       <div class="flex justify-between mb-[24px]">
         <div class="flex-column">
           <div class="pool-title">Segniorage Pool</div>
-          <div class="pool-subtitle">Dynamic swap fees: Currently 0.3%</div>
+          <div class="pool-subtitle">
+            Dynamic swap fees: Currently
+            <!-- {{ parseFloat(pool.swapFee) * 100 + '%' }} -->
+          </div>
         </div>
         <div class="flex items-center" v-if="isDesktop">
           <div class="flex items-center mr-[12px]">

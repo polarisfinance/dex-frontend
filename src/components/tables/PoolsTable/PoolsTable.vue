@@ -394,7 +394,7 @@ function iconAddresses(pool: PoolWithShares) {
               />
               <template v-else>
                 <div class="w-12 h-4">
-                  {{ aprLabelFor(pool) }}
+                  {{ parseFloat(aprLabelFor(pool)) / 365 + '%' }}
                 </div>
               </template>
             </div>
@@ -405,15 +405,15 @@ function iconAddresses(pool: PoolWithShares) {
               />
               <template v-else>
                 <div class="w-12 h-4">
-                  {{ aprLabelFor(pool) }}
+                  {{ aprLabelFor(pool) + '%' }}
                 </div>
               </template>
             </div>
             <div>
-              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
+              <BalLoadingBlock v-if="!pool?.totalLiquidity" class="w-12 h-4" />
               <span v-else class="text-right w-12 h-4">
                 {{
-                  fNum2(pool?.volumeSnapshot, {
+                  fNum2(pool?.totalLiquidity, {
                     style: 'currency',
                     maximumFractionDigits: 0,
                   })
@@ -421,15 +421,16 @@ function iconAddresses(pool: PoolWithShares) {
               </span>
             </div>
             <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
-              />
-              <template v-else>
-                <div class="w-12 h-4">
-                  {{ aprLabelFor(pool) }}
-                </div>
-              </template>
+              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
+              <span v-else class="text-right w-12 h-4">
+                <!-- {{
+                  Num2(pool?.volumeSnapshot, {
+                    style: 'currency',
+                    maximumFractionDigits: 0,
+                  })
+                }} -->
+                {{ '$' + pool?.volumeSnapshot }}
+              </span>
             </div>
             <div>
               <BalLoadingBlock

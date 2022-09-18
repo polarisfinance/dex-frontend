@@ -92,7 +92,7 @@ const stats = computed(() => {
           /> -->
         </div>
         <div class="flex items-center text-xl font-medium truncate funds">
-          {{ stat.value }}
+          {{ stat.value }} <span v-if="stat.label == 'APR'">%</span>
         </div>
       </div>
     </template>

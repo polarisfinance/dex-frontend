@@ -173,7 +173,7 @@ export function totalAprLabel(aprs: PoolAPRs, boost?: string): string {
     return `${minAPR} - ${maxAPR}`;
   }
 
-  return numF(aprs.total.staked.min, FNumFormats.percent);
+  return aprs.total.staked.min;
 }
 
 /**

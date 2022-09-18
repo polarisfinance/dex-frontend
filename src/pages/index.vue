@@ -15,6 +15,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import segniorageImg from './segniorage.svg';
 import singleStakingImg from './single-staking.svg';
 import classicImg from './classic.svg';
+import { InvestmentPool } from '@balancer-labs/typechain';
 
 // COMPOSABLES
 const router = useRouter();
@@ -29,6 +30,9 @@ const {
   loadMore,
   isLoadingMore,
 } = useStreamedPoolsQuery(selectedTokens);
+console.log('xxx');
+console.log(investmentPools);
+console.log('xxx');
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const { priceQueryLoading } = useTokens();
 
