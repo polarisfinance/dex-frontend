@@ -48,7 +48,13 @@
           </div>
         </div>
       </div>
-      <div class="my-pool-container" v-if="isMobile">
+      <MyPoolBalancesCard
+        v-if="isMobile"
+        :pool="pool"
+        :missingPrices="missingPrices"
+        class="mb-4"
+      />
+      <!-- <div class="my-pool-container" v-if="isMobile">
         <div class="my-pool-upper">
           <div>My pool balance</div>
           <div class="border my-[12px]" />
@@ -80,9 +86,14 @@
         <div class="bg-[#2E2433] p-[12px]">
           <div class="small-text">Based on pool tokens in your wallet</div>
           <div class="mb-[12px]">You can invest</div>
-          <button class="w-full connect-btn-pool">Connect Wallet</button>
+          <button
+            class="w-full connect-btn-pool"
+            @click="startConnectWithInjectedProvider"
+          >
+            Connect Wallet
+          </button>
         </div>
-      </div>
+      </div> -->
       <div class="AC-container my-[16px]" v-if="isMobile">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
@@ -165,7 +176,7 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           v-if="!isLiquidityBootstrappingPool"
           class="order-1 lg:order-2 px-4 lg:px-0"
         >
@@ -193,11 +204,17 @@
               />
             </BalStack>
           </StakingProvider>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="pt-28">
-      <div class="my-pool-container" v-if="isDesktop">
+      <MyPoolBalancesCard
+        v-if="isDesktop"
+        :pool="pool"
+        :missingPrices="missingPrices"
+        class="mb-4"
+      />
+      <!-- <div class="my-pool-container" v-if="isDesktop">
         <div class="my-pool-upper">
           <div>My pool balance</div>
           <div class="border my-[12px]" />
@@ -229,9 +246,21 @@
         <div class="bg-[#2E2433] p-[12px]">
           <div class="small-text">Based on pool tokens in your wallet</div>
           <div class="mb-[12px]">You can invest</div>
-          <button class="w-full connect-btn-pool">Connect Wallet</button>
+          <button
+            v-if="account"
+            @click="startConnectWithInjectedProvider"
+            class="w-full connect-btn-pool"
+          >
+            Connect Wallet
+          </button>
+          <div v-else>
+            <div class="flex w-full gap-[8px]">
+              <button class="w-full invest-btn">Invest</button>
+              <button class="w-full withdraw-btn">Withdraw</button>
+            </div>
+          </div>
         </div>
-      </div>
+      </div> -->
       <div class="AC-container my-[16px]" v-if="isDesktop">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
@@ -295,6 +324,8 @@ import useWeb3 from '@/services/web3/useWeb3';
 import { shortenLabel } from '@/lib/utils';
 import useBreakpoints from '@/composables/useBreakpoints';
 
+import { MyPoolBalancesCard } from '@/components/contextual/pages/pool/index';
+
 interface PoolPageData {
   id: string;
 }
@@ -320,6 +351,8 @@ export default defineComponent({
     const { isAffected, warnings } = usePoolWarning(route.params.id as string);
 
     const { isMobile, isDesktop } = useBreakpoints();
+
+    const { account, connector, startConnectWithInjectedProvider } = useWeb3();
 
     const tableData = computed(() => {
       const onchainTokens = pool.value?.onchain?.tokens || [];
@@ -508,6 +541,9 @@ export default defineComponent({
       // loadingApr,
       isMobile,
       isDesktop,
+      startConnectWithInjectedProvider,
+      account,
+      MyPoolBalancesCard,
     };
   },
 });
@@ -679,5 +715,31 @@ export default defineComponent({
   background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
+}
+
+.invest-btn {
+  background: radial-gradient(
+    49.66% 488.58% at 50% 30%,
+    #7b307f 0%,
+    rgba(123, 48, 127, 0.81) 100%
+  );
+  border-radius: 12px;
+  padding: 12px 0px;
+  color: #fdfdfd;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.withdraw-btn {
+  padding: 12px 0px;
+  background: #231928;
+  border-radius: 12px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(245, 225, 255, 0.7);
 }
 </style>

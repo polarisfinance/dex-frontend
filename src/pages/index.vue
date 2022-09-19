@@ -30,9 +30,6 @@ const {
   loadMore,
   isLoadingMore,
 } = useStreamedPoolsQuery(selectedTokens);
-console.log('xxx');
-console.log(investmentPools);
-console.log('xxx');
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const { priceQueryLoading } = useTokens();
 
