@@ -115,6 +115,9 @@ module.exports = {
           700: '#de07e2',
           800: '#d400d8',
           900: '#ca00ce',
+          primary: '#FBAAFF',
+          secondary: '#BE95C0',
+          third: 'rgba(245, 225, 255, 0.7)',
         },
         purple: {
           50: '#faf5ff',
