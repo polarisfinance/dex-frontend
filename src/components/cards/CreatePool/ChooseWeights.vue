@@ -315,71 +315,66 @@ function onAlertMountChange() {
 <template>
   <div ref="cardWrapper" class="mb-16">
     <BalStack vertical spacing="sm">
-      <div ref="tokenWeightListWrapper">
-        <div class="flex flex-col">
+      <div>
+        <div
+          class="flex justify-between px-4 w-full text-[16px] leading-[20px] font-semibold"
+        >
+          <span>{{ $t('token') }}</span>
+          <span>{{ $t('weight') }}</span>
+        </div>
+        <div class="grid max-w-full w-full gap-[4px] mt-[8px]">
           <div
-            class="flex justify-between px-4 w-full text-[16px] leading-[20px] font-semibold"
+            v-for="(token, i) of seedTokens"
+            :key="`tokenweight-${token.id}`"
+            :ref="addTokenListElementRef"
+            class="max-w-full w-full"
           >
-            <span>{{ $t('token') }}</span>
-            <span>{{ $t('weight') }}</span>
+            <AnimatePresence isVisible>
+              <TokenWeightInput
+                v-model:weight="seedTokens[i].weight"
+                v-model:address="seedTokens[i].tokenAddress"
+                noRules
+                noMax
+                class="w-full"
+                :excludedTokens="excludedTokens"
+                @update:weight="data => handleWeightChange(data, i)"
+                @update:address="data => handleAddressChange(data, i)"
+                @update:is-locked="data => handleLockedWeight(data, i)"
+                @delete="() => handleRemoveToken(i)"
+              />
+            </AnimatePresence>
           </div>
-          <div class="grid max-w-full w-full gap-5">
-            <div
-              v-for="(token, i) of seedTokens"
-              :key="`tokenweight-${token.id}`"
-              :ref="addTokenListElementRef"
-              class="max-w-full w-full"
-            >
-              <AnimatePresence isVisible>
-                <TokenWeightInput
-                  v-model:weight="seedTokens[i].weight"
-                  v-model:address="seedTokens[i].tokenAddress"
-                  noRules
-                  noMax
-                  class="w-full"
-                  :excludedTokens="excludedTokens"
-                  @update:weight="data => handleWeightChange(data, i)"
-                  @update:address="data => handleAddressChange(data, i)"
-                  @update:is-locked="data => handleLockedWeight(data, i)"
-                  @delete="() => handleRemoveToken(i)"
-                />
-              </AnimatePresence>
-            </div>
-          </div>
-          <div ref="addTokenRowElement" class="p-3">
-            <BalBtn
-              :disabled="maxTokenAmountReached"
-              outline
-              :color="maxTokenAmountReached ? 'gray' : 'blue'"
-              size="sm"
-              @click="addTokenToPool"
-            >
-              {{ $t('addToken') }}
-            </BalBtn>
-          </div>
-          <div
-            ref="totalsRowElement"
-            class="p-2 px-4 w-full bg-gray-50 dark:bg-gray-850"
+        </div>
+        <div class="p-3">
+          <BalBtn
+            :disabled="maxTokenAmountReached"
+            outline
+            :color="maxTokenAmountReached ? 'gray' : 'blue'"
+            size="sm"
+            @click="addTokenToPool"
           >
-            <div class="flex justify-between w-full">
-              <h6>{{ $t('totalAllocated') }}</h6>
-              <BalStack horizontal spacing="xs" align="center">
-                <h6 :class="weightColor">{{ totalAllocatedWeight }}%</h6>
-                <BalIcon
-                  v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
-                  class="mt-px text-red-500"
-                  name="alert-circle"
-                  size="sm"
-                />
-              </BalStack>
-            </div>
-            <BalProgressBar
-              :color="progressBarColor"
-              :width="totalAllocatedWeight"
-              :bufferWidth="0"
-              class="my-2"
-            />
+            {{ $t('addToken') }}
+          </BalBtn>
+        </div>
+        <div class="p-2 px-4 w-full bg-gray-50 dark:bg-gray-850">
+          <div class="flex justify-between w-full">
+            <h6>{{ $t('totalAllocated') }}</h6>
+            <BalStack horizontal spacing="xs" align="center">
+              <h6 :class="weightColor">{{ totalAllocatedWeight }}%</h6>
+              <BalIcon
+                v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
+                class="mt-px text-red-500"
+                name="alert-circle"
+                size="sm"
+              />
+            </BalStack>
           </div>
+          <BalProgressBar
+            :color="progressBarColor"
+            :width="totalAllocatedWeight"
+            :bufferWidth="0"
+            class="my-2"
+          />
         </div>
       </div>
       <AnimatePresence
