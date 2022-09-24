@@ -394,7 +394,7 @@ function iconAddresses(pool: PoolWithShares) {
               />
               <template v-else>
                 <div class="w-12 h-4">
-                  {{ parseFloat(aprLabelFor(pool)) / 365 + '%' }}
+                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
                 </div>
               </template>
             </div>
@@ -405,7 +405,7 @@ function iconAddresses(pool: PoolWithShares) {
               />
               <template v-else>
                 <div class="w-12 h-4">
-                  {{ aprLabelFor(pool) + '%' }}
+                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
                 </div>
               </template>
             </div>
@@ -439,7 +439,7 @@ function iconAddresses(pool: PoolWithShares) {
               />
               <template v-else>
                 <div class="w-12 h-4">
-                  {{ aprLabelFor(pool) }}
+                  {{ Math.round(aprLabelFor(pool), 2) }}
                 </div>
               </template>
             </div>

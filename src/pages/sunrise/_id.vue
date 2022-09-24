@@ -28,7 +28,12 @@
       <div class="num-tokens">100</div>
       <div class="details">$832.32</div>
       <div class="details">SPOLAR Staked</div>
-      <div class="flex justify-center mt-[24px] gap-[12px]">
+      <div v-if="approved == '0'">
+        <button class="claim-button" @click="approveSpolar">
+          Approve Spolar
+        </button>
+      </div>
+      <div class="flex justify-center mt-[24px] gap-[12px]" v-else>
         <button class="claim-btn">Deposit</button>
         <button class="withdraw-btn">Withdraw</button>
       </div>
@@ -78,7 +83,6 @@ import { computed, defineComponent, reactive, toRefs, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { sunriseDefinitions } from './config';
 import useBreakpoints from '@/composables/useBreakpoints';
-import usePolarisFinance from '@/composables/usePolarisFinance';
 
 import polarImg from './polar.svg';
 import orbitalImg from './orbital.svg';
@@ -87,16 +91,90 @@ import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
 
+import config from '@/lib/config/aurora.json';
+import Web3 from 'web3';
+
+import useWeb3 from '@/services/web3/useWeb3';
+
+import { sendTransaction } from '@/lib/utils/balancer/web3';
+import { MaxUint256 } from '@ethersproject/constants';
+import { TransactionResponse } from '@ethersproject/abstract-provider';
+
 interface PoolPageData {
   id: string;
 }
 
 export default defineComponent({
   components: {},
+  data() {
+    return {
+      approved: '0',
+    };
+  },
+
+  async created() {
+    const route = useRoute();
+    const { account } = useWeb3();
+    type Sunrises = [{ id: string; type: string }];
+
+    const result = await fetch(
+      `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `
+      query {
+        sunrises {
+          id,
+          type
+        }
+    }`,
+        }),
+      }
+    );
+    const result_json = await result.json();
+    const sunrises: Sunrises = result_json['data']['sunrises'];
+
+    const route_id = route.params.id;
+    var sunriseName = '';
+
+    for (let sunrise of Object.values(sunriseDefinitions)) {
+      if (sunrise.name == route_id) sunriseName = sunrise.name;
+    }
+
+    if (sunriseName != '') {
+      var sunriseAddress = '';
+
+      for (let s of Object.values(sunrises)) {
+        if (s.type.toLowerCase() == sunriseName) sunriseAddress = s.id;
+      }
+
+      const web3 = new Web3(config.rpc);
+
+      const abi = JSON.parse(
+        `[{"constant":"True","inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":"False","stateMutability":"view","type":"function"}]`
+      );
+      const contract = new web3.eth.Contract(
+        abi,
+        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729' // Spolar
+      );
+
+      const _owner = account.value;
+      const _spender = sunriseAddress;
+      const approval = await contract.methods
+        .allowance(_owner, _spender)
+        .call();
+
+      if (approval != '0') this.approved = '1';
+    }
+  },
 
   setup() {
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
+
+    const { account, getProvider } = useWeb3();
 
     const logo = {
       polar: polarImg,
@@ -117,7 +195,97 @@ export default defineComponent({
       return undefined;
     });
 
-    usePolarisFinance();
+    async function approveToken(
+      address: string,
+      spender: string,
+      abi
+    ): Promise<TransactionResponse> {
+      const amount = MaxUint256.toString();
+
+      try {
+        const tx = await sendTransaction(
+          getProvider(),
+          address,
+          abi,
+          'approve',
+          [spender, amount]
+        );
+
+        return tx;
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    }
+
+    async function getSunriseAddress() {
+      type Sunrises = [{ id: string; type: string }];
+
+      const result = await fetch(
+        `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: `
+      query {
+        sunrises {
+          id,
+          type
+        }
+    }`,
+          }),
+        }
+      );
+      const result_json = await result.json();
+      const sunrises: Sunrises = result_json['data']['sunrises'];
+
+      const route_id = route.params.id;
+      var sunriseName = '';
+
+      for (let sunrise of Object.values(sunriseDefinitions)) {
+        if (sunrise.name == route_id) sunriseName = sunrise.name;
+      }
+
+      if (sunriseName != '') {
+        var sunriseAddress = '';
+
+        for (let s of Object.values(sunrises)) {
+          if (s.type.toLowerCase() == sunriseName) sunriseAddress = s.id;
+        }
+
+        return sunriseAddress;
+      }
+
+      return undefined;
+    }
+
+    async function approveSpolar() {
+      const web3 = new Web3(config.rpc);
+
+      const abi = JSON.parse(
+        `[{
+        "inputs": [
+          { "internalType": "address", "name": "spender", "type": "address" },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" }
+        ],
+        "name": "approve",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`
+      );
+
+      const sunriseAddress = await getSunriseAddress();
+
+      if (sunriseAddress) {
+        approveToken(
+          '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729', // Spolar
+          sunriseAddress,
+          abi
+        );
+      }
+    }
 
     return {
       // data
@@ -128,13 +296,9 @@ export default defineComponent({
 
       // computed
       sunrise,
-      // time,
+      approveSpolar,
     };
   },
-  // async mounted() {
-  //   const PolarisFinance = usePolarisFinance();
-  //   return { PolarisFinance };
-  // },
 });
 </script>
 
