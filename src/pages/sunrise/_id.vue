@@ -76,6 +76,10 @@
     </div>
     <button class="claim-btn" text-center>Claim and withdraw</button>
   </div>
+  <div>
+    <input class="sunrise-input" v-model="depositAmount" />
+    <button @click="depositToken(depositAmount)">Deposit</button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -99,6 +103,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
+import { BigNumber } from 'ethers';
 
 interface PoolPageData {
   id: string;
@@ -109,6 +114,7 @@ export default defineComponent({
   data() {
     return {
       approved: '0',
+      depositAmount: '0',
     };
   },
 
@@ -171,6 +177,57 @@ export default defineComponent({
   },
 
   setup() {
+    const depositABIs = {
+      binaris: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      orbital: JSON.parse(`[{
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      ethernal: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      usp: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      tripolar: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      polar: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+    };
+
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
 
@@ -194,6 +251,31 @@ export default defineComponent({
       }
       return undefined;
     });
+
+    async function depositToken(amount) {
+      const address = await getSunriseAddress();
+      const depositAmount = BigNumber.from(amount).toString();
+      const route_id = route.params.id;
+
+      const abi = depositABIs[route_id.toString()];
+
+      if (address) {
+        try {
+          const tx = await sendTransaction(
+            getProvider(),
+            address,
+            abi,
+            'stake',
+            [depositAmount]
+          );
+
+          return tx;
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      }
+    }
 
     async function approveToken(
       address: string,
@@ -297,6 +379,7 @@ export default defineComponent({
       // computed
       sunrise,
       approveSpolar,
+      depositToken,
     };
   },
 });
@@ -524,5 +607,11 @@ export default defineComponent({
 
   color: #ffffff;
   gap: 24px;
+}
+
+.sunrise-input,
+select,
+textarea {
+  color: black;
 }
 </style>
