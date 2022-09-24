@@ -314,151 +314,131 @@ function onAlertMountChange() {
 
 <template>
   <div ref="cardWrapper" class="mb-16">
-    <BalCard shadow="xl" noBorder>
-      <BalStack vertical spacing="sm">
-        <BalStack vertical spacing="xs">
-          <span class="text-xs text-secondary">{{ networkName }}</span>
-          <h5 class="font-semibold dark:text-gray-300">
-            {{ $t('createAPool.chooseTokenWeights') }}
-          </h5>
-        </BalStack>
-        <BalCard shadow="none" noPad>
-          <div ref="tokenWeightListWrapper">
-            <div class="flex flex-col">
-              <div
-                class="flex justify-between p-2 px-4 w-full bg-gray-50 dark:bg-gray-850"
-              >
-                <h6>{{ $t('token') }}</h6>
-                <h6>{{ $t('weight') }}</h6>
-              </div>
-              <div class="relative w-full">
-                <div
-                  v-for="(token, i) of seedTokens"
-                  :key="`tokenweight-${token.id}`"
-                  :ref="addTokenListElementRef"
-                  class="absolute w-full"
-                >
-                  <AnimatePresence isVisible>
-                    <TokenWeightInput
-                      v-model:weight="seedTokens[i].weight"
-                      v-model:address="seedTokens[i].tokenAddress"
-                      noRules
-                      noMax
-                      :excludedTokens="excludedTokens"
-                      @update:weight="data => handleWeightChange(data, i)"
-                      @update:address="data => handleAddressChange(data, i)"
-                      @update:is-locked="data => handleLockedWeight(data, i)"
-                      @delete="() => handleRemoveToken(i)"
-                    />
-                  </AnimatePresence>
-                </div>
-              </div>
-
-              <div ref="addTokenRowElement" class="p-3">
-                <BalBtn
-                  :disabled="maxTokenAmountReached"
-                  outline
-                  :color="maxTokenAmountReached ? 'gray' : 'blue'"
-                  size="sm"
-                  @click="addTokenToPool"
-                >
-                  {{ $t('addToken') }}
-                </BalBtn>
-              </div>
-              <div
-                ref="totalsRowElement"
-                class="p-2 px-4 w-full bg-gray-50 dark:bg-gray-850"
-              >
-                <div class="flex justify-between w-full">
-                  <h6>{{ $t('totalAllocated') }}</h6>
-                  <BalStack horizontal spacing="xs" align="center">
-                    <h6 :class="weightColor">{{ totalAllocatedWeight }}%</h6>
-                    <BalIcon
-                      v-if="
-                        Number(totalWeight) > 100 || Number(totalWeight) <= 0
-                      "
-                      class="mt-px text-red-500"
-                      name="alert-circle"
-                      size="sm"
-                    />
-                  </BalStack>
-                </div>
-                <BalProgressBar
-                  :color="progressBarColor"
-                  :width="totalAllocatedWeight"
-                  :bufferWidth="0"
-                  class="my-2"
-                />
-              </div>
-            </div>
+    <BalStack vertical spacing="sm">
+      <div>
+        <div
+          class="flex justify-between px-4 w-full text-[16px] leading-[20px] font-semibold"
+        >
+          <span>{{ $t('token') }}</span>
+          <span>{{ $t('weight') }}</span>
+        </div>
+        <div class="grid max-w-full w-full gap-[4px] mt-[8px]">
+          <div
+            v-for="(token, i) of seedTokens"
+            :key="`tokenweight-${token.id}`"
+            :ref="addTokenListElementRef"
+            class="max-w-full w-full"
+          >
+            <AnimatePresence isVisible>
+              <TokenWeightInput
+                v-model:weight="seedTokens[i].weight"
+                v-model:address="seedTokens[i].tokenAddress"
+                noRules
+                noMax
+                class="w-full"
+                :excludedTokens="excludedTokens"
+                @update:weight="data => handleWeightChange(data, i)"
+                @update:address="data => handleAddressChange(data, i)"
+                @update:is-locked="data => handleLockedWeight(data, i)"
+                @delete="() => handleRemoveToken(i)"
+              />
+            </AnimatePresence>
           </div>
-        </BalCard>
-        <AnimatePresence
-          :isVisible="showLiquidityAlert && isWalletReady"
-          unmountInstantly
-          @on-presence="onAlertMountChange"
-          @on-exit="onAlertMountChange"
-        >
-          <BalAlert
-            :title="$t('createAPool.recommendedLiquidity')"
-            type="warning"
+        </div>
+        <div class="p-3">
+          <BalBtn
+            :disabled="maxTokenAmountReached"
+            outline
+            :color="maxTokenAmountReached ? 'gray' : 'blue'"
+            size="sm"
+            @click="addTokenToPool"
           >
-            {{
-              $t('createAPool.youCanFundWithThisPoolWith', [
-                fNum2(totalLiquidity.toString(), FNumFormats.fiat),
-              ])
-            }}
-          </BalAlert>
-        </AnimatePresence>
-        <AnimatePresence
-          :isVisible="zeroWeightToken"
-          unmountInstantly
-          @on-presence="onAlertMountChange"
-          @on-exit="onAlertMountChange"
-        >
-          <BalAlert :title="$t('createAPool.zeroWeightTitle')" type="error">
-            {{ $t('createAPool.zeroWeightInfo') }}
-          </BalAlert>
-        </AnimatePresence>
-        <AnimatePresence
-          :isVisible="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
-          unmountInstantly
-          @on-presence="onAlertMountChange"
-          @on-exit="onAlertMountChange"
-        >
-          <BalAlert
-            :title="$t('createAPool.totalWeightAlertTitle')"
-            type="error"
-          >
-            {{ $t('createAPool.totalWeightAlert', [zeroWeightToken?.symbol]) }}
-          </BalAlert>
-        </AnimatePresence>
-        <AnimatePresence
-          :isVisible="hasInjectedToken && !acceptedCustomTokenDisclaimer"
-          unmountInstantly
-          @on-presence="onAlertMountChange"
-          @on-exit="onAlertMountChange"
-        >
-          <BalAlert :title="$t('tokenWarningTitle')" type="warning">
-            <BalStack vertical spacing="xs">
-              <span>{{ $t('tokenWarning') }}</span>
-              <div>
-                <BalBtn size="xs" @click="acceptCustomTokenDisclaimer">
-                  {{ $t('accept') }}
-                </BalBtn>
-              </div>
+            {{ $t('addToken') }}
+          </BalBtn>
+        </div>
+        <div class="p-2 px-4 w-full bg-gray-50 dark:bg-gray-850">
+          <div class="flex justify-between w-full">
+            <h6>{{ $t('totalAllocated') }}</h6>
+            <BalStack horizontal spacing="xs" align="center">
+              <h6 :class="weightColor">{{ totalAllocatedWeight }}%</h6>
+              <BalIcon
+                v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
+                class="mt-px text-red-500"
+                name="alert-circle"
+                size="sm"
+              />
             </BalStack>
-          </BalAlert>
-        </AnimatePresence>
-        <BalBtn
-          block
-          color="gradient"
-          :disabled="isProceedDisabled"
-          @click="handleProceed"
+          </div>
+          <BalProgressBar
+            :color="progressBarColor"
+            :width="totalAllocatedWeight"
+            :bufferWidth="0"
+            class="my-2"
+          />
+        </div>
+      </div>
+      <AnimatePresence
+        :isVisible="showLiquidityAlert && isWalletReady"
+        unmountInstantly
+        @on-presence="onAlertMountChange"
+        @on-exit="onAlertMountChange"
+      >
+        <BalAlert
+          :title="$t('createAPool.recommendedLiquidity')"
+          type="warning"
         >
-          {{ walletLabel }}
-        </BalBtn>
-      </BalStack>
-    </BalCard>
+          {{
+            $t('createAPool.youCanFundWithThisPoolWith', [
+              fNum2(totalLiquidity.toString(), FNumFormats.fiat),
+            ])
+          }}
+        </BalAlert>
+      </AnimatePresence>
+      <AnimatePresence
+        :isVisible="zeroWeightToken"
+        unmountInstantly
+        @on-presence="onAlertMountChange"
+        @on-exit="onAlertMountChange"
+      >
+        <BalAlert :title="$t('createAPool.zeroWeightTitle')" type="error">
+          {{ $t('createAPool.zeroWeightInfo') }}
+        </BalAlert>
+      </AnimatePresence>
+      <AnimatePresence
+        :isVisible="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
+        unmountInstantly
+        @on-presence="onAlertMountChange"
+        @on-exit="onAlertMountChange"
+      >
+        <BalAlert :title="$t('createAPool.totalWeightAlertTitle')" type="error">
+          {{ $t('createAPool.totalWeightAlert', [zeroWeightToken?.symbol]) }}
+        </BalAlert>
+      </AnimatePresence>
+      <AnimatePresence
+        :isVisible="hasInjectedToken && !acceptedCustomTokenDisclaimer"
+        unmountInstantly
+        @on-presence="onAlertMountChange"
+        @on-exit="onAlertMountChange"
+      >
+        <BalAlert :title="$t('tokenWarningTitle')" type="warning">
+          <BalStack vertical spacing="xs">
+            <span>{{ $t('tokenWarning') }}</span>
+            <div>
+              <BalBtn size="xs" @click="acceptCustomTokenDisclaimer">
+                {{ $t('accept') }}
+              </BalBtn>
+            </div>
+          </BalStack>
+        </BalAlert>
+      </AnimatePresence>
+      <BalBtn
+        block
+        color="gradient"
+        :disabled="isProceedDisabled"
+        @click="handleProceed"
+      >
+        {{ walletLabel }}
+      </BalBtn>
+    </BalStack>
   </div>
 </template>

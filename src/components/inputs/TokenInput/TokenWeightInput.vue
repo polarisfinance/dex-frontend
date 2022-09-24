@@ -5,6 +5,7 @@ import TokenSelectInput from '@/components/inputs/TokenSelectInput/TokenSelectIn
 import useTokens from '@/composables/useTokens';
 import { HtmlInputEvent } from '@/types';
 import { TokenInfo } from '@/types/TokenList';
+import BalTextInputCreatePool from '@/components/_global/BalTextInput/BalTextInputCreatePool.vue';
 
 /**
  * TYPES
@@ -124,7 +125,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <BalTextInput
+  <BalTextInputCreatePool
     v-model="_weight"
     name="weight"
     :placeholder="hintAmount || '0.0'"
@@ -196,7 +197,7 @@ watchEffect(() => {
         </button>
       </BalStack>
     </template>
-  </BalTextInput>
+  </BalTextInputCreatePool>
 </template>
 
 <style scoped>

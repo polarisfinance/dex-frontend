@@ -4,7 +4,7 @@ import { computed, nextTick, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import BalVerticalSteps from '@/components/_global/BalVerticalSteps/BalVerticalSteps.vue';
+import BalHorizontalSteps from '@/components/_global/BalHorizontalSteps/BalHorizontalSteps.vue';
 import AnimatePresence from '@/components/animate/AnimatePresence.vue';
 import ChooseWeights from '@/components/cards/CreatePool/ChooseWeights.vue';
 import InitialLiquidity from '@/components/cards/CreatePool/InitialLiquidity.vue';
@@ -290,26 +290,37 @@ watch(
 </script>
 
 <template>
-  <Col3Layout offsetGutters mobileHideGutters class="mt-8">
-    <template #gutterLeft>
-      <div v-if="!upToLargeBreakpoint" class="col-span-3">
-        <BalStack v-if="!appLoading" vertical>
-          <BalVerticalSteps
-            title="Create a weighted pool steps"
-            :steps="steps"
-            @navigate="handleNavigate"
-          />
-          <AnimatePresence
-            :isVisible="
-              doSimilarPoolsExist && activeStep === 0 && validTokens.length
-            "
-          >
-            <SimilarPoolsCompact />
-          </AnimatePresence>
-        </BalStack>
-      </div>
-    </template>
-    <div class="relative center-col-mh">
+  <div v-if="!upToLargeBreakpoint" class="col-span-3">
+    <BalStack v-if="!appLoading" vertical>
+      <BalHorizontalSteps
+        title="Create a weighted pool steps"
+        :steps="steps"
+        @navigate="handleNavigate"
+      />
+      <AnimatePresence
+        :isVisible="
+          doSimilarPoolsExist && activeStep === 0 && validTokens.length
+        "
+      >
+        <SimilarPoolsCompact />
+      </AnimatePresence>
+    </BalStack>
+  </div>
+  <div
+    class="container grid grid-cols-2 gap-x-4 mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
+  >
+    <div
+      class="col-span-2 text-[20px] font-semibold leading-[26px] text-center"
+    >
+      Choose tokens & weights
+    </div>
+    <div
+      class="col-span-2 text-[12px] leading-[15px] text-center text-pink-third font-[500]"
+    >
+      Aurora Mainnet
+    </div>
+    <div class="border col-span-2 my-[24px]"></div>
+    <div class="relative">
       <AnimatePresence
         :isVisible="hasRestoredFromSavedState && !appLoading"
         unmountInstantly
@@ -374,32 +385,31 @@ watch(
       >
         <PreviewPool />
       </AnimatePresence>
-      <div v-if="upToLargeBreakpoint" ref="accordionWrapper" class="pb-24">
-        <BalAccordion
-          :dependencies="validTokens"
-          :sections="[
-            { title: t('createAPool.poolSummary'), id: 'pool-summary' },
-            { title: t('tokenPrices'), id: 'token-prices' },
-          ]"
-        >
-          <template #pool-summary>
-            <PoolSummary />
-          </template>
-          <template #token-prices>
-            <TokenPrices />
-          </template>
-        </BalAccordion>
-      </div>
     </div>
-    <template #gutterRight>
-      <div v-if="!upToLargeBreakpoint" class="col-span-11 lg:col-span-3">
-        <BalStack v-if="!appLoading" vertical spacing="base">
-          <PoolSummary />
-          <TokenPrices :toggleUnknownPriceModal="showUnknownTokenModal" />
-        </BalStack>
-      </div>
-    </template>
-  </Col3Layout>
+
+    <div v-if="upToLargeBreakpoint" ref="accordionWrapper" class="">
+      <!-- <BalAccordion
+        :dependencies="validTokens"
+        :sections="[
+          { title: t('createAPool.poolSummary'), id: 'pool-summary' },
+          { title: t('tokenPrices'), id: 'token-prices' },
+        ]"
+      > -->
+      <!-- <template #pool-summary> -->
+      <PoolSummary />
+      <!-- </template>
+      <template #token-prices> -->
+      <TokenPrices />
+      <!-- </template> -->
+      <!-- </BalAccordion> -->
+    </div>
+    <div v-if="!upToLargeBreakpoint" class="">
+      <BalStack v-if="!appLoading" vertical spacing="base">
+        <PoolSummary />
+        <TokenPrices :toggleUnknownPriceModal="showUnknownTokenModal" />
+      </BalStack>
+    </div>
+  </div>
   <UnknownTokenPriceModal
     :isVisible="isUnknownTokenModalVisible"
     :unknownTokens="unknownTokens"
