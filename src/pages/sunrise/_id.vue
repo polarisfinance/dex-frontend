@@ -34,7 +34,7 @@
         </button>
       </div>
       <div class="flex justify-center mt-[24px] gap-[12px]" v-else>
-        <button class="claim-btn">Deposit</button>
+        <button class="claim-btn" @click="claim">Deposit</button>
         <button class="withdraw-btn">Withdraw</button>
       </div>
     </div>
@@ -68,7 +68,7 @@
         <span class="uppercase">{{ sunrise.name }}</span> Earned
       </div>
       <div class="flex justify-center mt-[24px] gap-[12px]">
-        <button class="claim-btn">Claim</button>
+        <button class="claim-btn" @click="claim">Claim</button>
         <button class="single-stake-btn">
           <div class="single-stake-btn-text">Single Stake</div>
         </button>
@@ -182,6 +182,31 @@ export default defineComponent({
   },
 
   setup() {
+    const claimABIs = {
+      binaris: JSON.parse(
+        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
+      ),
+      orbital: JSON.parse(`[{
+        "inputs": [],
+        "name": "claimReward",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      usp: JSON.parse(
+        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
+      ),
+      ethernal: JSON.parse(
+        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
+      ),
+      polar: JSON.parse(
+        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
+      ),
+      tripolar: JSON.parse(
+        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
+      ),
+    };
+
     const withdrawABIs = {
       polar: JSON.parse(`[{
         "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
@@ -450,6 +475,29 @@ export default defineComponent({
       }
     }
 
+    async function claim() {
+      const route_id = route.params.id;
+      const abi = claimABIs[route_id.toString()];
+
+      const address = await getSunriseAddress();
+
+      try {
+        if (address) {
+          const tx = await sendTransaction(
+            getProvider(),
+            address,
+            abi,
+            'claimReward',
+            []
+          );
+          return tx;
+        }
+      } catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+      }
+    }
+
     return {
       // data
       ...toRefs(data),
@@ -462,6 +510,7 @@ export default defineComponent({
       approveSpolar,
       depositToken,
       withdrawToken,
+      claim,
     };
   },
 });
