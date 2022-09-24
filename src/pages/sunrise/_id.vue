@@ -25,7 +25,7 @@
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" src="./spolar.svg" />
-      <div class="num-tokens">100</div>
+      <div class="num-tokens">{{ balance }}</div>
       <div class="details">$832.32</div>
       <div class="details">SPOLAR Staked</div>
       <div v-if="approved == '0'">
@@ -53,20 +53,18 @@
         <div>SPOLARS Staked</div>
       </div>
       <div class="data-text">
-        <div>
-          <!-- {{ time }} -->
-        </div>
-        <div>134</div>
+        <div>18:20</div>
+        <div>{{ epoch }}</div>
         <div>0.6034</div>
         <div>0.6030</div>
         <div>0.6000</div>
         <div>429%</div>
-        <div>11234.4966</div>
+        <div>{{ spolarsStaked }}</div>
       </div>
     </div>
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" :src="logo[sunrise.name]" />
-      <div class="num-tokens">0.85</div>
+      <div class="num-tokens">{{ earned }}</div>
       <div class="details">$980.2</div>
       <div class="details">
         <span class="uppercase">{{ sunrise.name }}</span> Earned
@@ -115,6 +113,8 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from 'ethers';
 
+import BigInt from ''
+
 interface PoolPageData {
   id: string;
 }
@@ -126,12 +126,18 @@ export default defineComponent({
       approved: '0',
       depositAmount: '0',
       withdrawAmount: '0',
+      epoch: '-',
+      balance: '-',
+      earned: '-',
+      canWithdraw: false,
+      canClaim: false,
+      spolarsStaked: '-',
     };
   },
 
   async created() {
     const route = useRoute();
-    const { account } = useWeb3();
+    const { account, getProvider } = useWeb3();
     type Sunrises = [{ id: string; type: string }];
 
     const result = await fetch(
@@ -184,6 +190,56 @@ export default defineComponent({
         .call();
 
       if (approval != '0') this.approved = '1';
+
+      const abiSunrise = JSON.parse(`[{
+        "inputs": [],
+        "name": "epoch",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+        "name": "balanceOf",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
+        "name": "earned",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
+        "name": "canWithdraw",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
+        "name": "canClaimReward",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`);
+
+      const sunriseContract = new web3.eth.Contract(abiSunrise, sunriseAddress);
+      this.epoch = await sunriseContract.methods.epoch().call();
+      this.balance = await sunriseContract.methods
+        .balanceOf(account.value)
+        .call();
+      this.earned = await sunriseContract.methods.earned(account.value).call();
+      this.canWithdraw = await sunriseContract.methods
+        .canWithdraw(account.value)
+        .call();
+      this.canClaim = await sunriseContract.methods
+        .canClaimReward(account.value)
+        .call();
+      this.spolarsStaked = await sunriseContract.methods
+        .balanceOf('0x02cE473377B650b1188778A7e75cd4b31F59D8Ac')
+        .call();
+
+      console.log(BigInt.from(this.spolarsStaked) / Math.pow(10, 16));
     }
   },
 
