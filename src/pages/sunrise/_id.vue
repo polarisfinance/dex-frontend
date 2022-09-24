@@ -112,8 +112,9 @@ import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from 'ethers';
+import { Contract } from 'ethers';
 
-import BigInt from ''
+// import BigInt from ''
 
 interface PoolPageData {
   id: string;
@@ -121,128 +122,6 @@ interface PoolPageData {
 
 export default defineComponent({
   components: {},
-  data() {
-    return {
-      approved: '0',
-      depositAmount: '0',
-      withdrawAmount: '0',
-      epoch: '-',
-      balance: '-',
-      earned: '-',
-      canWithdraw: false,
-      canClaim: false,
-      spolarsStaked: '-',
-    };
-  },
-
-  async created() {
-    const route = useRoute();
-    const { account, getProvider } = useWeb3();
-    type Sunrises = [{ id: string; type: string }];
-
-    const result = await fetch(
-      `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `
-      query {
-        sunrises {
-          id,
-          type
-        }
-    }`,
-        }),
-      }
-    );
-    const result_json = await result.json();
-    const sunrises: Sunrises = result_json['data']['sunrises'];
-
-    const route_id = route.params.id;
-    var sunriseName = '';
-
-    for (let sunrise of Object.values(sunriseDefinitions)) {
-      if (sunrise.name == route_id) sunriseName = sunrise.name;
-    }
-
-    if (sunriseName != '') {
-      var sunriseAddress = '';
-
-      for (let s of Object.values(sunrises)) {
-        if (s.type.toLowerCase() == sunriseName) sunriseAddress = s.id;
-      }
-
-      const web3 = new Web3(config.rpc);
-
-      const abi = JSON.parse(
-        `[{"constant":"True","inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":"False","stateMutability":"view","type":"function"}]`
-      );
-      const contract = new web3.eth.Contract(
-        abi,
-        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729' // Spolar
-      );
-
-      const _owner = account.value;
-      const _spender = sunriseAddress;
-      const approval = await contract.methods
-        .allowance(_owner, _spender)
-        .call();
-
-      if (approval != '0') this.approved = '1';
-
-      const abiSunrise = JSON.parse(`[{
-        "inputs": [],
-        "name": "epoch",
-        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-        "stateMutability": "view",
-        "type": "function"
-      },{
-        "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
-        "name": "balanceOf",
-        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-        "stateMutability": "view",
-        "type": "function"
-      },{
-        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
-        "name": "earned",
-        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-        "stateMutability": "view",
-        "type": "function"
-      },{
-        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
-        "name": "canWithdraw",
-        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-        "stateMutability": "view",
-        "type": "function"
-      },{
-        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
-        "name": "canClaimReward",
-        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-        "stateMutability": "view",
-        "type": "function"
-      }]`);
-
-      const sunriseContract = new web3.eth.Contract(abiSunrise, sunriseAddress);
-      this.epoch = await sunriseContract.methods.epoch().call();
-      this.balance = await sunriseContract.methods
-        .balanceOf(account.value)
-        .call();
-      this.earned = await sunriseContract.methods.earned(account.value).call();
-      this.canWithdraw = await sunriseContract.methods
-        .canWithdraw(account.value)
-        .call();
-      this.canClaim = await sunriseContract.methods
-        .canClaimReward(account.value)
-        .call();
-      this.spolarsStaked = await sunriseContract.methods
-        .balanceOf('0x02cE473377B650b1188778A7e75cd4b31F59D8Ac')
-        .call();
-
-      console.log(BigInt.from(this.spolarsStaked) / Math.pow(10, 16));
-    }
-  },
-
   setup() {
     const claimABIs = {
       binaris: JSON.parse(
@@ -574,6 +453,174 @@ export default defineComponent({
       withdrawToken,
       claim,
     };
+  },
+  data() {
+    return {
+      approved: '0',
+      depositAmount: '0',
+      withdrawAmount: '0',
+      epoch: '-',
+      balance: '-',
+      earned: '-',
+      canWithdraw: false,
+      canClaim: false,
+      spolarsStaked: '-',
+    };
+  },
+
+  async created() {
+    const route = useRoute();
+    const { account, getProvider } = useWeb3();
+    type Sunrises = [{ id: string; type: string }];
+
+    const result = await fetch(
+      `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: `
+      query {
+        sunrises {
+          id,
+          type
+        }
+    }`,
+        }),
+      }
+    );
+    const result_json = await result.json();
+    const sunrises: Sunrises = result_json['data']['sunrises'];
+
+    const route_id = route.params.id;
+    var sunriseName = '';
+
+    for (let sunrise of Object.values(sunriseDefinitions)) {
+      if (sunrise.name == route_id) sunriseName = sunrise.name;
+    }
+
+    function BigNumberToFixedString(
+      number: BigNumber,
+      decimals = 18,
+      fixed = 4
+    ) {
+      return number
+        .div(BigNumber.from(10).pow(decimals))
+        .toNumber()
+        .toFixed(fixed);
+    }
+
+    if (sunriseName != '') {
+      var sunriseAddress = '';
+
+      for (let s of Object.values(sunrises)) {
+        if (s.type.toLowerCase() == sunriseName) sunriseAddress = s.id;
+      }
+
+      const abi = JSON.parse(
+        `[{
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          }
+        ],
+        "name": "allowance",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      }]`
+      );
+      const contract = new Contract(
+        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729', // Spolar
+        abi,
+        getProvider()
+      );
+
+      const _owner = account.value;
+      const _spender = sunriseAddress;
+      const approval: BigNumber = await contract.allowance(_owner, _spender);
+
+      if (approval != MaxUint256) this.approved = '1';
+      console.log(approval);
+
+      const abiSunrise = JSON.parse(`[{
+        "inputs": [],
+        "name": "epoch",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+        "name": "balanceOf",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
+        "name": "earned",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
+        "name": "canWithdraw",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [{ "internalType": "address", "name": "mason", "type": "address" }],
+        "name": "canClaimReward",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`);
+
+      const spolarAbi = JSON.parse(`[{
+        "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+        "name": "balanceOf",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`);
+
+      const spolarContract = new Contract(
+        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
+        spolarAbi,
+        getProvider()
+      );
+
+      const sunriseContract = new Contract(
+        sunriseAddress,
+        abiSunrise,
+        getProvider()
+      );
+
+      this.epoch = await sunriseContract.epoch();
+      const earned = await sunriseContract.earned(account.value);
+      this.earned = BigNumberToFixedString(earned);
+      this.canWithdraw = await sunriseContract.canWithdraw(account.value);
+      this.canClaim = await sunriseContract.canClaimReward(account.value);
+      const spolarsStaked: BigNumber = await spolarContract.balanceOf(
+        sunriseAddress
+      );
+      this.spolarsStaked = BigNumberToFixedString(spolarsStaked);
+      const balance: BigNumber = await sunriseContract.balanceOf(account.value);
+      this.balance = BigNumberToFixedString(balance);
+      // console.log(BigInt.from(this.spolarsStaked) / Math.pow(10, 16));
+    }
   },
 });
 </script>
