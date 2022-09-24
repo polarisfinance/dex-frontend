@@ -77,8 +77,12 @@
     <button class="claim-btn" text-center>Claim and withdraw</button>
   </div>
   <div>
+    <p>Deposit</p>
     <input class="sunrise-input" v-model="depositAmount" />
     <button @click="depositToken(depositAmount)">Deposit</button>
+    <p>Withdraw</p>
+    <input class="sunrise-input" v-model="withdrawAmount" />
+    <button @click="withdrawToken(depositAmount)">Withdraw</button>
   </div>
 </template>
 
@@ -115,6 +119,7 @@ export default defineComponent({
     return {
       approved: '0',
       depositAmount: '0',
+      withdrawAmount: '0',
     };
   },
 
@@ -177,6 +182,57 @@ export default defineComponent({
   },
 
   setup() {
+    const withdrawABIs = {
+      polar: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      binaris: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      orbital: JSON.parse(`[{
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      usp: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      tripolar: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+      ethernal: JSON.parse(`[{
+        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }]`),
+    };
+
     const depositABIs = {
       binaris: JSON.parse(`[{
         "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
@@ -267,6 +323,31 @@ export default defineComponent({
             abi,
             'stake',
             [depositAmount]
+          );
+
+          return tx;
+        } catch (error) {
+          console.error(error);
+          return Promise.reject(error);
+        }
+      }
+    }
+
+    async function withdrawToken(amount) {
+      const address = await getSunriseAddress();
+      const withdrawAmount = BigNumber.from(amount).toString();
+      const route_id = route.params.id;
+
+      const abi = withdrawABIs[route_id.toString()];
+
+      if (address) {
+        try {
+          const tx = await sendTransaction(
+            getProvider(),
+            address,
+            abi,
+            'withdraw',
+            [withdrawAmount]
           );
 
           return tx;
@@ -380,6 +461,7 @@ export default defineComponent({
       sunrise,
       approveSpolar,
       depositToken,
+      withdrawToken,
     };
   },
 });
