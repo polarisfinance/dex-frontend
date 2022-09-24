@@ -34,8 +34,12 @@
         </button>
       </div>
       <div class="flex justify-center mt-[24px] gap-[12px]" v-else>
-        <button class="claim-btn" @click="claim">Deposit</button>
-        <button class="withdraw-btn">Withdraw</button>
+        <button class="claim-btn" @click="depositToken(depositAmount)">
+          Deposit
+        </button>
+        <button class="withdraw-btn" @click="withdrawToken(depositAmount)">
+          Withdraw
+        </button>
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -74,7 +78,9 @@
         </button>
       </div>
     </div>
-    <button class="claim-btn" text-center>Claim and withdraw</button>
+    <button class="claim-btn" text-center @click="withdrawToken(depositAmount)">
+      Claim and withdraw
+    </button>
   </div>
   <div>
     <p>Deposit</p>
