@@ -155,7 +155,7 @@ onMounted(() => {
           @click="onClick"
           @focus="onFocus"
         />
-        <div v-if="$slots.append" :class="['append', appendClasses]">
+        <div v-if="$slots.append" class="">
           <slot name="append" />
         </div>
       </div>
@@ -171,7 +171,7 @@ onMounted(() => {
 
 <style scoped>
 .input-container {
-  @apply flex flex-col transition-colors;
+  @apply transition-colors flex flex-col px-[12px] py-[16px];
   background-color: #362d3b;
   border-radius: 16px;
   border: none;

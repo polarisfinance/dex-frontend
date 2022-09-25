@@ -126,16 +126,16 @@ const progressBarColor = computed(() => {
     Number(totalAllocatedWeight.value) > 100 ||
     Number(totalAllocatedWeight.value) <= 0
   ) {
-    return 'red';
+    return 'red-400';
   }
-  return 'green';
+  return 'green-400';
 });
 
 const weightColor = computed(() => {
   if (Number(totalWeight.value) > 100 || Number(totalWeight.value) <= 0) {
     return 'text-red-500';
   }
-  return darkMode.value ? 'text-gray-300' : 'text-gray-800';
+  return darkMode.value ? 'text-pink-third' : 'text-pink-third';
 });
 
 /**
@@ -346,7 +346,7 @@ function onAlertMountChange() {
           </div>
         </div>
         <div class="p-3">
-          <BalBtn
+          <!-- <BalBtn
             :disabled="maxTokenAmountReached"
             outline
             :color="maxTokenAmountReached ? 'gray' : 'blue'"
@@ -354,13 +354,20 @@ function onAlertMountChange() {
             @click="addTokenToPool"
           >
             {{ $t('addToken') }}
-          </BalBtn>
+          </BalBtn> -->
+          <button
+            class="text-pink-third leading-[18px] text-[14px] font-medium disabled:cursor-not-allowed py-[9.5px] px-[25px] bg-none border-[0.7px] border-[rgba(245,225,255,0.1)] rounded-2xl disabled:bg-red-600"
+            :disabled="maxTokenAmountReached"
+            @click="addTokenToPool"
+          >
+            {{ $t('addToken') }}
+          </button>
         </div>
-        <div class="w-full bg-gray-50 p-2 px-4 dark:bg-gray-850">
-          <div class="flex w-full justify-between">
-            <h6>{{ $t('totalAllocated') }}</h6>
+        <div class="p-2 px-4 w-full">
+          <div class="flex justify-between w-full">
+            <span class="font-semibold text-[16px] leading-[20px]">{{ $t('totalAllocated') }}</span>
             <BalStack horizontal spacing="xs" align="center">
-              <h6 :class="weightColor">{{ totalAllocatedWeight }}%</h6>
+              <span class='font-semibold text-[16px] leading-[20px]' :class="weightColor">{{ totalAllocatedWeight }}%</span>
               <BalIcon
                 v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
                 class="mt-px text-red-500"
@@ -373,6 +380,7 @@ function onAlertMountChange() {
             :color="progressBarColor"
             :width="totalAllocatedWeight"
             :bufferWidth="0"
+            :size="'[3px]'"
             class="my-2"
           />
         </div>

@@ -307,12 +307,15 @@ watch(
     </BalStack>
   </div>
   <div
-    class="container mx-auto grid max-w-[914px] grid-cols-2 gap-x-4 rounded-[20px] bg-[#2E2433] p-[24px]"
+    class="container grid grid-cols-2 grid-flow-row auto-rows-auto gap-x-4 mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
   >
     <div
-      class="col-span-2 text-center text-[20px] font-semibold leading-[26px]"
-    >
-      Choose tokens & weights
+      class="col-span-2 text-[20px] font-semibold leading-[26px] text-center"
+    > <span v-if="!appLoading && activeStep === 0">Choose tokens & weights</span>
+      <span v-if="!appLoading && activeStep === 1">Set pool fees</span>
+      <span v-if="!appLoading && activeStep === 2">Set initial liquidity</span>
+      <span v-if="!appLoading && activeStep === 3">Confirm pool creation</span>
+      
     </div>
     <div
       class="col-span-2 text-center text-[12px] font-[500] leading-[15px] text-pink-third"
@@ -396,17 +399,18 @@ watch(
         ]"
       > -->
       <!-- <template #pool-summary> -->
-      <PoolSummary />
+      
       <!-- </template>
       <template #token-prices> -->
       <TokenPrices />
       <!-- </template> -->
       <!-- </BalAccordion> -->
+      <PoolSummary />
     </div>
     <div v-if="!upToLargeBreakpoint" class="">
       <BalStack v-if="!appLoading" vertical spacing="base">
-        <PoolSummary />
         <TokenPrices :toggleUnknownPriceModal="showUnknownTokenModal" />
+        <PoolSummary />
       </BalStack>
     </div>
   </div>
