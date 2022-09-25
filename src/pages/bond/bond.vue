@@ -18,13 +18,11 @@ const logo = {
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
-// import { sunriseDefinitions } from '../../config';
+import { sunriseDefinitions } from '../../services/polaris-finance/config';
 
 const sunrises = computed(() =>
   Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired)
 );
-
-onMounted(() => {});
 </script>
 
 <template>

@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, toRefs } from 'vue';
+import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { sunriseDefinitions } from './config.js';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -89,6 +89,13 @@ import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
+import useWeb3 from '@/services/web3/useWeb3';
+
+import { sendTransaction } from '@/lib/utils/balancer/web3';
+import { MaxUint256 } from '@ethersproject/constants';
+import { TransactionResponse } from '@ethersproject/abstract-provider';
+import { BigNumber } from 'ethers';
+import { Contract } from 'ethers';
 
 interface PoolPageData {
   id: string;
@@ -96,6 +103,54 @@ interface PoolPageData {
 
 export default defineComponent({
   components: {},
+
+  async created() {
+    const route = useRoute();
+    const route_id = route.params.id;
+    const { account, getProvider } = useWeb3();
+
+    const tokenContract = {
+      binaris: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370',
+      polar: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86',
+      orbital: '0x3AC55eA8D2082fAbda674270cD2367dA96092889',
+      tripolar: '0x60527a2751A827ec0Adf861EfcAcbf111587d748',
+      usp: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96',
+      ethernal: '0x17cbd9C274e90C537790C51b4015a65cD015497e',
+    };
+
+    const tokenABI = JSON.parse(
+      `[{
+        "inputs": [
+          { "internalType": "address", "name": "owner", "type": "address" },
+          { "internalType": "address", "name": "spender", "type": "address" }
+        ],
+        "name": "allowance",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`
+    );
+
+    const tokenContractAddress = tokenContract[route_id.toString()];
+
+    if (tokenContractAddress) {
+      const tokenContract = new Contract(
+        tokenContractAddress,
+        tokenABI,
+        getProvider()
+      );
+
+      const _owner = account.value;
+      const _spender = tokenContractAddress;
+      const approval: BigNumber = await tokenContract.allowance(
+        _owner,
+        _spender
+      );
+
+      if (approval == MaxUint256) this.approved = '1';
+      console.log(this.approved);
+    }
+  },
 
   setup() {
     const route = useRoute();
@@ -130,6 +185,11 @@ export default defineComponent({
 
       // computed
       sunrise,
+    };
+  },
+  data() {
+    return {
+      approved: '0',
     };
   },
 });
