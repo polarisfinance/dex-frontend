@@ -26,7 +26,7 @@
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" src="./spolar.svg" />
       <div class="num-tokens">{{ balance }}</div>
-      <div class="details">$832.32</div>
+      <div class="details">${{ depositedInDollars }}</div>
       <div class="details">SPOLAR Staked</div>
       <div v-if="approved == '0'">
         <button class="claim-button" @click="approveSpolar">
@@ -55,9 +55,9 @@
       <div class="data-text">
         <div>18:20</div>
         <div>{{ epoch }}</div>
-        <div>0.6034</div>
-        <div>0.6030</div>
-        <div>0.6000</div>
+        <div>{{ twap }}</div>
+        <div>{{ lastEpochTwap }}</div>
+        <div>{{ printTwap }}</div>
         <div>429%</div>
         <div>{{ spolarsStaked }}</div>
       </div>
@@ -65,7 +65,7 @@
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" :src="logo[sunrise.name]" />
       <div class="num-tokens">{{ earned }}</div>
-      <div class="details">$980.2</div>
+      <div class="details">${{ earnedAmountInDollars }}</div>
       <div class="details">
         <span class="uppercase">{{ sunrise.name }}</span> Earned
       </div>
@@ -113,8 +113,6 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from 'ethers';
 import { Contract } from 'ethers';
-
-// import BigInt from ''
 
 interface PoolPageData {
   id: string;
@@ -465,6 +463,11 @@ export default defineComponent({
       canWithdraw: false,
       canClaim: false,
       spolarsStaked: '-',
+      lastEpochTwap: '-',
+      twap: '-',
+      printTwap: '-',
+      depositedInDollars: '-',
+      earnedAmountInDollars: '-',
     };
   },
 
@@ -554,7 +557,6 @@ export default defineComponent({
       const approval: BigNumber = await contract.allowance(_owner, _spender);
 
       if (approval != MaxUint256) this.approved = '1';
-      console.log(approval);
 
       const abiSunrise = JSON.parse(`[{
         "inputs": [],
@@ -596,6 +598,69 @@ export default defineComponent({
         "type": "function"
       }]`);
 
+      const treasuryABI = JSON.parse(
+        `[{
+        "inputs": [],
+        "name": "previousEpoch` +
+          `${sunriseName.charAt(0).toUpperCase()}` +
+          `${sunriseName.slice(1)}` +
+          `Price",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      }, {
+        "inputs": [],
+        "name": "` +
+          sunriseName +
+          `PriceCeiling",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [],
+        "name": "get` +
+          `${sunriseName.charAt(0).toUpperCase()}` +
+          `${sunriseName.slice(1)}` +
+          `UpdatedPrice",
+        "outputs": [{ "internalType": "uint256", "name": "_ethernalPrice", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`
+      );
+
+      const polarTreasuryABI = JSON.parse(`[{
+          "inputs": [],
+          "name": "previousEpochpolarPrice",
+          "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+          "stateMutability": "view",
+          "type": "function"
+        },{
+        "inputs": [],
+        "name": "polarPriceCeiling",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      },{
+        "inputs": [],
+        "name": "getpolarUpdatedPrice",
+        "outputs": [{ "internalType": "uint256", "name": "_polarPrice", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`);
+
+      const uniswapABI = JSON.parse(
+        `[{"inputs":[],"payable":"false","stateMutability":"nonpayable","type":"constructor"},{"anonymous":"false","inputs":[{"indexed":"true","internalType":"address","name":"owner","type":"address"},{"indexed":"true","internalType":"address","name":"spender","type":"address"},{"indexed":"false","internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":"false","inputs":[{"indexed":"true","internalType":"address","name":"sender","type":"address"},{"indexed":"false","internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":"false","internalType":"uint256","name":"amount1","type":"uint256"},{"indexed":"true","internalType":"address","name":"to","type":"address"}],"name":"Burn","type":"event"},{"anonymous":"false","inputs":[{"indexed":"true","internalType":"address","name":"sender","type":"address"},{"indexed":"false","internalType":"uint256","name":"amount0","type":"uint256"},{"indexed":"false","internalType":"uint256","name":"amount1","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":"false","inputs":[{"indexed":"true","internalType":"address","name":"sender","type":"address"},{"indexed":"false","internalType":"uint256","name":"amount0In","type":"uint256"},{"indexed":"false","internalType":"uint256","name":"amount1In","type":"uint256"},{"indexed":"false","internalType":"uint256","name":"amount0Out","type":"uint256"},{"indexed":"false","internalType":"uint256","name":"amount1Out","type":"uint256"},{"indexed":"true","internalType":"address","name":"to","type":"address"}],"name":"Swap","type":"event"},{"anonymous":"false","inputs":[{"indexed":"false","internalType":"uint112","name":"reserve0","type":"uint112"},{"indexed":"false","internalType":"uint112","name":"reserve1","type":"uint112"}],"name":"Sync","type":"event"},{"anonymous":"false","inputs":[{"indexed":"true","internalType":"address","name":"from","type":"address"},{"indexed":"true","internalType":"address","name":"to","type":"address"},{"indexed":"false","internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"constant":"true","inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"MINIMUM_LIQUIDITY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"PERMIT_TYPEHASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[{"internalType":"address","name":"","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"burn","outputs":[{"internalType":"uint256","name":"amount0","type":"uint256"},{"internalType":"uint256","name":"amount1","type":"uint256"}],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"factory","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"getReserves","outputs":[{"internalType":"uint112","name":"_reserve0","type":"uint112"},{"internalType":"uint112","name":"_reserve1","type":"uint112"},{"internalType":"uint32","name":"_blockTimestampLast","type":"uint32"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"_token0","type":"address"},{"internalType":"address","name":"_token1","type":"address"}],"name":"initialize","outputs":[],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[],"name":"kLast","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"mint","outputs":[{"internalType":"uint256","name":"liquidity","type":"uint256"}],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[{"internalType":"address","name":"","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[],"name":"price0CumulativeLast","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"price1CumulativeLast","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"to","type":"address"}],"name":"skim","outputs":[],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"false","inputs":[{"internalType":"uint256","name":"amount0Out","type":"uint256"},{"internalType":"uint256","name":"amount1Out","type":"uint256"},{"internalType":"address","name":"to","type":"address"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"swap","outputs":[],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[],"name":"sync","outputs":[],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"true","inputs":[],"name":"token0","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"token1","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"true","inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":"false","stateMutability":"view","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":"false","stateMutability":"nonpayable","type":"function"},{"constant":"false","inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":"false","stateMutability":"nonpayable","type":"function"}]`
+      );
+
+      const treasuries = {
+        ethernal: '0x4EB8Be5cFe68710Df61bf53F718CCAb48Da82263',
+        binaris: '0x4a1678998bd470eeEDb6e82116c05821a2eF2Bc1',
+        usp: '0x58d030Fb9b40ed1245762Fe321FbEd41bb217eEE',
+        orbital: '0xc9f5D8bC7a3E4a01bF6926f99540714027F7fF61',
+        polar: '0x2Af7e5b19405A02FC99468Af38a23aa270921781',
+        tripolar: '0x116449c7B1d0837439E12216d7b1EbaecbD848FF',
+      };
+
       const spolarContract = new Contract(
         '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
         spolarAbi,
@@ -608,18 +673,259 @@ export default defineComponent({
         getProvider()
       );
 
+      const treasuryContract = new Contract(
+        treasuries[sunriseName],
+        sunriseName != 'polar' ? treasuryABI : polarTreasuryABI,
+        getProvider()
+      );
+
       this.epoch = await sunriseContract.epoch();
       const earned = await sunriseContract.earned(account.value);
-      this.earned = BigNumberToFixedString(earned);
+      this.earned = (
+        Number(earned.div(BigNumber.from(10).pow(14))) / 10000
+      ).toString();
       this.canWithdraw = await sunriseContract.canWithdraw(account.value);
       this.canClaim = await sunriseContract.canClaimReward(account.value);
       const spolarsStaked: BigNumber = await spolarContract.balanceOf(
         sunriseAddress
       );
-      this.spolarsStaked = BigNumberToFixedString(spolarsStaked);
+      this.spolarsStaked = (
+        Number(spolarsStaked.div(BigNumber.from(10).pow(14))) / 10000
+      ).toString();
       const balance: BigNumber = await sunriseContract.balanceOf(account.value);
-      this.balance = BigNumberToFixedString(balance);
-      // console.log(BigInt.from(this.spolarsStaked) / Math.pow(10, 16));
+      // this.balance = BigNumberToFixedString(balance);
+      this.balance = (
+        Number(balance.div(BigNumber.from(10).pow(14))) / 10000
+      ).toString();
+
+      var lastEpochTwap = BigNumber.from('0');
+      var printTwap = BigNumber.from('0');
+      if (sunriseName != 'polar') {
+        lastEpochTwap = await treasuryContract[
+          'previousEpoch' +
+            sunriseName.charAt(0).toUpperCase() +
+            sunriseName.slice(1) +
+            'Price'
+        ]();
+
+        printTwap = await treasuryContract[sunriseName + 'PriceCeiling']();
+      } else {
+        lastEpochTwap = await treasuryContract.previousEpochpolarPrice();
+        printTwap = await treasuryContract.polarPriceCeiling();
+      }
+
+      this.lastEpochTwap = (
+        Number(lastEpochTwap.div(BigNumber.from(10).pow(14))) / 10000
+      ).toString();
+
+      this.printTwap = (
+        Number(printTwap.div(BigNumber.from(10).pow(14))) / 10000
+      ).toString();
+
+      const w3 = new Web3(config.rpc);
+
+      const pools = {
+        binaris: '0x29A3e2Bb73891f20C6d4A34ecE0c4a6F8020ec32',
+        orbital: '0x7243cB5DBae5921c78A022110645a23a38ffBA5D',
+        polar: '0x3fa4d0145a0b6ad0584b1ad5f61cb490a04d8242',
+        usp: '0xa984B8062316AFE25c86576b0478E76E65FdF564',
+        tripolar: '0x51488c4BcEEa96Ee530bC6093Bd0c00F9461fbb5',
+        ethernal: '0x81D77f8e86f65b9C0F393afe0FC743D888c2d4d7',
+        near: '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0',
+        spolar: '0xADf9D0C77c70FCb1fDB868F54211288fCE9937DF',
+      };
+
+      const contractAddress = pools[sunriseName];
+      const uniswapContract = new w3.eth.Contract(uniswapABI, contractAddress);
+
+      if (sunriseName != 'polar') {
+        const twap: BigNumber = await treasuryContract[
+          `get` +
+            `${sunriseName.charAt(0).toUpperCase()}` +
+            `${sunriseName.slice(1)}` +
+            `UpdatedPrice`
+        ]();
+        this.twap = (
+          Number(twap.div(BigNumber.from(10).pow(14))) / 10000
+        ).toString();
+      } else {
+        const twap: BigNumber = await treasuryContract[
+          `getpolarUpdatedPrice`
+        ]();
+        this.twap = (
+          Number(twap.div(BigNumber.from(10).pow(14))) / 10000
+        ).toString();
+      }
+      const nearPriceContract = new w3.eth.Contract(uniswapABI, pools['near']);
+      const nearReserves = await nearPriceContract.methods.getReserves().call();
+      const near_price =
+        1 / (nearReserves[1] / nearReserves[0] / 10 ** (24 - 6));
+      const spolarPriceContract = new w3.eth.Contract(
+        uniswapABI,
+        pools['spolar']
+      );
+      const polarReserves = await spolarPriceContract.methods
+        .getReserves()
+        .call();
+      const polar_price =
+        1 / (polarReserves[0] / polarReserves[1] / 10 ** (18 - 24));
+
+      const spolarPrice = polar_price * near_price;
+      this.depositedInDollars = (
+        parseFloat(this.balance) * spolarPrice
+      ).toString();
+
+      const uspPools = {
+        binaris: '0x0444eD96DccB0bA4b47908E144026cbA7355E454',
+        orbital: '0x711aB8ef67196Afd1dE0B35cBb81c775c12fA91F',
+        ethernal: '0x2BA1175563eb7FC165D640d3EAEe5D094e4af613',
+        polar: '0xc7193703dC70d0Ab3Ebc1a92cc013D70DC08e189',
+        tripolar: '',
+      };
+
+      var tokenUsdPrice = '0';
+      if (sunriseName == 'binaris') {
+        const uniswapPriceContractAddress = uspPools[sunriseName];
+        const uniswapPriceContract = new w3.eth.Contract(
+          uniswapABI,
+          uniswapPriceContractAddress
+        );
+        const res = await uniswapPriceContract.methods.getReserves().call();
+        const pr = res[0] / res[1];
+
+        const uspPoolAddr = '0xa984B8062316AFE25c86576b0478E76E65FdF564';
+        const uspPoolContract = new w3.eth.Contract(uniswapABI, uspPoolAddr);
+        const uspReserves = await uspPoolContract.methods.getReserves().call();
+        const uspPriceRes = uspReserves[1] / uspReserves[0];
+        const uspPrice = uspPriceRes / 10 ** (6 - 18);
+        tokenUsdPrice = (uspPrice * pr).toString();
+      } else if (sunriseName == 'ethernal') {
+        const contractAddr = '0x81D77f8e86f65b9C0F393afe0FC743D888c2d4d7';
+        const contract = new w3.eth.Contract(uniswapABI, contractAddr);
+        const reserves = await contract.methods.getReserves().call();
+        const price_eth = reserves[1] / reserves[0];
+        const contractAddr2 = '0x2F41AF687164062f118297cA10751F4b55478ae1';
+        const contract2 = new w3.eth.Contract(uniswapABI, contractAddr2);
+        const reserves2 = await contract2.methods.getReserves().call();
+        const price = reserves2[1] / reserves2[0];
+        const usdc_price = 1 / (price / 10 ** (18 - 6));
+        tokenUsdPrice = (usdc_price * price_eth).toString();
+      } else if (sunriseName == 'orbital') {
+        const contractAddr = '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0';
+        const contract = new w3.eth.Contract(uniswapABI, contractAddr);
+        const reserves = await contract.methods.getReserves().call();
+        const price = reserves[1] / reserves[0];
+        const near_price = 1 / (price / 10 ** (24 - 6));
+        const contractAddr2 = '0xbc8A244e8fb683ec1Fd6f88F3cc6E565082174Eb';
+        const contract2 = new w3.eth.Contract(uniswapABI, contractAddr2);
+        const reserves2 = await contract2.methods.getReserves().call();
+        const price2 = reserves2[1] / reserves2[0];
+        const btc_near_price = 1 / (price2 / 10 ** (8 - 24));
+        const contractAddr3 = '0x7243cB5DBae5921c78A022110645a23a38ffBA5D';
+        const contract3 = new w3.eth.Contract(uniswapABI, contractAddr3);
+        const reserves3 = await contract3.methods.getReserves().call();
+        const price3 = reserves3[1] / reserves3[0];
+        const orbital_btc_price = price3 / 10 ** (8 - 18);
+        tokenUsdPrice = (
+          near_price *
+          btc_near_price *
+          orbital_btc_price
+        ).toString();
+      } else if (sunriseName == 'polar') {
+        const contractAddr = '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0';
+        const contract = new w3.eth.Contract(uniswapABI, contractAddr);
+        const reserves = await contract.methods.getReserves().call();
+        const near_res = reserves[1] / reserves[0];
+        const near_price = 1 / (near_res / 10 ** (24 - 6));
+        const contractAddr2 = '0x3fa4d0145a0b6Ad0584B1ad5f61cB490A04d8242';
+        const contract2 = new w3.eth.Contract(uniswapABI, contractAddr2);
+        const reserves2 = await contract2.methods.getReserves().call();
+        const polar_res = reserves2[1] / reserves2[0];
+        const polar_price = 1 / (polar_res / 10 ** (18 - 24));
+        tokenUsdPrice = (near_price * polar_price).toString();
+      } else if (sunriseName == 'tripolar') {
+        const tri_nearAddr = '0x84b123875F0F36B966d0B6Ca14b31121bd9676AD';
+        const tri_near = new w3.eth.Contract(uniswapABI, tri_nearAddr);
+        const tri_near_reserves = await tri_near.methods.getReserves().call();
+        const tri_near_priceRes = tri_near_reserves[0] / tri_near_reserves[1];
+        const tri_near_price = tri_near_priceRes / 10 ** (24 - 18);
+
+        const near_usdcAddr = '0x20F8AeFB5697B77E0BB835A8518BE70775cdA1b0';
+        const near_usdc = new w3.eth.Contract(uniswapABI, near_usdcAddr);
+        const near_usdc_reserves = await near_usdc.methods.getReserves().call();
+        const near_usdc_priceRes =
+          near_usdc_reserves[1] / near_usdc_reserves[0];
+        const near_usdc_price = 1 / (near_usdc_priceRes / 10 ** (24 - 6));
+
+        const contractAddr = '0x51488c4BcEEa96Ee530bC6093Bd0c00F9461fbb5';
+        const contract = new w3.eth.Contract(uniswapABI, contractAddr);
+        const reserves = await contract.methods.getReserves().call();
+        const priceRes = reserves[1] / reserves[0];
+        tokenUsdPrice = (
+          priceRes *
+          tri_near_price *
+          near_usdc_price
+        ).toString();
+      } else {
+        const uspPoolAddr = '0xa984B8062316AFE25c86576b0478E76E65FdF564';
+        const uspPoolContract = new w3.eth.Contract(uniswapABI, uspPoolAddr);
+        const uspReserves = await uspPoolContract.methods.getReserves().call();
+        const uspPriceRes = uspReserves[1] / uspReserves[0];
+        tokenUsdPrice = (uspPriceRes / 10 ** (6 - 18)).toString();
+      }
+
+      this.earnedAmountInDollars = (
+        parseFloat(this.balance) * parseFloat(tokenUsdPrice)
+      ).toString();
+
+      const masonryABI = JSON.parse(`[{
+        "inputs": [],
+        "name": "rewardPerShare",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+      }]`);
+
+      const masonryContract = new Contract(
+        '0xA452f676F109d34665877B7a7B203f2B445D7DE0',
+        masonryABI,
+        getProvider()
+      );
+
+      const rewardsPerShare = await masonryContract.functions.rewardPerShare();
+      const epochRewardsPerShare = rewardsPerShare / 1e18;
+      const amountOfRewardsPerDay =
+        epochRewardsPerShare * Number(tokenUsdPrice) * 4;
+
+      const tvl = parseFloat(this.spolarsStaked) * spolarPrice;
+      const APR = ((amountOfRewardsPerDay * 100) / tvl) * 365;
+      console.log(APR);
+      //       async getSunriseAPR(sunrise: Sunrise) {
+      //   let latestSnapshotIndex: BigNumber,
+      //     lastHistory: BigNumber,
+      //     SPOLARPrice: TokenStat,
+      //     tokenPricePromise: Promise<TokenStat>,
+      //     tokenPrice: TokenStat;
+      //   const token = sunrise.earnTokenName;
+      //   const contract = this.contracts[sunrise.contract];
+      //   tokenPricePromise = this.getStat(token);
+      //   latestSnapshotIndex = await contract.latestSnapshotIndex();
+      //   [lastHistory, SPOLARPrice, tokenPrice] = await Promise.all([
+      //     contract.masonryHistory(latestSnapshotIndex),
+      //     this.getStat('SPOLAR'),
+      //     tokenPricePromise,
+      //   ]);
+      //   const lastRewardsReceived = lastHistory[1];
+      //   const epochRewardsPerShare = lastRewardsReceived / 1e18;
+
+      //   //Mgod formula
+      //   const amountOfRewardsPerDay = epochRewardsPerShare * Number(tokenPrice.priceInDollars) * 4;
+      //   const masonrytShareBalanceOf = await this.SPOLAR.balanceOf(contract.address);
+      //   const masonryTVL =
+      //     Number(getDisplayBalance(masonrytShareBalanceOf, this.SPOLAR.decimal)) * Number(SPOLARPrice.priceInDollars);
+      //   const realAPR = ((amountOfRewardsPerDay * 100) / masonryTVL) * 365;
+      //   return realAPR;
+      // }
     }
   },
 });
