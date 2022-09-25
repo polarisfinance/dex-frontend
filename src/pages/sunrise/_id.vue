@@ -28,16 +28,28 @@
       <div class="num-tokens">{{ balance }}</div>
       <div class="details">${{ depositedInDollars }}</div>
       <div class="details">SPOLAR Staked</div>
-      <div v-if="approved == '0'">
+
+      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
         <button class="claim-button" @click="approveSpolar">
           Approve Spolar
         </button>
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
-        <button class="claim-btn" @click="depositToken(depositAmount)">
+        <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
+          Deposit
+        </button> -->
+        <button class="claim-btn" @click="toggleSpolarModal(true)">
           Deposit
         </button>
-        <button class="withdraw-btn" @click="withdrawToken(depositAmount)">
+        <SpolarModal
+          :isVisible="isSpolarModalVisible"
+          :deposit="deposit"
+          @close="toggleSpolarModal"
+        />
+        <!-- <button class="withdraw-btn" @click="withdrawToken(depositAmount)">
+          Withdraw
+        </button> -->
+        <button class="withdraw-btn"  @click="toggleSpolarModal(false)">
           Withdraw
         </button>
       </div>
@@ -113,13 +125,15 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from 'ethers';
 import { Contract } from 'ethers';
+import SpolarModal from './SpolarModal.vue';
+// import BigInt from ''
 
 interface PoolPageData {
   id: string;
 }
 
 export default defineComponent({
-  components: {},
+  components: { SpolarModal },
   setup() {
     const claimABIs = {
       binaris: JSON.parse(
@@ -436,7 +450,13 @@ export default defineComponent({
         return Promise.reject(error);
       }
     }
-
+    const isSpolarModalVisible = ref(false);
+    const deposit = ref(false);
+    const toggleSpolarModal = (depositProp: boolean, value?: boolean) => {
+      isSpolarModalVisible.value = value ?? !isSpolarModalVisible.value;
+      deposit.value = depositProp;
+      console.log(deposit.value);
+    };
     return {
       // data
       ...toRefs(data),
@@ -450,11 +470,15 @@ export default defineComponent({
       depositToken,
       withdrawToken,
       claim,
+
+      isSpolarModalVisible,
+      toggleSpolarModal,
+      deposit,
     };
   },
   data() {
     return {
-      approved: '0',
+      approved: false,
       depositAmount: '0',
       withdrawAmount: '0',
       epoch: '-',
@@ -504,8 +528,8 @@ export default defineComponent({
 
     function BigNumberToFixedString(
       number: BigNumber,
-      decimals = 18,
-      fixed = 4
+      fixed = 4,
+      decimals = 18
     ) {
       return number
         .div(BigNumber.from(10).pow(decimals))
@@ -556,7 +580,9 @@ export default defineComponent({
       const _spender = sunriseAddress;
       const approval: BigNumber = await contract.allowance(_owner, _spender);
 
-      if (approval != MaxUint256) this.approved = '1';
+      if (approval.toString() === MaxUint256.toString()) {
+        this.approved = true;
+      }
 
       const abiSunrise = JSON.parse(`[{
         "inputs": [],

@@ -16,7 +16,7 @@ import { defineComponent } from 'vue';
 import WalletButton from '@/components/web3/WalletButton.vue';
 import { EXTERNAL_LINKS } from '@/constants/links';
 import { SupportedWallets } from '@/services/web3/web3.plugin';
-import X from './x.vue';
+import X from '@/components/web3/x.vue';
 
 export default defineComponent({
   components: {
