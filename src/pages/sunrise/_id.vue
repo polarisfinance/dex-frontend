@@ -125,9 +125,9 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from 'ethers';
 
-import useSunrise from './useSunrise';
-import useTreasury from './useTreasury';
-import useTokens from './useTokens';
+import useSunrise from '../../composables/PolarisFinance/useSunrise';
+import useTreasury from '../../composables/PolarisFinance/useTreasury';
+import useTokens from '../../composables/PolarisFinance/useTokens';
 
 interface PoolPageData {
   id: string;
