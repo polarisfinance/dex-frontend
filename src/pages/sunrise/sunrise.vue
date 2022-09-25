@@ -16,7 +16,7 @@ const logo = {
   usp: uspImg,
   ethernal: ethernalImg,
   binaris: binarisImg,
-  tripolar: orbitalImg,
+  tripolar: tripolarImg,
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
