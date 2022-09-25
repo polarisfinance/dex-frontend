@@ -243,6 +243,11 @@ export default defineComponent({
   outline: none !important;
 }
 
+.bal-btn {
+  background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
+  border-radius: 16px;
+}
+
 .content {
   @apply flex h-full w-full items-center justify-center;
 }

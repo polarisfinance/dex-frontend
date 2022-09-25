@@ -28,16 +28,28 @@
       <div class="num-tokens">{{ balance }}</div>
       <div class="details">${{ depositedInDollars }}</div>
       <div class="details">SPOLAR Staked</div>
-      <div v-if="approved == '0'">
+
+      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
         <button class="claim-button" @click="approveSpolar">
           Approve Spolar
         </button>
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
-        <button class="claim-btn" @click="depositToken(depositAmount)">
+        <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
+          Deposit
+        </button> -->
+        <button class="claim-btn" @click="toggleSpolarModal(true)">
           Deposit
         </button>
-        <button class="withdraw-btn" @click="withdrawToken(depositAmount)">
+        <SpolarModal
+          :isVisible="isSpolarModalVisible"
+          :deposit="deposit"
+          @close="toggleSpolarModal"
+        />
+        <!-- <button class="withdraw-btn" @click="withdrawToken(depositAmount)">
+          Withdraw
+        </button> -->
+        <button class="withdraw-btn" @click="toggleSpolarModal(false)">
           Withdraw
         </button>
       </div>
@@ -439,7 +451,13 @@ export default defineComponent({
         return Promise.reject(error);
       }
     }
-
+    const isSpolarModalVisible = ref(false);
+    const deposit = ref(false);
+    const toggleSpolarModal = (depositProp: boolean, value?: boolean) => {
+      isSpolarModalVisible.value = value ?? !isSpolarModalVisible.value;
+      deposit.value = depositProp;
+      console.log(deposit.value);
+    };
     return {
       // data
       ...toRefs(data),
@@ -453,11 +471,15 @@ export default defineComponent({
       depositToken,
       withdrawToken,
       claim,
+
+      isSpolarModalVisible,
+      toggleSpolarModal,
+      deposit,
     };
   },
   data() {
     return {
-      approved: '0',
+      approved: false,
       depositAmount: '0',
       withdrawAmount: '0',
       epoch: '-',
@@ -515,8 +537,7 @@ export default defineComponent({
 
     const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
 
-    const approved = await isApproved();
-    if (approved) this.approved = '1';
+    this.approved = await isApproved();
 
     this.epoch = await getEpoch();
     this.earned = await getRewardsEarned();

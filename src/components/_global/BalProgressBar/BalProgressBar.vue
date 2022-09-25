@@ -14,17 +14,17 @@ type Props = {
 /**
  * PROPS
  */
-const props = withDefaults(defineProps<Props>(), {
+ const props = withDefaults(defineProps<Props>(), {
   size: '1',
-  color: '#fbaaff',
+  color: 'green',
 });
 
 /**
  * COMPUTED
  */
 const barClasses = computed(() => ({
-  [`h-[2px]`]: true,
-  [`bg-[#fbaaff]`]: true,
+  [`h-${props.size}`]: true,
+  [`bg-${props.color}`]: true,
 }));
 
 const bufferBarClasses = computed(() => ({
@@ -54,7 +54,7 @@ const bufferBarStyles = computed(() => ({
 
 <style scoped>
 .progress-track {
-  @apply mx-[10px] flex overflow-hidden rounded-full bg-[#1b1021] dark:bg-[#1b1021];
+  @apply rounded-full bg-[#1b1021] dark:bg-[#1b1021] overflow-hidden flex h-[3px];
 }
 
 .progress-bar {
