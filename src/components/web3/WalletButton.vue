@@ -6,7 +6,7 @@
       </h5>
       <img
         :src="require(`@/assets/images/connectors/${wallet}.svg`)"
-        class="w-[24px] h-[24px]"
+        class="h-[24px] w-[24px]"
       />
     </div>
   </button>
@@ -43,7 +43,7 @@ export default defineComponent({
   @apply transition-all;
   /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */
   /* @apply border dark:border-gray-900; */
-  @apply flex justify-start items-center w-full h-14 rounded-md shadow-lg;
+  @apply flex h-14 w-full items-center justify-start rounded-md shadow-lg;
   background: #2e2433;
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;

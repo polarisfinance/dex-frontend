@@ -86,7 +86,7 @@ watch(popoverOpened, () => {
   >
     <div
       ref="activatorWrapper"
-      class="group bal-popover-activator"
+      class="bal-popover-activator group"
       @click="trigger === 'click' && togglePopover()"
       @mouseenter="trigger === 'hover' && showPopover()"
       @mouseleave="trigger === 'hover' && hidePopover()"
@@ -103,7 +103,7 @@ watch(popoverOpened, () => {
 
 <style scoped>
 .bal-popover-wrapper {
-  @apply invisible opacity-0 absolute z-30 pt-3;
+  @apply invisible absolute z-30 pt-3 opacity-0;
 
   transition: all 0.2s ease-in-out;
 }

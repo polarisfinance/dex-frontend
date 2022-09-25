@@ -29,7 +29,7 @@ const classes = computed(() => ({
     <h1 class="home-title">Automated portfolio manager</h1>
     <h1 class="home-subtitle">and trading platform</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
-      <div class="flex justify-center mt-[60px] w-full">
+      <div class="mt-[60px] flex w-full justify-center">
         <HeroConnectWalletButton class="mr-[16px]" />
 
         <a
@@ -48,7 +48,7 @@ const classes = computed(() => ({
 
 <style>
 .headline {
-  @apply text-white text-center text-4xl md:text-5xl pb-2 font-display font-black;
+  @apply pb-2 text-center font-display text-4xl font-black text-white md:text-5xl;
 
   font-weight: 600;
   font-variation-settings: 'wght' 700;

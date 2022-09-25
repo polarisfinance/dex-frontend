@@ -145,7 +145,7 @@ const swapRows = computed<SwapRow[]>(() =>
 
 <template>
   <div
-    class="overflow-x-auto table-container"
+    class="table-container overflow-x-auto"
     :square="upToLargeBreakpoint"
     :noBorder="upToLargeBreakpoint"
     noPad
@@ -228,19 +228,19 @@ const swapRows = computed<SwapRow[]>(() =>
     </BalTable> -->
     <div class="flex items-center justify-between">
       <div>Action</div>
-      <div class="flex items-center gap-[40px] w-full justify-center">
+      <div class="flex w-full items-center justify-center gap-[40px]">
         <div>Value</div>
         <div>Tokens</div>
       </div>
       <div>Time</div>
     </div>
-    <div class="border my-[24px]" />
+    <div class="my-[24px] border" />
     <div v-for="(action, index) in swapRows" :key="index">
       <a :href="explorerLinks.txLink(action.tx)" target="_blank">
-        <div class="flex items-center justify-between mb-[12px]">
+        <div class="mb-[12px] flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset
-              class="flex-shrink-0 mr-2"
+              class="mr-2 flex-shrink-0"
               :address="action.userAddress"
               :iconURI="action.ensAvatar"
               :size="24"
@@ -250,7 +250,7 @@ const swapRows = computed<SwapRow[]>(() =>
             </div>
           </div>
           <div
-            class="flex gap-[40px] width-[50px] items-center w-full justify-center"
+            class="width-[50px] flex w-full items-center justify-center gap-[40px]"
           >
             <div class="value-text w-[50px] text-right">
               {{ action.formattedValue }}
@@ -285,7 +285,7 @@ const swapRows = computed<SwapRow[]>(() =>
             {{ action.formattedDate }}
           </div>
         </div>
-        <div class="flex justify-end value-text mt-[8px]" v-if="isMobile">
+        <div class="value-text mt-[8px] flex justify-end" v-if="isMobile">
           {{ action.formattedDate }}
         </div>
       </a>

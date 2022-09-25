@@ -123,7 +123,7 @@ onUnmounted(() => {
     </slot>
   </button>
   <div ref="content" class="tooltip" :class="tooltipClasses">
-    <div :class="tooltipPad" class="font-medium tooltip-content">
+    <div :class="tooltipPad" class="tooltip-content font-medium">
       <p v-if="text" class="tooltip-text" v-text="text" />
       <slot v-else />
     </div>
@@ -131,7 +131,7 @@ onUnmounted(() => {
 </template>
 <style>
 .tooltip {
-  @apply z-50 hidden relative shadow-sm;
+  @apply relative z-50 hidden shadow-sm;
 }
 
 .dark .tooltip {
@@ -140,7 +140,7 @@ onUnmounted(() => {
 
 /* Light mode gray shadow */
 .tooltip::before {
-  @apply w-full h-full block absolute top-0 left-0 opacity-0 blur-2xl;
+  @apply absolute top-0 left-0 block h-full w-full opacity-0 blur-2xl;
 
   background-blend-mode: soft-light, soft-light, normal;
   background: radial-gradient(ellipse at center, rgb(0 0 0 / 60%), transparent);
@@ -164,7 +164,7 @@ onUnmounted(() => {
 }
 
 .tooltip-content {
-  @apply rounded-md text-xs text-black dark:text-white bg-white dark:bg-gray-900;
+  @apply rounded-md bg-white text-xs text-black dark:bg-gray-900 dark:text-white;
 }
 
 .tooltip[data-popper-placement='top'] .tooltip-content {
@@ -181,7 +181,7 @@ onUnmounted(() => {
 
 .tooltip[data-popper-placement='top'] .tooltip-content::before,
 .tooltip[data-popper-placement='bottom'] .tooltip-content::after {
-  @apply w-0 h-0 absolute;
+  @apply absolute h-0 w-0;
 
   content: ' ';
   left: calc(50% - 7px);

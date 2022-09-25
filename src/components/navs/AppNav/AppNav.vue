@@ -51,8 +51,8 @@ onUnmounted(() => {
 
 <template>
   <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
-  <nav id="app-nav" ref="appNav" class="top-0 lg:px-6 pr-1 pl-4 h-20">
-    <div class="flex w-full justify-between items-center h-full">
+  <nav id="app-nav" ref="appNav" class="top-0 h-20 pr-1 pl-4 lg:px-6">
+    <div class="flex h-full w-full items-center justify-between">
       <router-link
         :to="{ name: 'home' }"
         @click="trackGoal(Goals.ClickNavLogo)"
@@ -62,7 +62,7 @@ onUnmounted(() => {
       </router-link>
 
       <img src="./AuroraLogo.svg" v-if="isMobile" />
-      <DesktopLinks v-if="isDesktop" class="ml-8 font-medium flex" />
+      <DesktopLinks v-if="isDesktop" class="ml-8 flex font-medium" />
 
       <AppNavActions class="actions" />
     </div>
@@ -71,7 +71,7 @@ onUnmounted(() => {
 
 <style scoped>
 #app-nav {
-  @apply w-full z-30;
+  @apply z-30 w-full;
   /* @apply bg-white dark:bg-gray-900; */
   @apply border-b border-transparent;
 

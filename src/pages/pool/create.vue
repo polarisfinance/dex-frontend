@@ -307,19 +307,19 @@ watch(
     </BalStack>
   </div>
   <div
-    class="container grid grid-cols-2 gap-x-4 mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
+    class="container mx-auto grid max-w-[914px] grid-cols-2 gap-x-4 rounded-[20px] bg-[#2E2433] p-[24px]"
   >
     <div
-      class="col-span-2 text-[20px] font-semibold leading-[26px] text-center"
+      class="col-span-2 text-center text-[20px] font-semibold leading-[26px]"
     >
       Choose tokens & weights
     </div>
     <div
-      class="col-span-2 text-[12px] leading-[15px] text-center text-pink-third font-[500]"
+      class="col-span-2 text-center text-[12px] font-[500] leading-[15px] text-pink-third"
     >
       Aurora Mainnet
     </div>
-    <div class="border col-span-2 my-[24px]"></div>
+    <div class="col-span-2 my-[24px] border"></div>
     <div class="relative">
       <AnimatePresence
         :isVisible="hasRestoredFromSavedState && !appLoading"

@@ -58,12 +58,12 @@ const fiatTotal = computed(() => {
 
 <template>
   <div
-    class="p-4 w-full bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-900"
+    class="w-full border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-900 dark:bg-gray-800"
   >
-    <div class="text-sm text-secondary">
+    <div class="text-secondary text-sm">
       {{ $t('basedOnTokensInWallet') }}
     </div>
-    <div class="flex justify-between items-center mb-4">
+    <div class="mb-4 flex items-center justify-between">
       <h5>
         {{ $t('youCanInvest') }}
       </h5>

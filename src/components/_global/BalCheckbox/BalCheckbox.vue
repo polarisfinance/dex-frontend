@@ -10,7 +10,7 @@
           @change="onChange"
         />
       </div>
-      <div class="relative flex-col ml-2">
+      <div class="relative ml-2 flex-col">
         <label
           v-if="$slots.label || label"
           :for="name"
@@ -143,8 +143,8 @@ export default defineComponent({
 }
 
 .bal-checkbox-input {
-  @apply text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-    rounded leading-none;
+  @apply rounded border border-gray-300 bg-white leading-none text-blue-600 dark:border-gray-600
+    dark:bg-gray-700 dark:text-blue-400;
 
   appearance: none;
   -webkit-print-color-adjust: exact;
@@ -164,6 +164,6 @@ export default defineComponent({
 }
 
 .bal-checkbox-error {
-  @apply absolute text-red-500 text-sm;
+  @apply absolute text-sm text-red-500;
 }
 </style>

@@ -62,10 +62,10 @@ const submissionDisabled = computed(() => {
   <BalCard shadow="xl" exposeOverflow noBorder>
     <template #header>
       <div class="w-full">
-        <div class="text-xs leading-none text-secondary">
+        <div class="text-secondary text-xs leading-none">
           {{ configService.network.chainName }}
         </div>
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <h4>
             {{ $t('unlockVeBAL.unlockForm.title') }}
           </h4>

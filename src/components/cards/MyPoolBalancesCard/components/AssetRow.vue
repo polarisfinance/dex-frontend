@@ -51,7 +51,7 @@ const fiatLabel = computed(() => {
       <span>
         {{ balanceLabel }}
       </span>
-      <span class="text-sm text-secondary">
+      <span class="text-secondary text-sm">
         {{ fiatLabel }}
       </span>
     </div>

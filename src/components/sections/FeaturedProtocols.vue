@@ -24,8 +24,8 @@ export default defineComponent({
       <h3 class="medium-subtitle">Medium articles</h3>
     </div>
     <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-12 xs:col-span-6 lg:col-span-3 card">
-        <div class="hover:shadow-xl transition-shadow">
+      <div class="card col-span-12 xs:col-span-6 lg:col-span-3">
+        <div class="transition-shadow hover:shadow-xl">
           <img src="/images/banners/element.jpg" />
         </div>
         <div class="mx-[16px] mb-[16px]">
@@ -35,7 +35,7 @@ export default defineComponent({
           </p>
           <a target="_blank" :href="EXTERNAL_LINKS.Element.Home"
             ><div class="flex items-center">
-              <div class="mr-[12px] learn-more-text">Learn more</div>
+              <div class="learn-more-text mr-[12px]">Learn more</div>
               <img src="./learn-more.svg" /></div
           ></a>
         </div>

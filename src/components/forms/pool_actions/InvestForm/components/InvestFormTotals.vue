@@ -69,7 +69,7 @@ const optimizeBtnClasses = computed(() => ({
           </span>
           <span
             v-else
-            class="text-blue-500 cursor-pointer"
+            class="cursor-pointer text-blue-500"
             @click="emit('maximize')"
           >
             {{ $t('max') }}
@@ -130,7 +130,7 @@ const optimizeBtnClasses = computed(() => ({
 
 <style scoped>
 .data-table {
-  @apply border dark:border-gray-900 rounded-lg divide-y dark:divide-gray-900;
+  @apply divide-y rounded-lg border dark:divide-gray-900 dark:border-gray-900;
 }
 
 .data-table-row {
@@ -139,14 +139,14 @@ const optimizeBtnClasses = computed(() => ({
 }
 
 .data-table-number-col {
-  @apply col-span-3 p-2 flex items-center justify-between;
+  @apply col-span-3 flex items-center justify-between p-2;
 }
 
 .total-row {
-  @apply text-lg font-semibold rounded-t-lg dark:bg-gray-800;
+  @apply rounded-t-lg text-lg font-semibold dark:bg-gray-800;
 }
 
 .price-impact-row {
-  @apply text-sm rounded-b-lg;
+  @apply rounded-b-lg text-sm;
 }
 </style>

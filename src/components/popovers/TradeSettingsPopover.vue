@@ -10,7 +10,7 @@
     <div class="pl-2">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
-        <BalTooltip class="p-2 ml-2">
+        <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
@@ -22,14 +22,14 @@
     <div v-if="isEIP1559SupportedNetwork" class="mt-3 pl-2 pb-2">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('transactionType')" />
-        <BalTooltip class="p-2 ml-2">
+        <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-text="$t('ethereumTxTypeTooltip')" />
         </BalTooltip>
       </div>
-      <div class="flex mt-1">
+      <div class="mt-1 flex">
         <BalBtnGroup
           v-model="ethereumTxType"
           :options="ethereumTxTypeOptions"
@@ -50,13 +50,13 @@
           <div v-html="$t('transactionDeadlineTooltip')" />
         </BalTooltip>
       </div>
-      <div class="flex mt-1">
+      <div class="mt-1 flex">
         <div
-          class="flex items-center px-1 rounded-lg border dark:border-gray-700 shadow-inner"
+          class="flex items-center rounded-lg border px-1 shadow-inner dark:border-gray-700"
         >
           <input
             v-model="appTransactionDeadline"
-            class="w-8 text-right bg-transparent"
+            class="w-8 bg-transparent text-right"
             placeholder="20"
             type="number"
             step="1"

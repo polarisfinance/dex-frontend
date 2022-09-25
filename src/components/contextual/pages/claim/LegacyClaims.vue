@@ -224,12 +224,12 @@ async function claimAvailableRewards() {
       <BalCard noPad class="mb-4">
         <template #header>
           <div
-            class="px-3 w-full bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-900"
+            class="w-full border-b bg-gray-50 px-3 dark:border-gray-900 dark:bg-gray-800"
           >
             <BalTabs
               v-model="activeTab"
               :tabs="tabs"
-              class="p-0 m-0 -mb-px whitespace-nowrap"
+              class="m-0 -mb-px whitespace-nowrap p-0"
               noPad
             />
           </div>
@@ -240,7 +240,7 @@ async function claimAvailableRewards() {
             :key="`token-${claimableToken.token}`"
           >
             <div
-              class="flex items-center py-2 px-3 mb-2 last:border-0 border-b dark:border-gray-900"
+              class="mb-2 flex items-center border-b py-2 px-3 last:border-0 dark:border-gray-900"
             >
               <BalAsset
                 :address="claimableToken.token"
@@ -252,7 +252,7 @@ async function claimAvailableRewards() {
                   {{ fNum2(claimableToken.amount, FNumFormats.token) }}
                   {{ claimableToken.symbol }}
                 </div>
-                <div class="text-gray-400 font-sm">
+                <div class="font-sm text-gray-400">
                   {{ fNum2(claimableToken.fiatValue, FNumFormats.fiat) }}
                 </div>
               </div>
@@ -265,7 +265,7 @@ async function claimAvailableRewards() {
             :key="`token-${claimableToken.token}`"
           >
             <div
-              class="flex items-center py-2 px-3 mb-2 last:border-0 border-b dark:border-gray-900"
+              class="mb-2 flex items-center border-b py-2 px-3 last:border-0 dark:border-gray-900"
             >
               <BalAsset
                 :address="claimableToken.token"
@@ -277,7 +277,7 @@ async function claimAvailableRewards() {
                   {{ fNum2(claimableToken.amount, FNumFormats.token) }}
                   {{ claimableToken.symbol }}
                 </div>
-                <div class="text-gray-400 font-sm">
+                <div class="font-sm text-gray-400">
                   {{ fNum2(claimableToken.fiatValue, FNumFormats.fiat) }}
                 </div>
               </div>
@@ -318,7 +318,7 @@ async function claimAvailableRewards() {
         <div class="mb-2 font-semibold">
           Looking for other claimable tokens?
         </div>
-        <ul class="pl-8 list-disc">
+        <ul class="list-disc pl-8">
           <li v-if="legacyClaimUI.length > 0" class="mt-2">
             Claim
             <span class="inline-grid grid-flow-col gap-1">
@@ -366,7 +366,7 @@ async function claimAvailableRewards() {
         </ul>
       </div>
     </div>
-    <div v-else class="px-3 pb-3 mt-4 text-sm">
+    <div v-else class="mt-4 px-3 pb-3 text-sm">
       <div>{{ $t('liquidityMiningPopover.airdropEligibility') }}</div>
     </div>
   </div>

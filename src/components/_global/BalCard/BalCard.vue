@@ -3,7 +3,7 @@
     <div
       :class="[
         'card-container',
-        { 'overflow-y-scroll max-h-screen': overflowYScroll },
+        { 'max-h-screen overflow-y-scroll': overflowYScroll },
       ]"
     >
       <div v-if="imgSrc" class="feature" :style="featureStyles" />
@@ -146,7 +146,7 @@ export default defineComponent({
 }
 
 .header-content {
-  @apply flex-1 flex items-center;
+  @apply flex flex-1 items-center;
 }
 
 .footer {
@@ -154,6 +154,6 @@ export default defineComponent({
 }
 
 .feature {
-  @apply w-full h-40 bg-center bg-cover;
+  @apply h-40 w-full bg-cover bg-center;
 }
 </style>

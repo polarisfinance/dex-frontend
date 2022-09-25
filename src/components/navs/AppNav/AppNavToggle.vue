@@ -3,7 +3,7 @@
     <router-link
       :to="{ name: 'home' }"
       :class="[
-        'toggle-link px-6 rounded-l-lg',
+        'toggle-link rounded-l-lg px-6',
         { [activeClasses]: !isTradePage },
       ]"
       @click="trackGoal(Goals.ClickNavInvest)"
@@ -13,7 +13,7 @@
     <router-link
       :to="{ name: 'trade' }"
       :class="[
-        'toggle-link px-6 rounded-r-lg',
+        'toggle-link rounded-r-lg px-6',
         { [activeClasses]: isTradePage },
       ]"
       @click="trackGoal(Goals.ClickNavTrade)"
@@ -54,12 +54,12 @@ export default defineComponent({
 
 <style scoped>
 .app-nav-toggle {
-  @apply h-10 flex items-center rounded-lg shadow;
+  @apply flex h-10 items-center rounded-lg shadow;
 
   font-variation-settings: 'wght' 600;
 }
 
 .toggle-link {
-  @apply h-full flex items-center;
+  @apply flex h-full items-center;
 }
 </style>

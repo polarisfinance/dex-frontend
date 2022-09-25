@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
-    <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
-      <div class="flex justify-between mb-[24px]">
+    <div class="pt-8 lg:px-4 xl:container xl:mx-auto">
+      <div class="mb-[24px] flex justify-between">
         <div class="flex-column">
           <div class="pool-title">Segniorage Pool</div>
           <div class="pool-subtitle">
@@ -10,11 +10,11 @@
           </div>
         </div>
         <div class="flex items-center" v-if="isDesktop">
-          <div class="flex items-center mr-[12px]">
+          <div class="mr-[12px] flex items-center">
             <div
               v-for="(token, idx) in tableData"
               :key="idx"
-              class="flex token-name"
+              class="token-name flex"
             >
               <div>
                 {{ symbolFor(token.address) }}
@@ -34,11 +34,11 @@
               <BalAsset :address="token.address" :size="33" />
             </div>
           </div>
-          <div class="flex items-center mr-[12px]">
+          <div class="mr-[12px] flex items-center">
             <div
               v-for="(token, idx) in tableData"
               :key="idx"
-              class="flex token-name"
+              class="token-name flex"
             >
               <div>
                 {{ symbolFor(token.address) }}
@@ -100,7 +100,7 @@
         <div class="deposit mb-[16px]">
           Deposit SPOLAR-NEAR-LP to an autocompounder
         </div>
-        <div class="flex gap-[50px] justify-center">
+        <div class="flex justify-center gap-[50px]">
           <div class="flex-col gap-[8px] text-right">
             <div>APY</div>
             <div>Daily APY</div>
@@ -116,7 +116,7 @@
             <div>3.5%</div>
           </div>
         </div>
-        <button class="mt-[16px] w-full approve-btn-placeholder">
+        <button class="approve-btn-placeholder mt-[16px] w-full">
           <div class="approve-btn">Approve LP</div>
         </button>
       </div>
@@ -133,7 +133,7 @@
         :isStablePhantomPool="isLiquidityBootstrappingPool"
       /> -->
         <div class="hidden lg:block" />
-        <div class="order-2 lg:order-1 col-span-2">
+        <div class="order-2 col-span-2 lg:order-1">
           <div class="grid grid-cols-1 gap-y-8">
             <div class="px-4 lg:px-0">
               <PoolChart
@@ -146,7 +146,7 @@
                 :poolType="pool?.poolType"
               />
             </div>
-            <div class="px-4 lg:px-0 mb-[70px]">
+            <div class="mb-[70px] px-4 lg:px-0">
               <PoolStatCards
                 :pool="pool"
                 :poolApr="poolApr"
@@ -161,7 +161,7 @@
             </div>
             <div class="mb-4">
               <h4
-                class="px-4 lg:px-0 mb-[12px] table-title"
+                class="table-title mb-[12px] px-4 lg:px-0"
                 v-text="$t('poolComposition')"
               />
               <PoolBalancesCard :pool="pool" :loading="loadingPool" />
@@ -267,7 +267,7 @@
         <div class="deposit mb-[16px]">
           Deposit SPOLAR-NEAR-LP to an autocompounder
         </div>
-        <div class="flex gap-[50px] justify-center">
+        <div class="flex justify-center gap-[50px]">
           <div class="flex-col gap-[8px] text-right">
             <div>APY</div>
             <div>Daily APY</div>
@@ -283,7 +283,7 @@
             <div>3.5%</div>
           </div>
         </div>
-        <button class="mt-[16px] w-full approve-btn-placeholder">
+        <button class="approve-btn-placeholder mt-[16px] w-full">
           <div class="approve-btn">Approve LP</div>
         </button>
       </div>

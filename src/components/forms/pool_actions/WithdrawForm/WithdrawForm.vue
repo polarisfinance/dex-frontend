@@ -136,7 +136,7 @@ onBeforeMount(() => {
 
     <div
       v-if="highPriceImpact"
-      class="p-2 pb-2 mt-4 rounded-lg border dark:border-gray-700"
+      class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
     >
       <BalCheckbox
         v-model="highPriceImpactAccepted"

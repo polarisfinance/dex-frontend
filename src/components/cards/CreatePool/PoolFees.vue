@@ -140,7 +140,7 @@ async function onChangeFeeController(val: string) {
     <BalCard shadow="xl" noBorder>
       <BalStack vertical>
         <BalStack vertical spacing="xs">
-          <span class="text-xs text-secondary">{{
+          <span class="text-secondary text-xs">{{
             userNetworkConfig?.name
           }}</span>
           <BalStack horizontal align="center" spacing="xs">
@@ -172,7 +172,7 @@ async function onChangeFeeController(val: string) {
               <div :class="['custom-input', customInputClasses]">
                 <input
                   v-model="fee"
-                  class="w-12 h-full text-right bg-transparent"
+                  class="h-full w-12 bg-transparent text-right"
                   placeholder="0.1"
                   type="number"
                   step="any"
@@ -317,6 +317,6 @@ async function onChangeFeeController(val: string) {
 
 <style scoped>
 .custom-input {
-  @apply flex items-center px-1 rounded-lg shadow-inner h-full;
+  @apply flex h-full items-center rounded-lg px-1 shadow-inner;
 }
 </style>

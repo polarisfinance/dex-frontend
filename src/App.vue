@@ -147,9 +147,9 @@ export default defineComponent({
       <TrendingPairs class="mt-4" />
     </template> -->
 
-    <div class="absolute bar hidden lg:block" v-show="$route.name == 'trade'">
+    <div class="bar absolute hidden lg:block" v-show="$route.name == 'trade'">
       <img src="./Bar.svg" />
-      <div class="absolute sidebar w-full">
+      <div class="sidebar absolute w-full">
         <MyWallet class="sidebar-component" />
         <PairPriceGraph class="sidebar-component" />
         <TrendingPairs class="sidebar-component" />
@@ -161,7 +161,7 @@ export default defineComponent({
 
 <style>
 .VueQueryDevtoolsPanel + button {
-  @apply text-black bg-gray-100 p-2 rounded text-sm;
+  @apply rounded bg-gray-100 p-2 text-sm text-black;
 }
 
 .bar {

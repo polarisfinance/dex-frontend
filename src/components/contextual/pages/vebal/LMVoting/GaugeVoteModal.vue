@@ -383,15 +383,15 @@ onMounted(() => {
       />
 
       <div
-        class="flex justify-between items-center p-2 mb-4 rounded-lg border dark:border-gray-800"
+        class="mb-4 flex items-center justify-between rounded-lg border p-2 dark:border-gray-800"
       >
-        <div class="flex gap-4 items-center h-full">
+        <div class="flex h-full items-center gap-4">
           <BalAssetSet :logoURIs="logoURIs" :width="100" :size="32" />
           <div v-if="gauge.pool.name">
             <p class="font-medium text-black dark:text-white">
               {{ gauge.pool.name }}
             </p>
-            <p class="text-sm text-secondary">
+            <p class="text-secondary text-sm">
               {{ gauge.pool.symbol }}
             </p>
           </div>
@@ -409,7 +409,7 @@ onMounted(() => {
         >
           <BalIcon
             name="arrow-up-right"
-            class="text-gray-500 group-hover:text-pink-500 transition-colors"
+            class="text-gray-500 transition-colors group-hover:text-pink-500"
           />
         </BalLink>
       </div>
@@ -433,13 +433,13 @@ onMounted(() => {
         >
           <template #append>
             <div
-              class="flex flex-row justify-center items-center px-2 h-full rounded-r-lg border-gray-100 dark:border-gray-800"
+              class="flex h-full flex-row items-center justify-center rounded-r-lg border-gray-100 px-2 dark:border-gray-800"
             >
               <span class="text-xl text-black dark:text-white">%</span>
             </div>
           </template>
         </BalTextInput>
-        <div v-if="voteError" class="mt-2 text-sm text-secondary">
+        <div v-if="voteError" class="text-secondary mt-2 text-sm">
           {{
             t('veBAL.liquidityMining.popover.warnings.noVeBal.inputHintText')
           }}

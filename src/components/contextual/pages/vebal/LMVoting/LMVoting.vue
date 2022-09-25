@@ -96,9 +96,9 @@ function handleVoteSuccess() {
 
 <template>
   <div
-    class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-end mb-2"
+    class="mb-2 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
   >
-    <div class="px-4 xl:px-0 max-w-3xl">
+    <div class="max-w-3xl px-4 xl:px-0">
       <h3 class="mb-2">
         {{ $t('veBAL.liquidityMining.title') }}
       </h3>
@@ -106,10 +106,10 @@ function handleVoteSuccess() {
         {{ $t('veBAL.liquidityMining.description') }}
       </p>
     </div>
-    <div class="flex gap-2 xs:gap-3 px-4 xl:px-0">
-      <BalCard shadow="none" class="md:w-48 min-w-max">
+    <div class="flex gap-2 px-4 xs:gap-3 xl:px-0">
+      <BalCard shadow="none" class="min-w-max md:w-48">
         <div class="flex items-center">
-          <p class="inline mr-1 text-sm text-secondary">My unallocated votes</p>
+          <p class="text-secondary mr-1 inline text-sm">My unallocated votes</p>
           <BalTooltip
             :text="$t('veBAL.liquidityMining.myUnallocatedVotesTooltip')"
             iconClass="text-gray-400 dark:text-gray-600"
@@ -119,7 +119,7 @@ function handleVoteSuccess() {
           />
         </div>
         <p
-          class="inline mr-1 text-lg font-semibold"
+          class="mr-1 inline text-lg font-semibold"
           :class="{ 'text-red-500': hasExpiredLock }"
         >
           <span v-if="hasLock">
@@ -137,11 +137,11 @@ function handleVoteSuccess() {
           class="relative top-0.5"
         />
       </BalCard>
-      <BalCard shadow="none" class="md:w-48 min-w-max">
+      <BalCard shadow="none" class="min-w-max md:w-48">
         <div class="flex items-center">
           <p
-            :class="{ 'text-orange-500 font-medium': votingPeriodLastHour }"
-            class="inline mr-1 text-sm text-secondary"
+            :class="{ 'font-medium text-orange-500': votingPeriodLastHour }"
+            class="text-secondary mr-1 inline text-sm"
           >
             Voting period ends
           </p>

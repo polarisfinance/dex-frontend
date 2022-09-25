@@ -11,28 +11,28 @@
 
   <div
     :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="text-center justify-center"
+    class="justify-center text-center"
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <div class="bond-title">Purchase {{ sunrise.bond }}</div>
       <div
-        class="flex justify-between items-center mt-[40px]"
+        class="mt-[40px] flex items-center justify-between"
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name uppercase mt-[8px]">{{ sunrise.name }}</div>
+          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name uppercase mt-[8px]">{{ sunrise.bond }}</div>
+          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
         </div>
       </div>
       <div class="details mt-[32px]">
         {{ sunrise.bond }} is available for purchase
       </div>
-      <div class="flex justify-center mt-[24px] gap-[12px]">
+      <div class="mt-[24px] flex justify-center gap-[12px]">
         <button class="claim-btn">Deposit</button>
         <button class="withdraw-btn">Withdraw</button>
       </div>
@@ -54,21 +54,21 @@
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <div class="bond-title">Purchase {{ sunrise.bond }}</div>
       <div
-        class="flex justify-between items-center px-[70px] mt-[40px]"
+        class="mt-[40px] flex items-center justify-between px-[70px]"
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name uppercase mt-[8px]">{{ sunrise.name }}</div>
+          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name uppercase mt-[8px]">{{ sunrise.bond }}</div>
+          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
         </div>
       </div>
       <div class="details mt-[32px]">0.0000 {{ sunrise.bond }} Redeemable</div>
-      <div class="flex justify-center mt-[24px]">
+      <div class="mt-[24px] flex justify-center">
         <button class="claim-btn">
           Enable when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
@@ -137,7 +137,7 @@ export default defineComponent({
 
 <style scoped>
 .sunrise-title {
-  @apply bg-cover bg-center flex items-center justify-center text-center px-4;
+  @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
   background-image: url('./index_bg.svg');
 

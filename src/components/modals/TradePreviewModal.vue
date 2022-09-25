@@ -2,7 +2,7 @@
   <BalModal show :title="$t('previewTradeTransactions')" @close="onClose">
     <div>
       <div
-        class="flex items-center p-4 -mx-4 border-t border-b dark:border-gray-800"
+        class="-mx-4 flex items-center border-t border-b p-4 dark:border-gray-800"
       >
         <BalAssetSet
           :addresses="[addressIn, addressOut]"
@@ -15,7 +15,7 @@
             {{ symbolIn }} -> {{ fNum2(amountOut, FNumFormats.token) }}
             {{ symbolOut }}
           </div>
-          <div class="text-sm text-secondary">
+          <div class="text-secondary text-sm">
             {{ fNum2(valueIn, FNumFormats.fiat) }}
           </div>
         </div>
@@ -26,8 +26,8 @@
           {{ requiresApproval ? 'transactions' : 'transaction' }}:
         </div>
         <div>
-          <div v-if="requiresLidoRelayerApproval" class="mb-3 card-container">
-            <div class="text-green-500 card-step">
+          <div v-if="requiresLidoRelayerApproval" class="card-container mb-3">
+            <div class="card-step text-green-500">
               <BalIcon
                 v-if="isLidoRelayerApproved"
                 name="check"
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div v-if="requiresTokenApproval" class="card-container">
-            <div class="text-green-500 card-step">
+            <div class="card-step text-green-500">
               <BalIcon
                 v-if="isTokenApproved"
                 name="check"
@@ -60,7 +60,7 @@
               <span v-else>{{ $t('approve') }} {{ symbolIn }}</span>
             </div>
           </div>
-          <div class="mt-3 card-container">
+          <div class="card-container mt-3">
             <div class="card-step text-secondary">
               {{ totalRequiredTransactions }}
             </div>
@@ -294,10 +294,10 @@ export default defineComponent({
 </script>
 <style scoped>
 .card-container {
-  @apply p-3 flex items-center border rounded-lg dark:border-gray-800;
+  @apply flex items-center rounded-lg border p-3 dark:border-gray-800;
 }
 
 .card-step {
-  @apply w-9 h-9 flex items-center justify-center border rounded-full dark:border-gray-700;
+  @apply flex h-9 w-9 items-center justify-center rounded-full border dark:border-gray-700;
 }
 </style>

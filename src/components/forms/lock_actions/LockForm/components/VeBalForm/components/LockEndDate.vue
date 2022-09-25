@@ -102,11 +102,11 @@ function formatDateInput(date: Date | number) {
       :max="formatDateInput(maxLockEndDateTimestamp)"
       step="7"
     />
-    <div class="flex px-1 mt-2 text-sm text-secondary">
+    <div class="text-secondary mt-2 flex px-1 text-sm">
       <div
         v-for="(lockDate, index) in lockDates"
         :key="index"
-        class="mr-3 hover:text-pink-500 focus:text-pink-500 cursor-pointer"
+        class="mr-3 cursor-pointer hover:text-pink-500 focus:text-pink-500"
         @click="lockDate.action"
       >
         ~{{ lockDate.label }}

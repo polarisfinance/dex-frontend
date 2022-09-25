@@ -162,7 +162,7 @@ watchEffect(() => {
         <BalIcon name="percent" size="sm" class="mt-3 text-gray-600" />
         <button
           :class="[
-            'ml-2 ease-color mt-1 text-secondary hover:text-blue-800 dark:hover:text-blue-800 flex items-center shadow-sm border dark:border-0 bg-gray-50 dark:bg-gray-850 rounded-full p-1 justify-center',
+            'ease-color text-secondary ml-2 mt-1 flex items-center justify-center rounded-full border bg-gray-50 p-1 shadow-sm hover:text-blue-800 dark:border-0 dark:bg-gray-850 dark:hover:text-blue-800',
             {
               'text-blue-600 dark:text-blue-400': isLocked,
               'border-transparent': !isLocked,
@@ -189,7 +189,7 @@ watchEffect(() => {
         </button>
         <button
           :class="[
-            'ml-2 ease-color mt-1 text-secondary hover:text-red-500 dark:hover:text-red-500 flex items-center shadow-sm border dark:border-0 bg-gray-50 dark:bg-gray-850 rounded-full p-1 justify-center',
+            'ease-color text-secondary ml-2 mt-1 flex items-center justify-center rounded-full border bg-gray-50 p-1 shadow-sm hover:text-red-500 dark:border-0 dark:bg-gray-850 dark:hover:text-red-500',
           ]"
           @click="emit('delete')"
         >

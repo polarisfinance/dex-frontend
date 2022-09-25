@@ -1,6 +1,6 @@
 <template>
-  <div v-if="routes.length > 0" shadow="none" class="p-1 title">
-    <div class="flex items-center cursor-pointer text-secondary">
+  <div v-if="routes.length > 0" shadow="none" class="title p-1">
+    <div class="text-secondary flex cursor-pointer items-center">
       <div class="mr-2">
         {{ $t('tradeRoute') }}
       </div>
@@ -10,7 +10,7 @@
     <div class="mt-2">
       <div
         v-if="routes.length === 0"
-        class="mt-5 text-sm text-secondary"
+        class="text-secondary mt-5 text-sm"
         v-text="$t('noData')"
       />
       <div v-else>
@@ -34,8 +34,8 @@
             </div>
           </div>
           <div class="relative mt-2">
-            <div class="absolute mx-9 h-1/2 border-b pair-line dotted-border" />
-            <div class="flex relative z-10 justify-between">
+            <div class="pair-line dotted-border absolute mx-9 h-1/2 border-b" />
+            <div class="relative z-10 flex justify-between">
               <BalAsset :address="input.address" :size="36" />
               <BalAsset :address="output.address" :size="36" />
             </div>
@@ -69,15 +69,15 @@
               width: `calc(100% - ${4 * (routes.length - index - 1)}px + 1px)`,
               margin: `0 ${2 * (routes.length - index - 1) - 1}px`,
             }"
-            class="absolute rounded-b-md border-r border-b border-l border-design"
+            class="border-design absolute rounded-b-md border-r border-b border-l"
           />
           <div class="relative z-10">
             <div
               v-for="route in routes"
               :key="route.hops[0]?.pool?.address"
-              class="flex justify-between mt-9 first:mt-0"
+              class="mt-9 flex justify-between first:mt-0"
             >
-              <div class="flex items-center ml-4 w-4">
+              <div class="ml-4 flex w-4 items-center">
                 <!-- <BalIcon
                   name="triangle"
                   size="xxs"
@@ -89,7 +89,7 @@
                 <div
                   v-for="hop in route.hops"
                   :key="hop?.pool?.address"
-                  class="flex ml-4 first:ml-0 route"
+                  class="route ml-4 flex first:ml-0"
                 >
                   <a
                     class="flex p-1.5"
@@ -99,14 +99,14 @@
                     <BalAsset
                       v-for="token in hop.pool.tokens"
                       :key="token.address"
-                      class="ml-1.5 first:ml-0 w-24 h-24"
+                      class="ml-1.5 h-24 w-24 first:ml-0"
                       :address="token.address"
                       :size="20"
                     />
                   </a>
                 </div>
               </div>
-              <div class="mr-4 w-10 text-xs text-right percentage">
+              <div class="percentage mr-4 w-10 text-right text-xs">
                 {{ formatShare(route.share) }}
               </div>
             </div>
@@ -382,7 +382,7 @@ export default defineComponent({
 
       return `https://${prefix}balancer.fi/#/pool/${id}`;
     }
-    console.log("routes",routes)
+    console.log('routes', routes);
     return {
       visible,
       toggleVisibility,

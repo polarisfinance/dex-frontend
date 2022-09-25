@@ -21,7 +21,7 @@
 
   <div
     :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="text-center justify-center"
+    class="justify-center text-center"
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" src="./spolar.svg" />
@@ -33,7 +33,7 @@
           Approve Spolar
         </button>
       </div>
-      <div class="flex justify-center mt-[24px] gap-[12px]" v-else>
+      <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
         <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button>
@@ -69,7 +69,7 @@
       <div class="details">
         <span class="uppercase">{{ sunrise.name }}</span> Earned
       </div>
-      <div class="flex justify-center mt-[24px] gap-[12px]">
+      <div class="mt-[24px] flex justify-center gap-[12px]">
         <button class="claim-btn" @click="claim">Claim</button>
         <button class="single-stake-btn">
           <div class="single-stake-btn-text">Single Stake</div>
@@ -627,7 +627,7 @@ export default defineComponent({
 
 <style scoped>
 .sunrise-title {
-  @apply bg-cover bg-center flex items-center justify-center text-center px-4;
+  @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
   background-image: url('./index_bg.svg');
 

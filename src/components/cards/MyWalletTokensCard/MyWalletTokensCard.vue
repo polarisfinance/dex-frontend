@@ -109,17 +109,17 @@ function isSelectedNativeAsset(address: string): boolean {
 <template>
   <BalCard shadow="none" noPad>
     <template v-if="!hideHeader" #header>
-      <div class="p-4 w-full border-b dark:border-gray-900">
+      <div class="w-full border-b p-4 dark:border-gray-900">
         <h6>
           {{ $t('poolTransfer.myWalletTokensCard.title') }}
         </h6>
       </div>
     </template>
 
-    <div class="p-4 -mt-2">
+    <div class="-mt-2 p-4">
       <div v-for="address in tokenAddresses" :key="address" class="py-2">
         <div v-if="isSameAddress(address, wrappedNativeAsset.address)">
-          <div class="flex justify-between items-start">
+          <div class="flex items-start justify-between">
             <BalBreakdown
               :items="[nativeAsset, wrappedNativeAsset]"
               class="w-full"

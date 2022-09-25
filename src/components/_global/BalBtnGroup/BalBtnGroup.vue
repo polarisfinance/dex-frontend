@@ -5,7 +5,7 @@
       :key="option.value"
       outline
       size="sm"
-      class="mr-2 capitalize w-18"
+      class="w-18 mr-2 capitalize"
       v-bind="attrs_"
       :color="modelValue === option.value ? 'blue' : 'gray'"
       @click="onSelect(option)"

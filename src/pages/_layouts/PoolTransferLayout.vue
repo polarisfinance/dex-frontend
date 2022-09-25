@@ -31,7 +31,7 @@ usePoolTransfersGuard();
 
 <template>
   <div class="pb-16">
-    <div class="mb-12 layout-header">
+    <div class="layout-header mb-12">
       <div />
       <router-link :to="getReturnRoute({ name: 'pool', params: { id } })">
         <BalIcon name="x" size="lg" />

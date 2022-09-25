@@ -63,7 +63,7 @@ function loadMorePoolSwaps() {
 <template>
   <div>
     <h4
-      class="px-4 lg:px-0 mb-[12px] title"
+      class="title mb-[12px] px-4 lg:px-0"
       v-text="$t('poolTransactions.tabs.trades')"
     />
 

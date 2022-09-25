@@ -1,12 +1,12 @@
 <template>
   <BalCard
     noPad
-    class="relative card-container px-[10px] py-[12px]"
+    class="card-container relative px-[10px] py-[12px]"
     :shadow="tradeCardShadow"
     noBorder
   >
     <template #header>
-      <div class="flex justify-between items-center w-full header mb-[12px]">
+      <div class="header mb-[12px] flex w-full items-center justify-between">
         <h4 class="title ml-[10px]">{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
@@ -30,7 +30,7 @@
       />
       <BalAlert
         v-if="error"
-        class="p-3 mb-[12px]"
+        class="mb-[12px] p-3"
         type="error"
         size="sm"
         :title="error.header"
@@ -41,7 +41,7 @@
       />
       <BalAlert
         v-else-if="warning"
-        class="p-3 mb-[12px]"
+        class="mb-[12px] p-3"
         type="warning"
         size="sm"
         :title="warning.header"
@@ -85,7 +85,7 @@
         v-else-if="account"
         :disabled="false"
         @click="handlePreviewButton"
-        class="swap-button font-semibold text-[16px]"
+        class="swap-button text-[16px] font-semibold"
       >
         Swap
       </button>
@@ -465,7 +465,7 @@ export default defineComponent({
 }
 
 .gas-symbol {
-  @apply h-8 w-8 rounded-full flex items-center justify-center text-lg bg-gray-50 dark:bg-gray-800;
+  @apply flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 text-lg dark:bg-gray-800;
 }
 
 .gas-symbol::before {

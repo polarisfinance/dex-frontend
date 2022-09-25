@@ -101,15 +101,15 @@ defineExpose({ hide });
 
 <style scoped>
 .bal-modal {
-  @apply top-0 left-0 fixed h-screen w-full z-40;
+  @apply fixed top-0 left-0 z-40 h-screen w-full;
 }
 
 .content-container {
-  @apply flex h-screen items-end sm:items-center justify-center;
+  @apply flex h-screen items-end justify-center sm:items-center;
 }
 
 .content {
-  @apply absolute w-full h-3/4 sm:h-auto max-h-screen;
+  @apply absolute h-3/4 max-h-screen w-full sm:h-auto;
 
   max-width: 450px;
   transform-style: preserve-3d;

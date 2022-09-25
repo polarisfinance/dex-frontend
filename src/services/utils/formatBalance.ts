@@ -4,7 +4,7 @@ export const getDisplayBalance = (
   balance: BigNumber,
   decimals = 18,
   fractionDigits = 4,
-  isTruncated: boolean = false,
+  isTruncated: boolean = false
 ) => {
   if (decimals === 0) {
     fractionDigits = 0;
@@ -20,7 +20,11 @@ export const getDisplayBalance = (
   return ret;
 };
 
-export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, isTruncated = false) => {
+export const getFullDisplayBalance = (
+  balance: BigNumber,
+  decimals = 18,
+  isTruncated = false
+) => {
   return getDisplayBalance(balance, decimals, 6, isTruncated);
 };
 

@@ -1,11 +1,11 @@
 <template>
   <span class="relative text-orange-500">
     <span
-      class="absolute top-1/2 left-1/2 text-sm transform -translate-x-1/2 -translate-y-1/2"
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-sm"
     >
       {{ count }}
     </span>
-    <SpinnerIcon class="w-6 h-6 animate-spin" />
+    <SpinnerIcon class="h-6 w-6 animate-spin" />
   </span>
 </template>
 

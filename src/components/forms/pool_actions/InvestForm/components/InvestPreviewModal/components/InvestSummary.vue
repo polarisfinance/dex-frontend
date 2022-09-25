@@ -49,7 +49,7 @@ const { currency } = useUserSettings();
         :class="[
           'summary-table-row',
           {
-            'bg-red-50 dark:bg-red-500 text-red-500 dark:text-white':
+            'bg-red-50 text-red-500 dark:bg-red-500 dark:text-white':
               highPriceImpact,
           },
         ]"
@@ -58,7 +58,7 @@ const { currency } = useUserSettings();
           {{ $t('priceImpact') }}
         </div>
         <div class="summary-table-number">
-          <BalLoadingBlock v-if="isLoadingPriceImpact" class="w-10 h-6" />
+          <BalLoadingBlock v-if="isLoadingPriceImpact" class="h-6 w-10" />
           <template v-else>
             {{ fNum2(priceImpact, FNumFormats.percent) }}
             <BalTooltip
@@ -82,7 +82,7 @@ const { currency } = useUserSettings();
 
 <style scoped>
 .summary-table {
-  @apply border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg mt-4;
+  @apply mt-4 divide-y rounded-lg border dark:divide-gray-700 dark:border-gray-700;
 }
 
 .summary-table-row {

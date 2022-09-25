@@ -66,13 +66,13 @@
         <div>Value</div>
       </div>
     </div>
-    <div class="border mt-[24px]" />
+    <div class="mt-[24px] border" />
     <div v-for="(token, index) in tableData" :key="index">
       <a :href="explorer.addressLink(token.address)">
-        <div class="flex items-center justify-between mt-[24px]">
+        <div class="mt-[24px] flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset :address="token.address" :size="33" />
-            <div class="ml-[13.5px] token-name">
+            <div class="token-name ml-[13.5px]">
               {{ symbolFor(token.address) }}
             </div>
             <img :src="arrow" class="ml-[12px]" />

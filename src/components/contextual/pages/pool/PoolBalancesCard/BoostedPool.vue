@@ -74,7 +74,7 @@ function getTokenShare(address: string) {
   >
     <template #header>
       <div
-        class="grid grid-cols-3 p-4 w-full text-base font-semibold border-b dark:border-gray-900"
+        class="grid w-full grid-cols-3 border-b p-4 text-base font-semibold dark:border-gray-900"
       >
         <div>{{ $t('token') }}</div>
         <div class="justify-self-end">
@@ -86,7 +86,7 @@ function getTokenShare(address: string) {
       </div>
     </template>
 
-    <div class="p-4 -mt-2">
+    <div class="-mt-2 p-4">
       <div v-for="address in pool.tokensList" :key="address" class="py-4">
         <BalBreakdown
           :items="getUnderlyingTokens(address)"
@@ -106,7 +106,7 @@ function getTokenShare(address: string) {
             <BalIcon
               name="arrow-up-right"
               size="sm"
-              class="ml-2 text-gray-500 hover:text-blue-500 transition-colors"
+              class="ml-2 text-gray-500 transition-colors hover:text-blue-500"
             />
           </BalLink>
           <template #item="{ item: asset }">

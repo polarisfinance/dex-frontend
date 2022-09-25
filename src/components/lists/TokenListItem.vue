@@ -14,7 +14,7 @@
         {{ token.symbol }}
       </div>
     </div>
-    <span class="flex flex-col items-end font-medium text-right token-amount">
+    <span class="token-amount flex flex-col items-end text-right font-medium">
       <BalLoadingNumber v-if="balanceLoading" type="token" />
       <template v-else>
         <template v-if="balance > 0">

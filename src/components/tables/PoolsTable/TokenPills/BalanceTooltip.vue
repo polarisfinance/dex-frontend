@@ -33,7 +33,7 @@ const tokenBalance = computed(() => balanceFor(props.token.address));
 
 <template>
   <div>
-    <div class="mb-2 text-secondary">
+    <div class="text-secondary mb-2">
       {{ $t('tokenPills.balanceTooltip.title', [shortenLabel(account)]) }}
     </div>
     <div class="flex">

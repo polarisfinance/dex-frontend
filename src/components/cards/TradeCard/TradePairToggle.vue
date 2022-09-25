@@ -44,7 +44,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .icon-trade-toggle {
-  @apply transition-transform ease-out duration-200;
+  @apply transition-transform duration-200 ease-out;
 }
 
 .toggle-btn:hover .icon-trade-toggle {

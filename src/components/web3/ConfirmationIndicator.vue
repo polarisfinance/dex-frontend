@@ -65,7 +65,7 @@ const isLoading = computed(
   <BalLoadingBlock v-if="isLoading" class="h-6" />
   <div
     v-else
-    class="flex justify-between items-center text-sm text-gray-400 dark:text-gray-600"
+    class="flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
   >
     <div class="flex items-center">
       <BalIcon name="clock" />
@@ -83,7 +83,7 @@ const isLoading = computed(
       <BalIcon
         name="arrow-up-right"
         size="sm"
-        class="ml-px group-hover:text-pink-500 transition-colors"
+        class="ml-px transition-colors group-hover:text-pink-500"
       />
     </BalLink>
   </div>

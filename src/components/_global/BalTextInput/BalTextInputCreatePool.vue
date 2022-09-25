@@ -171,7 +171,7 @@ onMounted(() => {
 
 <style scoped>
 .input-container {
-  @apply transition-colors flex flex-col;
+  @apply flex flex-col transition-colors;
   background-color: #362d3b;
   border-radius: 16px;
   border: none;
@@ -180,11 +180,11 @@ onMounted(() => {
 }
 
 .input-group {
-  @apply grid grid-rows-1 grid-flow-col;
+  @apply grid grid-flow-col grid-rows-1;
 }
 
 .input {
-  @apply bg-transparent overflow-hidden;
+  @apply overflow-hidden bg-transparent;
   font-weight: 500;
 }
 
@@ -193,7 +193,7 @@ onMounted(() => {
 }
 
 .error {
-  @apply text-xs text-red-500 mt-1 ml-1;
+  @apply mt-1 ml-1 text-xs text-red-500;
 }
 .footer {
   @apply justify-end;

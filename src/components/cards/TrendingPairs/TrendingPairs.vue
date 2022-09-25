@@ -71,11 +71,11 @@ const setTradePair = (pair: TrendingPair[]) => {
         <h6 class="title">{{ $t('trendingPairs') }}</h6>
       </div>
       <div class="border" />
-      <div class="flex flex-wrap gap-3 lg:p-3 px-1">
+      <div class="flex flex-wrap gap-3 px-1 lg:p-3">
         <button
           v-for="(pair, i) in trendingPairs"
           :key="`trendingPair-${i}`"
-          class="flex items-center py-1 px-2 text-sm font-medium lg:font-normal hover:text-white bg-transparent hover:bg-blue-500 dark:hover:bg-blue-400 rounded-lg border dark:border-gray-800 shadow-sm transition-colors pair"
+          class="pair flex items-center rounded-lg border bg-transparent py-1 px-2 text-sm font-medium shadow-sm transition-colors hover:bg-blue-500 hover:text-white dark:border-gray-800 dark:hover:bg-blue-400 lg:font-normal"
           @click="setTradePair(pair)"
         >
           <div>{{ pair[0].symbol }}&nbsp;</div>

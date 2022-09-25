@@ -7,7 +7,7 @@
       type="text"
       autocorrect="off"
       autocapitalize="none"
-      class="flex-auto w-full search"
+      class="search w-full flex-auto"
       @input="handleInput"
     />
   </div>

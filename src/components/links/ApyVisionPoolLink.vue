@@ -25,7 +25,7 @@ const { poolPathSymbolSegment, apyVisionNetworkName } = useApyVisionHelpers();
 </script>
 
 <template>
-  <div class="group flex items-center mt-6 w-fit h-fit">
+  <div class="w-fit h-fit group mt-6 flex items-center">
     <BalLink
       :href="
         'https://app.apy.vision/pools/balancerv2_' +
@@ -37,12 +37,12 @@ const { poolPathSymbolSegment, apyVisionNetworkName } = useApyVisionHelpers();
       "
       external
       noStyle
-      class="flex items-center font-medium link link-black"
+      class="link link-black flex items-center font-medium"
     >
       <img
         width="32"
         height="32"
-        class="mr-2 rounded-full group-hover:shadow-lg transition"
+        class="mr-2 rounded-full transition group-hover:shadow-lg"
         src="@/assets/images/icons/apy-vision.svg"
         alt=""
       />
@@ -50,7 +50,7 @@ const { poolPathSymbolSegment, apyVisionNetworkName } = useApyVisionHelpers();
       <BalIcon
         name="arrow-up-right"
         size="sm"
-        class="ml-0.5 text-gray-500 group-hover:text-blue-500 hover:text-blue-400 transition-colors"
+        class="ml-0.5 text-gray-500 transition-colors hover:text-blue-400 group-hover:text-blue-500"
       />
     </BalLink>
   </div>

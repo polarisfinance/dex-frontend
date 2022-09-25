@@ -83,7 +83,7 @@ const fiatLabel = computed(() => {
         <BalIcon
           name="arrow-up-right"
           size="sm"
-          class="ml-2 hover:text-blue-500 transition-colors text-secondary"
+          class="text-secondary ml-2 transition-colors hover:text-blue-500"
         />
       </BalLink>
     </div>

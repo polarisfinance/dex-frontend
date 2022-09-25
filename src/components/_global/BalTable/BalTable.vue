@@ -226,13 +226,13 @@ watch(
 <template>
   <div
     :class="[
-      'max-w-full whitespace-nowrap overflow-hidden ',
+      'max-w-full overflow-hidden whitespace-nowrap ',
       { 'rounded-lg': !square },
     ]"
   >
     <div v-if="title" class="mb-[24px]">{{ title }}</div>
     <div ref="headerRef" class="overflow-hidden">
-      <table class="w-full whitespace-normal table-fixed bg-[#231928]">
+      <table class="w-full table-fixed whitespace-normal bg-[#231928]">
         <!-- header width handled by colgroup  -->
         <colgroup>
           <col
@@ -275,7 +275,7 @@ watch(
                 "
                 name="arrow-up"
                 size="sm"
-                class="flex items-center ml-1"
+                class="ml-1 flex items-center"
               />
               <BalIcon
                 v-if="
@@ -284,7 +284,7 @@ watch(
                 "
                 name="arrow-down"
                 size="sm"
-                class="flex items-center ml-1"
+                class="ml-1 flex items-center"
               />
             </div>
           </th>
@@ -300,11 +300,11 @@ watch(
       />
       <div
         v-else-if="!isLoading && !tableData.length"
-        class="flex justify-center items-center max-w-full h-40 bg-white dark:bg-gray-850 row-bg text-secondary"
+        class="row-bg text-secondary flex h-40 max-w-full items-center justify-center bg-white dark:bg-gray-850"
       >
         {{ noResultsLabel || $t('noResults') }}
       </div>
-      <table v-else class="w-full whitespace-normal table-fixed">
+      <table v-else class="w-full table-fixed whitespace-normal">
         <colgroup>
           <col
             v-for="column in filteredColumns"
@@ -321,7 +321,7 @@ watch(
               column.align === 'right' ? 'text-left' : 'text-right',
               getHorizontalStickyClass(columnIndex),
               isColumnStuck ? 'isSticky' : '',
-              'bg-white dark:bg-gray-850 p-0 m-0 h-0',
+              'm-0 h-0 bg-white p-0 dark:bg-gray-850',
             ]"
           />
         </tr>
@@ -421,13 +421,13 @@ watch(
 }
 
 .row-bg {
-  @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800;
+  @apply bg-white hover:bg-gray-50 dark:bg-gray-850 dark:hover:bg-gray-800;
 }
 
 .bal-table-pagination-btn {
-  @apply flex items-center justify-center h-16 transition-all;
+  @apply flex h-16 items-center justify-center transition-all;
   @apply font-medium hover:text-purple-600 dark:hover:text-yellow-500;
-  @apply border-t dark:border-gray-900 rounded-b-lg;
-  @apply hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer;
+  @apply rounded-b-lg border-t dark:border-gray-900;
+  @apply cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800;
 }
 </style>

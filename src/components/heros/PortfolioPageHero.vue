@@ -77,21 +77,21 @@ const isLoadingTotalValue = computed(
     <template v-if="isWalletReady || isWalletConnecting">
       <BalLoadingBlock
         v-if="isLoadingTotalValue"
-        class="mx-auto w-40 h-10"
+        class="mx-auto h-10 w-40"
         white
       />
       <div v-else class="mb-1 text-3xl font-semibold text-white">
         {{ totalInvestedLabel }}
       </div>
-      <div v-if="!isL2" class="inline-block relative mt-2">
+      <div v-if="!isL2" class="relative mt-2 inline-block">
         <BalLoadingBlock
           v-if="isLoadingTotalValue"
-          class="mx-auto w-40 h-8"
+          class="mx-auto h-8 w-40"
           white
         />
         <div
           v-else
-          class="group flex items-center px-3 h-8 text-sm font-medium text-yellow-500 hover:text-white focus:text-white rounded-tr rounded-bl border border-yellow-500 transition-colors cursor-pointer vebal-banner"
+          class="vebal-banner group flex h-8 cursor-pointer items-center rounded-tr rounded-bl border border-yellow-500 px-3 text-sm font-medium text-yellow-500 transition-colors hover:text-white focus:text-white"
           @click="router.push({ name: 'vebal' })"
         >
           <span v-if="lockFiatValue === '0'"

@@ -64,7 +64,7 @@ onMounted(() => {});
 
 <style scoped>
 .sunrise-title {
-  @apply bg-cover bg-center flex items-center justify-center text-center px-4;
+  @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
   background-image: url('./index_bg.svg');
 

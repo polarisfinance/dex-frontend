@@ -62,7 +62,7 @@ watch(iconSRC, newURL => {
 <template>
   <component
     :is="rootElement"
-    class="inline-block leading-none rounded-full shadow-sm bal-asset"
+    class="bal-asset inline-block rounded-full leading-none shadow-sm"
     :style="{
       width: `${size}px`,
       height: `${size}px`,
@@ -72,13 +72,13 @@ watch(iconSRC, newURL => {
     <img
       v-if="iconSRC && !error"
       :src="iconSRC"
-      class="bg-white rounded-full"
+      class="rounded-full bg-white"
       @error="error = true"
     />
     <Avatar v-else-if="!!address" :address="address" :size="size" />
     <div
       v-else
-      class="overflow-visible bg-gray-300 dark:bg-gray-700 rounded-full"
+      class="overflow-visible rounded-full bg-gray-300 dark:bg-gray-700"
       :style="{
         width: `${size}px`,
         height: `${size}px`,
@@ -89,7 +89,7 @@ watch(iconSRC, newURL => {
 
 <style scoped>
 button.bal-asset {
-  @apply transition-transform shadow;
+  @apply shadow transition-transform;
 }
 
 button.bal-asset:hover,

@@ -5,7 +5,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 
 <template>
   <AppNav />
-  <section class="lg:py-8 dark:bg-gray-900">
+  <section class="dark:bg-gray-900 lg:py-8">
     <div class="content-container">
       <router-view />
     </div>
@@ -15,7 +15,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 
 <style scoped>
 .content-container {
-  @apply w-full max-w-4xl px-4 md:p-8 lg:p-12 mx-auto py-8 bg-white dark:bg-gray-900;
+  @apply mx-auto w-full max-w-4xl bg-white px-4 py-8 dark:bg-gray-900 md:p-8 lg:p-12;
 
   min-height: calc(100vh - 140px);
 }
@@ -52,7 +52,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 }
 
 .content-container :deep(li) {
-  @apply list-disc ml-8 pb-2;
+  @apply ml-8 list-disc pb-2;
 }
 
 .content-container :deep(ol > li) {
@@ -76,7 +76,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 .content-container :deep(table),
 .content-container :deep(th),
 .content-container :deep(td) {
-  @apply p-4 border-gray-500 border text-left align-top;
+  @apply border border-gray-500 p-4 text-left align-top;
 }
 
 .content-container :deep(table) {

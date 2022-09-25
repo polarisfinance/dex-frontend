@@ -182,7 +182,7 @@ async function calculateColors() {
 
 <template>
   <BalCard noPad shadow="none">
-    <div v-if="!upToLargeBreakpoint" class="p-4 border-b dark:border-gray-600">
+    <div v-if="!upToLargeBreakpoint" class="border-b p-4 dark:border-gray-600">
       <h6 class="dark:text-gray-300">
         {{ $t('createAPool.poolSummary') }}
       </h6>
@@ -190,7 +190,7 @@ async function calculateColors() {
     <div class="p-2">
       <ECharts
         ref="chartInstance"
-        class="w-full h-56"
+        class="h-56 w-full"
         :option="chartConfig"
         autoresize
       />

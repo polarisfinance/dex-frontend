@@ -68,7 +68,7 @@ withDefaults(defineProps<Props>(), {
 
 <style scoped>
 .pill {
-  @apply flex items-center px-2 my-1 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 relative h-full;
+  @apply relative my-1 flex h-full items-center rounded-lg bg-gray-100 px-2 py-1 dark:bg-gray-700;
 }
 
 .pill-selected {
@@ -76,13 +76,13 @@ withDefaults(defineProps<Props>(), {
 }
 
 .pill-weight {
-  @apply font-medium text-gray-600 dark:text-gray-400 text-xs;
+  @apply text-xs font-medium text-gray-600 dark:text-gray-400;
   @apply mt-px ml-1;
 }
 
 .balance-indicator {
-  @apply w-3 h-3;
-  @apply rounded-full border-2 border-white dark:border-gray-850 group-hover:border-gray-50
+  @apply h-3 w-3;
+  @apply rounded-full border-2 border-white group-hover:border-gray-50 dark:border-gray-850
     dark:group-hover:border-gray-800;
   @apply bg-green-400 dark:bg-green-500;
   @apply absolute top-0 right-0 -mt-1 -mr-1;

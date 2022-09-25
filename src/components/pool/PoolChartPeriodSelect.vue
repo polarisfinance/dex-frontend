@@ -22,8 +22,8 @@ defineProps<Props>();
 <template>
   <BalPopover noPad>
     <template #activator>
-      <div class="h-10 text-base period-select-input">
-        <div class="flex flex-1 justify-between items-center h-full">
+      <div class="period-select-input h-10 text-base">
+        <div class="flex h-full flex-1 items-center justify-between">
           <div class="period-select-input__selected">
             {{ activeOption.text }}
           </div>
@@ -32,19 +32,19 @@ defineProps<Props>();
       </div>
     </template>
     <template #default="{ close }">
-      <div class="flex overflow-hidden flex-col w-44 rounded-lg" @click="close">
+      <div class="flex w-44 flex-col overflow-hidden rounded-lg" @click="close">
         <div
-          class="py-2 px-3 text-sm font-medium text-gray-500 whitespace-nowrap bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-900"
+          class="whitespace-nowrap border-b bg-gray-50 py-2 px-3 text-sm font-medium text-gray-500 dark:border-gray-900 dark:bg-gray-800"
         >
           {{ $t('poolChart.period.title') }}:
         </div>
         <div
           v-for="option in options"
           :key="option.days"
-          class="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-850 cursor-pointer"
+          class="flex cursor-pointer items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-850"
           @click="emit('change-option', option)"
         >
-          <div class="flex items-center ml-1 font-medium">
+          <div class="ml-1 flex items-center font-medium">
             {{ option.text }}
           </div>
           <BalIcon
@@ -60,12 +60,12 @@ defineProps<Props>();
 
 <style scoped>
 .period-select-input {
-  @apply relative w-28 rounded-lg shadow hover:shadow-none focus:shadow-none overflow-hidden px-2
-    bg-gray-50 dark:bg-gray-800 transition-all;
+  @apply relative w-28 overflow-hidden rounded-lg bg-gray-50 px-2 shadow transition-all
+    hover:shadow-none focus:shadow-none dark:bg-gray-800;
 }
 
 .period-select-input__selected {
-  @apply flex items-center font-semibold h-full leading-loose bg-transparent leading-none -ml-px text-xs;
+  @apply -ml-px flex h-full items-center bg-transparent text-xs font-semibold leading-loose leading-none;
 
   appearance: none;
   text-indent: 1px;

@@ -33,7 +33,7 @@ const wstETH = computed(() => getToken(networkConfig.addresses.wstETH));
 </script>
 
 <template>
-  <div v-if="isWstETHPool" class="flex items-center mb-4">
+  <div v-if="isWstETHPool" class="mb-4 flex items-center">
     <router-link
       :to="{
         name: 'trade',
@@ -42,7 +42,7 @@ const wstETH = computed(() => getToken(networkConfig.addresses.wstETH));
           assetOut: wstETH.address,
         },
       }"
-      class="text-xs underline text-secondary"
+      class="text-secondary text-xs underline"
     >
       {{ $t('wrapInstruction', [stETH.symbol, wstETH.symbol]) }}
     </router-link>

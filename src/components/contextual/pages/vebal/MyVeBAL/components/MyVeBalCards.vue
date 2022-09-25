@@ -149,14 +149,14 @@ const cards = computed(() => {
 
 <template>
   <BalCard v-for="card in cards" :key="card.id">
-    <div class="font-medium label">
+    <div class="label font-medium">
       {{ card.label }}
     </div>
     <div class="value" :class="card.id">
       <div v-if="card.id === 'myLockedLpToken'">
         <span
           :class="{ 'text-red-500': bnum(totalExpiredLpTokens).gt(0) }"
-          class="mr-1 font-semibold truncate"
+          class="mr-1 truncate font-semibold"
           >{{ card.value }}</span
         >
         <BalTooltip
@@ -170,13 +170,13 @@ const cards = computed(() => {
         />
       </div>
       <div v-else>
-        <span class="font-semibold truncate">{{ card.value }}</span>
+        <span class="truncate font-semibold">{{ card.value }}</span>
       </div>
       <div class="flex items-center">
         <BalIcon
           v-if="card.showUnlockIcon"
           name="minus-circle"
-          class="mr-2 transition-all cursor-pointer minus-circle"
+          class="minus-circle mr-2 cursor-pointer transition-all"
           @click="showUnlockPreviewModal = true"
         />
         <div>
@@ -187,13 +187,13 @@ const cards = computed(() => {
           >
             <BalIcon
               name="plus-circle"
-              class="transition-all cursor-pointer plus-circle"
+              class="plus-circle cursor-pointer transition-all"
             />
           </router-link>
         </div>
       </div>
     </div>
-    <div class="font-medium secondary-value text-secondary">
+    <div class="secondary-value text-secondary font-medium">
       {{ card.secondaryText }}
     </div>
   </BalCard>
@@ -212,11 +212,11 @@ const cards = computed(() => {
 
 <style scoped>
 .label {
-  @apply text-sm mb-2;
+  @apply mb-2 text-sm;
 }
 
 .value {
-  @apply text-xl font-medium flex flex-wrap items-center justify-between mb-0.5;
+  @apply mb-0.5 flex flex-wrap items-center justify-between text-xl font-medium;
 }
 
 .secondary-value {
@@ -227,7 +227,7 @@ const cards = computed(() => {
 .plus-circle:focus,
 .plus-circle:hover :deep(svg.feather-plus-circle),
 .plus-circle:focus :deep(svg.feather-plus-circle) {
-  @apply transition-all text-white;
+  @apply text-white transition-all;
 
   fill: theme('colors.blue.600');
 }
@@ -249,7 +249,7 @@ const cards = computed(() => {
 
 .minus-circle:hover :deep(svg.feather-minus-circle),
 .minus-circle:focus :deep(svg.feather-minus-circle) {
-  @apply transition-all text-white;
+  @apply text-white transition-all;
 
   fill: theme('colors.red.500');
 }

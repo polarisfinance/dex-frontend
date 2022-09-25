@@ -7,7 +7,7 @@
     <template #activator>
       <button
         @click="toggleModal"
-        class="text-base btn flex flex-row"
+        class="btn flex flex-row text-base"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
         :loadingLabel="upToLargeBreakpoint ? '' : $t('connecting')"
@@ -22,12 +22,12 @@
         />
         <span
           v-if="profile && profile.ens"
-          class="hidden lg:inline-block pl-2 leading-[20px]"
+          class="hidden pl-2 leading-[20px] lg:inline-block"
           v-text="profile && profile.ens"
         />
         <span
           v-else
-          class="hidden lg:inline-block pl-2 eth-address leading-[20px]"
+          class="eth-address hidden pl-2 leading-[20px] lg:inline-block"
           v-text="_shorten(account)"
         />
       </button>
@@ -105,7 +105,7 @@ export default defineComponent({
   color: #be95c0;
   border: 1px solid #ffffff00;
 }
-.btn:hover{
+.btn:hover {
   border: 1px solid #552162 !important;
 }
 </style>

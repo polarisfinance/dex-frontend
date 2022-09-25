@@ -35,12 +35,12 @@ const aprLabel = computed((): string => {
 
 <template>
   <BalCard noPad shadow="none">
-    <div class="p-4 w-full border-b dark:border-gray-900">
+    <div class="w-full border-b p-4 dark:border-gray-900">
       <h6>
         {{ $t(`migratePool.${poolMigrationInfo.type}.poolStats.title`) }}
       </h6>
     </div>
-    <div class="p-4 -mt-2">
+    <div class="-mt-2 p-4">
       <div class="mb-3">
         <div class="text-secondary">
           {{ $t('poolValue') }}

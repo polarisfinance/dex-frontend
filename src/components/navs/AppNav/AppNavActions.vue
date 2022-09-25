@@ -24,7 +24,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
 </script>
 
 <template>
-  <div class="grid grid-rows-1 grid-flow-col gap-2 items-grid">
+  <div class="items-grid grid grid-flow-col grid-rows-1 gap-2">
     <!-- <DarkModeToggle v-if="isDesktop" /> -->
     <!-- <AppNavActivityBtn v-if="account" /> -->
     <AppNavAccountBtn v-if="account" />
@@ -38,7 +38,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
       <span class="hidden lg:inline-block" v-text="$t('connectWallet')" />
       <span class="lg:hidden" v-text="$t('connect')" />
     </button>
-    <AppNavMenu /> 
+    <AppNavMenu />
     <button v-if="isMobile" @click="setSidebarOpen(true)" class="menu-btn">
       <BalIcon name="menu" size="lg" />
     </button>

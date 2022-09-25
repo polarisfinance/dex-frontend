@@ -47,21 +47,21 @@ const steps = computed(() => [
   >
     <template #how-to-lock-handle>
       <button
-        class="group flex justify-between items-center p-4 w-full rounded-xl"
+        class="group flex w-full items-center justify-between rounded-xl p-4"
       >
-        <h6 class="group-hover:text-blue-500 transition-colors">
+        <h6 class="transition-colors group-hover:text-blue-500">
           {{ $t('getVeBAL.howToLock.title') }}
         </h6>
         <BalIcon
           name="chevron-down"
-          class="text-blue-500 group-hover:text-pink-500 transition-colors"
+          class="text-blue-500 transition-colors group-hover:text-pink-500"
         />
       </button>
     </template>
     <template #how-to-lock>
-      <div class="p-4 border-t dark:border-gray-900">
+      <div class="border-t p-4 dark:border-gray-900">
         <div class="text-secondary">
-          <ol class="text-sm steps">
+          <ol class="steps text-sm">
             <li>
               {{ $t('getVeBAL.howToLock.steps.investPart1') }}
               <BalLink

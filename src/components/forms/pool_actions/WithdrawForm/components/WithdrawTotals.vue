@@ -40,7 +40,7 @@ const priceImpactClasses = computed(() => ({
       </div>
       <div class="data-table-number-col">
         <div class="flex items-center">
-          <BalLoadingBlock v-if="loadingAmountsOut" class="w-10 h-6" />
+          <BalLoadingBlock v-if="loadingAmountsOut" class="h-6 w-10" />
           <span v-else>{{ fNum2(priceImpact, FNumFormats.percent) }}</span>
 
           <BalTooltip :text="$t('withdraw.tooltips.priceImpact')">
@@ -67,18 +67,18 @@ const priceImpactClasses = computed(() => ({
 
 <style scoped>
 .data-table {
-  @apply rounded-lg divide-y dark:divide-gray-700;
+  @apply divide-y rounded-lg dark:divide-gray-700;
 }
 
 .data-table-row {
   @apply flex;
   @apply rounded-lg;
-  @apply divide-x dark:divide-gray-900 border dark:border-gray-900;
+  @apply divide-x border dark:divide-gray-900 dark:border-gray-900;
   @apply dark:bg-gray-800;
 }
 
 .data-table-number-col {
-  @apply p-2 flex flex-grow items-center justify-between;
+  @apply flex flex-grow items-center justify-between p-2;
 }
 
 .total-row {

@@ -106,7 +106,7 @@ watch(blockNumber, async () => {
 </script>
 
 <template>
-  <div class="opacity-0 fade-in-delay w-full">
+  <div class="fade-in-delay w-full opacity-0">
     <!-- <div
       class="flex flex-col justify-center px-4 h-20 border-b border-gray-800"
     >
@@ -133,7 +133,7 @@ watch(blockNumber, async () => {
         v-for="link in ecosystemLinks"
         :key="link.url"
         :href="link.url"
-        class="flex items-center side-bar-link justify-between"
+        class="side-bar-link flex items-center justify-between"
         external
         noStyle
       >
@@ -209,7 +209,7 @@ watch(blockNumber, async () => {
 }
 
 .side-bar-link {
-  @apply transition duration-300 cursor-pointer;
+  @apply cursor-pointer transition duration-300;
   padding-left: 24px;
   padding-right: 26px;
   row-gap: 32px;
@@ -221,16 +221,16 @@ watch(blockNumber, async () => {
 }
 
 .side-bar-btn {
-  @apply flex items-center bg-gray-850 hover:bg-gray-800 rounded-lg p-2 cursor-pointer transition;
+  @apply flex cursor-pointer items-center rounded-lg bg-gray-850 p-2 transition hover:bg-gray-800;
 }
 
 .social-link {
-  @apply w-11 h-11 xs:w-12 xs:h-12  rounded-full bg-gray-850 hover:bg-gray-800 flex items-center justify-center
-    text-white cursor-pointer;
+  @apply flex h-11 w-11 cursor-pointer  items-center justify-center rounded-full bg-gray-850 text-white hover:bg-gray-800
+    xs:h-12 xs:w-12;
 }
 
 .social-link > svg {
-  @apply w-6 h-6;
+  @apply h-6 w-6;
 
   fill: white;
 }

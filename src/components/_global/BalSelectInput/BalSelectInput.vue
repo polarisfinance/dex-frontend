@@ -1,7 +1,7 @@
 <template>
   <div :class="['bal-select-input', containerClasses]">
-    <div class="flex items-center h-full">
-      <div class="flex flex-col flex-1 justify-center h-full">
+    <div class="flex h-full items-center">
+      <div class="flex h-full flex-1 flex-col justify-center">
         <div v-if="label || $slots.label" :class="['label', labelClasses]">
           <slot name="label">
             {{ label }}
@@ -165,8 +165,8 @@ export default defineComponent({
 
 <style scoped>
 .bal-select-input {
-  @apply relative w-full rounded-lg shadow hover:shadow-none focus:shadow-none overflow-hidden px-2
-    bg-gray-50 dark:bg-gray-800 transition-all;
+  @apply relative w-full overflow-hidden rounded-lg bg-gray-50 px-2 shadow transition-all
+    hover:shadow-none focus:shadow-none dark:bg-gray-800;
 }
 
 .label {
@@ -174,7 +174,7 @@ export default defineComponent({
 }
 
 select {
-  @apply absolute w-full h-full leading-loose bg-transparent leading-none -ml-px text-xs;
+  @apply absolute -ml-px h-full w-full bg-transparent text-xs leading-loose leading-none;
 
   appearance: none;
   text-indent: 1px;

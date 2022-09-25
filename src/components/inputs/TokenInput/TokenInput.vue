@@ -257,31 +257,31 @@ watchEffect(() => {
         class="flex flex-col pt-[4.51px]"
       >
         <div
-          class="flex justify-between items-center text-sm leading-[18px] text-gray-600 dark:text-gray-400"
+          class="flex items-center justify-between text-sm leading-[18px] text-gray-600 dark:text-gray-400"
         >
           <div v-if="!isWalletReady || disableBalance" />
           <div
             v-else
-            class="flex items-center cursor-pointer ml-[12px] mb-[11px]"
+            class="ml-[12px] mb-[11px] flex cursor-pointer items-center"
             @click="setMax"
           >
             <template v-if="hasBalance && !noMax && !disableMax">
               <span
                 v-if="!isMaxed"
-                class="transition-colors pr-[4px] bg-[#391C41] rounded-xl pl-[7px] pr-[7px] text-[12px] mr-[4px] leading-[15px] pt-[1px] text-[#FBAAFF]"
+                class="mr-[4px] rounded-xl bg-[#391C41] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#FBAAFF] transition-colors"
               >
                 MAX
               </span>
               <span
                 v-else
-                class="text-gray-400 dark:text-gray-600 cursor-not-allowed pr-[4px] transition-colors pr-[4px] bg-[#391C41] rounded-xl pl-[7px] pr-[7px] text-[12px] mr-[4px] leading-[15px] pt-[1px]"
+                class="mr-[4px] cursor-not-allowed rounded-xl bg-[#391C41] pr-[4px] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-gray-400 transition-colors dark:text-gray-600"
               >
                 MAXED
               </span>
             </template>
             {{ balanceLabel ? balanceLabel : $t('balance') }}:
 
-            <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />
+            <BalLoadingBlock v-if="balanceLoading" class="mx-2 h-4 w-12" />
             <span v-else class="mx-1">
               {{ fNum2(tokenBalance, FNumFormats.token) }}
             </span>
@@ -300,7 +300,7 @@ watchEffect(() => {
             </template>
             <template v-else-if="hint">
               <span
-                class="text-blue-500 lowercase cursor-pointer"
+                class="cursor-pointer lowercase text-blue-500"
                 @click="emit('update:amount', hintAmount)"
               >
                 {{ hint }}

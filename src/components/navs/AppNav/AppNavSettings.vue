@@ -1,22 +1,22 @@
 <template>
   <div>
-    <div class="p-4 bal-card">
-      <div class="flex justify-between items-center mb-[20px]">
+    <div class="bal-card p-4">
+      <div class="mb-[20px] flex items-center justify-between">
         <h5
-          class="tracking-tight leading-none font-semibold text-[16px]"
+          class="text-[16px] font-semibold leading-none tracking-tight"
           v-text="$t('account')"
         />
 
-        <div class="flex gap-2 items-center pr-[8px]">
+        <div class="flex items-center gap-2 pr-[8px]">
           <X v-on:click="close" />
         </div>
       </div>
       <div class="box">
         <div
-          class="grid grid-cols-2 gap-5 grid-rows-1 justify-between items-center text-sm leading-none text-gray-600 dark:text-gray-400 w-ful h-[22px] mt-[12px] font-[500px]"
+          class="w-ful font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm leading-none text-gray-600 dark:text-gray-400"
         >
           Connected with {{ connectorName }}
-          <div class="flex flex-row gap-[8px] justify-end">
+          <div class="flex flex-row justify-end gap-[8px]">
             <button class="h-[22px] w-[86px] border" @click="disconnectWallet">
               <div
                 class="text-center text-[14px] leading-[18px]"
@@ -37,15 +37,15 @@
         <div class="flex flex-row">
           <Avatar :iconURI="profile?.avatar" :address="account" :size="24" />
           <div
-            class="font-bold text-black dark:text-white pl-[10px]"
+            class="pl-[10px] font-bold text-black dark:text-white"
             v-text="_shorten(account)"
           />
         </div>
 
-        <div class="flex address justify-start mb-[12px]">
-          <button class="p-0 button">
+        <div class="address mb-[12px] flex justify-start">
+          <button class="button p-0">
             <div
-              class="flex flex-row gap-[8px] justify-start align-baseline link"
+              class="link flex flex-row justify-start gap-[8px] align-baseline"
               @click="copyAddress"
             >
               <IconCheck v-if="copiedAddress" class="mt-0.5" />
@@ -62,7 +62,7 @@
             :href="explorer.addressLink(account)"
             target="_blank"
             rel="noreferrer"
-            class="flex flex-row gap-[8px] justify-start align-baseline ml-[16px] link"
+            class="link ml-[16px] flex flex-row justify-start gap-[8px] align-baseline"
           >
             <IconExplorer />
             <div class="text-center" v-text="'View on explorer'" />
@@ -219,11 +219,11 @@ export default defineComponent({
 }
 
 .option:hover {
-  @apply text-blue-500 border-blue-500;
+  @apply border-blue-500 text-blue-500;
 }
 
 .option.active {
-  @apply text-blue-500 border-blue-500;
+  @apply border-blue-500 text-blue-500;
 }
 
 .slippage-input {
@@ -231,7 +231,7 @@ export default defineComponent({
 }
 
 .slippage-input.active {
-  @apply text-blue-500 border-blue-500 border-2 ring;
+  @apply border-2 border-blue-500 text-blue-500 ring;
 }
 
 .bal-card {
@@ -247,7 +247,7 @@ export default defineComponent({
   @apply transition-all;
   /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */
   /* @apply border dark:border-gray-900; */
-  @apply flex rounded-md flex-col gap-[10px];
+  @apply flex flex-col gap-[10px] rounded-md;
   background: #2e2433;
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
@@ -261,7 +261,7 @@ export default defineComponent({
 }
 
 .border {
-  @apply py-[2px] px-[12px] bg-[#231928] bg-none border-transparent text-[#BE95C0];
+  @apply border-transparent bg-[#231928] bg-none py-[2px] px-[12px] text-[#BE95C0];
 }
 .border:hover {
   @apply text-[#FBAAFF];
@@ -271,13 +271,13 @@ export default defineComponent({
 }
 
 .link {
-  @apply text-[#B9BABB] font-semibold leading-[20px] fill-[B9BABB];
+  @apply fill-[B9BABB] font-semibold leading-[20px] text-[#B9BABB];
 }
 .link:hover {
-  @apply text-[#be95c0] font-semibold leading-[20px] no-underline fill-[#be95c0];
+  @apply fill-[#be95c0] font-semibold leading-[20px] text-[#be95c0] no-underline;
 }
 
 .link:focus {
-  @apply text-[#be95c0] font-semibold leading-[20px] no-underline fill-[#be95c0];
+  @apply fill-[#be95c0] font-semibold leading-[20px] text-[#be95c0] no-underline;
 }
 </style>

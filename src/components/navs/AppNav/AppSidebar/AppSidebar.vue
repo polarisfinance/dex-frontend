@@ -41,13 +41,13 @@ const { setSidebarOpen } = useSidebar();
   padding-top: 47px;
   padding-bottom: 47px;
 
-  @apply fixed top-0 left-0 h-full w-full cursor-pointer flex;
+  @apply fixed top-0 left-0 flex h-full w-full cursor-pointer;
   justify-content: flex-end;
   background: rgba(0, 0, 0, 0.7);
 }
 
 .app-sidebar {
-  @apply text-white shadow-xl h-full w-3/4 max-w-sm cursor-default overflow-y-auto;
+  @apply h-full w-3/4 max-w-sm cursor-default overflow-y-auto text-white shadow-xl;
   border-top-left-radius: 40px;
   border-bottom-left-radius: 40px;
   background-color: #231928;
@@ -81,13 +81,13 @@ const { setSidebarOpen } = useSidebar();
 }
 
 .close-icon {
-  @apply overflow-hidden rounded-full w-9 h-9;
+  @apply h-9 w-9 overflow-hidden rounded-full;
 
   animation: spin-quarter 0.3s ease-out both;
 }
 
 .close-icon::before {
-  @apply w-9 h-9 flex items-center justify-center absolute rounded-full;
+  @apply absolute flex h-9 w-9 items-center justify-center rounded-full;
 
   content: '';
   z-index: -1;

@@ -124,7 +124,7 @@ const poolTypeLabel = computed(() => {
   <div class="col-span-2 px-4 lg:px-0">
     <BalLoadingBlock v-if="loadingPool" class="h-16" />
     <div v-else class="flex flex-col">
-      <div class="flex flex-wrap items-center -mt-2">
+      <div class="-mt-2 flex flex-wrap items-center">
         <div v-if="POOLS.Metadata[pool?.id]">
           <h3 class="pool-title">
             {{ POOLS.Metadata[pool.id].name }}
@@ -139,7 +139,7 @@ const poolTypeLabel = computed(() => {
         <div
           v-for="([address, tokenMeta], i) in titleTokens"
           :key="i"
-          class="flex items-center px-2 mt-2 mr-2 h-10 bg-gray-50 dark:bg-gray-850 rounded-lg"
+          class="mt-2 mr-2 flex h-10 items-center rounded-lg bg-gray-50 px-2 dark:bg-gray-850"
         >
           <BalAsset :address="address" />
           <span class="ml-2">
@@ -173,12 +173,12 @@ const poolTypeLabel = computed(() => {
           <BalIcon
             name="arrow-up-right"
             size="sm"
-            class="mt-2 ml-2 text-gray-500 hover:text-blue-500 transition-colors"
+            class="mt-2 ml-2 text-gray-500 transition-colors hover:text-blue-500"
           />
         </BalLink>
       </div>
-      <div class="flex items-center mt-2">
-        <div class="mr-1 text-sm text-secondary" v-html="poolFeeLabel" />
+      <div class="mt-2 flex items-center">
+        <div class="text-secondary mr-1 text-sm" v-html="poolFeeLabel" />
         <BalTooltip>
           <template #activator>
             <BalLink
@@ -244,7 +244,7 @@ const poolTypeLabel = computed(() => {
 </template>
 <style scoped>
 .pool-title {
-  @apply mr-4 capitalize mt-2;
+  @apply mr-4 mt-2 capitalize;
 
   font-variation-settings: 'wght' 700;
 }

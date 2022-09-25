@@ -78,7 +78,7 @@ function handleSelected(newToken: string): void {
 <template>
   <BalDropdown :options="options" minWidth="44" @selected="handleSelected">
     <template #activator>
-      <div class="group token-select-input selected selectable">
+      <div class="token-select-input selected selectable group">
         <div>
           <BalAssetSet
             v-if="isProportional"
@@ -98,12 +98,12 @@ function handleSelected(newToken: string): void {
         <BalIcon
           name="chevron-down"
           size="sm"
-          class="ml-2 text-blue-500 group-hover:text-pink-500 dark:text-blue-400 dark:group-hover:text-yellow-500 transition-colors"
+          class="ml-2 text-blue-500 transition-colors group-hover:text-pink-500 dark:text-blue-400 dark:group-hover:text-yellow-500"
         />
       </div>
     </template>
     <template #option="{ option }">
-      <div v-if="option === 'all'" class="flex justify-between items-center">
+      <div v-if="option === 'all'" class="flex items-center justify-between">
         <div class="flex items-center">
           <BalAssetSet :addresses="tokenAddresses" :width="assetSetWidth" />
           {{ $t('allTokens') }}
@@ -114,7 +114,7 @@ function handleSelected(newToken: string): void {
           class="ml-2 text-blue-500 dark:text-blue-400"
         />
       </div>
-      <div v-else class="flex justify-between items-center">
+      <div v-else class="flex items-center justify-between">
         <div class="flex items-center">
           <BalAsset :address="option" class="mr-2" />
           {{ getToken(option)?.symbol }}
@@ -131,17 +131,17 @@ function handleSelected(newToken: string): void {
 
 <style scoped>
 .token-select-input {
-  @apply shadow rounded-lg flex items-center h-10 px-2 whitespace-nowrap;
+  @apply flex h-10 items-center whitespace-nowrap rounded-lg px-2 shadow;
   @apply text-sm;
 
   font-variation-settings: 'wght' 700;
 }
 
 .selectable {
-  @apply cursor-pointer hover:shadow-none transition-shadow;
+  @apply cursor-pointer transition-shadow hover:shadow-none;
 }
 
 .selected {
-  @apply bg-gray-50 dark:bg-gray-700 text-black dark:text-white;
+  @apply bg-gray-50 text-black dark:bg-gray-700 dark:text-white;
 }
 </style>

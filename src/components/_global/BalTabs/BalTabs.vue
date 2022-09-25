@@ -70,7 +70,7 @@ export default defineComponent({
 
 <style>
 .bal-tab {
-  @apply -mb-px mr-6 py-3 cursor-pointer;
+  @apply -mb-px mr-6 cursor-pointer py-3;
 }
 
 .tab-selected {

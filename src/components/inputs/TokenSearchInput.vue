@@ -106,12 +106,12 @@ function onClick() {
 </script>
 <template>
   <div>
-    <div class="flex flex-wrap gap-x-6 gap-y-3 items-stretch">
+    <div class="flex flex-wrap items-stretch gap-x-6 gap-y-3">
       <BalBtn color="white" size="sm" @click="onClick">
         <BalIcon name="search" size="sm" class="mr-2" />
         {{ $t('filterByToken') }}
       </BalBtn>
-      <div v-if="modelValue.length" class="flex flex-wrap gap-2 items-center">
+      <div v-if="modelValue.length" class="flex flex-wrap items-center gap-2">
         <BalChip
           v-for="token in modelValue"
           :key="token"

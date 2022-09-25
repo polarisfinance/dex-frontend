@@ -5,7 +5,7 @@ const { getReturnRoute } = useReturnRoute();
 </script>
 <template>
   <div class="pb-16">
-    <div class="mb-12 layout-header">
+    <div class="layout-header mb-12">
       <div />
       <router-link :to="getReturnRoute()">
         <BalIcon name="x" size="lg" />

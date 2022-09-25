@@ -19,7 +19,7 @@ withDefaults(defineProps<Props>(), {
 <template>
   <BalTooltip
     :disabled="!hasBalance"
-    class="mr-1 last:mr-0 leading-normal cursor-pointer"
+    class="mr-1 cursor-pointer leading-normal last:mr-0"
     textAlign="left"
     :delayMs="50"
   >
@@ -59,7 +59,7 @@ withDefaults(defineProps<Props>(), {
 }
 
 .pill::before {
-  @apply w-full h-full;
+  @apply h-full w-full;
   @apply absolute;
   @apply bg-gray-100 dark:bg-gray-700;
 
@@ -90,8 +90,8 @@ withDefaults(defineProps<Props>(), {
 }
 
 .balance-indicator {
-  @apply w-3 h-3;
-  @apply rounded-full border-2 border-white dark:border-gray-850 group-hover:border-gray-50
+  @apply h-3 w-3;
+  @apply rounded-full border-2 border-white group-hover:border-gray-50 dark:border-gray-850
     dark:group-hover:border-gray-800;
   @apply bg-green-200 dark:bg-green-500;
   @apply absolute top-0 right-0 -mt-1 -mr-2;

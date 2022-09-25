@@ -41,7 +41,7 @@ const hasUnknownPrice = computed(() =>
 
 <template>
   <BalCard noPad shadow="none" :noBorder="upToLargeBreakpoint">
-    <div v-if="!upToLargeBreakpoint" class="p-4 border-b dark:border-gray-600">
+    <div v-if="!upToLargeBreakpoint" class="border-b p-4 dark:border-gray-600">
       <BalStack horizontal spacing="sm" align="center">
         <h6 class="dark:text-gray-300">
           {{ $t('tokenPrices') }}
@@ -115,7 +115,7 @@ const hasUnknownPrice = computed(() =>
               align="center"
               class="w-3/4"
             >
-              <div class="justify-end w-full">
+              <div class="w-full justify-end">
                 <div class="-mr-1">
                   <span class="text-left">{{ $t('enterAPrice') }}</span>
                 </div>

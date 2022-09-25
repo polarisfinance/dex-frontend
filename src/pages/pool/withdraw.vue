@@ -20,10 +20,10 @@ const { pool, loadingPool, transfersAllowed } = usePoolTransfers();
     <BalCard v-else shadow="xl" exposeOverflow noBorder>
       <template #header>
         <div class="w-full">
-          <div class="text-xs leading-none text-secondary">
+          <div class="text-secondary text-xs leading-none">
             {{ network.chainName }}
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <h4>{{ $t('withdrawFromPool') }}</h4>
             <TradeSettingsPopover :context="TradeSettingsContext.invest" />
           </div>

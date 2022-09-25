@@ -22,11 +22,11 @@
               "
               name="arrow-up-right"
               size="sm"
-              class="ml-1 text-gray-400 group-hover:text-pink-500 dark:text-gray-600 transition-colors"
+              class="ml-1 text-gray-400 transition-colors group-hover:text-pink-500 dark:text-gray-600"
             />
           </div>
           <div
-            class="text-sm group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white transition-colors text-secondary summary"
+            class="text-secondary summary text-sm transition-colors group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
           >
             {{ transaction.summary }}
           </div>
@@ -34,7 +34,7 @@
         <div>
           <SpinnerIcon
             v-if="isPendingTransactionStatus(transaction.status)"
-            class="text-orange-500 animate-spin"
+            class="animate-spin text-orange-500"
           />
           <template v-else>
             <CheckIcon
@@ -127,7 +127,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .row {
-  @apply flex justify-between items-center;
+  @apply flex items-center justify-between;
 }
 
 .row:last-child {

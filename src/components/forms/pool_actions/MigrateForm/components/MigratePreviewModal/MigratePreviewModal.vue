@@ -113,7 +113,7 @@ function handleClose() {
 
     <div
       v-if="highPriceImpact"
-      class="p-3 mt-4 rounded-lg border dark:border-gray-700"
+      class="mt-4 rounded-lg border p-3 dark:border-gray-700"
     >
       <BalCheckbox
         v-model="highPriceImpactAccepted"

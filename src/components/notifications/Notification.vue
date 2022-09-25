@@ -1,6 +1,6 @@
 <template>
   <div
-    class="overflow-hidden relative p-3 w-64 text-sm dark:text-white bg-white dark:bg-gray-800 rounded dark:border-gray-850 shadow-lg"
+    class="relative w-64 overflow-hidden rounded bg-white p-3 text-sm shadow-lg dark:border-gray-850 dark:bg-gray-800 dark:text-white"
   >
     <div class="group justify-between">
       <BalLink
@@ -9,12 +9,12 @@
         external
         noStyle
       >
-        <div class="flex items-center mb-1 font-semibold">
+        <div class="mb-1 flex items-center font-semibold">
           <span class="title">{{ notification.title }}</span>
           <BalIcon
             name="arrow-up-right"
             size="sm"
-            class="ml-1 text-gray-400 group-hover:text-pink-500 dark:text-gray-600 transition-colors"
+            class="ml-1 text-gray-400 transition-colors group-hover:text-pink-500 dark:text-gray-600"
           />
         </div>
         <div class="message">
@@ -22,7 +22,7 @@
         </div>
       </BalLink>
       <div v-else>
-        <div class="mb-1 font-semibold title">
+        <div class="title mb-1 font-semibold">
           {{ notification.title }}
         </div>
         <div class="message">
@@ -30,7 +30,7 @@
         </div>
       </div>
       <BalCloseIcon
-        class="absolute top-3 right-2 flex-shrink-0 text-black dark:text-white cursor-pointer"
+        class="absolute top-3 right-2 flex-shrink-0 cursor-pointer text-black dark:text-white"
         @click="closeNotification()"
       />
     </div>

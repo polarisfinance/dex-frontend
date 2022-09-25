@@ -1,8 +1,8 @@
 <template>
   <BalModal show noContentPad @close="$emit('close')">
     <div class="modal">
-      <div class="flex justify-between items-center w-full">
-        <div class="flex items-center p-[24px] w-full">
+      <div class="flex w-full items-center justify-between">
+        <div class="flex w-full items-center p-[24px]">
           <BalBtn
             v-if="selectTokenList"
             color="gray"
@@ -51,7 +51,7 @@
         <div>
           <div
             v-if="Object.keys(tokenLists).length > 0"
-            class="overflow-y-scroll h-96 py-[24px]"
+            class="h-96 overflow-y-scroll py-[24px]"
           >
             <TokenListsListItem
               v-for="(tokenList, uri) in tokenLists"
@@ -64,7 +64,7 @@
           </div>
           <div
             v-else
-            class="flex justify-center items-center h-96"
+            class="flex h-96 items-center justify-center"
             v-text="$t('errorNoLists')"
           />
         </div>
@@ -121,7 +121,7 @@
           <RecycleScroller
             v-if="tokens.length > 0"
             v-slot="{ item: token }"
-            class="overflow-y-scroll h-96 py-[24px]"
+            class="h-96 overflow-y-scroll py-[24px]"
             :items="tokens"
             :itemSize="64"
             keyField="address"
@@ -136,13 +136,13 @@
           </RecycleScroller>
           <div
             v-else-if="loading"
-            class="flex justify-center items-center h-96"
+            class="flex h-96 items-center justify-center"
           >
             <BalLoadingIcon />
           </div>
           <div
             v-else
-            class="h-96 text-center text-secondary"
+            class="text-secondary h-96 text-center"
             v-text="$t('errorNoTokens')"
           />
         </div>

@@ -76,13 +76,13 @@ function handleNavigate(state: StepState, stepIndex: number) {
         <BalStack horizontal align="center" spacing="sm">
           <div
             :class="[
-              'relative text-sm rounded-full w-7 h-7 flex justify-center items-center',
+              'relative flex h-7 w-7 items-center justify-center rounded-full text-sm',
               stepCircleClasses[i],
               { 'circle-line': i !== visibleSteps.length - 1 },
             ]"
           >
             <div
-              class="flex absolute top-0 right-0 bottom-0 left-0 justify-center items-center mx-auto w-4"
+              class="absolute top-0 right-0 bottom-0 left-0 mx-auto flex w-4 items-center justify-center"
             >
               <span
                 v-if="

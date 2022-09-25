@@ -39,10 +39,10 @@ const { veBalTokenInfo } = useVeBal();
 
 <style scoped>
 .container {
-  @apply border dark:border-gray-800 bg-gray-50 dark:bg-gray-800 divide-y dark:divide-gray-850 rounded-lg text-sm;
+  @apply divide-y rounded-lg border bg-gray-50 text-sm dark:divide-gray-850 dark:border-gray-800 dark:bg-gray-800;
 }
 
 .row {
-  @apply p-3 flex justify-between;
+  @apply flex justify-between p-3;
 }
 </style>

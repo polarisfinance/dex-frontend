@@ -317,17 +317,17 @@ function onAlertMountChange() {
     <BalStack vertical spacing="sm">
       <div>
         <div
-          class="flex justify-between px-4 w-full text-[16px] leading-[20px] font-semibold"
+          class="flex w-full justify-between px-4 text-[16px] font-semibold leading-[20px]"
         >
           <span>{{ $t('token') }}</span>
           <span>{{ $t('weight') }}</span>
         </div>
-        <div class="grid max-w-full w-full gap-[4px] mt-[8px]">
+        <div class="mt-[8px] grid w-full max-w-full gap-[4px]">
           <div
             v-for="(token, i) of seedTokens"
             :key="`tokenweight-${token.id}`"
             :ref="addTokenListElementRef"
-            class="max-w-full w-full"
+            class="w-full max-w-full"
           >
             <AnimatePresence isVisible>
               <TokenWeightInput
@@ -356,8 +356,8 @@ function onAlertMountChange() {
             {{ $t('addToken') }}
           </BalBtn>
         </div>
-        <div class="p-2 px-4 w-full bg-gray-50 dark:bg-gray-850">
-          <div class="flex justify-between w-full">
+        <div class="w-full bg-gray-50 p-2 px-4 dark:bg-gray-850">
+          <div class="flex w-full justify-between">
             <h6>{{ $t('totalAllocated') }}</h6>
             <BalStack horizontal spacing="xs" align="center">
               <h6 :class="weightColor">{{ totalAllocatedWeight }}%</h6>

@@ -3,7 +3,7 @@
     <template #activator>
       <button
         @click="toggleModal"
-        class="text-base btn btn-menu flex flex-row pb-[10px] pt-0"
+        class="btn btn-menu flex flex-row pb-[10px] pt-0 text-base"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
         :loadingLabel="upToLargeBreakpoint ? '' : $t('connecting')"
@@ -12,13 +12,13 @@
         :circle="upToLargeBreakpoint"
       >
         <span
-          class="hidden lg:inline-block eth-address leading-[20px] text-[24px] leading-[31px] text-white"
+          class="eth-address hidden text-[24px] leading-[20px] leading-[31px] text-white lg:inline-block"
           v-text="'...'"
         />
       </button>
     </template>
     <div
-      class="flex overflow-hidden flex-col w-44 rounded-lg leading-[20px] px-[20px] py-[15px] bg-[#2e2433]"
+      class="flex w-44 flex-col overflow-hidden rounded-lg bg-[#2e2433] px-[20px] py-[15px] leading-[20px]"
       :style="{
         'box-shadow': 'inset 0px 0px 2px #fbaaff',
         'border-radius': '22px',
@@ -82,10 +82,10 @@ export default defineComponent({
   padding-top: 0 !important;
 }
 .menu-item {
-  @apply flex justify-between items-center cursor-pointer py-[5px] font-semibold;
+  @apply flex cursor-pointer items-center justify-between py-[5px] font-semibold;
 }
 .menu-link {
-  @apply text-white font-semibold leading-[20px];
+  @apply font-semibold leading-[20px] text-white;
 }
 
 .menu-link > svg {
@@ -98,11 +98,11 @@ export default defineComponent({
 
 .menu-link:hover,
 .menu-link:hover > svg {
-  @apply text-[#be95c0] font-semibold leading-[20px] no-underline;
+  @apply font-semibold leading-[20px] text-[#be95c0] no-underline;
 }
 
 .menu-link:focus,
 .menu-link:focus > svg {
-  @apply text-[#be95c0] font-semibold leading-[20px] no-underline;
+  @apply font-semibold leading-[20px] text-[#be95c0] no-underline;
 }
 </style>

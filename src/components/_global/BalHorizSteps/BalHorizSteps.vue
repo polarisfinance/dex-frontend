@@ -74,15 +74,15 @@ function stateClasses(state: StepState): string {
             <img
               v-else-if="step.state === stepState.WalletOpen"
               :src="walletLogo"
-              class="w-4 h-4"
+              class="h-4 w-4"
             />
             <template v-else-if="step.state === stepState.Pending">
               <span
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
               >
                 {{ i + 1 }}
               </span>
-              <SpinnerIcon class="w-8 h-8 animate-spin" />
+              <SpinnerIcon class="h-8 w-8 animate-spin" />
             </template>
             <span v-else>
               {{ i + 1 }}
@@ -96,7 +96,7 @@ function stateClasses(state: StepState): string {
 
 <style scoped>
 .step {
-  @apply w-8 h-8 rounded-full border shadow font-medium;
-  @apply flex items-center justify-center relative;
+  @apply h-8 w-8 rounded-full border font-medium shadow;
+  @apply relative flex items-center justify-center;
 }
 </style>

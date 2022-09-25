@@ -371,9 +371,9 @@ function setCurrentChartValue(payload: {
 
   <div v-else-if="snapshotValues.length >= MIN_CHART_VALUES" class="chart">
     <div
-      class="flex flex-col xs:flex-row xs:flex-wrap justify-between mb-6 dark:border-gray-900"
+      class="mb-6 flex flex-col justify-between dark:border-gray-900 xs:flex-row xs:flex-wrap"
     >
-      <div class="flex mb-4">
+      <div class="mb-4 flex">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="mr-6 -mb-px" />
         <div class="flex items-center">
           <PoolChartPeriodSelect
@@ -384,13 +384,13 @@ function setCurrentChartValue(payload: {
         </div>
       </div>
       <div
-        class="flex flex-col items-start xs:items-end text-2xl font-semibold tabular-nums"
+        class="flex flex-col items-start text-2xl font-semibold tabular-nums xs:items-end"
       >
         <p class="tracking-tighter">
           {{ isFocusedOnChart ? currentChartValue : defaultChartData.value }}
         </p>
         <div
-          class="text-sm font-medium text-secondary"
+          class="text-secondary text-sm font-medium"
           :class="{ 'text-pink-500': isFocusedOnChart }"
         >
           <p>
@@ -440,6 +440,6 @@ function setCurrentChartValue(payload: {
 
 <style scoped>
 .chart {
-  @apply sm:border rounded-xl sm:px-5 sm:pt-5 sm:shadow sm:dark:bg-gray-850 dark:border-transparent;
+  @apply rounded-xl dark:border-transparent sm:border sm:px-5 sm:pt-5 sm:shadow sm:dark:bg-gray-850;
 }
 </style>

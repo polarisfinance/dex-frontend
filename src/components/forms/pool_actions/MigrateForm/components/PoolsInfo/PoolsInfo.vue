@@ -63,10 +63,10 @@ onBeforeMount(() => {
   <BalCard shadow="xl" exposeOverflow noBorder>
     <template #header>
       <div class="w-full">
-        <div class="text-xs leading-none text-secondary">
+        <div class="text-secondary text-xs leading-none">
           {{ configService.network.chainName }}
         </div>
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <h4>
             {{ t(`migratePool.${poolMigrationInfo.type}.migrateToPool.title`) }}
           </h4>
@@ -83,8 +83,8 @@ onBeforeMount(() => {
       </div>
     </div>
     <PoolInfoBreakdown :pool="fromPool" :poolTokenInfo="fromPoolTokenInfo" />
-    <div class="flex justify-center my-4 dark:text-gray-50">
-      <ArrowDownIcon class="w-5 h-5 dark:text-secondary" />
+    <div class="my-4 flex justify-center dark:text-gray-50">
+      <ArrowDownIcon class="dark:text-secondary h-5 w-5" />
     </div>
     <PoolInfoBreakdown :pool="toPool" :poolTokenInfo="toPoolTokenInfo" />
     <BalBtn

@@ -203,9 +203,9 @@ function getTableRowClass(gauge: VotingGaugeWithVotes): string {
       <template #networkColumnCell="{ network }">
         <div v-if="!isLoading" class="py-4 px-6">
           <div
-            class="flex justify-center items-center w-8 h-8 bg-gray-50 dark:bg-gray-800 rounded shadow-sm"
+            class="flex h-8 w-8 items-center justify-center rounded bg-gray-50 shadow-sm dark:bg-gray-800"
           >
-            <img :src="networkSrc(network)" :alt="network" class="w-6 h-6" />
+            <img :src="networkSrc(network)" :alt="network" class="h-6 w-6" />
           </div>
         </div>
       </template>
@@ -252,6 +252,6 @@ function getTableRowClass(gauge: VotingGaugeWithVotes): string {
 
 <style>
 tr.expired-gauge-row {
-  @apply bg-red-50  hover:bg-red-100 dark:border-red-600 dark:border;
+  @apply bg-red-50  hover:bg-red-100 dark:border dark:border-red-600;
 }
 </style>

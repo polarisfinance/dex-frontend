@@ -374,7 +374,7 @@ watch(blockNumber, () => {
 <template>
   <BalModal show @close="onClose" class="confirm-swap">
     <div class="p-0.5">
-      <div class="flex justify-between items-center px-1.5 header">
+      <div class="header flex items-center justify-between px-1.5">
         <div>Confirm Swap</div>
         <div><X @click="onClose" /></div>
       </div>
@@ -395,10 +395,10 @@ watch(blockNumber, () => {
           </div>
         </div>
       </div>
-      <div class="flex justify-center w-full">
-        <div class="absolute arrow"><ArrowDownSwap /></div>
+      <div class="flex w-full justify-center">
+        <div class="arrow absolute"><ArrowDownSwap /></div>
       </div>
-      <div class="token-input flex justify-between p-4 mt-2">
+      <div class="token-input mt-2 flex justify-between p-4">
         <div class="flex items-center">
           <BalAsset
             :address="props.trading.tokenOut.value.address"
@@ -431,7 +431,7 @@ watch(blockNumber, () => {
         />
       </div>
       <div
-        class="flex accept-update items-center justify-between"
+        class="accept-update flex items-center justify-between"
         v-if="priceUpdated.value"
       >
         <div class="flex items-center">
@@ -829,7 +829,7 @@ watch(blockNumber, () => {
     </BalBtn>
     <BalAlert
       v-if="trading.submissionError.value != null"
-      class="p-3 mt-4"
+      class="mt-4 p-3"
       type="error"
       size="md"
       :title="$t('tradeSubmissionError.title')"

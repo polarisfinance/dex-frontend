@@ -14,7 +14,7 @@
     <BalCard class="w-72" noPad noBorder>
       <template #header>
         <div
-          class="flex justify-between items-center p-3 w-full border-b dark:border-gray-900"
+          class="flex w-full items-center justify-between border-b p-3 dark:border-gray-900"
         >
           <h5>{{ $t('recentActivityTitle') }}</h5>
         </div>
@@ -47,7 +47,7 @@
         </template>
       </div>
       <template v-if="transactions.length > 0" #footer>
-        <div class="p-3 w-full text-sm bg-white dark:bg-gray-800 rounded-b-lg">
+        <div class="w-full rounded-b-lg bg-white p-3 text-sm dark:bg-gray-800">
           <a class="text-blue-500" @click="clearAllTransactions()">
             {{ $t('clearTransactions') }}
           </a>

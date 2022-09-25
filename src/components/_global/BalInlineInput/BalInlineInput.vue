@@ -182,7 +182,7 @@ function handleBlur(e: HtmlInputEvent) {
 
 <style scoped>
 .input-container {
-  @apply bg-white dark:bg-gray-800 p-10;
+  @apply bg-white p-10 dark:bg-gray-800;
 }
 
 .input-group {
@@ -190,7 +190,7 @@ function handleBlur(e: HtmlInputEvent) {
 }
 
 .input {
-  @apply flex-grow bg-transparent overflow-hidden;
+  @apply flex-grow overflow-hidden bg-transparent;
 }
 
 .label {
@@ -198,6 +198,6 @@ function handleBlur(e: HtmlInputEvent) {
 }
 
 .error {
-  @apply text-xs text-red-500 mt-1 ml-1;
+  @apply mt-1 ml-1 text-xs text-red-500;
 }
 </style>

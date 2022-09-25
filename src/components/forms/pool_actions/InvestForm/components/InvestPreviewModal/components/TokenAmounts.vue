@@ -73,10 +73,10 @@ function amountShare(address: string): string {
 <template>
   <div class="token-amount-table">
     <div v-for="token in amountsToShow" :key="token.address" class="relative">
-      <div class="items-center token-amount-table-content">
+      <div class="token-amount-table-content items-center">
         <div class="flex items-center">
           <BalAsset :address="token.address" :size="36" />
-          <div class="flex flex-col ml-3">
+          <div class="ml-3 flex flex-col">
             <div class="text-lg font-medium">
               <span class="font-numeric">
                 {{ fNum2(token.amount, FNumFormats.token) }}
@@ -85,7 +85,7 @@ function amountShare(address: string): string {
             </div>
           </div>
         </div>
-        <div class="text-sm text-secondary font-numeric">
+        <div class="text-secondary font-numeric text-sm">
           {{ fNum2(token.fiatAmount, FNumFormats.fiat) }}
           ({{ fNum2(amountShare(token.address), FNumFormats.percent) }})
         </div>
@@ -93,9 +93,9 @@ function amountShare(address: string): string {
     </div>
     <div
       v-if="shouldShowCompactViewForZeroAmounts"
-      class="items-start -mb-2 token-amount-table-content"
+      class="token-amount-table-content -mb-2 items-start"
     >
-      <div class="flex flex-wrap mr-6">
+      <div class="mr-6 flex flex-wrap">
         <div
           v-for="token in groupedAmounts.zeroAmounts"
           :key="token.address"
@@ -105,7 +105,7 @@ function amountShare(address: string): string {
           <span>{{ tokenMap[token.address].symbol }}</span>
         </div>
       </div>
-      <div class="text-sm whitespace-nowrap text-secondary font-numeric">
+      <div class="text-secondary font-numeric whitespace-nowrap text-sm">
         {{ fNum2(0, FNumFormats.fiat) }}
         ({{ fNum2(0, FNumFormats.percent) }})
       </div>
@@ -115,14 +115,14 @@ function amountShare(address: string): string {
 
 <style scoped>
 .token-amount-table {
-  @apply shadow-lg border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg;
+  @apply divide-y rounded-lg border shadow-lg dark:divide-gray-700 dark:border-gray-700;
 }
 
 .token-amount-table-content {
-  @apply p-3 flex justify-between;
+  @apply flex justify-between p-3;
 }
 
 .token {
-  @apply flex items-center px-2 py-1 mr-2 mb-2 rounded-lg bg-gray-100 dark:bg-gray-700;
+  @apply mr-2 mb-2 flex items-center rounded-lg bg-gray-100 px-2 py-1 dark:bg-gray-700;
 }
 </style>

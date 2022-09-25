@@ -78,12 +78,12 @@ const stats = computed(() => {
 
 <template>
   <div
-    class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-[12px] pb-[12px]"
+    class="grid grid-cols-2 gap-[12px] pb-[12px] sm:grid-cols-2 xl:grid-cols-4"
   >
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading" class="h-24" />
       <div class="card-container" v-else>
-        <div class="flex mb-[12px] text-sm font-medium text-secondary">
+        <div class="text-secondary mb-[12px] flex text-sm font-medium">
           <div class="label">{{ stat.label }}</div>
           <!-- <APRTooltip
             v-if="stat.id === 'apr'"
@@ -91,7 +91,7 @@ const stats = computed(() => {
             :poolApr="poolApr"
           /> -->
         </div>
-        <div class="flex items-center text-xl font-medium truncate funds">
+        <div class="funds flex items-center truncate text-xl font-medium">
           {{ stat.value }} <span v-if="stat.label == 'APR'">%</span>
         </div>
       </div>

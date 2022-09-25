@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div noPad class="overflow-auto relative mb-2">
-      <div class="flex justify-between my-0.5 mx-2">
+    <div noPad class="relative mb-2 overflow-auto">
+      <div class="my-0.5 mx-2 flex justify-between">
         <div class="summary">Minimum Received</div>
         <div class="summary-stat">{{ summary.totalWithSlippage }}</div>
       </div>
-      <div class="flex justify-between my-0.5 mx-2">
+      <div class="my-0.5 mx-2 flex justify-between">
         <div class="summary">Price Impact</div>
         <div class="slippage">
           {{ fNum2(trading.sor.priceImpact.value, FNumFormats.percent) }}
         </div>
       </div>
-      <div class="flex justify-between my-0.5 mx-2">
+      <div class="my-0.5 mx-2 flex justify-between">
         <div class="summary">Liquidity Provider Fee</div>
         <div class="summary-stat">{{ summary.tradeFees }}</div>
       </div>
-      <div class="flex justify-between my-0.5 mx-2">
+      <div class="my-0.5 mx-2 flex justify-between">
         <div class="summary">Routed Via</div>
         <div class="routed">Standard AMM</div>
       </div>
@@ -500,23 +500,23 @@ export default defineComponent({
 </script>
 <style scoped>
 .arrow-down {
-  @apply absolute right-0 rounded-full border border-gray-100 flex items-center h-8 w-8 justify-center bg-white mr-3
+  @apply absolute right-0 mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-gray-100 bg-white
     dark:border-gray-800 dark:bg-gray-800;
 
   transform: translateY(-50%);
 }
 
 .summary-item-row {
-  @apply flex justify-between mb-1;
+  @apply mb-1 flex justify-between;
 }
 
 .step {
-  @apply rounded-full w-7 h-7 border border-gray-100 dark:border-gray-700 flex items-center
-    justify-center text-purple-500 relative;
+  @apply relative flex h-7 w-7 items-center justify-center rounded-full border
+    border-gray-100 text-purple-500 dark:border-gray-700;
 }
 
 .step-seperator {
-  @apply bg-gray-200 dark:bg-gray-700 h-px w-6;
+  @apply h-px w-6 bg-gray-200 dark:bg-gray-700;
 }
 
 .step-active {

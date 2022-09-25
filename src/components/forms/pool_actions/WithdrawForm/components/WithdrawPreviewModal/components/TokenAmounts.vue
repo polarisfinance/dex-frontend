@@ -42,14 +42,14 @@ function amountShare(address: string): string {
     <div v-for="(amount, address) in amountMap" :key="address" class="relative">
       <div class="token-amount-table-content">
         <BalAsset :address="address" :size="36" />
-        <div class="flex flex-col ml-3">
+        <div class="ml-3 flex flex-col">
           <div class="text-lg font-medium">
             <span class="font-numeric">
               {{ fNum2(amount, FNumFormats.token) }}
             </span>
             {{ tokenMap[address].symbol }}
           </div>
-          <div class="text-sm text-secondary font-numeric">
+          <div class="text-secondary font-numeric text-sm">
             {{ fNum2(fiatAmountMap[address], FNumFormats.fiat) }}
             ({{ fNum2(amountShare(address), FNumFormats.percent) }})
           </div>
@@ -61,10 +61,10 @@ function amountShare(address: string): string {
 
 <style scoped>
 .token-amount-table {
-  @apply shadow-lg border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg;
+  @apply divide-y rounded-lg border shadow-lg dark:divide-gray-700 dark:border-gray-700;
 }
 
 .token-amount-table-content {
-  @apply p-3 flex items-center;
+  @apply flex items-center p-3;
 }
 </style>

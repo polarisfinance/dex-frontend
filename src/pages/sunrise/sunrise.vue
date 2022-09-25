@@ -8,7 +8,7 @@ import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
-import { sunriseDefinitions }  from './config';
+import { sunriseDefinitions } from './config';
 
 const logo = {
   polar: polarImg,
@@ -20,7 +20,6 @@ const logo = {
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
-
 
 const sunrises = computed(() =>
   Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired)
@@ -66,7 +65,7 @@ onMounted(() => {});
 
 <style scoped>
 .sunrise-title {
-  @apply bg-cover bg-center flex items-center justify-center text-center px-4;
+  @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
   background-image: url('./index_bg.svg');
 

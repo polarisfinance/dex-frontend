@@ -71,13 +71,13 @@ function toggleModal(): void {
       :class="['token-select-input selected group', { selectable: !fixed }]"
       @click="toggleModal"
     >
-      <div class="px-[6px] grid content-center">
+      <div class="grid content-center px-[6px]">
         <BalAsset :address="token?.address" class="shadow" />
       </div>
-      <span class="text-base font-semibold text-[20px]">
+      <span class="text-base text-[20px] font-semibold">
         {{ token?.symbol }}
       </span>
-      <span v-if="Number(weight) > 0" class="ml-2 text-secondary">
+      <span v-if="Number(weight) > 0" class="text-secondary ml-2">
         {{
           fNum2(weight, {
             style: 'percent',
@@ -99,14 +99,14 @@ function toggleModal(): void {
       @selected="emit('update:modelValue', $event)"
     >
       <template #activator>
-        <div class="group token-select-input selected selectable">
+        <div class="token-select-input selected selectable group">
           <div class="w-8">
             <BalAsset :address="token?.address" class="shadow" />
           </div>
           <span class="text-base font-medium">
             {{ token?.symbol }}
           </span>
-          <span v-if="Number(weight) > 0" class="ml-2 text-secondary">
+          <span v-if="Number(weight) > 0" class="text-secondary ml-2">
             {{
               fNum2(weight, {
                 style: 'percent',
@@ -117,14 +117,14 @@ function toggleModal(): void {
           <BalIcon
             name="chevron-down"
             size="sm"
-            class="ml-2 text-blue-500 group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400 transition-colors"
+            class="ml-2 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400"
           />
         </div>
       </template>
       <template #option="{ option: address }">
         <div
           :set="(optionToken = getToken(address) || {})"
-          class="flex justify-between items-center"
+          class="flex items-center justify-between"
         >
           <div class="flex items-center">
             <BalAsset :address="optionToken?.address" class="shadow" />
@@ -175,7 +175,7 @@ function toggleModal(): void {
 }
 
 .token-select-input {
-  @apply shadow rounded-lg flex items-center whitespace-nowrap;
+  @apply flex items-center whitespace-nowrap rounded-lg shadow;
   @apply text-sm;
 
   font-variation-settings: 'wght' 700;
@@ -183,15 +183,15 @@ function toggleModal(): void {
 }
 
 .selectable {
-  @apply cursor-pointer hover:shadow-none transition-shadow;
+  @apply cursor-pointer transition-shadow hover:shadow-none;
 }
 
 .unselected {
-  @apply bg-blue-500 dark:bg-blue-400 text-white;
+  @apply bg-blue-500 text-white dark:bg-blue-400;
 }
 
 .selected {
-  @apply bg-gray-50 dark:bg-gray-700 text-black dark:text-white;
+  @apply bg-gray-50 text-black dark:bg-gray-700 dark:text-white;
 }
 
 .no-token {

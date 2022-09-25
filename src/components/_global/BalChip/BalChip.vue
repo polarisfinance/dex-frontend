@@ -52,10 +52,10 @@ const { classes: iconClasses, iconSize } = useCloseIconClasses(props);
 }
 
 .content-container {
-  @apply flex items-center leading-none h-full;
+  @apply flex h-full items-center leading-none;
 }
 
 .close {
-  @apply cursor-pointer ml-1 -mb-px text-gray-400;
+  @apply ml-1 -mb-px cursor-pointer text-gray-400;
 }
 </style>

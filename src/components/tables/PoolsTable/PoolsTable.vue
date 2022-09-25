@@ -247,27 +247,27 @@ function iconAddresses(pool: PoolWithShares) {
     <div class="mb-[15px]">
       {{ title }}
     </div>
-    <div class="flex table-title items-center w-full">
+    <div class="table-title flex w-full items-center">
       <div class="flex w-full items-center">
-        <img :src="img" class="mr-[12px] w-[24px] h-[14px]" />
+        <img :src="img" class="mr-[12px] h-[14px] w-[24px]" />
         <div>Pool name</div>
       </div>
-      <div class="justify-end w-full text-right">TVL & APR</div>
+      <div class="w-full justify-end text-right">TVL & APR</div>
     </div>
     <div class="mt-[12px]border w-full" />
     <div
-      class="flex items-center w-full"
+      class="flex w-full items-center"
       v-for="(pool, idx) in data"
       :key="idx"
     >
-      <router-link class="flex items-center w-full" :to="'/pool/' + pool.id">
+      <router-link class="flex w-full items-center" :to="'/pool/' + pool.id">
         <div class="flex-column mt-[20px] w-full">
           <BalAssetSet
             :size="36"
             :addresses="iconAddresses(pool)"
             :width="100"
           />
-          <div v-if="POOLS.Metadata[pool.id]" class="text-left mt-[8px]">
+          <div v-if="POOLS.Metadata[pool.id]" class="mt-[8px] text-left">
             {{ POOLS.Metadata[pool.id].name }}
           </div>
           <div v-else class="mt-[8px]">
@@ -285,10 +285,10 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ aprLabelFor(pool) }}
                 </div>
               </template>
@@ -296,17 +296,17 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ aprLabelFor(pool) }}
                 </div>
               </template>
             </div>
             <div>
-              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
-              <span v-else class="text-right w-12 h-4">
+              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
+              <span v-else class="h-4 w-12 text-right">
                 {{
                   fNum2(pool?.volumeSnapshot, {
                     style: 'currency',
@@ -318,10 +318,10 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ aprLabelFor(pool) }}
                 </div>
               </template>
@@ -329,10 +329,10 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ aprLabelFor(pool) }}
                 </div>
               </template>
@@ -346,28 +346,28 @@ function iconAddresses(pool: PoolWithShares) {
     <div>
       {{ title }}
     </div>
-    <div class="mt-[48px] table-title flex w-full">
-      <div class="flex w-full mr-[200px] items-center">
+    <div class="table-title mt-[48px] flex w-full">
+      <div class="mr-[200px] flex w-full items-center">
         <img :src="img" class="mr-[12px]" />
         <div>Pool name</div>
       </div>
-      <div class="flex w-full gap-[70px] justify-end items-center">
-        <div class="mr w-12 h-4">Daily</div>
-        <div class="mr w-12 h-4">APR</div>
-        <div class="mr w-12 h-4">TVL</div>
-        <div class="mr w-12 h-4">Volume (24h)</div>
+      <div class="flex w-full items-center justify-end gap-[70px]">
+        <div class="mr h-4 w-12">Daily</div>
+        <div class="mr h-4 w-12">APR</div>
+        <div class="mr h-4 w-12">TVL</div>
+        <div class="mr h-4 w-12">Volume (24h)</div>
         <div>To Claim</div>
       </div>
     </div>
-    <div class="mt-[24px] border w-full" />
+    <div class="mt-[24px] w-full border" />
     <div
-      class="mt-[24px] flex items-center w-full"
+      class="mt-[24px] flex w-full items-center"
       v-for="(pool, idx) in data"
       :key="idx"
     >
-      <router-link :to="'/pool/' + pool.id" class="flex items-center w-full">
-        <div class="flex items-center w-full">
-          <div class="flex items-center w-full">
+      <router-link :to="'/pool/' + pool.id" class="flex w-full items-center">
+        <div class="flex w-full items-center">
+          <div class="flex w-full items-center">
             <BalAssetSet
               :size="36"
               :addresses="iconAddresses(pool)"
@@ -386,14 +386,14 @@ function iconAddresses(pool: PoolWithShares) {
               />
             </div>
           </div>
-          <div class="flex gap-[80px] justify-end w-full text-left">
+          <div class="flex w-full justify-end gap-[80px] text-left">
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
                 </div>
               </template>
@@ -401,17 +401,17 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ Math.round(aprLabelFor(pool), 2) + '%' }}
                 </div>
               </template>
             </div>
             <div>
-              <BalLoadingBlock v-if="!pool?.totalLiquidity" class="w-12 h-4" />
-              <span v-else class="text-right w-12 h-4">
+              <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
+              <span v-else class="h-4 w-12 text-right">
                 {{
                   fNum2(pool?.totalLiquidity, {
                     style: 'currency',
@@ -421,8 +421,8 @@ function iconAddresses(pool: PoolWithShares) {
               </span>
             </div>
             <div>
-              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
-              <span v-else class="text-right w-12 h-4">
+              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
+              <span v-else class="h-4 w-12 text-right">
                 <!-- {{
                   Num2(pool?.volumeSnapshot, {
                     style: 'currency',
@@ -435,10 +435,10 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
-                class="w-12 h-4"
+                class="h-4 w-12"
               />
               <template v-else>
-                <div class="w-12 h-4">
+                <div class="h-4 w-12">
                   {{ Math.round(aprLabelFor(pool), 2) }}
                 </div>
               </template>

@@ -1,6 +1,6 @@
 <template>
   <div :class="['app-nav-alert', classes]" @click="handleClick">
-    <div class="flex flex-1 md:justify-center fade-in-slow">
+    <div class="fade-in-slow flex flex-1 md:justify-center">
       <BalIcon v-if="iconName" :name="iconName" class="mr-3" />
       <div>
         <p class="alert-label">
@@ -20,7 +20,7 @@
     <div v-if="!alert.persistent" class="flex items-start">
       <BalIcon
         name="x"
-        class="mt-0.5 cursor-pointer fade-in-slow"
+        class="fade-in-slow mt-0.5 cursor-pointer"
         @click.stop="handleClose"
       />
     </div>
@@ -86,12 +86,12 @@ export default defineComponent({
 
 <style>
 .app-nav-alert {
-  @apply flex content-start justify-between py-2 xs:py-4 px-4;
+  @apply flex content-start justify-between py-2 px-4 xs:py-4;
 
   min-height: 54px;
 }
 
 .alert-label {
-  @apply font-medium pb-1 block md:inline pr-4;
+  @apply block pb-1 pr-4 font-medium md:inline;
 }
 </style>

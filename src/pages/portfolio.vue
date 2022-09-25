@@ -28,7 +28,7 @@ const migratableUserPools = computed(() => {
 <template>
   <StakingProvider>
     <PortfolioPageHero />
-    <div class="xl:container xl:px-4 pt-10 md:pt-12 xl:mx-auto">
+    <div class="pt-10 md:pt-12 xl:container xl:mx-auto xl:px-4">
       <BalStack vertical>
         <div class="px-4 xl:px-0">
           <BalStack horizontal justify="between" align="center">

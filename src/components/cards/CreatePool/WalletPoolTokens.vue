@@ -50,17 +50,17 @@ const totalFiat = computed(() => {
 
 <template>
   <BalCard noPad shadow="none">
-    <div class="p-2 px-3 border-b">
+    <div class="border-b p-2 px-3">
       <h6>Pool tokens in my wallet</h6>
     </div>
     <BalStack vertical class="p-4" spacing="sm">
       <div>
-        <h6 class="relative branch">Native tokens</h6>
+        <h6 class="branch relative">Native tokens</h6>
         <BalStack vertical spacing="xs">
           <BalStack
             v-for="token in nativeTokens"
             :key="`wallet-pool-token-${token}`"
-            class="relative ml-6 twig"
+            class="twig relative ml-6"
             horizontal
             justify="between"
           >

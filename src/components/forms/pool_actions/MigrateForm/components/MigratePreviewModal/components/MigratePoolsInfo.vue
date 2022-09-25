@@ -17,7 +17,7 @@ defineProps<Props>();
 
 <template>
   <div
-    class="relative mt-4 rounded-lg border dark:border-gray-700 divide-y dark:divide-gray-700"
+    class="relative mt-4 divide-y rounded-lg border dark:divide-gray-700 dark:border-gray-700"
   >
     <div class="flex items-center p-3">
       <BalAsset :address="fromPoolTokenInfo.address" class="mr-2" :size="36" />
@@ -26,7 +26,7 @@ defineProps<Props>();
     <div class="arrow-container">
       <ArrowDownIcon />
     </div>
-    <div class="flex items-center p-3 border-t dark:border-gray-900">
+    <div class="flex items-center border-t p-3 dark:border-gray-900">
       <BalAsset :address="toPoolTokenInfo.address" class="mr-2" :size="36" />
       <div>{{ toPoolTokenInfo.symbol }}</div>
     </div>
@@ -35,12 +35,12 @@ defineProps<Props>();
 <style scoped>
 .card-container {
   @apply relative mt-4;
-  @apply border dark:border-gray-700 rounded-lg;
+  @apply rounded-lg border dark:border-gray-700;
 }
 
 .arrow-container {
-  @apply absolute right-0 top-1/2 transform -translate-y-1/2 -translate-x-1/2;
+  @apply absolute right-0 top-1/2 -translate-y-1/2 -translate-x-1/2 transform;
   @apply p-2;
-  @apply rounded-full border dark:border-gray-900 bg-white dark:bg-gray-700 dark:text-gray-400;
+  @apply rounded-full border bg-white dark:border-gray-900 dark:bg-gray-700 dark:text-gray-400;
 }
 </style>

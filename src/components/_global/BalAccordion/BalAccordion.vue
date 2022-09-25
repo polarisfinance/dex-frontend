@@ -194,7 +194,7 @@ watch(
           v-else
           ref="handleBarElement"
           :class="[
-            'w-full flex justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800',
+            'flex w-full justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800',
             {
               'border-b dark:border-gray-900': i !== sections.length - 1,
             },
@@ -214,7 +214,7 @@ watch(
             v-if="isContentVisible"
             ref="activeSectionElement"
             :class="{
-              'border-b active-section': isContentVisible && showSectionBorder,
+              'active-section border-b': isContentVisible && showSectionBorder,
             }"
           >
             <slot :name="section.id" />

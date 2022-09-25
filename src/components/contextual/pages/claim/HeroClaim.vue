@@ -2,29 +2,29 @@
 
 <template>
   <div class="bg">
-    <div class="w-full hero-container">
+    <div class="hero-container w-full">
       <div class="hero-content">
         <div class="hero-text fade-in-slow">
-          <h1 class="mb-3 text-white title text-shadow">
+          <h1 class="title text-shadow mb-3 text-white">
             {{ $t('claimHero.title') }}
           </h1>
-          <p class="max-w-3xl body-text text-shadow">
+          <p class="body-text text-shadow max-w-3xl">
             {{ $t('claimHero.description') }}
           </p>
         </div>
       </div>
       <div class="hero-graphic-container">
         <div
-          class="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-4 xl:gap-12 items-center w-full fade-in-slow"
+          class="fade-in-slow grid w-full grid-cols-2 items-center gap-8 sm:grid-cols-4 sm:gap-4 xl:gap-12"
         >
-          <div class="group tip">
+          <div class="tip group">
             <img
               width="144"
               height="144"
               class="tip-icon"
               src="@/assets/images/icons/claims-header/add-liquidity.svg"
             />
-            <p class="font-semibold tip-label text-shadow">
+            <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.addLiquidity') }}
               <BalTooltip
                 iconSize="xs"
@@ -37,14 +37,14 @@
               </BalTooltip>
             </p>
           </div>
-          <div class="group tip">
+          <div class="tip group">
             <img
               width="144"
               height="144"
               class="tip-icon"
               src="@/assets/images/icons/claims-header/stake.svg"
             />
-            <p class="font-semibold tip-label text-shadow">
+            <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.stake') }}
               <BalTooltip
                 iconSize="xs"
@@ -57,14 +57,14 @@
               </BalTooltip>
             </p>
           </div>
-          <div class="group tip">
+          <div class="tip group">
             <img
               width="144"
               height="144"
               class="tip-icon"
               src="@/assets/images/icons/claims-header/vebal.svg"
             />
-            <p class="font-semibold tip-label text-shadow">
+            <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.boost') }}
               <BalTooltip
                 iconSize="xs"
@@ -77,14 +77,14 @@
               </BalTooltip>
             </p>
           </div>
-          <div class="group tip">
+          <div class="tip group">
             <img
               width="144"
               height="144"
               class="tip-icon"
               src="@/assets/images/icons/claims-header/claim.svg"
             />
-            <p class="font-semibold tip-label text-shadow">
+            <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.claim') }}
               <BalTooltip
                 iconSize="xs"
@@ -105,23 +105,23 @@
 
 <style scoped>
 .bg {
-  @apply bg-gradient-to-r from-pink-500 to-yellow-500 relative;
+  @apply relative bg-gradient-to-r from-pink-500 to-yellow-500;
 
   background-image: url('/images/backgrounds/claims-header.svg');
 
-  @apply bg-no-repeat bg-cover bg-center;
+  @apply bg-cover bg-center bg-no-repeat;
 }
 
 .hero-container {
-  @apply grid grid-cols-1 lg:grid-cols-3 xl:container xl:mx-auto px-4;
+  @apply grid grid-cols-1 px-4 lg:grid-cols-3 xl:container xl:mx-auto;
 }
 
 .hero-graphic-container {
-  @apply w-full px-4 py-8 xl:p-8 flex items-center lg:col-span-2;
+  @apply flex w-full items-center px-4 py-8 lg:col-span-2 xl:p-8;
 }
 
 .hero-content {
-  @apply pt-8 lg:py-4 flex items-center w-full relative;
+  @apply relative flex w-full items-center pt-8 lg:py-4;
 }
 
 .hero-text {
@@ -129,7 +129,7 @@
 }
 
 .body-text {
-  @apply text-white pb-0 font-medium;
+  @apply pb-0 font-medium text-white;
 
   text-shadow: 0 1px 0 rgb(0 0 0 / 15%), 4px 4px 8px rgb(0 0 0 / 15%);
 }
@@ -139,11 +139,11 @@
 }
 
 .tip-icon {
-  @apply pb-4 transition-transform duration-300 w-20 md:w-24 lg:w-full;
+  @apply w-20 pb-4 transition-transform duration-300 md:w-24 lg:w-full;
 }
 
 .tip-label {
-  @apply text-white leading-5 transition-colors;
+  @apply leading-5 text-white transition-colors;
 }
 
 .tip:hover .tip-icon {

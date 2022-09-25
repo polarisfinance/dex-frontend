@@ -248,7 +248,7 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
       <template #actionCell="action">
         <div class="py-2 px-6">
           <div class="flex items-center">
-            <div class="flex mr-3 center">
+            <div class="center mr-3 flex">
               <BalIcon
                 v-if="action.type === 'invest'"
                 name="plus"
@@ -274,12 +274,12 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
       </template>
 
       <template #detailsCell="action">
-        <div class="flex flex-wrap items-center py-4 px-6 -mt-1">
+        <div class="-mt-1 flex flex-wrap items-center py-4 px-6">
           <template v-if="action.type === 'trade'">
             <div class="token-item">
               <BalAsset
                 :address="action.tokenAmounts[0].address"
-                class="flex-shrink-0 mr-2"
+                class="mr-2 flex-shrink-0"
               />
               <span class="font-numeric">{{
                 fNum2(action.tokenAmounts[0].amount, FNumFormats.token)
@@ -289,7 +289,7 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
             <div class="token-item">
               <BalAsset
                 :address="action.tokenAmounts[1].address"
-                class="flex-shrink-0 mr-2"
+                class="mr-2 flex-shrink-0"
               />
               <span class="font-numeric">{{
                 fNum2(action.tokenAmounts[1].amount, FNumFormats.token)
@@ -300,11 +300,11 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
             <template v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
               <div
                 v-if="tokenAmount.amount !== '0'"
-                class="flex items-center p-1 px-2 m-1 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                class="m-1 flex items-center rounded-lg bg-gray-50 p-1 px-2 dark:bg-gray-700"
               >
                 <BalAsset
                   :address="tokenAmount.address"
-                  class="flex-shrink-0 mr-2"
+                  class="mr-2 flex-shrink-0"
                 />
                 <span class="font-numeric">{{
                   fNum2(tokenAmount.amount, FNumFormats.token)
@@ -316,7 +316,7 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
       </template>
 
       <template #valueCell="action">
-        <div class="flex justify-end py-4 px-6 font-numeric">
+        <div class="font-numeric flex justify-end py-4 px-6">
           {{ action.formattedValue }}
         </div>
       </template>
@@ -324,18 +324,18 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
       <template #timeCell="action">
         <div class="py-4 px-6">
           <div
-            class="flex justify-end items-center text-right whitespace-nowrap wrap"
+            class="wrap flex items-center justify-end whitespace-nowrap text-right"
           >
             {{ action.formattedDate }}
             <BalLink
               :href="explorerLinks.txLink(action.tx)"
               external
-              class="flex items-center ml-2"
+              class="ml-2 flex items-center"
             >
               <BalIcon
                 name="arrow-up-right"
                 size="sm"
-                class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-secondary"
+                class="text-secondary transition-colors hover:text-blue-600 dark:hover:text-blue-400"
               />
             </BalLink>
           </div>
@@ -347,6 +347,6 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
 
 <style scoped>
 .token-item {
-  @apply m-1 flex items-center p-1 px-2 bg-gray-50 dark:bg-gray-700 rounded-lg;
+  @apply m-1 flex items-center rounded-lg bg-gray-50 p-1 px-2 dark:bg-gray-700;
 }
 </style>

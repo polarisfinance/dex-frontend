@@ -258,7 +258,7 @@ const chartGrid = computed(() => {
       }"
     />
     <div v-else class="container">
-      <div class="relative p-4 h-full bg-transparent">
+      <div class="relative h-full bg-transparent p-4">
         <!-- <button
           v-if="!failedToLoadPriceData && !(isLoadingPriceData || appLoading)"
           class="flex justify-center items-center p-2 m-4 rounded-full shadow-lg maximise"
@@ -271,7 +271,7 @@ const chartGrid = computed(() => {
           v-if="!failedToLoadPriceData && !(isLoadingPriceData || appLoading)"
           class="flex"
         >
-          <h6 class="font-medium title">{{ outputSym }}/{{ inputSym }}</h6>
+          <h6 class="title font-medium">{{ outputSym }}/{{ inputSym }}</h6>
           <!-- <BalTooltip class="ml-2" :text="$t('coingeckoPricingTooltip')">
             <template #activator>
               <img class="h-5" src="@/assets/images/icons/coingecko.svg" />
@@ -280,7 +280,7 @@ const chartGrid = computed(() => {
         </div>
         <div
           v-if="failedToLoadPriceData && tokenOutAddress"
-          class="flex justify-center items-center w-full h-full"
+          class="flex h-full w-full items-center justify-center"
         >
           <span class="text-sm text-gray-400">{{
             $t('insufficientData')
@@ -288,9 +288,9 @@ const chartGrid = computed(() => {
         </div>
         <div
           v-if="failedToLoadPriceData && !tokenOutAddress"
-          class="flex justify-center items-center w-full h-full"
+          class="flex h-full w-full items-center justify-center"
         >
-          <span class="text-sm text-center text-gray-400">{{
+          <span class="text-center text-sm text-gray-400">{{
             $t('chooseAPair')
           }}</span>
         </div>
@@ -330,7 +330,7 @@ const chartGrid = computed(() => {
             <div
               v-if="isModal"
               :class="[
-                'w-full flex justify-between mt-6',
+                'mt-6 flex w-full justify-between',
                 {
                   'flex-col': isModal,
                 },
@@ -341,7 +341,7 @@ const chartGrid = computed(() => {
                   v-for="timespan in chartTimespans"
                   :key="timespan.value"
                   :class="[
-                    'py-1 px-2 text-sm rounded-lg mr-2',
+                    'mr-2 rounded-lg py-1 px-2 text-sm',
                     {
                       'text-white': activeTimespan.value === timespan.value,
                       'text-secondary': activeTimespan.value !== timespan.value,
@@ -370,7 +370,7 @@ const chartGrid = computed(() => {
               </div>
             </div>
             <div v-else class="-mt-2 lg:mt-2">
-              <span class="flex justify-end w-full text-sm text-gray-500">{{
+              <span class="flex w-full justify-end text-sm text-gray-500">{{
                 activeTimespan.option
               }}</span>
             </div>

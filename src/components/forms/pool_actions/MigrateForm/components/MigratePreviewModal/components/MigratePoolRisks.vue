@@ -21,7 +21,7 @@ defineProps<Props>();
     block
     class="mb-4"
   >
-    <ul class="pl-6 list-disc">
+    <ul class="list-disc pl-6">
       <li
         v-for="i18nLabel in poolMigrationInfo.riskI18nLabels"
         :key="i18nLabel"

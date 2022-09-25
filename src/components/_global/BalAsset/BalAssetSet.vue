@@ -158,9 +158,9 @@ export default defineComponent({
 .token-icon {
   margin-left: -2px;
 
-  @apply rounded-full overflow-hidden shadow-none;
+  @apply overflow-hidden rounded-full shadow-none;
   @apply bg-white dark:bg-gray-850;
-  @apply border-2 border-white dark:border-gray-850 group-hover:border-gray-50 dark:group-hover:border-gray-800;
+  @apply border-2 border-white group-hover:border-gray-50 dark:border-gray-850 dark:group-hover:border-gray-800;
 }
 
 .my-wallet .token-icon {

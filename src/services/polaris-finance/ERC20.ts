@@ -11,7 +11,12 @@ class ERC20 {
   symbol: string;
   decimal: number;
 
-  constructor(address: string, provider: Signer | Provider, symbol: string, decimal = 18) {
+  constructor(
+    address: string,
+    provider: Signer | Provider,
+    symbol: string,
+    decimal = 18
+  ) {
     this.contract = new Contract(address, ABI, provider);
     this.address = address;
     this.symbol = symbol;
@@ -46,7 +51,11 @@ class ERC20 {
     return this.contract.approve(spender, amount);
   }
 
-  transferFrom(sender: string, recipient: string, amount: BigNumber): Promise<TransactionResponse> {
+  transferFrom(
+    sender: string,
+    recipient: string,
+    amount: BigNumber
+  ): Promise<TransactionResponse> {
     return this.contract.transferFrom(sender, recipient, amount);
   }
 

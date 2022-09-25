@@ -1,5 +1,5 @@
 <template>
-  <div class="group bal-toggle" @click="onClick">
+  <div class="bal-toggle group" @click="onClick">
     <input
       type="checkbox"
       :name="name"
@@ -52,22 +52,22 @@ export default defineComponent({
 
 <style>
 .bal-toggle {
-  @apply relative inline-block w-10 align-middle select-none transition duration-200 ease-out;
+  @apply relative inline-block w-10 select-none align-middle transition duration-200 ease-out;
 }
 
 .bal-toggle-checkbox {
-  @apply absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-200 group-hover:border-gray-300
-    dark:border-gray-700 dark:group-hover:border-gray-900 appearance-none cursor-pointer transition-colors;
+  @apply absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-gray-200
+    bg-white transition-colors group-hover:border-gray-300 dark:border-gray-700 dark:group-hover:border-gray-900;
 }
 
 .bal-toggle-track {
-  @apply block overflow-hidden h-6 rounded-full bg-gray-200 group-hover:bg-gray-300 dark:bg-gray-700
-    dark:group-hover:bg-gray-900 bg-none cursor-pointer transition-colors;
+  @apply block h-6 cursor-pointer overflow-hidden rounded-full bg-gray-200 bg-none
+    transition-colors group-hover:bg-gray-300 dark:bg-gray-700 dark:group-hover:bg-gray-900;
 }
 
 .bal-toggle-checkbox:checked {
-  @apply right-0 border-green-400 group-hover:border-green-500 dark:border-green-500
-    dark:group-hover:border-green-400 transition-colors;
+  @apply right-0 border-green-400 transition-colors group-hover:border-green-500
+    dark:border-green-500 dark:group-hover:border-green-400;
 }
 
 .bal-toggle-track[for='tradeGasless'] {
@@ -75,7 +75,7 @@ export default defineComponent({
 }
 
 .bal-toggle-checkbox[name='tradeGasless'] {
-  @apply w-8 h-8 flex items-center justify-center;
+  @apply flex h-8 w-8 items-center justify-center;
 }
 
 .bal-toggle-checkbox[name='tradeGasless']::before {
@@ -91,10 +91,10 @@ export default defineComponent({
 }
 
 .bal-toggle-checkbox[disabled] {
-  @apply border-gray-300 dark:border-gray-700 cursor-not-allowed;
+  @apply cursor-not-allowed border-gray-300 dark:border-gray-700;
 }
 
 .bal-toggle-checkbox[disabled] + .bal-toggle-track {
-  @apply bg-gray-300 dark:bg-gray-700 cursor-not-allowed;
+  @apply cursor-not-allowed bg-gray-300 dark:bg-gray-700;
 }
 </style>

@@ -120,10 +120,10 @@ function handleShowPreviewModal() {
   <BalCard shadow="xl" exposeOverflow noBorder>
     <template #header>
       <div class="w-full">
-        <div class="pb-1.5 text-xs leading-none text-secondary">
+        <div class="text-secondary pb-1.5 text-xs leading-none">
           {{ configService.network.chainName }}
         </div>
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <h4>
             {{ $t('getVeBAL.lockForm.title') }}
           </h4>

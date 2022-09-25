@@ -47,11 +47,11 @@ function navigateToCreatePool() {
 
 <template>
   <HomePageHero />
-  <div class="xl:container pt-10 md:pt-12 xl:mx-auto mt-[81px]">
+  <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
       <div class="px-4 xl:px-0">
         <div
-          class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full"
+          class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
           v-if="isDesktop"
         >
           <!-- <TokenSearchInput
@@ -61,14 +61,14 @@ function navigateToCreatePool() {
             @remove="removeSelectedToken"
           /> -->
           <div class="flex gap-[18px]">
-            <div class="flex items-center search">
+            <div class="search flex items-center">
               <img src="./search.svg" class="mr-[12px]" />
               <input type="text" placeholder="Filter by token" class="input" />
             </div>
             <div
-              class="pool-types flex gap-[8px] items-center pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
+              class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
             >
-              <div class="mr-[12px] favourites-text">Favourites</div>
+              <div class="favourites-text mr-[12px]">Favourites</div>
               <a href="#segniorage"
                 ><div class="segniorage-btn cursor-pointer">
                   Segniorage Pools
@@ -94,12 +94,12 @@ function navigateToCreatePool() {
 
         <div v-if="isMobile">
           <div
-            class="flex items-center w-full bg-[#231928] pb-[9px] pt-[9px] pl-[16px] rounded-[12px] px-[24px]"
+            class="flex w-full items-center rounded-[12px] bg-[#231928] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
           >
             <img src="./search.svg" class="mr-[12px]" />
             <input type="text" placeholder="Filter by token" class="input" />
           </div>
-          <div class="flex gap-[8px] justify-center mt-[8px]">
+          <div class="mt-[8px] flex justify-center gap-[8px]">
             <a href="#segniorage">
               <div class="segniorage mobile-pool-btn">Segniorage Pools</div>
             </a>
@@ -111,7 +111,7 @@ function navigateToCreatePool() {
             </a>
           </div>
           <button
-            class="create-pool-btn-mobile flex items-center justify-center w-full mt-[8px]"
+            class="create-pool-btn-mobile mt-[8px] flex w-full items-center justify-center"
             @click="navigateToCreatePool"
           >
             <img src="./plus.svg" class="mr-[8px]" />
@@ -167,7 +167,7 @@ function navigateToCreatePool() {
           :img="classicImg"
         />
       </div>
-      <div v-if="isElementSupported" class="p-4 xl:p-0 mt-16">
+      <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
         <FeaturedProtocols />
       </div>
     </BalStack>

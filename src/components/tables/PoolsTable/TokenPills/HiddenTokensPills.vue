@@ -14,7 +14,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="flex relative my-1 mr-2">
+  <div class="relative my-1 mr-2 flex">
     <div
       :class="[
         'pill',
@@ -52,7 +52,7 @@ withDefaults(defineProps<Props>(), {
 .pill {
   @apply px-2 py-1;
   @apply rounded-lg;
-  @apply bg-gray-50 dark:bg-gray-600 text-gray-600 dark:text-gray-400;
+  @apply bg-gray-50 text-gray-600 dark:bg-gray-600 dark:text-gray-400;
   @apply text-sm;
   @apply flex items-center;
 
@@ -72,7 +72,7 @@ withDefaults(defineProps<Props>(), {
 }
 
 .balance-indicator {
-  @apply w-3 h-3;
+  @apply h-3 w-3;
   @apply rounded-full border-2 border-white dark:border-gray-850;
   @apply bg-green-200 dark:bg-green-500;
   @apply absolute top-0 right-0 -mt-1 -mr-1;

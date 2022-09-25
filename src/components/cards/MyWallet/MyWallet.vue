@@ -57,14 +57,14 @@ const tokensWithBalance = computed(() => {
 
 <template>
   <div noPad growContent shadow="none">
-    <div class="flex flex-col w-full h-full container">
-      <div class="flex lg:justify-between p-3 pb-0 lg:pb-3">
+    <div class="container flex h-full w-full flex-col">
+      <div class="flex p-3 pb-0 lg:justify-between lg:pb-3">
         <h6 v-if="!upToLargeBreakpoint" class="title">
           {{ $t('myWallet2') }}
         </h6>
         <div
           v-if="!isLoadingBalances"
-          class="ml-1 lg:ml-0 font-semibold lg:font-normal"
+          class="ml-1 font-semibold lg:ml-0 lg:font-normal"
         >
           <div v-if="!hasBalance(nativeAsset.address)" class="mr-0.5">
             {{ nativeCurrency }}

@@ -90,7 +90,7 @@ watch(
     <div :class="['custom-input', customInputClasses]">
       <input
         v-model="state.customSlippage"
-        class="w-12 text-right bg-transparent"
+        class="w-12 bg-transparent text-right"
         placeholder="0.1"
         type="number"
         step="any"
@@ -104,6 +104,6 @@ watch(
 
 <style scoped>
 .custom-input {
-  @apply flex items-center px-1 rounded-lg shadow-inner;
+  @apply flex items-center rounded-lg px-1 shadow-inner;
 }
 </style>

@@ -210,7 +210,7 @@ export default defineComponent({
 }
 
 .bal-alert-icon {
-  @apply rounded-full flex items-center justify-center mr-2;
+  @apply mr-2 flex items-center justify-center rounded-full;
 }
 
 .bal-alert-description {

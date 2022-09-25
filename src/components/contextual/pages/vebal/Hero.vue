@@ -35,23 +35,23 @@ function navigateToGetVeBAL() {
   <div class="hero-container">
     <div class="hero-content">
       <div
-        class="py-8 lg:py-4 px-4 lg:px-8 2xl:px-0 xl:pt-0 max-w-md hero-text"
+        class="hero-text max-w-md py-8 px-4 lg:py-4 lg:px-8 xl:pt-0 2xl:px-0"
       >
-        <p class="font-medium eyebrow">veBAL</p>
-        <h1 class="mb-5 text-white title">
+        <p class="eyebrow font-medium">veBAL</p>
+        <h1 class="title mb-5 text-white">
           {{ $t('veBAL.hero.title') }}
         </h1>
         <ul>
           <li
             v-for="(benefit, i) in benefits"
             :key="i"
-            class="flex items-center mb-2 text-white"
+            class="mb-2 flex items-center text-white"
           >
             – {{ benefit }}
           </li>
         </ul>
-        <div class="flex mt-6">
-          <BalBtn class="mr-3 hero-btn btn-gold" @click="navigateToGetVeBAL">
+        <div class="mt-6 flex">
+          <BalBtn class="hero-btn btn-gold mr-3" @click="navigateToGetVeBAL">
             {{ $t('veBAL.hero.buttons.getVeBAL') }}
           </BalBtn>
           <BalBtn
@@ -67,14 +67,14 @@ function navigateToGetVeBAL() {
             <BalIcon
               name="arrow-up-right"
               size="sm"
-              class="ml-px group-hover:text-pink-500 transition-colors"
+              class="ml-px transition-colors group-hover:text-pink-500"
             />
           </BalBtn>
         </div>
       </div>
       <div class="coins">
-        <div class="group coin">
-          <div class="w-full coin-wrapper">
+        <div class="coin group">
+          <div class="coin-wrapper w-full">
             <BalImage
               class="graphic"
               width="330"
@@ -83,9 +83,9 @@ function navigateToGetVeBAL() {
               alt="BAL and WETH tokens"
             />
           </div>
-          <div class="font-semibold caption">
+          <div class="caption font-semibold">
             <p
-              class="inline mr-1 text-sm lg:text-base tracking-tighter lg:tracking-normal"
+              class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal"
             >
               {{ $t('veBAL.hero.tokens.balWETH') }}
             </p>
@@ -94,7 +94,7 @@ function navigateToGetVeBAL() {
             </BalTooltip>
           </div>
         </div>
-        <div class="group coin">
+        <div class="coin group">
           <div class="coin-wrapper">
             <BalImage
               class="graphic"
@@ -104,9 +104,9 @@ function navigateToGetVeBAL() {
               alt="B-80BAL-20WETH LP token"
             />
           </div>
-          <div class="font-semibold caption">
+          <div class="caption font-semibold">
             <p
-              class="inline mr-1 text-sm lg:text-base tracking-tighter lg:tracking-normal"
+              class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal"
             >
               {{ $t('veBAL.hero.tokens.lpToken') }}
             </p>
@@ -115,7 +115,7 @@ function navigateToGetVeBAL() {
             </BalTooltip>
           </div>
         </div>
-        <div class="group coin">
+        <div class="coin group">
           <div class="coin-wrapper">
             <BalImage
               class="graphic"
@@ -125,9 +125,9 @@ function navigateToGetVeBAL() {
               alt="veBAL token"
             />
           </div>
-          <div class="font-semibold caption">
+          <div class="caption font-semibold">
             <p
-              class="inline mr-1 text-sm lg:text-base tracking-tighter lg:tracking-normal"
+              class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal"
             >
               {{ $t('veBAL.hero.tokens.veBAL') }}
             </p>
@@ -142,7 +142,7 @@ function navigateToGetVeBAL() {
 </template>
 <style scoped>
 .hero-container {
-  @apply flex content-center relative w-full;
+  @apply relative flex w-full content-center;
 
   min-height: 440px;
   z-index: 0;
@@ -158,7 +158,7 @@ function navigateToGetVeBAL() {
   background-image: url('/images/patterns/fish-scale.png');
   background-repeat: repeat;
 
-  @apply block absolute left-0 top-0 w-full h-full opacity-10 z-0;
+  @apply absolute left-0 top-0 z-0 block h-full w-full opacity-10;
 }
 
 .dark .hero-container::before {
@@ -170,14 +170,14 @@ function navigateToGetVeBAL() {
   background: linear-gradient(45deg, rgb(0 0 0 / 100%), rgb(0 0 0 / 50%)),
     url('/images/backgrounds/vebal-hero-noise.svg');
 
-  @apply block absolute left-0 top-0 w-full h-full bg-no-repeat bg-cover opacity-20 z-0;
+  @apply absolute left-0 top-0 z-0 block h-full w-full bg-cover bg-no-repeat opacity-20;
 
   min-height: 440px;
 }
 
 .hero-content {
-  @apply flex flex-col md:flex-row md:items-center max-w-screen-2xl mx-auto md:gap-4 lg:gap-8 py-4 md:py-8
-    xl:pl-4 w-full z-10;
+  @apply z-10 mx-auto flex w-full max-w-screen-2xl flex-col py-4 md:flex-row md:items-center md:gap-4
+    md:py-8 lg:gap-8 xl:pl-4;
 }
 
 .eyebrow {
@@ -213,7 +213,7 @@ function navigateToGetVeBAL() {
 }
 
 .coins {
-  @apply flex lg:gap-8 px-1 lg:px-0;
+  @apply flex px-1 lg:gap-8 lg:px-0;
 
   flex-grow: 1;
 }
@@ -223,11 +223,11 @@ function navigateToGetVeBAL() {
 }
 
 .coin {
-  @apply w-full flex flex-col items-center justify-end relative;
+  @apply relative flex w-full flex-col items-center justify-end;
 }
 
 .graphic {
-  @apply transition-transform duration-300 relative;
+  @apply relative transition-transform duration-300;
 }
 
 .coin:hover .graphic {
@@ -235,7 +235,7 @@ function navigateToGetVeBAL() {
 }
 
 .caption {
-  @apply text-sm md:text-base text-gray-400 transition-colors text-center group-hover:text-white;
+  @apply text-center text-sm text-gray-400 transition-colors group-hover:text-white md:text-base;
 
   animation: fadeInMoveUp 0.5s ease-out 0.15s both;
 }

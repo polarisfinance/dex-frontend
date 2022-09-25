@@ -4,7 +4,7 @@
     :class="['bal-btn confirm-button', btnClasses]"
     :disabled="disabled || loading"
   >
-    <div v-if="loading" class="flex justify-center items-center">
+    <div v-if="loading" class="flex items-center justify-center">
       <BalLoadingIcon :size="size" :color="iconColor" />
       <span v-if="loadingLabel">
         {{ loadingLabel }}
@@ -244,7 +244,7 @@ export default defineComponent({
 }
 
 .content {
-  @apply flex justify-center items-center w-full h-full;
+  @apply flex h-full w-full items-center justify-center;
 }
 
 .confirm-button {

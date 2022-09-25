@@ -225,7 +225,7 @@ function saveAndProceed() {
     <BalCard shadow="xl" noBorder>
       <BalStack vertical>
         <BalStack vertical spacing="xs">
-          <span class="text-xs text-secondary">{{
+          <span class="text-secondary text-xs">{{
             userNetworkConfig?.name
           }}</span>
           <BalStack horizontal spacing="xs" align="center">
@@ -246,9 +246,9 @@ function saveAndProceed() {
               horizontal
               align="center"
               spacing="sm"
-              class="p-2 mt-2 rounded-lg border"
+              class="mt-2 rounded-lg border p-2"
             >
-              <BalIcon name="zap" size="sm" class="mt-1 text-secondary" />
+              <BalIcon name="zap" size="sm" class="text-secondary mt-1" />
               <span class="font-medium dark:text-gray-400">
                 {{ t('optimizedPrefilled') }}
               </span>
@@ -286,7 +286,7 @@ function saveAndProceed() {
                 <BalIcon
                   name="info"
                   size="xs"
-                  class="flex ml-1 text-gray-400"
+                  class="ml-1 flex text-gray-400"
                 />
               </template>
               <!-- eslint-disable-next-line vue/no-v-html -->
@@ -301,7 +301,7 @@ function saveAndProceed() {
             />
           </div>
         </BalStack>
-        <div class="p-3 rounded-lg border">
+        <div class="rounded-lg border p-3">
           <BalStack horizontal justify="between">
             <BalStack vertical spacing="none">
               <h6>{{ t('total') }}</h6>
@@ -313,7 +313,7 @@ function saveAndProceed() {
                 <button
                   :disabled="areAmountsMaxed"
                   :class="[
-                    'text-sm font-semibold3',
+                    'font-semibold3 text-sm',
                     {
                       'text-gray-400 dark:text-gray-600': areAmountsMaxed,
                       'text-blue-500 hover:text-blue-50': !areAmountsMaxed,
@@ -336,7 +336,7 @@ function saveAndProceed() {
                 @on-exit="onAlertMountChange"
               >
                 <button
-                  class="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-tr from-blue-500 hover:from-blue-800 to-pink-500 hover:to-pink-800"
+                  class="bg-gradient-to-tr from-blue-500 to-pink-500 bg-clip-text text-sm font-medium text-transparent hover:from-blue-800 hover:to-pink-800"
                   @click="optimiseLiquidity(true)"
                 >
                   {{ t('optimize') }}

@@ -36,11 +36,11 @@ const items = computed((): string[] => [
 <template>
   <BalBreakdown :items="items">
     {{ aprLabel }}
-    <span class="ml-1 text-xs text-secondary">
+    <span class="text-secondary ml-1 text-xs">
       {{ $t('tooltips.veBalApr.title') }}
     </span>
     <template #item="{ item }">
-      <div class="text-xs text-secondary">
+      <div class="text-secondary text-xs">
         {{ item }}
       </div>
     </template>

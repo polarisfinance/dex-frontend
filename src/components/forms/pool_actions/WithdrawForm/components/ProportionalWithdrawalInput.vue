@@ -121,15 +121,15 @@ onBeforeMount(() => {
       <div class="proportional-input-container">
         <div class="flex">
           <WithdrawalTokenSelect :pool="pool" />
-          <div class="flex-grow text-xl text-right font-numeric">
+          <div class="font-numeric flex-grow text-right text-xl">
             <BalLoadingBlock
               v-if="loadingAmountsOut"
-              class="float-right w-20 h-8"
+              class="float-right h-8 w-20"
             />
             <span v-else>{{ missingPrices ? '-' : fiatTotalLabel }}</span>
           </div>
         </div>
-        <div class="flex mt-2 text-sm text-secondary">
+        <div class="text-secondary mt-2 flex text-sm">
           <span>
             {{ $t('proportionalWithdrawal') }}
           </span>
@@ -154,7 +154,7 @@ onBeforeMount(() => {
         :key="address"
         class="p-4 last:mb-0"
       >
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset :address="address" class="mr-2" />
             <div class="flex flex-col leading-none">
@@ -172,11 +172,11 @@ onBeforeMount(() => {
             </div>
           </div>
           <div
-            class="flex flex-col flex-grow items-end pl-2 text-right font-numeric"
+            class="font-numeric flex flex-grow flex-col items-end pl-2 text-right"
           >
-            <BalLoadingBlock v-if="loadingAmountsOut" class="w-20 h-12" />
+            <BalLoadingBlock v-if="loadingAmountsOut" class="h-12 w-20" />
             <template v-else>
-              <span class="text-xl break-words">
+              <span class="break-words text-xl">
                 {{ fNum2(proportionalAmounts[i], FNumFormats.token) }}
               </span>
               <span class="text-sm text-gray-400">
@@ -192,17 +192,17 @@ onBeforeMount(() => {
 
 <style scoped>
 .proportional-input {
-  @apply shadow-lg rounded-lg mb-4 w-full dark:bg-gray-800;
+  @apply mb-4 w-full rounded-lg shadow-lg dark:bg-gray-800;
 }
 
 .proportional-input-container {
-  @apply shadow-inner p-3 pb-1 rounded-lg;
+  @apply rounded-lg p-3 pb-1 shadow-inner;
   @apply border border-gray-100 dark:border-gray-800;
 }
 
 .token-amounts {
   @apply rounded-lg;
   @apply bg-gray-50 dark:bg-gray-800;
-  @apply border dark:border-gray-900 divide-y dark:divide-gray-900;
+  @apply divide-y border dark:divide-gray-900 dark:border-gray-900;
 }
 </style>

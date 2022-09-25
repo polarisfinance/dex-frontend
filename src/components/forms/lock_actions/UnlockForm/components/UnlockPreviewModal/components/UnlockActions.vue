@@ -135,7 +135,7 @@ async function submit() {
     />
     <template v-else>
       <div
-        class="flex justify-between items-center mt-4 text-sm text-gray-400 dark:text-gray-600"
+        class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
       >
         <div class="flex items-center">
           <BalIcon name="clock" />
@@ -156,7 +156,7 @@ async function submit() {
           <BalIcon
             name="arrow-up-right"
             size="sm"
-            class="ml-px group-hover:text-pink-500 transition-colors"
+            class="ml-px transition-colors group-hover:text-pink-500"
           />
         </BalLink>
       </div>

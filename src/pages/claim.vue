@@ -228,16 +228,16 @@ onBeforeMount(async () => {
 <template>
   <HeroClaim />
   <div>
-    <div class="xl:container py-12 xl:px-4 xl:mx-auto">
-      <h2 class="px-4 xl:px-0 font-body text-2xl font-semibold">
+    <div class="py-12 xl:container xl:mx-auto xl:px-4">
+      <h2 class="px-4 font-body text-2xl font-semibold xl:px-0">
         {{ configService.network.chainName }} {{ $t('liquidityIncentives') }}
       </h2>
 
       <template v-if="!isL2">
         <div class="mb-16">
           <div class="px-4 xl:px-0">
-            <BalLoadingBlock v-if="appLoading" class="mt-6 mb-2 w-64 h-8" />
-            <div v-else class="flex items-center mt-6 mb-2">
+            <BalLoadingBlock v-if="appLoading" class="mt-6 mb-2 h-8 w-64" />
+            <div v-else class="mt-6 mb-2 flex items-center">
               <BalAsset :address="balToken?.address" />
               <h3 class="ml-2 text-xl">
                 Balancer (BAL) {{ $t('earnings').toLowerCase() }}
@@ -247,7 +247,7 @@ onBeforeMount(async () => {
           <BalClaimsTable :rewardsData="balRewardsData" :isLoading="loading" />
         </div>
         <div class="mb-16">
-          <h3 class="px-4 xl:px-0 mt-8 mb-3 text-xl">
+          <h3 class="mt-8 mb-3 px-4 text-xl xl:px-0">
             {{ $t('protocolEarnings') }}
           </h3>
           <ProtocolRewardsTable
@@ -263,7 +263,7 @@ onBeforeMount(async () => {
         </div>
       </template>
 
-      <h3 v-if="!isL2" class="px-4 xl:px-0 mt-8 text-xl">
+      <h3 v-if="!isL2" class="mt-8 px-4 text-xl xl:px-0">
         {{ $t('otherTokenEarnings') }}
       </h3>
       <BalLoadingBlock v-if="loading" class="mt-6 mb-2 h-56" />
@@ -272,7 +272,7 @@ onBeforeMount(async () => {
       >
         <div v-for="{ gauge, pool } in gaugeTables" :key="gauge.id">
           <div class="mb-16">
-            <div class="flex px-4 xl:px-0 mt-4">
+            <div class="mt-4 flex px-4 xl:px-0">
               <h4 class="mb-2 text-base">
                 {{ gaugeTitle(pool) }}
               </h4>
@@ -290,11 +290,11 @@ onBeforeMount(async () => {
           (!isClaimsLoading && !appLoading && gaugeTables.length === 0) ||
           !isWalletReady
         "
-        class="px-4 xl:px-0 mt-4 mb-16"
+        class="mt-4 mb-16 px-4 xl:px-0"
       >
         {{ $t('noClaimableIncentives') }}
       </BalBlankSlate>
-      <div class="px-4 xl:px-0 mb-16">
+      <div class="mb-16 px-4 xl:px-0">
         <h2 class="mt-8 font-body text-2xl font-semibold">
           {{ $t('pages.claim.titles.incentivesOnOtherNetworks') }}
         </h2>
@@ -309,7 +309,7 @@ onBeforeMount(async () => {
             <img
               :src="require(`@/assets/images/icons/networks/${network.id}.svg`)"
               :alt="network.id"
-              class="mr-2 w-6 h-6 rounded-full shadow-sm"
+              class="mr-2 h-6 w-6 rounded-full shadow-sm"
             />
             {{ $t('pages.claim.btns.claimOn') }} {{ network.name }}
           </BalBtn>
@@ -318,7 +318,7 @@ onBeforeMount(async () => {
 
       <template v-if="isWalletReady">
         <div class="px-4 xl:px-0">
-          <h2 :class="['font-body font-semibold text-2xl mt-8']">
+          <h2 :class="['mt-8 font-body text-2xl font-semibold']">
             {{ $t('pages.claim.titles.legacyIncentives') }}
           </h2>
           <LegacyClaims />

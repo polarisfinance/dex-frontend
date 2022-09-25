@@ -14,7 +14,7 @@ import { isVeBalSupported } from '@/composables/useVeBAL';
       <Hero />
     </div>
   </div>
-  <div class="py-16 xl:py-20 bg-gray-50 dark:bg-gray-900">
+  <div class="bg-gray-50 py-16 dark:bg-gray-900 xl:py-20">
     <div v-if="isVeBalSupported" class="lg:container lg:mx-auto">
       <div class="px-4">
         <MyVeBAL />
@@ -23,9 +23,9 @@ import { isVeBalSupported } from '@/composables/useVeBAL';
   </div>
   <div
     v-if="isVeBalSupported"
-    class="xl:container xl:px-4 pt-16 xl:pt-20 xl:mx-auto"
+    class="pt-16 xl:container xl:mx-auto xl:px-4 xl:pt-20"
   >
-    <div class="xl:px-0 mb-16">
+    <div class="mb-16 xl:px-0">
       <LMVoting />
     </div>
   </div>

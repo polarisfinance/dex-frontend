@@ -51,7 +51,7 @@ function formatWeightLabel(weight: string) {
 
 <template>
   <div class="container">
-    <div class="flex justify-between items-center p-3">
+    <div class="flex items-center justify-between p-3">
       <div>
         <div class="font-semibold">
           {{
@@ -78,6 +78,6 @@ function formatWeightLabel(weight: string) {
 
 <style scoped>
 .container {
-  @apply shadow-lg border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg;
+  @apply divide-y rounded-lg border shadow-lg dark:divide-gray-700 dark:border-gray-700;
 }
 </style>

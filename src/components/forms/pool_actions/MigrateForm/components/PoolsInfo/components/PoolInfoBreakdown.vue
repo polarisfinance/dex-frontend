@@ -27,7 +27,7 @@ const { getToken } = useTokens();
 </script>
 
 <template>
-  <div class="p-3 dark:bg-gray-800 rounded-lg border dark:border-gray-800">
+  <div class="rounded-lg border p-3 dark:border-gray-800 dark:bg-gray-800">
     <BalBreakdown
       :items="pool.tokensList"
       class="w-full cursor-pointer select-none"
@@ -48,7 +48,7 @@ const { getToken } = useTokens();
       </div>
       <template #item="{ item: address }">
         <div
-          class="inline-flex items-center py-1 px-2 ml-2 bg-gray-50 dark:bg-gray-700 rounded-lg border dark:border-gray-800"
+          class="ml-2 inline-flex items-center rounded-lg border bg-gray-50 py-1 px-2 dark:border-gray-800 dark:bg-gray-700"
         >
           <BalAsset :address="address" class="mr-2" />
           {{ getToken(address).symbol }}

@@ -1,18 +1,18 @@
 <template>
   <div
-    class="absolute top-0 left-0 z-10 w-full h-full text-center bg-white dark:bg-gray-850 rounded-lg"
+    class="absolute top-0 left-0 z-10 h-full w-full rounded-lg bg-white text-center dark:bg-gray-850"
   >
-    <div class="flex flex-col justify-between items-center p-4 h-full">
+    <div class="flex h-full flex-col items-center justify-between p-4">
       <h3 v-text="title" />
       <div class="flex flex-col items-center">
         <div
-          class="flex justify-center items-center mb-8 w-20 h-20 text-green-500 dark:text-gray-850 bg-green-100 dark:bg-green-500 rounded-full"
+          class="mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-500 dark:bg-green-500 dark:text-gray-850"
         >
           <BalIcon name="check-circle" size="xl" />
         </div>
         <p class="text-secondary" v-html="description" />
       </div>
-      <div class="grid grid-cols-2 gap-4 mt-4 w-full">
+      <div class="mt-4 grid w-full grid-cols-2 gap-4">
         <BalBtn
           tag="a"
           :href="explorerLink"

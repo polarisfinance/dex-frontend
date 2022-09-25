@@ -107,13 +107,13 @@ async function handleActionSuccess() {
         >
           <template #staking-handle>
             <button
-              class="p-4 w-full hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors"
+              class="w-full rounded-xl p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <BalStack horizontal justify="between" align="center">
                 <BalStack spacing="sm" align="center">
                   <div
                     :class="[
-                      'flex items-center p-1 text-white rounded-full',
+                      'flex items-center rounded-full p-1 text-white',
                       {
                         'bg-green-500': isPoolEligibleForStaking,
                         'bg-gray-400': !isPoolEligibleForStaking,
@@ -145,7 +145,7 @@ async function handleActionSuccess() {
               <BalStack
                 vertical
                 spacing="sm"
-                class="py-4 px-4 border-t dark:border-gray-900"
+                class="border-t py-4 px-4 dark:border-gray-900"
               >
                 <BalStack horizontal justify="between">
                   <span>{{ $t('staked') }} {{ $t('lpTokens') }}</span>

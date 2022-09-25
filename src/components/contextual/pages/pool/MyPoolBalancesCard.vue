@@ -179,12 +179,12 @@ const fiatTotal = computed(() => {
           {{ isWalletReady ? fNum2(fiatValue, FNumFormats.fiat) : '-' }}
         </div>
       </div>
-      <div class="border my-[12px]" />
+      <div class="my-[12px] border" />
       <div>
         <div
           v-for="(address, idx) in tokenAddresses"
           :key="idx"
-          class="flex token-name items-center justify-between mb-[12px]"
+          class="token-name mb-[12px] flex items-center justify-between"
         >
           <div class="flex items-center">
             <BalAsset :address="address" :size="32" class="mr-[12px]" />
@@ -200,13 +200,13 @@ const fiatTotal = computed(() => {
             </div>
           </div>
           <div>
-            <span class="flex flex-col flex-grow text-right">
+            <span class="flex flex-grow flex-col text-right">
               {{
                 isWalletReady
                   ? fNum2(propTokenAmounts[idx], FNumFormats.token)
                   : '-'
               }}
-              <span class="text-sm text-secondary">
+              <span class="text-secondary text-sm">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
             </span>
@@ -223,19 +223,19 @@ const fiatTotal = computed(() => {
       <button
         v-if="!account"
         @click="startConnectWithInjectedProvider"
-        class="w-full connect-btn-pool"
+        class="connect-btn-pool w-full"
       >
         Connect Wallet
       </button>
       <div v-else>
         <div class="flex w-full gap-[8px]">
           <router-link
-            class="w-full invest-btn text-center"
+            class="invest-btn w-full text-center"
             :to="'/pool/' + pool.id + '/invest'"
             >Invest</router-link
           >
           <router-link
-            class="w-full withdraw-btn text-center"
+            class="withdraw-btn w-full text-center"
             :to="'/pool/' + pool.id + '/withdraw'"
             >Withdraw</router-link
           >
@@ -251,12 +251,12 @@ const fiatTotal = computed(() => {
           {{ isWalletReady ? fNum2(fiatValue, FNumFormats.fiat) : '-' }}
         </div>
       </div>
-      <div class="border my-[12px]" />
+      <div class="my-[12px] border" />
       <div>
         <div
           v-for="(address, idx) in tokenAddresses"
           :key="idx"
-          class="flex token-name items-center justify-between mb-[12px]"
+          class="token-name mb-[12px] flex items-center justify-between"
         >
           <div class="flex items-center">
             <BalAsset :address="address" :size="32" class="mr-[12px]" />
@@ -270,13 +270,13 @@ const fiatTotal = computed(() => {
             </div>
           </div>
           <div>
-            <span class="flex flex-col flex-grow text-right">
+            <span class="flex flex-grow flex-col text-right">
               {{
                 isWalletReady
                   ? fNum2(propTokenAmounts[idx], FNumFormats.token)
                   : '-'
               }}
-              <span class="text-sm text-secondary">
+              <span class="text-secondary text-sm">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
             </span>
@@ -288,7 +288,7 @@ const fiatTotal = computed(() => {
       <div class="small-text">Based on pool tokens in your wallet</div>
       <div class="mb-[12px]">You can invest</div>
       <button
-        class="w-full connect-btn-pool"
+        class="connect-btn-pool w-full"
         @click="startConnectWithInjectedProvider"
       >
         Connect Wallet
@@ -360,12 +360,12 @@ const fiatTotal = computed(() => {
 
 <style scoped>
 .card-header {
-  @apply p-4 w-full flex items-center justify-between;
+  @apply flex w-full items-center justify-between p-4;
   @apply border-b dark:border-gray-700;
 }
 
 .asset-row {
-  @apply py-3 flex justify-between items-center text-lg;
+  @apply flex items-center justify-between py-3 text-lg;
 }
 
 .pool-actions-card {
