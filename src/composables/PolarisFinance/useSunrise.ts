@@ -5,6 +5,7 @@ import { BigNumberToString, sunriseNameToAddress, SPOLAR } from './utils';
 import { spolarABI, sunriseABI } from './ABI';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
+import { MaxUint256 } from '@ethersproject/constants';
 
 export default function useSunrise(account, provider, sunriseName) {
   const sunriseAddress = sunriseNameToAddress[sunriseName];
@@ -65,6 +66,55 @@ export default function useSunrise(account, provider, sunriseName) {
     }
   };
 
+  const approve = async () => {
+    const amount = MaxUint256.toString();
+
+    try {
+      const tx = await sendTransaction(provider, SPOLAR, spolarABI, 'approve', [
+        sunriseABI,
+        amount,
+      ]);
+
+      return tx;
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
+  const withdraw = async amount => {
+    try {
+      const tx = await sendTransaction(
+        provider,
+        sunriseABI,
+        sunriseABI,
+        'withdraw',
+        [amount]
+      );
+
+      return tx;
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
+  const claim = async () => {
+    try {
+      const tx = await sendTransaction(
+        provider,
+        sunriseABI,
+        sunriseABI,
+        'claimReward',
+        []
+      );
+      return tx;
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
   return {
     isApproved,
     getEpoch,
@@ -74,5 +124,8 @@ export default function useSunrise(account, provider, sunriseName) {
     getSpolarStaked,
     getBalance,
     deposit,
+    approve,
+    claim,
+    withdraw,
   };
 }
