@@ -90,14 +90,7 @@
       Claim and withdraw
     </button>
   </div>
-  <div>
-    <p>Deposit</p>
-    <input class="sunrise-input" v-model="depositAmount" />
-    <button @click="deposit(depositAmount)">Deposit</button>
-    <p>Withdraw</p>
-    <input class="sunrise-input" v-model="withdrawAmount" />
-    <button @click="withdraw(depositAmount)">Withdraw</button>
-  </div>
+  
 </template>
 
 <script lang="ts">
@@ -139,7 +132,7 @@ export default defineComponent({
       usp: uspImg,
       ethernal: ethernalImg,
       binaris: binarisImg,
-      tripolar: orbitalImg,
+      tripolar: tripolarImg,
     };
     const data = reactive<PoolPageData>({
       id: route.params.id as string,
@@ -151,12 +144,6 @@ export default defineComponent({
       }
       return undefined;
     });
-
-    async function deposit(amount) {
-      const tokenName = route.params.id.toString();
-      const { deposit } = useSunrise(account.value, getProvider(), tokenName);
-      await deposit(amount);
-    }
 
     async function withdraw(amount) {
       const tokenName = route.params.id.toString();
@@ -191,13 +178,13 @@ export default defineComponent({
       // computed
       sunrise,
       approve,
-      withdraw,
-      deposit,
       claim,
+      withdraw,
 
       isSpolarModalVisible,
       toggleSpolarModal,
       depositToken,
+      
     };
   },
   data() {

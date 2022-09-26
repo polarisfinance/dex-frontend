@@ -1,12 +1,24 @@
 import config from '@/lib/config/aurora.json';
 
-import { uniswapABI } from './ABI';
-import { pools, segnioragePools } from './utils';
+import { uniswapABI, spolarABI } from './ABI';
+import { pools, segnioragePools, SPOLAR, BigNumberToString } from './utils';
 
 import Web3 from 'web3';
 
+import useWeb3 from '@/services/web3/useWeb3';
+import { Contract } from '@ethersproject/contracts';
+
 export default function useTokens() {
   const w3 = new Web3(config.rpc);
+  
+  
+  
+  const getBalance = async () => {
+    const { account, getProvider } = useWeb3();
+    const spolarContract = new Contract(SPOLAR, spolarABI, getProvider());
+    const balance = await spolarContract.balanceOf(account.value);
+    return BigNumberToString(balance, 14, 4);
+  };
 
   const getSpolarPrice = async () => {
     const nearPriceContract = new w3.eth.Contract(
@@ -132,5 +144,5 @@ export default function useTokens() {
     return price / Math.pow(10, 18);
   };
 
-  return { getSpolarPrice, getTokenPriceInUSD, getTokenPeg };
+  return { getSpolarPrice, getTokenPriceInUSD, getTokenPeg, getBalance };
 }
