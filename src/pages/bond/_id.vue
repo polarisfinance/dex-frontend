@@ -69,9 +69,11 @@
           <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
         </div>
       </div>
-      <div class="details mt-[32px]">0.0000 {{ sunrise.bond }} Redeemable</div>
+      <div class="details mt-[32px]">
+        {{ earnedAmount }} {{ sunrise.bond }} Redeemable
+      </div>
       <div class="mt-[24px] flex justify-center">
-        <button class="claim-btn">
+        <button class="claim-btn" @click="redeem">
           Enable when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
       </div>
@@ -95,15 +97,6 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 import useBonds from '@/composables/PolarisFinance/useBonds';
 import useTreasury from '@/composables/PolarisFinance/useTreasury';
-import { sendTransaction } from '@/lib/utils/balancer/web3';
-import { tokenABI, bondABI } from '@/composables/PolarisFinance/ABI';
-import { MaxUint256 } from '@ethersproject/constants';
-import {
-  tokenNameToAddress,
-  treasuryNameToAddress,
-} from '@/composables/PolarisFinance/utils';
-
-import { BigNumber } from 'ethers';
 
 interface PoolPageData {
   id: string;
@@ -150,6 +143,12 @@ export default defineComponent({
       await approve();
     };
 
+    const redeem = async () => {
+      const tokenName = route.params.id.toString();
+      const { redeem } = useBonds(account.value, getProvider(), tokenName);
+      await redeem();
+    };
+
     return {
       // data
       ...toRefs(data),
@@ -161,6 +160,7 @@ export default defineComponent({
       sunrise,
       approve,
       purchase,
+      redeem,
     };
   },
   async created() {
@@ -185,7 +185,7 @@ export default defineComponent({
       }
     );
 
-    const { isApproved } = useBonds(
+    const { isApproved, getEarnedAmount } = useBonds(
       account.value,
       getProvider(),
       route_id.toString()
@@ -210,6 +210,7 @@ export default defineComponent({
     this.currentTwap = currentTwap;
     this.previousEpochTwap = await getLastEpochTWAP();
     this.approved = await isApproved();
+    this.earnedAmount = await getEarnedAmount();
   },
   data() {
     return {
@@ -217,6 +218,7 @@ export default defineComponent({
       previousEpochTwap: '-',
       currentTwap: '-',
       bondPrice: '-',
+      earnedAmount: '-',
     };
   },
 });

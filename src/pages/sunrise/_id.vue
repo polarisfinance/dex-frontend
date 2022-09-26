@@ -30,9 +30,7 @@
       <div class="details">SPOLAR Staked</div>
 
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
-        <button class="claim-button" @click="approveSpolar">
-          Approve Spolar
-        </button>
+        <button class="claim-button" @click="approve">Approve Spolar</button>
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
@@ -46,7 +44,7 @@
           :deposit="deposit"
           @close="toggleSpolarModal"
         />
-        <!-- <button class="withdraw-btn" @click="withdrawToken(depositAmount)">
+        <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
         <button class="withdraw-btn" @click="toggleSpolarModal(false)">
@@ -88,17 +86,17 @@
         </button>
       </div>
     </div>
-    <button class="claim-btn" text-center @click="withdrawToken(depositAmount)">
+    <button class="claim-btn" text-center @click="withdraw(depositAmount)">
       Claim and withdraw
     </button>
   </div>
   <div>
     <p>Deposit</p>
     <input class="sunrise-input" v-model="depositAmount" />
-    <button @click="depositToken(depositAmount)">Deposit</button>
+    <button @click="deposit(depositAmount)">Deposit</button>
     <p>Withdraw</p>
     <input class="sunrise-input" v-model="withdrawAmount" />
-    <button @click="withdrawToken(depositAmount)">Withdraw</button>
+    <button @click="withdraw(depositAmount)">Withdraw</button>
   </div>
 </template>
 
@@ -115,15 +113,7 @@ import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
 
-import config from '@/lib/config/aurora.json';
-import Web3 from 'web3';
-
 import useWeb3 from '@/services/web3/useWeb3';
-
-import { sendTransaction } from '@/lib/utils/balancer/web3';
-import { MaxUint256 } from '@ethersproject/constants';
-import { TransactionResponse } from '@ethersproject/abstract-provider';
-import { BigNumber } from 'ethers';
 
 import useSunrise from '../../composables/PolarisFinance/useSunrise';
 import useTreasury from '../../composables/PolarisFinance/useTreasury';
@@ -136,133 +126,6 @@ interface PoolPageData {
 export default defineComponent({
   components: {},
   setup() {
-    const claimABIs = {
-      binaris: JSON.parse(
-        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
-      ),
-      orbital: JSON.parse(`[{
-        "inputs": [],
-        "name": "claimReward",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      usp: JSON.parse(
-        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
-      ),
-      ethernal: JSON.parse(
-        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
-      ),
-      polar: JSON.parse(
-        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
-      ),
-      tripolar: JSON.parse(
-        `[{ "inputs": [], "name": "claimReward", "outputs": [], "stateMutability": "nonpayable", "type": "function" }]`
-      ),
-    };
-
-    const withdrawABIs = {
-      polar: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      binaris: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      orbital: JSON.parse(`[{
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      usp: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      tripolar: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      ethernal: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-    };
-
-    const depositABIs = {
-      binaris: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      orbital: JSON.parse(`[{
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          }
-        ],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      ethernal: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      usp: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      tripolar: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-      polar: JSON.parse(`[{
-        "inputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
-        "name": "stake",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`),
-    };
-
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
 
@@ -287,176 +150,35 @@ export default defineComponent({
       return undefined;
     });
 
-    async function depositToken(amount) {
-      const address = await getSunriseAddress();
-      const depositAmount = BigNumber.from(amount).toString();
-      const route_id = route.params.id;
-
-      const abi = depositABIs[route_id.toString()];
-
-      if (address) {
-        try {
-          const tx = await sendTransaction(
-            getProvider(),
-            address,
-            abi,
-            'stake',
-            [depositAmount]
-          );
-
-          return tx;
-        } catch (error) {
-          console.error(error);
-          return Promise.reject(error);
-        }
-      }
+    async function deposit(amount) {
+      const tokenName = route.params.id.toString();
+      const { deposit } = useSunrise(account.value, getProvider(), tokenName);
+      await deposit(amount);
     }
 
-    async function withdrawToken(amount) {
-      const address = await getSunriseAddress();
-      const withdrawAmount = BigNumber.from(amount).toString();
-      const route_id = route.params.id;
-
-      const abi = withdrawABIs[route_id.toString()];
-
-      if (address) {
-        try {
-          const tx = await sendTransaction(
-            getProvider(),
-            address,
-            abi,
-            'withdraw',
-            [withdrawAmount]
-          );
-
-          return tx;
-        } catch (error) {
-          console.error(error);
-          return Promise.reject(error);
-        }
-      }
+    async function withdraw(amount) {
+      const tokenName = route.params.id.toString();
+      const { withdraw } = useSunrise(account.value, getProvider(), tokenName);
+      await withdraw(amount);
     }
 
-    async function approveToken(
-      address: string,
-      spender: string,
-      abi
-    ): Promise<TransactionResponse> {
-      const amount = MaxUint256.toString();
-
-      try {
-        const tx = await sendTransaction(
-          getProvider(),
-          address,
-          abi,
-          'approve',
-          [spender, amount]
-        );
-
-        return tx;
-      } catch (error) {
-        console.error(error);
-        return Promise.reject(error);
-      }
-    }
-
-    async function getSunriseAddress() {
-      type Sunrises = [{ id: string; type: string }];
-
-      const result = await fetch(
-        `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: `
-      query {
-        sunrises {
-          id,
-          type
-        }
-    }`,
-          }),
-        }
-      );
-      const result_json = await result.json();
-      const sunrises: Sunrises = result_json['data']['sunrises'];
-
-      const route_id = route.params.id;
-      var sunriseName = '';
-
-      for (let sunrise of Object.values(sunriseDefinitions)) {
-        if (sunrise.name == route_id) sunriseName = sunrise.name;
-      }
-
-      if (sunriseName != '') {
-        var sunriseAddress = '';
-
-        for (let s of Object.values(sunrises)) {
-          if (s.type.toLowerCase() == sunriseName) sunriseAddress = s.id;
-        }
-
-        return sunriseAddress;
-      }
-
-      return undefined;
-    }
-
-    async function approveSpolar() {
-      const web3 = new Web3(config.rpc);
-
-      const abi = JSON.parse(
-        `[{
-        "inputs": [
-          { "internalType": "address", "name": "spender", "type": "address" },
-          { "internalType": "uint256", "name": "amount", "type": "uint256" }
-        ],
-        "name": "approve",
-        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }]`
-      );
-
-      const sunriseAddress = await getSunriseAddress();
-
-      if (sunriseAddress) {
-        approveToken(
-          '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729', // Spolar
-          sunriseAddress,
-          abi
-        );
-      }
+    async function approve() {
+      const tokenName = route.params.id.toString();
+      const { approve } = useSunrise(account.value, getProvider(), tokenName);
+      await approve();
     }
 
     async function claim() {
-      const route_id = route.params.id;
-      const abi = claimABIs[route_id.toString()];
-
-      const address = await getSunriseAddress();
-
-      try {
-        if (address) {
-          const tx = await sendTransaction(
-            getProvider(),
-            address,
-            abi,
-            'claimReward',
-            []
-          );
-          return tx;
-        }
-      } catch (error) {
-        console.error(error);
-        return Promise.reject(error);
-      }
+      const tokenName = route.params.id.toString();
+      const { claim } = useSunrise(account.value, getProvider(), tokenName);
+      await claim();
     }
     const isSpolarModalVisible = ref(false);
-    const deposit = ref(false);
+    const depositToken = ref(false);
     const toggleSpolarModal = (depositProp: boolean, value?: boolean) => {
       isSpolarModalVisible.value = value ?? !isSpolarModalVisible.value;
-      deposit.value = depositProp;
-      console.log(deposit.value);
+      depositToken.value = depositProp;
+      console.log(depositToken.value);
     };
     return {
       // data
@@ -467,14 +189,13 @@ export default defineComponent({
 
       // computed
       sunrise,
-      approveSpolar,
-      depositToken,
-      withdrawToken,
+      approve,
+      withdraw,
+      deposit,
       claim,
 
       isSpolarModalVisible,
       toggleSpolarModal,
-      deposit,
     };
   },
   data() {

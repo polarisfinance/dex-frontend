@@ -71,7 +71,7 @@ export default function useSunrise(account, provider, sunriseName) {
 
     try {
       const tx = await sendTransaction(provider, SPOLAR, spolarABI, 'approve', [
-        sunriseABI,
+        sunriseAddress,
         amount,
       ]);
 
@@ -86,7 +86,7 @@ export default function useSunrise(account, provider, sunriseName) {
     try {
       const tx = await sendTransaction(
         provider,
-        sunriseABI,
+        sunriseAddress,
         sunriseABI,
         'withdraw',
         [amount]
@@ -103,7 +103,7 @@ export default function useSunrise(account, provider, sunriseName) {
     try {
       const tx = await sendTransaction(
         provider,
-        sunriseABI,
+        sunriseAddress,
         sunriseABI,
         'claimReward',
         []
