@@ -49,5 +49,24 @@ export default function useTreasury(account, provider, treasuryName) {
     return BigNumberToString(twap, 14, 4);
   };
 
-  return { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP };
+  const getCurrentTWAPBigNumber = async () => {
+    let getTwap;
+    if (treasuryName == 'polar') {
+      getTwap = 'getpolarUpdatedPrice';
+    } else {
+      getTwap =
+        'get' +
+        treasuryName.charAt(0).toUpperCase() +
+        treasuryName.slice(1) +
+        'UpdatedPrice';
+    }
+    return await treasuryContract[getTwap]();
+  };
+
+  return {
+    getLastEpochTWAP,
+    getPrintTWAP,
+    getCurrentTWAP,
+    getCurrentTWAPBigNumber,
+  };
 }

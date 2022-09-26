@@ -1,7 +1,7 @@
 import config from '@/lib/config/aurora.json';
 
 import { uniswapABI } from './ABI';
-import { pools } from './utils';
+import { pools, segnioragePools } from './utils';
 
 import Web3 from 'web3';
 
@@ -116,5 +116,21 @@ export default function useTokens() {
     return 0;
   };
 
-  return { getSpolarPrice, getTokenPriceInUSD };
+  const getTokenPeg = async tokenName => {
+    const contractAddress = segnioragePools[tokenName];
+    const contract = new w3.eth.Contract(uniswapABI, contractAddress);
+    const reserves = contract.methods.getReserves().call();
+    const price = reserves[1] / reserves[0];
+
+    if (tokenName == 'polar') {
+      return 1 / (price / 10 ** (18 - 24));
+    } else if (tokenName == 'orbital') {
+      return price / 10 ** (8 - 18);
+    } else if (tokenName == 'usp') {
+      return price / 10 ** (6 - 18);
+    }
+    return price / Math.pow(10, 18);
+  };
+
+  return { getSpolarPrice, getTokenPriceInUSD, getTokenPeg };
 }
