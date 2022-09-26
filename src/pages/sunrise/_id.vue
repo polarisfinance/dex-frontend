@@ -41,7 +41,7 @@
         </button>
         <SpolarModal
           :isVisible="isSpolarModalVisible"
-          :deposit="deposit"
+          :deposit="depositToken"
           @close="toggleSpolarModal"
         />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
@@ -119,12 +119,14 @@ import useSunrise from '../../composables/PolarisFinance/useSunrise';
 import useTreasury from '../../composables/PolarisFinance/useTreasury';
 import useTokens from '../../composables/PolarisFinance/useTokens';
 
+import SpolarModal from './SpolarModal.vue';
+
 interface PoolPageData {
   id: string;
 }
 
 export default defineComponent({
-  components: {},
+  components: { SpolarModal },
   setup() {
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
@@ -178,7 +180,6 @@ export default defineComponent({
     const toggleSpolarModal = (depositProp: boolean, value?: boolean) => {
       isSpolarModalVisible.value = value ?? !isSpolarModalVisible.value;
       depositToken.value = depositProp;
-      console.log(depositToken.value);
     };
     return {
       // data
@@ -196,6 +197,7 @@ export default defineComponent({
 
       isSpolarModalVisible,
       toggleSpolarModal,
+      depositToken,
     };
   },
   data() {
