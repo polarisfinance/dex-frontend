@@ -51,7 +51,7 @@ export default function usePoolQuery(
   /**
    * QUERY INPUTS
    */
-  const queryKey = QUERY_KEYS.Pools.Current(id, gaugeAddresses);
+  // const queryKey = QUERY_KEYS.Pools.Current(id, gaugeAddresses);
 
   const queryFn = async () => {
     let pool: Pool;
@@ -93,5 +93,5 @@ export default function usePoolQuery(
     ...options,
   });
 
-  return useQuery<Pool>(queryKey, queryFn, queryOptions);
+  return useQuery<Pool>(id, queryFn, queryOptions);
 }

@@ -55,7 +55,7 @@ export class PoolDecorator {
     //   poolMulticaller.fetch(),
     //   this.getData(prices, gauges, tokens, processedPools, includeAprs),
     // ]);
-    const poolSnapshots = await this.getSnapshots();
+    // const poolSnapshots = await this.getSnapshots();
     const rawOnchainDataMap = await poolMulticaller.fetch();
 
     // const setAprCondition =
@@ -64,25 +64,25 @@ export class PoolDecorator {
     //   typeof protocolFeePercentage === 'number';
 
     const promises = processedPools.map(async pool => {
-      const poolSnapshot = poolSnapshots.find(p => p.id === pool.id);
+      // const poolSnapshot = poolSnapshots.find(p => p.id === pool.id);
       const poolService = new this.poolServiceClass(pool);
 
       poolService.setOnchainData(rawOnchainDataMap[pool.id], tokens);
-      poolService.setFeesSnapshot(poolSnapshot);
-      poolService.setVolumeSnapshot(poolSnapshot);
+      // poolService.setFeesSnapshot(poolSnapshot);
+      // poolService.setVolumeSnapshot(poolSnapshot);
       await poolService.setLinearPools();
 
       const protocolFeePercentage =
         await this.balancerContracts.vault.protocolFeesCollector.getSwapFeePercentage();
 
-      await poolService.setAPR(
-        poolSnapshot,
-        prices,
-        currency,
-        protocolFeePercentage,
-        { min: '0', max: '0' },
-        '0'
-      );
+      // await poolService.setAPR(
+      //   poolSnapshot,
+      //   prices,
+      //   currency,
+      //   protocolFeePercentage,
+      //   { min: '0', max: '0' },
+      //   '0'
+      // );
 
       // if (setAprCondition) {
       //   await poolService.setAPR(
