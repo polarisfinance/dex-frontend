@@ -6,7 +6,7 @@
           <div class="pool-title">Segniorage Pool</div>
           <div class="pool-subtitle">
             Dynamic swap fees: Currently
-            <!-- {{ parseFloat(pool.swapFee) * 100 + '%' }} -->
+            {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
           </div>
         </div>
         <div class="flex items-center" v-if="isDesktop">
