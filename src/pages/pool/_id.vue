@@ -54,46 +54,6 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <!-- <div class="my-pool-container" v-if="isMobile">
-        <div class="my-pool-upper">
-          <div>My pool balance</div>
-          <div class="border my-[12px]" />
-          <div>
-            <div
-              v-for="(token, idx) in tableData"
-              :key="idx"
-              class="flex token-name items-center justify-between mb-[12px]"
-            >
-              <div class="flex items-center">
-                <BalAsset
-                  :address="token.address"
-                  :size="32"
-                  class="mr-[12px]"
-                />
-                <div class="flex-column">
-                  <div>
-                    {{ symbolFor(token.address) }}
-                  </div>
-                  <div class="token-subtitle">
-                    {{ symbolFor(token.address) }}
-                  </div>
-                </div>
-              </div>
-              <div>-</div>
-            </div>
-          </div>
-        </div>
-        <div class="bg-[#2E2433] p-[12px]">
-          <div class="small-text">Based on pool tokens in your wallet</div>
-          <div class="mb-[12px]">You can invest</div>
-          <button
-            class="w-full connect-btn-pool"
-            @click="startConnectWithInjectedProvider"
-          >
-            Connect Wallet
-          </button>
-        </div>
-      </div> -->
       <div class="AC-container my-[16px]" v-if="isMobile">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
@@ -153,11 +113,6 @@
                 :loading="loadingPool"
                 :loadingApr="loadingPool"
               />
-              <!-- <ApyVisionPoolLink
-              v-if="!loadingPool"
-              :poolId="pool?.id"
-              :titleTokens="titleTokens"
-            /> -->
             </div>
             <div class="mb-4">
               <h4
@@ -175,92 +130,16 @@
             />
           </div>
         </div>
-
-        <!-- <div
-          v-if="!isLiquidityBootstrappingPool"
-          class="order-1 lg:order-2 px-4 lg:px-0"
-        >
-          <StakingProvider :poolAddress="getAddressFromPoolId(id)">
-            <BalStack vertical>
-              <BalLoadingBlock
-                v-if="loadingPool"
-                class="mb-4 h-60 pool-actions-card"
-              />
-              <MyPoolBalancesCard
-                v-else-if="!noInitLiquidity"
-                :pool="pool"
-                :missingPrices="missingPrices"
-                class="mb-4"
-              />
-
-              <BalLoadingBlock
-                v-if="loadingPool"
-                class="h-40 pool-actions-card"
-              />
-              <StakingIncentivesCard
-                v-if="isStakablePool && !loadingPool"
-                :pool="pool"
-                class="staking-incentives"
-              />
-            </BalStack>
-          </StakingProvider>
-        </div> -->
       </div>
     </div>
     <div class="pt-28">
       <MyPoolBalancesCard
-        v-if="isDesktop"
+        v-if="isDesktop && pool"
         :pool="pool"
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <!-- <div class="my-pool-container" v-if="isDesktop">
-        <div class="my-pool-upper">
-          <div>My pool balance</div>
-          <div class="border my-[12px]" />
-          <div>
-            <div
-              v-for="(token, idx) in tableData"
-              :key="idx"
-              class="flex token-name items-center justify-between mb-[12px]"
-            >
-              <div class="flex items-center">
-                <BalAsset
-                  :address="token.address"
-                  :size="32"
-                  class="mr-[12px]"
-                />
-                <div class="flex-column">
-                  <div>
-                    {{ symbolFor(token.address) }}
-                  </div>
-                  <div class="token-subtitle">
-                    {{ symbolFor(token.address) }}
-                  </div>
-                </div>
-              </div>
-              <div>-</div>
-            </div>
-          </div>
-        </div>
-        <div class="bg-[#2E2433] p-[12px]">
-          <div class="small-text">Based on pool tokens in your wallet</div>
-          <div class="mb-[12px]">You can invest</div>
-          <button
-            v-if="account"
-            @click="startConnectWithInjectedProvider"
-            class="w-full connect-btn-pool"
-          >
-            Connect Wallet
-          </button>
-          <div v-else>
-            <div class="flex w-full gap-[8px]">
-              <button class="w-full invest-btn">Invest</button>
-              <button class="w-full withdraw-btn">Withdraw</button>
-            </div>
-          </div>
-        </div>
-      </div> -->
+
       <div class="AC-container my-[16px]" v-if="isDesktop">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
