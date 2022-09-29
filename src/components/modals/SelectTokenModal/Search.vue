@@ -35,7 +35,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .search {
   background: rgba(46, 36, 51, 0.5);
   box-shadow: inset 0px 0px 1px #6f4773;

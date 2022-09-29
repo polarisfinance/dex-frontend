@@ -97,7 +97,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .btn {
   padding: 10px 25px;
   background: #231928;

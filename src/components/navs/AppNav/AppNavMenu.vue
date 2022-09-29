@@ -74,7 +74,7 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 .btn-menu {
   padding-top: 0 !important;
 }

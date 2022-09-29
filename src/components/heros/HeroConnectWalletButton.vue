@@ -25,7 +25,7 @@ function onClickConnect() {
   </button>
 </template>
 
-<style>
+<style scoped>
 .connect-wallet-button {
   padding: 10px 25px;
 

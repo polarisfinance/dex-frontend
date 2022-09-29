@@ -250,7 +250,7 @@ function getTableRowClass(gauge: VotingGaugeWithVotes): string {
   </BalCard>
 </template>
 
-<style>
+<style scoped>
 tr.expired-gauge-row {
   @apply bg-red-50  hover:bg-red-100 dark:border dark:border-red-600;
 }

@@ -183,7 +183,7 @@ watchEffect(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .toggle {
   transform: translateY(-50%);
 }

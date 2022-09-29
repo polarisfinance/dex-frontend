@@ -12,7 +12,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .bal-blank-slate {
   @apply flex flex-col items-center justify-center rounded-lg border border-dashed p-8 dark:border-gray-700;
 

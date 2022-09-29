@@ -38,7 +38,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .wallet-connect-btn {
   @apply transition-all;
   /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */

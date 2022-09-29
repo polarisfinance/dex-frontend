@@ -45,7 +45,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
   </div>
 </template>
 
-<style>
+<style scoped>
 button {
   background: linear-gradient(
     94.14deg,

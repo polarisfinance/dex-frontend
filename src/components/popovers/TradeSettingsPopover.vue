@@ -151,7 +151,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .icon {
   width: '20px';
 }

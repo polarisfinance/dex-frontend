@@ -105,7 +105,7 @@ const isLoadingTotalValue = computed(
   </AppHero>
 </template>
 
-<style>
+<style scoped>
 .vebal-banner::before {
   @apply border border-yellow-500;
 

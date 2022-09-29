@@ -336,7 +336,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .modal {
   background: #231928;
   border-radius: 44px;

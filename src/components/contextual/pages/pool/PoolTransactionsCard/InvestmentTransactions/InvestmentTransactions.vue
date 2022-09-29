@@ -108,7 +108,7 @@ const activeTab = ref(tabs.value[0].value);
   </div>
 </template>
 
-<style>
+<style scoped>
 .table-title {
   font-weight: 600;
   font-size: 20px;

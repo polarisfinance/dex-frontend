@@ -109,7 +109,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .bal-radio-input {
   @apply m-0 rounded-full bg-white dark:bg-gray-900;
   @apply border border-gray-300 dark:border-gray-900;

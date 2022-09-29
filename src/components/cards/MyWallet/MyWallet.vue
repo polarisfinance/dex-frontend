@@ -75,7 +75,7 @@ const tokensWithBalance = computed(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .title {
   color: #be95c0;
 }

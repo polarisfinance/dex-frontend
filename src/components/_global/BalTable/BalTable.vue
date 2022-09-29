@@ -393,7 +393,7 @@ watch(
   </div>
 </template>
 
-<style>
+<style scoped>
 .horizontalSticky {
   @apply z-10 opacity-95 xs:opacity-90;
 

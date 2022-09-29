@@ -68,7 +68,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .bal-tab {
   @apply -mb-px mr-6 cursor-pointer py-3;
 }

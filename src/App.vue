@@ -158,7 +158,7 @@ export default defineComponent({
   <GlobalModalContainer />
 </template>
 
-<style>
+<style scoped>
 .VueQueryDevtoolsPanel + button {
   @apply rounded bg-gray-100 p-2 text-sm text-black;
 }
