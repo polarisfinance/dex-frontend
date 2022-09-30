@@ -169,7 +169,7 @@ export default defineComponent({
     const { account, getProvider } = useWeb3();
 
     const result = await fetch(
-      `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
+      `http://graph.polarisfinance.io:8000/subgraphs/name/polaris`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
