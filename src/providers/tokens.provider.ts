@@ -128,6 +128,8 @@ export default {
         networkConfig.addresses.vault,
         networkConfig.addresses.wstETH,
         configService.network.addresses.veBAL,
+        networkConfig.addresses.pNear,
+        networkConfig.addresses.pStnear
       ]),
       injectedPrices: {},
     });
@@ -355,6 +357,7 @@ export default {
       const allowance = bnum(
         (allowances.value[contractAddress] || {})[getAddress(tokenAddress)]
       );
+      console.log(allowance)
       return allowance.lt(amount);
     }
 
@@ -369,7 +372,6 @@ export default {
     ): string[] {
       return tokenAddresses.filter((address, index) => {
         if (!contractAddress) return false;
-
         return approvalRequired(address, amounts[index], contractAddress);
       });
     }

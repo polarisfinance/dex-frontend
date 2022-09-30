@@ -65,6 +65,8 @@ export interface Config {
     feeDistributor: string;
     feeDistributorDeprecated: string;
     faucet: string;
+    pNear?: string;
+    pStnear?: string;
   };
   keys: {
     infura: string;

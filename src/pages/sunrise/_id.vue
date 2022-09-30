@@ -30,7 +30,7 @@
       <div class="details">SPOLAR Staked</div>
 
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
-        <button class="claim-button" @click="approve">Approve Spolar</button>
+        <button class="claim-btn" @click="approve">Approve Spolar</button>
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
@@ -210,7 +210,7 @@ export default defineComponent({
     const { account, getProvider } = useWeb3();
 
     const result = await fetch(
-      `http://graph.polarisfinance.io:8000/subgraphs/name/polaris`,
+      `https://graph.polarisfinance.io/subgraphs/name/polaris`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

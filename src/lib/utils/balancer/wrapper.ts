@@ -242,7 +242,7 @@ export const getWrapOutput = (
     return wrapType === WrapType.Wrap
       ? getWstETHByStETH(wrapAmount)
       : getStETHByWstETH(wrapAmount);
-  }
+  } if (wrapper === "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6" || wrapper === "0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465") {return BigNumber.from(wrapAmount)}
   throw new Error('Unknown wrapper');
 };
 
