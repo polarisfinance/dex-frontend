@@ -205,11 +205,26 @@ export const getWrapAction = (tokenIn: string, tokenOut: string): WrapType => {
   const nativeAddress = configService.network.nativeAsset.address;
   const { weth, stETH, wstETH } = configService.network.addresses;
 
-  if (tokenIn === nativeAddress && tokenOut === weth) return WrapType.Wrap;
-  if (tokenIn === stETH && tokenOut === wstETH) return WrapType.Wrap;
+  // if (tokenIn === nativeAddress && tokenOut === weth) return WrapType.Wrap;
+  // if (tokenIn === stETH && tokenOut === wstETH) return WrapType.Wrap;
+  const NEAR = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
+  const STNEAR = '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30';
+  const pNEAR = '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6';
+  const pSTNEAR = '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465';
 
-  if (tokenOut === nativeAddress && tokenIn === weth) return WrapType.Unwrap;
-  if (tokenOut === stETH && tokenIn === wstETH) return WrapType.Unwrap;
+  if (
+    (tokenIn == NEAR && tokenOut == pNEAR) ||
+    (tokenIn == STNEAR && tokenOut == pSTNEAR)
+  )
+    return WrapType.Wrap;
+
+  if (
+    (tokenIn == pNEAR && tokenOut == NEAR) ||
+    (tokenIn == pSTNEAR && tokenOut == STNEAR)
+  )
+    return WrapType.Unwrap;
+  //   if (tokenOut === nativeAddress && tokenIn === weth) return WrapType.Unwrap;
+  // if (tokenOut === stETH && tokenIn === wstETH) return WrapType.Unwrap;
 
   return WrapType.NonWrap;
 };

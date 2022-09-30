@@ -219,6 +219,8 @@ export default defineComponent({
       tokenOutAddress,
       tokenOutAmount
     );
+    console.log(trading);
+
     // COMPUTED
     const { errorMessage } = useValidation(
       tokenInAddress,
