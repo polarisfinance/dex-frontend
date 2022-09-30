@@ -242,7 +242,13 @@ export const getWrapOutput = (
     return wrapType === WrapType.Wrap
       ? getWstETHByStETH(wrapAmount)
       : getStETHByWstETH(wrapAmount);
-  } if (wrapper === "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6" || wrapper === "0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465") {return BigNumber.from(wrapAmount)}
+  }
+  if (
+    wrapper === '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6' ||
+    wrapper === '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
+  ) {
+    return BigNumber.from(wrapAmount);
+  }
   throw new Error('Unknown wrapper');
 };
 
@@ -253,7 +259,9 @@ export async function pWrap(
   amount: BigNumber
 ): Promise<TransactionResponse> {
   try {
-    return pWrapNative(tokenInAddress, web3, amount);
+    const address = await web3.getSigner().getAddress();
+    console.log(address); 
+    return pWrapNative(tokenInAddress, web3, amount, address,'aurora');
   } catch (e) {
     console.log('[Wrapper] Wrap error:', e);
     return Promise.reject(e);
@@ -315,11 +323,14 @@ const wrapNative = async (
 const pWrapNative = async (
   tokenInAddress: string,
   web3: Web3Provider,
-  amount: BigNumber
+  amount: BigNumber,
+  address: string,
+  network: string,
 ): Promise<TransactionResponse> =>
-  sendTransaction(web3, tokenInAddress, pABI, 'depositFor', [], {
-    value: amount,
-  });
+  sendTransaction(web3, '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6', ['function depositFor(address account, uint256 amount) returns (bool)'], 'depositFor', [
+    address,
+    amount,
+  ]);
 
 const unwrapNative = (
   network: string,

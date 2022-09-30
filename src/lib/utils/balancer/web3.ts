@@ -40,6 +40,7 @@ export async function sendTransaction(
   console.log('Params', params);
   const signer = web3.getSigner();
   const contract = new Contract(contractAddress, abi, web3);
+  console.log(contract);
   const contractWithSigner = contract.connect(signer);
   const paramsOverrides = { ...overrides };
 
