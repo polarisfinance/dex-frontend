@@ -33,6 +33,7 @@ import {
   getWrapOutput,
   unwrap,
   wrap,
+  pWrap,
   WrapType,
 } from '@/lib/utils/balancer/wrapper';
 import { configService } from '@/services/config/config.service';
@@ -516,7 +517,39 @@ export default function useSor({
       tokenInDecimals
     );
 
-    if (wrapType.value == WrapType.Wrap) {
+    const NEAR = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
+    const STNEAR = '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30';
+    const pNEAR = '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6';
+    const pSTNEAR = '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465';
+
+    if (
+      (tokenInAddress == NEAR && tokenOutAddress == pNEAR) ||
+      (tokenInAddress == STNEAR && tokenOutAddress == pSTNEAR) ||
+      (tokenInAddress == pNEAR && tokenOutAddress == NEAR) ||
+      (tokenInAddress == pSTNEAR && tokenOutAddress == STNEAR)
+    ) {
+      try {
+        const tx = await pWrap(
+          tokenInAddress,
+          provider.value as any,
+          tokenOutAddress,
+          tokenInAmountScaled
+        );
+        console.log('Wrap tx', tx);
+
+        txHandler(tx, 'wrap');
+
+        if (successCallback != null) {
+          successCallback();
+        }
+      } catch (e) {
+        console.log(e);
+        state.submissionError = (e as Error).message;
+        trading.value = false;
+        confirming.value = false;
+      }
+      return;
+    } else if (wrapType.value == WrapType.Wrap) {
       try {
         const tx = await wrap(
           appNetworkConfig.key,
