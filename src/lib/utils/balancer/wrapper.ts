@@ -7,184 +7,19 @@ import { configService } from '@/services/config/config.service';
 
 import { getStETHByWstETH, getWstETHByStETH } from './lido';
 
-const pABI = [
-  {
-    inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'wrappedToken',
-        type: 'address',
-      },
-      { internalType: 'string', name: 'name', type: 'string' },
-      { internalType: 'string', name: 'symbol', type: 'string' },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-    ],
-    name: 'Approval',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'from', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'to', type: 'address' },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-    ],
-    name: 'Transfer',
-    type: 'event',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'owner', type: 'address' },
-      { internalType: 'address', name: 'spender', type: 'address' },
-    ],
-    name: 'allowance',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'spender', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'approve',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
-    name: 'balanceOf',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'decimals',
-    outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'spender', type: 'address' },
-      { internalType: 'uint256', name: 'subtractedValue', type: 'uint256' },
-    ],
-    name: 'decreaseAllowance',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'account', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'depositFor',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'spender', type: 'address' },
-      { internalType: 'uint256', name: 'addedValue', type: 'uint256' },
-    ],
-    name: 'increaseAllowance',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'name',
-    outputs: [{ internalType: 'string', name: '', type: 'string' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'symbol',
-    outputs: [{ internalType: 'string', name: '', type: 'string' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'to', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'transfer',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'from', type: 'address' },
-      { internalType: 'address', name: 'to', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'transferFrom',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'underlying',
-    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'account', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'withdrawTo',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-];
+const wrapper = {
+  '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d':
+    '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+  '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30':
+    '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465',
+};
+
+const unwrapper = {
+  '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6':
+    '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
+  '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465':
+    '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30',
+};
 
 export enum WrapType {
   NonWrap = 0,
@@ -260,10 +95,25 @@ export async function pWrap(
 ): Promise<TransactionResponse> {
   try {
     const address = await web3.getSigner().getAddress();
-    console.log(address); 
-    return pWrapNative(tokenInAddress, web3, amount, address,'aurora');
+    console.log(address);
+    return pWrapNative(tokenInAddress, web3, amount, address, 'aurora');
   } catch (e) {
     console.log('[Wrapper] Wrap error:', e);
+    return Promise.reject(e);
+  }
+}
+
+export async function pUnwrap(
+  tokenInAddress: string,
+  web3: Web3Provider,
+  wrapper: string,
+  amount: BigNumber
+): Promise<TransactionResponse> {
+  try {
+    const address = await web3.getSigner().getAddress();
+    return pUnwrapNative('aurora', web3, amount, address, tokenInAddress);
+  } catch (e) {
+    console.log('[Wrapper] Unwrap error:', e);
     return Promise.reject(e);
   }
 }
@@ -325,12 +175,30 @@ const pWrapNative = async (
   web3: Web3Provider,
   amount: BigNumber,
   address: string,
-  network: string,
+  network: string
 ): Promise<TransactionResponse> =>
-  sendTransaction(web3, '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6', ['function depositFor(address account, uint256 amount) returns (bool)'], 'depositFor', [
-    address,
-    amount,
-  ]);
+  sendTransaction(
+    web3,
+    wrapper[tokenInAddress],
+    ['function depositFor(address account, uint256 amount) returns (bool)'],
+    'depositFor',
+    [address, amount]
+  );
+
+const pUnwrapNative = (
+  network: string,
+  web3: Web3Provider,
+  amount: BigNumber,
+  address: string,
+  tokenInAddress: string
+): Promise<TransactionResponse> =>
+  sendTransaction(
+    web3,
+    unwrapper[tokenInAddress],
+    ['function withdrawTo(uint256 wad)'],
+    'withdrawTo',
+    [address, amount]
+  );
 
 const unwrapNative = (
   network: string,

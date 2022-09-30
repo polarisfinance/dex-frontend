@@ -34,6 +34,7 @@ import {
   unwrap,
   wrap,
   pWrap,
+  pUnwrap,
   WrapType,
 } from '@/lib/utils/balancer/wrapper';
 import { configService } from '@/services/config/config.service';
@@ -524,9 +525,7 @@ export default function useSor({
 
     if (
       (tokenInAddress == NEAR && tokenOutAddress == pNEAR) ||
-      (tokenInAddress == STNEAR && tokenOutAddress == pSTNEAR) ||
-      (tokenInAddress == pNEAR && tokenOutAddress == NEAR) ||
-      (tokenInAddress == pSTNEAR && tokenOutAddress == STNEAR)
+      (tokenInAddress == STNEAR && tokenOutAddress == pSTNEAR)
     ) {
       try {
         const tx = await pWrap(
@@ -538,6 +537,31 @@ export default function useSor({
         console.log('Wrap tx', tx);
 
         txHandler(tx, 'wrap');
+
+        if (successCallback != null) {
+          successCallback();
+        }
+      } catch (e) {
+        console.log(e);
+        state.submissionError = (e as Error).message;
+        trading.value = false;
+        confirming.value = false;
+      }
+      return;
+    } else if (
+      (tokenInAddress == pNEAR && tokenOutAddress == NEAR) ||
+      (tokenInAddress == pSTNEAR && tokenOutAddress == STNEAR)
+    ) {
+      try {
+        const tx = await pUnwrap(
+          appNetworkConfig.key,
+          provider.value as any,
+          tokenInAddress,
+          tokenInAmountScaled
+        );
+        console.log('Unwrap tx', tx);
+
+        txHandler(tx, 'unwrap');
 
         if (successCallback != null) {
           successCallback();
