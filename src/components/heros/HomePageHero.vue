@@ -46,7 +46,7 @@ const classes = computed(() => ({
   </AppHero>
 </template>
 
-<style>
+<style scoped>
 .headline {
   @apply pb-2 text-center font-display text-4xl font-black text-white md:text-5xl;
 

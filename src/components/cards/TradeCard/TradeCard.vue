@@ -186,7 +186,6 @@ export default defineComponent({
     const { appNetworkConfig } = useWeb3();
     const { nativeAsset } = useTokens();
     const { account, startConnectWithInjectedProvider } = useWeb3();
-
     const {
       tokenInAddress,
       tokenOutAddress,
@@ -196,7 +195,6 @@ export default defineComponent({
       setTokenOutAddress,
       setInitialized,
     } = useTradeState();
-
     // DATA
     const exactIn = ref(true);
     const modalTradePreviewIsOpen = ref(false);
@@ -204,7 +202,6 @@ export default defineComponent({
       highPriceImpact: false,
     });
     const alwaysShowRoutes = lsGet('alwaysShowRoutes', false);
-
     const tradeCardShadow = computed(() => {
       switch (bp.value) {
         case 'xs':
@@ -215,7 +212,6 @@ export default defineComponent({
           return 'xl';
       }
     });
-
     const trading = useTrading(
       exactIn,
       tokenInAddress,
@@ -223,7 +219,6 @@ export default defineComponent({
       tokenOutAddress,
       tokenOutAmount
     );
-
     // COMPUTED
     const { errorMessage } = useValidation(
       tokenInAddress,
@@ -231,23 +226,19 @@ export default defineComponent({
       tokenOutAddress,
       tokenOutAmount
     );
-
     const isHighPriceImpact = computed(
       () =>
         trading.sor.validationErrors.value.highPriceImpact &&
         !dismissedErrors.value.highPriceImpact
     );
-
     const tradeDisabled = computed(() => {
       const hasValidationError = errorMessage.value !== TradeValidation.VALID;
       const hasGnosisErrors =
         trading.isGnosisTrade.value && trading.gnosis.hasValidationError.value;
       const hasBalancerErrors =
         trading.isBalancerTrade.value && isHighPriceImpact.value;
-
       return hasValidationError || hasGnosisErrors || hasBalancerErrors;
     });
-
     const title = computed(() => {
       if (trading.wrapType.value === WrapType.Wrap) {
         return `${t('wrap')} ${trading.tokenIn.value.symbol}`;
@@ -257,7 +248,6 @@ export default defineComponent({
       }
       return t('Swap');
     });
-
     const error = computed(() => {
       if (trading.isBalancerTrade.value && !trading.isLoading.value) {
         if (errorMessage.value === TradeValidation.NO_LIQUIDITY) {
@@ -267,11 +257,9 @@ export default defineComponent({
           };
         }
       }
-
       if (trading.isGnosisTrade.value) {
         if (trading.gnosis.validationError.value != null) {
           const validationError = trading.gnosis.validationError.value;
-
           if (validationError === ApiErrorCodes.SellAmountDoesNotCoverFee) {
             return {
               header: t('gnosisErrors.lowAmount.header'),
@@ -317,10 +305,8 @@ export default defineComponent({
           };
         }
       }
-
       return undefined;
     });
-
     const warning = computed(() => {
       if (trading.isGnosisTrade.value) {
         if (trading.gnosis.warnings.value.highFees) {
@@ -330,17 +316,14 @@ export default defineComponent({
           };
         }
       }
-
       return undefined;
     });
-
     // WATCHERS
     watch(trading.isLoading, newVal => {
       if (!newVal) {
         trading.handleAmountChange();
       }
     });
-
     // METHODS
     function trade() {
       trading.trade(() => {
@@ -348,62 +331,49 @@ export default defineComponent({
         modalTradePreviewIsOpen.value = false;
       });
     }
-
     function handleErrorButtonClick() {
       if (trading.sor.validationErrors.value.highPriceImpact) {
         dismissedErrors.value.highPriceImpact = true;
       }
     }
-
     async function populateInitialTokens(): Promise<void> {
       let assetIn = router.currentRoute.value.params.assetIn as string;
-
       if (assetIn === nativeAsset.deeplinkId) {
         assetIn = nativeAsset.address;
       } else if (isAddress(assetIn)) {
         assetIn = getAddress(assetIn);
       }
-
       let assetOut = router.currentRoute.value.params.assetOut as string;
-
       if (assetOut === nativeAsset.deeplinkId) {
         assetOut = nativeAsset.address;
       } else if (isAddress(assetOut)) {
         assetOut = getAddress(assetOut);
       }
       setTokenInAddress(assetIn || store.state.trade.inputAsset);
-      // setTokenOutAddress(assetOut || store.state.trade.outputAsset);
+      setTokenOutAddress(assetOut || store.state.trade.outputAsset);
       setTokenOutAddress('');
     }
-
     function switchToWETH() {
       tokenInAddress.value = appNetworkConfig.addresses.weth;
     }
-
     function handlePreviewButton() {
       trading.resetSubmissionError();
-
       modalTradePreviewIsOpen.value = true;
     }
-
     function handlePreviewModalClose() {
       trading.resetSubmissionError();
-
       modalTradePreviewIsOpen.value = false;
     }
-
     // INIT
     onBeforeMount(() => {
       populateInitialTokens();
-      setInitialized(true);
+      // setInitialized(true);
     });
-
     return {
       // constants
       TOKENS,
       // context
       TradeSettingsContext,
-
       // data
       tokenInAddress,
       tokenInAmount,
@@ -414,7 +384,6 @@ export default defineComponent({
       exactIn,
       trading,
       account,
-
       // computed
       title,
       error,
@@ -425,7 +394,6 @@ export default defineComponent({
       tradeCardShadow,
       handlePreviewButton,
       handlePreviewModalClose,
-
       // methods
       trade,
       switchToWETH,

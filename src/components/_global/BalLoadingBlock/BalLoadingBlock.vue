@@ -53,7 +53,7 @@ const classes = computed(() => {
   <div :class="['bal-loading-block', classes]" />
 </template>
 
-<style>
+<style scoped>
 .bal-loading-block {
   min-height: 5px;
 }

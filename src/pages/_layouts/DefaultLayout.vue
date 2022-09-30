@@ -15,7 +15,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
   </div>
 </template>
 
-<style>
+<style scoped>
 .VueQueryDevtoolsPanel + button {
   @apply rounded bg-gray-100 p-2 text-sm text-black;
 }

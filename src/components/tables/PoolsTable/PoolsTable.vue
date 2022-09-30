@@ -567,7 +567,7 @@ function iconAddresses(pool: PoolWithShares) {
   </BalCard> -->
 </template>
 
-<style>
+<style scoped>
 .pool-table {
   background: #231928;
   border-radius: 16px;

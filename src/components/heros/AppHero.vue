@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .app-hero {
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 

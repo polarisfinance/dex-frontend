@@ -50,7 +50,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .bal-toggle {
   @apply relative inline-block w-10 select-none align-middle transition duration-200 ease-out;
 }

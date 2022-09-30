@@ -84,7 +84,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .app-nav-alert {
   @apply flex content-start justify-between py-2 px-4 xs:py-4;
 

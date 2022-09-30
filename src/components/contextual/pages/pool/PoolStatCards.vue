@@ -99,7 +99,7 @@ const stats = computed(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .card-container {
   background: #231928;
   border-radius: 16px;

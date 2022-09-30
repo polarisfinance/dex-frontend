@@ -137,7 +137,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .bal-checkbox {
   @apply relative;
 }

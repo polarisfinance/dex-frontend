@@ -232,7 +232,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .table-container {
   background: #231928;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);

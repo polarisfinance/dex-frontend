@@ -148,8 +148,7 @@ export default defineComponent({
     </template> -->
 
     <div class="bar absolute hidden lg:block" v-show="$route.name == 'trade'">
-      <img src="./Bar.svg" />
-      <div class="sidebar absolute w-full">
+      <div class="bar-placeholder">
         <MyWallet class="sidebar-component" />
         <PairPriceGraph class="sidebar-component" />
         <TrendingPairs class="sidebar-component" />
@@ -159,9 +158,17 @@ export default defineComponent({
   <GlobalModalContainer />
 </template>
 
-<style>
+<style scoped>
 .VueQueryDevtoolsPanel + button {
   @apply rounded bg-gray-100 p-2 text-sm text-black;
+}
+
+.bar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .bar {
@@ -179,21 +186,9 @@ img {
   width: 100%;
 }
 
-.sidebar {
-  top: 0;
-  max-height: 500px;
-  margin-top: auto;
-  margin-bottom: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  transform: translateY(10%);
-}
-
 .sidebar-component {
+  width: 100%;
   margin-top: 0.5em;
-  width: 85%;
   margin-left: auto;
   margin-right: auto;
 }

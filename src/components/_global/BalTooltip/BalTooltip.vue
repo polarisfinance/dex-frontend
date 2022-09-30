@@ -129,7 +129,7 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
-<style>
+<style scoped>
 .tooltip {
   @apply relative z-50 hidden shadow-sm;
 }

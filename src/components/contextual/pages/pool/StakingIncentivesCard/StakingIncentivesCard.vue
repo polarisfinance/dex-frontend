@@ -218,7 +218,7 @@ async function handleActionSuccess() {
   </div>
 </template>
 
-<style>
+<style scoped>
 .handle {
   @apply overflow-hidden rounded-xl;
 }

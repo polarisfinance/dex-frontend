@@ -79,7 +79,7 @@ function loadMorePoolSwaps() {
   </div>
 </template>
 
-<style>
+<style scoped>
 .title {
   font-weight: 600;
   font-size: 20px;
