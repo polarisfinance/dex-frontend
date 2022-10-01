@@ -54,7 +54,7 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container my-[16px]" v-if="isMobile">
+      <!-- <div class="AC-container my-[16px]" v-if="isMobile">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
         <div class="deposit mb-[16px]">
@@ -79,7 +79,7 @@
         <button class="approve-btn-placeholder mt-[16px] w-full">
           <div class="approve-btn">Approve LP</div>
         </button>
-      </div>
+      </div> -->
       <div class="">
         <!-- this shit doesnt work for some reason :( -->
         <!-- <PoolPageHeader
@@ -140,7 +140,7 @@
         class="mb-4"
       />
 
-      <div class="AC-container my-[16px]" v-if="isDesktop">
+      <!-- <div class="AC-container my-[16px]" v-if="isDesktop">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
         <div class="deposit mb-[16px]">
@@ -165,7 +165,7 @@
         <button class="approve-btn-placeholder mt-[16px] w-full">
           <div class="approve-btn">Approve LP</div>
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

@@ -35,7 +35,7 @@ function handleInternalClose() {
     :show="showRedirectModal"
     @close="setShowRedirectModal(false)"
   >
-    <template #header>
+    <!-- <template #header>
       <h3>
         {{ $t('modals.veBalRedirectModal.title') }}
       </h3>
@@ -59,6 +59,18 @@ function handleInternalClose() {
           @click="handleInternalClose"
         />
       </div>
-    </div>
+    </div> -->
+    <div class="text-center coming-soon-text">Coming Soon</div>
   </BalModal>
 </template>
+
+<style scoped>
+.coming-soon-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+</style>
