@@ -7,20 +7,6 @@ import { configService } from '@/services/config/config.service';
 
 import { getStETHByWstETH, getWstETHByStETH } from './lido';
 
-const wrapper = {
-  '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d':
-    '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
-  '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30':
-    '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465',
-};
-
-const unwrapper = {
-  '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6':
-    '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
-  '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465':
-    '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30',
-};
-
 export enum WrapType {
   NonWrap = 0,
   Wrap,
@@ -96,7 +82,7 @@ export async function pWrap(
   try {
     const address = await web3.getSigner().getAddress();
     console.log(address);
-    return pWrapNative(tokenInAddress, web3, amount, address, 'aurora');
+    return pWrapNative(web3, amount, address, wrapper);
   } catch (e) {
     console.log('[Wrapper] Wrap error:', e);
     return Promise.reject(e);
@@ -111,7 +97,8 @@ export async function pUnwrap(
 ): Promise<TransactionResponse> {
   try {
     const address = await web3.getSigner().getAddress();
-    return pUnwrapNative('aurora', web3, amount, address, tokenInAddress);
+    console.log('this', wrapper);
+    return pUnwrapNative(web3, amount, address, wrapper);
   } catch (e) {
     console.log('[Wrapper] Unwrap error:', e);
     return Promise.reject(e);
@@ -171,31 +158,29 @@ const wrapNative = async (
   );
 
 const pWrapNative = async (
-  tokenInAddress: string,
   web3: Web3Provider,
   amount: BigNumber,
   address: string,
-  network: string
+  wrapper: string
 ): Promise<TransactionResponse> =>
   sendTransaction(
     web3,
-    wrapper[tokenInAddress],
+    wrapper,
     ['function depositFor(address account, uint256 amount) returns (bool)'],
     'depositFor',
     [address, amount]
   );
 
 const pUnwrapNative = (
-  network: string,
   web3: Web3Provider,
   amount: BigNumber,
   address: string,
-  tokenInAddress: string
+  wrapper: string
 ): Promise<TransactionResponse> =>
   sendTransaction(
     web3,
-    unwrapper[tokenInAddress],
-    ['function withdrawTo(uint256 wad)'],
+    wrapper,
+    ['function withdrawTo(address account, uint256 amount) returns (bool)'],
     'withdrawTo',
     [address, amount]
   );
