@@ -485,7 +485,7 @@ export default function useSor({
         tokenInAmount: tokenInAmountInput.value,
         tokenOutAmount: tokenOutAmountInput.value,
         exactIn: exactIn.value,
-        quote: getQuote(),
+        // quote: getQuote(),
         priceImpact: priceImpact.value,
         slippageBufferRate: slippageBufferRate.value,
       },
@@ -554,7 +554,7 @@ export default function useSor({
     ) {
       try {
         const tx = await pUnwrap(
-          appNetworkConfig.key,
+          tokenOutAddress,
           provider.value as any,
           tokenInAddress,
           tokenInAmountScaled
