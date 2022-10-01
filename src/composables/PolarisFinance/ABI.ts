@@ -104,6 +104,28 @@ export const sunriseABI = JSON.parse(`[{
   ],
   "stateMutability": "view",
   "type": "function"
+},{
+  "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+  "name": "masons",
+  "outputs": [
+    { "internalType": "uint256", "name": "lastSnapshotIndex", "type": "uint256" },
+    { "internalType": "uint256", "name": "rewardEarned", "type": "uint256" },
+    { "internalType": "uint256", "name": "epochTimerStart", "type": "uint256" }
+  ],
+  "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [],
+  "name": "withdrawLockupEpochs",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [],
+  "name": "rewardLockupEpochs",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
 }]`);
 
 export const treasuryABI = name => {
@@ -140,6 +162,12 @@ export const treasuryABI = name => {
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
   "stateMutability": "view",
   "type": "function"
+},{
+  "inputs": [],
+  "name": "PERIOD",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
 }]`
   );
 };
@@ -165,6 +193,12 @@ export const polarTreasuryABI = JSON.parse(`[{
 },{
   "inputs": [],
   "name": "nextEpochPoint",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [],
+  "name": "PERIOD",
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
   "stateMutability": "view",
   "type": "function"

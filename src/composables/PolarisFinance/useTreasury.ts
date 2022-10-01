@@ -63,6 +63,10 @@ export default function useTreasury(account, provider, treasuryName) {
     return await treasuryContract[getTwap]();
   };
 
+  const getNextEpochPoint = async () => {
+    return await treasuryContract.nextEpochPoint();
+  };
+
   const getNextEpochTime = async () => {
     const time = await treasuryContract.nextEpochPoint();
 
@@ -71,11 +75,17 @@ export default function useTreasury(account, provider, treasuryName) {
     return nextEpoch;
   };
 
+  const getPeriod = async () => {
+    return await treasuryContract.PERIOD();
+  };
+
   return {
     getLastEpochTWAP,
     getPrintTWAP,
     getCurrentTWAP,
     getCurrentTWAPBigNumber,
     getNextEpochTime,
+    getPeriod,
+    getNextEpochPoint,
   };
 }

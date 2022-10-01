@@ -12,6 +12,8 @@ import { spolarABI, sunriseABI } from './ABI';
 import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { MaxUint256 } from '@ethersproject/constants';
 import useTokens from './useTokens';
+import useTreasury from './useTreasury';
+import moment from 'moment';
 
 export default function useSunrise(account, provider, sunriseName) {
   const sunriseAddress = sunriseNameToAddress[sunriseName];
@@ -150,7 +152,56 @@ export default function useSunrise(account, provider, sunriseName) {
       .toString();
   };
 
-  const getUnstakePeriod = async () => {};
+  const getUnstakePeriod = async () => {
+    const { getPeriod, getNextEpochPoint } = useTreasury(
+      account,
+      provider,
+      sunriseName
+    );
+
+    const nextEpochTimestamp = await getNextEpochPoint();
+    const withdrawLockupEpochs = await sunriseContract.withdrawLockupEpochs();
+    const period = await getPeriod();
+    const currentEpoch = await getEpoch();
+    const mason = await sunriseContract.masons(account);
+    const startTimeEpoch = mason.epochTimerStart;
+    const PeriodInHours = period / 60 / 60;
+
+    const targetEpochForClaimUnlock =
+      Number(startTimeEpoch) + Number(withdrawLockupEpochs);
+    const delta = targetEpochForClaimUnlock - Number(currentEpoch) - 1;
+    const toDate = new Date(nextEpochTimestamp * 1000);
+
+    const endDate = moment(toDate)
+      .add(delta * PeriodInHours, 'hours')
+      .toDate();
+
+    return endDate;
+  };
+
+  const getClaimPeriod = async () => {
+    const { getPeriod, getNextEpochPoint } = useTreasury(
+      account,
+      provider,
+      sunriseName
+    );
+
+    const nextEpochTimestamp = await getNextEpochPoint();
+    const rewardLockupEpochs = await sunriseContract.rewardLockupEpochs();
+    const period = await getPeriod();
+    const currentEpoch = await getEpoch();
+    const mason = await sunriseContract.masons(account);
+    const startTimeEpoch = mason.epochTimerStart;
+    const periodInHours = period / 60 / 60;
+
+    const targetEpochForClaimUnlock =
+      Number(startTimeEpoch) + Number(rewardLockupEpochs);
+    const toDate = new Date(nextEpochTimestamp * 1000);
+    const delta = targetEpochForClaimUnlock - currentEpoch - 1;
+    return moment(toDate)
+      .add(delta * periodInHours, 'hours')
+      .toDate();
+  };
 
   return {
     isApproved,
@@ -165,5 +216,7 @@ export default function useSunrise(account, provider, sunriseName) {
     claim,
     withdraw,
     getSunriseAPR,
+    getUnstakePeriod,
+    getClaimPeriod,
   };
 }

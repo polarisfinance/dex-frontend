@@ -87,9 +87,15 @@
         </button>
       </div>
     </div>
-    <button class="claim-btn" text-center @click="withdraw(depositAmount)">
-      Claim and withdraw
-    </button>
+    <div class="w-full">
+      <div class="flex justify-between mx-[24px] timer-text">
+        <div>Withdraw possible in: {{ withdrawTime }}</div>
+        <div>Claim possible in: {{ claimTime }}</div>
+      </div>
+      <button class="claim-btn" text-center @click="withdraw(depositAmount)">
+        Claim and withdraw
+      </button>
+    </div>
   </div>
 </template>
 
@@ -136,10 +142,10 @@ function formatDate(hours, minutes, seconds) {
   );
 }
 
-async function setDate(event, instance) {
+async function setDate(event, instance, property, epochTimer = true) {
   var date = await event();
 
-  setInterval(async function () {
+  var interval = setInterval(async function () {
     var now = new Date().getTime();
     var distance = date.getTime() - now;
 
@@ -150,10 +156,11 @@ async function setDate(event, instance) {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      instance.nextEpoch = formatDate(hours, minutes, seconds);
+      instance[property] = formatDate(hours, minutes, seconds);
     } else {
-      instance.nextEpoch = '00:00:00';
-      date = await event();
+      instance[property] = '00:00:00';
+      if (epochTimer) date = await event();
+      else clearInterval(interval);
     }
   }, 1000);
 }
@@ -244,6 +251,8 @@ export default defineComponent({
       earnedAmountInDollars: '-',
       nextEpoch: '-',
       APR: '-',
+      withdrawTime: '-',
+      claimTime: '-',
     };
   },
   async created() {
@@ -279,12 +288,16 @@ export default defineComponent({
       getSpolarStaked,
       getBalance,
       getSunriseAPR,
+      getUnstakePeriod,
+      getClaimPeriod,
     } = useSunrise(account.value, getProvider(), sunriseName);
 
     const { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP, getNextEpochTime } =
       useTreasury(account.value, getProvider(), sunriseName);
 
     const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
+
+    const c = await getUnstakePeriod();
 
     this.approved = await isApproved();
 
@@ -311,7 +324,9 @@ export default defineComponent({
       .toFixed(2)
       .toString();
 
-    await setDate(getNextEpochTime, this);
+    await setDate(getNextEpochTime, this, 'nextEpoch');
+    await setDate(getUnstakePeriod, this, 'withdrawTime');
+    await setDate(getClaimPeriod, this, 'claimTime');
   },
 });
 </script>
@@ -544,5 +559,14 @@ export default defineComponent({
 select,
 textarea {
   color: black;
+}
+
+.timer-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 15px;
+
+  color: #ffffff;
 }
 </style>
