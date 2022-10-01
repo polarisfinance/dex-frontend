@@ -12,7 +12,8 @@
     <img src="./alert.svg" class="mr-[12px]" />
     <div>
       As we are in recovery mode, it is important to not sell your reward.
-      Please stake your ETHERNAL in the DAWN single stake.
+      Please stake your {{ sunrise.name.toUpperCase() }} in the DAWN single
+      stake.
     </div>
   </div>
   <div :class="{ info: isDesktop, infoMobile: isMobile }">
@@ -56,19 +57,19 @@
       <div class="data-text text-right">
         <div>Next Epoch:</div>
         <div>Current Epoch:</div>
-        <div>ETHERNAL Price (TWAP):</div>
+        <div>{{ sunrise.name.toUpperCase() }} Price (TWAP):</div>
         <div>Previous Epoch (TWAP):</div>
         <div>TWAP to print:</div>
         <div>APR:</div>
         <div>SPOLARS Staked</div>
       </div>
       <div class="data-text">
-        <div>18:20</div>
+        <div>{{ nextEpoch }}</div>
         <div>{{ epoch }}</div>
         <div>{{ twap }}</div>
         <div>{{ lastEpochTwap }}</div>
         <div>{{ printTwap }}</div>
-        <div>429%</div>
+        <div>{{ APR }}%</div>
         <div>{{ spolarsStaked }}</div>
       </div>
     </div>
@@ -90,7 +91,6 @@
       Claim and withdraw
     </button>
   </div>
-  
 </template>
 
 <script lang="ts">
@@ -116,6 +116,44 @@ import SpolarModal from './SpolarModal.vue';
 
 interface PoolPageData {
   id: string;
+}
+
+function getLength(number) {
+  return number.toString().length;
+}
+
+function formatDateNumber(number) {
+  return getLength(number) == 2 ? number : '0' + number;
+}
+
+function formatDate(hours, minutes, seconds) {
+  return (
+    formatDateNumber(hours) +
+    ':' +
+    formatDateNumber(minutes) +
+    ':' +
+    formatDateNumber(seconds)
+  );
+}
+
+function setDate(date, instance) {
+  var epochTimer = setInterval(function () {
+    var now = new Date().getTime();
+    var distance = date.getTime() - now;
+
+    if (distance >= 0) {
+      var hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      instance.nextEpoch = formatDate(hours, minutes, seconds);
+    } else {
+      instance.nextEpoch = '00:00:00';
+      clearInterval(epochTimer);
+    }
+  }, 1000);
 }
 
 export default defineComponent({
@@ -184,7 +222,6 @@ export default defineComponent({
       isSpolarModalVisible,
       toggleSpolarModal,
       depositToken,
-      
     };
   },
   data() {
@@ -203,6 +240,8 @@ export default defineComponent({
       printTwap: '-',
       depositedInDollars: '-',
       earnedAmountInDollars: '-',
+      nextEpoch: '-',
+      APR: '-',
     };
   },
   async created() {
@@ -237,13 +276,11 @@ export default defineComponent({
       canClaimReward,
       getSpolarStaked,
       getBalance,
+      getSunriseAPR,
     } = useSunrise(account.value, getProvider(), sunriseName);
 
-    const { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP } = useTreasury(
-      account.value,
-      getProvider(),
-      sunriseName
-    );
+    const { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP, getNextEpochTime } =
+      useTreasury(account.value, getProvider(), sunriseName);
 
     const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
 
@@ -259,6 +296,7 @@ export default defineComponent({
     this.lastEpochTwap = await getLastEpochTWAP();
     this.printTwap = await getPrintTWAP();
     this.twap = await getCurrentTWAP();
+    this.APR = await getSunriseAPR();
 
     const spolarPrice = await getSpolarPrice();
     const tokenUsdPrice = await getTokenPriceInUSD(sunriseName);
@@ -270,6 +308,9 @@ export default defineComponent({
     this.earnedAmountInDollars = (
       parseFloat(this.balance) * tokenUsdPrice
     ).toString();
+
+    const unstakeTime = await getNextEpochTime();
+    setDate(unstakeTime, this);
   },
 });
 </script>

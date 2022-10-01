@@ -1,11 +1,17 @@
 import { Contract } from 'ethers';
 import { BigNumber } from 'ethers';
 
-import { BigNumberToString, sunriseNameToAddress, SPOLAR } from './utils';
+import {
+  BigNumberToString,
+  sunriseNameToAddress,
+  SPOLAR,
+  getDisplayBalance,
+} from './utils';
 import { spolarABI, sunriseABI } from './ABI';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { MaxUint256 } from '@ethersproject/constants';
+import useTokens from './useTokens';
 
 export default function useSunrise(account, provider, sunriseName) {
   const sunriseAddress = sunriseNameToAddress[sunriseName];
@@ -42,6 +48,10 @@ export default function useSunrise(account, provider, sunriseName) {
   const getSpolarStaked = async () => {
     const spolarsStaked = await spolarContract.balanceOf(sunriseAddress);
     return BigNumberToString(spolarsStaked, 14, 4);
+  };
+
+  const getSpolarStakedBigNumber = async () => {
+    return await spolarContract.balanceOf(sunriseAddress);
   };
 
   const getBalance = async () => {
@@ -115,6 +125,53 @@ export default function useSunrise(account, provider, sunriseName) {
     }
   };
 
+  const getSunriseAPR = async () => {
+    // const token = sunrise.earnTokenName;
+    // const contract = this.contracts[sunrise.contract];
+    // tokenPricePromise = this.getStat(token);
+    // latestSnapshotIndex = await contract.latestSnapshotIndex();
+    // [lastHistory, SPOLARPrice, tokenPrice] = await Promise.all([
+    //   contract.masonryHistory(latestSnapshotIndex),
+    //   this.getStat('SPOLAR'),
+    //   tokenPricePromise,
+    // ]);
+    // const lastRewardsReceived = lastHistory[1];
+    // const epochRewardsPerShare = lastRewardsReceived / 1e18;
+    // //Mgod formula
+    // const amountOfRewardsPerDay =
+    //   epochRewardsPerShare * Number(tokenPrice.priceInDollars) * 4;
+    // const masonrytShareBalanceOf = await this.SPOLAR.balanceOf(
+    //   contract.address
+    // );
+    // const masonryTVL =
+    //   Number(getDisplayBalance(masonrytShareBalanceOf, this.SPOLAR.decimal)) *
+    //   Number(SPOLARPrice.priceInDollars);
+    // const realAPR = ((amountOfRewardsPerDay * 100) / masonryTVL) * 365;
+    // return realAPR;
+    const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
+
+    const latestSnapshotIndex = await sunriseContract.latestSnapshotIndex();
+    const lastHistory = await sunriseContract.masonryHistory(
+      latestSnapshotIndex
+    );
+    const spolarPrice = await getSpolarPrice();
+    const tokenPrice = await getTokenPriceInUSD(sunriseName);
+
+    const lastRewardsReceived = lastHistory[1];
+    const epochRewardsPerShare = lastRewardsReceived / 1e18;
+
+    const amountOfRewardsPerDay = epochRewardsPerShare * Number(tokenPrice) * 4;
+    const masonrytShareBalanceOf = await getSpolarStakedBigNumber();
+
+    const masonryTVL =
+      Number(getDisplayBalance(masonrytShareBalanceOf, 18)) *
+      Number(spolarPrice);
+
+    return (((amountOfRewardsPerDay * 100) / masonryTVL) * 365)
+      .toFixed(2)
+      .toString();
+  };
+
   return {
     isApproved,
     getEpoch,
@@ -127,5 +184,6 @@ export default function useSunrise(account, provider, sunriseName) {
     approve,
     claim,
     withdraw,
+    getSunriseAPR,
   };
 }

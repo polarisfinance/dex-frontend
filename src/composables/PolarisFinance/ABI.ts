@@ -88,6 +88,22 @@ export const sunriseABI = JSON.parse(`[{
   "outputs": [],
   "stateMutability": "nonpayable",
   "type": "function"
+},{
+  "inputs": [],
+  "name": "latestSnapshotIndex",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "name": "masonryHistory",
+  "outputs": [
+    { "internalType": "uint256", "name": "time", "type": "uint256" },
+    { "internalType": "uint256", "name": "rewardReceived", "type": "uint256" },
+    { "internalType": "uint256", "name": "rewardPerShare", "type": "uint256" }
+  ],
+  "stateMutability": "view",
+  "type": "function"
 }]`);
 
 export const treasuryABI = name => {
@@ -118,6 +134,12 @@ export const treasuryABI = name => {
   "outputs": [{ "internalType": "uint256", "name": "_ethernalPrice", "type": "uint256" }],
   "stateMutability": "view",
   "type": "function"
+},{
+  "inputs": [],
+  "name": "nextEpochPoint",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
 }]`
   );
 };
@@ -140,6 +162,12 @@ export const polarTreasuryABI = JSON.parse(`[{
 "outputs": [{ "internalType": "uint256", "name": "_polarPrice", "type": "uint256" }],
 "stateMutability": "view",
 "type": "function"
+},{
+  "inputs": [],
+  "name": "nextEpochPoint",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
 }]`);
 
 export const uniswapABI = JSON.parse(
