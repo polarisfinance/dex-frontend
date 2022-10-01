@@ -301,13 +301,13 @@ export default defineComponent({
     const spolarPrice = await getSpolarPrice();
     const tokenUsdPrice = await getTokenPriceInUSD(sunriseName);
 
-    this.depositedInDollars = (
-      parseFloat(this.balance) * spolarPrice
-    ).toString();
+    this.depositedInDollars = (parseFloat(this.balance) * spolarPrice)
+      .toFixed(2)
+      .toString();
 
-    this.earnedAmountInDollars = (
-      parseFloat(this.balance) * tokenUsdPrice
-    ).toString();
+    this.earnedAmountInDollars = (parseFloat(this.earned) * tokenUsdPrice)
+      .toFixed(2)
+      .toString();
 
     const unstakeTime = await getNextEpochTime();
     setDate(unstakeTime, this);
