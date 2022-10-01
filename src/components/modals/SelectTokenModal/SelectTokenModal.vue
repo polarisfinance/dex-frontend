@@ -16,31 +16,33 @@
           </BalBtn>
           <div class="flex w-full justify-between">
             <h5>Select a token</h5>
-            <x @click="$emit('close')" />
+            <div
+              v-if="!selectTokenList"
+              class="group flex items-center cursor-pointer"
+              @click="toggleSelectTokenList"
+            >
+              <span class="text-xs text-secondary">{{ $t('tokenLists') }}</span>
+              <div class="mr-[10px]">
+                <div class="flex items-center ml-2">
+                  <span class="mr-1">
+                    <img
+                      v-for="(tokenlist, i) in activeTokenLists"
+                      :key="i"
+                      :src="resolve(tokenlist.logoURI)"
+                      class="inline-block w-6 h-6 bg-white rounded-full shadow"
+                    />
+                  </span>
+                  <BalIcon
+                    name="chevron-down"
+                    size="sm"
+                    class="ml-1 text-blue-500 group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
+                  />
+                </div>
+              </div>
+              <x @click="$emit('close')" />
+            </div>
           </div>
         </div>
-        <!-- <div
-          v-if="!selectTokenList"
-          class="group flex items-center cursor-pointer"
-          @click="toggleSelectTokenList"
-        > -->
-        <!-- <span class="text-xs text-secondary">{{ $t('tokenLists') }}</span> -->
-        <!-- <div class="flex items-center ml-2">
-            <span class="mr-1">
-              <img
-                v-for="(tokenlist, i) in activeTokenLists"
-                :key="i"
-                :src="resolve(tokenlist.logoURI)"
-                class="inline-block w-6 h-6 bg-white rounded-full shadow"
-              />
-            </span>
-            <BalIcon
-              name="chevron-down"
-              size="sm"
-              class="ml-1 text-blue-500 group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
-            />
-          </div> -->
-        <!-- </div> -->
       </div>
       <template v-if="selectTokenList">
         <Search
