@@ -136,8 +136,10 @@ function formatDate(hours, minutes, seconds) {
   );
 }
 
-function setDate(date, instance) {
-  var epochTimer = setInterval(function () {
+async function setDate(event, instance) {
+  var date = await event();
+
+  setInterval(async function () {
     var now = new Date().getTime();
     var distance = date.getTime() - now;
 
@@ -151,7 +153,7 @@ function setDate(date, instance) {
       instance.nextEpoch = formatDate(hours, minutes, seconds);
     } else {
       instance.nextEpoch = '00:00:00';
-      clearInterval(epochTimer);
+      date = await event();
     }
   }, 1000);
 }
@@ -309,8 +311,7 @@ export default defineComponent({
       .toFixed(2)
       .toString();
 
-    const unstakeTime = await getNextEpochTime();
-    setDate(unstakeTime, this);
+    await setDate(getNextEpochTime, this);
   },
 });
 </script>

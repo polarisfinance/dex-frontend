@@ -126,28 +126,6 @@ export default function useSunrise(account, provider, sunriseName) {
   };
 
   const getSunriseAPR = async () => {
-    // const token = sunrise.earnTokenName;
-    // const contract = this.contracts[sunrise.contract];
-    // tokenPricePromise = this.getStat(token);
-    // latestSnapshotIndex = await contract.latestSnapshotIndex();
-    // [lastHistory, SPOLARPrice, tokenPrice] = await Promise.all([
-    //   contract.masonryHistory(latestSnapshotIndex),
-    //   this.getStat('SPOLAR'),
-    //   tokenPricePromise,
-    // ]);
-    // const lastRewardsReceived = lastHistory[1];
-    // const epochRewardsPerShare = lastRewardsReceived / 1e18;
-    // //Mgod formula
-    // const amountOfRewardsPerDay =
-    //   epochRewardsPerShare * Number(tokenPrice.priceInDollars) * 4;
-    // const masonrytShareBalanceOf = await this.SPOLAR.balanceOf(
-    //   contract.address
-    // );
-    // const masonryTVL =
-    //   Number(getDisplayBalance(masonrytShareBalanceOf, this.SPOLAR.decimal)) *
-    //   Number(SPOLARPrice.priceInDollars);
-    // const realAPR = ((amountOfRewardsPerDay * 100) / masonryTVL) * 365;
-    // return realAPR;
     const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
 
     const latestSnapshotIndex = await sunriseContract.latestSnapshotIndex();
@@ -171,6 +149,8 @@ export default function useSunrise(account, provider, sunriseName) {
       .toFixed(2)
       .toString();
   };
+
+  const getUnstakePeriod = async () => {};
 
   return {
     isApproved,
