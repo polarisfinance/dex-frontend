@@ -11,6 +11,9 @@ import { bnum, isSameAddress } from '@/lib/utils';
 import { isGreaterThan } from '@/lib/utils/validations';
 import useWeb3 from '@/services/web3/useWeb3';
 
+import CreateIcon from './create_pool.svg';
+import questionIcon from './question-mark.svg';
+
 const emit = defineEmits(['update:height']);
 
 /**
@@ -222,13 +225,13 @@ function saveAndProceed() {
 
 <template>
   <div ref="cardWrapper">
-    <BalCard shadow="xl" noBorder>
+    <div shadow="xl" noBorder>
       <BalStack vertical>
         <BalStack vertical spacing="xs">
-          <span class="text-secondary text-xs">{{
+          <!-- <span class="text-secondary text-xs">{{
             userNetworkConfig?.name
-          }}</span>
-          <BalStack horizontal spacing="xs" align="center">
+          }}</span> -->
+          <!-- <BalStack horizontal spacing="xs" align="center">
             <button
               v-if="!createPoolTxHash"
               class="flex text-blue-500 hover:text-blue-700"
@@ -240,20 +243,21 @@ function saveAndProceed() {
             <h5 class="font-semibold dark:text-gray-300">
               Set initial liquidity
             </h5>
-          </BalStack>
+          </BalStack> -->
           <AnimatePresence :isVisible="isOptimised" unmountInstantly>
             <BalStack
               horizontal
               align="center"
               spacing="sm"
-              class="mt-2 rounded-lg border p-2"
+              class="mt-2 rounded-lg"
             >
-              <BalIcon name="zap" size="sm" class="text-secondary mt-1" />
-              <span class="font-medium dark:text-gray-400">
+              <!-- <BalIcon name="zap" size="sm" class="text-secondary mt-1" /> -->
+              <img :src="CreateIcon" />
+              <span class="font-medium create-text">
                 {{ t('optimizedPrefilled') }}
               </span>
               <button
-                class="text-sm font-medium text-gray-400 hover:text-blue-500"
+                class="text-sm font-medium click-text"
                 @click="handleClearAll"
               >
                 Clear all
@@ -276,18 +280,19 @@ function saveAndProceed() {
             @update:address="handleAddressChange($event)"
           />
         </BalStack>
-        <BalStack horizontal spacing="sm" align="center">
+        <BalStack horizontal spacing="sm" align="center" class="my-[14px]">
           <div>
-            <span class="pl-2 text-sm">{{
+            <span class="pl-2 text-sm optimize-text">{{
               t('autoOptimiseLiquidityToggle.label')
             }}</span>
             <BalTooltip width="64">
               <template #activator>
-                <BalIcon
+                <!-- <BalIcon
                   name="info"
                   size="xs"
                   class="ml-1 flex text-gray-400"
-                />
+                /> -->
+                <img :src="questionIcon" />
               </template>
               <!-- eslint-disable-next-line vue/no-v-html -->
               <div v-html="t('autoOptimiseLiquidityToggle.tooltip')" />
@@ -301,24 +306,19 @@ function saveAndProceed() {
             />
           </div>
         </BalStack>
-        <div class="rounded-lg border p-3">
+        <div class="rounded-lg p-3">
           <BalStack horizontal justify="between">
             <BalStack vertical spacing="none">
-              <h6>{{ t('total') }}</h6>
+              <h6 class="total-text">{{ t('total') }}</h6>
               <BalStack horizontal spacing="xs" class="font-medium">
-                <span class="text-sm">
+                <span class="text-sm available-text">
                   {{ t('available') }}:
                   {{ fNum2(totalLiquidity.toString(), FNumFormats.fiat) }}
                 </span>
                 <button
                   :disabled="areAmountsMaxed"
-                  :class="[
-                    'font-semibold3 text-sm',
-                    {
-                      'text-gray-400 dark:text-gray-600': areAmountsMaxed,
-                      'text-blue-500 hover:text-blue-50': !areAmountsMaxed,
-                    },
-                  ]"
+                  :class="['font-semibold3 text-sm']"
+                  class="max-text"
                   @click="handleMax"
                 >
                   {{ areAmountsMaxed ? t('maxed') : t('max') }}
@@ -326,7 +326,7 @@ function saveAndProceed() {
               </BalStack>
             </BalStack>
             <BalStack vertical spacing="none">
-              <h6>
+              <h6 class="total-text">
                 {{ fNum2(currentLiquidity.toString(), FNumFormats.fiat) }}
               </h6>
               <AnimatePresence
@@ -372,6 +372,60 @@ function saveAndProceed() {
           {{ t('preview') }}
         </BalBtn>
       </BalStack>
-    </BalCard>
+    </div>
   </div>
 </template>
+
+<style>
+.create-text {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.click-text {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(215, 178, 255, 1);
+}
+
+.optimize-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+}
+
+.total-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.available-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.max-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: #d7b3ff;
+}
+</style>

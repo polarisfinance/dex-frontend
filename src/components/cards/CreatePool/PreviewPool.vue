@@ -171,12 +171,12 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
 
 <template>
   <BalStack vertical spacing="xs" class="mb-24">
-    <BalCard shadow="xl" noBorder>
-      <BalStack vertical spacing="xs">
+    <div shadow="xl" noBorder>
+      <!-- <BalStack vertical spacing="xs">
         <span class="text-secondary text-xs">{{
           userNetworkConfig?.name
         }}</span>
-      </BalStack>
+      </BalStack> -->
       <BalStack vertical>
         <div class="flex items-center">
           <BalCircle
@@ -188,41 +188,39 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
             <BalIcon name="check" />
           </BalCircle>
           <BalStack horizontal align="center" spacing="xs">
-            <button
+            <!-- <button
               class="flex text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
               @click="goBack"
             >
               <BalIcon class="flex" name="chevron-left" />
-            </button>
+            </button> -->
 
-            <h5 class="font-semibold dark:text-gray-300">
-              {{ title }}
-            </h5>
+            <div class="flex-column">
+              <h5 class="title">
+                {{ title }}
+              </h5>
+              <div class="subtitle">
+                <h6 class="text-sm">
+                  {{ $t('createAPool.tokensAndSeedLiquidity') }}
+                </h6>
+              </div>
+            </div>
           </BalStack>
         </div>
-        <BalCard shadow="none" noPad>
-          <div class="bg-gray-50 p-2 dark:bg-gray-700">
-            <h6 class="text-sm">
-              {{ $t('createAPool.tokensAndSeedLiquidity') }}
-            </h6>
-          </div>
-          <BalStack vertical spacing="none" withBorder>
-            <div
-              v-for="token in seedTokens"
-              :key="`tokenpreview-${token.tokenAddress}`"
-              class="p-4"
-            >
-              <BalStack horizontal justify="between">
+        <div shadow="none" noPad>
+          <BalStack vertical spacing="none">
+            <div v-for="(token, key) in seedTokens" :key="key" class="p-1">
+              <BalStack horizontal justify="between" class="selector">
                 <BalStack horizontal align="center">
                   <BalAsset :address="token.tokenAddress" :size="36" />
                   <BalStack vertical spacing="none">
-                    <span class="font-semibold">
+                    <span class="font-semibold weight">
                       {{ fNum2(token.weight / 100, FNumFormats.percent) }}
                       {{ getToken(token.tokenAddress)?.symbol }}
                     </span>
                     <span
                       :class="[
-                        'text-sm',
+                        'text-sm initial-weight',
                         getInitialWeightHighlightClass(token.tokenAddress),
                       ]"
                     >
@@ -237,10 +235,10 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
                   </BalStack>
                 </BalStack>
                 <BalStack vertical spacing="none" align="end">
-                  <span class="font-semibold">
+                  <span class="font-semibold weight">
                     {{ fNum2(token.amount, FNumFormats.token) }}
                   </span>
-                  <span class="text-secondary text-sm">
+                  <span class="initial-weight">
                     {{
                       fNum2(
                         bnum(token.amount)
@@ -254,24 +252,21 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
               </BalStack>
             </div>
           </BalStack>
-          <BalStack
-            horizontal
-            justify="between"
-            class="border-t p-4 dark:border-gray-600"
-          >
+          <BalStack horizontal justify="between" class="total">
             <h6>{{ $t('total') }}</h6>
             <h6>
               {{ fNum2(poolLiquidity.toString(), FNumFormats.fiat) }}
             </h6>
           </BalStack>
-        </BalCard>
-        <BalCard shadow="none" noPad>
-          <div class="bg-gray-50 p-2 dark:bg-gray-700">
-            <h6 class="text-sm">
+        </div>
+        <div shadow="none" noPad>
+          <div class="border" />
+          <div class="">
+            <h6 class="total">
               {{ $t('summary') }}
             </h6>
           </div>
-          <BalStack vertical spacing="xs" class="p-3">
+          <BalStack vertical spacing="xs" class="p-3 summary-text">
             <BalStack horizontal justify="between">
               <span class="text-sm">{{ $t('poolName') }}:</span>
               <BalInlineInput
@@ -315,7 +310,7 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
               </BalStack>
             </BalStack>
           </BalStack>
-        </BalCard>
+        </div>
         <AnimatePresence
           :isVisible="hasMissingPoolNameOrSymbol"
           unmountInstantly
@@ -362,6 +357,74 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
           @success="handleSuccess"
         />
       </BalStack>
-    </BalCard>
+    </div>
   </BalStack>
 </template>
+
+<style>
+.title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.subtitle {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.selector {
+  background: #362d3b;
+  border-radius: 16px;
+
+  padding: 12px;
+}
+
+.weight {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.initial-weight {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.total {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+
+  color: #ffffff;
+}
+
+.border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+  width: 100%;
+}
+
+.summary-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+</style>

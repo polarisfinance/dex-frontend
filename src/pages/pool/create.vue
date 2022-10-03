@@ -307,23 +307,39 @@ watch(
     </BalStack>
   </div>
   <div
-    class="container grid grid-cols-2 grid-flow-row auto-rows-auto gap-x-4 mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
+    class="bg container grid grid-cols-2 grid-flow-row auto-rows-auto gap-x-4 mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
   >
     <div
       class="col-span-2 text-[20px] font-semibold leading-[26px] text-center"
-    > <span v-if="!appLoading && activeStep === 0">Choose tokens & weights</span>
-      <span v-if="!appLoading && activeStep === 1">Set pool fees</span>
-      <span v-if="!appLoading && activeStep === 2">Set initial liquidity</span>
-      <span v-if="!appLoading && activeStep === 3">Confirm pool creation</span>
-      
+    >
+      <div class="flex">
+        <img
+          class="justify-start"
+          src="./left-arrow.svg"
+          @click="activeStep = activeStep - 1"
+          v-if="activeStep > 0"
+        />
+        <div class="justify-center w-full">
+          <span v-if="!appLoading && activeStep === 0"
+            >Choose tokens & weights</span
+          >
+          <span v-if="!appLoading && activeStep === 1">Set pool fees</span>
+          <span v-if="!appLoading && activeStep === 2"
+            >Set initial liquidity</span
+          >
+          <span v-if="!appLoading && activeStep === 3"
+            >Confirm pool creation</span
+          >
+        </div>
+      </div>
     </div>
     <div
       class="col-span-2 text-center text-[12px] font-[500] leading-[15px] text-pink-third"
     >
       Aurora Mainnet
     </div>
-    <div class="col-span-2 my-[24px] border"></div>
-    <div class="relative">
+    <div class="col-span-2 my-[24px] create-pool-border"></div>
+    <div class="relative overflow-y-scroll">
       <AnimatePresence
         :isVisible="hasRestoredFromSavedState && !appLoading"
         unmountInstantly
@@ -399,7 +415,7 @@ watch(
         ]"
       > -->
       <!-- <template #pool-summary> -->
-      
+
       <!-- </template>
       <template #token-prices> -->
       <TokenPrices />
@@ -424,5 +440,15 @@ watch(
 <style scoped>
 .center-col-mh {
   min-height: 550px;
+}
+
+.create-pool-border {
+  border: 0.5px solid rgba(111, 71, 115, 0.4);
+}
+
+.bg {
+  background: #2e2433;
+  box-shadow: 0px 1px 2px #231928;
+  border-radius: 20px;
 }
 </style>

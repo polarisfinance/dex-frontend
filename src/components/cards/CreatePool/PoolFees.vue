@@ -137,9 +137,9 @@ async function onChangeFeeController(val: string) {
 
 <template>
   <div ref="cardWrapper">
-    <BalCard shadow="xl" noBorder>
+    <div shadow="xl" noBorder>
       <BalStack vertical>
-        <BalStack vertical spacing="xs">
+        <!-- <BalStack vertical spacing="xs">
           <span class="text-secondary text-xs">{{
             userNetworkConfig?.name
           }}</span>
@@ -154,11 +154,11 @@ async function onChangeFeeController(val: string) {
               {{ $t('createAPool.setPoolFees') }}
             </h5>
           </BalStack>
-        </BalStack>
+        </BalStack> -->
         <BalStack vertical spacing="sm">
           <div>
-            <h6 class="mb-1">Initial swap fee</h6>
-            <p class="text-gray-600">
+            <h6 class="mb-1 initial-swap-fee">Initial swap fee</h6>
+            <p class="text-gray-600 initial-swap-fee-p my-[16px]">
               {{ $t('createAPool.bestFeeOption') }}
             </p>
           </div>
@@ -311,12 +311,30 @@ async function onChangeFeeController(val: string) {
           {{ $t('next') }}
         </BalBtn>
       </BalStack>
-    </BalCard>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .custom-input {
   @apply flex h-full items-center rounded-lg px-1 shadow-inner;
+}
+
+.initial-swap-fee {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+}
+
+.initial-swap-fee-p {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
 }
 </style>

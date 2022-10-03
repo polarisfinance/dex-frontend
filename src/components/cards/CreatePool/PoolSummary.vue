@@ -181,28 +181,61 @@ async function calculateColors() {
 </script>
 
 <template>
-  <BalCard noPad shadow="none">
-    <div v-if="!upToLargeBreakpoint" class="border-b p-4 dark:border-gray-600">
-      <h6 class="dark:text-gray-300">
+  <div noPad shadow="none">
+    <div v-if="!upToLargeBreakpoint" class="pool-summary">
+      <h6>
         {{ $t('createAPool.poolSummary') }}
       </h6>
     </div>
     <div class="p-2">
-      <ECharts
+      <!-- <ECharts
         ref="chartInstance"
         class="h-56 w-full"
         :option="chartConfig"
         autoresize
-      />
+      /> -->
     </div>
-    <BalStack class="mb-2" vertical spacing="none" align="center">
+    <BalStack
+      class="mb-2 text placeholder"
+      vertical
+      spacing="none"
+      align="center"
+    >
       <BalStack horizontal spacing="xs">
         <h6>{{ $t('inYourWallet') }}</h6>
-        <BalTooltip iconSize="sm" class="mt-1">
+        <!-- <BalTooltip iconSize="sm" class="mt-1">
           {{ $t('createAPool.maxLiquidityTooltip') }}
-        </BalTooltip>
+        </BalTooltip> -->
       </BalStack>
       <span>{{ fNum2(totalLiquidity.toString(), FNumFormats.fiat) }}</span>
     </BalStack>
-  </BalCard>
+  </div>
 </template>
+
+<style>
+.text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.pool-summary {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+  text-align: center;
+}
+
+.placeholder {
+  border: 0.5px solid rgba(245, 225, 255, 0.1);
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5));
+  border-radius: 16px;
+  padding: 10px;
+}
+</style>

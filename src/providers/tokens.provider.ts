@@ -129,7 +129,7 @@ export default {
         networkConfig.addresses.wstETH,
         configService.network.addresses.veBAL,
         networkConfig.addresses.pNear,
-        networkConfig.addresses.pStnear
+        networkConfig.addresses.pStnear,
       ]),
       injectedPrices: {},
     });
@@ -357,7 +357,7 @@ export default {
       const allowance = bnum(
         (allowances.value[contractAddress] || {})[getAddress(tokenAddress)]
       );
-      console.log(allowance)
+      console.log(allowance);
       return allowance.lt(amount);
     }
 

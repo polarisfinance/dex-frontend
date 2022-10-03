@@ -5,6 +5,7 @@ import usePoolCreation from '@/composables/pools/usePoolCreation';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import useTokens from '@/composables/useTokens';
+import Graph from '@/components/cards/PairPriceGraph/Graph.vue';
 
 type Props = {
   toggleUnknownPriceModal?: () => void;
@@ -37,20 +38,23 @@ const unknownTokens = computed(() =>
 const hasUnknownPrice = computed(() =>
   validTokens.value.some(token => priceFor(token) === 0)
 );
+
+const USDT = '0x4988a896b1227218e4a686fde5eabdcabd91571f';
 </script>
 
 <template>
-  <BalCard noPad shadow="none" :noBorder="upToLargeBreakpoint">
-    <div v-if="!upToLargeBreakpoint" class="border-b p-4 dark:border-gray-600">
+  <div noPad shadow="none" :noBorder="upToLargeBreakpoint" class="relative">
+    <div v-if="!upToLargeBreakpoint" class="p-4">
       <BalStack horizontal spacing="sm" align="center">
-        <h6 class="dark:text-gray-300">
+        <!-- <h6 class="dark:text-gray-300">
           {{ $t('tokenPrices') }}
         </h6>
-        <BalTooltip class="mt-1" :text="$t('correctTokenPricing')" />
+        <BalTooltip class="mt-1" :text="$t('correctTokenPricing')" /> -->
+        <div class="title">Token Prices</div>
       </BalStack>
     </div>
-    <div class="p-2 px-4">
-      <BalStack vertical isDynamic spacing="sm">
+    <div class="p-2 px-4 flex justify-center gap-[12px]">
+      <!-- <BalStack vertical isDynamic spacing="sm">
         <BalStack
           v-for="token in knownTokens"
           :key="`tokenPrice-known-${token}`"
@@ -124,7 +128,26 @@ const hasUnknownPrice = computed(() =>
             </BalStack>
           </BalStack>
         </button>
-      </BalStack>
+      </BalStack> -->
+      <Graph
+        v-for="(token, idx) in tokensList"
+        :tokenInAddress="USDT"
+        :tokenOutAddress="token"
+        :key="idx"
+      />
     </div>
-  </BalCard>
+  </div>
 </template>
+
+<style>
+.title {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+  width: 100%;
+  text-align: center;
+}
+</style>
