@@ -114,7 +114,12 @@ const showLiquidityAlert = computed(() => {
 });
 
 const excludedTokens = computed((): string[] => {
-  return [nativeAsset.address, ...tokensList.value];
+  return [
+    nativeAsset.address,
+    ...tokensList.value,
+    '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
+    '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30',
+  ];
 });
 
 const maxTokenAmountReached = computed(() => {
@@ -365,9 +370,15 @@ function onAlertMountChange() {
         </div>
         <div class="p-2 px-4 w-full">
           <div class="flex justify-between w-full">
-            <span class="font-semibold text-[16px] leading-[20px]">{{ $t('totalAllocated') }}</span>
+            <span class="font-semibold text-[16px] leading-[20px]">{{
+              $t('totalAllocated')
+            }}</span>
             <BalStack horizontal spacing="xs" align="center">
-              <span class='font-semibold text-[16px] leading-[20px]' :class="weightColor">{{ totalAllocatedWeight }}%</span>
+              <span
+                class="font-semibold text-[16px] leading-[20px]"
+                :class="weightColor"
+                >{{ totalAllocatedWeight }}%</span
+              >
               <BalIcon
                 v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
                 class="mt-px text-red-500"
