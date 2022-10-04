@@ -519,7 +519,7 @@ export default function useSor({
     );
 
     const NEAR = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
-    const STNEAR = '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30';
+    const STNEAR = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
     const pNEAR = '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6';
     const pSTNEAR = '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465';
 
