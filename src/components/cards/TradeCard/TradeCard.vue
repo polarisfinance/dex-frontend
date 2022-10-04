@@ -30,7 +30,7 @@
       />
       <BalAlert
         v-if="error"
-        class="mb-[12px] p-3"
+        class="mb-[12px]"
         type="error"
         size="sm"
         :title="error.header"
@@ -41,7 +41,7 @@
       />
       <BalAlert
         v-else-if="warning"
-        class="mb-[12px] p-3"
+        class="mb-[12px]"
         type="warning"
         size="sm"
         :title="warning.header"
