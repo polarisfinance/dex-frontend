@@ -78,11 +78,29 @@ export class PriceService {
       const pages = Array.from(Array(pageCount).keys());
       const requests: Promise<PriceResponse>[] = [];
 
+      let replaceNear = false;
+      let replaceStnear = false;
+    
       pages.forEach(page => {
         const addressString = addresses.slice(
           addressesPerRequest * page,
           addressesPerRequest * (page + 1)
         );
+        for (let i = 0; i < addressString.length; i++) {
+          if (
+            addressString[i] == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
+          ) {
+            addressString[i] = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
+            replaceNear = true
+          }
+          if (
+            addressString[i] == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
+          ) {
+            addressString[i] = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
+            replaceStnear = true
+          }
+        }
+
         const endpoint = `/simple/token_price/${this.platformId}?contract_addresses=${addressString}&vs_currencies=${this.fiatParam}`;
         const request = retryPromiseWithDelay(
           this.client.get<PriceResponse>(endpoint),
@@ -99,7 +117,15 @@ export class PriceService {
       if (includesAddress(addresses, this.nativeAssetAddress)) {
         results[this.nativeAssetAddress] = await this.getNativeAssetPrice();
       }
-
+      if (replaceNear) {
+        console.log(results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'])
+         results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] = results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
+        
+      } 
+      if (replaceStnear) {
+        results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] = results['0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30'];
+      }
+      console.log(results)
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
@@ -126,6 +152,16 @@ export class PriceService {
       const requests: Promise<HistoricalPriceResponse>[] = [];
 
       addresses.forEach(address => {
+        if (
+          address == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
+        ) {
+          address = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
+        }
+        if (
+          address == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
+        ) {
+          address = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
+        }
         const endpoint = `/coins/${
           this.platformId
         }/contract/${address.toLowerCase()}/market_chart/range?vs_currency=${
