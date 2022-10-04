@@ -184,7 +184,7 @@ const getRows = computed<ActivityRow[]>(() => {
 
 <template>
   <div
-    class="table-container overflow-x-auto"
+    class="table-container overflow-x-auto p-[24px]"
     :square="upToLargeBreakpoint"
     :noBorder="upToLargeBreakpoint"
     noPad
