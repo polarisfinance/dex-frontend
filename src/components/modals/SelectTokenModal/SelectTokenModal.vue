@@ -79,9 +79,10 @@
             class="flex-auto px-[16px]"
           />
         </div>
+        <!--  -->
         <div class="px-[24px] py-[12px]">
           <div class="common-bases-title mb-[12px]">Common bases</div>
-          <div class="flex gap-[8px]">
+          <div class="flex gap-[8px]" v-if="tokens[0]">
             <a @click="onSelectToken(tokens[0].address)">
               <div class="common-asset flex items-center">
                 <BalAsset
@@ -93,7 +94,7 @@
                 <div class="token-name">{{ tokens[0].name }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[1].address)">
+            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[1].address"
@@ -104,7 +105,7 @@
                 <div class="token-name">{{ tokens[1].name }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[2].address)">
+            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[2].address"
@@ -118,7 +119,7 @@
           </div>
         </div>
         <div class="m-[12px] border" />
-
+        <!--  -->
         <div class="overflow-hidden rounded-lg">
           <RecycleScroller
             v-if="tokens.length > 0"
