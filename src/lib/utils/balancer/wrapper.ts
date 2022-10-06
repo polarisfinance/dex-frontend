@@ -26,7 +26,7 @@ export const getWrapAction = (tokenIn: string, tokenOut: string): WrapType => {
   const nativeAddress = configService.network.nativeAsset.address;
   const { weth, stETH, wstETH } = configService.network.addresses;
 
-  // if (tokenIn === nativeAddress && tokenOut === weth) return WrapType.Wrap;
+  if (tokenIn === nativeAddress && tokenOut === weth) return WrapType.Wrap;
   // if (tokenIn === stETH && tokenOut === wstETH) return WrapType.Wrap;
   const NEAR = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
   const STNEAR = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
@@ -44,7 +44,7 @@ export const getWrapAction = (tokenIn: string, tokenOut: string): WrapType => {
     (tokenIn == pSTNEAR && tokenOut == STNEAR)
   )
     return WrapType.Unwrap;
-  //   if (tokenOut === nativeAddress && tokenIn === weth) return WrapType.Unwrap;
+  if (tokenOut === nativeAddress && tokenIn === weth) return WrapType.Unwrap;
   // if (tokenOut === stETH && tokenIn === wstETH) return WrapType.Unwrap;
 
   return WrapType.NonWrap;

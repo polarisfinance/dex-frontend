@@ -118,14 +118,12 @@ export class PriceService {
         results[this.nativeAssetAddress] = await this.getNativeAssetPrice();
       }
       if (replaceNear) {
-        console.log(results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'])
          results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] = results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
         
       } 
       if (replaceStnear) {
         results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] = results['0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30'];
       }
-      console.log(results)
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
