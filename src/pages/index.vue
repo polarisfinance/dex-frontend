@@ -37,6 +37,27 @@ const isInvestmentPoolsTableLoading = computed(
   () => dataStates.value['basic'] === 'loading' || priceQueryLoading.value
 );
 
+const segniorageIds = [
+  '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10000200000000000000000004',
+  '0xa83f9fa9b51fc26e9925a07bc3375617b473e051000200000000000000000005',
+  '0xa215a58225b344cbb62fcf762e8e884dbedfbe58000200000000000000000006',
+  '0x293bbbef6087f681a8110f08bbdedadd13599fc3000200000000000000000007',
+  '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
+  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e'
+];
+const segnioragePools = computed(
+  () =>
+    investmentPools.value.filter(pool =>
+      segniorageIds.includes(pool.id)
+    ) as InvestmentPool[]
+);
+const investmentPoolsWithoutSeigniorage = computed(
+  () =>
+    investmentPools.value.filter(
+      pool => !segniorageIds.includes(pool.id)
+    ) as InvestmentPool[]
+);
+console.log(investmentPools)
 /**
  * METHODS
  */
@@ -121,7 +142,7 @@ function navigateToCreatePool() {
       </div>
       <div id="segniorage">
         <PoolsTable
-          :data="investmentPools"
+          :data="segnioragePools"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoadingMore="isLoadingMore"
           :selectedTokens="selectedTokens"
@@ -135,7 +156,7 @@ function navigateToCreatePool() {
           :img="segniorageImg"
         />
       </div>
-      <div id="singlestaking">
+      <!-- <div id="singlestaking">
         <PoolsTable
           :data="investmentPools"
           :noPoolsLabel="$t('noPoolsFound')"
@@ -150,10 +171,10 @@ function navigateToCreatePool() {
           :title="'Single Staking'"
           :img="singleStakingImg"
         />
-      </div>
+      </div> -->
       <div id="classicpools">
         <PoolsTable
-          :data="investmentPools"
+          :data="investmentPoolsWithoutSeigniorage"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoadingMore="isLoadingMore"
           :selectedTokens="selectedTokens"

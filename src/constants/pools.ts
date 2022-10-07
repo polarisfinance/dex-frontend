@@ -441,7 +441,7 @@ const POOLS_ARBITRUM: Pools = {
 const POOLS_GENERIC: Pools = {
   IdsMap: {},
   Pagination: {
-    PerPage: 10,
+    PerPage: 1000,
     PerPool: 10,
     PerPoolInitial: 5,
   },
