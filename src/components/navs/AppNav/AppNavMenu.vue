@@ -24,27 +24,27 @@
         'border-radius': '22px',
       }"
     >
-      <a class="menu-item menu-link">
+      <!-- <a class="menu-item menu-link">
         <span> About </span>
         <IconAbout />
-      </a>
-      <a class="menu-item menu-link">
+      </a> -->
+      <!-- <a class="menu-item menu-link">
         <span> Help Center </span>
         <HelpCenter />
-      </a>
-      <a class="menu-item menu-link">
+      </a> -->
+      <a class="menu-item menu-link" href="https://discord.gg/polaris-finance">
         <span> Discord </span>
         <Discord />
       </a>
-      <a class="menu-item menu-link">
+      <a class="menu-item menu-link" href="https://docs.polarisfinance.io/">
         <span> Docs </span>
         <Docs />
       </a>
-      <a class="menu-item menu-link">
+      <!-- <a class="menu-item menu-link">
         <span> Legal & Privacy </span>
         <LegalAndPrivacy />
-      </a>
-      <a class="menu-item menu-link">
+      </a> -->
+      <a class="menu-item menu-link" href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/">
         <span> KYC </span>
         <Kyc />
       </a>
