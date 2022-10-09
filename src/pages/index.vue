@@ -188,9 +188,9 @@ function navigateToCreatePool() {
           :img="classicImg"
         />
       </div>
-      <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
+      <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
         <FeaturedProtocols />
-      </div>
+      </div> -->
     </BalStack>
   </div>
 </template>
