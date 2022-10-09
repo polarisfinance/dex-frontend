@@ -275,7 +275,7 @@ function iconAddresses(pool: PoolWithShares) {
               :tokens="
                 orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
               "
-              :isStablePool="isStableLike(pool.poolType)"
+              :isStablePool="false"
               :selectedTokens="selectedTokens"
             />
           </div>
@@ -381,7 +381,7 @@ function iconAddresses(pool: PoolWithShares) {
                 :tokens="
                   orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
                 "
-                :isStablePool="isStableLike(pool.poolType)"
+                :isStablePool="false"
                 :selectedTokens="selectedTokens"
               />
             </div>
@@ -423,12 +423,6 @@ function iconAddresses(pool: PoolWithShares) {
             <div>
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
-                <!-- {{
-                  Num2(pool?.volumeSnapshot, {
-                    style: 'currency',
-                    maximumFractionDigits: 0,
-                  })
-                }} -->
                 {{ '$' + pool?.volumeSnapshot }}
               </span>
             </div>
