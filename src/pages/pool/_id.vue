@@ -393,6 +393,7 @@ export default defineComponent({
      */
     watch(poolQuery.error, () => {
       if (poolQuery.error.value) {
+        console.log(poolQuery.error.value);
         addAlert({
           id: 'pool-fetch-error',
           label: t('alerts.pool-fetch-error'),

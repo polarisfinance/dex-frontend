@@ -204,7 +204,6 @@ export function isBlocked(pool: Pool, account: string): boolean {
   const isAllowlisted =
     POOLS.Stable.AllowList.includes(pool.id) ||
     POOLS.Investment.AllowList.includes(pool.id);
-
   return (
     !isTestnet.value && requiresAllowlisting && !isAllowlisted && !isOwnedByUser
   );
