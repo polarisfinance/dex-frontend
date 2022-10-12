@@ -247,7 +247,7 @@ function iconAddresses(pool: PoolWithShares) {
     <div class="mb-[15px]">
       {{ title }}
     </div>
-    <div class="table-title flex w-full items-center">
+    <div class="table-title grid">
       <div class="flex w-full items-center">
         <img :src="img" class="mr-[12px] h-[14px] w-[24px]" />
         <div>Pool name</div>
@@ -351,7 +351,7 @@ function iconAddresses(pool: PoolWithShares) {
         <img :src="img" class="mr-[12px]" />
         <div>Pool name</div>
       </div>
-      <div class="flex w-full items-center justify-end gap-[70px]">
+      <div class="grid-table">
         <div class="mr h-4 w-12">Daily</div>
         <div class="mr h-4 w-12">APR</div>
         <div class="mr h-4 w-12">TVL</div>
@@ -368,25 +368,28 @@ function iconAddresses(pool: PoolWithShares) {
       <router-link :to="'/pool/' + pool.id" class="flex w-full items-center">
         <div class="flex w-full items-center">
           <div class="flex w-full items-center">
-            <BalAssetSet
-              :size="36"
-              :addresses="iconAddresses(pool)"
-              :width="100"
-            />
-            <div v-if="POOLS.Metadata[pool.id]" class="text-left">
-              {{ POOLS.Metadata[pool.id].name }}
-            </div>
-            <div v-else>
-              <TokenPills
-                :tokens="
-                  orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-                "
-                :isStablePool="false"
-                :selectedTokens="selectedTokens"
+            <div class="flex w-full items-center">
+              <BalAssetSet
+                :size="36"
+                :addresses="iconAddresses(pool)"
+                :width="100"
               />
+              <div v-if="POOLS.Metadata[pool.id]" class="text-left">
+                {{ POOLS.Metadata[pool.id].name }}
+              </div>
+              <div v-else>
+                <TokenPills
+                  :tokens="
+                    orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+                  "
+                  :isStablePool="false"
+                  :selectedTokens="selectedTokens"
+                />
+              </div>
             </div>
           </div>
-          <div class="flex w-full justify-end gap-[80px] text-left">
+          <!-- <div class="flex w-full justify-end gap-[80px] text-left"> -->
+          <div class="grid justify-end">
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
@@ -606,5 +609,17 @@ function iconAddresses(pool: PoolWithShares) {
   line-height: 20px;
 
   color: #be95c0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 0.5fr);
+  width: 100%;
+}
+
+.grid-table {
+  display: grid;
+  grid-template-columns: repeat(5, 10fr);
+  width: 100%;
 }
 </style>
