@@ -251,7 +251,18 @@ export default defineComponent({
       return t('Swap');
     });
     const error = computed(() => {
-      if (trading.isBalancerTrade.value && !trading.isLoading.value) {
+      console.log(tokenInAddress.value);
+      if (
+        tokenInAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+        tokenOutAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+        tokenInAddress.value == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465' ||
+        tokenOutAddress.value == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
+      ) {
+        return {
+          header: 'Your tokens are not wrapped!',
+          body: 'You need to wrap your NEAR/STNEAR to pNEAR/pSTNEAR!',
+        };
+      } else if (trading.isBalancerTrade.value && !trading.isLoading.value) {
         if (errorMessage.value === TradeValidation.NO_LIQUIDITY) {
           return {
             header: t('insufficientLiquidity'),

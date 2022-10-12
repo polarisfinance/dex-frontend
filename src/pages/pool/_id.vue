@@ -48,6 +48,12 @@
           </div>
         </div>
       </div>
+
+      <div v-if="isPPool" class="alert my-[10px]">
+        You need to wrap your {{ isPPool }} into p{{ isPPool }} using the Swap
+        page!
+      </div>
+
       <MyPoolBalancesCard
         v-if="isMobile"
         :pool="pool"
@@ -254,6 +260,17 @@ export default defineComponent({
       id: route.params.id as string,
     });
 
+    const isPPool = computed(() => {
+      for (let token of tableData.value) {
+        if ('0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6' == token.address)
+          return 'NEAR';
+        if ('0xfbe0ec68483c0b0a9d4bcea3ccf33922225b8465' == token.address)
+          return 'STNEAR';
+      }
+
+      return undefined;
+    });
+
     //#region pool query
     const poolQuery = usePoolQuery(route.params.id as string);
     const pool = computed(() => poolQuery.data.value);
@@ -376,6 +393,7 @@ export default defineComponent({
      */
     watch(poolQuery.error, () => {
       if (poolQuery.error.value) {
+        console.log(poolQuery.error.value);
         addAlert({
           id: 'pool-fetch-error',
           label: t('alerts.pool-fetch-error'),
@@ -423,6 +441,7 @@ export default defineComponent({
       startConnectWithInjectedProvider,
       account,
       MyPoolBalancesCard,
+      isPPool,
     };
   },
 });
@@ -620,5 +639,19 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
   color: rgba(245, 225, 255, 0.7);
+}
+
+.alert {
+  background: #7b307f;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #ffffff;
+
+  align-items: center;
+  text-align: center;
 }
 </style>
