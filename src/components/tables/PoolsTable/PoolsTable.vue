@@ -347,7 +347,7 @@ function iconAddresses(pool: PoolWithShares) {
       {{ title }}
     </div>
     <div class="table-title mt-[48px] flex w-full">
-      <div class="mr-[200px] flex w-full items-center">
+      <div class="flex w-full items-center">
         <img :src="img" class="mr-[12px]" />
         <div>Pool name</div>
       </div>
