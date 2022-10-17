@@ -74,7 +74,7 @@
       </div>
       <div class="mt-[24px] flex justify-center">
         <button class="claim-btn" @click="redeem">
-          Enable when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
+          Enabled when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
       </div>
     </div>
