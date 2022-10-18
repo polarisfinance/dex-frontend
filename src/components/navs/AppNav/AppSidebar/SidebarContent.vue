@@ -49,27 +49,37 @@ const blockIcon = ref<HTMLDivElement>();
 
 const navLinks = [
   { label: t('swap'), path: '/trade', img: swapImg },
-  { label: t('invest'), path: '/', img: investImg },
-  { label: t('portfolio'), path: '/portfolio', img: portfolioImg },
+  { label: 'Dawn', path: '/', img: investImg },
+  { label: 'Sunrise', path: '/sunrise', img: investImg },
+  { label: 'Bond', path: '/bond', img: investImg },
+  { label: t('portfolio'), path: '/vebal', img: portfolioImg },
   { label: 'vexPOLAR', path: '/vebal', img: vexpolarImg },
   // { label: t('claim'), path: '/claim' },
 ];
 
 const ecosystemLinks = [
-  { label: t('About'), url: 'https://balancer.fi/build', img: aboutImg },
+  { label: t('About'), url: 'https://home.polarisfinance.io', img: aboutImg },
+  // {
+  //   label: t('Help Center'),
+  //   url: 'https://medium.com/balancer-protocol',
+  //   img: helpImg,
+  // },
   {
-    label: t('Help Center'),
-    url: 'https://medium.com/balancer-protocol',
-    img: helpImg,
+    label: t('Discord'),
+    url: 'https://discord.gg/polaris-finance',
+    img: discordImg,
   },
-  { label: t('Discord'), url: 'https://docs.balancer.fi/', img: discordImg },
-  { label: t('Docs'), url: 'https://vote.balancer.fi/#/', img: docsImg },
+  { label: t('Docs'), url: 'https://docs.polarisfinance.io/', img: docsImg },
+  // {
+  //   label: t('Legal & Privacy'),
+  //   url: 'https://dune.xyz/balancerlabs',
+  //   img: legalImg,
+  // },
   {
-    label: t('Legal & Privacy'),
-    url: 'https://dune.xyz/balancerlabs',
-    img: legalImg,
+    label: t('KYC'),
+    url: 'https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/',
+    img: kycImg,
   },
-  { label: t('KYC'), url: 'https://forum.balancer.fi/', img: kycImg },
   // {
   //   label: t('grants'),
   //   url: 'http://grants.balancer.community',
