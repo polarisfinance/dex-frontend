@@ -80,7 +80,7 @@ export class PriceService {
 
       let replaceNear = false;
       let replaceStnear = false;
-    
+      let replaceBnb = false;
       pages.forEach(page => {
         const addressString = addresses.slice(
           addressesPerRequest * page,
@@ -91,13 +91,19 @@ export class PriceService {
             addressString[i] == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
           ) {
             addressString[i] = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
-            replaceNear = true
+            replaceNear = true;
           }
           if (
             addressString[i] == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
           ) {
             addressString[i] = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
-            replaceStnear = true
+            replaceStnear = true;
+          }
+          if (
+            addressString[i] == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762'
+          ) {
+            addressString[i] = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
+            replaceBnb = true;
           }
         }
 
@@ -108,6 +114,13 @@ export class PriceService {
           2000
         );
         requests.push(request);
+        const bnbEndpoint = `/simple/token_price/binance-smart-chain?contract_addresses=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&vs_currencies=${this.fiatParam}`;
+        const bnbRequest = retryPromiseWithDelay(
+          this.client.get<PriceResponse>(bnbEndpoint),
+          3,
+          2000
+        );
+        requests.push(bnbRequest);
       });
 
       const paginatedResults = await Promise.all(requests);
@@ -118,12 +131,18 @@ export class PriceService {
         results[this.nativeAssetAddress] = await this.getNativeAssetPrice();
       }
       if (replaceNear) {
-         results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] = results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
-        
-      } 
-      if (replaceStnear) {
-        results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] = results['0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30'];
+        results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] =
+          results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
       }
+      if (replaceStnear) {
+        results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] =
+          results['0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30'];
+      }
+      if (replaceBnb) {
+        results['0xb14674C7264eC7d948B904Aab2c0E0F906F6e762'] =
+          results['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'];
+      }
+
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
@@ -150,18 +169,19 @@ export class PriceService {
       const requests: Promise<HistoricalPriceResponse>[] = [];
 
       addresses.forEach(address => {
-        if (
-          address == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
-        ) {
+        let bnb = false;
+        if (address == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') {
           address = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
         }
-        if (
-          address == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
-        ) {
+        if (address == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') {
           address = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
         }
+        if (address == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762') {
+          address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
+          bnb = true;
+        }
         const endpoint = `/coins/${
-          this.platformId
+          bnb ? 'binance-smart-chain' : this.platformId
         }/contract/${address.toLowerCase()}/market_chart/range?vs_currency=${
           this.fiatParam
         }&from=${start}&to=${end}`;
