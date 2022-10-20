@@ -257,7 +257,7 @@ const chartGrid = computed(() => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container mb-[10px]">
     <BalLoadingBlock
       v-if="isLoadingPriceData"
       :class="{

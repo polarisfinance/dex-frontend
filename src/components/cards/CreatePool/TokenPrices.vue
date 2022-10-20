@@ -53,7 +53,7 @@ const USDT = '0x4988a896b1227218e4a686fde5eabdcabd91571f';
         <div class="title">Token Prices</div>
       </BalStack>
     </div>
-    <div class="p-2 px-4 flex justify-center gap-[12px]">
+    <div class="p-2 px-4 flex-wrap justify-center gap-[12px]">
       <!-- <BalStack vertical isDynamic spacing="sm">
         <BalStack
           v-for="token in knownTokens"
