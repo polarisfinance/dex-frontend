@@ -199,7 +199,7 @@ export default defineComponent({
           v-if="isDesktop"
         >
           <div class="flex gap-[18px]">
-            <div class="relative">
+            <div class="relative" @click="inputFocused = true">
               <div class="search flex items-center">
                 <img src="./search.svg" class="mr-[12px]" />
                 <input
@@ -208,8 +208,6 @@ export default defineComponent({
                   class="input"
                   v-on:input="filterToken"
                   v-model="searchTerm"
-                  @focus="inputFocused = true"
-                  @blur="inputFocused = false"
                 />
               </div>
               <ul class="absolute w-full text-center list" v-if="inputFocused">
