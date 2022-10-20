@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HomePageHero from '@/components/heros/HomePageHero.vue';
@@ -17,8 +17,6 @@ import classicImg from './classic.svg';
 import { InvestmentPool } from '@balancer-labs/typechain';
 
 import { TOKENS } from '@/constants/tokens';
-
-import { TokenInfo } from '@/types/TokenList';
 
 const { priceQueryLoading, tokens, getTokens } = useTokens();
 
@@ -94,11 +92,50 @@ const investmentPoolsWithoutSeigniorage = computed(
 function navigateToCreatePool() {
   router.push({ name: 'create-pool' });
 }
+
+let searchTerm = ref('');
+
+const getTokenNames = () => {
+  const { tokens } = useTokens();
+  const Tokens = Object.entries(tokens.value);
+  const tokenList = [] as string[];
+
+  for (const token of Object.entries(Tokens)) {
+    const tokenName: string = token[1][1]['name'];
+
+    tokenList.push(tokenName);
+  }
+  console.log(tokenList);
+
+  return tokenList;
+};
+
+const searchTokens = computed(() => {
+  if (searchTerm.value === '') {
+    return [];
+  }
+
+  const tokenNames = getTokenNames();
+
+  return tokenNames.filter(token => {
+    if (token.toLowerCase().includes(searchTerm.value.toLowerCase())) {
+      return token;
+    }
+  });
+});
+
+let selectedToken = ref('');
+
+const selectToken = token => {
+  selectedToken.value = token;
+  searchTerm.value = '';
+};
 </script>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import useTokens from '@/composables/useTokens';
+import { TokenInfo } from '@/types/TokenList';
 
 export default defineComponent({
   created() {
@@ -135,6 +172,7 @@ export default defineComponent({
 
 <template>
   <HomePageHero />
+
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
       <div class="px-4 xl:px-0">
@@ -142,12 +180,6 @@ export default defineComponent({
           class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
           v-if="isDesktop"
         >
-          <!-- <TokenSearchInput
-            v-model="selectedTokens"
-            class="w-full md:w-2/3"
-            @add="addSelectedToken"
-            @remove="removeSelectedToken"
-          /> -->
           <div class="flex gap-[18px]">
             <div class="search flex items-center">
               <img src="./search.svg" class="mr-[12px]" />
@@ -156,8 +188,19 @@ export default defineComponent({
                 placeholder="Filter by token"
                 class="input"
                 v-on:input="filterToken"
+                v-model="searchTerm"
               />
             </div>
+            <ul>
+              <li
+                v-for="token in searchTokens"
+                :key="token"
+                @click="selectToken(token)"
+                class="absolute flex-column l-0"
+              >
+                {{ token }}
+              </li>
+            </ul>
             <div
               class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
             >
