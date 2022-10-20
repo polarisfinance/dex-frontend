@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HomePageHero from '@/components/heros/HomePageHero.vue';
@@ -9,13 +9,18 @@ import PoolsTable from '@/components/tables/PoolsTable/PoolsTable.vue';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 import useBreakpoints from '@/composables/useBreakpoints';
-import useTokens from '@/composables/useTokens';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import segniorageImg from './segniorage.svg';
 import singleStakingImg from './single-staking.svg';
 import classicImg from './classic.svg';
 import { InvestmentPool } from '@balancer-labs/typechain';
+
+import { TOKENS } from '@/constants/tokens';
+
+import { TokenInfo } from '@/types/TokenList';
+
+const { priceQueryLoading, tokens, getTokens } = useTokens();
 
 // COMPOSABLES
 const router = useRouter();
@@ -31,7 +36,6 @@ const {
   isLoadingMore,
 } = useStreamedPoolsQuery(selectedTokens);
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
-const { priceQueryLoading } = useTokens();
 
 const isInvestmentPoolsTableLoading = computed(
   () => dataStates.value['basic'] === 'loading' || priceQueryLoading.value
@@ -43,27 +47,90 @@ const segniorageIds = [
   '0xa215a58225b344cbb62fcf762e8e884dbedfbe58000200000000000000000006',
   '0x293bbbef6087f681a8110f08bbdedadd13599fc3000200000000000000000007',
   '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
-  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e'
+  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e',
 ];
-const segnioragePools = computed(
-  () =>
-    investmentPools.value.filter(pool =>
-      segniorageIds.includes(pool.id)
-    ) as InvestmentPool[]
-);
+
+const contains = (arr1, arr2) => {
+  for (let el of arr1) {
+    if (arr2.includes(el)) return true;
+  }
+  console.log('x');
+
+  return false;
+};
+
+// const filteredTokensList: String[] = [];
+
+// function filterToken(e) {
+//   const filteredToken = e.target.value.toLowerCase();
+//   filteredTokensList.length = 0;
+
+//   for (const token of Object.entries(tokens.value)) {
+//     const tokenName = token[1].name;
+//     const tokenAddress = token[1].address;
+
+//     if (tokenName.toLowerCase().includes(filteredToken)) {
+//       filteredTokensList.push(tokenAddress);
+//     }
+//   }
+
+//   console.log(filteredTokensList);
+// }
+
+const segnioragePools = computed(() => {
+  return investmentPools.value.filter(pool =>
+    segniorageIds.includes(pool.id)
+  ) as InvestmentPool[];
+});
 const investmentPoolsWithoutSeigniorage = computed(
   () =>
     investmentPools.value.filter(
       pool => !segniorageIds.includes(pool.id)
     ) as InvestmentPool[]
 );
-console.log(investmentPools)
 /**
  * METHODS
  */
 function navigateToCreatePool() {
   router.push({ name: 'create-pool' });
 }
+</script>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import useTokens from '@/composables/useTokens';
+
+export default defineComponent({
+  created() {
+    const { tokens } = useTokens();
+    this.tokens = Object.entries(tokens.value);
+  },
+  data() {
+    return {
+      filteredTokensList: [] as string[],
+      tokens: [] as [string, TokenInfo][],
+    };
+  },
+  methods: {
+    filterToken(e) {
+      const filteredToken = e.target.value.toLowerCase();
+      this.filteredTokensList.length = 0;
+      const tokens = this.tokens;
+      const tokenList = [] as string[];
+
+      for (const token of Object.entries(tokens)) {
+        const tokenName: string = token[1]['name'];
+        const tokenAddress: string = token[1]['address'];
+
+        if (!tokenName.toLowerCase().includes(filteredToken)) {
+          tokenList.push(tokenAddress);
+        }
+      }
+
+      this.filteredTokensList = tokenList;
+    },
+  },
+});
 </script>
 
 <template>
@@ -84,7 +151,12 @@ function navigateToCreatePool() {
           <div class="flex gap-[18px]">
             <div class="search flex items-center">
               <img src="./search.svg" class="mr-[12px]" />
-              <input type="text" placeholder="Filter by token" class="input" />
+              <input
+                type="text"
+                placeholder="Filter by token"
+                class="input"
+                v-on:input="filterToken"
+              />
             </div>
             <div
               class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
@@ -142,10 +214,11 @@ function navigateToCreatePool() {
       </div>
       <div id="segniorage">
         <PoolsTable
+          :key="filteredTokensList"
           :data="segnioragePools"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoadingMore="isLoadingMore"
-          :selectedTokens="selectedTokens"
+          :selectedTokens="filteredTokensList"
           class="mb-8"
           :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
           :columnStates="dataStates"
@@ -174,10 +247,11 @@ function navigateToCreatePool() {
       </div> -->
       <div id="classicpools">
         <PoolsTable
+          :key="filteredTokensList"
           :data="investmentPoolsWithoutSeigniorage"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoadingMore="isLoadingMore"
-          :selectedTokens="selectedTokens"
+          :selectedTokens="filteredTokensList"
           class="mb-8"
           :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
           :columnStates="dataStates"
