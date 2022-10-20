@@ -103,7 +103,7 @@ const sunrises = computed(() =>
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: stretch;
   gap: 24px;
   padding-left: 165px;
   padding-right: 165px;
@@ -115,7 +115,7 @@ const sunrises = computed(() =>
   padding-right: 24px;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 12px;
   margin-top: 40px;

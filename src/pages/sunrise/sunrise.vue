@@ -48,7 +48,7 @@ onMounted(() => {});
     >
       <img :src="logo[sunrise.name]" class="logo" />
       <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
-      <div class="sunrise-description mt-[12px]">
+      <div class="sunrise-description mt-[12px] p-[10px]">
         <p>
           Stake your $SPOLAR to earn
           <span class="uppercase">{{ '$' + sunrise.name }}</span>
@@ -105,7 +105,7 @@ onMounted(() => {});
 .sunrisePlaceholder {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 24px;
   padding-left: 165px;
@@ -118,7 +118,7 @@ onMounted(() => {});
   padding-right: 24px;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: 12px;
   margin-top: 40px;
