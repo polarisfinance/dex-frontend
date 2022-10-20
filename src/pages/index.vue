@@ -210,7 +210,7 @@ export default defineComponent({
                   v-model="searchTerm"
                 />
               </div>
-              <ul class="absolute w-full text-center list" v-if="inputFocused">
+              <!-- <ul class="absolute w-full text-center list" v-if="inputFocused">
                 <li
                   v-for="token in searchTokens"
                   :key="token"
@@ -221,7 +221,7 @@ export default defineComponent({
                     <div>{{ token }}</div>
                   </div>
                 </li>
-              </ul>
+              </ul> -->
             </div>
             <div
               class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
