@@ -110,6 +110,23 @@ const getTokenNames = () => {
   return tokenList;
 };
 
+const getTokenMapping = () => {
+  const { tokens } = useTokens();
+  const Tokens = Object.entries(tokens.value);
+  const tokenList = {};
+
+  for (const token of Object.entries(Tokens)) {
+    const tokenName: string = token[1][1]['name'];
+    const tokenAddress: string = token[1][1]['address'];
+
+    tokenList[tokenName] = tokenAddress;
+  }
+
+  return tokenList;
+};
+
+const mapping = getTokenMapping();
+
 const searchTokens = computed(() => {
   if (searchTerm.value === '') {
     return [];
@@ -128,7 +145,7 @@ let selectedToken = ref('');
 
 const selectToken = token => {
   selectedToken.value = token;
-  searchTerm.value = '';
+  searchTerm.value = token;
 };
 </script>
 
@@ -146,6 +163,7 @@ export default defineComponent({
     return {
       filteredTokensList: [] as string[],
       tokens: [] as [string, TokenInfo][],
+      inputFocused: false,
     };
   },
   methods: {
@@ -181,26 +199,32 @@ export default defineComponent({
           v-if="isDesktop"
         >
           <div class="flex gap-[18px]">
-            <div class="search flex items-center">
-              <img src="./search.svg" class="mr-[12px]" />
-              <input
-                type="text"
-                placeholder="Filter by token"
-                class="input"
-                v-on:input="filterToken"
-                v-model="searchTerm"
-              />
+            <div class="relative">
+              <div class="search flex items-center">
+                <img src="./search.svg" class="mr-[12px]" />
+                <input
+                  type="text"
+                  placeholder="Filter by token"
+                  class="input"
+                  v-on:input="filterToken"
+                  v-model="searchTerm"
+                  @focus="inputFocused = true"
+                  @blur="inputFocused = false"
+                />
+              </div>
+              <ul class="absolute w-full text-center list" v-if="inputFocused">
+                <li
+                  v-for="token in searchTokens"
+                  :key="token"
+                  @click="selectToken(token)"
+                >
+                  <div class="flex justify-between px-[10px] py-[5px]">
+                    <BalAsset :address="mapping[token]" />
+                    <div>{{ token }}</div>
+                  </div>
+                </li>
+              </ul>
             </div>
-            <ul>
-              <li
-                v-for="token in searchTokens"
-                :key="token"
-                @click="selectToken(token)"
-                class="absolute flex-column l-0"
-              >
-                {{ token }}
-              </li>
-            </ul>
             <div
               class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
             >
@@ -445,5 +469,10 @@ export default defineComponent({
     rgba(123, 48, 127, 0.5) 0%,
     rgba(123, 48, 127, 0.405) 100%
   );
+}
+
+.list {
+  z-index: 100;
+  background: #231928;
 }
 </style>
