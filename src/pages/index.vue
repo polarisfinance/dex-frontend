@@ -168,7 +168,7 @@ export default defineComponent({
   },
   methods: {
     filterToken(e) {
-      const filteredToken = e.target.value.toLowerCase();
+      const filteredToken = e.target.value;
       this.filteredTokensList.length = 0;
       const tokens = this.tokens;
       const tokenList = [] as string[];
@@ -177,7 +177,11 @@ export default defineComponent({
         const tokenName: string = token[1]['name'];
         const tokenAddress: string = token[1]['address'];
 
-        if (!tokenName.toLowerCase().includes(filteredToken)) {
+        if (
+          tokenName &&
+          filteredToken &&
+          !tokenName.toLowerCase().includes(filteredToken.toLowerCase())
+        ) {
           tokenList.push(tokenAddress);
         }
       }
