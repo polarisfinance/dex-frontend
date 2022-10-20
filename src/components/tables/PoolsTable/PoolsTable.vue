@@ -240,6 +240,25 @@ function iconAddresses(pool: PoolWithShares) {
     ? [pool.address]
     : orderedTokenAddresses(pool);
 }
+
+function findCommonElements3(arr1, arr2) {
+  for (let el1 of arr1) {
+    for (let el2 of arr2) {
+      if (el1.toLowerCase() === el2.toLowerCase()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function selected(pool) {
+  let found = true;
+  const poolTokens = Object.values(pool.tokensList);
+  const selectedTokens = Object.values(props.selectedTokens);
+
+  return findCommonElements3(selectedTokens, poolTokens);
+}
 </script>
 
 <template>
@@ -361,11 +380,15 @@ function iconAddresses(pool: PoolWithShares) {
     </div>
     <div class="mt-[24px] w-full border" />
     <div
-      class="mt-[24px] flex w-full items-center"
+      class="flex w-full items-center"
       v-for="(pool, idx) in data"
       :key="idx"
     >
-      <router-link :to="'/pool/' + pool.id" class="flex w-full items-center">
+      <router-link
+        :to="'/pool/' + pool.id"
+        class="flex w-full items-center mt-[24px]"
+        v-if="selected(pool)"
+      >
         <div class="flex w-full items-center">
           <div class="flex w-full items-center">
             <div class="flex w-full items-center">

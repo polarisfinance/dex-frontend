@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HomePageHero from '@/components/heros/HomePageHero.vue';
@@ -9,13 +9,16 @@ import PoolsTable from '@/components/tables/PoolsTable/PoolsTable.vue';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 import useBreakpoints from '@/composables/useBreakpoints';
-import useTokens from '@/composables/useTokens';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import segniorageImg from './segniorage.svg';
 import singleStakingImg from './single-staking.svg';
 import classicImg from './classic.svg';
 import { InvestmentPool } from '@balancer-labs/typechain';
+
+import { TOKENS } from '@/constants/tokens';
+
+const { priceQueryLoading, tokens, getTokens } = useTokens();
 
 // COMPOSABLES
 const router = useRouter();
@@ -31,7 +34,6 @@ const {
   isLoadingMore,
 } = useStreamedPoolsQuery(selectedTokens);
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
-const { priceQueryLoading } = useTokens();
 
 const isInvestmentPoolsTableLoading = computed(
   () => dataStates.value['basic'] === 'loading' || priceQueryLoading.value
@@ -43,31 +45,152 @@ const segniorageIds = [
   '0xa215a58225b344cbb62fcf762e8e884dbedfbe58000200000000000000000006',
   '0x293bbbef6087f681a8110f08bbdedadd13599fc3000200000000000000000007',
   '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
-  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e'
+  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e',
 ];
-const segnioragePools = computed(
-  () =>
-    investmentPools.value.filter(pool =>
-      segniorageIds.includes(pool.id)
-    ) as InvestmentPool[]
-);
+
+const contains = (arr1, arr2) => {
+  for (let el of arr1) {
+    if (arr2.includes(el)) return true;
+  }
+  console.log('x');
+
+  return false;
+};
+
+// const filteredTokensList: String[] = [];
+
+// function filterToken(e) {
+//   const filteredToken = e.target.value.toLowerCase();
+//   filteredTokensList.length = 0;
+
+//   for (const token of Object.entries(tokens.value)) {
+//     const tokenName = token[1].name;
+//     const tokenAddress = token[1].address;
+
+//     if (tokenName.toLowerCase().includes(filteredToken)) {
+//       filteredTokensList.push(tokenAddress);
+//     }
+//   }
+
+//   console.log(filteredTokensList);
+// }
+
+const segnioragePools = computed(() => {
+  return investmentPools.value.filter(pool =>
+    segniorageIds.includes(pool.id)
+  ) as InvestmentPool[];
+});
 const investmentPoolsWithoutSeigniorage = computed(
   () =>
     investmentPools.value.filter(
       pool => !segniorageIds.includes(pool.id)
     ) as InvestmentPool[]
 );
-console.log(investmentPools)
 /**
  * METHODS
  */
 function navigateToCreatePool() {
   router.push({ name: 'create-pool' });
 }
+
+let searchTerm = ref('');
+
+const getTokenNames = () => {
+  const { tokens } = useTokens();
+  const Tokens = Object.entries(tokens.value);
+  const tokenList = [] as string[];
+
+  for (const token of Object.entries(Tokens)) {
+    const tokenName: string = token[1][1]['name'];
+
+    tokenList.push(tokenName);
+  }
+  console.log(tokenList);
+
+  return tokenList;
+};
+
+const getTokenMapping = () => {
+  const { tokens } = useTokens();
+  const Tokens = Object.entries(tokens.value);
+  const tokenList = {};
+
+  for (const token of Object.entries(Tokens)) {
+    const tokenName: string = token[1][1]['name'];
+    const tokenAddress: string = token[1][1]['address'];
+
+    tokenList[tokenName] = tokenAddress;
+  }
+
+  return tokenList;
+};
+
+const mapping = getTokenMapping();
+
+const searchTokens = computed(() => {
+  if (searchTerm.value === '') {
+    return [];
+  }
+
+  const tokenNames = getTokenNames();
+
+  return tokenNames.filter(token => {
+    if (token.toLowerCase().includes(searchTerm.value.toLowerCase())) {
+      return token;
+    }
+  });
+});
+
+let selectedToken = ref('');
+
+const selectToken = token => {
+  selectedToken.value = token;
+  searchTerm.value = token;
+};
+</script>
+
+<script lang="ts">
+import { defineComponent, ref, computed } from 'vue';
+import useTokens from '@/composables/useTokens';
+import { TokenInfo } from '@/types/TokenList';
+
+export default defineComponent({
+  created() {
+    const { tokens } = useTokens();
+    this.tokens = Object.entries(tokens.value);
+  },
+  data() {
+    return {
+      filteredTokensList: [] as string[],
+      tokens: [] as [string, TokenInfo][],
+      inputFocused: false,
+    };
+  },
+  methods: {
+    filterToken(e) {
+      const filteredToken = e.target.value.toLowerCase();
+      this.filteredTokensList.length = 0;
+      const tokens = this.tokens;
+      const tokenList = [] as string[];
+
+      for (const token of Object.entries(tokens)) {
+        const tokenName: string = token[1]['name'];
+        const tokenAddress: string = token[1]['address'];
+
+        if (!tokenName.toLowerCase().includes(filteredToken)) {
+          tokenList.push(tokenAddress);
+        }
+      }
+
+      this.filteredTokensList = tokenList;
+    },
+  },
+});
 </script>
 
 <template>
   <HomePageHero />
+
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
       <div class="px-4 xl:px-0">
@@ -75,16 +198,30 @@ function navigateToCreatePool() {
           class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
           v-if="isDesktop"
         >
-          <!-- <TokenSearchInput
-            v-model="selectedTokens"
-            class="w-full md:w-2/3"
-            @add="addSelectedToken"
-            @remove="removeSelectedToken"
-          /> -->
           <div class="flex gap-[18px]">
-            <div class="search flex items-center">
-              <img src="./search.svg" class="mr-[12px]" />
-              <input type="text" placeholder="Filter by token" class="input" />
+            <div class="relative" @click="inputFocused = true">
+              <div class="search flex items-center">
+                <img src="./search.svg" class="mr-[12px]" />
+                <input
+                  type="text"
+                  placeholder="Filter by token"
+                  class="input"
+                  v-on:input="filterToken"
+                  v-model="searchTerm"
+                />
+              </div>
+              <!-- <ul class="absolute w-full text-center list" v-if="inputFocused">
+                <li
+                  v-for="token in searchTokens"
+                  :key="token"
+                  @click="selectToken(token)"
+                >
+                  <div class="flex justify-between px-[10px] py-[5px]">
+                    <BalAsset :address="mapping[token]" />
+                    <div>{{ token }}</div>
+                  </div>
+                </li>
+              </ul> -->
             </div>
             <div
               class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
@@ -142,10 +279,11 @@ function navigateToCreatePool() {
       </div>
       <div id="segniorage">
         <PoolsTable
+          :key="filteredTokensList"
           :data="segnioragePools"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoadingMore="isLoadingMore"
-          :selectedTokens="selectedTokens"
+          :selectedTokens="filteredTokensList"
           class="mb-8"
           :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
           :columnStates="dataStates"
@@ -174,10 +312,11 @@ function navigateToCreatePool() {
       </div> -->
       <div id="classicpools">
         <PoolsTable
+          :key="filteredTokensList"
           :data="investmentPoolsWithoutSeigniorage"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoadingMore="isLoadingMore"
-          :selectedTokens="selectedTokens"
+          :selectedTokens="filteredTokensList"
           class="mb-8"
           :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
           :columnStates="dataStates"
@@ -328,5 +467,10 @@ function navigateToCreatePool() {
     rgba(123, 48, 127, 0.5) 0%,
     rgba(123, 48, 127, 0.405) 100%
   );
+}
+
+.list {
+  z-index: 100;
+  background: #231928;
 }
 </style>
