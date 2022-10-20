@@ -12,7 +12,7 @@
   "loggingRpc": "https://rpc.polarisfinance.io",
   "explorer": "https://aurorascan.dev",
   "explorerName": "Aurorascan",
-  "subgraph": "https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-dex",
+  "subgraph": "https://graph.polarisfinance.io/subgraphs/name/polarisfinance/polaris-dex",
   "poolsUrlV2": "",
   "subgraphs": {
     "aave": "",

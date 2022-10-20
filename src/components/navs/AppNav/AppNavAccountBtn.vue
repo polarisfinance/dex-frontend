@@ -20,14 +20,13 @@
           :address="account"
           :size="avatarSize"
         />
-        <span
+        <!-- <span
           v-if="profile && profile.ens"
           class="hidden pl-2 leading-[20px] lg:inline-block"
           v-text="profile && profile.ens"
-        />
+        /> -->
         <span
-          v-else
-          class="eth-address hidden pl-2 leading-[20px] lg:inline-block"
+          class="eth-address  pl-2 leading-[20px] inline-block"
           v-text="_shorten(account)"
         />
       </button>
@@ -75,9 +74,9 @@ export default defineComponent({
 
     const avatarSize = computed(() => {
       if (bp.value === 'sm') {
-        return 35;
+        return 20;
       } else if (['md', 'lg'].includes(bp.value)) {
-        return 40;
+        return 20;
       } else {
         return 20;
       }
