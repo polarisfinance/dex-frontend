@@ -174,7 +174,6 @@ export default defineComponent({
       const tokenList = [] as string[];
 
       for (const token of Object.entries(tokens)) {
-        console.log(token[1][1]);
         const tokenName: string = token[1][1]['name'];
         const tokenAddress: string = token[1][1]['address'];
 
