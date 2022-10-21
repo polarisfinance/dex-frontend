@@ -290,7 +290,7 @@ export default defineComponent({
           :isPaginated="true"
           :isLoading="isInvestmentPoolsTableLoading"
           @load-more="loadMore"
-          :title="'Segniorage Pools'"
+          :title="'Seigniorage Pools'"
           :img="segniorageImg"
         />
       </div>
