@@ -156,14 +156,19 @@ import { TokenInfo } from '@/types/TokenList';
 
 export default defineComponent({
   created() {
-    const { tokens } = useTokens();
+    const { tokens, getToken } = useTokens();
+
     this.tokens = Object.entries(tokens.value);
+    Object.entries(tokens.value).forEach(token => {
+      this.tokenNames[getToken(token[0]).symbol] = token[0];
+    });
   },
   data() {
     return {
       filteredTokensList: [] as string[],
       tokens: [] as [string, TokenInfo][],
       inputFocused: false,
+      tokenNames: {},
     };
   },
   methods: {
@@ -173,14 +178,14 @@ export default defineComponent({
       const tokens = this.tokens;
       const tokenList = [] as string[];
 
-      for (const token of Object.entries(tokens)) {
-        const tokenName: string = token[1][1]['name'];
-        const tokenAddress: string = token[1][1]['address'];
+      for (const token of Object.entries(this.tokenNames)) {
+        const tokenName: string = token[0] as string;
+        const tokenAddress: string = token[1] as string;
 
         if (
           tokenName &&
           filteredToken &&
-          !tokenName.toLowerCase().includes(filteredToken.toLowerCase())
+          tokenName.toLowerCase().includes(filteredToken.toLowerCase())
         ) {
           tokenList.push(tokenAddress);
         }
