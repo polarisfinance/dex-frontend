@@ -406,7 +406,7 @@ watch(
       </AnimatePresence>
     </div>
 
-    <div v-if="upToLargeBreakpoint" ref="accordionWrapper" class="">
+    <div v-if="upToLargeBreakpoint"  class="">
       <!-- <BalAccordion
         :dependencies="validTokens"
         :sections="[
