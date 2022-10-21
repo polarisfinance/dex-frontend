@@ -174,8 +174,7 @@ const {
     wrappedNativeAsset
   ),
   () =>
-    getPairPriceData(
-      tokenInAddress.value,
+    getPairPriceData(tokenInAddress.value,
       tokenOutAddress.value,
       nativeAsset?.address,
       wrappedNativeAsset.value?.address,
