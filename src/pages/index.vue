@@ -229,7 +229,7 @@ export default defineComponent({
               <div class="favourites-text mr-[12px]">Favourites</div>
               <a href="#segniorage"
                 ><div class="segniorage-btn cursor-pointer">
-                  Segniorage Pools
+                  Seigniorage Pools
                 </div></a
               >
               <a href="#singlestaking">
@@ -259,7 +259,7 @@ export default defineComponent({
           </div>
           <div class="mt-[8px] flex justify-center gap-[8px]">
             <a href="#segniorage">
-              <div class="segniorage mobile-pool-btn">Segniorage Pools</div>
+              <div class="segniorage mobile-pool-btn">Seigniorage Pools</div>
             </a>
             <a href="#singlestaking">
               <div class="mobile-pool-btn">Single Staking</div>

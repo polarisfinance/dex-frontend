@@ -3,7 +3,7 @@
     <div class="pt-8 lg:px-4 xl:container xl:mx-auto">
       <div class="mb-[24px] flex justify-between">
         <div class="flex-column">
-          <div class="pool-title">Segniorage Pool</div>
+          <div class="pool-title">Seigniorage Pool</div>
           <div class="pool-subtitle">
             Dynamic swap fees: Currently
             {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
