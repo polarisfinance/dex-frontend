@@ -171,7 +171,7 @@ onMounted(() => {
 
 <style scoped>
 .input-container {
-  @apply transition-colors flex flex-col px-[12px] py-[16px];
+  @apply flex flex-col px-[12px] py-[16px] transition-colors;
   background-color: #362d3b;
   border-radius: 16px;
   border: none;
@@ -187,6 +187,8 @@ onMounted(() => {
   @apply overflow-hidden bg-transparent;
   font-weight: 500;
 }
+
+
 
 .label {
   @apply text-sm;

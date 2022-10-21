@@ -3,7 +3,7 @@
     <template #activator>
       <button class="icon-spin-anim settings-button" @click="onActivatorClick">
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
-        <IconSettings class="mt-1" />
+        <IconSettings class="mt-1 mr-[12px]" />
       </button>
     </template>
 
@@ -158,7 +158,6 @@ export default defineComponent({
 
 .settings-button {
   background: none;
-  background-color: #130719 !important;
   margin: 0 !important;
   padding: 0 !important;
 }

@@ -172,11 +172,15 @@ onMounted(() => {
 <style scoped>
 .input-container {
   @apply flex flex-col transition-colors;
-  background-color: #231928;
+  background-color: #261737;
   border-radius: 16px;
   border: none;
   height: 86px;
   font-weight: 500;
+}
+
+::placeholder {
+  color: #FDFDFD !important;
 }
 
 .input-group {

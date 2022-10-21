@@ -418,14 +418,16 @@ export default defineComponent({
 </script>
 <style scoped>
 .amount-button {
-  background: #231928;
+  background: #261737;
   border-radius: 12px;
   width: 100%;
   padding: 12px 0px;
   gap: 12px;
   left: 10px;
   top: 259px;
-  color: #b9babb;
+  color: #F5E1FF;
+  font-size: 20px;
+  line-height: 26px;
 }
 
 .title {
@@ -463,12 +465,12 @@ export default defineComponent({
   left: 10px;
   top: 226px;
 
-  background: linear-gradient(
-    94.14deg,
-    #391b40 23.11%,
-    rgba(57, 27, 64, 0.81) 81.52%
-  );
+  background: #1e102d;
+  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
+    inset 2px 2px 4px #010001;
   border-radius: 12px;
+  color: #D7B3FF;
+  
   width: 100%;
 }
 

@@ -127,8 +127,8 @@ export default defineComponent({
 <style scoped>
 .bal-card {
   @apply flex flex-col;
-  background-color: #130719;
-  box-shadow: inset 0px 0px 2px #fbaaff;
+  background-color: #160D22;
+  border: 0.5px solid rgba(215, 179, 255, 0.5);
   border-radius: 22px;
   box-sizing: border-box;
 }

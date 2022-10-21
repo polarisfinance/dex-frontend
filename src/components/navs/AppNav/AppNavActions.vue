@@ -47,19 +47,16 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
 
 <style scoped>
 button {
-  background: linear-gradient(
-    94.14deg,
-    #391b40 23.11%,
-    rgba(57, 27, 64, 0.81) 81.52%
-  );
-  border-radius: 16px;
-  padding: 10px 25px;
+  @apply bg-transparent;
+  padding: 9px 50px;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 
-  color: #fbaaff;
+  color: #fdfdfd;
+  border: 1px solid rgba(64, 51, 71, 0.5);
+  border-radius: 12px;
 }
 
 .menu-btn {
@@ -68,25 +65,10 @@ button {
 }
 
 .btn:hover {
-  background: linear-gradient(
-    94.14deg,
-    #391b40 23.11%,
-    rgba(57, 27, 64, 0.81) 81.52%
-  );
-  border: 0.5px solid #ffffff;
-  box-shadow: inset 0px 0px 1px rgba(255, 247, 247, 0.25);
-  border-radius: 16px;
-  padding: 10px 25px;
+
 }
 
 .btn:active {
-  background: linear-gradient(
-    94.14deg,
-    #391b40 23.11%,
-    rgba(57, 27, 64, 0.81) 81.52%
-  );
-  border: 1px solid #ffffff;
-  box-shadow: inset 0px 0px 1px rgba(255, 247, 247, 0.25);
-  border-radius: 16px;
+
 }
 </style>

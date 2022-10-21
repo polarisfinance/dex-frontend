@@ -11,10 +11,10 @@
         :size="upToLargeBreakpoint ? 'md' : 'sm'"
         :circle="upToLargeBreakpoint"
       >
-        <span
+        <!-- <span
           class="eth-address hidden text-[24px] leading-[20px] leading-[31px] text-white lg:inline-block"
           v-text="'...'"
-        />
+        /> -->
       </button>
     </template>
     <div

@@ -165,7 +165,9 @@ function toggleModal(): void {
 
 <style scoped>
 .group {
-  background-color: #2e2433 !important;
+  background: #261737 !important;
+  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
+    inset 2px 2px 4px #18111c !important;
   border-radius: 16px !important;
 }
 
@@ -198,7 +200,8 @@ function toggleModal(): void {
   padding: 4px 4px 4px 16px;
   gap: 6px;
 
-  background: #7b307f !important;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-style: normal;
   font-weight: 600;

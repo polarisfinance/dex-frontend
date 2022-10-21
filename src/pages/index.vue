@@ -101,8 +101,8 @@ const getTokenNames = () => {
   const tokenList = [] as string[];
 
   for (const token of Object.entries(Tokens)) {
-    const tokenName: string = token[1][1]['name'];
-
+    const tokenName: string = token[1][1]['symbol'];
+    console.log(token)
     tokenList.push(tokenName);
   }
   console.log(tokenList);
@@ -116,9 +116,9 @@ const getTokenMapping = () => {
   const tokenList = {};
 
   for (const token of Object.entries(Tokens)) {
-    const tokenName: string = token[1][1]['name'];
+    const tokenName: string = token[1][1]['symbol'];
     const tokenAddress: string = token[1][1]['address'];
-
+    console.log(token[1][1]['symbol'])
     tokenList[tokenName] = tokenAddress;
   }
 
@@ -174,7 +174,7 @@ export default defineComponent({
       const tokenList = [] as string[];
 
       for (const token of Object.entries(tokens)) {
-        const tokenName: string = token[1]['name'];
+        const tokenName: string = token[1]['symbol'];
         const tokenAddress: string = token[1]['address'];
 
         if (!tokenName.toLowerCase().includes(filteredToken)) {

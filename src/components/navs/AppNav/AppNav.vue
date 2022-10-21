@@ -62,7 +62,7 @@ onUnmounted(() => {
       </router-link>
 
       <!-- <img src="./AuroraLogo.svg" v-if="isMobile" /> -->
-      <DesktopLinks v-if="isDesktop" class="ml-8 flex font-medium" />
+      <DesktopLinks v-if="isDesktop" class="flex font-medium" />
 
       <AppNavActions class="actions" />
     </div>

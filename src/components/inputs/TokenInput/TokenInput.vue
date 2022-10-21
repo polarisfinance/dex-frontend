@@ -257,7 +257,7 @@ watchEffect(() => {
         class="flex flex-col pt-[4.51px]"
       >
         <div
-          class="flex items-center justify-between text-sm leading-[18px] text-gray-600 dark:text-gray-400"
+          class="flex items-center justify-between text-sm leading-[18px] text-[#F5E1FF]"
         >
           <div v-if="!isWalletReady || disableBalance" />
           <div
@@ -268,13 +268,13 @@ watchEffect(() => {
             <template v-if="hasBalance && !noMax && !disableMax">
               <span
                 v-if="!isMaxed"
-                class="mr-[4px] rounded-xl bg-[#391C41] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#FBAAFF] transition-colors"
+                class="mr-[4px] rounded-xl bg-[#200D30] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#D7B2FF] transition-colors"
               >
                 MAX
               </span>
               <span
                 v-else
-                class="mr-[4px] cursor-not-allowed rounded-xl bg-[#391C41] pr-[4px] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-gray-400 transition-colors dark:text-gray-600"
+                class="mr-[4px] cursor-not-allowed rounded-xl bg-[#200D30] pr-[4px] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] input text-[24px] text-right font-numeric transition-colors text-[#D7B2FF]"
               >
                 MAXED
               </span>
