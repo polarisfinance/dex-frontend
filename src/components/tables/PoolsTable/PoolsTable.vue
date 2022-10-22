@@ -257,7 +257,9 @@ function selected(pool) {
   const poolTokens = Object.values(pool.tokensList);
   const selectedTokens = Object.values(props.selectedTokens);
 
-  return findCommonElements3(selectedTokens, poolTokens);
+  if (selectedTokens.length == 0) return true;
+
+  return !findCommonElements3(selectedTokens, poolTokens);
 }
 </script>
 

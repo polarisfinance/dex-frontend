@@ -48,6 +48,18 @@ const segniorageIds = [
   '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e',
 ];
 
+const classicPoolsIds = [
+  '0xcb9eb3f264be622a6d707947765db5c79d969ca7000000000000000000000009',
+  '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a',
+  '0x9cd44e44e8a61bc7dc34b04c762a3c0137a3707c000200000000000000000002',
+  '0xfbfcd8d689a3689db0f35277bf7cc11663a672e000020000000000000000000b',
+  '0xb3a04902b78fbe61185b766866193630db4db8a300020000000000000000000d',
+  '0x24f58ab36c212e54b248ebfb17eff2ca21dc95d5000200000000000000000013',
+  '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed00020000000000000000000c',
+  '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b00020000000000000000000f',
+  '0x8bd71de52a3be3aadeb375f8d69aed37adf83d80000200000000000000000010',
+];
+
 const contains = (arr1, arr2) => {
   for (let el of arr1) {
     if (arr2.includes(el)) return true;
@@ -86,6 +98,15 @@ const investmentPoolsWithoutSeigniorage = computed(
       pool => !segniorageIds.includes(pool.id)
     ) as InvestmentPool[]
 );
+
+const communityPools = computed(
+  () =>
+    investmentPools.value.filter(
+      pool =>
+        !segniorageIds.includes(pool.id) && !classicPoolsIds.includes(pool.id)
+    ) as InvestmentPool[]
+);
+
 /**
  * METHODS
  */
@@ -105,7 +126,6 @@ const getTokenNames = () => {
     console.log(token)
     tokenList.push(tokenName);
   }
-  console.log(tokenList);
 
   return tokenList;
 };
@@ -147,6 +167,12 @@ const selectToken = token => {
   selectedToken.value = token;
   searchTerm.value = token;
 };
+
+const foo = () => {
+  investmentPoolsWithoutSeigniorage.value.forEach(pool => {
+    console.log(pool.id);
+  });
+};
 </script>
 
 <script lang="ts">
@@ -156,28 +182,37 @@ import { TokenInfo } from '@/types/TokenList';
 
 export default defineComponent({
   created() {
-    const { tokens } = useTokens();
+    const { tokens, getToken } = useTokens();
+
     this.tokens = Object.entries(tokens.value);
+    Object.entries(tokens.value).forEach(token => {
+      this.tokenNames[getToken(token[0]).symbol] = token[0];
+    });
   },
   data() {
     return {
       filteredTokensList: [] as string[],
       tokens: [] as [string, TokenInfo][],
       inputFocused: false,
+      tokenNames: {},
     };
   },
   methods: {
     filterToken(e) {
-      const filteredToken = e.target.value.toLowerCase();
+      const filteredToken = e.target.value;
       this.filteredTokensList.length = 0;
       const tokens = this.tokens;
       const tokenList = [] as string[];
 
-      for (const token of Object.entries(tokens)) {
-        const tokenName: string = token[1]['symbol'];
-        const tokenAddress: string = token[1]['address'];
+      for (const token of Object.entries(this.tokenNames)) {
+        const tokenName: string = token[0] as string;
+        const tokenAddress: string = token[1] as string;
 
-        if (!tokenName.toLowerCase().includes(filteredToken)) {
+        if (
+          tokenName &&
+          filteredToken &&
+          tokenName.toLowerCase().includes(filteredToken.toLowerCase())
+        ) {
           tokenList.push(tokenAddress);
         }
       }
@@ -198,6 +233,7 @@ export default defineComponent({
           class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
           v-if="isDesktop"
         >
+          {{ foo() }}
           <div class="flex gap-[18px]">
             <div class="relative" @click="inputFocused = true">
               <div class="search flex items-center">
@@ -324,6 +360,23 @@ export default defineComponent({
           :isLoading="isInvestmentPoolsTableLoading"
           @load-more="loadMore"
           :title="'Classic Pools'"
+          :img="classicImg"
+        />
+      </div>
+      <div id="communitypools">
+        <PoolsTable
+          :key="filteredTokensList"
+          :data="communityPools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="filteredTokensList"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Community Pools'"
           :img="classicImg"
         />
       </div>
