@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div class="flex justify-center gap-[24px] pb-[44px]">
+    <!-- <div class="flex justify-center gap-[24px] pb-[44px]">
       <BalLink :href="EXTERNAL_LINKS.Balancer.Social.Discord" external noStyle>
         <IconDiscord />
       </BalLink>
@@ -16,6 +16,83 @@
       <BalLink :href="EXTERNAL_LINKS.Balancer.Social.Github" external noStyle>
         <IconGithub />
       </BalLink>
+    </div> -->
+    <div className="min-w-screen px-[20px] ">
+      <div
+        className=" mx-auto flex min-w-min max-w-[1000px] flex-col justify-between text-[18px] font-semibold text-[#676671] sm:flex-row"
+      >
+        <div className="flex min-w-max pt-[51px] sm:self-start">
+          <img
+            src="../images/Logo.svg"
+            alt="logo-no-bg"
+            height="62"
+            width="62"
+            className=" "
+          />
+          <span className="colored-logo self-center text-[20px] font-medium">
+            POLARIS&nbsp;
+          </span>
+          <span className="colored-logo self-center text-[20px] font-semibold">
+            D&nbsp;E&nbsp;X
+          </span>
+        </div>
+        <div
+          className="flex min-w-max flex-grow flex-col-reverse justify-evenly sm:flex-row"
+        >
+          <div className="flex w-full sm:justify-evenly space-x-[20px]">
+            <div
+              className="flex flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white"
+            >
+              <span>Protocol</span>
+              <div className="flex flex-col space-y-[16px] text-[#5F5564]">
+                <a href="https://docs.polarisfinance.io">Docs</a>
+
+                <a href="https://vote.polarisfinance.io/#/">Vote</a>
+              </div>
+            </div>
+            <div
+              className="flex flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white"
+            >
+              <span>Help</span>
+              <div className="flex flex-col space-y-[16px] text-[#5F5564]">
+                <a
+                  href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/"
+                >
+                  KYC
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="flex min-w-max flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white"
+          >
+            <span>Social media</span>
+            <div className="flex space-x-[28px] text-[#5F5564]">
+              <a href="https://discord.gg/polaris-finance">
+                <IconDiscord />
+              </a>
+              <a href="https://t.me/polarisfinance">
+                <IconTelegram />
+              </a>
+              <a href="https://twitter.com/PolarisFinance_">
+                <IconTwitter />
+              </a>
+              <a href="https://medium.com/@PolarisFinance">
+                <IconMedium />
+              </a>
+              <a href="https://github.com/polarisfinance">
+                <IconGithub />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="mx-auto max-w-[1000px] pb-[139px] pt-[60px]">
+        <span className="text-[12px] font-medium leading-[14px] text-[#5F5564]">
+          Copyright © {{ year }} Polaris Finance. All rights reserved.
+        </span>
+      </div>
     </div>
   </footer>
 </template>
@@ -50,10 +127,12 @@ export default {
   },
   setup() {
     const { t } = useI18n();
+    const year = new Date().getFullYear();
     return {
       EXTERNAL_LINKS,
       t,
       isThirdPartyServicesModalVisible,
+      year,
     };
   },
 };
@@ -98,5 +177,14 @@ footer :deep(.logotype) {
 .router-link-active,
 .dark .router-link-active {
   @apply text-blue-600 dark:text-blue-400;
+}
+
+.colored-logo {
+  background: linear-gradient(180deg, #4b5e98 23.08%, #403a4e 73.08%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  display: inline-block;
 }
 </style>
