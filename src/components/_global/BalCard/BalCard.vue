@@ -40,6 +40,7 @@ export default defineComponent({
     noPad: { type: Boolean, default: false },
     noContentPad: { type: Boolean, default: false },
     noBorder: { type: Boolean, default: false },
+    lighterBg: { type: Boolean, default: false },
     darkBgColor: { type: String, default: '850' },
     imgSrc: { type: String, default: '' },
     hFull: { type: Boolean, default: false },
@@ -68,14 +69,15 @@ export default defineComponent({
 
   setup(props) {
     const borderClasses = computed(() => {
-      return 'border dark:border-gray-900';
+      return 'box-border border-[0.5px] border-[rgba(215,179,255,0.5)]';
     });
 
     const cardClasses = computed(() => {
       return {
         'rounded-lg': !props.square,
         'overflow-hidden': !props.exposeOverflow,
-        // [`bg-[#50d71e]`]: true,
+        'bg-[#160D22]': !props.lighterBg,
+        'bg-[#1E0D2C]': props.lighterBg,
         [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,
         [borderClasses.value]: !props.noBorder,
         'h-full': props.hFull,
@@ -127,10 +129,10 @@ export default defineComponent({
 <style scoped>
 .bal-card {
   @apply flex flex-col;
-  background-color: #160D22;
-  border: 0.5px solid rgba(215, 179, 255, 0.5);
+  /* background-color: #160D22; */
+  /* border: 0.5px solid rgba(215, 179, 255, 0.5); */
   border-radius: 22px;
-  box-sizing: border-box;
+  box-shadow: inset 0px 0px 2px #130719;
 }
 
 .card-container {

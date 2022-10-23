@@ -140,15 +140,14 @@ export default defineComponent({
         return 'bg-gray-50 hover:bg-white dark:bg-gray-800';
       } else {
         if (props.disabled) {
-          return `bg-gray-300 dark:bg-gray-700 text-white dark:text-gray-500`;
+          return `bg-purple-button-dark text-white dark:text-gray-500 rounded-[12px]`;
         }
         if (props.loading) {
           return `bg-${props.color}-400 dark:bg-${props.color}-dark-400`;
         }
 
         return `
-          bg-${props.color}-600 hover:bg-${props.color}-700
-          dark:bg-${props.color}-gray-400 dark:hover:bg-${props.color}-gray-600
+          bg-purple-button-${props.color} hover:bg-purple-button-${props.color}
         `;
       }
     });
@@ -173,7 +172,9 @@ export default defineComponent({
       }
       if (props.outline || props.flat)
         return `text-${props.color}-500 dark:text-${props.color}-400`;
-      return 'text-white';
+      if (props.color === 'dark')
+        return 'text-text-purple-secondary'
+      return 'text-text-white';
     });
 
     const displayClasses = computed(() => {
@@ -184,7 +185,7 @@ export default defineComponent({
 
     const shapeClasses = computed(() => {
       if (props.circle || props.rounded) return 'rounded-full';
-      return 'rounded-lg';
+      return 'rounded-xl';
     });
 
     const cursorClasses = computed(() => {
@@ -244,18 +245,18 @@ export default defineComponent({
 }
 
 .bal-btn {
-  background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
-  border-radius: 16px;
+  /* background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
+  border-radius: 16px; */
+ 
 }
 
 .content {
-  @apply flex h-full w-full items-center justify-center;
+  @apply  pt-[5px] pb-[3px] inline-block selection:align-bottom;
 }
 
 .confirm-button {
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 26px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 23px;
 }
 </style>

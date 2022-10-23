@@ -9,25 +9,25 @@
 
     <div class="pl-2">
       <div class="flex items-baseline">
-        <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
-        <BalTooltip class="ml-2 p-2">
+        <span class="mb-2 font-semibold" v-text="$t('slippageTolerance')" />
+        <!-- <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-html="$t('marketConditionsWarning')" />
-        </BalTooltip>
+        </BalTooltip> -->
       </div>
       <AppSlippageForm class="mt-1" />
     </div>
     <div v-if="isEIP1559SupportedNetwork" class="mt-3 pl-2 pb-2">
       <div class="flex items-baseline">
-        <span class="mb-2 font-medium" v-text="$t('transactionType')" />
-        <BalTooltip class="ml-2 p-2">
+        <span class="mb-2 font-semibold" v-text="$t('transactionType')" />
+        <!-- <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
           </template>
           <div v-text="$t('ethereumTxTypeTooltip')" />
-        </BalTooltip>
+        </BalTooltip> -->
       </div>
       <div class="mt-1 flex">
         <BalBtnGroup

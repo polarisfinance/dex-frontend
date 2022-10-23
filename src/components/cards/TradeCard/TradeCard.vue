@@ -3,7 +3,6 @@
     noPad
     class="card-container relative px-[10px] py-[12px]"
     :shadow="tradeCardShadow"
-    noBorder
   >
     <template #header>
       <div class="header mb-[12px] flex w-full items-center justify-between">

@@ -43,8 +43,7 @@ export default defineComponent({
   @apply transition-all;
   /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */
   /* @apply border dark:border-gray-900; */
-  @apply flex h-14 w-full items-center justify-start rounded-md shadow-lg;
-  background: #2e2433;
+  @apply flex h-14 w-full items-center justify-start rounded-md shadow-lg bg-frame-light;
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
   margin-top: 0.5em;

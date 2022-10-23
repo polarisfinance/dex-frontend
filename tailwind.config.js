@@ -55,6 +55,27 @@ module.exports = {
         '2xl': '1.25rem',
       },
       colors: {
+        frame: {
+          dark: {
+            DEFAULT: '#1E0D2C',
+            ultra: '#160D22',
+          },
+          light: {
+            DEFAULT: '#261737',
+            ultra: '#301D45',
+          },
+        },
+        text: {
+          white: {
+            DEFAULT: '#FDFDFD',
+            hero: '#F5F5F5',
+          },
+          purple: {
+            DEFAULT: '#D7B3FF',
+            secondary: '#F5E1FF'
+          }
+        },
+
         gray: {
           50: '#F8FAFC',
           100: '#EAF0F6',
@@ -130,6 +151,10 @@ module.exports = {
           700: '#7e22ce',
           800: '#6b21a8',
           900: '#581c87',
+          button: {
+            dark: '#261737',
+            light: '#4E2F72',
+          },
         },
         yellow: {
           50: '#FFFBEA',

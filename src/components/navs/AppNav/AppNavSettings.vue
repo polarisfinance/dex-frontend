@@ -3,11 +3,11 @@
     <div class="bal-card p-4">
       <div class="mb-[20px] flex items-center justify-between">
         <h5
-          class="text-[16px] font-semibold leading-none tracking-tight"
+          class="ml-[8px] text-[16px] font-semibold leading-none tracking-tight"
           v-text="$t('account')"
         />
 
-        <div class="flex items-center gap-2 pr-[8px]">
+        <div class="flex items-center gap-2 pr-[8px] cursor-pointer ">
           <X v-on:click="close" />
         </div>
       </div>
@@ -26,6 +26,7 @@
             <button
               class="h-[22px] w-[68px] border"
               @click="toggleWalletSelectModal"
+              v-on:click="close"
             >
               <div
                 class="text-center text-[14px] leading-[18px]"
@@ -235,9 +236,9 @@ export default defineComponent({
 }
 
 .bal-card {
-  @apply flex flex-col;
-  background-color: #231928;
-  box-shadow: inset 0px 0px 2px #fbaaff;
+  @apply flex flex-col bg-frame-dark;
+  /* background-color: #231928; */
+  /* box-shadow: inset 0px 0px 2px #fbaaff; */
   border-radius: 22px;
   box-sizing: border-box;
   width: 440px;
@@ -247,8 +248,9 @@ export default defineComponent({
   @apply transition-all;
   /* @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800; */
   /* @apply border dark:border-gray-900; */
+  @apply bg-frame-light;
   @apply flex flex-col gap-[10px] rounded-md;
-  background: #2e2433;
+  /* background: #2e2433; */
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
   padding-left: 12px;
@@ -261,23 +263,19 @@ export default defineComponent({
 }
 
 .border {
-  @apply border-transparent bg-[#231928] bg-none py-[2px] px-[12px] text-[#BE95C0];
+  @apply rounded-[12px] border-transparent bg-frame-dark bg-none py-[2px] px-[12px] font-semibold text-text-purple;
 }
 .border:hover {
-  @apply text-[#FBAAFF];
-  background: #391c41 !important;
-  border: 1px solid #552162 !important;
-  border-radius: 12px !important;
+  @apply text-text-white;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
 }
 
 .link {
   @apply fill-[B9BABB] font-semibold leading-[20px] text-[#B9BABB];
 }
-.link:hover {
-  @apply fill-[#be95c0] font-semibold leading-[20px] text-[#be95c0] no-underline;
-}
 
-.link:focus {
-  @apply fill-[#be95c0] font-semibold leading-[20px] text-[#be95c0] no-underline;
+.link:focus,
+.link:hover {
+  @apply fill-[#D7B2FF] font-semibold leading-[20px] text-text-purple no-underline;
 }
 </style>

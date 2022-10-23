@@ -35,7 +35,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
       @click="startConnectWithInjectedProvider"
     >
       <!-- <WalletIcon class="mr-2" /> -->
-      <span class="hidden lg:inline-block" v-text="$t('connectWallet')" />
+      <span class="hidden lg:inline-block w-[100px]" v-text="$t('connectWallet')" />
       <span class="lg:hidden" v-text="$t('connect')" />
     </button>
     <AppNavMenu />
@@ -48,7 +48,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
 <style scoped>
 button {
   @apply bg-transparent;
-  padding: 9px 50px;
+  padding: 9px 49px;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

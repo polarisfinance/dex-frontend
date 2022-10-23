@@ -14,7 +14,8 @@ export default {
   data() {
     return {
       picture: require('./x.svg'),
-      hoveredPicture: require('./xHover.svg'),
+      // xHover.svg is bigger x.svg
+      hoveredPicture: require('./x.svg'),
       hover: false,
     };
   },

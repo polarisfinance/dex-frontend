@@ -43,16 +43,17 @@ function hide(): void {
   showContent.value = false;
 }
 
-watch(
-  () => props.show,
-  () => {
-    if (props.show) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-  }
-);
+// this causes the scrollbar to hide when modal opens which causes the page to jump to left
+// watch(
+//   () => props.show,
+//   () => {
+//     if (props.show) {
+//       document.body.classList.add('overflow-hidden');
+//     } else {
+//       document.body.classList.remove('overflow-hidden');
+//     }
+//   }
+// );
 
 /**
  * EXPOSE
@@ -121,13 +122,12 @@ defineExpose({ hide });
 }
 
 .modal-bg {
-  @apply absolute h-full w-full bg-black bg-opacity-40;
+  @apply absolute h-full w-full bg-black bg-opacity-70;
   /* box-shadow: inset 0px 0px 2px #130719 !important; */
 }
 
 .modal-card {
-  @apply mx-auto h-full dark:border-0;
-  background: #231928;
+  @apply mx-auto h-full dark:border-0 bg-frame-dark;
   border-radius: 22px;
 }
 

@@ -26,7 +26,7 @@
           v-text="profile && profile.ens"
         /> -->
         <span
-          class="eth-address  pl-2 leading-[20px] inline-block"
+          class="eth-address inline-block pl-2 leading-[20px]"
           v-text="_shorten(account)"
         />
       </button>
@@ -98,11 +98,11 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-  padding: 10px 25px;
-  background: #231928;
-  border-radius: 16px;
-  color: #be95c0;
-  border: 1px solid #ffffff00;
+  @apply bg-transparent;
+  padding: 9px 43.5px;
+  color: #fdfdfd;
+  border: 1px solid rgba(64, 51, 71, 0.5);
+  border-radius: 12px;
 }
 .btn:hover {
   border: 1px solid #552162 !important;
