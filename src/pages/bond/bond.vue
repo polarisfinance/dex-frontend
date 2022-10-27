@@ -7,6 +7,7 @@ import orbitalImg from './orbital.svg';
 import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
+import tripolarImg from './tripolar.svg';
 
 const logo = {
   polar: polarImg,
@@ -14,7 +15,7 @@ const logo = {
   usp: uspImg,
   ethernal: ethernalImg,
   binaris: binarisImg,
-  tripolar: orbitalImg,
+  tripolar: tripolarImg,
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
