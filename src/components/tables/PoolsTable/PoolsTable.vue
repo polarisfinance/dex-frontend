@@ -298,6 +298,7 @@ function selected(pool) {
               "
               :isStablePool="false"
               :selectedTokens="selectedTokens"
+              :showWeight="pool['poolType'] != 'Stable'"
             />
           </div>
         </div>
@@ -409,6 +410,7 @@ function selected(pool) {
                   "
                   :isStablePool="false"
                   :selectedTokens="selectedTokens"
+                  :showWeight="pool['poolType'] != 'Stable'"
                 />
               </div>
             </div>
