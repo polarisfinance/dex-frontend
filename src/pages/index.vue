@@ -123,7 +123,7 @@ const getTokenNames = () => {
 
   for (const token of Object.entries(Tokens)) {
     const tokenName: string = token[1][1]['symbol'];
-    console.log(token)
+    console.log(token);
     tokenList.push(tokenName);
   }
 
@@ -138,7 +138,7 @@ const getTokenMapping = () => {
   for (const token of Object.entries(Tokens)) {
     const tokenName: string = token[1][1]['symbol'];
     const tokenAddress: string = token[1][1]['address'];
-    console.log(token[1][1]['symbol'])
+    console.log(token[1][1]['symbol']);
     tokenList[tokenName] = tokenAddress;
   }
 
@@ -274,6 +274,9 @@ export default defineComponent({
               <a href="#classicpools">
                 <div class="pool-type-btn cursor-pointer">Classic Pools</div>
               </a>
+              <a href="#communitypools">
+                <div class="pool-type-btn cursor-pointer">Community Pools</div>
+              </a>
             </div>
           </div>
 
@@ -302,6 +305,9 @@ export default defineComponent({
             </a>
             <a href="#classicpools">
               <div class="mobile-pool-btn">Classic Pools</div>
+            </a>
+            <a href="#communitypools">
+              <div class="pool-type-btn cursor-pointer">Community Pools</div>
             </a>
           </div>
           <button
