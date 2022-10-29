@@ -57,10 +57,10 @@ input[type='number'] {
   appearance: textfield; /* Firefox */
 }
 
-*::-webkit-scrollbar {
+/* *::-webkit-scrollbar {
   @apply bg-transparent;
 }
 
 *::-webkit-scrollbar-thumb {
   @apply bg-[#301D45];
-}
+} */

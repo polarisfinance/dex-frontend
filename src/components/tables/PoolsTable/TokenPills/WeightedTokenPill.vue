@@ -10,6 +10,7 @@ type Props = {
   isSelected: boolean;
   token: PoolToken;
   lastToken: boolean;
+  showWeight: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -27,6 +28,7 @@ withDefaults(defineProps<Props>(), {
     <div
       :class="{ isMobile: weightMobile, isDesktop: weight }"
       class="weight text-center"
+      v-if="showWeight"
     >
       {{ weight }}
     </div>

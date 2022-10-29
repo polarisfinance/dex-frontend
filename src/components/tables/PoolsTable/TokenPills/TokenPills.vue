@@ -14,6 +14,7 @@ type Props = {
   tokens: PoolToken[];
   isStablePool?: boolean;
   selectedTokens?: string[];
+  showWeight: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -80,6 +81,7 @@ const MAX_PILLS = 11;
         :token="token"
         :isSelected="includesAddress(selectedTokens, token.address)"
         :lastToken="idx == visibleTokens.length - 1"
+        :showWeight="showWeight"
       />
       <HiddenTokensPills
         v-if="hiddenTokens.length > 0"

@@ -262,7 +262,7 @@ export default defineComponent({
             <div
               class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
             >
-              <div class="favourites-text mr-[12px]">Favourites</div>
+              <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
               <a href="#segniorage"
                 ><div class="segniorage-btn cursor-pointer">
                   Seigniorage Pools

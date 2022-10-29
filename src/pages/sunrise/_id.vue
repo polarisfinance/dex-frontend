@@ -45,10 +45,15 @@
           :deposit="depositToken"
           @close="toggleSpolarModal"
         />
+        <SpolarWithdrawModal
+          :isVisible="isSpolarWithdrawModalVisible"
+          :deposit="depositToken"
+          @close="toggleSpolarWithdrawModal"
+        />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button class="withdraw-btn" @click="toggleSpolarModal(false)">
+        <button class="withdraw-btn" @click="toggleSpolarWithdrawModal(false)">
           Withdraw
         </button>
       </div>
@@ -119,6 +124,7 @@ import useTreasury from '../../composables/PolarisFinance/useTreasury';
 import useTokens from '../../composables/PolarisFinance/useTokens';
 
 import SpolarModal from './SpolarModal.vue';
+import SpolarWithdrawModal from './SpolarWithdrawModal.vue';
 
 interface PoolPageData {
   id: string;
@@ -166,7 +172,7 @@ async function setDate(event, instance, property, epochTimer = true) {
 }
 
 export default defineComponent({
-  components: { SpolarModal },
+  components: { SpolarModal, SpolarWithdrawModal },
   setup() {
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
@@ -210,9 +216,19 @@ export default defineComponent({
       await claim();
     }
     const isSpolarModalVisible = ref(false);
+    const isSpolarWithdrawModalVisible = ref(false);
     const depositToken = ref(false);
     const toggleSpolarModal = (depositProp: boolean, value?: boolean) => {
       isSpolarModalVisible.value = value ?? !isSpolarModalVisible.value;
+      depositToken.value = depositProp;
+    };
+
+    const toggleSpolarWithdrawModal = (
+      depositProp: boolean,
+      value?: boolean
+    ) => {
+      isSpolarWithdrawModalVisible.value =
+        value ?? !isSpolarWithdrawModalVisible.value;
       depositToken.value = depositProp;
     };
     return {
@@ -229,6 +245,8 @@ export default defineComponent({
       withdraw,
 
       isSpolarModalVisible,
+      isSpolarWithdrawModalVisible,
+      toggleSpolarWithdrawModal,
       toggleSpolarModal,
       depositToken,
     };
