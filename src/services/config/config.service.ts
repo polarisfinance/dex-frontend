@@ -46,7 +46,8 @@ export default class ConfigService {
 
   public getNetworkConfig(key: Network): Config {
     if (!Object.keys(configs).includes(key?.toString()))
-      throw new Error(`No config for network key: ${key}`);
+      // throw new Error(`No config for network key: ${key}`);
+      return configs[Network.AURORA];
     return configs[key];
   }
 

@@ -5,13 +5,20 @@ import { treasuryABI, polarTreasuryABI } from './ABI';
 
 import { BigNumberToString, treasuryNameToAddress } from './utils';
 
+import {
+  rpcProviderService,
+} from '@/services/rpc-provider/rpc-provider.service';
+import { Network } from '@balancer-labs/sdk';
+
 export default function useTreasury(account, provider, treasuryName) {
+  const w3 =  rpcProviderService.getJsonProvider(Network.AURORA);
+
   const treasuryAddress = treasuryNameToAddress[treasuryName];
 
   const treasuryContract = new Contract(
     treasuryAddress,
     treasuryName != 'polar' ? treasuryABI(treasuryName) : polarTreasuryABI,
-    provider
+    w3
   );
 
   const getLastEpochTWAP = async () => {

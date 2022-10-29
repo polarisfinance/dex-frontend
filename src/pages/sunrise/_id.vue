@@ -88,7 +88,7 @@
       </div>
     </div>
     <div class="w-full">
-      <div class="flex justify-between mx-[24px] timer-text">
+      <div class="timer-text mx-[24px] flex justify-between">
         <div>Withdraw possible in: {{ withdrawTime }}</div>
         <div>Claim possible in: {{ claimTime }}</div>
       </div>
@@ -258,6 +258,7 @@ export default defineComponent({
   async created() {
     const route = useRoute();
     const { account, getProvider } = useWeb3();
+    console.log(getProvider());
 
     const result = await fetch(
       `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
@@ -296,22 +297,24 @@ export default defineComponent({
       useTreasury(account.value, getProvider(), sunriseName);
 
     const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
+    this.epoch = await getEpoch();
+    this.spolarsStaked = await getSpolarStaked();
+    this.lastEpochTwap = await getLastEpochTWAP();
+    this.printTwap = await getPrintTWAP();
+    this.twap = await getCurrentTWAP();
+    this.APR = await getSunriseAPR();
+    await setDate(getNextEpochTime, this, 'nextEpoch');
 
     const c = await getUnstakePeriod();
 
     this.approved = await isApproved();
 
-    this.epoch = await getEpoch();
     this.earned = await getRewardsEarned();
     this.canWithdraw = await canWithdraw();
     this.canClaim = await canClaimReward();
-    this.spolarsStaked = await getSpolarStaked();
     this.balance = await getBalance();
 
-    this.lastEpochTwap = await getLastEpochTWAP();
-    this.printTwap = await getPrintTWAP();
-    this.twap = await getCurrentTWAP();
-    this.APR = await getSunriseAPR();
+    
 
     const spolarPrice = await getSpolarPrice();
     const tokenUsdPrice = await getTokenPriceInUSD(sunriseName);
@@ -324,7 +327,6 @@ export default defineComponent({
       .toFixed(2)
       .toString();
 
-    await setDate(getNextEpochTime, this, 'nextEpoch');
     await setDate(getUnstakePeriod, this, 'withdrawTime');
     await setDate(getClaimPeriod, this, 'claimTime');
   },

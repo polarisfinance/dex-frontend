@@ -15,11 +15,20 @@ import useTokens from './useTokens';
 import useTreasury from './useTreasury';
 import moment from 'moment';
 
-export default function useSunrise(account, provider, sunriseName) {
-  const sunriseAddress = sunriseNameToAddress[sunriseName];
+import {
+  rpcProviderService,
+} from '@/services/rpc-provider/rpc-provider.service';
+import { Network } from '@balancer-labs/sdk';
 
-  const spolarContract = new Contract(SPOLAR, spolarABI, provider);
-  const sunriseContract = new Contract(sunriseAddress, sunriseABI, provider);
+
+export default function useSunrise(account, provider, sunriseName) {
+  const w3 =  rpcProviderService.getJsonProvider(Network.AURORA);
+
+  const sunriseAddress = sunriseNameToAddress[sunriseName];
+  const spolarContract = new Contract(SPOLAR, spolarABI, w3);
+  const sunriseContract = new Contract(sunriseAddress, sunriseABI, w3);
+  const spolarContractSigned = new Contract(SPOLAR, spolarABI, provider);
+  const sunriseContractSigned = new Contract(sunriseAddress, sunriseABI, provider);
 
   const isApproved = async () => {
     const _owner = account;
