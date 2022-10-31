@@ -167,12 +167,6 @@ const selectToken = token => {
   selectedToken.value = token;
   searchTerm.value = token;
 };
-
-const foo = () => {
-  investmentPoolsWithoutSeigniorage.value.forEach(pool => {
-    console.log(pool.id);
-  });
-};
 </script>
 
 <script lang="ts">
@@ -233,7 +227,6 @@ export default defineComponent({
           class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
           v-if="isDesktop"
         >
-          {{ foo() }}
           <div class="flex gap-[18px]">
             <div class="relative" @click="inputFocused = true">
               <div class="search flex items-center">

@@ -290,9 +290,24 @@ const fiatTotal = computed(() => {
       <button
         class="connect-btn-pool w-full"
         @click="startConnectWithInjectedProvider"
+        v-if="!account"
       >
         Connect Wallet
       </button>
+      <div v-else>
+        <div class="flex w-full gap-[8px]">
+          <router-link
+            class="invest-btn w-full text-center"
+            :to="'/pool/' + pool.id + '/invest'"
+            >Invest</router-link
+          >
+          <router-link
+            class="withdraw-btn w-full text-center"
+            :to="'/pool/' + pool.id + '/withdraw'"
+            >Withdraw</router-link
+          >
+        </div>
+      </div>
     </div>
   </div>
   <!-- <BalCard shadow="2xl" noPad class="rounded-xl">
