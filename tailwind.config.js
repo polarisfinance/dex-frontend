@@ -155,6 +155,9 @@ module.exports = {
             dark: '#261737',
             light: '#4E2F72',
           },
+          DEFAULT: '#D7B2FF',
+          secondary: '#F5E1FF',
+
         },
         yellow: {
           50: '#FFFBEA',

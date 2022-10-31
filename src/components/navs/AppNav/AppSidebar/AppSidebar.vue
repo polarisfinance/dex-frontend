@@ -47,10 +47,9 @@ const { setSidebarOpen } = useSidebar();
 }
 
 .app-sidebar {
-  @apply h-full w-3/4 max-w-sm cursor-default overflow-y-auto text-white shadow-xl;
+  @apply h-full w-3/4 max-w-sm cursor-default overflow-y-auto text-text-white shadow-xl bg-frame-dark;
   border-top-left-radius: 40px;
   border-bottom-left-radius: 40px;
-  background-color: #231928;
 
   will-change: transform;
 }

@@ -7,7 +7,7 @@
     <template #activator>
       <button
         @click="toggleModal"
-        class="btn flex flex-row text-base"
+        class="btn flex flex-row text-base w-full lg:w-auto justify-center"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
         :loadingLabel="upToLargeBreakpoint ? '' : $t('connecting')"
@@ -98,11 +98,8 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-  @apply bg-transparent;
-  padding: 9px 43.5px;
-  color: #fdfdfd;
+  @apply bg-transparent rounded-[16px] py-[12px] px-[43.5px] text-purple font-semibold;
   border: 1px solid rgba(64, 51, 71, 0.5);
-  border-radius: 12px;
 }
 .btn:hover {
   border: 1px solid #552162 !important;
