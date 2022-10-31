@@ -252,10 +252,33 @@ export default defineComponent({
     const error = computed(() => {
       console.log(tokenInAddress.value);
       if (
-        tokenInAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
-        tokenOutAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
-        tokenInAddress.value == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465' ||
-        tokenOutAddress.value == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
+        (tokenInAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+          tokenOutAddress.value ==
+            '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+          tokenInAddress.value ==
+            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
+          tokenOutAddress.value ==
+            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30') &&
+        !(
+          (tokenInAddress.value ==
+            '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+            tokenInAddress.value ==
+              '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') &&
+          (tokenOutAddress.value ==
+            '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+            tokenOutAddress.value ==
+              '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6')
+        ) &&
+        !(
+          (tokenInAddress.value ==
+            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
+            tokenInAddress.value ==
+              '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') &&
+          (tokenOutAddress.value ==
+            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
+            tokenOutAddress.value ==
+              '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465')
+        )
       ) {
         return {
           header: 'Your tokens are not wrapped!',
@@ -424,7 +447,7 @@ export default defineComponent({
   gap: 12px;
   left: 10px;
   top: 259px;
-  color: #F5E1FF;
+  color: #f5e1ff;
   font-size: 20px;
   line-height: 26px;
 }
@@ -468,8 +491,8 @@ export default defineComponent({
   box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
     inset 2px 2px 4px #010001;
   border-radius: 12px;
-  color: #D7B3FF;
-  
+  color: #d7b3ff;
+
   width: 100%;
 }
 

@@ -178,7 +178,7 @@ const bufferPercentage = computed(() => {
 });
 
 const barColor = computed(() =>
-  amountExceedsTokenBalance.value ? 'red' : '#fbaaff'
+  amountExceedsTokenBalance.value ? 'red-600' : 'pink-primary'
 );
 
 const priceImpactSign = computed(() => (props.priceImpact >= 0 ? '-' : '+'));
@@ -268,13 +268,13 @@ watchEffect(() => {
             <template v-if="hasBalance && !noMax && !disableMax">
               <span
                 v-if="!isMaxed"
-                class="mr-[4px] rounded-xl bg-[#200D30] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#D7B2FF] transition-colors"
+                class="mr-[4px] rounded-xl bg-[#200D30] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#D7B2FF] transition-colors"
               >
                 MAX
               </span>
               <span
                 v-else
-                class="mr-[4px] cursor-not-allowed rounded-xl bg-[#200D30] pr-[4px] pr-[4px] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] input text-[24px] text-right font-numeric transition-colors text-[#D7B2FF]"
+                class="mr-[4px] rounded-xl bg-[#200D30] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#D7B2FF] transition-colors"
               >
                 MAXED
               </span>
@@ -313,8 +313,11 @@ watchEffect(() => {
           :width="maxPercentage"
           :bufferWidth="bufferPercentage"
           :color="barColor"
-          class="my-[2px]"
+          class="mt-[5px]"
         />
+        <!-- for tailwind jit to load color clases -->
+        <div class="hidden bg-pink-primary"></div>
+        <div class="hidden bg-red-600"></div>
         <!-- <div
           v-if="shouldShowTxBufferMessage"
           class="mt-2 text-xs text-orange-600 dark:text-orange-400"

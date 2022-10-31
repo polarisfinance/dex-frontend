@@ -89,7 +89,7 @@ function toggleModal(): void {
         v-if="!fixed"
         name="chevron-down"
         size="sm"
-        class="pl-[6px] pr-[4px]"
+        class="pl-[6px] pr-[4px] mt-0"
       />
     </div>
     <BalDropdown
@@ -117,7 +117,7 @@ function toggleModal(): void {
           <BalIcon
             name="chevron-down"
             size="sm"
-            class="ml-2 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400"
+            class="ml-2 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400 mt-0"
           />
         </div>
       </template>
@@ -147,7 +147,7 @@ function toggleModal(): void {
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
-      <BalIcon name="chevron-down" size="sm" class="ml-2" />
+      <BalIcon name="chevron-down" size="sm" class="ml-2 mt-0" />
     </div>
 
     <teleport to="#modal">

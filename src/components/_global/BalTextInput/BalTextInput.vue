@@ -162,9 +162,9 @@ onMounted(() => {
       <div v-if="$slots.footer" :class="['footer', footerClasses]">
         <slot name="footer" />
       </div>
-      <div v-if="isInvalid && !!errors[0]" :class="['error']">
+      <!-- <div v-if="isInvalid && !!errors[0]" :class="['error']">
         {{ errors[0] }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
