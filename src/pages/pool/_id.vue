@@ -3,7 +3,7 @@
     <div class="pt-8 lg:px-4 xl:container xl:mx-auto">
       <div class="mb-[24px] flex justify-between">
         <div class="flex-column">
-          <div class="pool-title">Liquidty Pool</div>
+          <div class="pool-title">Liquidity Pool</div>
           <div class="pool-subtitle">
             Dynamic swap fees: Currently
             {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
@@ -50,8 +50,10 @@
       </div>
 
       <div v-if="isPPool" class="alert my-[10px]">
-        You need to wrap your {{ isPPool }} into p{{ isPPool }} using the Swap
-        page!
+        <a class="underline" href="https://dex-frontend-gold.vercel.app/#/trade"
+          >You need to wrap your {{ isPPool }} into p{{ isPPool }} using the
+          Swap page!</a
+        >
       </div>
 
       <MyPoolBalancesCard

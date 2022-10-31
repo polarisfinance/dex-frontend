@@ -15,7 +15,7 @@
             <BalIcon name="arrow-left" size="sm" />
           </BalBtn>
           <div class="flex w-full justify-between">
-            <h5>Select a token</h5>
+            <h5>Select a list</h5>
             <div
               v-if="!selectTokenList"
               class="group flex items-center cursor-pointer"
