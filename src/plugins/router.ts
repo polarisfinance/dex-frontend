@@ -202,8 +202,10 @@ if (isGoerli.value) {
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior() {
-    return { top: 0 };
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return { el: to.hash, behavior: 'smooth' };
+    }
   },
 });
 
