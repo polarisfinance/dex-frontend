@@ -4,8 +4,8 @@
       :src="pictureHover"
       @mouseover="hover = true"
       @mouseleave="hover = false"
-      width="45"
-      height="45"
+      width="32"
+      height="32"
     />
   </div>
 </template>
