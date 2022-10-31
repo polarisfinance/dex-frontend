@@ -86,7 +86,13 @@
         <span class="uppercase">{{ sunrise.name }}</span> Earned
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]">
-        <button class="claim-btn" @click="claim">Claim</button>
+        <button
+          class="claim-btn"
+          @click="claim"
+          :disabled="!(parseFloat(earned) > 0)"
+        >
+          Claim
+        </button>
         <button class="single-stake-btn">
           <div class="single-stake-btn-text">Single Stake</div>
         </button>
@@ -331,8 +337,6 @@ export default defineComponent({
     this.canWithdraw = await canWithdraw();
     this.canClaim = await canClaimReward();
     this.balance = await getBalance();
-
-    
 
     const spolarPrice = await getSpolarPrice();
     const tokenUsdPrice = await getTokenPriceInUSD(sunriseName);

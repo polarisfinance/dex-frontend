@@ -16,6 +16,7 @@ import useWeb3 from '@/services/web3/useWeb3';
  * STATE
  */
 const appNav = ref<HTMLDivElement>();
+const nvb = ref<HTMLDivElement>();
 
 /**
  * COMPOSABLES
@@ -29,11 +30,14 @@ const { currentAlert } = useAlerts();
  */
 function handleScroll() {
   if (!appNav.value) return;
+  if (!nvb.value) return;
 
   if (window.scrollY === 0) {
     appNav.value.classList.remove('shadow-lg');
+    nvb.value.classList.remove('navbar-bg');
   } else {
     appNav.value.classList.add('shadow-lg');
+    nvb.value.classList.add('navbar-bg');
   }
 }
 
@@ -51,8 +55,8 @@ onUnmounted(() => {
 
 <template>
   <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
-  <nav id="app-nav" ref="appNav" class="top-0 h-20 pr-1 pl-4 lg:px-6">
-    <div class="flex h-full w-full items-center justify-between">
+  <nav id="app-nav" ref="appNav" class="top-0 h-20 pr-1 pl-4 lg:px-6 sticky">
+    <div ref="nvb" class="flex h-full w-full items-center justify-between">
       <router-link
         :to="{ name: 'home' }"
         @click="trackGoal(Goals.ClickNavLogo)"
@@ -80,5 +84,14 @@ onUnmounted(() => {
 
 .actions {
   z-index: 999;
+}
+
+.navbar-bg {
+  background: linear-gradient(
+    90.08deg,
+    rgba(19, 7, 25, 0.7) -0.61%,
+    rgba(19, 7, 25, 0.7) 100%
+  );
+  backdrop-filter: blur(10px);
 }
 </style>
