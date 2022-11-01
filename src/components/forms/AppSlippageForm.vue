@@ -90,7 +90,7 @@ watch(
     <div :class="['custom-input', customInputClasses]">
       <input
         v-model="state.customSlippage"
-        class="w-12 bg-transparent text-right placeholder:text-white"
+        class="w-[55px] bg-transparent text-right placeholder:text-white"
         placeholder="0.1"
         type="number"
         step="any"
@@ -108,7 +108,7 @@ watch(
   @apply text-text-purple-secondary;
 }
 .custom-input {
-  @apply flex items-center rounded-xl px-1 shadow-inner pt-[5px] pb-[3px];
+  @apply flex items-center rounded-xl px-1 shadow-inner pt-[5px] pb-[3px] ml-[19px];
   font-weight: 500;
   font-size: 18px;
   line-height: 23px;

@@ -1,15 +1,22 @@
 <template>
-  <BalPopover>
+  <BalPopover @show="open = true" @hide="open = false">
     <template #activator>
-      <button class="icon-spin-anim settings-button" @click="onActivatorClick">
+      <button
+        class="icon-spin-anim settings-button"
+        @click="onActivatorClick"
+      >
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
-        <IconSettings class="mt-1 mr-[12px]" />
+        <!-- <IconSettings class="mt-1 mr-[12px]" /> -->
+        <img :src="Picture" height="24" class="mr-[12px]" />
       </button>
     </template>
 
-    <div class="pl-2">
+    <div class="px-[4px]">
       <div class="flex items-baseline">
-        <span class="mb-2 font-semibold" v-text="$t('slippageTolerance')" />
+        <span
+          class="mb-[12px] font-semibold leading-[20px]"
+          v-text="$t('slippageTolerance')"
+        />
         <!-- <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
@@ -17,11 +24,14 @@
           <div v-html="$t('marketConditionsWarning')" />
         </BalTooltip> -->
       </div>
-      <AppSlippageForm class="mt-1" />
+      <AppSlippageForm class="" />
     </div>
-    <div v-if="isEIP1559SupportedNetwork" class="mt-3 pl-2 pb-2">
+    <div v-if="isEIP1559SupportedNetwork" class="mt-[16px] px-[4px] pb-[3px]">
       <div class="flex items-baseline">
-        <span class="mb-2 font-semibold" v-text="$t('transactionType')" />
+        <span
+          class="mb-[12px] font-semibold leading-[20px]"
+          v-text="$t('transactionType')"
+        />
         <!-- <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
@@ -29,7 +39,7 @@
           <div v-text="$t('ethereumTxTypeTooltip')" />
         </BalTooltip> -->
       </div>
-      <div class="mt-1 flex">
+      <div class="flex">
         <BalBtnGroup
           v-model="ethereumTxType"
           :options="ethereumTxTypeOptions"
@@ -102,7 +112,22 @@ export default defineComponent({
     },
     isGassless: { type: Boolean, default: false },
   },
-
+  data() {
+    return {
+      settings: require('@/components/icons/SettingsIcon.svg'),
+      x: require('@/components/icons/x.svg'),
+      open: false,
+    };
+  },
+  computed: {
+    Picture() {
+      if (this.open == false) {
+        return this.settings;
+      } else {
+        return this.x;
+      }
+    },
+  },
   setup(props) {
     // DATA
     const { context }: { context: Ref<TradeSettingsContext> } = toRefs(props);
@@ -160,6 +185,8 @@ export default defineComponent({
   background: none;
   margin: 0 !important;
   padding: 0 !important;
+  min-height: 24px;
+  min-width: 24px;
 }
 
 .trade-settings-option:hover {

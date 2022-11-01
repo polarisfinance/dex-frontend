@@ -89,7 +89,7 @@ function toggleModal(): void {
         v-if="!fixed"
         name="chevron-down"
         size="sm"
-        class="pl-[6px] pr-[4px] mt-0"
+        class="mt-0 pl-[6px] pr-[4px]"
       />
     </div>
     <BalDropdown
@@ -117,7 +117,7 @@ function toggleModal(): void {
           <BalIcon
             name="chevron-down"
             size="sm"
-            class="ml-2 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400 mt-0"
+            class="ml-2 mt-0 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400"
           />
         </div>
       </template>
@@ -172,8 +172,9 @@ function toggleModal(): void {
 }
 
 .group:hover {
-  background-color: #3e3045 !important;
-  border-radius: 16px !important;
+  background: #392253 !important;
+  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
+    inset 2px 2px 4px #18111c !important;
 }
 
 .token-select-input {
@@ -210,6 +211,11 @@ function toggleModal(): void {
 }
 
 .no-token:hover {
-  background: rgba(123, 48, 127, 0.7) !important;
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
+  );
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 </style>

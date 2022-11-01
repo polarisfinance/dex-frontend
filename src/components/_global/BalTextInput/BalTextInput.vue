@@ -7,7 +7,7 @@ export default {
 
 <script setup lang="ts">
 import { omit } from 'lodash';
-import { computed, onMounted, ref, useAttrs } from 'vue';
+import { computed, onMounted, ref, useAttrs, watch } from 'vue';
 
 import { HtmlInputEvent } from '@/types';
 
@@ -177,6 +177,15 @@ onMounted(() => {
   border: none;
   height: 86px;
   font-weight: 500;
+  border: 0.5px solid rgba(0, 0, 0, 0);
+
+}
+.input-container:hover {
+  border: 0.5px solid rgba(0,0,0,0)
+}
+.input-container:focus-within {
+  border: 0.5px solid rgba(215, 178, 255, 0.5);
+
 }
 
 ::placeholder {

@@ -194,7 +194,7 @@ export default defineComponent({
     });
 
     const shadowClasses = computed(() => {
-      if (props.flat || props.disabled || props.loading) return '';
+      if (props.flat || props.disabled || props.loading) return 'loading';
       if (props.size === 'sm') return 'shadow hover:shadow-none';
       return 'shadow hover:shadow-none';
     });
@@ -237,6 +237,7 @@ export default defineComponent({
   line-height: 0;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  min-width: 64px;
 }
 
 .bal-btn:focus,
@@ -257,7 +258,22 @@ export default defineComponent({
 .confirm-button {
   font-weight: 500;
   font-size: 18px;
-  min-height: 40px;
   line-height: 23px;
+}
+
+.loading {
+  @apply font-semibold;
+  padding: 12px 0px;
+  gap: 12px;
+  left: 10px;
+  top: 226px;
+
+  background: #1e102d;
+  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
+    inset 2px 2px 4px #010001;
+  border-radius: 12px;
+  color: #d7b3ff;
+
+  width: 100%;
 }
 </style>

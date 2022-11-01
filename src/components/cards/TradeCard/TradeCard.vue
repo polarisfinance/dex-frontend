@@ -1,7 +1,7 @@
 <template>
   <BalCard
     noPad
-    class="card-container relative px-[10px] py-[12px]"
+    class="card-container relative px-[12px] py-[12px]"
     :shadow="tradeCardShadow"
   >
     <template #header>
@@ -497,12 +497,8 @@ export default defineComponent({
 }
 
 .connect-wallet:hover {
-  background: linear-gradient(
-    94.14deg,
-    rgba(45, 20, 51, 0.7) 23.11%,
-    rgba(57, 28, 65, 0.567) 81.52%
-  );
-  border-radius: 12px;
+  background: #2C1842;
+  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3), inset 2px 2px 4px #010001;
 }
 
 .connect-wallet:active {
