@@ -98,7 +98,7 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-  @apply bg-transparent rounded-[16px] py-[12px] px-[43.5px] text-purple font-semibold;
+  @apply bg-transparent rounded-[16px] py-[12px] px-[43.5px] text-text-white font-semibold;
   border: 1px solid rgba(64, 51, 71, 0.5);
 }
 .btn:hover {

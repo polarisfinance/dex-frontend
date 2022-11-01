@@ -13,7 +13,7 @@
       </div>
       <div class="box">
         <div
-          class="w-ful font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm leading-none text-gray-600 dark:text-gray-400"
+          class="w-ful font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm leading-none text-purple-secondary"
         >
           Connected with {{ connectorName }}
           <div class="flex flex-row justify-end gap-[8px]">
@@ -271,11 +271,11 @@ export default defineComponent({
 }
 
 .link {
-  @apply fill-[B9BABB] font-semibold leading-[20px] text-[#B9BABB];
+  @apply fill-[#D7B3FF] font-semibold leading-[20px] text-text-purple;
 }
 
 .link:focus,
 .link:hover {
-  @apply fill-[#D7B2FF] font-semibold leading-[20px] text-text-purple no-underline;
+  @apply fill-[#F5E1FF] font-semibold leading-[20px] text-[#F5E1FF] no-underline;
 }
 </style>

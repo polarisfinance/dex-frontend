@@ -89,7 +89,7 @@ function toggleModal(): void {
         v-if="!fixed"
         name="chevron-down"
         size="sm"
-        class="mt-0 pl-[6px] pr-[4px]"
+        class="mt-0 px-[6px]"
       />
     </div>
     <BalDropdown
@@ -117,7 +117,7 @@ function toggleModal(): void {
           <BalIcon
             name="chevron-down"
             size="sm"
-            class="ml-2 mt-0 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400"
+            class="mt-0 text-blue-500 transition-colors group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-purple-400"
           />
         </div>
       </template>
@@ -147,7 +147,7 @@ function toggleModal(): void {
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
-      <BalIcon name="chevron-down" size="sm" class="ml-2 mt-0" />
+      <BalIcon name="chevron-down" size="sm" class="mt-0" />
     </div>
 
     <teleport to="#modal">
@@ -198,7 +198,7 @@ function toggleModal(): void {
 }
 
 .no-token {
-  padding: 4px 4px 4px 16px;
+  padding: 5px 6px 5px 12px;
   gap: 6px;
 
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);

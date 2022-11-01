@@ -184,7 +184,7 @@ onMounted(() => {
   border: 0.5px solid rgba(0,0,0,0)
 }
 .input-container:focus-within {
-  border: 0.5px solid rgba(215, 178, 255, 0.5);
+  border: 0.5px solid rgba(215, 178, 255, 0.25);
 
 }
 

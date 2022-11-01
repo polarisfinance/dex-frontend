@@ -11,15 +11,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classes = computed(() => ({
   // 'border-white dark:border-gray-900': !props.active,
-  // 'border-blue-600 dark:border-blue-400 text-blue-700 dark:text-blue-400':
-  //   props.active,
+  'gradient-underline': props.active,
 }));
 </script>
 
 <template>
-  <router-link :class="['desktop-link-item', classes]">
-    <slot />
-  </router-link>
+    <router-link :class="['desktop-link-item', classes]">
+      <slot />
+    </router-link>
 </template>
 
 <style scoped>
@@ -30,8 +29,17 @@ const classes = computed(() => ({
     font-semibold transition-all duration-500 ease-in-out;
 }
 
+.gradient-underline::after {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  content: '';
+  position: absolute;
+  top: 70%;
+  left: 0;
+  height: 2px;
+  width: 100%;
+}
 .desktop-link-item:hover {
-  color: #be95c0;
+  @apply opacity-80;
 }
 
 .desktop-link-item::before {
