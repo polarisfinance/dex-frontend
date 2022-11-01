@@ -1,5 +1,5 @@
 <template>
-  <div class="toggle-btn" @click="toggle">
+  <div class="toggle-btn cursor-pointer" @click="toggle">
     <img
       :src="pictureHover"
       @mouseover="hover = true"

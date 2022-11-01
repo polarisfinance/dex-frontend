@@ -146,14 +146,15 @@ export default defineComponent({
       <MyWallet />
       <TrendingPairs class="mt-4" />
     </template> -->
-
-    <div class="bar absolute hidden lg:block" v-show="$route.name == 'trade'">
+    
+    <!-- right bar -->
+    <!-- <div class="bar absolute hidden lg:block" v-show="$route.name == 'trade'">
       <div class="bar-placeholder">
         <MyWallet class="sidebar-component" />
         <PairPriceGraph class="sidebar-component" />
         <TrendingPairs class="sidebar-component" />
       </div>
-    </div>
+    </div> -->
   </div>
   <GlobalModalContainer />
 </template>
