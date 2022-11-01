@@ -39,7 +39,7 @@ const classes = computed(() => ({
   width: 100%;
 }
 .desktop-link-item:hover {
-  @apply opacity-80;
+  @apply text-[#D7B2FF];
 }
 
 .desktop-link-item::before {
