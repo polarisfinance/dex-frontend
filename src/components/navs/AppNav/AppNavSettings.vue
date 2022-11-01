@@ -7,13 +7,13 @@
           v-text="$t('account')"
         />
 
-        <div class="flex items-center gap-2 pr-[8px] cursor-pointer ">
+        <div class="flex cursor-pointer items-center gap-2 pr-[8px]">
           <X v-on:click="close" />
         </div>
       </div>
       <div class="box">
         <div
-          class="w-ful font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm leading-none text-purple-secondary"
+          class="w-ful font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm font-medium leading-none text-purple-secondary"
         >
           Connected with {{ connectorName }}
           <div class="flex flex-row justify-end gap-[8px]">
