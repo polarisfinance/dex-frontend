@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classes = computed(() => ({
   // 'border-white dark:border-gray-900': !props.active,
-  'gradient-underline': props.active,
+  // 'gradient-underline': props.active,
 }));
 </script>
 
@@ -26,10 +26,10 @@ const classes = computed(() => ({
   /* @apply h-full flex-col justify-center cursor-pointer hover:text-green-400 dark:hover:text-green-400 flex relative */
   @apply relative flex h-full cursor-pointer flex-col justify-center
     overflow-hidden p-0 text-[20px]
-    font-semibold transition-all duration-500 ease-in-out;
+    font-semibold transition-all duration-500 ease-in-out text-[#FDFDFD];
 }
 
-.gradient-underline::after {
+/* .gradient-underline::after {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   content: '';
   position: absolute;
@@ -37,9 +37,9 @@ const classes = computed(() => ({
   left: 0;
   height: 2px;
   width: 100%;
-}
+} */
 .desktop-link-item:hover {
-  @apply text-[#D7B2FF];
+  @apply text-[#CAC7CC];
 }
 
 .desktop-link-item::before {
