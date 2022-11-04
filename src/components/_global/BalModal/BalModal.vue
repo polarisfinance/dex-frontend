@@ -117,8 +117,9 @@ defineExpose({ hide });
 }
 
 .contentMobile {
-  botttom: 0;
+  bottom: 0;
   width: 100%;
+  transform-style: preserve-3d;
 }
 
 .modal-bg {
@@ -127,7 +128,7 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full dark:border-0 bg-frame-dark;
+  @apply mx-auto h-full bg-frame-dark dark:border-0;
   border-radius: 22px;
 }
 
