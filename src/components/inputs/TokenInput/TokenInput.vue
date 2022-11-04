@@ -169,13 +169,12 @@ const maxPercentage = computed(() => {
 });
 
 const bufferPercentage = computed(() => {
-  // if (!shouldShowTxBufferMessage.value) return '0';
+  if (!shouldShowTxBufferMessage.value) return '0';
 
-  // return bnum(nativeAsset.minTransactionBuffer)
-  //   .div(tokenBalance.value)
-  //   .times(100)
-  //   .toFixed(2);
-  return '0';
+  return bnum(nativeAsset.minTransactionBuffer)
+    .div(tokenBalance.value)
+    .times(100)
+    .toFixed(2);
 });
 
 const barColor = computed(() =>
@@ -194,18 +193,18 @@ const priceImpactClass = computed(() =>
 const setMax = () => {
   if (props.disableMax) return;
 
-  // if (
-  //   _address.value === nativeAsset.address &&
-  //   !props.disableNativeAssetBuffer
-  // ) {
-  //   // Subtract buffer for gas
-  //   _amount.value = tokenBalanceBN.value.gt(nativeAsset.minTransactionBuffer)
-  //     ? tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer).toString()
-  //     : '0';
-  // } else {
-  //   _amount.value = tokenBalance.value;
-  // }
-  _amount.value = tokenBalance.value;
+  if (
+    _address.value === nativeAsset.address &&
+    !props.disableNativeAssetBuffer
+  ) {
+    // Subtract buffer for gas
+    _amount.value = tokenBalanceBN.value.gt(nativeAsset.minTransactionBuffer)
+      ? tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer).toString()
+      : '0';
+  } else {
+    _amount.value = tokenBalance.value;
+  }
+
 
   emit('update:amount', _amount.value);
 };
