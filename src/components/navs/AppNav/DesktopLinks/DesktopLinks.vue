@@ -55,6 +55,6 @@ function isActive(page: string): boolean {
 
 <style scoped>
 .desktop-links {
-  @apply grid h-full grid-flow-col grid-rows-1 content-center gap-x-[24px] font-semibold;
+  @apply grid h-full grid-flow-col grid-rows-1 content-center gap-x-[44px] font-semibold;
 }
 </style>
