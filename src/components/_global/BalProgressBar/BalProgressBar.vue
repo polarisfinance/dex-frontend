@@ -23,7 +23,7 @@ type Props = {
  * COMPUTED
  */
 const barClasses = computed(() => ({
-  [`h-${props.size}`]: true,
+  // [`h-${props.size}`]: true,
   [`bg-${props.color}`]: true,
 }));
 
