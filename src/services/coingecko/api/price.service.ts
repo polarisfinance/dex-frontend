@@ -81,6 +81,7 @@ export class PriceService {
       let replaceNear = false;
       let replaceStnear = false;
       let replaceBnb = false;
+      let replaceEth = false;
       pages.forEach(page => {
         const addressString = addresses.slice(
           addressesPerRequest * page,
@@ -104,6 +105,13 @@ export class PriceService {
           ) {
             addressString[i] = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
             replaceBnb = true;
+          }
+          if (
+            addressString[i] == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+          )
+          {
+            addressString[i] = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
+            replaceEth = true;
           }
         }
 
@@ -142,6 +150,10 @@ export class PriceService {
         results['0xb14674C7264eC7d948B904Aab2c0E0F906F6e762'] =
           results['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'];
       }
+      if (replaceEth) {
+        results['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] =
+          results['0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'];
+      }
 
       return results;
     } catch (error) {
@@ -179,6 +191,9 @@ export class PriceService {
         if (address == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762') {
           address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
           bnb = true;
+        }
+        if (address == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+          address = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
         }
         const endpoint = `/coins/${
           bnb ? 'binance-smart-chain' : this.platformId
