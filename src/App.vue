@@ -28,6 +28,8 @@ import MyWallet from '@/components/cards/MyWallet/MyWallet.vue';
 import PairPriceGraph from '@/components/cards/PairPriceGraph/PairPriceGraph.vue';
 import TrendingPairs from '@/components/cards/TrendingPairs/TrendingPairs.vue';
 
+import MobileWallet from './MobileWallet.vue';
+
 const { isMobile } = useBreakpoints();
 
 BigNumber.config({ DECIMAL_PLACES: DEFAULT_TOKEN_DECIMALS });
@@ -47,6 +49,13 @@ export default defineComponent({
     MyWallet,
     PairPriceGraph,
     TrendingPairs,
+    MobileWallet,
+  },
+
+  data() {
+    return {
+      showMobileWallet: false,
+    };
   },
 
   setup() {
@@ -139,7 +148,10 @@ export default defineComponent({
       :isVisible="isThirdPartyServicesModalVisible"
       @close="handleThirdPartyModalToggle(false, 'third')"
     />
-    <AppSidebar v-if="sidebarOpen" />
+    <AppSidebar
+      v-if="sidebarOpen"
+      @ToggleMobileWallet="showMobileWallet = true"
+    />
     <Notifications />
 
     <!-- <template #gutterLeft>
@@ -157,6 +169,16 @@ export default defineComponent({
     </div> -->
   </div>
   <GlobalModalContainer />
+
+  <BalModal show v-if="showMobileWallet" @close="showMobileWallet = false">
+    <div>
+      <div class="flex text justify-between">
+        <div>Account</div>
+        <div>X</div>
+      </div>
+      <MobileWallet />
+    </div>
+  </BalModal>
 </template>
 
 <style scoped>
@@ -192,5 +214,17 @@ img {
   margin-top: 0.5em;
   margin-left: auto;
   margin-right: auto;
+}
+
+.text {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #fdfdfd;
+}
+
+.modal {
+  background: #1e0d2c;
 }
 </style>
