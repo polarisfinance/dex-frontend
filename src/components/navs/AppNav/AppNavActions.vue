@@ -27,7 +27,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
   <div class="items-grid grid grid-flow-col grid-rows-1 gap-2">
     <!-- <DarkModeToggle v-if="isDesktop" /> -->
     <!-- <AppNavActivityBtn v-if="account" /> -->
-    <AppNavAccountBtn v-if="account" />
+    <AppNavAccountBtn v-if="account && isDesktop" />
     <button
       class="btn"
       v-else-if="isDesktop"

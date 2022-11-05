@@ -9,11 +9,16 @@ import SidebarContent from './SidebarContent.vue';
  * STATE
  */
 const showSidebar = ref(false);
+const emit = defineEmits(['close', 'ToggleMobileWallet']);
 
 /**
  * COMPOSABLES
  */
 const { setSidebarOpen } = useSidebar();
+
+const toggleMobileWallet = () => {
+  emit('ToggleMobileWallet');
+};
 </script>
 
 <template>
@@ -21,7 +26,10 @@ const { setSidebarOpen } = useSidebar();
     <div class="sidebar-overlay" @click="showSidebar = false">
       <Transition name="sidebar" @after-leave="setSidebarOpen(false)">
         <div v-if="showSidebar" class="app-sidebar pt-[60px]">
-          <SidebarContent @close="showSidebar = false" />
+          <SidebarContent
+            @close="showSidebar = false"
+            @ToggleMobileWallet="toggleMobileWallet"
+          />
         </div>
       </Transition>
       <!-- <div class="app-sidebar_empty" @click="showSidebar = false">

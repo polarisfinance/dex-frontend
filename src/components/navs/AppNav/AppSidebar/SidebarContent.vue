@@ -11,6 +11,7 @@ import { sleep } from '@/lib/utils';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import AppNavAccountBtn from '../AppNavAccountBtn.vue';
+import MobileWalletBtn from './MobileWalletBtn.vue';
 
 import useBreakpoints from '@/composables/useBreakpoints';
 const { isMobile, isDesktop } = useBreakpoints();
@@ -29,7 +30,7 @@ import kycImg from './kyc.svg';
 /**
  * PROPS & EMITS
  */
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'ToggleMobileWallet']);
 
 /**
  * COMPOSABLES
@@ -103,6 +104,10 @@ watch(blockNumber, async () => {
   await sleep(300);
   blockIcon.value?.classList.remove('block-change');
 });
+
+const toggleMobileWallet = () => {
+  emit('ToggleMobileWallet');
+};
 </script>
 
 <template>
@@ -143,58 +148,11 @@ watch(blockNumber, async () => {
         <img :src="link.img" />
       </BalLink>
     </div>
-
-    <!-- <div class="px-4 mt-6">
-      <div class="mt-2 side-bar-btn" @click="toggleDarkMode">
-        <MoonIcon v-if="!darkMode" class="mr-2" />
-        <SunIcon v-else class="mr-2" />
-        <span>{{ darkMode ? 'Light' : 'Dark' }} mode</span>
-      </div>
-    </div> -->
-
-    <!-- <div class="grid grid-rows-1 grid-flow-col auto-cols-min gap-2 px-4 mt-4">
-      <BalLink
-        v-for="link in socialLinks"
-        :key="link.component"
-        :href="link.url"
-        class="social-link"
-        noStyle
-        external
-      >
-        <component :is="link.component" />
-      </BalLink>
-      <BalLink
-        href="mailto:contact@balancer.finance"
-        class="social-link"
-        noStyle
-      >
-        <EmailIcon />
-      </BalLink>
-    </div>
-
-    <div class="px-4 mt-6 text-xs">
-      <div class="flex items-center">
-        <div
-          ref="blockIcon"
-          class="w-2 h-2 bg-green-500 rounded-full block-icon"
-        />
-        <span class="ml-2 text-gray-300">
-          {{ networkConfig.name }}: Block {{ blockNumber }}
-        </span>
-      </div>
-      <BalLink
-        :href="`https://github.com/balancer-labs/frontend-v2/releases/tag/${version}`"
-        class="flex items-center mt-2 text-gray-300"
-        external
-        noStyle
-      >
-        App: v{{ version }}
-        <BalIcon name="arrow-up-right" size="xs" class="ml-1" />
-      </BalLink>
-    </div> -->
   </div>
   <div class="px-[24px] py-[44px]">
-    <AppNavAccountBtn v-if="account" />
+    <div v-if="account">
+      <MobileWalletBtn @toggle-mobile-wallet="toggleMobileWallet" />
+    </div>
     <button class="btn" v-else @click="startConnectWithInjectedProvider">
       Connect Wallet
     </button>
