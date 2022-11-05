@@ -131,6 +131,8 @@ import useTokens from '../../composables/PolarisFinance/useTokens';
 
 import SpolarModal from './SpolarModal.vue';
 import SpolarWithdrawModal from './SpolarWithdrawModal.vue';
+import { parseFixed } from '@ethersproject/bignumber';
+
 
 interface PoolPageData {
   id: string;
@@ -205,9 +207,10 @@ export default defineComponent({
     });
 
     async function withdraw(amount) {
+      const formatedAmount = parseFixed(amount, 18);
       const tokenName = route.params.id.toString();
       const { withdraw } = useSunrise(account.value, getProvider(), tokenName);
-      await withdraw(amount);
+      await withdraw(formatedAmount);
     }
 
     async function approve() {

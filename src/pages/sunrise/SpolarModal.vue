@@ -44,6 +44,8 @@ import useTokens from '../../composables/PolarisFinance/useTokens';
 import { useRoute } from 'vue-router';
 import useWeb3 from '@/services/web3/useWeb3';
 import useSunrise from '../../composables/PolarisFinance/useSunrise';
+import { parseFixed } from '@ethersproject/bignumber';
+
 
 /**
  * STATE
@@ -63,16 +65,18 @@ export default defineComponent({
     const { account, getProvider } = useWeb3();
     const route = useRoute();
 
-    async function deposit(amount) {
+    async function deposit(amount: string) {
+      const formatedAmount = parseFixed(amount, 18);
       const tokenName = route.params.id.toString();
       const { deposit } = useSunrise(account.value, getProvider(), tokenName);
-      await deposit(amount);
+      await deposit(formatedAmount);
     }
 
     async function withdraw(amount) {
+      const formatedAmount = parseFixed(amount, 18);
       const tokenName = route.params.id.toString();
       const { withdraw } = useSunrise(account.value, getProvider(), tokenName);
-      await withdraw(amount);
+      await withdraw(formatedAmount);
     }
 
     
