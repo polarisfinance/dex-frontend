@@ -1,6 +1,8 @@
 <template>
-  <div v-if="routes.length > 0" shadow="none" class="title p-1">
-    <div class="text-secondary flex cursor-pointer items-center">
+  <div v-if="routes.length > 0" shadow="none" class="title p-[9px]">
+    <div
+      class="flex cursor-pointer items-center text-[14px] font-semibold text-[#CAC7CC]"
+    >
       <div class="mr-2">
         {{ $t('tradeRoute') }}
       </div>
@@ -69,7 +71,7 @@
               width: `calc(100% - ${4 * (routes.length - index - 1)}px + 1px)`,
               margin: `0 ${2 * (routes.length - index - 1) - 1}px`,
             }"
-            class="border-design absolute rounded-b-md border-r border-b border-l"
+            class="border-design absolute"
           />
           <div class="relative z-10">
             <div
@@ -92,7 +94,7 @@
                   class="route ml-4 flex first:ml-0"
                 >
                   <a
-                    class="flex p-1.5"
+                    class="flex"
                     :href="getPoolLink(hop.pool.id)"
                     target="_blank"
                   >
@@ -101,7 +103,7 @@
                       :key="token.address"
                       class="ml-1.5 h-24 w-24 first:ml-0"
                       :address="token.address"
-                      :size="20"
+                      :size="24"
                     />
                   </a>
                 </div>
@@ -380,7 +382,7 @@ export default defineComponent({
       };
       const prefix = prefixMap[chainId] || '';
 
-      return `https://${prefix}balancer.fi/#/pool/${id}`;
+      return `/#/pool/${id}`;
     }
     console.log('routes', routes);
     return {
@@ -412,31 +414,34 @@ export default defineComponent({
 }
 
 .token-amount {
+  @apply text-text-white;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
-
-  color: #ffffff;
 }
 
 .token-symbol {
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
-
-  color: #b9babb;
+  color: #cac7cc;
 }
 
 .dotted-border {
-  border-bottom: 0.5px dashed #be95c0;
-  box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(#160d22, #160d22) padding-box,
+    linear-gradient(94.84deg, #9747ff 6.12%, #3b44bd 100%) border-box;
+  border-bottom: 0.5px dotted #160d22;
   opacity: 0.7;
 }
 
 .border-design {
-  border-bottom: 0.5px solid #be95c0;
-  border-left: 0.5px solid #be95c0;
-  border-right: 0.5px solid #be95c0;
+  background: linear-gradient(#160d22, #160d22) padding-box,
+    linear-gradient(94.84deg, #9747ff 6.12%, #3b44bd 100%) border-box;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
   opacity: 0.7;
 }
 
@@ -452,8 +457,8 @@ export default defineComponent({
   padding: 4px 6px;
   gap: 6px;
 
-  background: #2e2433;
+  background: #261737;
   box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 99px;
 }
 </style>

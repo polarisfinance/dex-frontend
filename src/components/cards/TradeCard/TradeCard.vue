@@ -118,7 +118,7 @@
             :amountOut="trading.tokenOutAmountInput.value"
             :pools="trading.sor.pools.value"
             :sorReturn="trading.sor.sorReturn.value"
-            class="mt-2"
+            class=""
           />
         </div>
       </div>
@@ -515,22 +515,14 @@ export default defineComponent({
   gap: 12px;
   left: 10px;
 
-  background: radial-gradient(
-      49.66% 488.58% at 50% 30%,
-      #7b307f 0%,
-      rgba(123, 48, 127, 0.81) 100%
-    )
+  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   border-radius: 12px;
   width: 100%;
 }
 
 .swap-button:hover {
-  background: radial-gradient(
-      49.66% 488.58% at 50% 30%,
-      rgba(123, 48, 127, 0.7) 0%,
-      rgba(123, 48, 127, 0.567) 100%
-    )
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   border-radius: 12px;
 }
@@ -564,4 +556,6 @@ export default defineComponent({
 .stats {
   margin-top: 1em !important;
 }
+
+
 </style>
