@@ -82,7 +82,7 @@ const sunrises = computed(() =>
 }
 
 .sunriseCard {
-  background: #2e2433;
+  @apply bg-frame-dark;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   padding: 24px 0px;
@@ -92,7 +92,8 @@ const sunrises = computed(() =>
 }
 
 .sunriseCardMobile {
-  background: #2e2433;
+  @apply bg-frame-dark;
+
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   padding: 24px 52px;
@@ -141,9 +142,8 @@ const sunrises = computed(() =>
 }
 
 .view-and-stake {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   padding: 10px 25px;
-
-  background: #772f7b;
   border-radius: 12px;
   font-weight: 600;
   font-size: 16px;
@@ -152,19 +152,12 @@ const sunrises = computed(() =>
   color: #ffffff;
 }
 
-.view-and-stake:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
-}
-
+.view-and-stake:hover,
 .view-and-stake:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
   );
 }
 

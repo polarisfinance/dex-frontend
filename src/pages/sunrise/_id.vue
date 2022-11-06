@@ -32,8 +32,11 @@
 
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
         <button class="claim-btn" @click="approve">Approve Spolar</button>
+        <div class="absolute pt-[80px]">
+          Withdraw possible in: {{ withdrawTime }}
+        </div>
       </div>
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
+      <div class="container mt-[24px] flex justify-center gap-[12px]" v-else>
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button> -->
@@ -53,9 +56,17 @@
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button class="withdraw-btn" @click="toggleSpolarWithdrawModal(false)">
+        <button
+          class="withdraw-btn"
+          :class="{ disabled: !canWithdraw }"
+          :disabled="!canWithdraw"
+          @click="toggleSpolarWithdrawModal(false)"
+        >
           Withdraw
         </button>
+        <div class="absolute mt-[80px]">
+          Withdraw possible in: {{ withdrawTime }}
+        </div>
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -89,20 +100,18 @@
         <button
           class="claim-btn"
           @click="claim"
-          :disabled="!(parseFloat(earned) > 0)"
+          :disabled="!(parseFloat(earned) > 0) || !canClaim"
+          :class="{ disabled: !(parseFloat(earned) > 0) || !canClaim }"
         >
           Claim
         </button>
         <button class="single-stake-btn">
           <div class="single-stake-btn-text">Single Stake</div>
         </button>
+        <div class="absolute mt-[80px]">Claim possible in: {{ claimTime }}</div>
       </div>
     </div>
     <div class="w-full">
-      <div class="timer-text mx-[24px] flex justify-between">
-        <div>Withdraw possible in: {{ withdrawTime }}</div>
-        <div>Claim possible in: {{ claimTime }}</div>
-      </div>
       <button class="claim-btn" text-center @click="withdraw(depositAmount)">
         Claim and withdraw
       </button>
@@ -132,7 +141,6 @@ import useTokens from '../../composables/PolarisFinance/useTokens';
 import SpolarModal from './SpolarModal.vue';
 import SpolarWithdrawModal from './SpolarWithdrawModal.vue';
 import { parseFixed } from '@ethersproject/bignumber';
-
 
 interface PoolPageData {
   id: string;
@@ -379,7 +387,11 @@ export default defineComponent({
 }
 
 .sunriseWarning {
-  background: #7b307f;
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.3) 2.98%,
+    rgba(126, 2, 245, 0.3) 97.02%
+  );
   border-radius: 16px;
   margin-left: 278px;
   margin-right: 278px;
@@ -395,7 +407,11 @@ export default defineComponent({
 }
 
 .sunriseWarningMobile {
-  background: #7b307f;
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.3) 2.98%,
+    rgba(126, 2, 245, 0.3) 97.02%
+  );
   border-radius: 16px;
   margin-left: 24px;
   margin-right: 24px;
@@ -414,7 +430,7 @@ export default defineComponent({
   font-size: 24px;
   line-height: 31px;
 
-  color: rgba(245, 225, 255, 0.7);
+  color: #d7b3ff;
   text-align: center;
   margin-left: 380px;
   margin-right: 380px;
@@ -432,7 +448,7 @@ export default defineComponent({
   line-height: 26px;
   text-align: center;
 
-  color: rgba(245, 225, 255, 0.7);
+  color: #d7b3ff;
 }
 
 .sunrise {
@@ -454,9 +470,9 @@ export default defineComponent({
 }
 
 .card {
+  @apply bg-frame-dark;
   padding: 24px 50px;
 
-  background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -466,8 +482,8 @@ export default defineComponent({
 }
 
 .cardMobile {
+  @apply bg-frame-dark;
   gap: 40px;
-  background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   padding: 24px;
@@ -509,7 +525,7 @@ export default defineComponent({
 }
 
 .claim-btn {
-  background: #772f7b;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
   padding: 10px 35px;
   font-weight: 600;
@@ -519,31 +535,36 @@ export default defineComponent({
   color: #ffffff;
 }
 
-.claim-btn:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
-}
-
+.claim-btn:hover,
 .claim-btn:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
   );
 }
 
 .withdraw-btn {
-  background: #231928;
+  background: #160d22;
+  box-shadow: inset -2px -2px 4px #2e1b46, inset 2px 2px 4px #050309;
   border-radius: 12px;
   padding: 10px 35px;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 
-  color: #be95c0;
+  color: #fdfdfd;
+}
+.withdraw-btn:hover,
+.withdraw-btn:active {
+  background: #2e1b46;
+}
+
+.disabled {
+  cursor: not-allowed;
+  background: #261737 !important;
+  color: rgba(245, 225, 255, 0.7) !important;
+  box-shadow: none !important;
 }
 
 .single-stake-btn-text {
@@ -551,12 +572,7 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 
-  background: linear-gradient(
-    90.64deg,
-    #fbaaff -20.45%,
-    #f89c35 36.77%,
-    #7b307f 100.27%
-  );
+  background: linear-gradient(97.8deg, #7b307f 7.03%, #f89c35 92.27%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -565,8 +581,8 @@ export default defineComponent({
 }
 
 .single-stake-btn {
-  background: #231928;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  background: #160d22;
+  box-shadow: inset -2px -2px 4px #2e1b46, inset 2px 2px 4px #050309;
   border-radius: 12px;
   padding: 10px 35px;
 }
