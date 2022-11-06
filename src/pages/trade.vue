@@ -58,11 +58,11 @@ onMounted(() => {
       <TradeCard />
     </template>
 
-    <div v-if="isMobile" class="mt-8 px-6">
+    <!-- <div v-if="isMobile" class="mt-8 px-6">
       <MyWallet class="mt-2" />
       <TrendingPairs class="mt-2" />
       <PairPriceGraph class="mt-2" />
-    </div>
+    </div> -->
     <!-- <template #gutterRight>
       <PairPriceGraph :toggleModal="togglePairPriceGraphModal" />
     </template> -->

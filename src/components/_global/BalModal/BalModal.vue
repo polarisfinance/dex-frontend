@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 import BalCard from '../BalCard/BalCard.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-const { isMobile, isDesktop } = useBreakpoints();
+const { upToSmallBreakpoint} = useBreakpoints();
 
 /**
  * TYPES
@@ -75,7 +75,7 @@ defineExpose({ hide });
       <Transition name="modal" @after-leave="$emit('close')">
         <div
           v-if="showContent"
-          :class="{ contentMobile: isMobile, content: isDesktop }"
+          :class="{ contentMobile: upToSmallBreakpoint, content: !upToSmallBreakpoint }"
         >
           <BalCard
             :title="title"
@@ -128,8 +128,7 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full bg-frame-dark dark:border-0;
-  border-radius: 22px;
+  @apply mx-auto h-full bg-frame-dark dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
 }
 
 .dark .bal-modal .content::before {

@@ -13,7 +13,7 @@ import AppNavMenu from './AppNavMenu.vue';
 /**
  * COMPOSABLES
  */
-const { isMobile, isDesktop } = useBreakpoints();
+const { isMobile, isDesktop, upToSmallBreakpoint } = useBreakpoints();
 const { account, connector, startConnectWithInjectedProvider } = useWeb3();
 const { setSidebarOpen } = useSidebar();
 
@@ -27,7 +27,7 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
   <div class="items-grid grid grid-flow-col grid-rows-1 gap-2">
     <!-- <DarkModeToggle v-if="isDesktop" /> -->
     <!-- <AppNavActivityBtn v-if="account" /> -->
-    <AppNavAccountBtn v-if="account && isDesktop" />
+    <AppNavAccountBtn v-if="account && !upToSmallBreakpoint" />
     <button
       class="btn"
       v-else-if="isDesktop"

@@ -53,7 +53,7 @@ const centerClasses = computed(() => ({
 
 <style scoped>
 .layout-container {
-  @apply mx-auto max-w-6xl px-0 sm:px-4;
+  @apply mx-auto max-w-6xl px-[8px] sm:px-4;
   @apply grid grid-cols-1 gap-y-8 gap-x-0 lg:grid-cols-7 lg:gap-x-8;
 }
 
