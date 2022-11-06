@@ -374,9 +374,9 @@ watch(blockNumber, () => {
 <template>
   <BalModal show @close="onClose" class="confirm-swap">
     <div class="p-0.5">
-      <div class="header flex items-center justify-between px-1.5">
+      <div class="header flex items-center justify-between px-1.5 pb-[12px]">
         <div>Confirm Swap</div>
-        <div><X @click="onClose" /></div>
+        <div><X @click="onClose" class="cursor-pointer" /></div>
       </div>
       <div class="token-input flex justify-between p-4">
         <div class="flex items-center">
@@ -792,7 +792,7 @@ watch(blockNumber, () => {
       "
       :loadingLabel="`${$t('approvingGnosisRelayer')}...`"
       @click.prevent="gnosisRelayerApproval.approve"
-      class="confirm-button"
+      color="gradient"
     >
       {{ $t('approveGnosisRelayer') }}
     </BalBtn>
@@ -804,6 +804,7 @@ watch(blockNumber, () => {
       "
       :loadingLabel="`${$t('approvingLidoRelayer')}...`"
       @click.prevent="lidoRelayerApproval.approve"
+      color="gradient"
     >
       {{ $t('approveLidoRelayer') }}
     </BalBtn>
@@ -813,6 +814,7 @@ watch(blockNumber, () => {
       :loadingLabel="`${$t('approving')} ${trading.tokenIn.value.symbol}...`"
       block
       @click.prevent="approveToken"
+      color="gradient"
     >
       {{ `${$t('approve')} ${trading.tokenIn.value.symbol}` }}
     </BalBtn>
@@ -824,6 +826,7 @@ watch(blockNumber, () => {
       :disabled="tradeDisabled"
       class="relative"
       @click.prevent="trade"
+      color="gradient"
     >
       {{ labels.confirmTrade }}
     </BalBtn>
@@ -866,7 +869,7 @@ watch(blockNumber, () => {
 }
 
 .token-input {
-  background: #2e2433;
+  background: #261737;
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
 
@@ -898,7 +901,7 @@ watch(blockNumber, () => {
 }
 
 .summary-card {
-  background: #2e2433;
+  background: #261737;
   box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
   border-radius: 16px;
   padding: 0.5em 0.3em;
