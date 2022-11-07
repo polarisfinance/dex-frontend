@@ -128,7 +128,7 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full bg-frame-dark dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
+  @apply mx-auto h-full bg-frame-dark-ultra dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
 }
 
 .dark .bal-modal .content::before {
