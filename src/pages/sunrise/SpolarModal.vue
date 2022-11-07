@@ -29,7 +29,7 @@
         </div>
         <button
           class="button-style mt-[12px] h-[44px] w-full rounded-[16px] text-white"
-          @click="deposit ? deposit(inputValue) : withdraw(inputValue)"
+          @click="deposit(inputValue)"
         >
           Confirm
         </button>
