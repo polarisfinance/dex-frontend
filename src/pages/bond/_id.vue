@@ -191,8 +191,7 @@ export default defineComponent({
       route_id.toString()
     );
     const { getCurrentTWAP, getLastEpochTWAP } = useTreasury(
-      account.value,
-      getProvider(),
+
       route_id.toString()
     );
 

@@ -1,5 +1,6 @@
 import { Contract } from 'ethers';
 import { BigNumber } from 'ethers';
+import { TransactionResponse } from '@ethersproject/providers';
 
 import {
   BigNumberToString,
@@ -15,22 +16,23 @@ import useTokens from './useTokens';
 import useTreasury from './useTreasury';
 import moment from 'moment';
 
-import {
-  rpcProviderService,
-} from '@/services/rpc-provider/rpc-provider.service';
+import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import { Network } from '@balancer-labs/sdk';
+import useTransactions from '../useTransactions';
+import useWeb3 from '@/services/web3/useWeb3';
+import { computed } from 'vue';
+import { Web3Provider } from '@ethersproject/providers';
 
-
-export default function useSunrise(account, provider, sunriseName) {
-  const w3 =  rpcProviderService.getJsonProvider(Network.AURORA);
+export default function useSunrise(sunriseName) {
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
   const sunriseAddress = sunriseNameToAddress[sunriseName];
   const spolarContract = new Contract(SPOLAR, spolarABI, w3);
   const sunriseContract = new Contract(sunriseAddress, sunriseABI, w3);
-  const spolarContractSigned = new Contract(SPOLAR, spolarABI, provider);
-  const sunriseContractSigned = new Contract(sunriseAddress, sunriseABI, provider);
+  // const spolarContractSigned = new Contract(SPOLAR, spolarABI, provider);
+  // const sunriseContractSigned = new Contract(sunriseAddress, sunriseABI, provider);
 
-  const isApproved = async () => {
+  const isApproved = async (account: string) => {
     const _owner = account;
     const _spender = sunriseAddress;
     const approval = await spolarContract.allowance(_owner, _spender);
@@ -43,16 +45,16 @@ export default function useSunrise(account, provider, sunriseName) {
     return epoch.toString();
   };
 
-  const getRewardsEarned = async () => {
+  const getRewardsEarned = async (account: string) => {
     const earned = await sunriseContract.earned(account);
     return BigNumberToString(earned, 14, 4);
   };
 
-  const canWithdraw = async () => {
+  const canWithdraw = async (account: string) => {
     return await sunriseContract.canWithdraw(account);
   };
 
-  const canClaimReward = async () => {
+  const canClaimReward = async (account: string) => {
     return await sunriseContract.canClaimReward(account);
   };
 
@@ -65,12 +67,12 @@ export default function useSunrise(account, provider, sunriseName) {
     return await spolarContract.balanceOf(sunriseAddress);
   };
 
-  const getBalance = async () => {
+  const getBalance = async (account: string) => {
     const balance = await sunriseContract.balanceOf(account);
     return BigNumberToString(balance, 14, 4);
   };
 
-  const deposit = async amount => {
+  const deposit = async (amount: BigNumber, provider: Web3Provider) => {
     try {
       const tx = await sendTransaction(
         provider,
@@ -79,7 +81,6 @@ export default function useSunrise(account, provider, sunriseName) {
         'stake',
         [amount]
       );
-
       return tx;
     } catch (error) {
       console.error(error);
@@ -87,9 +88,8 @@ export default function useSunrise(account, provider, sunriseName) {
     }
   };
 
-  const approve = async () => {
+  const approve = async (provider: Web3Provider) => {
     const amount = MaxUint256.toString();
-
     try {
       const tx = await sendTransaction(provider, SPOLAR, spolarABI, 'approve', [
         sunriseAddress,
@@ -103,7 +103,7 @@ export default function useSunrise(account, provider, sunriseName) {
     }
   };
 
-  const withdraw = async amount => {
+  const withdraw = async (amount: BigNumber, provider: Web3Provider) => {
     try {
       const tx = await sendTransaction(
         provider,
@@ -120,7 +120,7 @@ export default function useSunrise(account, provider, sunriseName) {
     }
   };
 
-  const claim = async () => {
+  const claim = async (provider: Web3Provider) => {
     try {
       const tx = await sendTransaction(
         provider,
@@ -140,17 +140,24 @@ export default function useSunrise(account, provider, sunriseName) {
     const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
 
     const latestSnapshotIndex = await sunriseContract.latestSnapshotIndex();
-    const lastHistory = await sunriseContract.masonryHistory(
-      latestSnapshotIndex
-    );
-    const spolarPrice = await getSpolarPrice();
-    const tokenPrice = await getTokenPriceInUSD(sunriseName);
+    // const lastHistory = await sunriseContract.masonryHistory(
+    //   latestSnapshotIndex
+    // );
+    // const spolarPrice = await getSpolarPrice();
+    // const tokenPrice = await getTokenPriceInUSD(sunriseName);
+    // const masonrytShareBalanceOf = await getSpolarStakedBigNumber();
 
+    const [lastHistory, spolarPrice, tokenPrice, masonrytShareBalanceOf] =
+      await Promise.all([
+        sunriseContract.masonryHistory(latestSnapshotIndex),
+        getSpolarPrice(),
+        getTokenPriceInUSD(sunriseName),
+        spolarContract.balanceOf(sunriseAddress),
+      ]);
     const lastRewardsReceived = lastHistory[1];
     const epochRewardsPerShare = lastRewardsReceived / 1e18;
 
     const amountOfRewardsPerDay = epochRewardsPerShare * Number(tokenPrice) * 4;
-    const masonrytShareBalanceOf = await getSpolarStakedBigNumber();
 
     const masonryTVL =
       Number(getDisplayBalance(masonrytShareBalanceOf, 18)) *
@@ -161,10 +168,10 @@ export default function useSunrise(account, provider, sunriseName) {
       .toString();
   };
 
-  const getUnstakePeriod = async () => {
+  const getUnstakePeriod = async (account: string) => {
     const { getPeriod, getNextEpochPoint } = useTreasury(
-      account,
-      provider,
+      // account,
+      // provider,
       sunriseName
     );
 
@@ -188,10 +195,10 @@ export default function useSunrise(account, provider, sunriseName) {
     return endDate;
   };
 
-  const getClaimPeriod = async () => {
+  const getClaimPeriod = async (account: string) => {
     const { getPeriod, getNextEpochPoint } = useTreasury(
-      account,
-      provider,
+      // account,
+      // provider,
       sunriseName
     );
 

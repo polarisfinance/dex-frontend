@@ -65,8 +65,7 @@ export default function useBonds(account, provider, tokenName) {
 
   const purchase = async amount => {
     const { getCurrentTWAPBigNumber } = useTreasury(
-      account.value,
-      provider,
+
       tokenName
     );
 
@@ -89,8 +88,7 @@ export default function useBonds(account, provider, tokenName) {
 
   const redeem = async () => {
     const { getCurrentTWAPBigNumber } = useTreasury(
-      account.value,
-      provider,
+
       tokenName
     );
 

@@ -2,7 +2,7 @@
   <BalModal :show="isVisible" noPad @close="$emit('close')">
     <div class="p-[12px]">
       <div class="header px-[12px]">
-        <div v-if="deposit" class="title text-white">Deposit SPOLAR</div>
+        <div v-if="depositBol" class="title text-white">Deposit SPOLAR</div>
         <div v-else class="title text-white">Withdraw SPOLAR</div>
         <X class="pt-[4px]" v-on:click="$emit('close')" />
       </div>
@@ -29,7 +29,7 @@
         </div>
         <button
           class="button-style mt-[12px] h-[44px] w-full rounded-[16px] text-white"
-          @click="deposit(inputValue)"
+          @click="depositBol ? deposit(inputValue) : withdraw(inputValue)"
         >
           Confirm
         </button>
@@ -38,14 +38,16 @@
   </BalModal>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import X from '@/components/web3/x.vue';
 import useTokens from '../../composables/PolarisFinance/useTokens';
 import { useRoute } from 'vue-router';
 import useWeb3 from '@/services/web3/useWeb3';
 import useSunrise from '../../composables/PolarisFinance/useSunrise';
 import { parseFixed } from '@ethersproject/bignumber';
-
+import useTransactions from '@/composables/useTransactions';
+import { TransactionResponse } from '@ethersproject/providers';
+import useEthers from '../../composables/useEthers';
 
 /**
  * STATE
@@ -61,25 +63,57 @@ export default defineComponent({
   components: {
     X,
   },
-  setup() {
-    const { account, getProvider } = useWeb3();
+  props: {
+    isVisible: Boolean,
+    depositBol: Boolean,
+    balance: { type: String, default: '0' },
+  },
+  setup(props, { emit }) {
+    const { getProvider } = useWeb3();
+
     const route = useRoute();
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'stake',
+        summary: 'deposit for sunrise',
+      });
+    };
 
     async function deposit(amount: string) {
       const formatedAmount = parseFixed(amount, 18);
       const tokenName = route.params.id.toString();
-      const { deposit } = useSunrise(account.value, getProvider(), tokenName);
-      await deposit(formatedAmount);
+      const { deposit } = useSunrise(tokenName);
+      const tx = await deposit(formatedAmount, getProvider());
+      txHandler(tx);
+      txListener(tx, {
+        onTxConfirmed: () => {
+          emit('close');
+          emit('update');
+        },
+        onTxFailed: () => {},
+      });
     }
 
-    async function withdraw(amount) {
+    async function withdraw(amount: string) {
       const formatedAmount = parseFixed(amount, 18);
       const tokenName = route.params.id.toString();
-      const { withdraw } = useSunrise(account.value, getProvider(), tokenName);
-      await withdraw(formatedAmount);
+      const { withdraw } = useSunrise(tokenName);
+      const tx = await withdraw(formatedAmount, getProvider());
+      txHandler(tx);
+      txListener(tx, {
+        onTxConfirmed: () => {
+          emit('close');
+          emit('update');
+        },
+        onTxFailed: () => {},
+      });
     }
 
-    
     return {
       deposit,
       withdraw,
@@ -88,7 +122,6 @@ export default defineComponent({
 
   data() {
     return {
-      balance: '0',
       inputValue: '0',
     };
   },
@@ -97,22 +130,9 @@ export default defineComponent({
       this.inputValue = this.balance;
     },
   },
+  
 
-  async created() {
-    const { getBalance } = useTokens();
-    this.balance = await getBalance();
-  },
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: false,
-    },
-    deposit: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['close'],
+  emits: ['close', 'update'],
 });
 </script>
 <style scoped>
