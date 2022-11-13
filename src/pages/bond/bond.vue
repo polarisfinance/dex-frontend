@@ -54,9 +54,9 @@ const sunrises = computed(() =>
           <span class="uppercase">{{ '$' + sunrise.name }}</span>
         </p>
       </div>
-      <button class="view-and-stake mt-[34px]">
-        <router-link :to="'/bond/' + sunrise.name"> View and Bond </router-link>
-      </button>
+      <router-link :to="'/bond/' + sunrise.name">
+        <button class="view-and-stake mt-[34px]">View and Bond</button>
+      </router-link>
     </div>
   </div>
 </template>

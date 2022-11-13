@@ -54,11 +54,9 @@ onMounted(() => {});
           <span class="uppercase">{{ '$' + sunrise.name }}</span>
         </p>
       </div>
-      <button class="view-and-stake mt-[34px]">
-        <router-link :to="'/sunrise/' + sunrise.name">
-          View and Stake
-        </router-link>
-      </button>
+      <router-link :to="'/sunrise/' + sunrise.name">
+        <button class="view-and-stake mt-[34px]">View and Stake</button>
+      </router-link>
     </div>
   </div>
 </template>
