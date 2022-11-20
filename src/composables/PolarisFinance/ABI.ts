@@ -158,6 +158,15 @@ export const treasuryABI = name => {
   "type": "function"
 },{
   "inputs": [],
+  "name": "get` +
+      `${name.charAt(0).toUpperCase()}` +
+      `${name.slice(1)}` +
+      `Price",
+  "outputs": [{ "internalType": "uint256", "name": "_ethernalPrice", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [],
   "name": "nextEpochPoint",
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
   "stateMutability": "view",
@@ -167,6 +176,15 @@ export const treasuryABI = name => {
   "name": "PERIOD",
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
   "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [
+    { "internalType": "uint256", "name": "_polarAmount", "type": "uint256" },
+    { "internalType": "uint256", "name": "targetPrice", "type": "uint256" }
+  ],
+  "name": "buyBonds",
+  "outputs": [],
+  "stateMutability": "nonpayable",
   "type": "function"
 }]`
   );
@@ -192,6 +210,12 @@ export const polarTreasuryABI = JSON.parse(`[{
 "type": "function"
 },{
   "inputs": [],
+  "name": "getpolarPrice",
+  "outputs": [{ "internalType": "uint256", "name": "_polarPrice", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
+  },{
+  "inputs": [],
   "name": "nextEpochPoint",
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
   "stateMutability": "view",
@@ -201,6 +225,15 @@ export const polarTreasuryABI = JSON.parse(`[{
   "name": "PERIOD",
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
   "stateMutability": "view",
+  "type": "function"
+},{
+  "inputs": [
+    { "internalType": "uint256", "name": "_polarAmount", "type": "uint256" },
+    { "internalType": "uint256", "name": "targetPrice", "type": "uint256" }
+  ],
+  "name": "buyBonds",
+  "outputs": [],
+  "stateMutability": "nonpayable",
   "type": "function"
 }]`);
 
@@ -226,18 +259,15 @@ export const tokenABI = JSON.parse(`[{
   "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
   "stateMutability": "nonpayable",
   "type": "function"
+},{
+  "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
+  "name": "balanceOf",
+  "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+  "stateMutability": "view",
+  "type": "function"
 }]`);
 
 export const bondABI = JSON.parse(`[{
-  "inputs": [
-    { "internalType": "uint256", "name": "_polarAmount", "type": "uint256" },
-    { "internalType": "uint256", "name": "targetPrice", "type": "uint256" }
-  ],
-  "name": "buyBonds",
-  "outputs": [],
-  "stateMutability": "nonpayable",
-  "type": "function"
-},{
   "inputs": [{ "internalType": "address", "name": "account", "type": "address" }],
   "name": "balanceOf",
   "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],

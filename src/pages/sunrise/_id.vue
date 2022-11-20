@@ -484,9 +484,6 @@ export default defineComponent({
         await this.render();
       }
     },
-    canWithdraw(newVal) {
-      console.log(newVal);
-    },
   },
 });
 </script>
