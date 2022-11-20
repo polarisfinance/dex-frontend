@@ -33,7 +33,7 @@
         {{ sunrise.bond }} is available for purchase
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
-        <button class="purchase-button" @click="toggleBondModal">
+        <button class="purchase-button" @click="togglePurchaseBondModal">
           Purchase
         </button>
       </div>
@@ -43,12 +43,12 @@
       </div>
       <BondModal
         :purchaseBol="true"
-        :isVisible="isBondModalVisible"
+        :isVisible="isPurchaseBondModalVisible"
         :balance="tokenBalance"
         :name="sunrise.bond"
         :account="account"
         :sunriseName="sunrise.name"
-        @close="toggleBondModal"
+        @close="togglePurchaseBondModal"
         @update="render"
       />
     </div>
@@ -83,14 +83,30 @@
         </div>
       </div>
       <div class="details mt-[32px]">
-        {{ earnedAmount }} {{ sunrise.bond }} Redeemable
+        {{ bondBalance }} {{ sunrise.bond }} Redeemable
       </div>
       <div class="mt-[24px] flex justify-center">
-        <button class="claim-btn" @click="redeem">
+        <button
+          class="purchase-button"
+          @click="toggleRedeemBondModal"
+          v-if="redeemEnabled"
+        >
+          Redeem
+        </button>
+        <button class="claim-btn" v-else>
           Enabled when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
-        <button class="purchase-btn" @click="toggleBondModal">Redeem</button>
       </div>
+      <BondModal
+        :purchaseBol="false"
+        :isVisible="isRedeemBondModalVisible"
+        :balance="bondBalance"
+        :name="sunrise.bond"
+        :account="account"
+        :sunriseName="sunrise.name"
+        @close="toggleRedeemBondModal"
+        @update="render"
+      />
     </div>
   </div>
 </template>
@@ -171,9 +187,14 @@ export default defineComponent({
       return sunriseDefinitions.polar;
     });
 
-    const isBondModalVisible = ref(false);
-    const toggleBondModal = () => {
-      isBondModalVisible.value = !isBondModalVisible.value;
+    const isPurchaseBondModalVisible = ref(false);
+    const togglePurchaseBondModal = () => {
+      isPurchaseBondModalVisible.value = !isPurchaseBondModalVisible.value;
+    };
+
+    const isRedeemBondModalVisible = ref(false);
+    const toggleRedeemBondModal = () => {
+      isRedeemBondModalVisible.value = !isRedeemBondModalVisible.value;
     };
 
     return {
@@ -189,10 +210,12 @@ export default defineComponent({
 
       getProvider,
       account,
-      isBondModalVisible,
-      toggleBondModal,
+      isPurchaseBondModalVisible,
+      togglePurchaseBondModal,
       txHandler,
       txListener,
+      isRedeemBondModalVisible,
+      toggleRedeemBondModal,
     };
   },
   methods: {
@@ -210,12 +233,10 @@ export default defineComponent({
     },
 
     async render() {
-      const {
-        isApprovedPurchase,
-        getEarnedAmount,
-        getTokenBalance,
-        getBondBalance,
-      } = useBonds(this.account, this.sunriseName);
+      const { isApprovedPurchase, getTokenBalance, getBondBalance } = useBonds(
+        this.account,
+        this.sunriseName
+      );
       const { getCurrentTWAP, getLastEpochTWAP } = useTreasury(
         this.sunriseName
       );
@@ -238,14 +259,12 @@ export default defineComponent({
           this.previousEpochTwap,
           this.currentTwap,
           this.approved,
-          this.earnedAmount,
           this.tokenBalance,
           this.bondBalance,
         ] = await Promise.all([
           getLastEpochTWAP(),
           getCurrentTWAP(),
           isApprovedPurchase(),
-          getEarnedAmount(),
           getTokenBalance(),
           getBondBalance(),
         ]);
@@ -259,6 +278,7 @@ export default defineComponent({
         }
         this.bondPrice = bondPrice.toString();
       }
+      this.redeemEnabled = parseFloat(this.previousEpochTwap) > 1.01;
     },
   },
   async created() {
@@ -268,10 +288,10 @@ export default defineComponent({
   data() {
     return {
       approved: false,
+      redeemEnabled: false,
       previousEpochTwap: '-',
       currentTwap: '-',
       bondPrice: '-',
-      earnedAmount: '-',
       tokenBalance: '-',
       bondBalance: '-',
     };

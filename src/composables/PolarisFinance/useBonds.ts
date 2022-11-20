@@ -89,12 +89,6 @@ export default function useBonds(account: string, tokenName: string) {
     return BigNumberToString(balance, 14, 4);
   };
 
-  const getEarnedAmount = async () => {
-    console.log(tokenContract);
-    const balance = await tokenContract.balanceOf(account);
-    return BigNumberToString(balance, 14, 4);
-  };
-
   const purchase = async (amount: BigNumber, provider: Web3Provider) => {
     const { getCurrentPrice } = useTreasury(tokenName);
     const targetPrice = await getCurrentPrice();
@@ -140,7 +134,6 @@ export default function useBonds(account: string, tokenName: string) {
     isApprovedRedeem,
     approvePurchase,
     approveRedeem,
-    getEarnedAmount,
     purchase,
     redeem,
     getTokenBalance,

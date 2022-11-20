@@ -31,7 +31,7 @@
         </div>
         <button
           class="button-style mt-[12px] h-[44px] w-full rounded-[16px] text-white"
-          @click="purchaseBol ? purchase(inputValue) : purchase(inputValue)"
+          @click="purchaseBol ? purchase(inputValue) : redeem(inputValue)"
         >
           Confirm
         </button>
