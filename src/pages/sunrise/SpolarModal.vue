@@ -46,7 +46,6 @@ import useWeb3 from '@/services/web3/useWeb3';
 import useSunrise from '../../composables/PolarisFinance/useSunrise';
 import { parseFixed } from '@ethersproject/bignumber';
 
-
 /**
  * STATE
  */
@@ -79,7 +78,6 @@ export default defineComponent({
       await withdraw(formatedAmount);
     }
 
-    
     return {
       deposit,
       withdraw,

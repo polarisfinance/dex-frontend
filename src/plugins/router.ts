@@ -41,15 +41,16 @@ const FaucetPage = () =>
 
 const PortfolioPage = () =>
   import(/* webpackChunkName: "PortfolioPage" */ '@/pages/portfolio.vue');
-
+const SingleStakePage = () =>
+  import(/* webpackChunkName: "SingleStakePage" */ '@/pages/singlestake.vue');
 const SunrisesPage = () =>
-  import(/* webpackChunkName: "SunrisePage" */ '@/pages/sunrise/sunrise.vue');
+  import(/* webpackChunkName: "SunrisesPage" */ '@/pages/sunrise/sunrise.vue');
 const SunrisePage = () =>
   import(/* webpackChunkName: "SunrisePage" */ '@/pages/sunrise/_id.vue');
 const BondsPage = () =>
-  import(/* webpackChunkName: "SunrisePage" */ '@/pages/bond/bond.vue');
+  import(/* webpackChunkName: "BondPage" */ '@/pages/bond/bond.vue');
 const BondPage = () =>
-  import(/* webpackChunkName: "SunrisePage" */ '@/pages/bond/_id.vue');
+  import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -62,6 +63,11 @@ declare module 'vue-router' {
 }
 
 const routes: RouteRecordRaw[] = [
+  {
+    path: '/singlestake/:id',
+    name: 'singlestake',
+    component: SingleStakePage,
+  },
   {
     path: '/',
     name: 'home',
