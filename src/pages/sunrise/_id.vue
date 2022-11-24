@@ -146,6 +146,7 @@ import useTokens from '../../composables/PolarisFinance/useTokens';
 
 import SpolarModal from './SpolarModal.vue';
 import { parseFixed } from '@ethersproject/bignumber';
+
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import isDate from 'date-fns/esm/isDate/index.js';

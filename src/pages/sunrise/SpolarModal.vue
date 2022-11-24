@@ -45,6 +45,7 @@ import { useRoute } from 'vue-router';
 import useWeb3 from '@/services/web3/useWeb3';
 import useSunrise from '../../composables/PolarisFinance/useSunrise';
 import { parseFixed } from '@ethersproject/bignumber';
+
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import useEthers from '../../composables/useEthers';
@@ -130,7 +131,6 @@ export default defineComponent({
       this.inputValue = this.balance;
     },
   },
-  
 
   emits: ['close', 'update'],
 });
