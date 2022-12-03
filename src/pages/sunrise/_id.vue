@@ -46,17 +46,11 @@
         <SpolarModal
           :depositBol="true"
           :isVisible="isSpolarModalVisible"
-<<<<<<< HEAD
           :deposit="depositToken"
           @close="
             toggleSpolarModal();
             fetchData();
           "
-=======
-          :balance="balance"
-          @close="toggleSpolarModal"
-          @update="render"
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
         />
         <SpolarModal
           :isVisible="isSpolarWithdrawModalVisible"
@@ -114,18 +108,12 @@
         >
           Claim
         </button>
-<<<<<<< HEAD
         <router-link :to="'/singlestake/' + sunrise['name']">
           <button class="single-stake-btn">
             <div class="single-stake-btn-text">Single Stake</div>
           </button>
         </router-link>
-=======
-        <button class="single-stake-btn">
-          <div class="single-stake-btn-text">Single Stake</div>
-        </button>
         <div class="absolute mt-[80px]">Claim possible in: {{ claimTime }}</div>
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
       </div>
     </div>
     <div class="w-full">
@@ -163,14 +151,11 @@ import useTokens from '../../composables/PolarisFinance/useTokens';
 import SpolarModal from './SpolarModal.vue';
 import { parseFixed } from '@ethersproject/bignumber';
 
-<<<<<<< HEAD
-=======
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import isDate from 'date-fns/esm/isDate/index.js';
 import useEthers from '../../composables/useEthers';
 
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 interface PoolPageData {
   id: string;
 }
@@ -322,106 +307,6 @@ export default defineComponent({
       balance: '-',
     };
   },
-<<<<<<< HEAD
-  async created() {
-    // const route = useRoute();
-    // const { account, getProvider } = useWeb3();
-
-    // const result = await fetch(
-    //   `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
-    //   {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({
-    //       query: `
-    //   query {
-    //     sunrises {
-    //       id,
-    //       type
-    //     }
-    // }`,
-    //     }),
-    //   }
-    // );
-    await this.fetchData();
-
-    // const route_id = route.params.id;
-    // var sunriseName = route_id.toString();
-
-    // const {
-    //   isApproved,
-    //   getEpoch,
-    //   getRewardsEarned,
-    //   canWithdraw,
-    //   canClaimReward,
-    //   getSpolarStaked,
-    //   getBalance,
-    //   getSunriseAPR,
-    //   getUnstakePeriod,
-    //   getClaimPeriod,
-    // } = useSunrise(account.value, getProvider(), sunriseName);
-
-    // const { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP, getNextEpochTime } =
-    //   useTreasury(account.value, getProvider(), sunriseName);
-
-    // const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
-    // this.epoch = await getEpoch();
-    // this.spolarsStaked = await getSpolarStaked();
-    // this.lastEpochTwap = await getLastEpochTWAP();
-    // this.printTwap = await getPrintTWAP();
-    // this.twap = await getCurrentTWAP();
-    // this.APR = await getSunriseAPR();
-    // await setDate(getNextEpochTime, this, 'nextEpoch');
-
-    // const c = await getUnstakePeriod();
-
-    // this.approved = await isApproved();
-
-    // this.earned = await getRewardsEarned();
-    // this.canWithdraw = await canWithdraw();
-    // this.canClaim = await canClaimReward();
-    // this.balance = await getBalance();
-
-    // const spolarPrice = await getSpolarPrice();
-    // const tokenUsdPrice = await getTokenPriceInUSD(sunriseName);
-
-    // this.depositedInDollars = (parseFloat(this.balance) * spolarPrice)
-    //   .toFixed(2)
-    //   .toString();
-
-    // this.earnedAmountInDollars = (parseFloat(this.earned) * tokenUsdPrice)
-    //   .toFixed(2)
-    //   .toString();
-
-    // await setDate(getUnstakePeriod, this, 'withdrawTime');
-    // await setDate(getClaimPeriod, this, 'claimTime');
-  },
-  methods: {
-    async fetchData() {
-      const route = useRoute();
-      const { account, getProvider } = useWeb3();
-
-      const result = await fetch(
-        `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: `
-      query {
-        sunrises {
-          id,
-          type
-        }
-    }`,
-          }),
-        }
-      );
-
-      const route_id = route.params.id;
-      var sunriseName = route_id.toString();
-
-=======
   methods: {
     async claim() {
       const { claim } = useSunrise(this.sunriseName);
@@ -475,7 +360,6 @@ export default defineComponent({
       }
     },
     async render() {
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
       const {
         isApproved,
         getEpoch,
@@ -487,52 +371,13 @@ export default defineComponent({
         getSunriseAPR,
         getUnstakePeriod,
         getClaimPeriod,
-<<<<<<< HEAD
-      } = useSunrise(account.value, getProvider(), sunriseName);
-=======
       } = useSunrise(this.sunriseName);
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 
       const {
         getLastEpochTWAP,
         getPrintTWAP,
         getCurrentTWAP,
         getNextEpochTime,
-<<<<<<< HEAD
-      } = useTreasury(account.value, getProvider(), sunriseName);
-
-      const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
-      this.epoch = await getEpoch();
-      this.spolarsStaked = await getSpolarStaked();
-      this.lastEpochTwap = await getLastEpochTWAP();
-      this.printTwap = await getPrintTWAP();
-      this.twap = await getCurrentTWAP();
-      this.APR = await getSunriseAPR();
-      await setDate(getNextEpochTime, this, 'nextEpoch');
-
-      const c = await getUnstakePeriod();
-
-      this.approved = await isApproved();
-
-      this.earned = await getRewardsEarned();
-      this.canWithdraw = await canWithdraw();
-      this.canClaim = await canClaimReward();
-      this.balance = await getBalance();
-
-      const spolarPrice = await getSpolarPrice();
-      const tokenUsdPrice = await getTokenPriceInUSD(sunriseName);
-
-      this.depositedInDollars = (parseFloat(this.balance) * spolarPrice)
-        .toFixed(2)
-        .toString();
-
-      this.earnedAmountInDollars = (parseFloat(this.earned) * tokenUsdPrice)
-        .toFixed(2)
-        .toString();
-
-      await setDate(getUnstakePeriod, this, 'withdrawTime');
-      await setDate(getClaimPeriod, this, 'claimTime');
-=======
       } = useTreasury(this.sunriseName);
 
       const { getSpolarBalance } = useTokens();
@@ -643,7 +488,6 @@ export default defineComponent({
       if (newEpoch === '00:00:00') {
         await this.render();
       }
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
     },
   },
 });

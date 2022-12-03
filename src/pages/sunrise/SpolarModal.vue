@@ -46,13 +46,10 @@ import useWeb3 from '@/services/web3/useWeb3';
 import useSunrise from '../../composables/PolarisFinance/useSunrise';
 import { parseFixed } from '@ethersproject/bignumber';
 
-<<<<<<< HEAD
-=======
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import useEthers from '../../composables/useEthers';
 
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 /**
  * STATE
  */
