@@ -14,7 +14,6 @@ import AppNavAccountBtn from '../AppNavAccountBtn.vue';
 import MobileWalletBtn from './MobileWalletBtn.vue';
 
 import useBreakpoints from '@/composables/useBreakpoints';
-const { isMobile, isDesktop } = useBreakpoints();
 
 import swapImg from './swap.svg';
 import investImg from './invest.svg';
@@ -42,6 +41,9 @@ const { version } = useApp();
 const { t } = useI18n();
 const router = useRouter();
 const { account, connector, startConnectWithInjectedProvider } = useWeb3();
+const { isMobile, isDesktop, upToSmallBreakpoint } = useBreakpoints();
+console.log(upToSmallBreakpoint)
+
 
 /**
  * STATE
@@ -159,7 +161,7 @@ const toggleMobileWallet = () => {
       </BalLink>
     </div>
   </div>
-  <div class="px-[24px] py-[44px]">
+  <div v-if="upToSmallBreakpoint" class="px-[24px] py-[44px]">
     <div v-if="account">
       <MobileWalletBtn @toggle-mobile-wallet="toggleMobileWallet" />
     </div>

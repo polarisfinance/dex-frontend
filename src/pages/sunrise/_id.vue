@@ -26,14 +26,17 @@
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" src="./spolar.svg" />
-      <div class="num-tokens">{{ balance }}</div>
+      <div class="num-tokens">{{ depositedBalance }}</div>
       <div class="details">${{ depositedInDollars }}</div>
       <div class="details">SPOLAR Staked</div>
 
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
         <button class="claim-btn" @click="approve">Approve Spolar</button>
+        <div class="absolute mt-[80px]">
+          Withdraw possible in: {{ withdrawTime }}
+        </div>
       </div>
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
+      <div class="container mt-[24px] flex justify-center gap-[12px]" v-else>
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button> -->
@@ -41,24 +44,39 @@
           Deposit
         </button>
         <SpolarModal
+          :depositBol="true"
           :isVisible="isSpolarModalVisible"
+<<<<<<< HEAD
           :deposit="depositToken"
           @close="
             toggleSpolarModal();
             fetchData();
           "
+=======
+          :balance="balance"
+          @close="toggleSpolarModal"
+          @update="render"
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
         />
-        <SpolarWithdrawModal
+        <SpolarModal
           :isVisible="isSpolarWithdrawModalVisible"
           :deposit="depositToken"
+          :balance="depositedBalance"
           @close="toggleSpolarWithdrawModal"
         />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button class="withdraw-btn" @click="toggleSpolarWithdrawModal(false)">
+        <button
+          class="withdraw-btn"
+          :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
+          @click="toggleSpolarWithdrawModal(false)"
+        >
           Withdraw
         </button>
+        <div class="absolute mt-[80px]">
+          Withdraw possible in: {{ withdrawTime }}
+        </div>
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -92,23 +110,31 @@
         <button
           class="claim-btn"
           @click="claim"
-          :disabled="!(parseFloat(earned) > 0)"
+          :disabled="!(parseFloat(earned) > 0) || !canClaim"
         >
           Claim
         </button>
+<<<<<<< HEAD
         <router-link :to="'/singlestake/' + sunrise['name']">
           <button class="single-stake-btn">
             <div class="single-stake-btn-text">Single Stake</div>
           </button>
         </router-link>
+=======
+        <button class="single-stake-btn">
+          <div class="single-stake-btn-text">Single Stake</div>
+        </button>
+        <div class="absolute mt-[80px]">Claim possible in: {{ claimTime }}</div>
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
       </div>
     </div>
     <div class="w-full">
-      <div class="timer-text mx-[24px] flex justify-between">
-        <div>Withdraw possible in: {{ withdrawTime }}</div>
-        <div>Claim possible in: {{ claimTime }}</div>
-      </div>
-      <button class="claim-btn" text-center @click="withdraw(depositAmount)">
+      <button
+        class="claim-btn"
+        text-center
+        @click="withdrawAll"
+        :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
+      >
         Claim and withdraw
       </button>
     </div>
@@ -135,9 +161,16 @@ import useTreasury from '../../composables/PolarisFinance/useTreasury';
 import useTokens from '../../composables/PolarisFinance/useTokens';
 
 import SpolarModal from './SpolarModal.vue';
-import SpolarWithdrawModal from './SpolarWithdrawModal.vue';
 import { parseFixed } from '@ethersproject/bignumber';
 
+<<<<<<< HEAD
+=======
+import useTransactions from '@/composables/useTransactions';
+import { TransactionResponse } from '@ethersproject/providers';
+import isDate from 'date-fns/esm/isDate/index.js';
+import useEthers from '../../composables/useEthers';
+
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 interface PoolPageData {
   id: string;
 }
@@ -160,33 +193,47 @@ function formatDate(hours, minutes, seconds) {
   );
 }
 
-async function setDate(event, instance, property, epochTimer = true) {
-  var date = await event();
+// async function setDate(event, instance, property, epochTimer = true) {
+//   var date = await event();
 
-  var interval = setInterval(async function () {
-    var now = new Date().getTime();
-    var distance = date.getTime() - now;
+//   var interval = setInterval(async function () {
+//     var now = new Date().getTime();
+//     var distance = date.getTime() - now;
 
-    if (distance >= 0) {
-      var hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//     if (distance >= 0) {
+//       var hours = Math.floor(
+//         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+//       );
+//       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      instance[property] = formatDate(hours, minutes, seconds);
-    } else {
-      instance[property] = '00:00:00';
-      if (epochTimer) date = await event();
-      else clearInterval(interval);
-    }
-  }, 1000);
-}
+//       instance[property] = formatDate(hours, minutes, seconds);
+//     } else {
+//       instance[property] = '00:00:00';
+//       if (epochTimer) date = await event();
+//       else clearInterval(interval);
+//     }
+//   }, 1000);
+// }
 
 export default defineComponent({
-  components: { SpolarModal, SpolarWithdrawModal },
+  components: { SpolarModal },
   setup() {
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'approve',
+        summary: 'deposit for sunrise',
+      });
+    };
     const route = useRoute();
+    const route_id = route.params.id;
+    var sunriseName = route_id.toString();
+
     const { isMobile, isDesktop } = useBreakpoints();
 
     const { account, getProvider } = useWeb3();
@@ -210,27 +257,10 @@ export default defineComponent({
       return undefined;
     });
 
-    async function withdraw(amount) {
-      const formatedAmount = parseFixed(amount, 18);
-      const tokenName = route.params.id.toString();
-      const { withdraw } = useSunrise(account.value, getProvider(), tokenName);
-      await withdraw(formatedAmount);
-    }
-
-    async function approve() {
-      const tokenName = route.params.id.toString();
-      const { approve } = useSunrise(account.value, getProvider(), tokenName);
-      await approve();
-    }
-
-    async function claim() {
-      const tokenName = route.params.id.toString();
-      const { claim } = useSunrise(account.value, getProvider(), tokenName);
-      await claim();
-    }
     const isSpolarModalVisible = ref(false);
     const isSpolarWithdrawModalVisible = ref(false);
     const depositToken = ref(false);
+
     const toggleSpolarModal = (depositProp: boolean, value?: boolean) => {
       isSpolarModalVisible.value = value ?? !isSpolarModalVisible.value;
       depositToken.value = depositProp;
@@ -253,15 +283,17 @@ export default defineComponent({
 
       // computed
       sunrise,
-      approve,
-      claim,
-      withdraw,
 
       isSpolarModalVisible,
       isSpolarWithdrawModalVisible,
       toggleSpolarWithdrawModal,
       toggleSpolarModal,
       depositToken,
+      account,
+      getProvider,
+      sunriseName,
+      txHandler,
+      txListener,
     };
   },
   data() {
@@ -270,7 +302,6 @@ export default defineComponent({
       depositAmount: '0',
       withdrawAmount: '0',
       epoch: '-',
-      balance: '-',
       earned: '-',
       canWithdraw: false,
       canClaim: false,
@@ -281,11 +312,17 @@ export default defineComponent({
       depositedInDollars: '-',
       earnedAmountInDollars: '-',
       nextEpoch: '-',
+      nextEpochDate: new Date(),
       APR: '-',
       withdrawTime: '-',
+      withdrawTimeDate: new Date(),
       claimTime: '-',
+      claimTimeDate: new Date(),
+      depositedBalance: '-',
+      balance: '-',
     };
   },
+<<<<<<< HEAD
   async created() {
     // const route = useRoute();
     // const { account, getProvider } = useWeb3();
@@ -384,6 +421,61 @@ export default defineComponent({
       const route_id = route.params.id;
       var sunriseName = route_id.toString();
 
+=======
+  methods: {
+    async claim() {
+      const { claim } = useSunrise(this.sunriseName);
+      const tx = await claim(this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async approve() {
+      const { approve } = useSunrise(this.sunriseName);
+      const tx = await approve(this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async withdrawAll() {
+      const amount = this.depositedBalance;
+      const formatedAmount = parseFixed(amount, 18);
+      const { withdraw } = useSunrise(this.sunriseName);
+      const tx = await withdraw(formatedAmount, this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async setDate(time: Date) {
+      var now = new Date().getTime();
+      var distance = time.getTime() - now;
+
+      if (distance >= 0) {
+        var hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        return formatDate(hours, minutes, seconds);
+      } else {
+        return '00:00:00';
+      }
+    },
+    async render() {
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
       const {
         isApproved,
         getEpoch,
@@ -395,13 +487,18 @@ export default defineComponent({
         getSunriseAPR,
         getUnstakePeriod,
         getClaimPeriod,
+<<<<<<< HEAD
       } = useSunrise(account.value, getProvider(), sunriseName);
+=======
+      } = useSunrise(this.sunriseName);
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 
       const {
         getLastEpochTWAP,
         getPrintTWAP,
         getCurrentTWAP,
         getNextEpochTime,
+<<<<<<< HEAD
       } = useTreasury(account.value, getProvider(), sunriseName);
 
       const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
@@ -435,6 +532,118 @@ export default defineComponent({
 
       await setDate(getUnstakePeriod, this, 'withdrawTime');
       await setDate(getClaimPeriod, this, 'claimTime');
+=======
+      } = useTreasury(this.sunriseName);
+
+      const { getSpolarBalance } = useTokens();
+
+      const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
+
+      // this.nextEpochDate = await getNextEpochTime();
+      // this.epoch = await getEpoch();
+      // this.spolarsStaked = await getSpolarStaked();
+      // this.lastEpochTwap = await getLastEpochTWAP();
+      // this.printTwap = await getPrintTWAP();
+      // this.twap = await getCurrentTWAP();
+      // this.APR = await getSunriseAPR();
+      if (this.account === '') {
+        [
+          this.nextEpochDate,
+          this.epoch,
+          this.spolarsStaked,
+          this.lastEpochTwap,
+          this.printTwap,
+          this.twap,
+          this.APR,
+        ] = await Promise.all([
+          getNextEpochTime(),
+          getEpoch(),
+          getSpolarStaked(),
+          getLastEpochTWAP(),
+          getPrintTWAP(),
+          getCurrentTWAP(),
+          getSunriseAPR(),
+        ]);
+      } else {
+        let spolarPrice: number;
+        let tokenUsdPrice: number;
+        [
+          this.nextEpochDate,
+          this.epoch,
+          this.spolarsStaked,
+          this.lastEpochTwap,
+          this.printTwap,
+          this.twap,
+          this.APR,
+          this.approved,
+          this.earned,
+          this.canWithdraw,
+          this.canClaim,
+          this.depositedBalance,
+          spolarPrice,
+          tokenUsdPrice,
+          this.claimTimeDate,
+          this.withdrawTimeDate,
+        ] = await Promise.all([
+          getNextEpochTime(),
+          getEpoch(),
+          getSpolarStaked(),
+          getLastEpochTWAP(),
+          getPrintTWAP(),
+          getCurrentTWAP(),
+          getSunriseAPR(),
+          isApproved(this.account),
+          getRewardsEarned(this.account),
+          canWithdraw(this.account),
+          canClaimReward(this.account),
+          getBalance(this.account),
+          getSpolarPrice(),
+          getTokenPriceInUSD(this.sunriseName),
+          getClaimPeriod(this.account),
+          getUnstakePeriod(this.account),
+        ]);
+        this.depositedInDollars = (
+          parseFloat(this.depositedBalance) * spolarPrice
+        )
+          .toFixed(2)
+          .toString();
+
+        this.earnedAmountInDollars = (parseFloat(this.earned) * tokenUsdPrice)
+          .toFixed(2)
+          .toString();
+
+        this.balance = await getSpolarBalance(this.account);
+      }
+
+      // await setDate(getClaimPeriod, this, 'claimTime');
+      // await setDate(getNextEpochTime, this, 'nextEpoch');
+    },
+  },
+  async created() {
+    setInterval(
+      async () => (this.claimTime = await this.setDate(this.claimTimeDate)),
+      1000
+    );
+    setInterval(
+      async () =>
+        (this.withdrawTime = await this.setDate(this.withdrawTimeDate)),
+      1000
+    );
+    setInterval(
+      async () => (this.nextEpoch = await this.setDate(this.nextEpochDate)),
+      1000
+    );
+    await this.render();
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.render();
+    },
+    async nextEpoch(newEpoch, oldEpoch) {
+      if (newEpoch === '00:00:00') {
+        await this.render();
+      }
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
     },
   },
 });
@@ -461,7 +670,11 @@ export default defineComponent({
 }
 
 .sunriseWarning {
-  background: #7b307f;
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.3) 2.98%,
+    rgba(126, 2, 245, 0.3) 97.02%
+  );
   border-radius: 16px;
   margin-left: 278px;
   margin-right: 278px;
@@ -477,7 +690,11 @@ export default defineComponent({
 }
 
 .sunriseWarningMobile {
-  background: #7b307f;
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.3) 2.98%,
+    rgba(126, 2, 245, 0.3) 97.02%
+  );
   border-radius: 16px;
   margin-left: 24px;
   margin-right: 24px;
@@ -496,7 +713,7 @@ export default defineComponent({
   font-size: 24px;
   line-height: 31px;
 
-  color: rgba(245, 225, 255, 0.7);
+  color: #d7b3ff;
   text-align: center;
   margin-left: 380px;
   margin-right: 380px;
@@ -514,7 +731,7 @@ export default defineComponent({
   line-height: 26px;
   text-align: center;
 
-  color: rgba(245, 225, 255, 0.7);
+  color: #d7b3ff;
 }
 
 .sunrise {
@@ -536,9 +753,9 @@ export default defineComponent({
 }
 
 .card {
+  @apply bg-frame-dark;
   padding: 24px 50px;
 
-  background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -548,8 +765,8 @@ export default defineComponent({
 }
 
 .cardMobile {
+  @apply bg-frame-dark;
   gap: 40px;
-  background: #2e2433;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   padding: 24px;
@@ -591,7 +808,7 @@ export default defineComponent({
 }
 
 .claim-btn {
-  background: #772f7b;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
   padding: 10px 35px;
   font-weight: 600;
@@ -601,31 +818,42 @@ export default defineComponent({
   color: #ffffff;
 }
 
-.claim-btn:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
-}
-
+.claim-btn:hover,
 .claim-btn:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
   );
 }
 
 .withdraw-btn {
-  background: #231928;
+  background: #160d22;
+  box-shadow: inset -2px -2px 4px #2e1b46, inset 2px 2px 4px #050309;
   border-radius: 12px;
   padding: 10px 35px;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 
-  color: #be95c0;
+  color: #fdfdfd;
+}
+.withdraw-btn:hover,
+.withdraw-btn:active {
+  background: #2e1b46;
+}
+
+.withdraw-btn:disabled {
+  cursor: not-allowed;
+  background: #261737 !important;
+  color: rgba(245, 225, 255, 0.7) !important;
+  box-shadow: none !important;
+}
+.claim-btn:disabled {
+  cursor: not-allowed;
+  background: #261737 !important;
+  color: rgba(245, 225, 255, 0.7) !important;
+  box-shadow: none !important;
 }
 
 .single-stake-btn-text {
@@ -633,12 +861,7 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 
-  background: linear-gradient(
-    90.64deg,
-    #fbaaff -20.45%,
-    #f89c35 36.77%,
-    #7b307f 100.27%
-  );
+  background: linear-gradient(97.8deg, #7b307f 7.03%, #f89c35 92.27%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -647,8 +870,8 @@ export default defineComponent({
 }
 
 .single-stake-btn {
-  background: #231928;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  background: #160d22;
+  box-shadow: inset -2px -2px 4px #2e1b46, inset 2px 2px 4px #050309;
   border-radius: 12px;
   padding: 10px 35px;
 }

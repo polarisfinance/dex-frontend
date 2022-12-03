@@ -29,6 +29,7 @@ import PairPriceGraph from '@/components/cards/PairPriceGraph/PairPriceGraph.vue
 import TrendingPairs from '@/components/cards/TrendingPairs/TrendingPairs.vue';
 
 import MobileWallet from './MobileWallet.vue';
+import x from './x.vue';
 
 const { isMobile } = useBreakpoints();
 
@@ -50,6 +51,7 @@ export default defineComponent({
     PairPriceGraph,
     TrendingPairs,
     MobileWallet,
+    x,
   },
 
   data() {
@@ -158,7 +160,7 @@ export default defineComponent({
       <MyWallet />
       <TrendingPairs class="mt-4" />
     </template> -->
-    
+
     <!-- right bar -->
     <!-- <div class="bar absolute hidden lg:block" v-show="$route.name == 'trade'">
       <div class="bar-placeholder">
@@ -172,9 +174,9 @@ export default defineComponent({
 
   <BalModal show v-if="showMobileWallet" @close="showMobileWallet = false">
     <div>
-      <div class="flex text justify-between">
+      <div class="text flex justify-between">
         <div>Account</div>
-        <div>X</div>
+        <x @click="showMobileWallet = false" />
       </div>
       <MobileWallet />
     </div>

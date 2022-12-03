@@ -76,7 +76,7 @@ export default defineComponent({
       return {
         'rounded-lg': !props.square,
         'overflow-hidden': !props.exposeOverflow,
-        'bg-[#160D22]': !props.lighterBg,
+        'bg-frame-dark-ultra': !props.lighterBg,
         'bg-[#1E0D2C]': props.lighterBg,
         [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,
         [borderClasses.value]: !props.noBorder,

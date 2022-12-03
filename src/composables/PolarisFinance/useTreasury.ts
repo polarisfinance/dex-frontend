@@ -5,13 +5,11 @@ import { treasuryABI, polarTreasuryABI } from './ABI';
 
 import { BigNumberToString, treasuryNameToAddress } from './utils';
 
-import {
-  rpcProviderService,
-} from '@/services/rpc-provider/rpc-provider.service';
+import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import { Network } from '@balancer-labs/sdk';
 
-export default function useTreasury(account, provider, treasuryName) {
-  const w3 =  rpcProviderService.getJsonProvider(Network.AURORA);
+export default function useTreasury(treasuryName) {
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
   const treasuryAddress = treasuryNameToAddress[treasuryName];
 
@@ -70,6 +68,19 @@ export default function useTreasury(account, provider, treasuryName) {
     return await treasuryContract[getTwap]();
   };
 
+  const getCurrentPrice = async () => {
+    let getCurrentPriceString;
+    if (treasuryName == 'polar') {
+      getCurrentPriceString = 'getpolarPrice';
+    } else {
+      getCurrentPriceString =
+        'get' +
+        treasuryName.charAt(0).toUpperCase() +
+        treasuryName.slice(1) +
+        'Price';
+    }
+    return await treasuryContract[getCurrentPriceString]();
+  };
   const getNextEpochPoint = async () => {
     return await treasuryContract.nextEpochPoint();
   };
@@ -94,5 +105,6 @@ export default function useTreasury(account, provider, treasuryName) {
     getNextEpochTime,
     getPeriod,
     getNextEpochPoint,
+    getCurrentPrice,
   };
 }

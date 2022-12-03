@@ -5,18 +5,18 @@ import { pools, segnioragePools, SPOLAR, BigNumberToString } from './utils';
 
 import Web3 from 'web3';
 
-import useWeb3 from '@/services/web3/useWeb3';
 import { Contract } from '@ethersproject/contracts';
+import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
+import { Network } from '@balancer-labs/sdk';
 
 export default function useTokens() {
   const w3 = new Web3(config.rpc);
   
+  const provider = rpcProviderService.getJsonProvider(Network.AURORA);
   
-  
-  const getBalance = async () => {
-    const { account, getProvider } = useWeb3();
-    const spolarContract = new Contract(SPOLAR, spolarABI, getProvider());
-    const balance = await spolarContract.balanceOf(account.value);
+  const getSpolarBalance = async (account: string) => {
+    const spolarContract = new Contract(SPOLAR, spolarABI, provider);
+    const balance = await spolarContract.balanceOf(account);
     return BigNumberToString(balance, 14, 4);
   };
 
@@ -144,5 +144,5 @@ export default function useTokens() {
     return price / Math.pow(10, 18);
   };
 
-  return { getSpolarPrice, getTokenPriceInUSD, getTokenPeg, getBalance };
+  return { getSpolarPrice, getTokenPriceInUSD, getTokenPeg, getSpolarBalance };
 }

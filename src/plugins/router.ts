@@ -42,7 +42,13 @@ const FaucetPage = () =>
 const PortfolioPage = () =>
   import(/* webpackChunkName: "PortfolioPage" */ '@/pages/portfolio.vue');
 const SingleStakePage = () =>
+<<<<<<< HEAD
   import(/* webpackChunkName: "SingleStakePage" */ '@/pages/singlestake.vue');
+=======
+  import(
+    /* webpackChunkName: "SingleStakePage" */ '@/pages/singleStake/singlestake.vue'
+  );
+>>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 const SunrisesPage = () =>
   import(/* webpackChunkName: "SunrisesPage" */ '@/pages/sunrise/sunrise.vue');
 const SunrisePage = () =>

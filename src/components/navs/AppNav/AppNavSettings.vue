@@ -236,7 +236,7 @@ export default defineComponent({
 }
 
 .bal-card {
-  @apply flex flex-col bg-frame-dark;
+  @apply flex flex-col bg-frame-dark-ultra;
   /* background-color: #231928; */
   /* box-shadow: inset 0px 0px 2px #fbaaff; */
   border-radius: 22px;

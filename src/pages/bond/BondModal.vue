@@ -2,8 +2,10 @@
   <BalModal :show="isVisible" noPad @close="$emit('close')">
     <div class="p-[12px]">
       <div class="header px-[12px]">
-        <div v-if="depositBol" class="title text-white">Deposit SPOLAR</div>
-        <div v-else class="title text-white">Withdraw SPOLAR</div>
+        <div v-if="purchaseBol" class="title text-white">
+          Purchase {{ name }}
+        </div>
+        <div v-else class="title text-white">Redeem {{ name }}</div>
         <X class="pt-[4px]" v-on:click="$emit('close')" />
       </div>
       <div class="grid justify-items-start pt-[24px]">
@@ -29,7 +31,7 @@
         </div>
         <button
           class="button-style mt-[12px] h-[44px] w-full rounded-[16px] text-white"
-          @click="depositBol ? deposit(inputValue) : withdraw(inputValue)"
+          @click="purchaseBol ? purchase(inputValue) : redeem(inputValue)"
         >
           Confirm
         </button>
@@ -43,16 +45,12 @@ import X from '@/components/web3/x.vue';
 import useTokens from '../../composables/PolarisFinance/useTokens';
 import { useRoute } from 'vue-router';
 import useWeb3 from '@/services/web3/useWeb3';
-import useSunrise from '../../composables/PolarisFinance/useSunrise';
+import useBonds from '../../composables/PolarisFinance/useBonds';
 import { parseFixed } from '@ethersproject/bignumber';
-
-<<<<<<< HEAD
-=======
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import useEthers from '../../composables/useEthers';
 
->>>>>>> 5e69e8f182c34c8f678e9dd2ba1f8d3d8d18e735
 /**
  * STATE
  */
@@ -69,8 +67,11 @@ export default defineComponent({
   },
   props: {
     isVisible: Boolean,
-    depositBol: Boolean,
+    purchaseBol: Boolean,
     balance: { type: String, default: '0' },
+    name: { String, default: '' },
+    account: { String, default: '' },
+    sunriseName: { String, default: '' },
   },
   setup(props, { emit }) {
     const { getProvider } = useWeb3();
@@ -88,39 +89,11 @@ export default defineComponent({
       });
     };
 
-    async function deposit(amount: string) {
-      const formatedAmount = parseFixed(amount, 18);
-      const tokenName = route.params.id.toString();
-      const { deposit } = useSunrise(tokenName);
-      const tx = await deposit(formatedAmount, getProvider());
-      txHandler(tx);
-      txListener(tx, {
-        onTxConfirmed: () => {
-          emit('close');
-          emit('update');
-        },
-        onTxFailed: () => {},
-      });
-    }
-
-    async function withdraw(amount: string) {
-      const formatedAmount = parseFixed(amount, 18);
-      const tokenName = route.params.id.toString();
-      const { withdraw } = useSunrise(tokenName);
-      const tx = await withdraw(formatedAmount, getProvider());
-      txHandler(tx);
-      txListener(tx, {
-        onTxConfirmed: () => {
-          emit('close');
-          emit('update');
-        },
-        onTxFailed: () => {},
-      });
-    }
-
     return {
-      deposit,
-      withdraw,
+      getProvider,
+      txListener,
+      txHandler,
+      emit,
     };
   },
 
@@ -132,6 +105,33 @@ export default defineComponent({
   methods: {
     maxBalance() {
       this.inputValue = this.balance;
+    },
+    async purchase(amount: string) {
+      const formatedAmount = parseFixed(amount, 18);
+      const { purchase } = useBonds(this.account, this.sunriseName);
+      const tx = await purchase(formatedAmount, this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.emit('close');
+          this.emit('update');
+        },
+        onTxFailed: () => {},
+      });
+    },
+
+    async redeem(amount: string) {
+      const formatedAmount = parseFixed(amount, 18);
+      const { redeem } = useBonds(this.account, this.sunriseName);
+      const tx = await redeem(formatedAmount, this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.emit('close');
+          this.emit('update');
+        },
+        onTxFailed: () => {},
+      });
     },
   },
 

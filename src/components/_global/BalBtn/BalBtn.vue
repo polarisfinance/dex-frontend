@@ -120,8 +120,7 @@ export default defineComponent({
         return `bg-gradient-to-tr from-${fromColor}-400 to-${toColor}-400`;
       }
       return `
-        bg-gradient-to-tr from-${fromColor}-600 to-${toColor}-600
-        hover:from-${fromColor}-700 hover:to-${toColor}-700 transition-colors
+        custom-gradient
       `;
     });
 
@@ -252,7 +251,7 @@ export default defineComponent({
 }
 
 .content {
-  @apply  pt-[5px] pb-[3px] inline-block selection:align-bottom;
+  @apply  pt-[5px] pb-[3px] inline-block selection:align-bottom font-semibold;
 }
 
 .confirm-button {
@@ -275,5 +274,12 @@ export default defineComponent({
   color: #d7b3ff;
 
   width: 100%;
+}
+
+.custom-gradient {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+}
+.custom-gradient:hover {
+  background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
 }
 </style>

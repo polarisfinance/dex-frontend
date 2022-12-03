@@ -12,22 +12,34 @@ import {
   tokenNameToAddress,
   treasuryNameToAddress,
 } from './utils';
+import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
+import { Network } from '@balancer-labs/sdk';
+import { Web3Provider } from '@ethersproject/providers';
+import { treasuryABI, polarTreasuryABI } from './ABI';
+import { TokenAmount } from '@trisolaris/sdk';
 
-export default function useBonds(account, provider, tokenName) {
+export default function useBonds(account: string, tokenName: string) {
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
   const bondAddress = bondNameToAddress[tokenName];
   const tokenAddress = tokenNameToAddress[tokenName];
-
-  const tokenContract = new Contract(tokenAddress, tokenABI, provider);
-
-  const isApproved = async () => {
+  const treasuryAddress = treasuryNameToAddress[tokenName];
+  const tokenContract = new Contract(tokenAddress, tokenABI, w3);
+  const bondContract = new Contract(bondAddress, bondABI, w3);
+  const isApprovedPurchase = async () => {
     const _owner = account;
-    const _spender = bondAddress;
+    const _spender = treasuryAddress;
     const approval = await tokenContract.allowance(_owner, _spender);
-
     return approval != 0 ? true : false;
   };
 
-  const approve = async () => {
+  const isApprovedRedeem = async () => {
+    const _owner = account;
+    const _spender = treasuryAddress;
+    const approval = await bondContract.allowance(_owner, _spender);
+    return approval != 0 ? true : false;
+  };
+
+  const approvePurchase = async (provider: Web3Provider) => {
     const amount = MaxUint256.toString();
     const spender = treasuryNameToAddress[tokenName];
 
@@ -47,38 +59,48 @@ export default function useBonds(account, provider, tokenName) {
     }
   };
 
-  const getEarnedAmount = async () => {
+  const approveRedeem = async (provider: Web3Provider) => {
+    const amount = MaxUint256.toString();
+    const spender = treasuryNameToAddress[tokenName];
+
     try {
       const tx = await sendTransaction(
         provider,
-        bondNameToAddress[tokenName],
-        bondABI,
-        'balanceOf',
-        [account]
+        tokenNameToAddress[tokenName],
+        tokenABI,
+        'approve',
+        [spender, amount]
       );
-      return BigNumberToString(tx, 14, 4);
+
+      return tx;
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   };
 
-  const purchase = async amount => {
-    const { getCurrentTWAPBigNumber } = useTreasury(
-      account.value,
-      provider,
-      tokenName
-    );
+  const getTokenBalance = async () => {
+    const balance = await tokenContract.balanceOf(account);
+    return BigNumberToString(balance, 14, 4);
+  };
 
-    const targetPrice = await getCurrentTWAPBigNumber();
+  const getBondBalance = async () => {
+    const balance = await bondContract.balanceOf(account);
+    return BigNumberToString(balance, 14, 4);
+  };
 
+  const purchase = async (amount: BigNumber, provider: Web3Provider) => {
+    const { getCurrentPrice } = useTreasury(tokenName);
+    const targetPrice = await getCurrentPrice();
+    const localABI =
+      tokenName != 'polar' ? treasuryABI(tokenName) : polarTreasuryABI;
     try {
       const tx = await sendTransaction(
         provider,
         treasuryNameToAddress[tokenName],
-        bondABI,
+        localABI,
         'buyBonds',
-        [amount, BigNumber.from(targetPrice)]
+        [amount, targetPrice]
       );
       return tx;
     } catch (error) {
@@ -87,12 +109,8 @@ export default function useBonds(account, provider, tokenName) {
     }
   };
 
-  const redeem = async () => {
-    const { getCurrentTWAPBigNumber } = useTreasury(
-      account.value,
-      provider,
-      tokenName
-    );
+  const redeem = async (amount: BigNumber, provider: Web3Provider) => {
+    const { getCurrentTWAPBigNumber } = useTreasury(tokenName);
 
     const targetPrice = await getCurrentTWAPBigNumber();
 
@@ -102,7 +120,7 @@ export default function useBonds(account, provider, tokenName) {
         treasuryNameToAddress[tokenName],
         bondABI,
         'redeemBonds',
-        [account, BigNumber.from(targetPrice)]
+        [amount, BigNumber.from(targetPrice)]
       );
       return tx;
     } catch (error) {
@@ -111,5 +129,14 @@ export default function useBonds(account, provider, tokenName) {
     }
   };
 
-  return { isApproved, approve, getEarnedAmount, purchase, redeem };
+  return {
+    isApprovedPurchase,
+    isApprovedRedeem,
+    approvePurchase,
+    approveRedeem,
+    purchase,
+    redeem,
+    getTokenBalance,
+    getBondBalance,
+  };
 }

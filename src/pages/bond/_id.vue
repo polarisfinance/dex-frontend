@@ -33,11 +33,24 @@
         {{ sunrise.bond }} is available for purchase
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
-        <button class="claim-btn" @click="purchase('1')">Purchase</button>
+        <button class="purchase-button" @click="togglePurchaseBondModal">
+          Purchase
+        </button>
       </div>
+
       <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
-        <button class="claim-btn" @click="approve">Approve</button>
+        <button class="purchase-button" @click="approve">Approve</button>
       </div>
+      <BondModal
+        :purchaseBol="true"
+        :isVisible="isPurchaseBondModalVisible"
+        :balance="tokenBalance"
+        :name="sunrise.bond"
+        :account="account"
+        :sunriseName="sunrise.name"
+        @close="togglePurchaseBondModal"
+        @update="render"
+      />
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
       <div>
@@ -70,19 +83,43 @@
         </div>
       </div>
       <div class="details mt-[32px]">
-        {{ earnedAmount }} {{ sunrise.bond }} Redeemable
+        {{ bondBalance }} {{ sunrise.bond }} Redeemable
       </div>
       <div class="mt-[24px] flex justify-center">
-        <button class="claim-btn" @click="redeem">
+        <button
+          class="purchase-button"
+          @click="toggleRedeemBondModal"
+          v-if="redeemEnabled"
+        >
+          Redeem
+        </button>
+        <button class="claim-btn" v-else>
           Enabled when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
       </div>
+      <BondModal
+        :purchaseBol="false"
+        :isVisible="isRedeemBondModalVisible"
+        :balance="bondBalance"
+        :name="sunrise.bond"
+        :account="account"
+        :sunriseName="sunrise.name"
+        @close="toggleRedeemBondModal"
+        @update="render"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, toRefs } from 'vue';
+import {
+  ref,
+  computed,
+  defineComponent,
+  onMounted,
+  reactive,
+  toRefs,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import { sunriseDefinitions } from './config.js';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -97,16 +134,35 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 import useBonds from '@/composables/PolarisFinance/useBonds';
 import useTreasury from '@/composables/PolarisFinance/useTreasury';
+import { BigNumber } from 'ethers';
+import BondModal from './BondModal.vue';
+import useEthers from '../../composables/useEthers';
+import useTransactions from '@/composables/useTransactions';
+import { TransactionResponse } from '@ethersproject/providers';
 
 interface PoolPageData {
   id: string;
 }
 
 export default defineComponent({
-  components: {},
+  components: { BondModal },
 
   setup() {
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'approve',
+        summary: 'deposit for sunrise',
+      });
+    };
     const route = useRoute();
+    const route_id = route.params.id;
+    const sunriseName = route_id.toString();
+
     const { isMobile, isDesktop } = useBreakpoints();
 
     const { account, getProvider } = useWeb3();
@@ -128,25 +184,17 @@ export default defineComponent({
       for (let sunrise of Object.values(sunriseDefinitions)) {
         if (sunrise.name == data.id) return sunrise;
       }
-      return undefined;
+      return sunriseDefinitions.polar;
     });
 
-    const purchase = async amount => {
-      const tokenName = route.params.id.toString();
-      const { purchase } = useBonds(account.value, getProvider(), tokenName);
-      await purchase(amount);
+    const isPurchaseBondModalVisible = ref(false);
+    const togglePurchaseBondModal = () => {
+      isPurchaseBondModalVisible.value = !isPurchaseBondModalVisible.value;
     };
 
-    const approve = async () => {
-      const tokenName = route.params.id.toString();
-      const { approve } = useBonds(account.value, getProvider(), tokenName);
-      await approve();
-    };
-
-    const redeem = async () => {
-      const tokenName = route.params.id.toString();
-      const { redeem } = useBonds(account.value, getProvider(), tokenName);
-      await redeem();
+    const isRedeemBondModalVisible = ref(false);
+    const toggleRedeemBondModal = () => {
+      isRedeemBondModalVisible.value = !isRedeemBondModalVisible.value;
     };
 
     return {
@@ -155,71 +203,103 @@ export default defineComponent({
       isMobile,
       isDesktop,
       logo,
+      sunriseName,
 
       // computed
       sunrise,
-      approve,
-      purchase,
-      redeem,
+
+      getProvider,
+      account,
+      isPurchaseBondModalVisible,
+      togglePurchaseBondModal,
+      txHandler,
+      txListener,
+      isRedeemBondModalVisible,
+      toggleRedeemBondModal,
     };
   },
-  async created() {
-    const route = useRoute();
-    const route_id = route.params.id;
-    const { account, getProvider } = useWeb3();
+  methods: {
+    async approve() {
+      const { approvePurchase } = useBonds(this.account, this.sunriseName);
 
-    const result = await fetch(
-      `https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-subgraph`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `
-      query {
-        sunrises {
-          id,
-          type
+      const tx = await approvePurchase(this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
+        },
+        onTxFailed: () => {},
+      });
+    },
+
+    async render() {
+      const { isApprovedPurchase, getTokenBalance, getBondBalance } = useBonds(
+        this.account,
+        this.sunriseName
+      );
+      const { getCurrentTWAP, getLastEpochTWAP } = useTreasury(
+        this.sunriseName
+      );
+      if (this.account === '') {
+        [this.previousEpochTwap, this.currentTwap] = await Promise.all([
+          getLastEpochTWAP(),
+          getCurrentTWAP(),
+        ]);
+        const twap = parseFloat(this.currentTwap);
+
+        let bondPrice = 0;
+        if (twap >= 1.01) {
+          bondPrice = 1 + (twap - 1) * 0.7;
+        } else {
+          bondPrice = twap;
         }
-    }`,
-        }),
+        this.bondPrice = bondPrice.toString();
+      } else {
+        [
+          this.previousEpochTwap,
+          this.currentTwap,
+          this.approved,
+          this.tokenBalance,
+          this.bondBalance,
+        ] = await Promise.all([
+          getLastEpochTWAP(),
+          getCurrentTWAP(),
+          isApprovedPurchase(),
+          getTokenBalance(),
+          getBondBalance(),
+        ]);
+        const twap = parseFloat(this.currentTwap);
+
+        let bondPrice = 0;
+        if (twap >= 1.01) {
+          bondPrice = 1 + (twap - 1) * 0.7;
+        } else {
+          bondPrice = twap;
+        }
+        this.bondPrice = bondPrice.toString();
       }
-    );
-
-    const { isApproved, getEarnedAmount } = useBonds(
-      account.value,
-      getProvider(),
-      route_id.toString()
-    );
-    const { getCurrentTWAP, getLastEpochTWAP } = useTreasury(
-      account.value,
-      getProvider(),
-      route_id.toString()
-    );
-
-    const currentTwap = await getCurrentTWAP();
-    const twap = parseFloat(currentTwap);
-
-    let bondPrice = 0;
-    if (twap >= 1.01) {
-      bondPrice = 1 + (twap - 1) * 0.7;
-    } else {
-      bondPrice = twap;
-    }
-
-    this.bondPrice = bondPrice.toString();
-    this.currentTwap = currentTwap;
-    this.previousEpochTwap = await getLastEpochTWAP();
-    this.approved = await isApproved();
-    this.earnedAmount = await getEarnedAmount();
+      this.redeemEnabled = parseFloat(this.previousEpochTwap) > 1.01;
+    },
   },
+  async created() {
+    await this.render();
+  },
+
   data() {
     return {
       approved: false,
+      redeemEnabled: false,
       previousEpochTwap: '-',
       currentTwap: '-',
       bondPrice: '-',
-      earnedAmount: '-',
+      tokenBalance: '-',
+      bondBalance: '-',
     };
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.render();
+    },
   },
 });
 </script>
@@ -493,5 +573,14 @@ export default defineComponent({
 .tokenTransitionMobile {
   padding-left: 30px;
   padding-right: 30px;
+}
+
+.purchase-button {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  border-radius: 12px;
+  padding: 10px 35px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
 }
 </style>
