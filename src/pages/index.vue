@@ -291,16 +291,26 @@ export default defineComponent({
           </div>
           <div class="mt-[8px] flex justify-center gap-[8px]">
             <a href="#segniorage">
-              <div class="segniorage mobile-pool-btn">Seigniorage Pools</div>
+              <div
+                class="segniorage cursor-pointer mobile-pool-btn text-center"
+              >
+                Seigniorage Pools
+              </div>
             </a>
             <a href="#singlestaking">
-              <div class="mobile-pool-btn">Single Staking</div>
+              <div class="mobile-pool-btn cursor-pointer text-center">
+                Single Staking
+              </div>
             </a>
             <a href="#classicpools">
-              <div class="mobile-pool-btn">Classic Pools</div>
+              <div class="mobile-pool-btn cursor-pointer text-center">
+                Classic Pools
+              </div>
             </a>
             <a href="#communitypools">
-              <div class="pool-type-btn cursor-pointer">Community Pools</div>
+              <div class="pool-type-btn cursor-pointer text-center">
+                Community Pools
+              </div>
             </a>
           </div>
           <button
@@ -429,6 +439,7 @@ export default defineComponent({
 .pool-types {
   background: #231928;
   border-radius: 12px;
+  text-align: center;
 }
 
 .input {

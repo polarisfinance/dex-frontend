@@ -303,7 +303,7 @@ function selected(pool) {
           </div>
         </div>
         <div class="flex">
-          <div class="flex-column w-full gap-[4px]">
+          <div class="flex-column w-full gap-[6px]">
             <div>
               <BalLoadingBlock
                 v-if="!pool?.apr?.total?.unstaked"
@@ -311,7 +311,7 @@ function selected(pool) {
               />
               <template v-else>
                 <div class="h-4 w-12">
-                  {{ aprLabelFor(pool) }}
+                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
                 </div>
               </template>
             </div>
@@ -322,19 +322,14 @@ function selected(pool) {
               />
               <template v-else>
                 <div class="h-4 w-12">
-                  {{ aprLabelFor(pool) }}
+                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
                 </div>
               </template>
             </div>
             <div>
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
-                {{
-                  fNum2(pool?.volumeSnapshot, {
-                    style: 'currency',
-                    maximumFractionDigits: 0,
-                  })
-                }}
+                {{ '$' + pool?.volumeSnapshot }}
               </span>
             </div>
             <div>
@@ -344,7 +339,12 @@ function selected(pool) {
               />
               <template v-else>
                 <div class="h-4 w-12">
-                  {{ aprLabelFor(pool) }}
+                  {{
+                    fNum2(pool?.totalLiquidity, {
+                      style: 'currency',
+                      maximumFractionDigits: 0,
+                    })
+                  }}
                 </div>
               </template>
             </div>
@@ -355,7 +355,7 @@ function selected(pool) {
               />
               <template v-else>
                 <div class="h-4 w-12">
-                  {{ aprLabelFor(pool) }}
+                  {{ Math.round(aprLabelFor(pool), 2) }}
                 </div>
               </template>
             </div>

@@ -5,6 +5,9 @@ import { computed, ref } from 'vue';
 import BalModal from '@/components/_global/BalModal/BalModal.vue';
 import { urlFor } from '@/composables/useNetwork';
 import useVeBAL from '@/composables/useVeBAL';
+import useBreakpoints from '@/composables/useBreakpoints';
+
+const { isDesktop, isMobile } = useBreakpoints();
 
 /**
  * STATE
@@ -60,7 +63,12 @@ function handleInternalClose() {
         />
       </div>
     </div> -->
-    <div class="text-center coming-soon-text">Coming Soon</div>
+    <div class="text-center coming-soon-text overflow" v-if="isDesktop">
+      Coming Soon
+    </div>
+    <div class="text-center coming-soon-text mobile overflow" v-else>
+      Coming Soon
+    </div>
   </BalModal>
 </template>
 
@@ -72,5 +80,14 @@ function handleInternalClose() {
   line-height: 26px;
 
   color: #ffffff;
+}
+
+.mobile {
+  padding-bottom: 80%;
+  padding-top: 10%;
+}
+
+.overflow {
+  overflow: none;
 }
 </style>

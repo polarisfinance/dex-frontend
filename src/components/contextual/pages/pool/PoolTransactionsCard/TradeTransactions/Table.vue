@@ -226,21 +226,21 @@ const swapRows = computed<SwapRow[]>(() =>
         </div>
       </template>
     </BalTable> -->
-    <div class="flex items-center justify-between">
+    <div class="grid">
       <div>Action</div>
-      <div class="flex w-full items-center justify-center gap-[40px]">
+      <div class="ml-[20px] flex w-full items-start gap-[40px]">
         <div>Value</div>
         <div>Tokens</div>
       </div>
-      <div>Time</div>
+      <div class="text-right">Time</div>
     </div>
     <div class="my-[24px] border" />
     <div v-for="(action, index) in swapRows" :key="index">
       <a :href="explorerLinks.txLink(action.tx)" target="_blank">
-        <div class="mb-[12px] flex items-center justify-between">
+        <div class="mb-[12px] grid">
           <div class="flex items-center">
             <BalAsset
-              class="mr-2 flex-shrink-0"
+              class="mr-2"
               :address="action.userAddress"
               :iconURI="action.ensAvatar"
               :size="24"
@@ -249,45 +249,48 @@ const swapRows = computed<SwapRow[]>(() =>
               {{ action.ensName || shortenLabel(action.userAddress) }}
             </div>
           </div>
-          <div
+          <!-- <div
             class="width-[50px] flex w-full items-center justify-center gap-[40px]"
-          >
-            <div class="value-text w-[50px] text-right">
-              {{ action.formattedValue }}
-            </div>
-            <div class="w-[130px]">
-              <div class="flex items-center">
-                <div class="token-item">
-                  <BalAsset
-                    :address="action.tokenIn"
-                    class="mr-[8px]"
-                    :size="16"
-                  />
-                  <span class="font-numeric">{{
-                    fNum2(action.tokenAmountIn, FNumFormats.token)
-                  }}</span>
-                </div>
-                <img src="./swap.svg" class="mx-[12px]" />
-                <div class="token-item">
-                  <BalAsset
-                    :address="action.tokenOut"
-                    class="mr-[8px]"
-                    :size="16"
-                  />
-                  <span class="font-numeric">{{
-                    fNum2(action.tokenAmountOut, FNumFormats.token)
-                  }}</span>
-                </div>
+          > -->
+          <div class="text-center ml-[20px]">
+            <div class="flex items-center text-center">
+              <div class="value-text text-right mr-[12px]">
+                {{ action.formattedValue }}
               </div>
+              <div class="token-item">
+                <BalAsset
+                  :address="action.tokenIn"
+                  class="mr-[8px]"
+                  :size="16"
+                />
+                <span class="font-numeric">{{
+                  fNum2(action.tokenAmountIn, FNumFormats.token)
+                }}</span>
+              </div>
+              <img src="./swap.svg" class="mx-[12px]" />
+              <div class="token-item">
+                <BalAsset
+                  :address="action.tokenOut"
+                  class="mr-[8px]"
+                  :size="16"
+                />
+                <span class="font-numeric">{{
+                  fNum2(action.tokenAmountOut, FNumFormats.token)
+                }}</span>
+              </div>
+              <!-- </div> -->
             </div>
           </div>
-          <div class="value-text" v-if="isDesktop">
+          <div class="value-text text-right" v-if="isDesktop">
             {{ action.formattedDate }}
           </div>
         </div>
-        <div class="value-text mt-[8px] flex justify-end" v-if="isMobile">
+        <div v-if="isMobile" class="value-text text-right w-full">
           {{ action.formattedDate }}
         </div>
+        <!-- <div class="value-text mt-[8px] flex justify-end" v-if="isMobile">
+          {{ action.formattedDate }}
+        </div> -->
       </a>
     </div>
     <!-- <div class="w-full flex justify-center">
@@ -352,5 +355,11 @@ const swapRows = computed<SwapRow[]>(() =>
 
   color: #be95c0;
   background: #231928;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
 }
 </style>

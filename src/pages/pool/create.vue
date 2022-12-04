@@ -339,7 +339,7 @@ watch(
       Aurora Mainnet
     </div>
     <div class="col-span-2 my-[24px] create-pool-border"></div>
-    <div class="relative overflow-y-scroll">
+    <div class="relative overflowed">
       <AnimatePresence
         :isVisible="hasRestoredFromSavedState && !appLoading"
         unmountInstantly
@@ -406,7 +406,7 @@ watch(
       </AnimatePresence>
     </div>
 
-    <div v-if="upToLargeBreakpoint"  class="">
+    <div v-if="upToLargeBreakpoint" class="">
       <!-- <BalAccordion
         :dependencies="validTokens"
         :sections="[
@@ -450,5 +450,9 @@ watch(
   background: #2e2433;
   box-shadow: 0px 1px 2px #231928;
   border-radius: 20px;
+}
+
+.overflowed {
+  overflow: scroll;
 }
 </style>

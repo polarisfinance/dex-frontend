@@ -265,18 +265,19 @@ const getRows = computed<ActivityRow[]>(() => {
         </div>
       </template>
     </BalTable> -->
-    <div class="flex items-center justify-between">
+    <div class="grid">
       <div>Action</div>
-      <div class="flex w-full items-center justify-center gap-[40px]">
+      <div class="ml-[32px] flex w-full items-start gap-[40px]">
         <div>Value</div>
         <div>Tokens</div>
       </div>
-      <div>Time</div>
+      <div class="text-right">Time</div>
     </div>
     <div class="my-[24px] border" />
     <div v-for="(action, index) in activityRows" :key="index">
       <a :href="explorerLinks.txLink(action.tx)" target="_blank">
-        <div class="flex items-center justify-between">
+        <div class="grid">
+          <!-- <div class="flex items-center justify-between"> -->
           <div class="flex items-center">
             <img :src="plus" v-if="action.label == 'Invest'" />
             <img :src="minus" v-else />
@@ -284,13 +285,11 @@ const getRows = computed<ActivityRow[]>(() => {
               {{ action.label }}
             </div>
           </div>
-          <div
-            class="width-[50px] flex w-full items-center justify-center gap-[40px]"
-          >
-            <div class="value-text w-[50px] text-right">
+          <div class="ml-[32px] flex items-start justify-start">
+            <div class="value-text mr-[16px]">
               {{ action.formattedValue }}
             </div>
-            <div class="flex w-[50px] items-center gap-[12px]">
+            <div class="flex items-center gap-[12px]">
               <div v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
                 <div
                   v-if="tokenAmount.amount !== '0'"
@@ -306,9 +305,10 @@ const getRows = computed<ActivityRow[]>(() => {
               </div>
             </div>
           </div>
-          <div class="value-text" v-if="isDesktop">
+          <div class="value-text text-right" v-if="isDesktop">
             {{ action.formattedDate }}
           </div>
+          <!-- </div> -->
         </div>
         <div class="value-text mt-[8px] flex justify-end" v-if="isMobile">
           {{ action.formattedDate }}
@@ -368,5 +368,11 @@ const getRows = computed<ActivityRow[]>(() => {
 
   color: #be95c0;
   background: #231928;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
 }
 </style>

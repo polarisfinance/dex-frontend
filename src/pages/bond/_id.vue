@@ -54,32 +54,42 @@
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
       <div>
-        <div class="bond-h1">ETHERNAL = {{ currentTwap }} WETH</div>
+        <div class="bond-h1">
+          {{ sunrise.name.toUpperCase() }} = {{ currentTwap }}
+          {{ sunrise.lpToken }}
+        </div>
         <div class="bond-h2">Last-Hour TWAP Price</div>
       </div>
       <div>
-        <div class="bond-h1">ETHERNAL = {{ previousEpochTwap }} WETH</div>
+        <div class="bond-h1">
+          {{ sunrise.name.toUpperCase() }} = {{ previousEpochTwap }}
+          {{ sunrise.lpToken }}
+        </div>
         <div class="bond-h2">Previous Epoch TWAP Price</div>
       </div>
       <div>
-        <div class="bond-h1">EBOND = {{ bondPrice }} WETH</div>
-        <div class="bond-h2">Current Price: (Ethernal)^2</div>
+        <div class="bond-h1">
+          {{ sunrise.bond }} = {{ bondPrice }} {{ sunrise.lpToken }}
+        </div>
+        <div class="bond-h2">
+          Current Price: ({{ sunrise.name.toUpperCase() }})^2
+        </div>
       </div>
     </div>
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <div class="bond-title">Purchase {{ sunrise.bond }}</div>
+      <div class="bond-title">Redeem {{ sunrise.lpToken.toUpperCase() }}</div>
       <div
         class="mt-[40px] flex items-center justify-between px-[70px]"
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
+          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
+          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
         </div>
       </div>
       <div class="details mt-[32px]">
