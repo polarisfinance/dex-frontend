@@ -58,7 +58,7 @@ const {
 } = usePoolCreation();
 const { removeAlert } = useAlerts();
 const { t } = useI18n();
-const { upToLargeBreakpoint } = useBreakpoints();
+const { upToLargeBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const {
   dynamicDataLoading,
   priceFor,
@@ -307,7 +307,12 @@ watch(
     </BalStack>
   </div>
   <div
-    class="bg container grid grid-cols-2 grid-flow-row auto-rows-auto gap-x-4 mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
+    :class="{
+      'container grid grid-cols-2 grid-flow-row auto-rows-auto gap-x-4':
+        isDesktop,
+      mobileContainer: isMobile,
+    }"
+    class="bg mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
   >
     <div
       class="col-span-2 text-[20px] font-semibold leading-[26px] text-center"
@@ -358,69 +363,69 @@ watch(
       <AnimatePresence :isVisible="isLoading" unmountInstantly>
         <BalLoadingBlock class="h-64" />
       </AnimatePresence>
-      <AnimatePresence
+      <!-- <AnimatePresence
         :isVisible="
           !appLoading && activeStep === 0 && !hasRestoredFromSavedState
         "
         :initial="initialAnimateProps"
         :animate="entryAnimateProps"
         :exit="exitAnimateProps"
-      >
-        <ChooseWeights @update:height="setWrapperHeight" />
-      </AnimatePresence>
-      <AnimatePresence
+      > -->
+      <ChooseWeights
+        v-if="!appLoading && activeStep === 0 && !hasRestoredFromSavedState"
+        @update:height="setWrapperHeight"
+      />
+      <!-- </AnimatePresence> -->
+      <!-- <AnimatePresence
         :isVisible="!appLoading && activeStep === 1"
         :initial="initialAnimateProps"
         :animate="entryAnimateProps"
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
-      >
-        <PoolFees @update:height="setWrapperHeight" />
-      </AnimatePresence>
-      <AnimatePresence
+      > -->
+      <PoolFees
+        v-if="!appLoading && activeStep === 1"
+        @update:height="setWrapperHeight"
+      />
+      <!-- </AnimatePresence> -->
+      <!-- <AnimatePresence
         :isVisible="!appLoading && activeStep === 2 && similarPools.length > 0"
         :initial="initialAnimateProps"
         :animate="entryAnimateProps"
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
-      >
-        <SimilarPools />
-      </AnimatePresence>
-      <AnimatePresence
+      > -->
+      <SimilarPools
+        v-if="!appLoading && activeStep === 2 && similarPools.length > 0"
+      />
+      <!-- </AnimatePresence> -->
+      <!-- <AnimatePresence
         :isVisible="!isLoading && activeStep === 3"
         :initial="initialAnimateProps"
         :animate="entryAnimateProps"
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
-      >
-        <InitialLiquidity @update:height="setWrapperHeight" />
-      </AnimatePresence>
-      <AnimatePresence
+      > -->
+      <InitialLiquidity
+        v-if="!isLoading && activeStep === 3"
+        @update:height="setWrapperHeight"
+      />
+      <!-- </AnimatePresence> -->
+      <!-- <AnimatePresence
         :isVisible="!appLoading && activeStep === 4 && !dynamicDataLoading"
         :initial="initialAnimateProps"
         :animate="entryAnimateProps"
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
-      >
-        <PreviewPool />
-      </AnimatePresence>
+      > -->
+      <PreviewPool
+        v-if="!appLoading && activeStep === 4 && !dynamicDataLoading"
+      />
+      <!-- </AnimatePresence> -->
     </div>
 
     <div v-if="upToLargeBreakpoint" class="">
-      <!-- <BalAccordion
-        :dependencies="validTokens"
-        :sections="[
-          { title: t('createAPool.poolSummary'), id: 'pool-summary' },
-          { title: t('tokenPrices'), id: 'token-prices' },
-        ]"
-      > -->
-      <!-- <template #pool-summary> -->
-
-      <!-- </template>
-      <template #token-prices> -->
       <TokenPrices />
-      <!-- </template> -->
-      <!-- </BalAccordion> -->
       <PoolSummary />
     </div>
     <div v-if="!upToLargeBreakpoint" class="">
