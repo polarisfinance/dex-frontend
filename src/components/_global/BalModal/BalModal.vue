@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 import BalCard from '../BalCard/BalCard.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-const { upToSmallBreakpoint} = useBreakpoints();
+const { upToSmallBreakpoint } = useBreakpoints();
 
 /**
  * TYPES
@@ -75,7 +75,10 @@ defineExpose({ hide });
       <Transition name="modal" @after-leave="$emit('close')">
         <div
           v-if="showContent"
-          :class="{ contentMobile: upToSmallBreakpoint, content: !upToSmallBreakpoint }"
+          :class="{
+            contentMobile: upToSmallBreakpoint,
+            content: !upToSmallBreakpoint,
+          }"
         >
           <BalCard
             :title="title"
@@ -103,10 +106,12 @@ defineExpose({ hide });
 <style scoped>
 .bal-modal {
   @apply fixed top-0 left-0 z-40 h-screen w-full;
+  overflow: none;
 }
 
 .content-container {
   @apply flex h-screen items-end justify-center sm:items-center;
+  overflow: none;
 }
 
 .content {
@@ -114,6 +119,7 @@ defineExpose({ hide });
 
   max-width: 450px;
   transform-style: preserve-3d;
+  overflow: none;
 }
 
 .contentMobile {
@@ -125,10 +131,12 @@ defineExpose({ hide });
 .modal-bg {
   @apply absolute h-full w-full bg-black bg-opacity-70;
   /* box-shadow: inset 0px 0px 2px #130719 !important; */
+  overflow: none;
 }
 
 .modal-card {
   @apply mx-auto h-full bg-frame-dark-ultra dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
+  overflow: none;
 }
 
 .dark .bal-modal .content::before {
@@ -149,6 +157,7 @@ defineExpose({ hide });
   filter: blur(80px);
   transform: translateZ(-1px);
   animation: fadeInMoveUpScaleUp 0.2s ease-out both;
+  overflow: none;
 }
 
 /* Overlay animation */
