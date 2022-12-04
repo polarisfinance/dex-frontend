@@ -62,6 +62,22 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
+      <div class="AC-container" v-if="isMobile">
+        <div>Staking incentives</div>
+        <div class="incentives-border"></div>
+        <div class="incentives-text flex justify-between">
+          <div>Staked LP tokens</div>
+          <div>$0.00</div>
+        </div>
+        <div class="incentives-text flex justify-between">
+          <div>Untaked LP tokens</div>
+          <div>$0.00</div>
+        </div>
+        <div class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn">Stake</button>
+          <button class="incentives-btn">Unstake</button>
+        </div>
+      </div>
       <!-- <div class="AC-container my-[16px]" v-if="isMobile">
         <div>Auto Compounder</div>
         <div class="brd my-[12px]" />
@@ -147,6 +163,22 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
+      <div class="AC-container">
+        <div>Staking incentives</div>
+        <div class="incentives-border"></div>
+        <div class="incentives-text flex justify-between">
+          <div>Staked LP tokens</div>
+          <div>$0.00</div>
+        </div>
+        <div class="incentives-text flex justify-between">
+          <div>Untaked LP tokens</div>
+          <div>$0.00</div>
+        </div>
+        <div class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn">Stake</button>
+          <button class="incentives-btn">Unstake</button>
+        </div>
+      </div>
 
       <!-- <div class="AC-container my-[16px]" v-if="isDesktop">
         <div>Auto Compounder</div>
@@ -522,6 +554,10 @@ export default defineComponent({
   border: 0.5px solid rgba(111, 71, 115, 0.4);
 }
 
+.incentives-border {
+  border: 0.25px solid rgba(151, 71, 255, 0.4);
+}
+
 .token-subtitle {
   font-weight: 500;
   font-size: 12px;
@@ -567,7 +603,7 @@ export default defineComponent({
 }
 
 .AC-container {
-  background: linear-gradient(#180a1e, #180a1e) padding-box,
+  background: linear-gradient(#160d22, #160d22) padding-box,
     linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box;
   border: 1px solid transparent;
   border-radius: 22px;
@@ -579,6 +615,22 @@ export default defineComponent({
   color: #ffffff;
 
   padding: 12px 24px;
+}
+
+.incentives-text {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 20px;
+
+  color: #fdfdfd;
+}
+
+.incentives-btn {
+  background: #301d45;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .brd {
@@ -655,5 +707,14 @@ export default defineComponent({
 
   align-items: center;
   text-align: center;
+}
+
+.incentives-container {
+  /* background: #160d22; */
+  /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25); */
+  border-radius: 22px;
+
+  background: linear-gradient(#180a1e, #180a1e) padding-box,
+    linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box !important;
 }
 </style>
