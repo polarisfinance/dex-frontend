@@ -17,6 +17,7 @@ import classicImg from './classic.svg';
 import { InvestmentPool } from '@balancer-labs/typechain';
 
 import { TOKENS } from '@/constants/tokens';
+import SingleStake from './SingleStakeTable.vue';
 
 const { priceQueryLoading, tokens, getTokens } = useTokens();
 
@@ -339,22 +340,6 @@ export default defineComponent({
           :img="segniorageImg"
         />
       </div>
-      <!-- <div id="singlestaking">
-        <PoolsTable
-          :data="investmentPools"
-          :noPoolsLabel="$t('noPoolsFound')"
-          :isLoadingMore="isLoadingMore"
-          :selectedTokens="selectedTokens"
-          class="mb-8"
-          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-          :columnStates="dataStates"
-          :isPaginated="true"
-          :isLoading="isInvestmentPoolsTableLoading"
-          @load-more="loadMore"
-          :title="'Single Staking'"
-          :img="singleStakingImg"
-        />
-      </div> -->
       <div id="classicpools">
         <PoolsTable
           :key="filteredTokensList"
@@ -388,6 +373,9 @@ export default defineComponent({
           :title="'Community Pools'"
           :img="classicImg"
         />
+      </div>
+      <div id="singlestaking">
+        <SingleStake />
       </div>
       <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
         <FeaturedProtocols />
