@@ -285,7 +285,7 @@ export default defineComponent({
 
         <div v-if="isMobile">
           <div
-            class="flex w-full items-center rounded-[12px] bg-[#231928] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
+            class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
           >
             <img src="./search.svg" class="mr-[12px]" />
             <input type="text" placeholder="Filter by token" class="input" />
@@ -479,7 +479,7 @@ export default defineComponent({
 }
 
 .segniorage {
-  background: linear-gradient(#2e2433, #2e2433) padding-box,
+  background: linear-gradient(#261737, #261737) padding-box,
     linear-gradient(to bottom left, #fbaaff, #9747ff, #f89c01) border-box;
   border: 1px solid transparent;
 }
@@ -487,7 +487,7 @@ export default defineComponent({
 .mobile-pool-btn {
   border-radius: 12px;
   padding: 4px 5px;
-  background-color: #2e2433;
+  background-color: #261737;
 
   font-weight: 600;
   font-size: 14px;

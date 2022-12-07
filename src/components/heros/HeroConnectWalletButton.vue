@@ -29,8 +29,8 @@ function onClickConnect() {
 .connect-wallet-button {
   padding: 10px 25px;
 
-  background: #772f7b;
-  border-radius: 16px;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  border-radius: 12px;
 
   font-weight: 600;
   font-size: 16px;
