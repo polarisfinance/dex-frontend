@@ -75,12 +75,8 @@ const classes = computed(() => ({
 .learn-more-button {
   padding: 10px 25px;
 
-  background: linear-gradient(
-    94.14deg,
-    #391b40 23.11%,
-    rgba(57, 27, 64, 0.81) 81.52%
-  );
-  border-radius: 16px;
+  border: 1px solid rgba(64, 51, 71, 0.5);
+  border-radius: 12px;
 
   display: flex;
   align-items: center;
