@@ -69,7 +69,7 @@ const classes = computed(() => ({
   line-height: 51px;
   text-align: center;
 
-  color: #be95c0;
+  color: #d7b3ff;
 }
 
 .learn-more-button {

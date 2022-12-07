@@ -156,14 +156,14 @@
         </div>
       </div>
     </div>
-    <div class="pt-28">
+    <div class="pt-28" :class="{ margin: isDesktop }">
       <MyPoolBalancesCard
         v-if="isDesktop && pool"
         :pool="pool"
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container">
+      <div class="AC-container" v-if="isDesktop">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
@@ -716,5 +716,9 @@ export default defineComponent({
 
   background: linear-gradient(#180a1e, #180a1e) padding-box,
     linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box !important;
+}
+
+.margin {
+  padding-right: 16px;
 }
 </style>

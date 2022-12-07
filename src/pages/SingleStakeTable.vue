@@ -27,44 +27,9 @@ import { PoolWithShares } from '@/services/pool/types';
 import { POOLS } from '@/constants/pools';
 
 import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
-import TokenPills from './TokenPills/TokenPills.vue';
+// import TokenPills from './TokenPills/TokenPills.vue';
 
 const { isMobile, isDesktop } = useBreakpoints();
-
-/**
- * TYPES
- */
-type Props = {
-  data?: PoolWithShares[];
-  isLoading?: boolean;
-  isLoadingMore?: boolean;
-  showPoolShares?: boolean;
-  noPoolsLabel?: string;
-  isPaginated?: boolean;
-  selectedTokens?: string[];
-  hiddenColumns?: string[];
-  showBoost?: boolean;
-  columnStates?: Record<string, string>;
-  title: String;
-  img;
-};
-
-/**
- * PROPS & EMITS
- */
-
-const props = withDefaults(defineProps<Props>(), {
-  isLoadingMore: false,
-  showPoolShares: false,
-  noPoolsLabel: 'No pools',
-  isPaginated: false,
-  hiddenColumns: () => [],
-  showBoost: false,
-  columnStates: () => ({}),
-  data: () => [],
-  selectedTokens: () => [],
-});
-
 const emit = defineEmits(['loadMore', 'triggerStake']);
 
 /**
@@ -201,46 +166,6 @@ const columns = computed<ColumnDefinition<PoolWithShares>[]>(() => [
   },
 ]);
 
-const visibleColumns = computed(() =>
-  columns.value.filter(column => !props.hiddenColumns.includes(column.id))
-);
-
-/**
- * METHODS
- */
-function handleRowClick(pool: PoolWithShares) {
-  trackGoal(Goals.ClickPoolsTableRow);
-  router.push({ name: 'pool', params: { id: pool.id } });
-}
-
-function navigateToPoolMigration(pool: PoolWithShares) {
-  router.push({
-    name: 'migrate-pool',
-    params: {
-      from: pool.id,
-      to: POOL_MIGRATIONS_MAP[PoolMigrationType.AAVE_BOOSTED_POOL].toPoolId,
-    },
-    query: { returnRoute: 'home' },
-  });
-}
-
-function aprLabelFor(pool: PoolWithShares): string {
-  const poolAPRs = pool?.apr;
-  if (!poolAPRs) return '0';
-
-  return totalAprLabel(poolAPRs, pool.boost);
-}
-
-function lockedUntil(lockEndDate?: number) {
-  return lockEndDate ? format(lockEndDate, PRETTY_DATE_FORMAT) : '—';
-}
-
-function iconAddresses(pool: PoolWithShares) {
-  return POOLS.Metadata[pool.id]?.hasIcon
-    ? [pool.address]
-    : orderedTokenAddresses(pool);
-}
-
 function findCommonElements3(arr1, arr2) {
   for (let el1 of arr1) {
     for (let el2 of arr2) {
@@ -252,102 +177,56 @@ function findCommonElements3(arr1, arr2) {
   return true;
 }
 
-function selected(pool) {
-  let found = true;
-  const poolTokens = Object.values(pool.tokensList);
-  const selectedTokens = Object.values(props.selectedTokens);
-
-  if (selectedTokens.length == 0) return true;
-
-  return !findCommonElements3(selectedTokens, poolTokens);
-}
+// const data = computed(() => (upToMediumBreakpoint.value ? 450 : undefined));
+const pools = computed(() => [
+  { name: 'POLAR', id: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86' },
+  { name: 'ORBITAL', id: '0x3AC55eA8D2082fAbda674270cD2367dA96092889' },
+  { name: 'BINARIS', id: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370' },
+  { name: 'USP', id: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96' },
+  { name: 'ETHERNAL', id: '0x17cbd9C274e90C537790C51b4015a65cD015497e' },
+  { name: 'TRIPOLAR', id: '0x60527a2751A827ec0Adf861EfcAcbf111587d748' },
+]);
 </script>
 
 <template>
   <div v-if="isMobile" class="pool-table-mobile mb-[24px]">
-    <div class="mb-[15px]">
-      {{ title }}
-    </div>
+    <div class="mb-[15px]">Single Stake</div>
     <div class="table-title flex justify-between">
-      <div class="flex w-full items-center">
-        <img :src="img" class="mr-[12px] h-[14px] w-[24px]" />
+      <div class="flex items-center">
         <div>Pool name</div>
       </div>
-      <div class="w-full justify-end text-right">TVL & APR</div>
+      <div class="text-right">TVL & APR</div>
     </div>
-    <div class="mt-[12px]border w-full" />
+    <div class="mt-[12px]" />
     <div
       class="flex w-full items-center"
-      v-for="(pool, idx) in data"
+      v-for="(pool, idx) in pools"
       :key="idx"
     >
       <router-link
-        class="flex items-center justify-between w-full"
-        :to="'/pool/' + pool.id"
+        class="flex w-full items-center justify-between"
+        :to="'/singlestake/' + pool.name.toLowerCase()"
       >
         <div class="flex-column mt-[20px]">
-          <BalAssetSet
-            :size="36"
-            :addresses="iconAddresses(pool)"
-            :width="100"
-          />
-          <div v-if="POOLS.Metadata[pool.id]" class="mt-[8px] text-left">
-            {{ POOLS.Metadata[pool.id].name }}
-          </div>
-          <div v-else class="mt-[8px]">
-            <TokenPills
-              :tokens="
-                orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-              "
-              :isStablePool="false"
-              :selectedTokens="selectedTokens"
-              :showWeight="pool['poolType'] != 'Stable'"
-            />
+          <BalAsset :address="pool.id" :size="36" width="100" />
+          <div class="text-left">
+            {{ pool.name }}
           </div>
         </div>
-        <div class="flex text-right">
-          <div class="flex-column">
-            <div class="tvl">
-              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
-              <template v-else>
-                <div>
-                  {{
-                    fNum2(pool?.totalLiquidity, {
-                      style: 'currency',
-                      maximumFractionDigits: 0,
-                    }) + ' TVL'
-                  }}
-                </div>
-              </template>
-            </div>
-            <div class="APR">
-              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
-              <template v-else>
-                <div>
-                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
-                </div>
-              </template>
-            </div>
-            <div class="APR">
-              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
-              <template v-else>
-                <div>
-                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
-                </div>
-              </template>
-            </div>
+        <div class="flex">
+          <div class="flex-column justify-end">
+            <div>-</div>
+            <div>-</div>
+            <div>-</div>
           </div>
         </div>
       </router-link>
     </div>
   </div>
   <div class="pool-table mb-[40px]" v-if="isDesktop">
-    <div>
-      {{ title }}
-    </div>
+    <div>Single Stake</div>
     <div class="table-title mt-[48px] flex w-full">
       <div class="flex w-full items-center">
-        <img :src="img" class="mr-[12px]" />
         <div>Pool name</div>
       </div>
       <div class="grid-table">
@@ -361,89 +240,28 @@ function selected(pool) {
     <div class="mt-[24px] w-full border" />
     <div
       class="flex w-full items-center"
-      v-for="(pool, idx) in data"
+      v-for="(pool, idx) in pools"
       :key="idx"
     >
       <router-link
-        :to="'/pool/' + pool.id"
+        :to="'/singlestake/' + pool.name.toLowerCase()"
         class="flex w-full items-center mt-[24px]"
-        v-if="selected(pool)"
       >
         <div class="flex w-full items-center">
           <div class="flex w-full items-center">
             <div class="flex w-full items-center">
-              <BalAssetSet
-                :size="36"
-                :addresses="iconAddresses(pool)"
-                :width="100"
-              />
-              <div v-if="POOLS.Metadata[pool.id]" class="text-left">
-                {{ POOLS.Metadata[pool.id].name }}
-              </div>
-              <div v-else>
-                <TokenPills
-                  :tokens="
-                    orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-                  "
-                  :isStablePool="false"
-                  :selectedTokens="selectedTokens"
-                  :showWeight="pool['poolType'] != 'Stable'"
-                />
+              <BalAsset :address="pool.id" :size="36" width="100" />
+              <div class="text-left ml-[24px]">
+                {{ pool.name }}
               </div>
             </div>
           </div>
-          <!-- <div class="flex w-full justify-end gap-[80px] text-left"> -->
           <div class="grid justify-end">
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
-              <template v-else>
-                <div class="h-4 w-12">
-                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
-                </div>
-              </template>
-            </div>
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
-              <template v-else>
-                <div class="h-4 w-12">
-                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
-                </div>
-              </template>
-            </div>
-            <div>
-              <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
-              <span v-else class="h-4 w-12 text-right">
-                {{
-                  fNum2(pool?.totalLiquidity, {
-                    style: 'currency',
-                    maximumFractionDigits: 0,
-                  })
-                }}
-              </span>
-            </div>
-            <div>
-              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
-              <span v-else class="h-4 w-12 text-right">
-                {{ '$' + pool?.volumeSnapshot }}
-              </span>
-            </div>
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
-              <template v-else>
-                <div class="h-4 w-12">
-                  {{ Math.round(aprLabelFor(pool), 2) }}
-                </div>
-              </template>
-            </div>
+            <div>-</div>
+            <div>-</div>
+            <div>-</div>
+            <div>-</div>
+            <div>-</div>
           </div>
         </div>
       </router-link>
@@ -586,7 +404,7 @@ function selected(pool) {
   font-size: 16px;
   line-height: 20px;
 
-  color: #d7b3ff;
+  color: #be95c0;
 }
 
 .border {
@@ -625,21 +443,5 @@ function selected(pool) {
   display: grid;
   grid-template-columns: repeat(5, 10fr);
   width: 100%;
-}
-
-.tvl {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-
-  color: #fdfdfd;
-}
-
-.APR {
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
-
-  color: rgba(245, 225, 255, 0.7);
 }
 </style>

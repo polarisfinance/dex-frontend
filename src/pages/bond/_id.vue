@@ -327,7 +327,7 @@ export default defineComponent({
 }
 
 .sunrise-subtitle-text {
-  color: #be95c0;
+  color: #d7b3ff;
   font-weight: 600;
   font-size: 30px;
   line-height: 61px;
@@ -370,7 +370,7 @@ export default defineComponent({
   font-size: 24px;
   line-height: 31px;
 
-  color: rgba(245, 225, 255, 0.7);
+  color: #d7b3ff;
   text-align: center;
   margin-left: 380px;
   margin-right: 380px;
@@ -390,7 +390,7 @@ export default defineComponent({
 
   margin-top: 40px;
 
-  color: rgba(245, 225, 255, 0.7);
+  color: #d7b3ff;
 }
 
 .sunrise {
@@ -414,7 +414,7 @@ export default defineComponent({
 .card {
   padding: 24px 50px;
 
-  background: #2e2433;
+  background: #1e0d2c;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -425,7 +425,7 @@ export default defineComponent({
 
 .cardMobile {
   gap: 40px;
-  background: #2e2433;
+  background: #1e0d2c;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   padding: 24px;

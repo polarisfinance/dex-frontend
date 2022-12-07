@@ -78,9 +78,9 @@ export default defineComponent({
   font-size: 14px;
   line-height: 18px;
 
-  color: #fbaaff;
+  color: #d7b3ff;
 
-  border-bottom: 1px solid #fbaaff;
+  border-bottom: 1px solid #d7b3ff;
 }
 
 .tab-unselected {

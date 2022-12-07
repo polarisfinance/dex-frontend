@@ -47,6 +47,7 @@
           :depositBol="true"
           :isVisible="isSpolarModalVisible"
           :deposit="depositToken"
+          :balance="balance"
           @close="
             toggleSpolarModal();
             fetchData();
@@ -506,7 +507,7 @@ export default defineComponent({
 }
 
 .sunrise-subtitle-text {
-  color: #be95c0;
+  color: #d7b3ff;
   font-weight: 600;
   font-size: 30px;
   line-height: 61px;

@@ -101,7 +101,7 @@ const stats = computed(() => {
 
 <style scoped>
 .card-container {
-  background: #231928;
+  background: #1e0d2c;
   border-radius: 16px;
   padding: 16px;
 }
@@ -111,7 +111,7 @@ const stats = computed(() => {
   font-size: 14px;
   line-height: 18px;
 
-  color: #be95c0;
+  color: #d7b3ff;
 }
 
 .funds {
