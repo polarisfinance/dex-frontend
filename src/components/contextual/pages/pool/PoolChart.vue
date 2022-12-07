@@ -370,9 +370,7 @@ function setCurrentChartValue(payload: {
   <BalLoadingBlock v-if="loading || appLoading" class="h-96" />
 
   <div v-else-if="snapshotValues.length >= MIN_CHART_VALUES" class="chart">
-    <div
-      class="mb-6 flex flex-col justify-between dark:border-gray-900 xs:flex-row xs:flex-wrap"
-    >
+    <div class="mb-6 flex flex-col justify-between">
       <div class="mb-4 flex">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="mr-6 -mb-px" />
         <div class="flex items-center">
@@ -440,6 +438,8 @@ function setCurrentChartValue(payload: {
 
 <style scoped>
 .chart {
-  @apply rounded-xl dark:border-transparent sm:border sm:px-5 sm:pt-5 sm:shadow sm:dark:bg-gray-850;
+  @apply rounded-xl dark:border-transparent sm:border sm:px-5 sm:pt-5 sm:shadow;
+  background: #1e0d2c;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
 }
 </style>

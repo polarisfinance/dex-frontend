@@ -206,7 +206,7 @@ const fiatTotal = computed(() => {
                   ? fNum2(propTokenAmounts[idx], FNumFormats.token)
                   : '-'
               }}
-              <span class="text-secondary text-sm">
+              <span class="text-secondary text-sm txt">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
             </span>
@@ -214,7 +214,7 @@ const fiatTotal = computed(() => {
         </div>
       </div>
     </div>
-    <div class="bg-[#2E2433] p-[12px]">
+    <div class="bg-[#261737] p-[12px]">
       <div class="small-text">Based on pool tokens in your wallet</div>
       <div class="mb-[12px] flex justify-between">
         <div>You can invest</div>
@@ -276,7 +276,7 @@ const fiatTotal = computed(() => {
                   ? fNum2(propTokenAmounts[idx], FNumFormats.token)
                   : '-'
               }}
-              <span class="text-secondary text-sm">
+              <span class="text-secondary text-sm txt">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
             </span>
@@ -284,7 +284,7 @@ const fiatTotal = computed(() => {
         </div>
       </div>
     </div>
-    <div class="bg-[#2E2433] p-[12px]">
+    <div class="bg-[#261737] p-[12px]">
       <div class="small-text">Based on pool tokens in your wallet</div>
       <div class="mb-[12px]">You can invest</div>
       <button
@@ -436,7 +436,7 @@ const fiatTotal = computed(() => {
 }
 
 .my-pool-container {
-  background: #231928;
+  background: #1e0d2c;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -472,7 +472,7 @@ const fiatTotal = computed(() => {
 }
 
 .connect-btn-pool {
-  background: #7b307f;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
   padding: 12px 0px;
 
@@ -484,11 +484,11 @@ const fiatTotal = computed(() => {
 }
 
 .connect-btn-pool:hover {
-  background: radial-gradient(
+  /* background: radial-gradient(
     49.66% 488.58% at 50% 30%,
     rgba(123, 48, 127, 0.7) 0%,
     rgba(123, 48, 127, 0.567) 100%
-  );
+  ); */
 }
 
 .connect-btn-pool:active {
@@ -551,11 +551,7 @@ const fiatTotal = computed(() => {
 }
 
 .invest-btn {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    #7b307f 0%,
-    rgba(123, 48, 127, 0.81) 100%
-  );
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
   padding: 12px 0px;
   color: #fdfdfd;
@@ -567,12 +563,18 @@ const fiatTotal = computed(() => {
 
 .withdraw-btn {
   padding: 12px 0px;
-  background: #231928;
+  background: #261737;
+  border: 1px solid rgba(64, 51, 71, 0.5);
+  box-shadow: inset -2px -2px 4px #331f49, inset 2px 2px 4px #180f23;
   border-radius: 12px;
 
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
+  color: rgba(245, 225, 255, 0.7);
+}
+
+.txt {
   color: rgba(245, 225, 255, 0.7);
 }
 </style>

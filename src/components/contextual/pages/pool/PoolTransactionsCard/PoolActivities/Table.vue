@@ -328,7 +328,7 @@ const getRows = computed<ActivityRow[]>(() => {
 
 <style scoped>
 .table-container {
-  background: #231928;
+  background: #1e0d2c;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -341,7 +341,7 @@ const getRows = computed<ActivityRow[]>(() => {
 }
 
 .border {
-  border: 0.5px solid rgba(111, 71, 115, 0.4);
+  border: 0.5px solid rgba(151, 71, 255, 0.4);
 }
 
 .value-text {

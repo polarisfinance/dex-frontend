@@ -50,7 +50,7 @@ defineProps<Props>();
           <BalIcon
             v-if="activeOption.days === option.days"
             name="check"
-            class="text-blue-500"
+            class="btn-color"
           />
         </div>
       </div>
@@ -61,7 +61,9 @@ defineProps<Props>();
 <style scoped>
 .period-select-input {
   @apply relative w-28 overflow-hidden rounded-lg bg-gray-50 px-2 shadow transition-all
-    hover:shadow-none focus:shadow-none dark:bg-gray-800;
+    hover:shadow-none focus:shadow-none;
+
+  background: #261737;
 }
 
 .period-select-input__selected {
