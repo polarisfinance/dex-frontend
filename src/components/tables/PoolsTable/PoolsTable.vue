@@ -593,7 +593,7 @@ function selected(pool) {
 
 <style scoped>
 .pool-table {
-  background: #231928;
+  background: #1e0d2c;
   border-radius: 16px;
   padding: 24px 60px;
 
@@ -609,15 +609,15 @@ function selected(pool) {
   font-size: 16px;
   line-height: 20px;
 
-  color: #be95c0;
+  color: #d7b3ff;
 }
 
 .border {
-  border: 0.5px solid rgba(111, 71, 115, 0.4);
+  border: 0.5px solid rgba(151, 71, 255, 0.4);
 }
 
 .pool-table-mobile {
-  background: #231928;
+  background: #1e0d2c;
   box-shadow: 0px 0.949153px 1.89831px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
 
@@ -635,7 +635,7 @@ function selected(pool) {
   font-size: 16px;
   line-height: 20px;
 
-  color: #be95c0;
+  color: #d7b3ff;
 }
 
 .grid {

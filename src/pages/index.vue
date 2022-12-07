@@ -386,7 +386,7 @@ export default defineComponent({
 
 <style scoped>
 .create-pool-btn {
-  background: #7b307f;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
 
   padding: 10px 16px;
@@ -394,23 +394,23 @@ export default defineComponent({
 }
 
 .create-pool-btn:hover {
-  background: radial-gradient(
+  /* background: radial-gradient(
     49.66% 488.58% at 50% 30%,
     rgba(123, 48, 127, 0.7) 0%,
     rgba(123, 48, 127, 0.567) 100%
-  );
+  ); */
 }
 
 .create-pool-btn:active {
-  background: radial-gradient(
+  /* background: radial-gradient(
     49.66% 488.58% at 50% 30%,
     rgba(123, 48, 127, 0.5) 0%,
     rgba(123, 48, 127, 0.405) 100%
-  );
+  ); */
 }
 
 .search {
-  background: #231928;
+  background: #261737;
   border-radius: 12px;
   padding-left: 16px;
   padding-top: 10px;
@@ -425,7 +425,7 @@ export default defineComponent({
 }
 
 .pool-types {
-  background: #231928;
+  background: #261737;
   border-radius: 12px;
   text-align: center;
 }
@@ -461,14 +461,14 @@ export default defineComponent({
   line-height: 18px;
 
   color: #fdfdfd;
-  background: linear-gradient(#2e2433, #2e2433) padding-box,
+  background: linear-gradient(#1e0d2c, #1e0d2c) padding-box,
     linear-gradient(to bottom left, #fbaaff, #9747ff, #f89c01) border-box;
   border: 1px solid transparent;
 }
 
 .pool-type-btn {
   padding: 4px 16px;
-  background: #2e2433;
+  background: #261737;
   border-radius: 12px;
 
   font-weight: 600;
@@ -497,7 +497,7 @@ export default defineComponent({
 }
 
 .create-pool-btn-mobile {
-  background: #7b307f;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
 
   padding: 10px 16px;
@@ -505,19 +505,19 @@ export default defineComponent({
 }
 
 .create-pool-btn-mobile:hover {
-  background: radial-gradient(
+  /* background: radial-gradient(
     49.66% 488.58% at 50% 30%,
     rgba(123, 48, 127, 0.7) 0%,
     rgba(123, 48, 127, 0.567) 100%
-  );
+  ); */
 }
 
 .create-pool-btn-mobile:active {
-  background: radial-gradient(
+  /* background: radial-gradient(
     49.66% 488.58% at 50% 30%,
     rgba(123, 48, 127, 0.5) 0%,
     rgba(123, 48, 127, 0.405) 100%
-  );
+  ); */
 }
 
 .list {
