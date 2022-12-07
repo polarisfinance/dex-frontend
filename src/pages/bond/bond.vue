@@ -74,7 +74,7 @@ const sunrises = computed(() =>
 }
 
 .sunrise-subtitle-text {
-  color: #be95c0;
+  color: rgba(215, 178, 255, 1);
   font-weight: 600;
   font-size: 30px;
   line-height: 61px;
