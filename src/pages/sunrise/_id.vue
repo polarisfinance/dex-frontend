@@ -47,6 +47,7 @@
           :depositBol="true"
           :isVisible="isSpolarModalVisible"
           :deposit="depositToken"
+          :balance="balance"
           @close="
             toggleSpolarModal();
             fetchData();
