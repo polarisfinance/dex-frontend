@@ -268,7 +268,7 @@ function selected(pool) {
     <div class="mb-[15px]">
       {{ title }}
     </div>
-    <div class="table-title grid">
+    <div class="table-title flex justify-between">
       <div class="flex w-full items-center">
         <img :src="img" class="mr-[12px] h-[14px] w-[24px]" />
         <div>Pool name</div>
@@ -281,8 +281,11 @@ function selected(pool) {
       v-for="(pool, idx) in data"
       :key="idx"
     >
-      <router-link class="flex w-full items-center" :to="'/pool/' + pool.id">
-        <div class="flex-column mt-[20px] w-full">
+      <router-link
+        class="flex items-center justify-between w-full"
+        :to="'/pool/' + pool.id"
+      >
+        <div class="flex-column mt-[20px]">
           <BalAssetSet
             :size="36"
             :addresses="iconAddresses(pool)"
@@ -302,60 +305,34 @@ function selected(pool) {
             />
           </div>
         </div>
-        <div class="flex">
-          <div class="flex-column w-full gap-[6px]">
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
+        <div class="flex text-right">
+          <div class="flex-column">
+            <div class="tvl">
+              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
               <template v-else>
-                <div class="h-4 w-12">
-                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
-                </div>
-              </template>
-            </div>
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
-              <template v-else>
-                <div class="h-4 w-12">
-                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
-                </div>
-              </template>
-            </div>
-            <div>
-              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
-              <span v-else class="h-4 w-12 text-right">
-                {{ '$' + pool?.volumeSnapshot }}
-              </span>
-            </div>
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
-              <template v-else>
-                <div class="h-4 w-12">
+                <div>
                   {{
                     fNum2(pool?.totalLiquidity, {
                       style: 'currency',
                       maximumFractionDigits: 0,
-                    })
+                    }) + ' TVL'
                   }}
                 </div>
               </template>
             </div>
-            <div>
-              <BalLoadingBlock
-                v-if="!pool?.apr?.total?.unstaked"
-                class="h-4 w-12"
-              />
+            <div class="APR">
+              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
               <template v-else>
-                <div class="h-4 w-12">
-                  {{ Math.round(aprLabelFor(pool), 2) }}
+                <div>
+                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
+                </div>
+              </template>
+            </div>
+            <div class="APR">
+              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
+              <template v-else>
+                <div>
+                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
                 </div>
               </template>
             </div>
@@ -648,5 +625,21 @@ function selected(pool) {
   display: grid;
   grid-template-columns: repeat(5, 10fr);
   width: 100%;
+}
+
+.tvl {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #fdfdfd;
+}
+
+.APR {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+
+  color: rgba(245, 225, 255, 0.7);
 }
 </style>

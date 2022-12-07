@@ -156,7 +156,7 @@
         </div>
       </div>
     </div>
-    <div class="pt-28">
+    <div class="pt-28" :class="{ margin: isDesktop }">
       <MyPoolBalancesCard
         v-if="isDesktop && pool"
         :pool="pool"
@@ -716,5 +716,9 @@ export default defineComponent({
 
   background: linear-gradient(#180a1e, #180a1e) padding-box,
     linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box !important;
+}
+
+.margin {
+  padding-right: 16px;
 }
 </style>

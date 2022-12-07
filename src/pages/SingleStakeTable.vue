@@ -191,32 +191,30 @@ const pools = computed(() => [
 <template>
   <div v-if="isMobile" class="pool-table-mobile mb-[24px]">
     <div class="mb-[15px]">Single Stake</div>
-    <div class="table-title grid">
-      <div class="flex w-full items-center">
+    <div class="table-title flex justify-between">
+      <div class="flex items-center">
         <div>Pool name</div>
       </div>
-      <div class="w-full justify-end text-right">TVL & APR</div>
+      <div class="text-right">TVL & APR</div>
     </div>
-    <div class="mt-[12px]border w-full" />
+    <div class="mt-[12px]" />
     <div
       class="flex w-full items-center"
       v-for="(pool, idx) in pools"
       :key="idx"
     >
       <router-link
-        class="flex w-full items-center"
+        class="flex w-full items-center justify-between"
         :to="'/singlestake/' + pool.name.toLowerCase()"
       >
-        <div class="flex-column mt-[20px] w-full">
+        <div class="flex-column mt-[20px]">
           <BalAsset :address="pool.id" :size="36" width="100" />
           <div class="text-left">
             {{ pool.name }}
           </div>
         </div>
         <div class="flex">
-          <div class="flex-column w-full gap-[6px]">
-            <div>-</div>
-            <div>-</div>
+          <div class="flex-column justify-end">
             <div>-</div>
             <div>-</div>
             <div>-</div>
