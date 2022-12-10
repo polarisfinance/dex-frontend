@@ -80,6 +80,7 @@ onUnmounted(() => {
   @apply border-b border-transparent;
 
   transition: all 0.2s ease-in-out;
+  background: transparent;
 }
 
 .actions {
