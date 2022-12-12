@@ -128,6 +128,14 @@ export default defineComponent({
       for (let sunrise of Object.values(sunriseDefinitions)) {
         if (sunrise.name == data.id) return sunrise;
       }
+
+      if (
+        ['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(
+          data.id.toUpperCase()
+        )
+      ) {
+        return { name: data.id };
+      }
       return undefined;
     });
 

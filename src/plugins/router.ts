@@ -185,11 +185,11 @@ const routes: RouteRecordRaw[] = [
     name: 'portfolio',
     component: PortfolioPage,
   },
-  {
-    path: '/vexpolar',
-    name: 'vexpolar',
-    component: VexPolarPage,
-  },
+  // {
+  //   path: '/vexpolar',
+  //   name: 'vexpolar',
+  //   component: VexPolarPage,
+  // },
 ];
 
 /**
