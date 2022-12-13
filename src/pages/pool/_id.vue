@@ -71,9 +71,12 @@
         </div>
         <div class="incentives-text flex justify-between">
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div>Untaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
 =======
+=======
+>>>>>>> a76c08cdd49d2a8ebebcdf017f54df960a1547a4
           <div>Unstaked LP tokens</div>
           <div>$0.00</div>
 >>>>>>> a76c08cd (spelling mistake)
@@ -305,6 +308,7 @@ import { shortenLabel } from '@/lib/utils';
 import useBreakpoints from '@/composables/useBreakpoints';
 
 import { MyPoolBalancesCard } from '@/components/contextual/pages/pool/index';
+<<<<<<< HEAD
 import StakeModal from './StakeModal.vue';
 import { InvestmentPool } from '@balancer-labs/typechain';
 
@@ -319,6 +323,10 @@ import {
   SPOLAR,
   getDisplayBalance,
 } from '@/composables/PolarisFinance/utils';
+=======
+import { InvestmentPool } from '@balancer-labs/typechain';
+
+>>>>>>> a76c08cdd49d2a8ebebcdf017f54df960a1547a4
 interface PoolPageData {
   id: string;
 }
@@ -613,6 +621,7 @@ export default defineComponent({
       account,
       MyPoolBalancesCard,
       isPPool,
+<<<<<<< HEAD
       toggleStakeModal,
       isStakeModalVisible,
       tokenName,
@@ -622,6 +631,8 @@ export default defineComponent({
       txHandler,
       txListener,
       getProvider,
+=======
+>>>>>>> a76c08cdd49d2a8ebebcdf017f54df960a1547a4
       isCommunityPool,
       poolID,
     };
