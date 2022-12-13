@@ -282,7 +282,7 @@ function selected(pool) {
       :key="idx"
     >
       <router-link
-        class="flex items-center justify-between w-full"
+        class="flex w-full items-center justify-between"
         :to="'/pool/' + pool.id"
       >
         <div class="flex-column mt-[20px]">
@@ -366,7 +366,7 @@ function selected(pool) {
     >
       <router-link
         :to="'/pool/' + pool.id"
-        class="flex w-full items-center mt-[24px]"
+        class="mt-[24px] flex w-full items-center"
         v-if="selected(pool)"
       >
         <div class="flex w-full items-center">
@@ -401,7 +401,7 @@ function selected(pool) {
               />
               <template v-else>
                 <div class="h-4 w-12">
-                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
+                  {{ Math.round(parseFloat(aprLabelFor(pool)) / 365, 2) + '%' }}
                 </div>
               </template>
             </div>
@@ -430,7 +430,7 @@ function selected(pool) {
             <div>
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
-                {{ '$' + pool?.volumeSnapshot }}
+                {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}
               </span>
             </div>
             <div>
