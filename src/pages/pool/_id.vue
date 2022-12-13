@@ -312,7 +312,7 @@ import {
   sunriseNameToAddress,
   SPOLAR,
   getDisplayBalance,
-} from '../composables/PolarisFinance/utils';
+} from '@/composables/PolarisFinance/utils';
 interface PoolPageData {
   id: string;
 }
