@@ -59,6 +59,8 @@ const classicPoolsIds = [
   '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed00020000000000000000000c',
   '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b00020000000000000000000f',
   '0x8bd71de52a3be3aadeb375f8d69aed37adf83d80000200000000000000000010',
+  '0xceecce984f498ee00832670e9ca6d372f6ce155a000200000000000000000014',
+  '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
 ];
 
 const contains = (arr1, arr2) => {
@@ -95,8 +97,8 @@ const segnioragePools = computed(() => {
 });
 const investmentPoolsWithoutSeigniorage = computed(
   () =>
-    investmentPools.value.filter(
-      pool => !segniorageIds.includes(pool.id)
+    investmentPools.value.filter(pool =>
+      classicPoolsIds.includes(pool.id)
     ) as InvestmentPool[]
 );
 
@@ -262,9 +264,9 @@ export default defineComponent({
                   Seigniorage Pools
                 </div></a
               >
-              <a href="#singlestaking">
+              <!-- <a href="#singlestaking">
                 <div class="pool-type-btn cursor-pointer">Single Staking</div>
-              </a>
+              </a> -->
               <a href="#classicpools">
                 <div class="pool-type-btn cursor-pointer">Classic Pools</div>
               </a>
@@ -293,16 +295,16 @@ export default defineComponent({
           <div class="mt-[8px] flex justify-center gap-[8px]">
             <a href="#segniorage">
               <div
-                class="segniorage cursor-pointer mobile-pool-btn text-center"
+                class="segniorage mobile-pool-btn cursor-pointer text-center"
               >
                 Seigniorage Pools
               </div>
             </a>
-            <a href="#singlestaking">
+            <!-- <a href="#singlestaking">
               <div class="mobile-pool-btn cursor-pointer text-center">
                 Single Staking
               </div>
-            </a>
+            </a> -->
             <a href="#classicpools">
               <div class="mobile-pool-btn cursor-pointer text-center">
                 Classic Pools
@@ -374,9 +376,9 @@ export default defineComponent({
           :img="classicImg"
         />
       </div>
-      <div id="singlestaking">
+      <!-- <div id="singlestaking">
         <SingleStake />
-      </div>
+      </div> -->
       <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
         <FeaturedProtocols />
       </div> -->

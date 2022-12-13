@@ -6,7 +6,7 @@
     </div>
   </div>
   <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">
-    Earn SPOLAR by depositing ETHERNAL
+    Earn XPOLAR by depositing{{ sunrise.name.toUpperCase() }}
   </div>
 
   <div

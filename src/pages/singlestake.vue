@@ -6,7 +6,7 @@
     </div>
   </div>
   <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">
-    Earn SPOLAR by depositing ETHERNAL
+    Earn XPOLAR by depositing {{ sunrise.name.toUpperCase() }}
   </div>
 
   <div
@@ -26,28 +26,29 @@
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button> -->
-        <button class="claim-btn" @click="toggleSpolarModal(true)">
-          Deposit
-        </button>
-        <SpolarModal
-          :isVisible="isSpolarModalVisible"
-          :deposit="depositToken"
-          @close="
-            toggleSpolarModal();
-            fetchData();
-          "
-        />
-        <SpolarWithdrawModal
-          :isVisible="isSpolarWithdrawModalVisible"
-          :deposit="depositToken"
-          @close="toggleSpolarWithdrawModal"
+        <button class="claim-btn" @click="toggleStakeModal()">Deposit</button>
+        <StakeModal
+          :depositBol="true"
+          :isVisible="isStakeModalVisible"
+          :token="sunrise.name.toUpperCase()"
+          :balance="'0'"
+          :address="''"
+          @close="toggleStakeModal()"
         />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button class="withdraw-btn" @click="toggleSpolarWithdrawModal(false)">
+        <button class="withdraw-btn" @click="toggleUnstakeModal()">
           Withdraw
         </button>
+        <StakeModal
+          :depositBol="false"
+          :isVisible="isUnstakeModalVisible"
+          :token="sunrise.name.toUpperCase()"
+          :balance="'0'"
+          :address="''"
+          @close="toggleUnstakeModal()"
+        />
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -100,12 +101,15 @@ import tripolarImg from './tripolar.svg';
 
 import useWeb3 from '@/services/web3/useWeb3';
 
+import useStake from '../composables/PolarisFinance/useStake';
+import StakeModal from './pool/StakeModal.vue';
+
 interface PoolPageData {
   id: string;
 }
 
 export default defineComponent({
-  components: {},
+  components: { StakeModal },
   setup() {
     const route = useRoute();
     const { isMobile, isDesktop } = useBreakpoints();
@@ -128,9 +132,25 @@ export default defineComponent({
       for (let sunrise of Object.values(sunriseDefinitions)) {
         if (sunrise.name == data.id) return sunrise;
       }
+      if (
+        ['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(
+          data.id.toUpperCase()
+        )
+      ) {
+        return { name: data.id };
+      }
       return undefined;
     });
+    const isStakeModalVisible = ref(false);
+    const isUnstakeModalVisible = ref(false);
 
+    const toggleStakeModal = (value?: boolean) => {
+      isStakeModalVisible.value = value ?? !isStakeModalVisible.value;
+    };
+
+    const toggleUnstakeModal = (value?: boolean) => {
+      isUnstakeModalVisible.value = value ?? !isUnstakeModalVisible.value;
+    };
     return {
       // data
       ...toRefs(data),
@@ -140,6 +160,10 @@ export default defineComponent({
 
       // computed
       sunrise,
+      isStakeModalVisible,
+      isUnstakeModalVisible,
+      toggleStakeModal,
+      toggleUnstakeModal,
     };
   },
   data() {

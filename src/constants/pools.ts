@@ -545,7 +545,7 @@ const POOLS_AURORA: Pools = {
   ExcludedPoolTypes: ['Element', 'AaveLinear', 'Linear', 'ERC4626Linear'],
   Stable: {
     AllowList: [
-      '0xcb9eb3f264be622a6d707947765db5c79d969ca7000000000000000000000009', // AURORA TRI POOL
+      '0xceecce984f498ee00832670e9ca6d372f6ce155a000200000000000000000014', // AURORA usdc usdt
     ],
   },
   Investment: {
@@ -606,7 +606,7 @@ const POOLS_MAP = {
   [Network.MAINNET]: POOLS_MAINNET,
   [Network.POLYGON]: POOLS_POLYGON,
   [Network.ARBITRUM]: POOLS_ARBITRUM,
-  [Network.AURORA]: POOLS_AURORA
+  [Network.AURORA]: POOLS_AURORA,
 };
 
 export const POOLS: Pools = POOLS_MAP[networkId.value]

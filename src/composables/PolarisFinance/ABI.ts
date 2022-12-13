@@ -1,3 +1,771 @@
+export const ERC20ABI = JSON.parse(`[
+   {
+       "constant": true,
+       "inputs": [],
+       "name": "name",
+       "outputs": [
+           {
+               "name": "",
+               "type": "string"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "view",
+       "type": "function"
+   },
+   {
+       "constant": false,
+       "inputs": [
+           {
+               "name": "_spender",
+               "type": "address"
+           },
+           {
+               "name": "_value",
+               "type": "uint256"
+           }
+       ],
+       "name": "approve",
+       "outputs": [
+           {
+               "name": "",
+               "type": "bool"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "nonpayable",
+       "type": "function"
+   },
+   {
+       "constant": true,
+       "inputs": [],
+       "name": "totalSupply",
+       "outputs": [
+           {
+               "name": "",
+               "type": "uint256"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "view",
+       "type": "function"
+   },
+   {
+       "constant": false,
+       "inputs": [
+           {
+               "name": "_from",
+               "type": "address"
+           },
+           {
+               "name": "_to",
+               "type": "address"
+           },
+           {
+               "name": "_value",
+               "type": "uint256"
+           }
+       ],
+       "name": "transferFrom",
+       "outputs": [
+           {
+               "name": "",
+               "type": "bool"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "nonpayable",
+       "type": "function"
+   },
+   {
+       "constant": true,
+       "inputs": [],
+       "name": "decimals",
+       "outputs": [
+           {
+               "name": "",
+               "type": "uint8"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "view",
+       "type": "function"
+   },
+   {
+       "constant": true,
+       "inputs": [
+           {
+               "name": "_owner",
+               "type": "address"
+           }
+       ],
+       "name": "balanceOf",
+       "outputs": [
+           {
+               "name": "balance",
+               "type": "uint256"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "view",
+       "type": "function"
+   },
+   {
+       "constant": true,
+       "inputs": [],
+       "name": "symbol",
+       "outputs": [
+           {
+               "name": "",
+               "type": "string"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "view",
+       "type": "function"
+   },
+   {
+       "constant": false,
+       "inputs": [
+           {
+               "name": "_to",
+               "type": "address"
+           },
+           {
+               "name": "_value",
+               "type": "uint256"
+           }
+       ],
+       "name": "transfer",
+       "outputs": [
+           {
+               "name": "",
+               "type": "bool"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "nonpayable",
+       "type": "function"
+   },
+   {
+       "constant": true,
+       "inputs": [
+           {
+               "name": "_owner",
+               "type": "address"
+           },
+           {
+               "name": "_spender",
+               "type": "address"
+           }
+       ],
+       "name": "allowance",
+       "outputs": [
+           {
+               "name": "",
+               "type": "uint256"
+           }
+       ],
+       "payable": false,
+       "stateMutability": "view",
+       "type": "function"
+   },
+   {
+       "payable": true,
+       "stateMutability": "payable",
+       "type": "fallback"
+   },
+   {
+       "anonymous": false,
+       "inputs": [
+           {
+               "indexed": true,
+               "name": "owner",
+               "type": "address"
+           },
+           {
+               "indexed": true,
+               "name": "spender",
+               "type": "address"
+           },
+           {
+               "indexed": false,
+               "name": "value",
+               "type": "uint256"
+           }
+       ],
+       "name": "Approval",
+       "type": "event"
+   },
+   {
+       "anonymous": false,
+       "inputs": [
+           {
+               "indexed": true,
+               "name": "from",
+               "type": "address"
+           },
+           {
+               "indexed": true,
+               "name": "to",
+               "type": "address"
+           },
+           {
+               "indexed": false,
+               "name": "value",
+               "type": "uint256"
+           }
+       ],
+       "name": "Transfer",
+       "type": "event"
+   }
+]`);
+
+export const xpolarRewardPoolABI = JSON.parse(
+  `[
+    {
+       "inputs":[
+          {
+             "internalType":"address",
+             "name":"_xpolar",
+             "type":"address"
+          },
+          {
+             "internalType":"uint256",
+             "name":"_poolStartTime",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"nonpayable",
+       "type":"constructor",
+       "name":"constructor"
+    },
+    {
+       "anonymous":false,
+       "inputs":[
+          {
+             "indexed":true,
+             "internalType":"address",
+             "name":"user",
+             "type":"address"
+          },
+          {
+             "indexed":true,
+             "internalType":"uint256",
+             "name":"pid",
+             "type":"uint256"
+          },
+          {
+             "indexed":false,
+             "internalType":"uint256",
+             "name":"amount",
+             "type":"uint256"
+          }
+       ],
+       "name":"Deposit",
+       "type":"event"
+    },
+    {
+       "anonymous":false,
+       "inputs":[
+          {
+             "indexed":true,
+             "internalType":"address",
+             "name":"user",
+             "type":"address"
+          },
+          {
+             "indexed":true,
+             "internalType":"uint256",
+             "name":"pid",
+             "type":"uint256"
+          },
+          {
+             "indexed":false,
+             "internalType":"uint256",
+             "name":"amount",
+             "type":"uint256"
+          }
+       ],
+       "name":"EmergencyWithdraw",
+       "type":"event"
+    },
+    {
+       "anonymous":false,
+       "inputs":[
+          {
+             "indexed":true,
+             "internalType":"address",
+             "name":"user",
+             "type":"address"
+          },
+          {
+             "indexed":false,
+             "internalType":"uint256",
+             "name":"amount",
+             "type":"uint256"
+          }
+       ],
+       "name":"RewardPaid",
+       "type":"event"
+    },
+    {
+       "anonymous":false,
+       "inputs":[
+          {
+             "indexed":true,
+             "internalType":"address",
+             "name":"user",
+             "type":"address"
+          },
+          {
+             "indexed":true,
+             "internalType":"uint256",
+             "name":"pid",
+             "type":"uint256"
+          },
+          {
+             "indexed":false,
+             "internalType":"uint256",
+             "name":"amount",
+             "type":"uint256"
+          }
+       ],
+       "name":"Withdraw",
+       "type":"event"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"TOTAL_REWARDS",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_allocPoint",
+             "type":"uint256"
+          },
+          {
+             "internalType":"contract IERC20",
+             "name":"_token",
+             "type":"address"
+          },
+          {
+             "internalType":"bool",
+             "name":"_withUpdate",
+             "type":"bool"
+          },
+          {
+             "internalType":"uint256",
+             "name":"_lastRewardTime",
+             "type":"uint256"
+          }
+       ],
+       "name":"add",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_pid",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"_amount",
+             "type":"uint256"
+          }
+       ],
+       "name":"deposit",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_pid",
+             "type":"uint256"
+          }
+       ],
+       "name":"emergencyWithdraw",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_fromTime",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"_toTime",
+             "type":"uint256"
+          }
+       ],
+       "name":"getGeneratedReward",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"contract IERC20",
+             "name":"_token",
+             "type":"address"
+          },
+          {
+             "internalType":"uint256",
+             "name":"amount",
+             "type":"uint256"
+          },
+          {
+             "internalType":"address",
+             "name":"to",
+             "type":"address"
+          }
+       ],
+       "name":"governanceRecoverUnsupported",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"governanceRetire",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"harvestAllRewards",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"massUpdatePools",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"operator",
+       "outputs":[
+          {
+             "internalType":"address",
+             "name":"",
+             "type":"address"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_pid",
+             "type":"uint256"
+          },
+          {
+             "internalType":"address",
+             "name":"_user",
+             "type":"address"
+          }
+       ],
+       "name":"pendingShare",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"poolEndTime",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "name":"poolInfo",
+       "outputs":[
+          {
+             "internalType":"contract IERC20",
+             "name":"token",
+             "type":"address"
+          },
+          {
+             "internalType":"uint256",
+             "name":"allocPoint",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"lastRewardTime",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"accXpolarPerShare",
+             "type":"uint256"
+          },
+          {
+             "internalType":"bool",
+             "name":"isStarted",
+             "type":"bool"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"poolStartTime",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"runningTime",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_pid",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"_allocPoint",
+             "type":"uint256"
+          }
+       ],
+       "name":"set",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"address",
+             "name":"_operator",
+             "type":"address"
+          }
+       ],
+       "name":"setOperator",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"totalAllocPoint",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_pid",
+             "type":"uint256"
+          }
+       ],
+       "name":"updatePool",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          },
+          {
+             "internalType":"address",
+             "name":"",
+             "type":"address"
+          }
+       ],
+       "name":"userInfo",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"amount",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"rewardDebt",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          {
+             "internalType":"uint256",
+             "name":"_pid",
+             "type":"uint256"
+          },
+          {
+             "internalType":"uint256",
+             "name":"_amount",
+             "type":"uint256"
+          }
+       ],
+       "name":"withdraw",
+       "outputs":[
+          
+       ],
+       "stateMutability":"nonpayable",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"xpolar",
+       "outputs":[
+          {
+             "internalType":"contract IERC20",
+             "name":"",
+             "type":"address"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    },
+    {
+       "inputs":[
+          
+       ],
+       "name":"xpolarPerSecond",
+       "outputs":[
+          {
+             "internalType":"uint256",
+             "name":"",
+             "type":"uint256"
+          }
+       ],
+       "stateMutability":"view",
+       "type":"function"
+    }
+ ]`
+);
+
 export const spolarABI = JSON.parse(
   `[{
     "inputs": [

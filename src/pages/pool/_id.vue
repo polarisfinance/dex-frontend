@@ -67,15 +67,43 @@
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
           <div>Staked LP tokens</div>
-          <div>$0.00</div>
+          <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
           <div>Untaked LP tokens</div>
-          <div>$0.00</div>
+          <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
         </div>
-        <div class="incentives-text flex gap-[8px]">
-          <button class="incentives-btn">Stake</button>
-          <button class="incentives-btn">Unstake</button>
+        <div class="incentives-text flex justify-between">
+          <div>XPOLAR to claim</div>
+          <div>{{ xpolarToClaim }}</div>
+        </div>
+        <div v-if="isApproved" class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="toggleStakeModal()">
+            Stake
+          </button>
+          <StakeModal
+            :depositBol="true"
+            :isVisible="isStakeModalVisible"
+            :token="tokenName"
+            :balance="balanceFor(pool.address)"
+            :address="pool.address"
+            @close="toggleStakeModal"
+          />
+          <button class="incentives-btn" @click="toggleUnstakeModal()">
+            Unstake
+          </button>
+          <StakeModal
+            :depositBol="false"
+            :isVisible="isUnstakeModalVisible"
+            :token="tokenName"
+            :balance="stakedBalance"
+            :address="pool.address"
+            @close="toggleUnstakeModal"
+          />
+          <button class="incentives-btn" @click="claim()">Claim</button>
+        </div>
+        <div v-else class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="approve()">Approve</button>
         </div>
       </div>
       <!-- <div class="AC-container my-[16px]" v-if="isMobile">
@@ -168,15 +196,43 @@
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
           <div>Staked LP tokens</div>
-          <div>$0.00</div>
+          <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
           <div>Untaked LP tokens</div>
-          <div>$0.00</div>
+          <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
         </div>
-        <div class="incentives-text flex gap-[8px]">
-          <button class="incentives-btn">Stake</button>
-          <button class="incentives-btn">Unstake</button>
+        <div class="incentives-text flex justify-between">
+          <div>XPOLAR to claim</div>
+          <div>{{ xpolarToClaim }}</div>
+        </div>
+        <div v-if="isApproved" class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="toggleStakeModal()">
+            Stake
+          </button>
+          <StakeModal
+            :depositBol="true"
+            :isVisible="isStakeModalVisible"
+            :token="tokenName"
+            :balance="balanceFor(pool.address)"
+            :address="pool.address"
+            @close="toggleStakeModal"
+          />
+          <button class="incentives-btn" @click="toggleUnstakeModal()">
+            Unstake
+          </button>
+          <StakeModal
+            :depositBol="false"
+            :isVisible="isUnstakeModalVisible"
+            :token="tokenName"
+            :balance="stakedBalance"
+            :address="pool.address"
+            @close="toggleUnstakeModal"
+          />
+          <button class="incentives-btn" @click="claim()">Claim</button>
+        </div>
+        <div v-else class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="approve()">Approve</button>
         </div>
       </div>
 
@@ -244,6 +300,13 @@ import { shortenLabel } from '@/lib/utils';
 import useBreakpoints from '@/composables/useBreakpoints';
 
 import { MyPoolBalancesCard } from '@/components/contextual/pages/pool/index';
+import StakeModal from './StakeModal.vue';
+
+import useStake from '../../composables/PolarisFinance/useStake';
+import useTransactions from '@/composables/useTransactions';
+import useEthers from '../../composables/useEthers';
+import { TransactionResponse } from '@ethersproject/providers';
+import { BigNumber } from 'ethers';
 
 interface PoolPageData {
   id: string;
@@ -256,6 +319,7 @@ export default defineComponent({
     // StakingProvider,
     ApyVisionPoolLink,
     PoolPageHeader,
+    StakeModal,
   },
 
   setup() {
@@ -265,7 +329,7 @@ export default defineComponent({
     const { t } = useI18n();
     const route = useRoute();
     const { explorerLinks } = useWeb3();
-    const { prices } = useTokens();
+    const { prices, balanceFor } = useTokens();
     const { addAlert, removeAlert } = useAlerts();
     const { isAffected, warnings } = usePoolWarning(route.params.id as string);
 
@@ -303,6 +367,16 @@ export default defineComponent({
       }
 
       return undefined;
+    });
+    const tokenName = computed(() => {
+      let name = '';
+      for (let i = 0; i < tableData.value.length; i++) {
+        name += symbolFor(tableData.value[i].address);
+        if (i < tableData.value.length - 1) {
+          name += '-';
+        }
+      }
+      return name;
     });
 
     //#region pool query
@@ -442,6 +516,30 @@ export default defineComponent({
       }
     });
 
+    const isStakeModalVisible = ref(false);
+    const isUnstakeModalVisible = ref(false);
+
+    const toggleStakeModal = (value?: boolean) => {
+      isStakeModalVisible.value = value ?? !isStakeModalVisible.value;
+    };
+
+    const toggleUnstakeModal = (value?: boolean) => {
+      isUnstakeModalVisible.value = value ?? !isUnstakeModalVisible.value;
+    };
+
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'approve',
+        summary: 'approve for staking',
+      });
+    };
+    const { getProvider } = useWeb3();
+
     return {
       // data
       ...toRefs(data),
@@ -476,7 +574,84 @@ export default defineComponent({
       account,
       MyPoolBalancesCard,
       isPPool,
+      toggleStakeModal,
+      isStakeModalVisible,
+      tokenName,
+      balanceFor,
+      toggleUnstakeModal,
+      isUnstakeModalVisible,
+      txHandler,
+      txListener,
+      getProvider,
     };
+  },
+  data() {
+    return {
+      stakedBalance: '0',
+      xpolarToClaim: '0',
+      isApproved: false,
+    };
+  },
+  methods: {
+    async fetchStakedBalance() {
+      const { balance } = useStake();
+      let poolAddress = '';
+      if (this.pool) {
+        poolAddress = this.pool.address;
+      }
+      this.stakedBalance = await balance(poolAddress, this.account);
+    },
+    async fetchXpolarToClaim() {
+      const { pendingShare } = useStake();
+      let poolAddress = '';
+      if (this.pool) {
+        poolAddress = this.pool.address;
+      }
+      this.xpolarToClaim = await pendingShare(poolAddress, this.account);
+    },
+    async claim() {
+      const { withdraw } = useStake();
+      let poolAddress = '';
+      if (this.pool) {
+        poolAddress = this.pool.address;
+      }
+      const tx = await withdraw(
+        poolAddress,
+        BigNumber.from(0),
+        this.getProvider()
+      );
+      this.txHandler(tx);
+    },
+    async approve() {
+      const { approve } = useStake();
+      let poolAddress = '';
+      if (this.pool) {
+        poolAddress = this.pool.address;
+      }
+      const tx = await approve(poolAddress, this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchIsApproved();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async fetchIsApproved() {
+      const { isApproved } = useStake();
+      let poolAddress = '';
+      if (this.pool) {
+        poolAddress = this.pool.address;
+      }
+      const approval = await isApproved(poolAddress, this.account);
+      this.isApproved = approval;
+    },
+  },
+  async mounted() {
+    await this.fetchStakedBalance();
+    await this.fetchXpolarToClaim();
+    await this.fetchIsApproved();
+    setInterval(async () => await this.fetchIsApproved, 500);
   },
 });
 </script>
