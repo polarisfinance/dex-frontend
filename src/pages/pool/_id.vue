@@ -50,7 +50,7 @@
       </div>
 
       <div v-if="isPPool" class="alert my-[10px]">
-        <a class="underline" href="https://dex-frontend-gold.vercel.app/#/trade"
+        <a class="underline" href="https://app.polarisfinance.io/#/trade"
           >You need to wrap your {{ isPPool }} into p{{ isPPool }} using the
           Swap page!</a
         >
