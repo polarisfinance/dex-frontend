@@ -264,9 +264,9 @@ export default defineComponent({
                   Seigniorage Pools
                 </div></a
               >
-              <!-- <a href="#singlestaking">
+              <a href="#singlestaking">
                 <div class="pool-type-btn cursor-pointer">Single Staking</div>
-              </a> -->
+              </a>
               <a href="#classicpools">
                 <div class="pool-type-btn cursor-pointer">Classic Pools</div>
               </a>
@@ -300,11 +300,11 @@ export default defineComponent({
                 Seigniorage Pools
               </div>
             </a>
-            <!-- <a href="#singlestaking">
+            <a href="#singlestaking">
               <div class="mobile-pool-btn cursor-pointer text-center">
                 Single Staking
               </div>
-            </a> -->
+            </a>
             <a href="#classicpools">
               <div class="mobile-pool-btn cursor-pointer text-center">
                 Classic Pools
