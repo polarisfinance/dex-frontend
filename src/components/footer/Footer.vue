@@ -48,7 +48,7 @@
                 <a href="https://docs.polarisfinance.io">Docs</a>
 
                 <a href="https://vote.polarisfinance.io/#/">Vote</a>
-                <a href="https://polarisfinance.io/">Old Website</a>
+                <a href="https://old.polarisfinance.io/">Old Website</a>
               </div>
             </div>
             <div
