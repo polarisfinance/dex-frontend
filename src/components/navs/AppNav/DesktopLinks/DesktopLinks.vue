@@ -49,7 +49,7 @@ function isActive(page: string): boolean {
 
     <div class="dropdown">
       <div class="dropdown-title flex gap-[12px] w-full">
-        Dropdown <img :src="ArrowDown" />
+        Bridges <img :src="ArrowDown" />
       </div>
       <div class="dropdown-content w-full">
         <a href="https://synapseprotocol.com/"
