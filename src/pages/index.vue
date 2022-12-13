@@ -273,6 +273,9 @@ export default defineComponent({
               <a href="#communitypools">
                 <div class="pool-type-btn cursor-pointer">Community Pools</div>
               </a>
+              <a href="#singlestaking">
+                <div class="pool-type-btn cursor-pointer">Single Stake</div>
+              </a>
             </div>
           </div>
 
@@ -313,6 +316,11 @@ export default defineComponent({
             <a href="#communitypools">
               <div class="pool-type-btn cursor-pointer text-center">
                 Community Pools
+              </div>
+            </a>
+            <a href="#singlestaking">
+              <div class="pool-type-btn cursor-pointer text-center">
+                Single Stake
               </div>
             </a>
           </div>

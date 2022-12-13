@@ -62,7 +62,7 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container" v-if="isMobile && isCommunityPool(poolID())">
+      <div class="AC-container" v-if="isMobile && !isCommunityPool(poolID())">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
@@ -70,7 +70,7 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
-          <div>Untaked LP tokens</div>
+          <div>Unstaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
           <div>Unstaked LP tokens</div>
           <div>$0.00</div>
@@ -201,7 +201,7 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
-          <div>Untaked LP tokens</div>
+          <div>Unstaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
         </div>
         <div class="incentives-text flex justify-between">
@@ -340,6 +340,7 @@ const classicPoolsIds = [
   '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed00020000000000000000000c',
   '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b00020000000000000000000f',
   '0x8bd71de52a3be3aadeb375f8d69aed37adf83d80000200000000000000000010',
+  '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
 ];
 
 const isCommunityPool = pool => {
