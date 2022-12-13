@@ -42,8 +42,7 @@ const { t } = useI18n();
 const router = useRouter();
 const { account, connector, startConnectWithInjectedProvider } = useWeb3();
 const { isMobile, isDesktop, upToSmallBreakpoint } = useBreakpoints();
-console.log(upToSmallBreakpoint)
-
+console.log(upToSmallBreakpoint);
 
 /**
  * STATE
@@ -56,7 +55,7 @@ const navLinks = [
   { label: 'Sunrise', path: '/sunrise', img: investImg },
   { label: 'Bond', path: '/bond', img: investImg },
   { label: t('portfolio'), path: '/vebal', img: portfolioImg },
-  { label: 'vexPOLAR', path: '/vebal', img: vexpolarImg },
+  { label: 'vexPOLAR', path: '/vexpolar', img: vexpolarImg },
   // { label: t('claim'), path: '/claim' },
 ];
 

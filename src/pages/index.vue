@@ -433,7 +433,7 @@ export default defineComponent({
 }
 
 .input {
-  background-color: #231928;
+  background-color: #261737;
 }
 
 .input::placeholder {

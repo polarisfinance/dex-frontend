@@ -51,6 +51,8 @@ const BondsPage = () =>
   import(/* webpackChunkName: "BondPage" */ '@/pages/bond/bond.vue');
 const BondPage = () =>
   import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
+const VexPolarPage = () =>
+  import(/* webpackChunkName: "BondPageID" */ '@/pages/VexPolar.vue');
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -183,6 +185,11 @@ const routes: RouteRecordRaw[] = [
     name: 'portfolio',
     component: PortfolioPage,
   },
+  {
+    path: '/vexpolar',
+    name: 'vexpolar',
+    component: VexPolarPage,
+  },
 ];
 
 /**
@@ -209,9 +216,10 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (to.hash) {
-      return { el: to.hash, behavior: 'smooth' };
-    }
+    // if (to.hash) {
+    //   return { el: to.hash, behavior: 'smooth' };
+    // }
+    return { top: 0 };
   },
 });
 
