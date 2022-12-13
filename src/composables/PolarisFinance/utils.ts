@@ -89,3 +89,5 @@ export const tokenNameToAddress = {
   ethernal: '0x17cbd9C274e90C537790C51b4015a65cD015497e',
   usp: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96',
 };
+
+export const xpolarPool = '';
