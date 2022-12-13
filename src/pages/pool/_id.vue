@@ -62,7 +62,7 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container" v-if="isMobile">
+      <div class="AC-container" v-if="isMobile && isCommunityPool(poolID())">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
@@ -191,7 +191,7 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container" v-if="isDesktop">
+      <div class="AC-container" v-if="isDesktop && !isCommunityPool(poolID())">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
@@ -301,6 +301,7 @@ import useBreakpoints from '@/composables/useBreakpoints';
 
 import { MyPoolBalancesCard } from '@/components/contextual/pages/pool/index';
 import StakeModal from './StakeModal.vue';
+import { InvestmentPool } from '@balancer-labs/typechain';
 
 import useStake from '../../composables/PolarisFinance/useStake';
 import useTransactions from '@/composables/useTransactions';
@@ -316,6 +317,32 @@ import {
 interface PoolPageData {
   id: string;
 }
+
+const segniorageIds = [
+  '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10000200000000000000000004',
+  '0xa83f9fa9b51fc26e9925a07bc3375617b473e051000200000000000000000005',
+  '0xa215a58225b344cbb62fcf762e8e884dbedfbe58000200000000000000000006',
+  '0x293bbbef6087f681a8110f08bbdedadd13599fc3000200000000000000000007',
+  '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
+  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e',
+];
+
+const classicPoolsIds = [
+  '0xcb9eb3f264be622a6d707947765db5c79d969ca7000000000000000000000009',
+  '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a',
+  '0x9cd44e44e8a61bc7dc34b04c762a3c0137a3707c000200000000000000000002',
+  '0xfbfcd8d689a3689db0f35277bf7cc11663a672e000020000000000000000000b',
+  '0xb3a04902b78fbe61185b766866193630db4db8a300020000000000000000000d',
+  '0x24f58ab36c212e54b248ebfb17eff2ca21dc95d5000200000000000000000013',
+  '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed00020000000000000000000c',
+  '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b00020000000000000000000f',
+  '0x8bd71de52a3be3aadeb375f8d69aed37adf83d80000200000000000000000010',
+];
+
+const isCommunityPool = pool => {
+  console.log(pool);
+  return !segniorageIds.includes(pool) && !classicPoolsIds.includes(pool);
+};
 
 export default defineComponent({
   components: {
@@ -349,6 +376,8 @@ export default defineComponent({
         index,
       }));
     });
+
+    const poolID = () => data.id;
 
     function symbolFor(address: string) {
       if (!pool || !pool.value) return '-';
@@ -588,6 +617,8 @@ export default defineComponent({
       txHandler,
       txListener,
       getProvider,
+      isCommunityPool,
+      poolID,
     };
   },
   data() {
