@@ -114,6 +114,12 @@ import useTransactions from '@/composables/useTransactions';
 import useEthers from '@/composables/useEthers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
+import {
+  BigNumberToString,
+  sunriseNameToAddress,
+  SPOLAR,
+  getDisplayBalance,
+} from '../composables/PolarisFinance/utils';
 interface PoolPageData {
   id: string;
 }
@@ -248,7 +254,11 @@ export default defineComponent({
     async fetchData() {
       const { balance, pendingShare, walletBalance, isApproved } = useStake();
       this.balance = await balance(this.tokenAddress, this.account);
-      this.earned = await pendingShare(this.tokenAddress, this.account);
+      this.earned = BigNumberToString(
+        await pendingShare(this.tokenAddress, this.account),
+        14,
+        4
+      );
       this.approved = await isApproved(this.tokenAddress, this.account);
     },
     async approve() {

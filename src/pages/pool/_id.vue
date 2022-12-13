@@ -307,7 +307,12 @@ import useTransactions from '@/composables/useTransactions';
 import useEthers from '../../composables/useEthers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
-
+import {
+  BigNumberToString,
+  sunriseNameToAddress,
+  SPOLAR,
+  getDisplayBalance,
+} from '../composables/PolarisFinance/utils';
 interface PoolPageData {
   id: string;
 }
@@ -607,7 +612,11 @@ export default defineComponent({
       if (this.pool) {
         poolAddress = this.pool.address;
       }
-      this.xpolarToClaim = await pendingShare(poolAddress, this.account);
+      this.xpolarToClaim = BigNumberToString(
+        await pendingShare(poolAddress, this.account),
+        14,
+        4
+      );
     },
     async claim() {
       const { withdraw } = useStake();
