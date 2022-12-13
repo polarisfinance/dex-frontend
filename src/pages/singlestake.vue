@@ -6,7 +6,7 @@
     </div>
   </div>
   <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">
-    Earn SPOLAR by depositing ETHERNAL
+    Earn xSpolar by depositing ETHERNAL
   </div>
 
   <div
@@ -66,7 +66,7 @@
       <img class="logo" src="./spolar.svg" />
       <div class="num-tokens">{{ earned }}</div>
       <div class="details">${{ earnedAmountInDollars }}</div>
-      <div class="details"><span class="uppercase">SPOLAR</span> Earned</div>
+      <div class="details"><span class="uppercase">xSpolar</span> Earned</div>
       <div class="mt-[24px] flex justify-center gap-[12px]">
         <button
           class="claim-btn"
