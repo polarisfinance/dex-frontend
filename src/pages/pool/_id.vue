@@ -70,16 +70,10 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
-<<<<<<< HEAD
-<<<<<<< HEAD
           <div>Untaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
-=======
-=======
->>>>>>> a76c08cdd49d2a8ebebcdf017f54df960a1547a4
           <div>Unstaked LP tokens</div>
           <div>$0.00</div>
->>>>>>> a76c08cd (spelling mistake)
         </div>
         <div class="incentives-text flex justify-between">
           <div>XPOLAR to claim</div>
@@ -97,7 +91,7 @@
             :address="pool.address"
             @close="toggleStakeModal"
           />
-          <button class="incentives-btn" @click="toggleUnstakeModal()">
+          <button class="unstake-incentives-btn" @click="toggleUnstakeModal()">
             Unstake
           </button>
           <StakeModal
@@ -226,7 +220,7 @@
             :address="pool.address"
             @close="toggleStakeModal"
           />
-          <button class="incentives-btn" @click="toggleUnstakeModal()">
+          <button class="unstake-incentives-btn" @click="toggleUnstakeModal()">
             Unstake
           </button>
           <StakeModal
@@ -308,7 +302,6 @@ import { shortenLabel } from '@/lib/utils';
 import useBreakpoints from '@/composables/useBreakpoints';
 
 import { MyPoolBalancesCard } from '@/components/contextual/pages/pool/index';
-<<<<<<< HEAD
 import StakeModal from './StakeModal.vue';
 import { InvestmentPool } from '@balancer-labs/typechain';
 
@@ -323,10 +316,7 @@ import {
   SPOLAR,
   getDisplayBalance,
 } from '@/composables/PolarisFinance/utils';
-=======
-import { InvestmentPool } from '@balancer-labs/typechain';
 
->>>>>>> a76c08cdd49d2a8ebebcdf017f54df960a1547a4
 interface PoolPageData {
   id: string;
 }
@@ -621,7 +611,6 @@ export default defineComponent({
       account,
       MyPoolBalancesCard,
       isPPool,
-<<<<<<< HEAD
       toggleStakeModal,
       isStakeModalVisible,
       tokenName,
@@ -631,8 +620,6 @@ export default defineComponent({
       txHandler,
       txListener,
       getProvider,
-=======
->>>>>>> a76c08cdd49d2a8ebebcdf017f54df960a1547a4
       isCommunityPool,
       poolID,
     };
@@ -862,8 +849,17 @@ export default defineComponent({
   color: #fdfdfd;
 }
 
+.unstake-incentives-btn {
+  border-radius: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background: #160d22;
+  box-shadow: inset -2px -2px 4px #2e1b46, inset 2px 2px 4px #050309;
+  border-radius: 12px;
+}
+
 .incentives-btn {
-  background: #301d45;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   padding-left: 8px;
