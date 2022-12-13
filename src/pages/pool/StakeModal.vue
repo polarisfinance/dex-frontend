@@ -91,6 +91,7 @@ export default defineComponent({
       const formatedAmount = parseFixed(amount, 18);
       console.log(formatedAmount);
       const { deposit } = useStake();
+      console.log(props.address);
       const tx = await deposit(props.address, formatedAmount, getProvider());
       txHandler(tx);
       txListener(tx, {

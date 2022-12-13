@@ -651,7 +651,13 @@ export default defineComponent({
     await this.fetchStakedBalance();
     await this.fetchXpolarToClaim();
     await this.fetchIsApproved();
-    setInterval(async () => await this.fetchIsApproved, 500);
+  },
+  watch: {
+    async account() {
+      await this.fetchStakedBalance();
+      await this.fetchXpolarToClaim();
+      await this.fetchIsApproved();
+    },
   },
 });
 </script>

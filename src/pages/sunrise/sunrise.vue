@@ -105,7 +105,7 @@ onMounted(() => {});
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  justify-content: center;
+  justify-content: stretch;
   gap: 24px;
   padding-left: 165px;
   padding-right: 165px;

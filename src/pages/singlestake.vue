@@ -16,10 +16,10 @@
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" :src="logo[sunrise.name]" />
       <div class="num-tokens">{{ balance }}</div>
-      <div class="details">${{ depositedInDollars }}</div>
+      <!-- <div class="details">${{ depositedInDollars }}</div> -->
       <div class="details">{{ sunrise.name.toUpperCase() }} Staked</div>
 
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
+      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
         <button class="claim-btn" @click="approve">Approve</button>
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
@@ -31,8 +31,8 @@
           :depositBol="true"
           :isVisible="isStakeModalVisible"
           :token="sunrise.name.toUpperCase()"
-          :balance="'0'"
-          :address="''"
+          :balance="balanceFor(tokenAddress)"
+          :address="tokenAddress"
           @close="toggleStakeModal()"
         />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
@@ -45,8 +45,8 @@
           :depositBol="false"
           :isVisible="isUnstakeModalVisible"
           :token="sunrise.name.toUpperCase()"
-          :balance="'0'"
-          :address="''"
+          :balance="balance"
+          :address="tokenAddress"
           @close="toggleUnstakeModal()"
         />
       </div>
@@ -55,23 +55,23 @@
       <div class="data-text text-right">
         <div>APR:</div>
         <div>Daily APR:</div>
-        <div>TVL:</div>
+        <!-- <div>TVL:</div> -->
       </div>
       <div class="data-text">
         <div>{{ APR }}%</div>
         <div>{{ DAILY_APR }}%</div>
-        <div>{{ TVL }}</div>
+        <!-- <div>{{ TVL }}</div> -->
       </div>
     </div>
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <img class="logo" src="./spolar.svg" />
+      <img class="logo" src="./xpolar.png" width="80" height="80" />
       <div class="num-tokens">{{ earned }}</div>
-      <div class="details">${{ earnedAmountInDollars }}</div>
-      <div class="details"><span class="uppercase">xSpolar</span> Earned</div>
+      <!-- <div class="details">${{ earnedAmountInDollars }}</div> -->
+      <div class="details"><span class="uppercase">xpolar</span> Earned</div>
       <div class="mt-[24px] flex justify-center gap-[12px]">
         <button
           class="claim-btn"
-          @click="claim"
+          @click="claim()"
           :disabled="!(parseFloat(earned) > 0)"
         >
           Claim Rewards
@@ -79,7 +79,7 @@
       </div>
     </div>
     <div class="w-full">
-      <button class="claim-btn" text-center @click="withdraw(depositAmount)">
+      <button class="claim-btn" text-center @click="withdrawEverything()">
         Claim and withdraw
       </button>
     </div>
@@ -99,11 +99,21 @@ import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
 
+import PbondImg from './bond/Pbond.svg';
+import ObondImg from './bond/Obond.svg';
+import USPbondImg from './bond/USPbond.svg';
+import EbondImg from './bond/Ebond.svg';
+import BbondImg from './bond/Bbond.svg';
+
 import useWeb3 from '@/services/web3/useWeb3';
 
 import useStake from '../composables/PolarisFinance/useStake';
 import StakeModal from './pool/StakeModal.vue';
-
+import useTokens from '@/composables/useTokens';
+import useTransactions from '@/composables/useTransactions';
+import useEthers from '@/composables/useEthers';
+import { TransactionResponse } from '@ethersproject/providers';
+import { BigNumber } from 'ethers';
 interface PoolPageData {
   id: string;
 }
@@ -123,6 +133,12 @@ export default defineComponent({
       ethernal: ethernalImg,
       binaris: binarisImg,
       tripolar: tripolarImg,
+
+      pbond: PbondImg,
+      obond: ObondImg,
+      uspbond: USPbondImg,
+      ebond: EbondImg,
+      bbond: BbondImg,
     };
     const data = reactive<PoolPageData>({
       id: route.params.id as string,
@@ -141,6 +157,23 @@ export default defineComponent({
       }
       return undefined;
     });
+
+    const tokenAddress = computed(() => {
+      for (let sunrise of Object.values(sunriseDefinitions)) {
+        if (sunrise.name == data.id) return sunrise.tokenAddress;
+      }
+      if (
+        ['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(
+          data.id.toUpperCase()
+        )
+      ) {
+        for (let sunrise of Object.values(sunriseDefinitions)) {
+          if (sunrise.bond == data.id.toUpperCase())
+            return sunrise.bondTokenAddress;
+        }
+      }
+      return undefined;
+    });
     const isStakeModalVisible = ref(false);
     const isUnstakeModalVisible = ref(false);
 
@@ -150,6 +183,19 @@ export default defineComponent({
 
     const toggleUnstakeModal = (value?: boolean) => {
       isUnstakeModalVisible.value = value ?? !isUnstakeModalVisible.value;
+    };
+
+    const { balanceFor } = useTokens();
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'approve',
+        summary: 'approve for staking',
+      });
     };
     return {
       // data
@@ -164,6 +210,12 @@ export default defineComponent({
       isUnstakeModalVisible,
       toggleStakeModal,
       toggleUnstakeModal,
+      tokenAddress,
+      account,
+      balanceFor,
+      txHandler,
+      txListener,
+      getProvider,
     };
   },
   data() {
@@ -186,13 +238,65 @@ export default defineComponent({
       withdrawTime: '-',
       claimTime: '-',
       TVL: '-',
+      tokenWalletBalance: '0',
     };
   },
-  async created() {
+  async mounted() {
     await this.fetchData();
   },
   methods: {
-    async fetchData() {},
+    async fetchData() {
+      const { balance, pendingShare, walletBalance, isApproved } = useStake();
+      this.balance = await balance(this.tokenAddress, this.account);
+      this.earned = await pendingShare(this.tokenAddress, this.account);
+      this.approved = await isApproved(this.tokenAddress, this.account);
+    },
+    async approve() {
+      const { approve } = useStake();
+      const tx = await approve(this.tokenAddress, this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchData();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async claim() {
+      const { withdraw } = useStake();
+      const tx = await withdraw(
+        this.tokenAddress,
+        BigNumber.from(0),
+        this.getProvider()
+      );
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchData();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async withdrawEverything() {
+      const { withdrawAll } = useStake();
+      const tx = await withdrawAll(
+        this.tokenAddress,
+        this.account,
+        this.getProvider()
+      );
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchData();
+        },
+        onTxFailed: () => {},
+      });
+    },
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.fetchData();
+    },
   },
 });
 </script>

@@ -25,7 +25,7 @@
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
-          <img :src="logo[sunrise.name]" />
+          <img :src="bondLogo[sunrise.name]" />
           <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
         </div>
       </div>
@@ -83,7 +83,7 @@
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
-          <img :src="logo[sunrise.name]" />
+          <img :src="bondLogo[sunrise.name]" />
           <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
         </div>
         <img src="./arrow.svg" />
@@ -140,6 +140,13 @@ import uspImg from './usp.svg';
 import ethernalImg from './ethernal.svg';
 import binarisImg from './binaris.svg';
 import tripolarImg from './tripolar.svg';
+
+import PbondImg from './Pbond.svg';
+import EbondImg from './Ebond.svg';
+import ObondImg from './Obond.svg';
+import USPbondImg from './USPbond.svg';
+import BbondImg from './Bbond.svg';
+
 import useWeb3 from '@/services/web3/useWeb3';
 
 import useBonds from '@/composables/PolarisFinance/useBonds';
@@ -183,7 +190,14 @@ export default defineComponent({
       usp: uspImg,
       ethernal: ethernalImg,
       binaris: binarisImg,
-      tripolar: orbitalImg,
+    };
+
+    const bondLogo = {
+      polar: PbondImg,
+      orbital: ObondImg,
+      usp: USPbondImg,
+      ethernal: EbondImg,
+      binaris: BbondImg,
     };
 
     const data = reactive<PoolPageData>({
@@ -226,6 +240,7 @@ export default defineComponent({
       txListener,
       isRedeemBondModalVisible,
       toggleRedeemBondModal,
+      bondLogo,
     };
   },
   methods: {

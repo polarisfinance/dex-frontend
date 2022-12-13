@@ -66,7 +66,7 @@ export default function useStake() {
     provider: Web3Provider
   ) => {
     try {
-      const pid = PID[address];
+      const pid = PID[address.toLowerCase()];
 
       const tx = await sendTransaction(
         provider,
@@ -88,7 +88,7 @@ export default function useStake() {
     provider: Web3Provider
   ) => {
     try {
-      const pid = PID[address];
+      const pid = PID[address.toLowerCase()];
       const tx = await sendTransaction(
         provider,
         xpolarRewardPoolAddress,
@@ -103,9 +103,32 @@ export default function useStake() {
     }
   };
 
+  const withdrawAll = async (
+    address: string,
+    account: string,
+    provider: Web3Provider
+  ) => {
+    try {
+      const pid = PID[address.toLowerCase()];
+      const balanceFetched = await xpolarRewardPool.userInfo(pid, account);
+
+      const tx = await sendTransaction(
+        provider,
+        xpolarRewardPoolAddress,
+        xpolarRewardPoolABI,
+        'withdraw',
+        [pid, balanceFetched[0]]
+      );
+      return tx;
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
   const balance = async (address: string, account: string) => {
     try {
-      const pid = PID[address];
+      const pid = PID[address.toLowerCase()];
       const balanceFetched = await xpolarRewardPool.userInfo(pid, account);
       return BigNumberToString(balanceFetched[0], 14, 4);
     } catch (error) {
@@ -115,7 +138,7 @@ export default function useStake() {
 
   const pendingShare = async (address: string, account: string) => {
     try {
-      const pid = PID[address];
+      const pid = PID[address.toLowerCase()];
       const pendingShare = await xpolarRewardPool.pendingShare(pid, account);
       return pendingShare;
     } catch (error) {
@@ -144,5 +167,27 @@ export default function useStake() {
     }
   };
 
-  return { deposit, withdraw, balance, pendingShare, isApproved, approve };
+  const walletBalance = async (address: string, account: string) => {
+    try {
+      console.log(address);
+      console.log(account);
+      const token = new Contract(address, ERC20ABI, w3);
+      const balance = await token.balanceOf(account);
+      console.log(balance);
+      return balance;
+    } catch (error) {
+      return '0';
+    }
+  };
+
+  return {
+    deposit,
+    withdraw,
+    balance,
+    pendingShare,
+    isApproved,
+    approve,
+    walletBalance,
+    withdrawAll,
+  };
 }

@@ -377,9 +377,9 @@ export default defineComponent({
           :img="classicImg"
         />
       </div>
-      <!-- <div id="singlestaking">
+      <div id="singlestaking">
         <SingleStake />
-      </div> -->
+      </div>
       <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
         <FeaturedProtocols />
       </div> -->

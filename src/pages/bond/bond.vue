@@ -2,11 +2,11 @@
 import { computed, onMounted, ref } from 'vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-import polarImg from './polar.svg';
-import orbitalImg from './orbital.svg';
-import uspImg from './usp.svg';
-import ethernalImg from './ethernal.svg';
-import binarisImg from './binaris.svg';
+import polarImg from './Pbond.svg';
+import orbitalImg from './Obond.svg';
+import uspImg from './USPbond.svg';
+import ethernalImg from './Ebond.svg';
+import binarisImg from './Bbond.svg';
 import tripolarImg from './tripolar.svg';
 
 const logo = {
