@@ -70,7 +70,7 @@
           <div>$0.00</div>
         </div>
         <div class="incentives-text flex justify-between">
-          <div>Untaked LP tokens</div>
+          <div>Unstaked LP tokens</div>
           <div>$0.00</div>
         </div>
         <div class="incentives-text flex gap-[8px]">
