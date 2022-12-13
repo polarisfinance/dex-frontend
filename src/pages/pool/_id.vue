@@ -62,7 +62,7 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container" v-if="isMobile && isCommunityPool(poolID())">
+      <div class="AC-container" v-if="isMobile && !isCommunityPool(poolID())">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
