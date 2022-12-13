@@ -70,8 +70,13 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
+<<<<<<< HEAD
           <div>Untaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
+=======
+          <div>Unstaked LP tokens</div>
+          <div>$0.00</div>
+>>>>>>> a76c08cd (spelling mistake)
         </div>
         <div class="incentives-text flex justify-between">
           <div>XPOLAR to claim</div>
