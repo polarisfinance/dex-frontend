@@ -70,7 +70,7 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
-          <div>Untaked LP tokens</div>
+          <div>Unstaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
           <div>Unstaked LP tokens</div>
           <div>$0.00</div>
@@ -166,6 +166,7 @@
                 :poolApr="poolApr"
                 :loading="loadingPool"
                 :loadingApr="loadingPool"
+                :aprString="apr"
               />
             </div>
             <div class="mb-4">
@@ -201,7 +202,7 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
-          <div>Untaked LP tokens</div>
+          <div>Unstaked LP tokens</div>
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
         </div>
         <div class="incentives-text flex justify-between">
@@ -632,15 +633,20 @@ export default defineComponent({
       stakedBalance: '0',
       xpolarToClaim: '0',
       isApproved: false,
+      apr: '0',
     };
   },
   methods: {
     async fetchStakedBalance() {
-      const { balance } = useStake();
+      const { balance, getPoolApr } = useStake();
       let poolAddress = '';
+      let poolId = '';
       if (this.pool) {
         poolAddress = this.pool.address;
+        poolId = this.pool.id;
       }
+      this.apr = (await getPoolApr(poolAddress, poolId)).yearlyAPR;
+
       this.stakedBalance = await balance(poolAddress, this.account);
     },
     async fetchXpolarToClaim() {
@@ -700,6 +706,11 @@ export default defineComponent({
   },
   watch: {
     async account() {
+      await this.fetchStakedBalance();
+      await this.fetchXpolarToClaim();
+      await this.fetchIsApproved();
+    },
+    async pool() {
       await this.fetchStakedBalance();
       await this.fetchXpolarToClaim();
       await this.fetchIsApproved();

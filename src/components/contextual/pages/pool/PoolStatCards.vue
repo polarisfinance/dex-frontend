@@ -16,6 +16,7 @@ type Props = {
   poolApr: PoolAPRs;
   loading?: boolean;
   loadingApr?: boolean;
+  aprString: string;
 };
 
 /**
@@ -91,8 +92,17 @@ const stats = computed(() => {
             :poolApr="poolApr"
           /> -->
         </div>
-        <div class="funds flex items-center truncate text-xl font-medium">
+        <div
+          class="funds flex items-center truncate text-xl font-medium"
+          v-if="stat.label != 'APR'"
+        >
           {{ stat.value }} <span v-if="stat.label == 'APR'">%</span>
+        </div>
+        <div
+          class="funds flex items-center truncate text-xl font-medium"
+          v-else
+        >
+          {{ aprString }} <span v-if="stat.label == 'APR'">%</span>
         </div>
       </div>
     </template>
