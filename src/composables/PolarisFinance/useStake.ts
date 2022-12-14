@@ -214,9 +214,9 @@ export default function useStake() {
 
   const getPoolApr = async (
     depositTokenAddress: string,
-    depositTokenId: string
+    depositTokenId: string,
+    prices: any
   ) => {
-    const { prices, balanceFor } = useTokensBal();
     const xpolarPoolQuery = usePoolQuery(
       '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
     );

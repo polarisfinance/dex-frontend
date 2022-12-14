@@ -596,6 +596,7 @@ export default defineComponent({
       isLoadingSnapshots,
       loadingPool,
       missingPrices,
+      prices,
       isStableLikePool,
       isLiquidityBootstrappingPool,
       isStablePhantomPool,
@@ -648,7 +649,7 @@ export default defineComponent({
       }
 
       this.stakedBalance = await balance(poolAddress, this.account);
-      this.apr = (await getPoolApr(poolAddress, poolId)).yearlyAPR;
+      this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
     },
     async fetchXpolarToClaim() {
       const { pendingShare } = useStake();
@@ -716,6 +717,11 @@ export default defineComponent({
       await this.fetchXpolarToClaim();
       await this.fetchIsApproved();
     },
+    async prices() {
+      await this.fetchStakedBalance();
+      await this.fetchXpolarToClaim();
+      await this.fetchIsApproved();
+    }
   },
 });
 </script>
