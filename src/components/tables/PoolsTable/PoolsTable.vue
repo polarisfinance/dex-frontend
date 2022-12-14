@@ -28,7 +28,7 @@ import { POOLS } from '@/constants/pools';
 
 import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
 import TokenPills from './TokenPills/TokenPills.vue';
-
+import useStake from '@/composables/PolarisFinance/useStake';
 const { isMobile, isDesktop } = useBreakpoints();
 
 /**
@@ -229,6 +229,18 @@ function aprLabelFor(pool: PoolWithShares): string {
   if (!poolAPRs) return '0';
 
   return totalAprLabel(poolAPRs, pool.boost);
+}
+
+async function yearlyApr(pool: PoolWithShares) {
+  const { getPoolApr } = useStake();
+  const apr = await getPoolApr(pool.address, pool.id);
+  return apr.yearlyAPR;
+}
+
+async function dailyApr(pool: PoolWithShares) {
+  const { getPoolApr } = useStake();
+  const apr = await getPoolApr(pool.address, pool.id);
+  return apr.dailyAPR;
 }
 
 function lockedUntil(lockEndDate?: number) {

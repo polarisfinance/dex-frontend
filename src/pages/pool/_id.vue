@@ -62,7 +62,6 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-
       <div class="AC-container" v-if="isMobile && !isCommunityPool(poolID())">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
@@ -71,9 +70,10 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
+          <!-- <div>Untaked LP tokens</div> -->
           <div>Unstaked LP tokens</div>
+
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
-          <div>Unstaked LP tokens</div>
           <div>$0.00</div>
         </div>
         <div class="incentives-text flex justify-between">
@@ -167,6 +167,7 @@
                 :poolApr="poolApr"
                 :loading="loadingPool"
                 :loadingApr="loadingPool"
+                :aprString="apr"
               />
             </div>
             <div class="mb-4">
@@ -595,6 +596,7 @@ export default defineComponent({
       isLoadingSnapshots,
       loadingPool,
       missingPrices,
+      prices,
       isStableLikePool,
       isLiquidityBootstrappingPool,
       isStablePhantomPool,
@@ -633,16 +635,21 @@ export default defineComponent({
       stakedBalance: '0',
       xpolarToClaim: '0',
       isApproved: false,
+      apr: '0',
     };
   },
   methods: {
     async fetchStakedBalance() {
       const { balance } = useStake();
       let poolAddress = '';
+      // let poolId = '';
       if (this.pool) {
         poolAddress = this.pool.address;
+        // poolId = this.pool.id;
       }
+
       this.stakedBalance = await balance(poolAddress, this.account);
+      // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
     },
     async fetchXpolarToClaim() {
       const { pendingShare } = useStake();
@@ -701,6 +708,16 @@ export default defineComponent({
   },
   watch: {
     async account() {
+      await this.fetchStakedBalance();
+      await this.fetchXpolarToClaim();
+      await this.fetchIsApproved();
+    },
+    async pool() {
+      await this.fetchStakedBalance();
+      await this.fetchXpolarToClaim();
+      await this.fetchIsApproved();
+    },
+    async prices() {
       await this.fetchStakedBalance();
       await this.fetchXpolarToClaim();
       await this.fetchIsApproved();

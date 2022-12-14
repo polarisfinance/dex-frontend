@@ -22,6 +22,10 @@ import useTransactions from '../useTransactions';
 import useWeb3 from '@/services/web3/useWeb3';
 import { computed } from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
+import useTokensBal from '@/composables/useTokens';
+import usePoolQuery from '@/composables/queries/usePoolQuery';
+import { getBptBalanceFiatValue } from '@/lib/utils/balancer/pool';
+import BigNumberJs from 'bignumber.js';
 
 export default function useStake() {
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
@@ -169,15 +173,112 @@ export default function useStake() {
 
   const walletBalance = async (address: string, account: string) => {
     try {
-      console.log(address);
-      console.log(account);
       const token = new Contract(address, ERC20ABI, w3);
       const balance = await token.balanceOf(account);
-      console.log(balance);
       return balance;
     } catch (error) {
       return '0';
     }
+  };
+
+  // async getPoolAPRs(bank: Bank): Promise<PoolStats> {
+  //   if (this.myAccount === undefined) return;
+  //   const depositToken = bank.depositToken;
+  //   const poolContract = this.contracts[bank.contract];
+  //   const depositTokenPrice = await this.getDepositTokenPriceInDollars(bank.depositTokenName, depositToken);
+  //   const stakeInPool = await depositToken.balanceOf(bank.address);
+  //   const TVL = Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal, 18));
+  //   const stat = await this.getStat(bank.earnTokenName);
+
+  //   const tokenPerSecond = await this.getTokenPerSecond(
+  //     bank.earnTokenName,
+  //     bank.contract,
+  //     poolContract,
+  //     bank.depositTokenName,
+  //   );
+
+  //   const tokenPerHour = tokenPerSecond.mul(60).mul(60);
+  //   const totalRewardPricePerYear =
+  //     Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24).mul(365)));
+  //   const totalRewardPricePerDay = Number(stat.priceInDollars) * Number(getDisplayBalance(tokenPerHour.mul(24)));
+  //   const totalStakingTokenInPool =
+  //     Number(depositTokenPrice) * Number(getDisplayBalance(stakeInPool, depositToken.decimal, 18));
+  //   const dailyAPR = (totalRewardPricePerDay / totalStakingTokenInPool) * 100;
+  //   const yearlyAPR = (totalRewardPricePerYear / totalStakingTokenInPool) * 100;
+  //   return {
+  //     dailyAPR: dailyAPR.toFixed(2).toString(),
+  //     yearlyAPR: yearlyAPR.toFixed(2).toString(),
+  //     TVL: numberWithSpaces(Number(TVL.toFixed(2))),
+  //   };
+  // }
+
+  const getPoolApr = async (
+    depositTokenAddress: string,
+    depositTokenId: string,
+    prices: any
+  ) => {
+    const xpolarPoolQuery = usePoolQuery(
+      '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+    );
+    const xpolarPool = computed(() => xpolarPoolQuery.data.value);
+    const xpolarBalance =
+      xpolarPool.value?.onchain?.tokens[
+        '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
+      ]?.balance;
+
+    const nearBalance =
+      xpolarPool.value?.onchain?.tokens[
+        '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
+      ]?.balance;
+
+    const nearPrice = prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'].usd;
+    const xpolarPrice =
+      (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
+      Number(nearPrice);
+
+    const pid = PID[depositTokenAddress.toLowerCase()];
+
+    const depositToken = new Contract(depositTokenAddress, ERC20ABI, w3);
+    const depositTokenPrice = '0';
+    const stakedInPool = BigNumberToString(
+      await depositToken.balanceOf(xpolarRewardPoolAddress),
+      14,
+      4
+    );
+
+    const depositTokenPoolQuery = usePoolQuery(depositTokenId);
+    const depositTokenPool = computed(() => depositTokenPoolQuery.data.value);
+    const TVL = new BigNumberJs(depositTokenPool.value?.totalLiquidity || '')
+      .div(depositTokenPool.value?.totalShares || '')
+      .times(stakedInPool)
+      .toString();
+
+    const xpolarPerSecond = await xpolarRewardPool.xpolarPerSecond();
+    const allocPoint = (await xpolarRewardPool.poolInfo(pid)).allocPoint;
+
+    const finalXpolarPerSecond = BigNumberToString(
+      xpolarPerSecond.mul(allocPoint).div(800000),
+      14,
+      4
+    );
+    console.log(finalXpolarPerSecond);
+    const tokenPerHour = Number(finalXpolarPerSecond) * 60 * 60;
+    console.log(tokenPerHour);
+    const totalRewardPricePerYear = tokenPerHour * 24 * 365 * xpolarPrice;
+    console.log('this', totalRewardPricePerYear);
+    const totalRewardPricePerDay = tokenPerHour * 24 * xpolarPrice;
+    const dailyAPR = Math.ceil(
+      (totalRewardPricePerDay / Number(TVL)) * 100
+    ).toString();
+    const yearlyAPR = Math.ceil(
+      (totalRewardPricePerYear / Number(TVL)) * 100
+    ).toString();
+    console.log(dailyAPR, yearlyAPR, TVL);
+    return {
+      dailyAPR: dailyAPR,
+      yearlyAPR: yearlyAPR,
+      TVL: TVL,
+    };
   };
 
   return {
@@ -189,5 +290,6 @@ export default function useStake() {
     approve,
     walletBalance,
     withdrawAll,
+    getPoolApr,
   };
 }

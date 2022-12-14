@@ -50,7 +50,6 @@ const segniorageIds = [
 ];
 
 const classicPoolsIds = [
-  '0xcb9eb3f264be622a6d707947765db5c79d969ca7000000000000000000000009',
   '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a',
   '0x9cd44e44e8a61bc7dc34b04c762a3c0137a3707c000200000000000000000002',
   '0xfbfcd8d689a3689db0f35277bf7cc11663a672e000020000000000000000000b',
@@ -264,9 +263,9 @@ export default defineComponent({
                   Seigniorage Pools
                 </div></a
               >
-              <!-- <a href="#singlestaking">
+              <a href="#singlestaking">
                 <div class="pool-type-btn cursor-pointer">Single Staking</div>
-              </a> -->
+              </a>
               <a href="#classicpools">
                 <div class="pool-type-btn cursor-pointer">Classic Pools</div>
               </a>
@@ -303,11 +302,11 @@ export default defineComponent({
                 Seigniorage Pools
               </div>
             </a>
-            <!-- <a href="#singlestaking">
+            <a href="#singlestaking">
               <div class="mobile-pool-btn cursor-pointer text-center">
                 Single Staking
               </div>
-            </a> -->
+            </a>
             <a href="#classicpools">
               <div class="mobile-pool-btn cursor-pointer text-center">
                 Classic Pools
