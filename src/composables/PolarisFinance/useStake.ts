@@ -231,8 +231,7 @@ export default function useStake() {
         '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
       ]?.balance;
 
-    const nearPrice =
-      prices.value['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'].usd;
+    const nearPrice = prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'].usd;
     const xpolarPrice =
       (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
       Number(nearPrice);
