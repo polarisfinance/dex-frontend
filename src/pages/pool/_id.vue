@@ -62,7 +62,7 @@
         :missingPrices="missingPrices"
         class="mb-4"
       />
-      <div class="AC-container" v-if="isMobile && isCommunityPool(poolID())">
+      <div class="AC-container" v-if="isMobile && !isCommunityPool(poolID())">
         <div>Staking incentives</div>
         <div class="incentives-border"></div>
         <div class="incentives-text flex justify-between">
@@ -70,9 +70,10 @@
           <div>{{ stakedBalance }}</div>
         </div>
         <div class="incentives-text flex justify-between">
+          <!-- <div>Untaked LP tokens</div> -->
           <div>Unstaked LP tokens</div>
+
           <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
-          <div>Unstaked LP tokens</div>
           <div>$0.00</div>
         </div>
         <div class="incentives-text flex justify-between">
