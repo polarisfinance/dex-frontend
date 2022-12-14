@@ -247,6 +247,10 @@ export default function useStake() {
       4
     );
 
+    console.log('depositTokenId');
+
+    console.log(depositTokenId);
+
     const depositTokenPoolQuery = usePoolQuery(depositTokenId);
     const depositTokenPool = computed(() => depositTokenPoolQuery.data.value);
     const TVL = new BigNumberJs(depositTokenPool.value?.totalLiquidity || '')
