@@ -639,30 +639,6 @@ export default defineComponent({
     };
   },
   methods: {
-    async fetchStakedBalance() {
-      const { balance } = useStake();
-      let poolAddress = '';
-      // let poolId = '';
-      if (this.pool) {
-        poolAddress = this.pool.address;
-        // poolId = this.pool.id;
-      }
-
-      this.stakedBalance = await balance(poolAddress, this.account);
-      // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
-    },
-    async fetchXpolarToClaim() {
-      const { pendingShare } = useStake();
-      let poolAddress = '';
-      if (this.pool) {
-        poolAddress = this.pool.address;
-      }
-      this.xpolarToClaim = BigNumberToString(
-        await pendingShare(poolAddress, this.account),
-        14,
-        4
-      );
-    },
     async claim() {
       const { withdraw } = useStake();
       let poolAddress = '';
@@ -686,41 +662,56 @@ export default defineComponent({
       this.txHandler(tx);
       this.txListener(tx, {
         onTxConfirmed: () => {
-          this.fetchIsApproved();
+          this.fetch();
         },
         onTxFailed: () => {},
       });
     },
-    async fetchIsApproved() {
-      const { isApproved } = useStake();
+
+    async fetch() {
+      const { balance, isApproved, getPoolApr, pendingShare } = useStake();
       let poolAddress = '';
-      if (this.pool) {
+      let poolId = '';
+
+      if (this.pool != undefined) {
         poolAddress = this.pool.address;
+        poolId = this.pool.id;
+      } else {
+        return;
       }
+      const apr = await getPoolApr(poolAddress, poolId, this.prices);
+      this.apr = apr.yearlyAPR;
+
+      if (this.account != '') {
+      } else {
+        return;
+      }
+
+      this.stakedBalance = await balance(poolAddress, this.account);
+      // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
+
+      this.xpolarToClaim = BigNumberToString(
+        await pendingShare(poolAddress, this.account),
+        14,
+        4
+      );
+
       const approval = await isApproved(poolAddress, this.account);
       this.isApproved = approval;
     },
   },
   async mounted() {
-    await this.fetchStakedBalance();
-    await this.fetchXpolarToClaim();
-    await this.fetchIsApproved();
+    await this.fetch();
   },
   watch: {
     async account() {
-      await this.fetchStakedBalance();
-      await this.fetchXpolarToClaim();
-      await this.fetchIsApproved();
+      await this.fetch();
     },
     async pool() {
-      await this.fetchStakedBalance();
-      await this.fetchXpolarToClaim();
-      await this.fetchIsApproved();
+      await this.fetch();
     },
     async prices() {
-      await this.fetchStakedBalance();
-      await this.fetchXpolarToClaim();
-      await this.fetchIsApproved();
+      await this.fetch();
     },
   },
 });

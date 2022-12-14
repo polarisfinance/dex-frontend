@@ -146,7 +146,8 @@ export default function useStake() {
       const pendingShare = await xpolarRewardPool.pendingShare(pid, account);
       return pendingShare;
     } catch (error) {
-      return '0';
+      console.log(error);
+      return BigNumber.from(0);
     }
   };
 
