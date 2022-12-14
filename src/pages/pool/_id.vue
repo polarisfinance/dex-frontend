@@ -646,9 +646,9 @@ export default defineComponent({
         poolAddress = this.pool.address;
         poolId = this.pool.id;
       }
-      this.apr = (await getPoolApr(poolAddress, poolId)).yearlyAPR;
 
       this.stakedBalance = await balance(poolAddress, this.account);
+      this.apr = (await getPoolApr(poolAddress, poolId)).yearlyAPR;
     },
     async fetchXpolarToClaim() {
       const { pendingShare } = useStake();
