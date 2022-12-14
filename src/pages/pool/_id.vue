@@ -640,12 +640,12 @@ export default defineComponent({
   },
   methods: {
     async fetchStakedBalance() {
-      const { balance, getPoolApr } = useStake();
+      const { balance } = useStake();
       let poolAddress = '';
-      let poolId = '';
+      // let poolId = '';
       if (this.pool) {
         poolAddress = this.pool.address;
-        poolId = this.pool.id;
+        // poolId = this.pool.id;
       }
 
       this.stakedBalance = await balance(poolAddress, this.account);
