@@ -12,7 +12,7 @@ import { spolarABI, sunriseABI, xpolarRewardPoolABI, ERC20ABI } from './ABI';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { MaxUint256 } from '@ethersproject/constants';
-import useTokens from './useTokens';
+import useTokens from '@/composables/useTokens';
 import useTreasury from './useTreasury';
 import moment from 'moment';
 
@@ -26,6 +26,8 @@ import useTokensBal from '@/composables/useTokens';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import { getBptBalanceFiatValue } from '@/lib/utils/balancer/pool';
 import BigNumberJs from 'bignumber.js';
+
+import prices from '@/providers/tokens.provider';
 
 export default function useStake() {
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
@@ -217,74 +219,75 @@ export default function useStake() {
     depositTokenAddress: string,
     depositTokenId: string
   ) => {
-    console.log(useTokensBal());
-    const { prices } = useTokensBal();
+    // console.log(useTokensBal());
+    // const { prices } = useTokensBal();
 
-    const xpolarPoolQuery = usePoolQuery(
-      '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-    );
-    const xpolarPool = computed(() => xpolarPoolQuery.data.value);
-    const xpolarBalance =
-      xpolarPool.value?.onchain?.tokens[
-        '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
-      ]?.balance;
+    // const xpolarPoolQuery = usePoolQuery(
+    //   '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+    // );
 
-    const nearBalance =
-      xpolarPool.value?.onchain?.tokens[
-        '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
-      ]?.balance;
+    // const xpolarPool = computed(() => xpolarPoolQuery.data.value);
+    // const xpolarBalance =
+    //   xpolarPool.value?.onchain?.tokens[
+    //     '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
+    //   ]?.balance;
 
-    const nearPrice = prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'].usd;
-    const xpolarPrice =
-      (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
-      Number(nearPrice);
+    // const nearBalance =
+    //   xpolarPool.value?.onchain?.tokens[
+    //     '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
+    //   ]?.balance;
 
-    const pid = PID[depositTokenAddress.toLowerCase()];
+    // const nearPrice = prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'].usd;
+    // const xpolarPrice =
+    //   (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
+    //   Number(nearPrice);
 
-    const depositToken = new Contract(depositTokenAddress, ERC20ABI, w3);
-    const depositTokenPrice = '0';
-    const stakedInPool = BigNumberToString(
-      await depositToken.balanceOf(xpolarRewardPoolAddress),
-      14,
-      4
-    );
+    // const pid = PID[depositTokenAddress.toLowerCase()];
 
-    console.log('depositTokenId');
+    // const depositToken = new Contract(depositTokenAddress, ERC20ABI, w3);
+    // const depositTokenPrice = '0';
+    // const stakedInPool = BigNumberToString(
+    //   await depositToken.balanceOf(xpolarRewardPoolAddress),
+    //   14,
+    //   4
+    // );
 
-    console.log(depositTokenId);
+    // console.log('depositTokenId');
 
-    const depositTokenPoolQuery = usePoolQuery(depositTokenId);
-    const depositTokenPool = computed(() => depositTokenPoolQuery.data.value);
-    const TVL = new BigNumberJs(depositTokenPool.value?.totalLiquidity || '')
-      .div(depositTokenPool.value?.totalShares || '')
-      .times(stakedInPool)
-      .toString();
+    // console.log(depositTokenId);
 
-    const xpolarPerSecond = await xpolarRewardPool.xpolarPerSecond();
-    const allocPoint = (await xpolarRewardPool.poolInfo(pid)).allocPoint;
+    // const depositTokenPoolQuery = usePoolQuery(depositTokenId);
+    // const depositTokenPool = computed(() => depositTokenPoolQuery.data.value);
+    // const TVL = new BigNumberJs(depositTokenPool.value?.totalLiquidity || '')
+    //   .div(depositTokenPool.value?.totalShares || '')
+    //   .times(stakedInPool)
+    //   .toString();
 
-    const finalXpolarPerSecond = BigNumberToString(
-      xpolarPerSecond.mul(allocPoint).div(800000),
-      14,
-      4
-    );
-    console.log(finalXpolarPerSecond);
-    const tokenPerHour = Number(finalXpolarPerSecond) * 60 * 60;
-    console.log(tokenPerHour);
-    const totalRewardPricePerYear = tokenPerHour * 24 * 365 * xpolarPrice;
-    console.log('this', totalRewardPricePerYear);
-    const totalRewardPricePerDay = tokenPerHour * 24 * xpolarPrice;
-    const dailyAPR = Math.ceil(
-      (totalRewardPricePerDay / Number(TVL)) * 100
-    ).toString();
-    const yearlyAPR = Math.ceil(
-      (totalRewardPricePerYear / Number(TVL)) * 100
-    ).toString();
-    console.log(dailyAPR, yearlyAPR, TVL);
+    // const xpolarPerSecond = await xpolarRewardPool.xpolarPerSecond();
+    // const allocPoint = (await xpolarRewardPool.poolInfo(pid)).allocPoint;
+
+    // const finalXpolarPerSecond = BigNumberToString(
+    //   xpolarPerSecond.mul(allocPoint).div(800000),
+    //   14,
+    //   4
+    // );
+    // console.log(finalXpolarPerSecond);
+    // const tokenPerHour = Number(finalXpolarPerSecond) * 60 * 60;
+    // console.log(tokenPerHour);
+    // const totalRewardPricePerYear = tokenPerHour * 24 * 365 * xpolarPrice;
+    // console.log('this', totalRewardPricePerYear);
+    // const totalRewardPricePerDay = tokenPerHour * 24 * xpolarPrice;
+    // const dailyAPR = Math.ceil(
+    //   (totalRewardPricePerDay / Number(TVL)) * 100
+    // ).toString();
+    // const yearlyAPR = Math.ceil(
+    //   (totalRewardPricePerYear / Number(TVL)) * 100
+    // ).toString();
+    // console.log(dailyAPR, yearlyAPR, TVL);
     return {
-      dailyAPR: dailyAPR,
-      yearlyAPR: yearlyAPR,
-      TVL: TVL,
+      dailyAPR: 'dailyAPR',
+      yearlyAPR: 'yearlyAPR',
+      TVL: 'TVL',
     };
   };
 

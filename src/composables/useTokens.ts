@@ -12,9 +12,9 @@ const defaultProviderResponse = {} as TokensProviderResponse;
  * Interface to all token static and dynamic metatdata.
  */
 export default function useTokens(): TokensProviderResponse {
-  console.log('this');
-  console.log(TokensProviderSymbol);
-  console.log(defaultProviderResponse);
-  console.log(inject(TokensProviderSymbol, defaultProviderResponse));
+  // console.log('this');
+  // console.log(TokensProviderSymbol);
+  // console.log(defaultProviderResponse);
+  // console.log(inject(TokensProviderSymbol, defaultProviderResponse));
   return inject(TokensProviderSymbol, defaultProviderResponse);
 }
