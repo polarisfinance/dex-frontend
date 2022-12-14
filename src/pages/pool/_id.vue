@@ -73,7 +73,7 @@
           <!-- <div>Untaked LP tokens</div> -->
           <div>Unstaked LP tokens</div>
 
-          <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
+          <div>{{ balanceFor(address).slice(0, -15) }}</div>
           <div>$0.00</div>
         </div>
         <div class="incentives-text flex justify-between">
@@ -88,8 +88,8 @@
             :depositBol="true"
             :isVisible="isStakeModalVisible"
             :token="tokenName"
-            :balance="balanceFor(pool.address)"
-            :address="pool.address"
+            :balance="balanceFor(address)"
+            :address="address"
             @close="toggleStakeModal"
           />
           <button class="unstake-incentives-btn" @click="toggleUnstakeModal()">
@@ -100,7 +100,7 @@
             :isVisible="isUnstakeModalVisible"
             :token="tokenName"
             :balance="stakedBalance"
-            :address="pool.address"
+            :address="address"
             @close="toggleUnstakeModal"
           />
           <button class="incentives-btn" @click="claim()">Claim</button>
@@ -204,7 +204,7 @@
         </div>
         <div class="incentives-text flex justify-between">
           <div>Unstaked LP tokens</div>
-          <div>{{ balanceFor(pool.address).slice(0, -15) }}</div>
+          <div>{{ balanceFor(address).slice(0, -15) }}</div>
         </div>
         <div class="incentives-text flex justify-between">
           <div>XPOLAR to claim</div>
@@ -218,8 +218,8 @@
             :depositBol="true"
             :isVisible="isStakeModalVisible"
             :token="tokenName"
-            :balance="balanceFor(pool.address)"
-            :address="pool.address"
+            :balance="balanceFor(address)"
+            :address="address"
             @close="toggleStakeModal"
           />
           <button class="unstake-incentives-btn" @click="toggleUnstakeModal()">
@@ -230,7 +230,7 @@
             :isVisible="isUnstakeModalVisible"
             :token="tokenName"
             :balance="stakedBalance"
-            :address="pool.address"
+            :address="address"
             @close="toggleUnstakeModal"
           />
           <button class="incentives-btn" @click="claim()">Claim</button>
@@ -582,6 +582,8 @@ export default defineComponent({
     };
     const { getProvider } = useWeb3();
 
+    const { getPoolApr } = useStake();
+
     return {
       // data
       ...toRefs(data),
@@ -628,6 +630,7 @@ export default defineComponent({
       getProvider,
       isCommunityPool,
       poolID,
+      getPoolApr,
     };
   },
   data() {
@@ -636,6 +639,7 @@ export default defineComponent({
       xpolarToClaim: '0',
       isApproved: false,
       apr: '0',
+      address: '',
     };
   },
   methods: {
@@ -669,17 +673,18 @@ export default defineComponent({
     },
 
     async fetch() {
-      const { balance, isApproved, getPoolApr, pendingShare } = useStake();
+      const { balance, isApproved, pendingShare } = useStake();
       let poolAddress = '';
       let poolId = '';
 
       if (this.pool != undefined) {
         poolAddress = this.pool.address;
         poolId = this.pool.id;
+        this.address = poolAddress;
       } else {
         return;
       }
-      const apr = await getPoolApr(poolAddress, poolId, this.prices);
+      const apr = await this.getPoolApr(poolAddress, poolId);
       this.apr = apr.yearlyAPR;
 
       if (this.account != '') {
@@ -700,9 +705,7 @@ export default defineComponent({
       this.isApproved = approval;
     },
   },
-  async mounted() {
-    await this.fetch();
-  },
+  async mounted() {},
   watch: {
     async account() {
       await this.fetch();
