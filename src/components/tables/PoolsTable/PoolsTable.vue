@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
   columnStates: () => ({}),
   data: () => [],
   selectedTokens: () => [],
-  prices: () => [],
+  prices: [],
   noApr: false,
 });
 
@@ -456,7 +456,6 @@ export default defineComponent({
               : setTimeout(loop);
           loop();
         });
-        console.log('data', this.data[i]);
         // if (this.data[i] == undefined) {
         //   i--; // repeat the action
         //   await new Promise(resolve => setTimeout(resolve, 1000));
