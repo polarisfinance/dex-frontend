@@ -312,16 +312,11 @@ import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 
 export default defineComponent({
-  created() {
-    const { prices } = useTokensBal();
-    return { prices };
-  },
   data() {
     return {
       xpolarPoolQuery: usePoolQuery(
         '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
       ),
-      balPrices: useTokensBal,
       aprs: {},
       pid: {
         '0x0993fa12d3256e85da64866354ec3532f187e178': 0,
@@ -349,6 +344,8 @@ export default defineComponent({
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
       },
+      prices: this.prices,
+      data: this.data,
     };
   },
   methods: {
@@ -448,21 +445,24 @@ export default defineComponent({
   watch: {
     async data() {
       await new Promise(resolve => setTimeout(resolve, 2000));
+
       for (var i = 0; this.data.length; i++) {
-        await new Promise((resolve, reject) => {
-          const loop = () =>
-            this.data[i].address !== undefined
-              ? resolve(this.data[i].address)
-              : setTimeout(loop);
-          loop();
-        });
+        // await new Promise((resolve, reject) => {
+        //   const loop = () =>
+        //     this.data[i].address !== undefined
+        //       ? resolve(this.data[i].address)
+        //       : setTimeout(loop);
+        //   loop();
+        // });
         // if (this.data[i] == undefined) {
         //   i--; // repeat the action
         //   await new Promise(resolve => setTimeout(resolve, 1000));
+        // }
         // } else
         // if (this.data[i].id.toLowerCase() in this.pid === false) {
         //   continue;
-        // } else {
+        // }
+        // else {
         const apr = await this.fetch(this.data[i]);
         this.aprs[this.data[i].address] = apr;
         // }
