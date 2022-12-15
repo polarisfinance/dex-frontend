@@ -533,7 +533,7 @@ export default defineComponent({
               <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
               <template v-else>
                 <div>
-                  {{ Math.round(parseFloat(aprLabelFor(pool)), 2) / 365 + '%' }}
+                  {{ aprs[pool.address]['dailyAPR'] + '%' }}
                 </div>
               </template>
             </div>
@@ -541,7 +541,7 @@ export default defineComponent({
               <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
               <template v-else>
                 <div>
-                  {{ Math.round(aprLabelFor(pool), 2) + '%' }}
+                  {{ aprs[pool.address]['yearlyAPR'] + '%' }}
                 </div>
               </template>
             </div>
