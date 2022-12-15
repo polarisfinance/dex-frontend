@@ -19,7 +19,7 @@ import { InvestmentPool } from '@balancer-labs/typechain';
 import { TOKENS } from '@/constants/tokens';
 import SingleStake from './SingleStakeTable.vue';
 
-const { priceQueryLoading, tokens, getTokens } = useTokens();
+const { priceQueryLoading, tokens, getTokens, prices } = useTokens();
 
 // COMPOSABLES
 const router = useRouter();
@@ -347,6 +347,7 @@ export default defineComponent({
           @load-more="loadMore"
           :title="'Seigniorage Pools'"
           :img="segniorageImg"
+          :prices="prices"
         />
       </div>
       <div id="classicpools">
@@ -364,6 +365,7 @@ export default defineComponent({
           @load-more="loadMore"
           :title="'Classic Pools'"
           :img="classicImg"
+          :prices="prices"
         />
       </div>
       <div id="communitypools">
@@ -381,6 +383,7 @@ export default defineComponent({
           @load-more="loadMore"
           :title="'Community Pools'"
           :img="classicImg"
+          :noApr="true"
         />
       </div>
       <div id="singlestaking">

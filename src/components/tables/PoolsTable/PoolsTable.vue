@@ -46,7 +46,8 @@ type Props = {
   showBoost?: boolean;
   columnStates?: Record<string, string>;
   title: String;
-  img;
+  prices: any;
+  noApr?: boolean;
 };
 
 /**
@@ -63,6 +64,8 @@ const props = withDefaults(defineProps<Props>(), {
   columnStates: () => ({}),
   data: () => [],
   selectedTokens: () => [],
+  prices: () => [],
+  noApr: false,
 });
 
 const emit = defineEmits(['loadMore', 'triggerStake']);
@@ -309,7 +312,10 @@ import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 
 export default defineComponent({
-  setup() {},
+  created() {
+    const { prices } = useTokensBal();
+    return { prices };
+  },
   data() {
     return {
       xpolarPoolQuery: usePoolQuery(
@@ -317,6 +323,32 @@ export default defineComponent({
       ),
       balPrices: useTokensBal,
       aprs: {},
+      pid: {
+        '0x0993fa12d3256e85da64866354ec3532f187e178': 0,
+        '0xf0b6cf745afe642c4565165922ad62d6a93857c1': 1,
+        '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10': 2,
+        '0xa83f9fa9b51fc26e9925a07bc3375617b473e051': 3,
+        '0xa215a58225b344cbb62fcf762e8e884dbedfbe58': 4,
+        '0x293bbbef6087f681a8110f08bbdedadd13599fc3': 5,
+        '0xceecce984f498ee00832670e9ca6d372f6ce155a': 6,
+        '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb5': 7,
+        '0x9cd44e44e8a61bc7dc34b04c762a3c0137a3707c': 8,
+        '0x454adaa07eec2c432c0df4379a709b1fa4c800ed': 9,
+        '0xb3a04902b78fbe61185b766866193630db4db8a3': 10,
+        '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed': 11,
+        '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b': 12,
+        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78': 13,
+        '0xf0f3b9eee32b1f490a4b8720cf6f005d4ae9ea86': 14,
+        '0x3ac55ea8d2082fabda674270cd2367da96092889': 15,
+        '0xafe0d6ca6aabb43cda024895d203120831ba0370': 16,
+        '0xa69d9ba086d41425f35988613c156db9a88a1a96': 17,
+        '0x17cbd9c274e90c537790c51b4015a65cd015497e': 18,
+        '0x3a4773e600086a753862621a26a2e3274610da43': 19,
+        '0x266437e6c7500a947012f19a3de96a3881a0449e': 20,
+        '0x192bdcdd7b95a97ec66de5630a85967f6b79e695': 21,
+        '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
+        '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
+      },
     };
   },
   methods: {
@@ -371,18 +403,14 @@ export default defineComponent({
           '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
         ]?.balance;
 
-      const { prices } = this.balPrices();
-
       const nearPrice =
-        prices.value['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
-
+        this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
       const xpolarPrice =
         (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
         Number(nearPrice);
 
       const pid = PID[poolAddress.toLowerCase()];
       const depositToken = new Contract(poolAddress, ERC20ABI, w3);
-      const depositTokenPrice = '0';
       const stakedInPool = BigNumberToString(
         await depositToken.balanceOf(xpolarRewardPoolAddress),
         14,
@@ -413,15 +441,34 @@ export default defineComponent({
       return { dailyAPR: dailyAPR, yearlyAPR: yearlyAPR };
     },
   },
-  async created() {
+  async mounted() {
     const { selectedTokens } = usePoolFilters();
+  },
 
-    const { result: investmentPools } = useStreamedPoolsQuery(selectedTokens);
-
-    investmentPools.value.forEach(async pool => {
-      const apr = await this.fetch(pool);
-      this.aprs[pool.address] = apr;
-    });
+  watch: {
+    async data() {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      for (var i = 0; this.data.length; i++) {
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+            this.data[i].address !== undefined
+              ? resolve(this.data[i].address)
+              : setTimeout(loop);
+          loop();
+        });
+        console.log('data', this.data[i]);
+        // if (this.data[i] == undefined) {
+        //   i--; // repeat the action
+        //   await new Promise(resolve => setTimeout(resolve, 1000));
+        // } else
+        // if (this.data[i].id.toLowerCase() in this.pid === false) {
+        //   continue;
+        // } else {
+        const apr = await this.fetch(this.data[i]);
+        this.aprs[this.data[i].address] = apr;
+        // }
+      }
+    },
   },
 });
 </script>
@@ -558,8 +605,13 @@ export default defineComponent({
           <!-- <div class="flex w-full justify-end gap-[80px] text-left"> -->
           <div class="grid justify-end">
             <div>
+              <template v-if="noApr">
+                <div class="h-4 w-12">
+                  {{ '0' + '%' }}
+                </div>
+              </template>
               <BalLoadingBlock
-                v-if="!aprs || !aprs[pool.address]"
+                v-else-if="!aprs || !aprs[pool.address]"
                 class="h-4 w-12"
               />
               <template v-else>
@@ -569,8 +621,13 @@ export default defineComponent({
               </template>
             </div>
             <div>
+              <template v-if="noApr">
+                <div class="h-4 w-12">
+                  {{ '0' + '%' }}
+                </div>
+              </template>
               <BalLoadingBlock
-                v-if="!aprs || !aprs[pool.address]"
+                v-else-if="!aprs || !aprs[pool.address]"
                 class="h-4 w-12"
               />
               <template v-else>
