@@ -530,7 +530,13 @@ export default defineComponent({
               </template>
             </div>
             <div class="APR">
-              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
+              <BalLoadingBlock
+                v-if="
+                  !aprs ||
+                  !aprs[pool.address] ||
+                  !aprs[pool.address]['dailyAPR']
+                "
+              />
               <template v-else>
                 <div>
                   {{ aprs[pool.address]['dailyAPR'] + '%' }}
@@ -538,7 +544,13 @@ export default defineComponent({
               </template>
             </div>
             <div class="APR">
-              <BalLoadingBlock v-if="!pool?.apr?.total?.unstaked" />
+              <BalLoadingBlock
+                v-if="
+                  !aprs ||
+                  !aprs[pool.address] ||
+                  !aprs[pool.address]['yearlyAPR']
+                "
+              />
               <template v-else>
                 <div>
                   {{ aprs[pool.address]['yearlyAPR'] + '%' }}
@@ -610,7 +622,11 @@ export default defineComponent({
                 </div>
               </template>
               <BalLoadingBlock
-                v-else-if="!aprs || !aprs[pool.address]"
+                v-else-if="
+                  !aprs ||
+                  !aprs[pool.address] ||
+                  !aprs[pool.address]['dailyAPR']
+                "
                 class="h-4 w-12"
               />
               <template v-else>
@@ -626,7 +642,11 @@ export default defineComponent({
                 </div>
               </template>
               <BalLoadingBlock
-                v-else-if="!aprs || !aprs[pool.address]"
+                v-else-if="
+                  !aprs ||
+                  !aprs[pool.address] ||
+                  !aprs[pool.address]['yearlyAPR']
+                "
                 class="h-4 w-12"
               />
               <template v-else>
