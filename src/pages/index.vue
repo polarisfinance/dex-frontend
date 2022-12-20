@@ -236,11 +236,15 @@ export default defineComponent({
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <div class="px-4 xl:px-0">
         <div
           class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
 =======
       <div class="px-4 xl:px-0 container" ref="filterPanel" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
+=======
+      <div class="px-4 xl:px-0 container" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
+>>>>>>> 86822edc (fucking ref fix)
 
 
 
