@@ -239,7 +239,7 @@ export default defineComponent({
 
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
-      <div class="px-4 xl:px-0 container" ref="filterPanel" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
+      <div class="px-4 xl:px-0 container" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
 
 
 
