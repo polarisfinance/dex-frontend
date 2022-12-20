@@ -224,7 +224,7 @@ export default defineComponent({
       // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
       // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
 
-      if (scrollPos >= 300 ) {
+      if (scrollPos >= 380 ) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
