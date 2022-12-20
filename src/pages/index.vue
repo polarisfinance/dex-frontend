@@ -235,9 +235,18 @@ export default defineComponent({
 
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
+<<<<<<< HEAD
       <div class="px-4 xl:px-0">
         <div
           class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
+=======
+      <div class="px-4 xl:px-0 container" ref="filterPanel" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
+
+
+
+
+        <div class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center" 
+>>>>>>> 9d90e171 (Cannot read properties of undefined fix)
           v-if="isDesktop"
         >
           <div class="flex gap-[18px]">
@@ -540,15 +549,15 @@ export default defineComponent({
   background: #231928;
 }
 .is-sticky{
-position: fixed;
-top: 79px;
-z-index: 100;
-background: linear-gradient( 90.08deg, rgba(19, 7, 25, 0.7) -0.61%, rgba(19, 7, 25, 0.7) 100% );
--webkit-backdrop-filter: blur(10px);
-backdrop-filter: blur(10px);
+  position: fixed;
+  top: 79px;
+  z-index: 100;
+  background: linear-gradient( 90.08deg, rgba(19, 7, 25, 0.7) -0.61%, rgba(19, 7, 25, 0.7) 100% );
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 .not-sticky{
-position: relative;
+  position: relative;
 }
 
 </style>
