@@ -221,18 +221,9 @@ export default defineComponent({
     },
     onScroll(){
       var scrollPos = window.scrollY;
-      var left = 0 - window.scrollX;
-      var pinnedBottom = false;
-      
-      var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
-      var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
+      // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
+      // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
 
-
-      /*if($('.footer-holder').offset().top - pinnedMargin <= (scrollPos + blogSideBarHeight)){
-        this.$refs['filterPanel'].css("position","absolute");
-        $('.blog-menu').css("top",$('.footer-holder').offset().top - blogSideBarHeight-holderPos-pinnedMargin+"px");
-      }else */
-      console.log("PanelTOP:"+panelTop+" seniorageTop:"+senTop + " scrollPos:"+scrollPos);
       if (scrollPos >= 300 ) {
         this.stickyPanel = true;
       } else {
