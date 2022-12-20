@@ -215,6 +215,17 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
+    onScroll(){
+      var scrollPos = window.scrollY;
+      // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
+      // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
+
+      if (scrollPos >= 380 ) {
+        this.stickyPanel = true;
+      } else {
+        this.stickyPanel = false;
+      }
+    }
   },
 });
 </script>
@@ -528,4 +539,16 @@ export default defineComponent({
   z-index: 100;
   background: #231928;
 }
+.is-sticky{
+position: fixed;
+top: 79px;
+z-index: 100;
+background: linear-gradient( 90.08deg, rgba(19, 7, 25, 0.7) -0.61%, rgba(19, 7, 25, 0.7) 100% );
+-webkit-backdrop-filter: blur(10px);
+backdrop-filter: blur(10px);
+}
+.not-sticky{
+position: relative;
+}
+
 </style>
