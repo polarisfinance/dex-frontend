@@ -290,21 +290,22 @@ watch(
 </script>
 
 <template>
-  <div v-if="!upToLargeBreakpoint" class="col-span-3">
-    <BalStack v-if="!appLoading" vertical>
+  <div class="col-span-3">
+    <BalStack v-if="!appLoading && !upToLargeBreakpoint" vertical>
       <BalHorizontalSteps
         title="Create a weighted pool steps"
         :steps="steps"
         @navigate="handleNavigate"
       />
-      <AnimatePresence
+      
+    </BalStack>
+    <AnimatePresence
         :isVisible="
           doSimilarPoolsExist && activeStep === 0 && validTokens.length
         "
       >
         <SimilarPoolsCompact />
       </AnimatePresence>
-    </BalStack>
   </div>
   <div
     :class="{

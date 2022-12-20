@@ -25,7 +25,7 @@ function getPoolLabel(pool: Pool) {
 </script>
 
 <template>
-  <BalCard noPad shadow="none">
+  <BalCard noPad shadow="none" class="mb-5 mx-auto max-w-[914px]">
     <BalStack
       spacing="sm"
       align="center"
