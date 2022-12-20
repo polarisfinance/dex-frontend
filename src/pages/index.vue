@@ -342,7 +342,7 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <div id="segniorage" ref="segniorage">
+      <div id="segniorage">
         <PoolsTable
           :key="filteredTokensList"
           :data="segnioragePools"
