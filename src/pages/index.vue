@@ -169,6 +169,8 @@ const selectToken = token => {
   selectedToken.value = token;
   searchTerm.value = token;
 };
+
+
 </script>
 
 <script lang="ts">
@@ -179,11 +181,12 @@ import { TokenInfo } from '@/types/TokenList';
 export default defineComponent({
   created() {
     const { tokens, getToken } = useTokens();
-
     this.tokens = Object.entries(tokens.value);
     Object.entries(tokens.value).forEach(token => {
       this.tokenNames[getToken(token[0]).symbol] = token[0];
     });
+    
+    window.addEventListener('scroll', this.onScroll);
   },
   data() {
     return {
@@ -191,6 +194,7 @@ export default defineComponent({
       tokens: [] as [string, TokenInfo][],
       inputFocused: false,
       tokenNames: {},
+      stickyPanel: false
     };
   },
   methods: {
@@ -215,18 +219,32 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
+    onScroll(){
+      var scrollPos = window.scrollY;
+      // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
+      // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
+
+      if (scrollPos >= 300 ) {
+        this.stickyPanel = true;
+      } else {
+        this.stickyPanel = false;
+      }
+    }
   },
 });
 </script>
 
-<template>
+<template >
   <HomePageHero />
 
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
-      <div class="px-4 xl:px-0">
-        <div
-          class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
+      <div class="px-4 xl:px-0 container" ref="filterPanel" :class="{ 'is-sticky': this.stickyPanel, 'navbar-bg': this.stickyPanel, 'not-sticky': !this.stickyPanel }">
+
+
+
+
+        <div class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center" 
           v-if="isDesktop"
         >
           <div class="flex gap-[18px]">
@@ -324,7 +342,7 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <div id="segniorage">
+      <div id="segniorage" ref="segniorage">
         <PoolsTable
           :key="filteredTokensList"
           :data="segnioragePools"
@@ -527,5 +545,17 @@ export default defineComponent({
 .list {
   z-index: 100;
   background: #231928;
+}
+
+.is-sticky{
+position: fixed;
+top: 79px;
+z-index: 100;
+background: linear-gradient( 90.08deg, rgba(19, 7, 25, 0.7) -0.61%, rgba(19, 7, 25, 0.7) 100% );
+-webkit-backdrop-filter: blur(10px);
+backdrop-filter: blur(10px);
+}
+.not-sticky{
+position: relative;
 }
 </style>
