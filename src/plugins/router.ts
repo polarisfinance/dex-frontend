@@ -52,7 +52,7 @@ const BondsPage = () =>
 const BondPage = () =>
   import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
 const VexPolarPage = () =>
-  import(/* webpackChunkName: "BondPageID" */ '@/pages/VexPolar.vue');
+  import(/* webpackChunkName: "VexPolarPage" */ '@/pages/VexPolar.vue');
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -185,11 +185,11 @@ const routes: RouteRecordRaw[] = [
     name: 'portfolio',
     component: PortfolioPage,
   },
-  // {
-  //   path: '/vexpolar',
-  //   name: 'vexpolar',
-  //   component: VexPolarPage,
-  // },
+  {
+     path: '/vexpolar',
+     name: 'vexpolar',
+     component: VexPolarPage,
+  },
 ];
 
 /**
