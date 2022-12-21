@@ -78,7 +78,7 @@ onMounted(() => {});
   height: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position-y: -30%;
+  background-position-y: -10%;
   background-position-x: center;
 }
 

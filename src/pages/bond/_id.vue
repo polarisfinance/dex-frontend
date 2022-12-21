@@ -338,7 +338,7 @@ export default defineComponent({
   height: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position-y: -20%;
+  background-position-y: -10%;
   background-position-x: right;
 }
 .sunrise-title {
