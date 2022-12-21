@@ -338,8 +338,10 @@ export default defineComponent({
   height: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position-y: -10%;
+  background-position-y: 0%;
   background-position-x: right;
+  top:0px;
+  padding-top: 100px;
 }
 .sunrise-title {
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
