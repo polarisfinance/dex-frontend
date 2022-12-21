@@ -42,7 +42,7 @@ function iconAddresses(pool: PoolWithShares) {
         <div>Extra earnings <br />& voting power</div>
         <div class="flex gap-[28px] justify-center mt-[16px]">
           <button class="get-btn">Get VexPolar</button>
-          <button class="learn-btn">Learn More</button>
+          <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" class="learn-btn">Learn More</a>
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@ function iconAddresses(pool: PoolWithShares) {
           protocol revenue
         </div>
         <div class="info-token">
-          <img class="w-[124px]" src="./xpolar.svg" />
+          <img class="w-[124px]" src="./near.svg" />
         </div>
         <div class="info-subtitle">VexPolar</div>
       </div>
@@ -117,7 +117,7 @@ function iconAddresses(pool: PoolWithShares) {
       </div>
     </div>
 
-    <div v-if="isMobile" class="mt-[56px]">
+    <div v-if="isMobile" class="mt-[56px] mx-[24px]">
       <div class="pools-eligible">Pools eligible for liquidity mining</div>
       <div class="content mt-[32px]">
         Liquidity incentives are directed by the community of veBAL holders. If
@@ -378,7 +378,6 @@ function iconAddresses(pool: PoolWithShares) {
   display: flex;
   flex-direction: column;
 }
-
 .title {
   position: relative;
   display: flex;
