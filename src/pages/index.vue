@@ -191,6 +191,7 @@ export default defineComponent({
       tokens: [] as [string, TokenInfo][],
       inputFocused: false,
       tokenNames: {},
+      stickyPanel: false,
     };
   },
   methods: {
@@ -235,184 +236,180 @@ export default defineComponent({
 
   <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
     <BalStack vertical>
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <div class="px-4 xl:px-0">
-        <div
-          class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
-=======
-      <div class="px-4 xl:px-0 container" ref="filterPanel" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
-=======
       <div class="px-4 xl:px-0 container" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
->>>>>>> 86822edc (fucking ref fix)
 
-
-
-
-        <div class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center" 
->>>>>>> 9d90e171 (Cannot read properties of undefined fix)
-          v-if="isDesktop"
-        >
-          <div class="flex gap-[18px]">
-            <div class="relative" @click="inputFocused = true">
-              <div class="search flex items-center">
-                <img src="./search.svg" class="mr-[12px]" />
-                <input
-                  type="text"
-                  placeholder="Filter by token"
-                  class="input"
-                  v-on:input="filterToken"
-                  v-model="searchTerm"
-                />
+          <div class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center" 
+            v-if="isDesktop"
+          >
+            <div class="flex gap-[18px]">
+              <div class="relative" @click="inputFocused = true">
+                <div class="search flex items-center">
+                  <img src="./search.svg" class="mr-[12px]" />
+                  <input
+                    type="text"
+                    placeholder="Filter by token"
+                    class="input"
+                    v-on:input="filterToken"
+                    v-model="searchTerm"
+                  />
+                </div>
+                <!-- <ul class="absolute w-full text-center list" v-if="inputFocused">
+                  <li
+                    v-for="token in searchTokens"
+                    :key="token"
+                    @click="selectToken(token)"
+                  >
+                    <div class="flex justify-between px-[10px] py-[5px]">
+                      <BalAsset :address="mapping[token]" />
+                      <div>{{ token }}</div>
+                    </div>
+                  </li>
+                </ul> -->
               </div>
-              <!-- <ul class="absolute w-full text-center list" v-if="inputFocused">
-                <li
-                  v-for="token in searchTokens"
-                  :key="token"
-                  @click="selectToken(token)"
-                >
-                  <div class="flex justify-between px-[10px] py-[5px]">
-                    <BalAsset :address="mapping[token]" />
-                    <div>{{ token }}</div>
-                  </div>
-                </li>
-              </ul> -->
-            </div>
-            <div
-              class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
-            >
-              <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
-              <a href="#segniorage"
-                ><div class="segniorage-btn cursor-pointer">
-                  Seigniorage Pools
-                </div></a
+              <div
+                class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
               >
+                <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
+                <a href="#segniorage"
+                  ><div class="segniorage-btn cursor-pointer">
+                    Seigniorage Pools
+                  </div></a
+                >
+                <a href="#singlestaking">
+                  <div class="pool-type-btn cursor-pointer">Single Staking</div>
+                </a>
+                <a href="#classicpools">
+                  <div class="pool-type-btn cursor-pointer">Classic Pools</div>
+                </a>
+                <a href="#communitypools">
+                  <div class="pool-type-btn cursor-pointer">Community Pools</div>
+                </a>
+              </div>
+            </div>
+
+            <button
+              class="create-pool-btn flex items-center"
+              @click="navigateToCreatePool"
+            >
+              <img src="./plus.svg" class="mr-[8px]" />
+              <div>Create a pool</div>
+            </button>
+          </div>
+
+          <div v-if="isMobile">
+            <div
+              class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
+            >
+              <img src="./search.svg" class="mr-[12px]" />
+              <input type="text" placeholder="Filter by token" class="input" />
+            </div>
+            <div class="mt-[8px] flex justify-center gap-[8px]">
+              <a href="#segniorage">
+                <div
+                  class="segniorage mobile-pool-btn cursor-pointer text-center"
+                >
+                  Seigniorage Pools
+                </div>
+              </a>
               <a href="#singlestaking">
-                <div class="pool-type-btn cursor-pointer">Single Staking</div>
+                <div class="mobile-pool-btn cursor-pointer text-center">
+                  Single Staking
+                </div>
               </a>
               <a href="#classicpools">
-                <div class="pool-type-btn cursor-pointer">Classic Pools</div>
+                <div class="mobile-pool-btn cursor-pointer text-center">
+                  Classic Pools
+                </div>
               </a>
               <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer">Community Pools</div>
+                <div class="pool-type-btn cursor-pointer text-center">
+                  Community Pools
+                </div>
               </a>
             </div>
+            <button
+              class="create-pool-btn-mobile mt-[8px] flex w-full items-center justify-center"
+              @click="navigateToCreatePool"
+            >
+              <img src="./plus.svg" class="mr-[8px]" />
+              <div>Create a pool</div>
+            </button>
           </div>
-
-          <button
-            class="create-pool-btn flex items-center"
-            @click="navigateToCreatePool"
-          >
-            <img src="./plus.svg" class="mr-[8px]" />
-            <div>Create a pool</div>
-          </button>
         </div>
-
-        <div v-if="isMobile">
-          <div
-            class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
-          >
-            <img src="./search.svg" class="mr-[12px]" />
-            <input type="text" placeholder="Filter by token" class="input" />
-          </div>
-          <div class="mt-[8px] flex justify-center gap-[8px]">
-            <a href="#segniorage">
-              <div
-                class="segniorage mobile-pool-btn cursor-pointer text-center"
-              >
-                Seigniorage Pools
-              </div>
-            </a>
-            <a href="#singlestaking">
-              <div class="mobile-pool-btn cursor-pointer text-center">
-                Single Staking
-              </div>
-            </a>
-            <a href="#classicpools">
-              <div class="mobile-pool-btn cursor-pointer text-center">
-                Classic Pools
-              </div>
-            </a>
-            <a href="#communitypools">
-              <div class="pool-type-btn cursor-pointer text-center">
-                Community Pools
-              </div>
-            </a>
-          </div>
-          <button
-            class="create-pool-btn-mobile mt-[8px] flex w-full items-center justify-center"
-            @click="navigateToCreatePool"
-          >
-            <img src="./plus.svg" class="mr-[8px]" />
-            <div>Create a pool</div>
-          </button>
+        <div id="segniorage">
+          <PoolsTable
+            :key="filteredTokensList"
+            :data="segnioragePools"
+            :noPoolsLabel="$t('noPoolsFound')"
+            :isLoadingMore="isLoadingMore"
+            :selectedTokens="filteredTokensList"
+            class="mb-8"
+            :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+            :columnStates="dataStates"
+            :isPaginated="true"
+            :isLoading="isInvestmentPoolsTableLoading"
+            @load-more="loadMore"
+            :title="'Seigniorage Pools'"
+            :img="segniorageImg"
+            :prices="prices"
+          />
         </div>
-      </div>
-      <div id="segniorage">
-        <PoolsTable
-          :key="filteredTokensList"
-          :data="segnioragePools"
-          :noPoolsLabel="$t('noPoolsFound')"
-          :isLoadingMore="isLoadingMore"
-          :selectedTokens="filteredTokensList"
-          class="mb-8"
-          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-          :columnStates="dataStates"
-          :isPaginated="true"
-          :isLoading="isInvestmentPoolsTableLoading"
-          @load-more="loadMore"
-          :title="'Seigniorage Pools'"
-          :img="segniorageImg"
-          :prices="prices"
-        />
-      </div>
-      <div id="classicpools">
-        <PoolsTable
-          :key="filteredTokensList"
-          :data="investmentPoolsWithoutSeigniorage"
-          :noPoolsLabel="$t('noPoolsFound')"
-          :isLoadingMore="isLoadingMore"
-          :selectedTokens="filteredTokensList"
-          class="mb-8"
-          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-          :columnStates="dataStates"
-          :isPaginated="true"
-          :isLoading="isInvestmentPoolsTableLoading"
-          @load-more="loadMore"
-          :title="'Classic Pools'"
-          :img="classicImg"
-          :prices="prices"
-        />
-      </div>
-      <div id="communitypools">
-        <PoolsTable
-          :key="filteredTokensList"
-          :data="communityPools"
-          :noPoolsLabel="$t('noPoolsFound')"
-          :isLoadingMore="isLoadingMore"
-          :selectedTokens="filteredTokensList"
-          class="mb-8"
-          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-          :columnStates="dataStates"
-          :isPaginated="true"
-          :isLoading="isInvestmentPoolsTableLoading"
-          @load-more="loadMore"
-          :title="'Community Pools'"
-          :img="classicImg"
-          :noApr="true"
-        />
-      </div>
-      <div id="singlestaking">
-        <SingleStake />
-      </div>
-      <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
-        <FeaturedProtocols />
-      </div> -->
-    </BalStack>
-  </div>
+        <div id="classicpools">
+          <PoolsTable
+            :key="filteredTokensList"
+            :data="investmentPoolsWithoutSeigniorage"
+            :noPoolsLabel="$t('noPoolsFound')"
+            :isLoadingMore="isLoadingMore"
+            :selectedTokens="filteredTokensList"
+            class="mb-8"
+            :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+            :columnStates="dataStates"
+            :isPaginated="true"
+            :isLoading="isInvestmentPoolsTableLoading"
+            @load-more="loadMore"
+            :title="'Classic Pools'"
+            :img="classicImg"
+            :prices="prices"
+          />
+        </div>
+        <div id="communitypools">
+          <PoolsTable
+            :key="filteredTokensList"
+            :data="communityPools"
+            :noPoolsLabel="$t('noPoolsFound')"
+            :isLoadingMore="isLoadingMore"
+            :selectedTokens="filteredTokensList"
+            class="mb-8"
+            :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+            :columnStates="dataStates"
+            :isPaginated="true"
+            :isLoading="isInvestmentPoolsTableLoading"
+            @load-more="loadMore"
+            :title="'Community Pools'"
+            :img="classicImg"
+            :noApr="true"
+          />
+        </div>
+        <div id="singlestaking">
+          <SingleStake />
+        </div>
+        <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
+          <FeaturedProtocols />
+        </div> -->
+      </BalStack>
+    </div>
 </template>
 
 <style scoped>
+.pg-bg{
+  background-image: url('./dawn_bg.svg');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position-y: -10%;
+  background-position-x: right;
+}
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;

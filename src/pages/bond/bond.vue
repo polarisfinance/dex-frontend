@@ -27,45 +27,56 @@ const sunrises = computed(() =>
 </script>
 
 <template>
-  <div class="sunrise-title py-10">
-    <div class="flex-column">
-      <div class="sunrise-title-text">Bond</div>
-      <div class="sunrise-subtitle-text">Earn premiums upon redemption</div>
+  <div :class="{ 'pg-bg': isDesktop }">
+    <div class="sunrise-title py-10">
+      <div class="flex-column">
+        <div class="sunrise-title-text">Bond</div>
+        <div class="sunrise-subtitle-text">Earn premiums upon redemption</div>
+      </div>
     </div>
-  </div>
-  <div
-    :class="{
-      sunrisePlaceholder: isDesktop,
-      sunrisePlaceholderMobile: isMobile,
-    }"
-  >
     <div
-      v-for="(sunrise, idx) in sunrises"
-      :key="idx"
-      :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
+      :class="{
+        sunrisePlaceholder: isDesktop,
+        sunrisePlaceholderMobile: isMobile,
+      }"
     >
-      <img :src="logo[sunrise.name]" class="logo" />
-      <div class="sunrise-name mt-[34px]">
-        <span>{{ sunrise.name }}</span> BOND
+      <div
+        v-for="(sunrise, idx) in sunrises"
+        :key="idx"
+        :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
+      >
+        <img :src="logo[sunrise.name]" class="logo" />
+        <div class="sunrise-name mt-[34px]">
+          <span>{{ sunrise.name }}</span> BOND
+        </div>
+        <div class="sunrise-description mt-[12px]">
+          <p>
+            Bond room for
+            <span class="uppercase">{{ '$' + sunrise.name }}</span>
+          </p>
+        </div>
+        <router-link :to="'/bond/' + sunrise.name">
+          <button class="view-and-stake mt-[34px]">View and Bond</button>
+        </router-link>
       </div>
-      <div class="sunrise-description mt-[12px]">
-        <p>
-          Bond room for
-          <span class="uppercase">{{ '$' + sunrise.name }}</span>
-        </p>
-      </div>
-      <router-link :to="'/bond/' + sunrise.name">
-        <button class="view-and-stake mt-[34px]">View and Bond</button>
-      </router-link>
     </div>
   </div>
 </template>
 
 <style scoped>
+.pg-bg{
+  background-image: url('./bond_bg.svg');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position-y: -20%;
+  background-position-x: right;
+}
 .sunrise-title {
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
-  background-image: url('./index_bg.svg');
+  /*background-image: url('./index_bg.svg');*/
 
   font-weight: 600;
   font-size: 42px;
