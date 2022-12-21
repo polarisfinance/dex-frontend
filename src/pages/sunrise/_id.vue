@@ -1,131 +1,133 @@
 <template>
-  <div class="sunrise-title py-10">
-    <div class="flex-column">
-      <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
-      <div class="sunrise-subtitle-text">Sunrise</div>
+  <div class="pg-bg">
+    <div class="sunrise-title py-10">
+      <div class="flex-column">
+        <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
+        <div class="sunrise-subtitle-text">Sunrise</div>
+      </div>
     </div>
-  </div>
-  <div
-    class="flex justify-center"
-    :class="{ sunriseWarning: isDesktop, sunriseWarningMobile: isMobile }"
-  >
-    <img src="./alert.svg" class="mr-[12px]" />
-    <div>
-      As we are in recovery mode, it is important to not sell your reward.
-      Please stake your {{ sunrise.name.toUpperCase() }} in the DAWN single
-      stake.
+    <div
+      class="flex justify-center"
+      :class="{ sunriseWarning: isDesktop, sunriseWarningMobile: isMobile }"
+    >
+      <img src="./alert.svg" class="mr-[12px]" />
+      <div>
+        As we are in recovery mode, it is important to not sell your reward.
+        Please stake your {{ sunrise.name.toUpperCase() }} in the DAWN single
+        stake.
+      </div>
     </div>
-  </div>
-  <div :class="{ info: isDesktop, infoMobile: isMobile }">
-    Staked SPOLARs can only be withdrawn after 3 epochs since deposit.
-  </div>
+    <div :class="{ info: isDesktop, infoMobile: isMobile }">
+      Staked SPOLARs can only be withdrawn after 3 epochs since deposit.
+    </div>
 
-  <div
-    :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="justify-center text-center"
-  >
-    <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <img class="logo" src="./spolar.svg" />
-      <div class="num-tokens">{{ depositedBalance }}</div>
-      <div class="details">${{ depositedInDollars }}</div>
-      <div class="details">SPOLAR Staked</div>
+    <div
+      :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
+      class="justify-center text-center"
+    >
+      <div :class="{ card: isDesktop, cardMobile: isMobile }">
+        <img class="logo" src="./spolar.svg" />
+        <div class="num-tokens">{{ depositedBalance }}</div>
+        <div class="details">${{ depositedInDollars }}</div>
+        <div class="details">SPOLAR Staked</div>
 
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
-        <button class="claim-btn" @click="approve">Approve Spolar</button>
-        <div class="absolute mt-[80px]">
-          Withdraw possible in: {{ withdrawTime }}
+        <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
+          <button class="claim-btn" @click="approve">Approve Spolar</button>
+          <div class="absolute mt-[80px]">
+            Withdraw possible in: {{ withdrawTime }}
+          </div>
+        </div>
+        <div class="container mt-[24px] flex justify-center gap-[12px]" v-else>
+          <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
+            Deposit
+          </button> -->
+          <button class="claim-btn" @click="toggleSpolarModal(true)">
+            Deposit
+          </button>
+          <SpolarModal
+            :depositBol="true"
+            :isVisible="isSpolarModalVisible"
+            :deposit="depositToken"
+            :balance="balance"
+            @close="
+              toggleSpolarModal();
+              fetchData();
+            "
+          />
+          <SpolarModal
+            :isVisible="isSpolarWithdrawModalVisible"
+            :deposit="depositToken"
+            :balance="depositedBalance"
+            @close="toggleSpolarWithdrawModal"
+          />
+          <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
+            Withdraw
+          </button> -->
+          <button
+            class="withdraw-btn"
+            :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
+            @click="toggleSpolarWithdrawModal(false)"
+          >
+            Withdraw
+          </button>
+          <div class="absolute mt-[80px]">
+            Withdraw possible in: {{ withdrawTime }}
+          </div>
         </div>
       </div>
-      <div class="container mt-[24px] flex justify-center gap-[12px]" v-else>
-        <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
-          Deposit
-        </button> -->
-        <button class="claim-btn" @click="toggleSpolarModal(true)">
-          Deposit
-        </button>
-        <SpolarModal
-          :depositBol="true"
-          :isVisible="isSpolarModalVisible"
-          :deposit="depositToken"
-          :balance="balance"
-          @close="
-            toggleSpolarModal();
-            fetchData();
-          "
-        />
-        <SpolarModal
-          :isVisible="isSpolarWithdrawModalVisible"
-          :deposit="depositToken"
-          :balance="depositedBalance"
-          @close="toggleSpolarWithdrawModal"
-        />
-        <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
-          Withdraw
-        </button> -->
-        <button
-          class="withdraw-btn"
-          :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
-          @click="toggleSpolarWithdrawModal(false)"
-        >
-          Withdraw
-        </button>
-        <div class="absolute mt-[80px]">
-          Withdraw possible in: {{ withdrawTime }}
+      <div :class="{ data: isDesktop, dataMobile: isMobile }">
+        <div class="data-text text-right">
+          <div>Next Epoch:</div>
+          <div>Current Epoch:</div>
+          <div>{{ sunrise.name.toUpperCase() }} Price (TWAP):</div>
+          <div>Previous Epoch (TWAP):</div>
+          <div>TWAP to print:</div>
+          <div>APR:</div>
+          <div>SPOLARS Staked</div>
+        </div>
+        <div class="data-text">
+          <div>{{ nextEpoch }}</div>
+          <div>{{ epoch }}</div>
+          <div>{{ twap }}</div>
+          <div>{{ lastEpochTwap }}</div>
+          <div>{{ printTwap }}</div>
+          <div>{{ APR }}%</div>
+          <div>{{ spolarsStaked }}</div>
         </div>
       </div>
-    </div>
-    <div :class="{ data: isDesktop, dataMobile: isMobile }">
-      <div class="data-text text-right">
-        <div>Next Epoch:</div>
-        <div>Current Epoch:</div>
-        <div>{{ sunrise.name.toUpperCase() }} Price (TWAP):</div>
-        <div>Previous Epoch (TWAP):</div>
-        <div>TWAP to print:</div>
-        <div>APR:</div>
-        <div>SPOLARS Staked</div>
+      <div :class="{ card: isDesktop, cardMobile: isMobile }">
+        <img class="logo" :src="logo[sunrise.name]" />
+        <div class="num-tokens">{{ earned }}</div>
+        <div class="details">${{ earnedAmountInDollars }}</div>
+        <div class="details">
+          <span class="uppercase">{{ sunrise.name }}</span> Earned
+        </div>
+        <div class="mt-[24px] flex justify-center gap-[12px]">
+          <button
+            class="claim-btn"
+            @click="claim"
+            :disabled="!(parseFloat(earned) > 0) || !canClaim"
+          >
+            Claim
+          </button>
+          <router-link :to="'/singlestake/' + sunrise['name']">
+            <button class="single-stake-btn">
+              <div class="single-stake-btn-text">Single Stake</div>
+            </button>
+          </router-link>
+          <div class="absolute mt-[80px]">Claim possible in: {{ claimTime }}</div>
+        </div>
       </div>
-      <div class="data-text">
-        <div>{{ nextEpoch }}</div>
-        <div>{{ epoch }}</div>
-        <div>{{ twap }}</div>
-        <div>{{ lastEpochTwap }}</div>
-        <div>{{ printTwap }}</div>
-        <div>{{ APR }}%</div>
-        <div>{{ spolarsStaked }}</div>
-      </div>
-    </div>
-    <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <img class="logo" :src="logo[sunrise.name]" />
-      <div class="num-tokens">{{ earned }}</div>
-      <div class="details">${{ earnedAmountInDollars }}</div>
-      <div class="details">
-        <span class="uppercase">{{ sunrise.name }}</span> Earned
-      </div>
-      <div class="mt-[24px] flex justify-center gap-[12px]">
+      <div class="w-full">
         <button
           class="claim-btn"
-          @click="claim"
-          :disabled="!(parseFloat(earned) > 0) || !canClaim"
+          text-center
+          @click="withdrawAll"
+          :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
         >
-          Claim
+          Claim and withdraw
         </button>
-        <router-link :to="'/singlestake/' + sunrise['name']">
-          <button class="single-stake-btn">
-            <div class="single-stake-btn-text">Single Stake</div>
-          </button>
-        </router-link>
-        <div class="absolute mt-[80px]">Claim possible in: {{ claimTime }}</div>
       </div>
-    </div>
-    <div class="w-full">
-      <button
-        class="claim-btn"
-        text-center
-        @click="withdrawAll"
-        :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
-      >
-        Claim and withdraw
-      </button>
     </div>
   </div>
 </template>
@@ -495,10 +497,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.pg-bg{
+  background-image: url('./sunrise_bg.svg');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position-y: -30%;
+  background-position-x: center;
+}
 .sunrise-title {
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
-  background-image: url('./index_bg.svg');
+  /*background-image: url('./index_bg.svg');*/
 
   font-weight: 600;
   font-size: 48px;

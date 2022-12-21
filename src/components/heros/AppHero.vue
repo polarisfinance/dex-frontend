@@ -11,7 +11,7 @@
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
   transition: all 0.3s ease-in-out;
-  background-image: url('./index_bg.svg');
+  /*background-image: url('./index_bg.svg');*/
 
   margin-top: 81px;
 }
