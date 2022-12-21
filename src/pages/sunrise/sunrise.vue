@@ -78,8 +78,10 @@ onMounted(() => {});
   height: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position-y: -10%;
+  background-position-y: 0%;
   background-position-x: center;
+  top:0px;
+  padding-top: 100px;
 }
 
 .sunrise-subtitle-text {

@@ -415,8 +415,10 @@ export default defineComponent({
   height: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  background-position-y: -10%;
+  background-position-y: 0%;
   background-position-x: right;
+  top:0px;
+  padding-top: 100px;
 }
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
