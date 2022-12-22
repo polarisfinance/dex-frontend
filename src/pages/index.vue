@@ -232,8 +232,9 @@ export default defineComponent({
 });
 </script>
 
-<template>
-  <div :class="{ 'pg-bg': isDesktop }">
+<template >
+  <div :class="{ 'pg-bg': isDesktop }"></div>
+  <div :class="{ 'relative': isDesktop }">
     <HomePageHero />
 
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
