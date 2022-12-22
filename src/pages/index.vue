@@ -61,6 +61,7 @@ const classicPoolsIds = [
   '0xceecce984f498ee00832670e9ca6d372f6ce155a000200000000000000000014',
   '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
   '0x454adaa07eec2c432c0df4379a709b1fa4c800ed000200000000000000000016',
+  '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020',
 ];
 
 const contains = (arr1, arr2) => {
@@ -232,9 +233,9 @@ export default defineComponent({
 });
 </script>
 
-<template >
+<template>
   <div :class="{ 'pg-bg': isDesktop }"></div>
-  <div :class="{ 'relative': isDesktop }">
+  <div :class="{ relative: isDesktop }">
     <HomePageHero />
 
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
