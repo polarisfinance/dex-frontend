@@ -444,7 +444,7 @@ export default defineComponent({
 
   watch: {
     async data() {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 4000));
 
       for (var i = 0; this.data.length; i++) {
         // await new Promise((resolve, reject) => {

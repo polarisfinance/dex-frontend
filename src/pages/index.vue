@@ -169,8 +169,6 @@ const selectToken = token => {
   selectedToken.value = token;
   searchTerm.value = token;
 };
-
-
 </script>
 
 <script lang="ts">
@@ -185,7 +183,7 @@ export default defineComponent({
     Object.entries(tokens.value).forEach(token => {
       this.tokenNames[getToken(token[0]).symbol] = token[0];
     });
-    
+
     window.addEventListener('scroll', this.onScroll);
   },
   data() {
@@ -194,7 +192,7 @@ export default defineComponent({
       tokens: [] as [string, TokenInfo][],
       inputFocused: false,
       tokenNames: {},
-      stickyPanel: false
+      stickyPanel: false,
     };
   },
   methods: {
@@ -219,17 +217,17 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
-    onScroll(){
+    onScroll() {
       var scrollPos = window.scrollY;
       // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
       // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
 
-      if (scrollPos >= 380 ) {
+      if (scrollPos >= 380) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
       }
-    }
+    },
   },
 });
 </script>
@@ -241,12 +239,16 @@ export default defineComponent({
 
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
       <BalStack vertical>
-        <div class="px-4 xl:px-0 container" :class="{ 'is-sticky': stickyPanel, 'navbar-bg': stickyPanel, 'not-sticky': !stickyPanel }">
-
-
-
-
-          <div class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center" 
+        <div
+          class="container px-4 xl:px-0"
+          :class="{
+            'is-sticky': stickyPanel,
+            'navbar-bg': stickyPanel,
+            'not-sticky': !stickyPanel,
+          }"
+        >
+          <div
+            class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
             v-if="isDesktop"
           >
             <div class="flex gap-[18px]">
@@ -290,7 +292,9 @@ export default defineComponent({
                   <div class="pool-type-btn cursor-pointer">Classic Pools</div>
                 </a>
                 <a href="#communitypools">
-                  <div class="pool-type-btn cursor-pointer">Community Pools</div>
+                  <div class="pool-type-btn cursor-pointer">
+                    Community Pools
+                  </div>
                 </a>
               </div>
             </div>
@@ -410,7 +414,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.pg-bg{
+.pg-bg {
   background-image: url('./dawn_bg.svg');
   width: 100%;
   height: 100%;
@@ -418,7 +422,7 @@ export default defineComponent({
   background-repeat: no-repeat;
   background-position-y: 0%;
   background-position-x: right;
-  top:0px;
+  top: 0px;
   padding-top: 100px;
 }
 .create-pool-btn {
@@ -561,15 +565,19 @@ export default defineComponent({
   background: #231928;
 }
 
-.is-sticky{
-position: fixed;
-top: 79px;
-z-index: 100;
-background: linear-gradient( 90.08deg, rgba(19, 7, 25, 0.7) -0.61%, rgba(19, 7, 25, 0.7) 100% );
--webkit-backdrop-filter: blur(10px);
-backdrop-filter: blur(10px);
+.is-sticky {
+  position: fixed;
+  top: 79px;
+  z-index: 100;
+  background: linear-gradient(
+    90.08deg,
+    rgba(19, 7, 25, 0.7) -0.61%,
+    rgba(19, 7, 25, 0.7) 100%
+  );
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
-.not-sticky{
-position: relative;
+.not-sticky {
+  position: relative;
 }
 </style>

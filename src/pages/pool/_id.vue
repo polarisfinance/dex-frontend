@@ -1,229 +1,273 @@
 <template>
-  <div :class="{ 'px-8': isMobile }">
-    <div class="flex  xl:container mx-auto" >
-      <div class="flex-1 pt-8">
-        <div class="mb-[24px] flex justify-between">
-          <div class="flex-column">
-            <div class="pool-title">Liquidity Pool</div>
-            <div class="pool-subtitle">
-              Dynamic swap fees: Currently
-              {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
+  <div class="flex">
+    <div class="pt-8 lg:px-4 xl:container xl:mx-auto">
+      <div class="mb-[24px] flex justify-between">
+        <div class="flex-column">
+          <div class="pool-title">Liquidity Pool</div>
+          <div class="pool-subtitle">
+            Dynamic swap fees: Currently
+            {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
+          </div>
+        </div>
+        <div class="flex items-center" v-if="isDesktop">
+          <div class="mr-[12px] flex items-center">
+            <div
+              v-for="(token, idx) in tableData"
+              :key="idx"
+              class="token-name flex"
+            >
+              <div>
+                {{ symbolFor(token.address) }}
+              </div>
+              <div v-if="idx < tableData.length - 1">-</div>
             </div>
           </div>
-          <div class="flex items-center" v-if="isDesktop">
-            <div class="mr-[12px] flex items-center">
-              <div
-                v-for="(token, idx) in tableData"
-                :key="idx"
-                class="token-name flex"
-              >
-                <div>
-                  {{ symbolFor(token.address) }}
-                </div>
-                <div v-if="idx < tableData.length - 1">-</div>
-              </div>
-            </div>
-            <div class="flex items-center">
-              <div v-for="(token, idx) in tableData" :key="idx">
-                <BalAsset :address="token.address" :size="33" />
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <div class="flex items-center">
-              <div v-for="(token, idx) in tableData" :key="idx">
-                <BalAsset :address="token.address" :size="33" />
-              </div>
-            </div>
-            <div class="mr-[12px] flex items-center">
-              <div
-                v-for="(token, idx) in tableData"
-                :key="idx"
-                class="token-name flex"
-              >
-                <div>
-                  {{ symbolFor(token.address) }}
-                </div>
-                <div v-if="idx < tableData.length - 1">-</div>
-              </div>
+          <div class="flex items-center">
+            <div v-for="(token, idx) in tableData" :key="idx">
+              <BalAsset :address="token.address" :size="33" />
             </div>
           </div>
         </div>
-
-        <div v-if="isPPool" class="alert my-[10px]">
-          <a class="underline" href="https://app.polarisfinance.io/#/trade"
-            >You need to wrap your {{ isPPool }} into p{{ isPPool }} using the
-            Swap page!</a
-          >
-        </div>
-
-        <MyPoolBalancesCard
-          v-if="isMobile"
-          :pool="pool"
-          :missingPrices="missingPrices"
-          class="mb-4"
-        />
-        <div class="AC-container mt-5 mb-5" v-if="isMobile && !isCommunityPool(poolID())">
-          <div>Staking incentives</div>
-          <div class="my-[12px] incentives-border"></div>
-          <div class="incentives-text flex justify-between">
-            <div>Staked LP tokens</div>
-            <div>{{ stakedBalance }}</div>
+        <div v-else>
+          <div class="flex items-center">
+            <div v-for="(token, idx) in tableData" :key="idx">
+              <BalAsset :address="token.address" :size="33" />
+            </div>
           </div>
-          <div class="incentives-text flex justify-between">
-            <!-- <div>Untaked LP tokens</div> -->
-            <div>Unstaked LP tokens</div>
-
-            <div>{{ balanceFor(address).slice(0, -15) }}</div>
-            <div>$0.00</div>
-          </div>
-          <div class="incentives-text flex justify-between">
-            <div>XPOLAR to claim</div>
-            <div>{{ xpolarToClaim }}</div>
-          </div>
-          <div v-if="isApproved" class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn w-full" @click="toggleStakeModal()">
-              Stake
-            </button>
-            <StakeModal
-              :depositBol="true"
-              :isVisible="isStakeModalVisible"
-              :token="tokenName"
-              :balance="balanceFor(address)"
-              :address="address"
-              @close="toggleStakeModal"
-            />
-            <button class="unstake-incentives-btn  w-full" @click="toggleUnstakeModal()">
-              Unstake
-            </button>
-            <StakeModal
-              :depositBol="false"
-              :isVisible="isUnstakeModalVisible"
-              :token="tokenName"
-              :balance="stakedBalance"
-              :address="address"
-              @close="toggleUnstakeModal"
-            />
-            <button class="incentives-btn  w-full" @click="claim()">Claim</button>
-          </div>
-          <div v-else class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn  w-full" @click="approve()">Approve</button>
-          </div>
-        </div>
-        <div class="">
-          <!-- this shit doesnt work for some reason :( -->
-          <!-- <PoolPageHeader
-          :loadingPool="loadingPool"
-          :pool="pool"
-          :isStableLikePool="isStableLikePool"
-          :noInitLiquidity="noInitLiquidity"
-          :titleTokens="titleTokens"
-          :missingPrices="missingPrices"
-          :isLiquidityBootstrappingPool="isLiquidityBootstrappingPool"
-          :isStablePhantomPool="isLiquidityBootstrappingPool"
-        /> -->
-          <div class="hidden lg:block" />
-          <div class="order-2 col-span-2 lg:order-1">
-            <div class="grid grid-cols-1 gap-y-8">
-              <div class="px-4 lg:px-0">
-                <PoolChart
-                  :pool="pool"
-                  :historicalPrices="historicalPrices"
-                  :snapshots="snapshots"
-                  :loading="isLoadingSnapshots"
-                  :totalLiquidity="pool?.totalLiquidity"
-                  :tokensList="pool?.tokensList"
-                  :poolType="pool?.poolType"
-                />
+          <div class="mr-[12px] flex items-center">
+            <div
+              v-for="(token, idx) in tableData"
+              :key="idx"
+              class="token-name flex"
+            >
+              <div>
+                {{ symbolFor(token.address) }}
               </div>
-              <div class="mb-[70px] px-4 lg:px-0">
-                <PoolStatCards
-                  :pool="pool"
-                  :poolApr="poolApr"
-                  :loading="loadingPool"
-                  :loadingApr="loadingPool"
-                  :aprString="apr"
-                />
-              </div>
+              <div v-if="idx < tableData.length - 1">-</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="flex-none pt-28" :class="{ 'pl-8': isDesktop }" :style= "[isDesktop ? {'width':'25%'}:{}]">
-        <MyPoolBalancesCard
-          v-if="isDesktop && pool"
-          :pool="pool"
-          :missingPrices="missingPrices"
-          class="mb-4"
-        />
-        <div class="AC-container mt-5 mb-5" v-if="isDesktop && !isCommunityPool(poolID())">
-          <div>Staking incentives</div>
-          <div class="my-[12px] incentives-border"></div>
-          <div class="incentives-text flex justify-between">
-            <div>Staked LP tokens</div>
-            <div>{{ stakedBalance }}</div>
-          </div>
-          <div class="incentives-text flex justify-between">
-            <div>Unstaked LP tokens</div>
-            <div>{{ balanceFor(address).slice(0, -15) }}</div>
-          </div>
-          <div class="incentives-text flex justify-between">
-            <div>XPOLAR to claim</div>
-            <div>{{ xpolarToClaim }}</div>
-          </div>
-          <div v-if="isApproved" class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn  w-full" @click="toggleStakeModal()">
-              Stake
-            </button>
-            <StakeModal
-              :depositBol="true"
-              :isVisible="isStakeModalVisible"
-              :token="tokenName"
-              :balance="balanceFor(address)"
-              :address="address"
-              @close="toggleStakeModal"
-            />
-            <button class="unstake-incentives-btn  w-full" @click="toggleUnstakeModal()">
-              Unstake
-            </button>
-            <StakeModal
-              :depositBol="false"
-              :isVisible="isUnstakeModalVisible"
-              :token="tokenName"
-              :balance="stakedBalance"
-              :address="address"
-              @close="toggleUnstakeModal"
-            />
-            <button class="incentives-btn w-full" @click="claim()">Claim</button>
-          </div>
-          <div v-else class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn  w-full" @click="approve()">Approve</button>
-          </div>
-        </div>
+
+      <div v-if="isPPool" class="alert my-[10px]">
+        <a class="underline" href="https://app.polarisfinance.io/#/trade"
+          >You need to wrap your {{ isPPool }} into p{{ isPPool }} using the
+          Swap page!</a
+        >
       </div>
 
-      
-
-      
-
-    </div>
-    <div class="mb-4 xl:container mx-auto">
-      <h4
-        class="table-title mb-[12px] px-4 lg:px-0"
-        v-text="$t('poolComposition')"
+      <MyPoolBalancesCard
+        v-if="isMobile"
+        :pool="pool"
+        :missingPrices="missingPrices"
+        class="mb-4"
       />
-      <PoolBalancesCard :pool="pool" :loading="loadingPool" />
-    </div>
+      <div class="AC-container" v-if="isMobile && !isCommunityPool(poolID())">
+        <div>Staking incentives</div>
+        <div class="incentives-border"></div>
+        <div class="incentives-text flex justify-between">
+          <div>Staked LP tokens</div>
+          <div>{{ stakedBalance }}</div>
+        </div>
+        <div class="incentives-text flex justify-between">
+          <!-- <div>Untaked LP tokens</div> -->
+          <div>Unstaked LP tokens</div>
 
-    <div class="xl:container mx-auto" ref="intersectionSentinel" />
-    <div class="xl:container mx-auto" >
-    <PoolTransactionsCard
-      v-if="isSentinelIntersected"
-      :pool="pool"
-      :loading="loadingPool"
-    />
+          <div>{{ balanceFor(address).slice(0, -15) }}</div>
+          <div>$0.00</div>
+        </div>
+        <div class="incentives-text flex justify-between">
+          <div>XPOLAR to claim</div>
+          <div>{{ xpolarToClaim }}</div>
+        </div>
+        <div v-if="isApproved" class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="toggleStakeModal()">
+            Stake
+          </button>
+          <StakeModal
+            :depositBol="true"
+            :isVisible="isStakeModalVisible"
+            :token="tokenName"
+            :balance="balanceFor(address)"
+            :address="address"
+            @close="toggleStakeModal"
+          />
+          <button class="unstake-incentives-btn" @click="toggleUnstakeModal()">
+            Unstake
+          </button>
+          <StakeModal
+            :depositBol="false"
+            :isVisible="isUnstakeModalVisible"
+            :token="tokenName"
+            :balance="stakedBalance"
+            :address="address"
+            @close="toggleUnstakeModal"
+          />
+          <button class="incentives-btn" @click="claim()">Claim</button>
+        </div>
+        <div v-else class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="approve()">Approve</button>
+        </div>
+      </div>
+      <!-- <div class="AC-container my-[16px]" v-if="isMobile">
+        <div>Auto Compounder</div>
+        <div class="brd my-[12px]" />
+        <div class="deposit mb-[16px]">
+          Deposit SPOLAR-NEAR-LP to an autocompounder
+        </div>
+        <div class="flex justify-center gap-[50px]">
+          <div class="flex-col gap-[8px] text-right">
+            <div>APY</div>
+            <div>Daily APY</div>
+            <div>Deposit Fee</div>
+            <div>Withdraw Fee</div>
+            <div>On Profits Fee</div>
+          </div>
+          <div class="flex-col gap-[8px] text-right">
+            <div>372.8%</div>
+            <div>0.23%</div>
+            <div>0%</div>
+            <div>0.1%</div>
+            <div>3.5%</div>
+          </div>
+        </div>
+        <button class="approve-btn-placeholder mt-[16px] w-full">
+          <div class="approve-btn">Approve LP</div>
+        </button>
+      </div> -->
+      <div class="">
+        <!-- this shit doesnt work for some reason :( -->
+        <!-- <PoolPageHeader
+        :loadingPool="loadingPool"
+        :pool="pool"
+        :isStableLikePool="isStableLikePool"
+        :noInitLiquidity="noInitLiquidity"
+        :titleTokens="titleTokens"
+        :missingPrices="missingPrices"
+        :isLiquidityBootstrappingPool="isLiquidityBootstrappingPool"
+        :isStablePhantomPool="isLiquidityBootstrappingPool"
+      /> -->
+        <div class="hidden lg:block" />
+        <div class="order-2 col-span-2 lg:order-1">
+          <div class="grid grid-cols-1 gap-y-8">
+            <div class="px-4 lg:px-0">
+              <PoolChart
+                :pool="pool"
+                :historicalPrices="historicalPrices"
+                :snapshots="snapshots"
+                :loading="isLoadingSnapshots"
+                :totalLiquidity="pool?.totalLiquidity"
+                :tokensList="pool?.tokensList"
+                :poolType="pool?.poolType"
+              />
+            </div>
+            <div class="mb-[70px] px-4 lg:px-0">
+              <PoolStatCards
+                :pool="pool"
+                :poolApr="poolApr"
+                :loading="loadingPool"
+                :loadingApr="loadingPool"
+                :aprString="apr"
+              />
+            </div>
+            <div class="mb-4">
+              <h4
+                class="table-title mb-[12px] px-4 lg:px-0"
+                v-text="$t('poolComposition')"
+              />
+              <PoolBalancesCard :pool="pool" :loading="loadingPool" />
+            </div>
+
+            <div ref="intersectionSentinel" />
+            <PoolTransactionsCard
+              v-if="isSentinelIntersected"
+              :pool="pool"
+              :loading="loadingPool"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+    <div class="pt-28" :class="{ margin: isDesktop }">
+      <MyPoolBalancesCard
+        v-if="isDesktop && pool"
+        :pool="pool"
+        :missingPrices="missingPrices"
+        class="mb-4"
+      />
+      <div class="AC-container" v-if="isDesktop && !isCommunityPool(poolID())">
+        <div>Staking incentives</div>
+        <div class="incentives-border"></div>
+        <div class="incentives-text flex justify-between">
+          <div>Staked LP tokens</div>
+          <div>{{ stakedBalance }}</div>
+        </div>
+        <div class="incentives-text flex justify-between">
+          <div>Unstaked LP tokens</div>
+          <div>{{ balanceFor(address).slice(0, -15) }}</div>
+        </div>
+        <div class="incentives-text flex justify-between">
+          <div>XPOLAR to claim</div>
+          <div>{{ xpolarToClaim }}</div>
+        </div>
+        <div v-if="isApproved" class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="toggleStakeModal()">
+            Stake
+          </button>
+          <StakeModal
+            :depositBol="true"
+            :isVisible="isStakeModalVisible"
+            :token="tokenName"
+            :balance="balanceFor(address)"
+            :address="address"
+            @close="toggleStakeModal"
+          />
+          <button class="unstake-incentives-btn" @click="toggleUnstakeModal()">
+            Unstake
+          </button>
+          <StakeModal
+            :depositBol="false"
+            :isVisible="isUnstakeModalVisible"
+            :token="tokenName"
+            :balance="stakedBalance"
+            :address="address"
+            @close="toggleUnstakeModal"
+          />
+          <button class="incentives-btn" @click="claim()">Claim</button>
+        </div>
+        <div v-else class="incentives-text flex gap-[8px]">
+          <button class="incentives-btn" @click="approve()">Approve</button>
+        </div>
+      </div>
+
+      <!-- <div class="AC-container my-[16px]" v-if="isDesktop">
+        <div>Auto Compounder</div>
+        <div class="brd my-[12px]" />
+        <div class="deposit mb-[16px]">
+          Deposit SPOLAR-NEAR-LP to an autocompounder
+        </div>
+        <div class="flex justify-center gap-[50px]">
+          <div class="flex-col gap-[8px] text-right">
+            <div>APY</div>
+            <div>Daily APY</div>
+            <div>Deposit Fee</div>
+            <div>Withdraw Fee</div>
+            <div>On Profits Fee</div>
+          </div>
+          <div class="flex-col gap-[8px] text-right">
+            <div>372.8%</div>
+            <div>0.23%</div>
+            <div>0%</div>
+            <div>0.1%</div>
+            <div>3.5%</div>
+          </div>
+        </div>
+        <button class="approve-btn-placeholder mt-[16px] w-full">
+          <div class="approve-btn">Approve LP</div>
+        </button>
+      </div> -->
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -935,7 +979,7 @@ export default defineComponent({
 
 .incentives-text {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
 
   color: #fdfdfd;
@@ -954,8 +998,8 @@ export default defineComponent({
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  padding:8px;
-
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .brd {
@@ -1046,5 +1090,4 @@ export default defineComponent({
 .margin {
   padding-right: 16px;
 }
-
 </style>
