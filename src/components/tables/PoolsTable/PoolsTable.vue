@@ -428,12 +428,12 @@ export default defineComponent({
       const totalRewardPricePerYear = tokenPerHour * 24 * 365 * xpolarPrice;
       const totalRewardPricePerDay = tokenPerHour * 24 * xpolarPrice;
 
-      const dailyAPR = Math.ceil(
-        (totalRewardPricePerDay / Number(TVL)) * 100
-      ).toString();
-      const yearlyAPR = Math.ceil(
-        (totalRewardPricePerYear / Number(TVL)) * 100
-      ).toString();
+      const dailyAPR = ((totalRewardPricePerDay / Number(TVL)) * 100)
+        .toFixed(2)
+        .toString();
+      const yearlyAPR = ((totalRewardPricePerYear / Number(TVL)) * 100)
+        .toFixed(2)
+        .toString();
 
       return { dailyAPR: dailyAPR, yearlyAPR: yearlyAPR };
     },
@@ -444,7 +444,7 @@ export default defineComponent({
 
   watch: {
     async data() {
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       for (var i = 0; this.data.length; i++) {
         // await new Promise((resolve, reject) => {
