@@ -34,7 +34,8 @@ function iconAddresses(pool: PoolWithShares) {
 </script>
 
 <template>
-  <div :class="{ 'pg-bg': isDesktop }">
+  <div :class="{ 'pg-bg': isDesktop }"></div>
+  <div :class="{ 'relative': isDesktop }">
     <div class="vex-container">
       <div class="title">
         <img src="./bubble.svg" />
