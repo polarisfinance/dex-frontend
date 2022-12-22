@@ -343,6 +343,7 @@ export default defineComponent({
         '0x192bdcdd7b95a97ec66de5630a85967f6b79e695': 21,
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
+        '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
       },
       prices: this.prices,
       data: this.data,
@@ -387,6 +388,7 @@ export default defineComponent({
         '0x192bdcdd7b95a97ec66de5630a85967f6b79e695': 21,
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
+        '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
       };
 
       const xpolarPool = this.xpolarPoolQuery?.data;
@@ -413,6 +415,8 @@ export default defineComponent({
         14,
         4
       );
+      console.log(depositToken);
+      console.log(await depositToken.balanceOf(xpolarRewardPoolAddress));
       const TVL = new BigNumberJs(pool.totalLiquidity || '')
         .div(pool.totalShares || '')
         .times(stakedInPool)
