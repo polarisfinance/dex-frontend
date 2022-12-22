@@ -179,11 +179,12 @@ import { TokenInfo } from '@/types/TokenList';
 export default defineComponent({
   created() {
     const { tokens, getToken } = useTokens();
-
     this.tokens = Object.entries(tokens.value);
     Object.entries(tokens.value).forEach(token => {
       this.tokenNames[getToken(token[0]).symbol] = token[0];
     });
+
+    window.addEventListener('scroll', this.onScroll);
   },
   data() {
     return {
@@ -232,7 +233,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <HomePageHero />
   <div :class="{ 'pg-bg': isDesktop }">
     <HomePageHero />
 
@@ -434,18 +434,18 @@ export default defineComponent({
 
 .create-pool-btn:hover {
   /* background: radial-gradient(
-49.66% 488.58% at 50% 30%,
-rgba(123, 48, 127, 0.7) 0%,
-rgba(123, 48, 127, 0.567) 100%
-); */
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.7) 0%,
+    rgba(123, 48, 127, 0.567) 100%
+  ); */
 }
 
 .create-pool-btn:active {
   /* background: radial-gradient(
-49.66% 488.58% at 50% 30%,
-rgba(123, 48, 127, 0.5) 0%,
-rgba(123, 48, 127, 0.405) 100%
-); */
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.5) 0%,
+    rgba(123, 48, 127, 0.405) 100%
+  ); */
 }
 
 .search {
@@ -545,22 +545,38 @@ rgba(123, 48, 127, 0.405) 100%
 
 .create-pool-btn-mobile:hover {
   /* background: radial-gradient(
-49.66% 488.58% at 50% 30%,
-rgba(123, 48, 127, 0.7) 0%,
-rgba(123, 48, 127, 0.567) 100%
-); */
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.7) 0%,
+    rgba(123, 48, 127, 0.567) 100%
+  ); */
 }
 
 .create-pool-btn-mobile:active {
   /* background: radial-gradient(
-49.66% 488.58% at 50% 30%,
-rgba(123, 48, 127, 0.5) 0%,
-rgba(123, 48, 127, 0.405) 100%
-); */
+    49.66% 488.58% at 50% 30%,
+    rgba(123, 48, 127, 0.5) 0%,
+    rgba(123, 48, 127, 0.405) 100%
+  ); */
 }
 
 .list {
   z-index: 100;
   background: #231928;
+}
+
+.is-sticky {
+  position: fixed;
+  top: 79px;
+  z-index: 100;
+  background: linear-gradient(
+    90.08deg,
+    rgba(19, 7, 25, 0.7) -0.61%,
+    rgba(19, 7, 25, 0.7) 100%
+  );
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.not-sticky {
+  position: relative;
 }
 </style>
