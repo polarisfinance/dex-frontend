@@ -29,34 +29,36 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div class="sunrise-title py-10">
-    <div class="flex-column">
-      <div class="sunrise-title-text">Sunrise</div>
-      <div class="sunrise-subtitle-text">The right place for your $SPOLAR</div>
-    </div>
-  </div>
-  <div
-    :class="{
-      sunrisePlaceholder: isDesktop,
-      sunrisePlaceholderMobile: isMobile,
-    }"
-  >
-    <div
-      v-for="(sunrise, idx) in sunrises"
-      :key="idx"
-      :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
-    >
-      <img :src="logo[sunrise.name]" class="logo" />
-      <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
-      <div class="sunrise-description mt-[12px] p-[10px]">
-        <p>
-          Stake your $SPOLAR to earn
-          <span class="uppercase">{{ '$' + sunrise.name }}</span>
-        </p>
+  <div :class="{ 'pg-bg': isDesktop }">
+    <div class="sunrise-title py-10">
+      <div class="flex-column">
+        <div class="sunrise-title-text">Sunrise</div>
+        <div class="sunrise-subtitle-text">The right place for your $SPOLAR</div>
       </div>
-      <router-link :to="'/sunrise/' + sunrise.name">
-        <button class="view-and-stake mt-[34px]">View and Stake</button>
-      </router-link>
+    </div>
+    <div
+      :class="{
+        sunrisePlaceholder: isDesktop,
+        sunrisePlaceholderMobile: isMobile,
+      }"
+    >
+      <div
+        v-for="(sunrise, idx) in sunrises"
+        :key="idx"
+        :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
+      >
+        <img :src="logo[sunrise.name]" class="logo" />
+        <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
+        <div class="sunrise-description mt-[12px] p-[10px]">
+          <p>
+            Stake your $SPOLAR to earn
+            <span class="uppercase">{{ '$' + sunrise.name }}</span>
+          </p>
+        </div>
+        <router-link :to="'/sunrise/' + sunrise.name">
+          <button class="view-and-stake mt-[34px]">View and Stake</button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -65,12 +67,21 @@ onMounted(() => {});
 .sunrise-title {
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
-  background-image: url('./index_bg.svg');
-
   font-weight: 600;
   font-size: 42px;
   line-height: 61px;
   text-align: center;
+}
+.pg-bg{
+  background-image: url('./sunrise_bg.svg');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position-y: 0%;
+  background-position-x: center;
+  top:0px;
+  padding-top: 100px;
 }
 
 .sunrise-subtitle-text {

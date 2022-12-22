@@ -56,7 +56,7 @@ onUnmounted(() => {
 <template>
   <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
   <nav id="app-nav" ref="appNav" class="top-0 h-20 pr-1 pl-4 lg:px-6 sticky">
-    <div ref="nvb" class="flex h-full w-full items-center justify-between">
+    <div ref="nvb" class="flex h-full w-full items-center justify-between px-10">
       <router-link
         :to="{ name: 'home' }"
         @click="trackGoal(Goals.ClickNavLogo)"
@@ -81,6 +81,7 @@ onUnmounted(() => {
 
   transition: all 0.2s ease-in-out;
   background: transparent;
+  padding: 0px;
 }
 
 .actions {
