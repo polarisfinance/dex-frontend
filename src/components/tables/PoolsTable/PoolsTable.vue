@@ -437,18 +437,19 @@ export default defineComponent({
         });
       }
 
-      const poolTotalLiquidty = pool.totalLiquidity;
       if (pool.totalLiquidity == '0') {
-        console.log('fetching pool total liquidity');
         await new Promise((resolve, reject) => {
-          const loop = () =>
+          const loop = () => {
             pool.totalLiquidity != '0'
               ? resolve(pool.totalLiquidity)
               : setTimeout(loop, 100);
+            console.log('fetching pool total liquidity');
+          };
+
           loop();
         });
       }
-
+      const poolTotalLiquidty = pool.totalLiquidity;
       const xpolarPool = this.xpolarPoolQuery?.data;
 
       const xpolarBalance =
