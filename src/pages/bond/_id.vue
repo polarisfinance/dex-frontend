@@ -1,122 +1,125 @@
 <template>
-  <div class="sunrise-title py-10">
-    <div class="flex-column">
-      <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
-      <div class="sunrise-subtitle-text">Bond</div>
+  <div :class="{ 'pg-bg': isDesktop }"></div>
+  <div :class="{ 'relative': isDesktop }">
+    <div class="sunrise-title py-10">
+      <div class="flex-column">
+        <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
+        <div class="sunrise-subtitle-text">Bond</div>
+      </div>
     </div>
-  </div>
-  <div :class="{ info: isDesktop, infoMobile: isMobile }">
-    Buy & Redeem Bonds. Earn premiums upon redemption
-  </div>
+    <div :class="{ info: isDesktop, infoMobile: isMobile }">
+      Buy & Redeem Bonds. Earn premiums upon redemption
+    </div>
 
-  <div
-    :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="justify-center text-center"
-  >
-    <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <div class="bond-title">Purchase {{ sunrise.bond }}</div>
-      <div
-        class="mt-[40px] flex items-center justify-between"
-        :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
-      >
-        <div class="flex-column">
-          <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
-        </div>
-        <img src="./arrow.svg" />
-        <div class="flex-column">
-          <img :src="bondLogo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
-        </div>
-      </div>
-      <div class="details mt-[32px]">
-        {{ sunrise.bond }} is available for purchase
-      </div>
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
-        <button class="purchase-button" @click="togglePurchaseBondModal">
-          Purchase
-        </button>
-      </div>
-
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
-        <button class="purchase-button" @click="approve">Approve</button>
-      </div>
-      <BondModal
-        :purchaseBol="true"
-        :isVisible="isPurchaseBondModalVisible"
-        :balance="tokenBalance"
-        :name="sunrise.bond"
-        :account="account"
-        :sunriseName="sunrise.name"
-        @close="togglePurchaseBondModal"
-        @update="render"
-      />
-    </div>
-    <div :class="{ data: isDesktop, dataMobile: isMobile }">
-      <div>
-        <div class="bond-h1">
-          {{ sunrise.name.toUpperCase() }} = {{ currentTwap }}
-          {{ sunrise.lpToken }}
-        </div>
-        <div class="bond-h2">Last-Hour TWAP Price</div>
-      </div>
-      <div>
-        <div class="bond-h1">
-          {{ sunrise.name.toUpperCase() }} = {{ previousEpochTwap }}
-          {{ sunrise.lpToken }}
-        </div>
-        <div class="bond-h2">Previous Epoch TWAP Price</div>
-      </div>
-      <div>
-        <div class="bond-h1">
-          {{ sunrise.bond }} = {{ bondPrice }} {{ sunrise.lpToken }}
-        </div>
-        <div class="bond-h2">
-          Current Price: ({{ sunrise.name.toUpperCase() }})^2
-        </div>
-      </div>
-    </div>
-    <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <div class="bond-title">Redeem {{ sunrise.lpToken.toUpperCase() }}</div>
-      <div
-        class="mt-[40px] flex items-center justify-between px-[70px]"
-        :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
-      >
-        <div class="flex-column">
-          <img :src="bondLogo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
-        </div>
-        <img src="./arrow.svg" />
-        <div class="flex-column">
-          <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
-        </div>
-      </div>
-      <div class="details mt-[32px]">
-        {{ bondBalance }} {{ sunrise.bond }} Redeemable
-      </div>
-      <div class="mt-[24px] flex justify-center">
-        <button
-          class="purchase-button"
-          @click="toggleRedeemBondModal"
-          v-if="redeemEnabled"
+    <div
+      :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
+      class="justify-center text-center"
+    >
+      <div :class="{ card: isDesktop, cardMobile: isMobile }">
+        <div class="bond-title">Purchase {{ sunrise.bond }}</div>
+        <div
+          class="mt-[40px] flex items-center justify-between"
+          :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
         >
-          Redeem
-        </button>
-        <button class="claim-btn" v-else>
-          Enabled when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
-        </button>
+          <div class="flex-column">
+            <img :src="logo[sunrise.name]" />
+            <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
+          </div>
+          <img src="./arrow.svg" />
+          <div class="flex-column">
+            <img :src="bondLogo[sunrise.name]" />
+            <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
+          </div>
+        </div>
+        <div class="details mt-[32px]">
+          {{ sunrise.bond }} is available for purchase
+        </div>
+        <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
+          <button class="purchase-button" @click="togglePurchaseBondModal">
+            Purchase
+          </button>
+        </div>
+
+        <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
+          <button class="purchase-button" @click="approve">Approve</button>
+        </div>
+        <BondModal
+          :purchaseBol="true"
+          :isVisible="isPurchaseBondModalVisible"
+          :balance="tokenBalance"
+          :name="sunrise.bond"
+          :account="account"
+          :sunriseName="sunrise.name"
+          @close="togglePurchaseBondModal"
+          @update="render"
+        />
       </div>
-      <BondModal
-        :purchaseBol="false"
-        :isVisible="isRedeemBondModalVisible"
-        :balance="bondBalance"
-        :name="sunrise.bond"
-        :account="account"
-        :sunriseName="sunrise.name"
-        @close="toggleRedeemBondModal"
-        @update="render"
-      />
+      <div :class="{ data: isDesktop, dataMobile: isMobile }">
+        <div>
+          <div class="bond-h1">
+            {{ sunrise.name.toUpperCase() }} = {{ currentTwap }}
+            {{ sunrise.lpToken }}
+          </div>
+          <div class="bond-h2">Last-Hour TWAP Price</div>
+        </div>
+        <div>
+          <div class="bond-h1">
+            {{ sunrise.name.toUpperCase() }} = {{ previousEpochTwap }}
+            {{ sunrise.lpToken }}
+          </div>
+          <div class="bond-h2">Previous Epoch TWAP Price</div>
+        </div>
+        <div>
+          <div class="bond-h1">
+            {{ sunrise.bond }} = {{ bondPrice }} {{ sunrise.lpToken }}
+          </div>
+          <div class="bond-h2">
+            Current Price: ({{ sunrise.name.toUpperCase() }})^2
+          </div>
+        </div>
+      </div>
+      <div :class="{ card: isDesktop, cardMobile: isMobile }">
+        <div class="bond-title">Redeem {{ sunrise.lpToken.toUpperCase() }}</div>
+        <div
+          class="mt-[40px] flex items-center justify-between px-[70px]"
+          :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
+        >
+          <div class="flex-column">
+            <img :src="bondLogo[sunrise.name]" />
+            <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
+          </div>
+          <img src="./arrow.svg" />
+          <div class="flex-column">
+            <img :src="logo[sunrise.name]" />
+            <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
+          </div>
+        </div>
+        <div class="details mt-[32px]">
+          {{ bondBalance }} {{ sunrise.bond }} Redeemable
+        </div>
+        <div class="mt-[24px] flex justify-center">
+          <button
+            class="purchase-button"
+            @click="toggleRedeemBondModal"
+            v-if="redeemEnabled"
+          >
+            Redeem
+          </button>
+          <button class="claim-btn" v-else>
+            Enabled when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
+          </button>
+        </div>
+        <BondModal
+          :purchaseBol="false"
+          :isVisible="isRedeemBondModalVisible"
+          :balance="bondBalance"
+          :name="sunrise.bond"
+          :account="account"
+          :sunriseName="sunrise.name"
+          @close="toggleRedeemBondModal"
+          @update="render"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -330,10 +333,21 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.pg-bg{
+  background-image: url('./bond_bg.svg');
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position-y: 0%;
+  background-position-x: right;
+  top:0px;
+  padding-top: 100px;
+}
 .sunrise-title {
   @apply flex items-center justify-center bg-cover bg-center px-4 text-center;
 
-  background-image: url('./index_bg.svg');
+  /*background-image: url('./index_bg.svg');*/
 
   font-weight: 600;
   font-size: 48px;

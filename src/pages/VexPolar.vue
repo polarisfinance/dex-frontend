@@ -34,154 +34,165 @@ function iconAddresses(pool: PoolWithShares) {
 </script>
 
 <template>
-  <div class="bg"></div>
-  <div class="vex-container">
-    <div class="title">
-      <img src="./bubble.svg" />
-      <div class="title-text">
-        <div>Extra earnings <br />& voting power</div>
-        <div class="flex gap-[28px] justify-center mt-[16px]">
-          <button class="get-btn">Get VexPolar</button>
-          <button class="learn-btn">Learn More</button>
+  <div :class="{ 'pg-bg': isDesktop }"></div>
+  <div :class="{ 'relative': isDesktop }">
+    <div class="vex-container">
+      <div class="title">
+        <img src="./bubble.svg" />
+        <div class="title-text">
+          <div>Extra earnings <br />& voting power</div>
+          <div class="flex gap-[28px] justify-center mt-[16px]">
+            <button class="get-btn">Get VexPolar</button>
+            <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" class="learn-btn">Learn More</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div
-      :class="{
-        'info-container': isDesktop,
-        'info-container-mobile': isMobile,
-      }"
-      class="mt-[120px]"
-    >
-      <div class="info">
-        <div class="info-title">
-          Boost liquidity mining<br />
-          yield up to 2.5x
-        </div>
-        <div class="info-token">
-          <img class="w-[124px]" src="./xpolar.svg" />
-        </div>
-        <div class="info-subtitle">VexPolar</div>
-      </div>
-      <div class="info">
-        <div class="info-title">
-          Vote to direct liquidity <br />
-          mining emissions
-        </div>
-        <div class="info-token">
-          <img class="w-[124px]" src="./polar-fancy.svg" />
-        </div>
-        <div class="info-subtitle">VexPolar</div>
-      </div>
-      <div class="info">
-        <div class="info-title">
-          Earn your share of <br />
-          protocol revenue
-        </div>
-        <div class="info-token">
-          <img class="w-[124px]" src="./xpolar.svg" />
-        </div>
-        <div class="info-subtitle">VexPolar</div>
-      </div>
-    </div>
-
-    <div class="my-vexpolar">
-      <div class="my-vexpolar-title">My VexPolar</div>
-      <div class="border" />
       <div
         :class="{
-          'my-vexpolar-table': isDesktop,
-          'my-vexpolar-table-mobile': isMobile,
+          'info-container': isDesktop,
+          'info-container-mobile': isMobile,
         }"
+        class="mt-[120px]"
       >
-        <div class="my-vexpolar-element">
-          <div class="my-vexpolar-element-title">My VexPolar</div>
-          <div class="my-vexpolar-element-price">$ USD</div>
-          <div class="my-vexpolar-element-token">My VexPolar</div>
+        <div class="info">
+          <div class="info-title">
+            Boost liquidity mining<br />
+            yield up to 2.5x
+          </div>
+          <div class="info-token">
+            <img class="w-[124px]" src="./xpolar.svg" />
+          </div>
+          <div class="info-subtitle">VexPolar</div>
         </div>
-        <div class="my-vexpolar-element">
-          <div class="my-vexpolar-element-title">My VexPolar</div>
-          <div class="my-vexpolar-element-price">$ USD</div>
-          <div class="my-vexpolar-element-token">My VexPolar</div>
+        <div class="info">
+          <div class="info-title">
+            Vote to direct liquidity <br />
+            mining emissions
+          </div>
+          <div class="info-token">
+            <img class="w-[124px]" src="./polar-fancy.svg" />
+          </div>
+          <div class="info-subtitle">VexPolar</div>
         </div>
-        <div class="my-vexpolar-element">
-          <div class="my-vexpolar-element-title">My VexPolar</div>
-          <div class="my-vexpolar-element-price">$ USD</div>
-          <div class="my-vexpolar-element-token">My VexPolar</div>
-        </div>
-        <div class="my-vexpolar-element">
-          <div class="my-vexpolar-element-title">My VexPolar</div>
-          <div class="my-vexpolar-element-price">$ USD</div>
-          <div class="my-vexpolar-element-token">My VexPolar</div>
+        <div class="info">
+          <div class="info-title">
+            Earn your share of <br />
+            protocol revenue
+          </div>
+          <div class="info-token">
+            <img class="w-[124px]" src="./near.svg" />
+          </div>
+          <div class="info-subtitle">VexPolar</div>
         </div>
       </div>
-    </div>
 
-    <div v-if="isMobile" class="mt-[56px]">
-      <div class="pools-eligible">Pools eligible for liquidity mining</div>
-      <div class="content mt-[32px]">
-        Liquidity incentives are directed by the community of veBAL holders. If
-        you hold veBAL, vote below on any pools across Ethereum and Layer 2’s.
-        Your vote will persist until you change it and editing a pool can only
-        be done once in 10 days.
+      <div class="my-vexpolar">
+        <div class="my-vexpolar-title">My VexPolar</div>
+        <div class="border" />
+        <div
+          :class="{
+            'my-vexpolar-table': isDesktop,
+            'my-vexpolar-table-mobile': isMobile,
+          }"
+        >
+          <div class="my-vexpolar-element">
+            <div class="my-vexpolar-element-title">My VexPolar</div>
+            <div class="my-vexpolar-element-price">$ USD</div>
+            <div class="my-vexpolar-element-token">My VexPolar</div>
+          </div>
+          <div class="my-vexpolar-element">
+            <div class="my-vexpolar-element-title">My VexPolar</div>
+            <div class="my-vexpolar-element-price">$ USD</div>
+            <div class="my-vexpolar-element-token">My VexPolar</div>
+          </div>
+          <div class="my-vexpolar-element">
+            <div class="my-vexpolar-element-title">My VexPolar</div>
+            <div class="my-vexpolar-element-price">$ USD</div>
+            <div class="my-vexpolar-element-token">My VexPolar</div>
+          </div>
+          <div class="my-vexpolar-element">
+            <div class="my-vexpolar-element-title">My VexPolar</div>
+            <div class="my-vexpolar-element-price">$ USD</div>
+            <div class="my-vexpolar-element-token">My VexPolar</div>
+          </div>
+        </div>
       </div>
-      <div class="pools-subtitle mt-[32px]">My unallocated votes</div>
-      <div class="pools-content mt-[24px]">-</div>
 
-      <div class="pools-subtitle mt-[32px]">Voting period ends</div>
-      <div class="pools-content mt-[24px">6d : 6h : 56m : 19s</div>
-    </div>
+      <div v-if="isMobile" class="mt-[56px] mx-[24px]">
+        <div class="pools-eligible">Pools eligible for liquidity mining</div>
+        <div class="content mt-[32px]">
+          Liquidity incentives are directed by the community of veBAL holders. If
+          you hold veBAL, vote below on any pools across Ethereum and Layer 2’s.
+          Your vote will persist until you change it and editing a pool can only
+          be done once in 10 days.
+        </div>
+        <div class="pools-subtitle mt-[32px]">My unallocated votes</div>
+        <div class="pools-content mt-[24px]">-</div>
 
-    <div class="table mt-[144px]">
-      <div class="table-title">Pools</div>
-      <div class="table-head" v-if="isDesktop">
-        <div class="flex gap-[12px]">
-          <img :src="segniorageImg" />
-          <div>Tokens</div>
-        </div>
-        <div>Composition</div>
-        <div>Next Period Votes</div>
+        <div class="pools-subtitle mt-[32px]">Voting period ends</div>
+        <div class="pools-content mt-[24px">6d : 6h : 56m : 19s</div>
       </div>
-      <div v-if="isMobile" class="table-head-mobile">
-        <div class="flex gap-[12px]">
-          <img :src="segniorageImg" />
-          <div>Tokens & Composition</div>
+
+      <div class="table mt-[144px]">
+        <div class="table-title">Pools</div>
+        <div class="table-head" v-if="isDesktop">
+          <div class="flex gap-[12px]">
+            <img :src="segniorageImg" />
+            <div>Tokens</div>
+          </div>
+          <div>Composition</div>
+          <div>Next Period Votes</div>
         </div>
-        <div>Next Votes</div>
-      </div>
-      <div class="border" />
-      <div
-        class="flex justify-between items-center"
-        v-for="(pool, idx) in investmentPools"
-        :key="idx"
-      >
-        <div class="mt-[24px]">
-          <BalAssetSet
-            :size="36"
-            :addresses="iconAddresses(pool)"
-            :width="100"
-          />
+        <div v-if="isMobile" class="table-head-mobile">
+          <div class="flex gap-[12px]">
+            <img :src="segniorageImg" />
+            <div>Tokens & Composition</div>
+          </div>
+          <div>Next Votes</div>
         </div>
-        <div v-if="POOLS.Metadata[pool.id]" class="text-left">
-          {{ POOLS.Metadata[pool.id].name }}
+        <div class="border" />
+        <div
+          class="flex justify-between items-center"
+          v-for="(pool, idx) in investmentPools"
+          :key="idx"
+        >
+          <div class="mt-[24px]">
+            <BalAssetSet
+              :size="36"
+              :addresses="iconAddresses(pool)"
+              :width="100"
+            />
+          </div>
+          <div v-if="POOLS.Metadata[pool.id]" class="text-left">
+            {{ POOLS.Metadata[pool.id].name }}
+          </div>
+          <div v-else>
+            <TokenPills
+              :tokens="
+                orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+              "
+              :isStablePool="false"
+              :selectedTokens="selectedTokens"
+              :showWeight="pool['poolType'] != 'Stable'"
+            />
+          </div>
+          <div>-</div>
         </div>
-        <div v-else>
-          <TokenPills
-            :tokens="
-              orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-            "
-            :isStablePool="false"
-            :selectedTokens="selectedTokens"
-            :showWeight="pool['poolType'] != 'Stable'"
-          />
-        </div>
-        <div>-</div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.pg-bg{
+  background-image: url(./vexpolar_bg.svg);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-repeat: no-repeat;
+  top:0px;
+  padding-top: 100px;
+}
 .pools-content {
   font-weight: 600;
   font-size: 32px;
@@ -378,7 +389,6 @@ function iconAddresses(pool: PoolWithShares) {
   display: flex;
   flex-direction: column;
 }
-
 .title {
   position: relative;
   display: flex;

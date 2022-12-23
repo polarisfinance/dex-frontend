@@ -35,7 +35,7 @@ const { isMobile, isDesktop } = useBreakpoints();
  * TYPES
  */
 type Props = {
-  data?: PoolWithShares[];
+  data: PoolWithShares[];
   isLoading?: boolean;
   isLoadingMore?: boolean;
   showPoolShares?: boolean;
@@ -343,12 +343,33 @@ export default defineComponent({
         '0x192bdcdd7b95a97ec66de5630a85967f6b79e695': 21,
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
+        '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
+        '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
       },
       prices: this.prices,
       data: this.data,
     };
   },
   methods: {
+    async fetchAll() {
+      if (this.data.length == 0) {
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+            this.data.length !== 0
+              ? resolve(this.data.length)
+              : setTimeout(loop, 100);
+          loop();
+        });
+      }
+      const aprsPromises: any[] = [];
+      for (var i = 0; i < this.data.length; i++) {
+        aprsPromises.push(this.fetch(this.data[i]));
+      }
+      const aprs = await Promise.all(aprsPromises);
+      for (var i = 0; i < this.data.length; i++) {
+        this.aprs[this.data[i].address] = aprs[i];
+      }
+    },
     async fetch(pool) {
       const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
@@ -387,7 +408,29 @@ export default defineComponent({
         '0x192bdcdd7b95a97ec66de5630a85967f6b79e695': 21,
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
+        '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
+        '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
       };
+
+      if (this.xpolarPoolQuery?.data === undefined) {
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+            this.xpolarPoolQuery?.data !== undefined
+              ? resolve(this.xpolarPoolQuery?.data)
+              : setTimeout(loop, 100);
+          loop();
+        });
+      }
+
+      if (this.prices === undefined) {
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+            this.prices !== undefined
+              ? resolve(this.prices)
+              : setTimeout(loop, 100);
+          loop();
+        });
+      }
 
       const xpolarPool = this.xpolarPoolQuery?.data;
 
@@ -402,25 +445,30 @@ export default defineComponent({
 
       const nearPrice =
         this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
+
       const xpolarPrice =
         (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
         Number(nearPrice);
 
       const pid = PID[poolAddress.toLowerCase()];
       const depositToken = new Contract(poolAddress, ERC20ABI, w3);
-      const stakedInPool = BigNumberToString(
-        await depositToken.balanceOf(xpolarRewardPoolAddress),
-        14,
-        4
-      );
+
+      const [xpolarPerSecond, allocPoint, stakedInPoolBigNumber] =
+        await Promise.all([
+          xpolarRewardPool.xpolarPerSecond(),
+          xpolarRewardPool.poolInfo(pid),
+          depositToken.balanceOf(xpolarRewardPoolAddress),
+        ]);
+
+      const stakedInPool = BigNumberToString(stakedInPoolBigNumber, 14, 4);
+
       const TVL = new BigNumberJs(pool.totalLiquidity || '')
         .div(pool.totalShares || '')
         .times(stakedInPool)
         .toString();
-      const xpolarPerSecond = await xpolarRewardPool.xpolarPerSecond();
-      const allocPoint = (await xpolarRewardPool.poolInfo(pid)).allocPoint;
+
       const finalXpolarPerSecond = BigNumberToString(
-        xpolarPerSecond.mul(allocPoint).div(800000),
+        xpolarPerSecond.mul(allocPoint.allocPoint).div(800000),
         14,
         4
       );
@@ -428,15 +476,25 @@ export default defineComponent({
       const totalRewardPricePerYear = tokenPerHour * 24 * 365 * xpolarPrice;
       const totalRewardPricePerDay = tokenPerHour * 24 * xpolarPrice;
 
-      const dailyAPR = Math.ceil(
-        (totalRewardPricePerDay / Number(TVL)) * 100
-      ).toString();
-      const yearlyAPR = Math.ceil(
-        (totalRewardPricePerYear / Number(TVL)) * 100
-      ).toString();
+      const dailyAPR = ((totalRewardPricePerDay / Number(TVL)) * 100)
+        .toFixed(2)
+        .toString();
+      const yearlyAPR = ((totalRewardPricePerYear / Number(TVL)) * 100)
+        .toFixed(2)
+        .toString();
+
+      if (yearlyAPR === 'NaN') {
+        console.log(xpolarPrice);
+        console.log(nearBalance);
+        console.log(xpolarBalance);
+        console.log(xpolarPool);
+      }
 
       return { dailyAPR: dailyAPR, yearlyAPR: yearlyAPR };
     },
+  },
+  created() {
+    this.fetchAll();
   },
   async mounted() {
     const { selectedTokens } = usePoolFilters();
@@ -444,29 +502,10 @@ export default defineComponent({
 
   watch: {
     async data() {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      for (var i = 0; this.data.length; i++) {
-        // await new Promise((resolve, reject) => {
-        //   const loop = () =>
-        //     this.data[i].address !== undefined
-        //       ? resolve(this.data[i].address)
-        //       : setTimeout(loop);
-        //   loop();
-        // });
-        // if (this.data[i] == undefined) {
-        //   i--; // repeat the action
-        //   await new Promise(resolve => setTimeout(resolve, 1000));
-        // }
-        // } else
-        // if (this.data[i].id.toLowerCase() in this.pid === false) {
-        //   continue;
-        // }
-        // else {
-        const apr = await this.fetch(this.data[i]);
-        this.aprs[this.data[i].address] = apr;
-        // }
-      }
+      // this.fetchAll();
+    },
+    async prices() {
+      // this.fetchAll();
     },
   },
 });
