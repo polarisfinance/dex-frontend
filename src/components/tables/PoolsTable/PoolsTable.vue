@@ -422,11 +422,28 @@ export default defineComponent({
         });
       }
 
-      if (this.prices === undefined) {
+      if (
+        this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'] === undefined
+      ) {
         await new Promise((resolve, reject) => {
           const loop = () =>
-            this.prices !== undefined
-              ? resolve(this.prices)
+            this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'] !==
+            undefined
+              ? resolve(
+                  this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']
+                )
+              : setTimeout(loop, 100);
+          loop();
+        });
+      }
+
+      const poolTotalLiquidty = pool.totalLiquidity;
+      if (pool.totalLiquidity == '0') {
+        console.log('fetching pool total liquidity');
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+            pool.totalLiquidity != '0'
+              ? resolve(pool.totalLiquidity)
               : setTimeout(loop, 100);
           loop();
         });
@@ -462,7 +479,7 @@ export default defineComponent({
 
       const stakedInPool = BigNumberToString(stakedInPoolBigNumber, 14, 4);
 
-      const TVL = new BigNumberJs(pool.totalLiquidity || '')
+      const TVL = new BigNumberJs(poolTotalLiquidty || '')
         .div(pool.totalShares || '')
         .times(stakedInPool)
         .toString();
@@ -482,13 +499,6 @@ export default defineComponent({
       const yearlyAPR = ((totalRewardPricePerYear / Number(TVL)) * 100)
         .toFixed(2)
         .toString();
-
-      if (yearlyAPR === 'NaN') {
-        console.log(xpolarPrice);
-        console.log(nearBalance);
-        console.log(xpolarBalance);
-        console.log(xpolarPool);
-      }
 
       return { dailyAPR: dailyAPR, yearlyAPR: yearlyAPR };
     },

@@ -127,7 +127,7 @@ const getTokenNames = () => {
 
   for (const token of Object.entries(Tokens)) {
     const tokenName: string = token[1][1]['symbol'];
-    console.log(token);
+    // console.log(token);
     tokenList.push(tokenName);
   }
 
@@ -142,7 +142,7 @@ const getTokenMapping = () => {
   for (const token of Object.entries(Tokens)) {
     const tokenName: string = token[1][1]['symbol'];
     const tokenAddress: string = token[1][1]['address'];
-    console.log(token[1][1]['symbol']);
+    // console.log(token[1][1]['symbol']);
     tokenList[tokenName] = tokenAddress;
   }
 
