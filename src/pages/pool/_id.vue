@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'px-8': isMobile }">
-    <div class="flex  xl:container mx-auto" >
+    <div class="mx-auto flex xl:container">
       <div class="flex-1 pt-8">
         <div class="mb-[24px] flex justify-between">
           <div class="flex-column">
@@ -63,9 +63,12 @@
           :missingPrices="missingPrices"
           class="mb-4"
         />
-        <div class="AC-container mt-5 mb-5" v-if="isMobile && !isCommunityPool(poolID())">
+        <div
+          class="AC-container mt-5 mb-5"
+          v-if="isMobile && !isCommunityPool(poolID())"
+        >
           <div>Staking incentives</div>
-          <div class="my-[12px] incentives-border"></div>
+          <div class="incentives-border my-[12px]"></div>
           <div class="incentives-text flex justify-between">
             <div>Staked LP tokens</div>
             <div>{{ stakedBalance }}</div>
@@ -81,7 +84,7 @@
             <div>XPOLAR to claim</div>
             <div>{{ xpolarToClaim }}</div>
           </div>
-          <div v-if="isApproved" class="incentives-text flex gap-[8px] mt-3">
+          <div v-if="isApproved" class="incentives-text mt-3 flex gap-[8px]">
             <button class="incentives-btn w-full" @click="toggleStakeModal()">
               Stake
             </button>
@@ -93,7 +96,10 @@
               :address="address"
               @close="toggleStakeModal"
             />
-            <button class="unstake-incentives-btn  w-full" @click="toggleUnstakeModal()">
+            <button
+              class="unstake-incentives-btn w-full"
+              @click="toggleUnstakeModal()"
+            >
               Unstake
             </button>
             <StakeModal
@@ -104,10 +110,14 @@
               :address="address"
               @close="toggleUnstakeModal"
             />
-            <button class="incentives-btn  w-full" @click="claim()">Claim</button>
+            <button class="incentives-btn w-full" @click="claim()">
+              Claim
+            </button>
           </div>
-          <div v-else class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn  w-full" @click="approve()">Approve</button>
+          <div v-else class="incentives-text mt-3 flex gap-[8px]">
+            <button class="incentives-btn w-full" @click="approve()">
+              Approve
+            </button>
           </div>
         </div>
         <div class="">
@@ -149,16 +159,23 @@
           </div>
         </div>
       </div>
-      <div class="flex-none pt-28" :class="{ 'pl-8': isDesktop }" :style= "[isDesktop ? {'width':'25%'}:{}]">
+      <div
+        class="flex-none pt-28"
+        :class="{ 'pl-8': isDesktop }"
+        :style="[isDesktop ? { width: '25%' } : {}]"
+      >
         <MyPoolBalancesCard
           v-if="isDesktop && pool"
           :pool="pool"
           :missingPrices="missingPrices"
           class="mb-4"
         />
-        <div class="AC-container mt-5 mb-5" v-if="isDesktop && !isCommunityPool(poolID())">
+        <div
+          class="AC-container mt-5 mb-5"
+          v-if="isDesktop && !isCommunityPool(poolID())"
+        >
           <div>Staking incentives</div>
-          <div class="my-[12px] incentives-border"></div>
+          <div class="incentives-border my-[12px]"></div>
           <div class="incentives-text flex justify-between">
             <div>Staked LP tokens</div>
             <div>{{ stakedBalance }}</div>
@@ -171,8 +188,8 @@
             <div>XPOLAR to claim</div>
             <div>{{ xpolarToClaim }}</div>
           </div>
-          <div v-if="isApproved" class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn  w-full" @click="toggleStakeModal()">
+          <div v-if="isApproved" class="incentives-text mt-3 flex gap-[8px]">
+            <button class="incentives-btn w-full" @click="toggleStakeModal()">
               Stake
             </button>
             <StakeModal
@@ -183,7 +200,10 @@
               :address="address"
               @close="toggleStakeModal"
             />
-            <button class="unstake-incentives-btn  w-full" @click="toggleUnstakeModal()">
+            <button
+              class="unstake-incentives-btn w-full"
+              @click="toggleUnstakeModal()"
+            >
               Unstake
             </button>
             <StakeModal
@@ -194,15 +214,19 @@
               :address="address"
               @close="toggleUnstakeModal"
             />
-            <button class="incentives-btn w-full" @click="claim()">Claim</button>
+            <button class="incentives-btn w-full" @click="claim()">
+              Claim
+            </button>
           </div>
-          <div v-else class="incentives-text flex gap-[8px] mt-3">
-            <button class="incentives-btn  w-full" @click="approve()">Approve</button>
+          <div v-else class="incentives-text mt-3 flex gap-[8px]">
+            <button class="incentives-btn w-full" @click="approve()">
+              Approve
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="mb-4 xl:container mx-auto">
+    <div class="mx-auto mb-4 xl:container">
       <h4
         class="table-title mb-[12px] px-4 lg:px-0"
         v-text="$t('poolComposition')"
@@ -210,15 +234,15 @@
       <PoolBalancesCard :pool="pool" :loading="loadingPool" />
     </div>
 
-    <div class="xl:container mx-auto" ref="intersectionSentinel" />
-    <div class="xl:container mx-auto" >
-    <PoolTransactionsCard
-      v-if="isSentinelIntersected"
-      :pool="pool"
-      :loading="loadingPool"
-    />
+    <div class="mx-auto xl:container" ref="intersectionSentinel" />
+    <div class="mx-auto xl:container">
+      <PoolTransactionsCard
+        v-if="isSentinelIntersected"
+        :pool="pool"
+        :loading="loadingPool"
+      />
     </div>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -318,6 +342,7 @@ const classicPoolsIds = [
   '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
   '0x454adaa07eec2c432c0df4379a709b1fa4c800ed000200000000000000000016',
   '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020',
+  '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
 ];
 
 const isCommunityPool = pool => {
@@ -709,6 +734,7 @@ export default defineComponent({
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
         '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
+        '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
       };
 
       const xpolarPool = computed(() => this.xpolarPoolQuery.data.value);

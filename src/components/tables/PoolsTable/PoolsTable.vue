@@ -344,6 +344,7 @@ export default defineComponent({
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
         '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
+        '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
       },
       prices: this.prices,
       data: this.data,
@@ -389,6 +390,7 @@ export default defineComponent({
         '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
         '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
         '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
+        '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
       };
 
       const xpolarPool = this.xpolarPoolQuery?.data;
