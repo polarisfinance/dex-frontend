@@ -62,6 +62,7 @@ const sunrises = computed(() =>
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>

@@ -43,7 +43,7 @@ function isActive(page: string): boolean {
     <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
       Portfolio
     </DesktopLinkItem>
-    <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
+    <DesktopLinkItem to="/vexpolar" :active="isActive('vexpolar')">
       vexPolar
     </DesktopLinkItem>
 

@@ -62,6 +62,7 @@ const classicPoolsIds = [
   '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
   '0x454adaa07eec2c432c0df4379a709b1fa4c800ed000200000000000000000016',
   '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020',
+  '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
 ];
 
 const contains = (arr1, arr2) => {
@@ -218,6 +219,7 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
+
     onScroll() {
       var scrollPos = window.scrollY;
       // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
@@ -415,17 +417,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.pg-bg {
-  background-image: url('./dawn_bg.svg');
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position-y: 0%;
-  background-position-x: right;
-  top: 0px;
-  padding-top: 100px;
-}
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
@@ -565,7 +556,6 @@ export default defineComponent({
   z-index: 100;
   background: #231928;
 }
-
 .is-sticky {
   position: fixed;
   top: 79px;
