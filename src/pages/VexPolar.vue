@@ -47,12 +47,17 @@ function iconAddresses(pool: PoolWithShares) {
           </div>
         </div>
       </div>
+      <div class="title mt-[160px]">
+      <div class="title-text">
+          Coming soon...
+      </div>
+      </div>
       <div
         :class="{
           'info-container': isDesktop,
           'info-container-mobile': isMobile,
         }"
-        class="mt-[120px]"
+        class="mt-[160px]"
       >
         <div class="info">
           <div class="info-title">
@@ -62,7 +67,7 @@ function iconAddresses(pool: PoolWithShares) {
           <div class="info-token">
             <img class="w-[124px]" src="./xpolar.svg" />
           </div>
-          <div class="info-subtitle">VexPolar</div>
+          <div class="info-subtitle">XPOLAR</div>
         </div>
         <div class="info">
           <div class="info-title">
@@ -72,7 +77,7 @@ function iconAddresses(pool: PoolWithShares) {
           <div class="info-token">
             <img class="w-[124px]" src="./polar-fancy.svg" />
           </div>
-          <div class="info-subtitle">VexPolar</div>
+          <div class="info-subtitle">SPOLAR</div>
         </div>
         <div class="info">
           <div class="info-title">
@@ -82,7 +87,7 @@ function iconAddresses(pool: PoolWithShares) {
           <div class="info-token">
             <img class="w-[124px]" src="./near.svg" />
           </div>
-          <div class="info-subtitle">VexPolar</div>
+          <div class="info-subtitle">NEAR</div>
         </div>
       </div>
 
