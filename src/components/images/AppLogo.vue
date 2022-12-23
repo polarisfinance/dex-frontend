@@ -37,14 +37,14 @@ const fillColor = computed(() => {
 </script>
 
 <template>
-  <div class="app-logo flex items-center sm:mr-4">
+  <div class="app-logo flex min-w-[185px] items-center sm:mr-4">
     <img src="./Logo.svg" width="62" height="62" class="mr-2" />
-    <p className="custom-logo-text self-center text-[20px] font-medium">
+    <nobr className="custom-logo-text self-center text-[20px] font-medium">
       POLARIS
-      <span className="custom-logo-text self-center text-[20px] font-semibold">
+      <nobr className="custom-logo-text self-center text-[20px] font-semibold">
         D E X
-      </span>
-    </p>
+      </nobr>
+    </nobr>
   </div>
 </template>
 
@@ -75,6 +75,4 @@ const fillColor = computed(() => {
   text-fill-color: transparent;
   color: transparent;
 }
-
-
 </style>

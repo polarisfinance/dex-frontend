@@ -48,33 +48,33 @@ function isActive(page: string): boolean {
     </DesktopLinkItem>
 
     <div class="dropdown">
-      <div class="dropdown-title flex gap-[12px] w-full">
+      <div class="dropdown-title flex w-full gap-[12px]">
         Bridges <img :src="ArrowDown" />
       </div>
       <div class="dropdown-content w-full">
         <a href="https://synapseprotocol.com/"
-          ><div class="flex justify-between w-full">
+          ><div class="flex w-full justify-between">
             <div>Synapse</div>
             <img src="./arrow.svg" />
           </div>
         </a>
         <a href="https://multichain.xyz/"
-          ><div class="flex justify-between w-full">
+          ><div class="flex w-full justify-between">
             <div>Multichain</div>
             <img src="./arrow.svg" /></div
         ></a>
         <a href="https://allbridge.io/classic/"
-          ><div class="flex justify-between w-full">
+          ><div class="flex w-full justify-between">
             <div>Allbridge</div>
             <img src="./arrow.svg" /></div
         ></a>
         <a href="https://cbridge.celer.network/"
-          ><div class="flex justify-between w-full">
+          ><div class="flex w-full justify-between">
             <div>CBridge</div>
             <img src="./arrow.svg" /></div
         ></a>
         <a href="https://rainbowbridge.app/"
-          ><div class="flex justify-between w-full">
+          ><div class="flex w-full justify-between">
             <div>Rainbow Bridge</div>
             <img src="./arrow.svg" /></div
         ></a>
@@ -92,7 +92,7 @@ function isActive(page: string): boolean {
 
 <style scoped>
 .desktop-links {
-  @apply grid h-full grid-flow-col grid-rows-1 content-center gap-x-[44px] font-semibold;
+  @apply grid h-full w-[600px] grid-flow-col grid-rows-1 content-center justify-between font-semibold;
 }
 
 .dropdown-title {
