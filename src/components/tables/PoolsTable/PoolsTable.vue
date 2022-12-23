@@ -361,9 +361,13 @@ export default defineComponent({
           loop();
         });
       }
+      const aprsPromises: any[] = [];
       for (var i = 0; i < this.data.length; i++) {
-        const apr = await this.fetch(this.data[i]);
-        this.aprs[this.data[i].address] = apr;
+        aprsPromises.push(this.fetch(this.data[i]));
+      }
+      const aprs = await Promise.all(aprsPromises);
+      for (var i = 0; i < this.data.length; i++) {
+        this.aprs[this.data[i].address] = aprs[i];
       }
     },
     async fetch(pool) {
@@ -448,20 +452,23 @@ export default defineComponent({
 
       const pid = PID[poolAddress.toLowerCase()];
       const depositToken = new Contract(poolAddress, ERC20ABI, w3);
-      const stakedInPool = BigNumberToString(
-        await depositToken.balanceOf(xpolarRewardPoolAddress),
-        14,
-        4
-      );
+
+      const [xpolarPerSecond, allocPoint, stakedInPoolBigNumber] =
+        await Promise.all([
+          xpolarRewardPool.xpolarPerSecond(),
+          xpolarRewardPool.poolInfo(pid),
+          depositToken.balanceOf(xpolarRewardPoolAddress),
+        ]);
+
+      const stakedInPool = BigNumberToString(stakedInPoolBigNumber, 14, 4);
 
       const TVL = new BigNumberJs(pool.totalLiquidity || '')
         .div(pool.totalShares || '')
         .times(stakedInPool)
         .toString();
-      const xpolarPerSecond = await xpolarRewardPool.xpolarPerSecond();
-      const allocPoint = (await xpolarRewardPool.poolInfo(pid)).allocPoint;
+
       const finalXpolarPerSecond = BigNumberToString(
-        xpolarPerSecond.mul(allocPoint).div(800000),
+        xpolarPerSecond.mul(allocPoint.allocPoint).div(800000),
         14,
         4
       );
