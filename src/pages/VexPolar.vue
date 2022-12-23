@@ -49,7 +49,7 @@ function iconAddresses(pool: PoolWithShares) {
       </div>
       <div class="title mt-[160px]">
       <div class="title-text">
-          Comming soon...
+          Coming soon...
       </div>
       </div>
       <div
