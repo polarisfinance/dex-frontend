@@ -29,8 +29,6 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div :class="{ 'pg-bg': isDesktop }"></div>
-  <div :class="{ 'relative': isDesktop }">
     <div class="sunrise-title py-10">
       <div class="flex-column">
         <div class="sunrise-title-text">Sunrise</div>
@@ -61,7 +59,6 @@ onMounted(() => {});
         </router-link>
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped>

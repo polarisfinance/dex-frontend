@@ -218,7 +218,8 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
-    onScroll() {
+
+    onScroll(){
       var scrollPos = window.scrollY;
       // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
       // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
@@ -415,17 +416,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.pg-bg {
-  background-image: url('./dawn_bg.svg');
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position-y: 0%;
-  background-position-x: right;
-  top: 0px;
-  padding-top: 100px;
-}
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
@@ -565,7 +555,6 @@ export default defineComponent({
   z-index: 100;
   background: #231928;
 }
-
 .is-sticky {
   position: fixed;
   top: 79px;
