@@ -337,7 +337,7 @@ const getRows = computed<ActivityRow[]>(() => {
   line-height: 20px;
 
   color: #fdfdfd;
-  padding-bottom: 0;
+  /* padding-bottom: 0; */
 }
 
 .border {
