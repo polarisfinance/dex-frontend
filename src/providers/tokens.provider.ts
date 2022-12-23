@@ -33,6 +33,9 @@ import {
   TokenList,
 } from '@/types/TokenList';
 
+import { balancer } from '@/lib/balancer.sdk';
+import { Pool, SubgraphPoolBase } from '@balancer-labs/sdk';
+
 /**
  * TYPES
  */
@@ -376,10 +379,87 @@ export default {
       });
     }
 
+    const getNearPrice = async () => {
+      const pool = (await balancer.poolsProvider.find(
+        '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a'
+      )) as Pool;
+
+      const spotPrice =
+        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+          '0xb12bfca5a55806aaf64e99521918a4bf0fc40802',
+          '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6',
+          pool as SubgraphPoolBase
+        );
+
+      return spotPrice;
+    };
+
+    const getSpolarPrice = async () => {
+      const pool = (await balancer.poolsProvider.find(
+        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+      )) as Pool;
+
+      const spotPrice =
+        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+          '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+          '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
+          pool as SubgraphPoolBase
+        );
+
+      const nearPrice = await getNearPrice();
+
+      return (Number(nearPrice) * Number(spotPrice)).toFixed(2).toString();
+    };
+
+    const getXpolarPrice = async () => {
+      const pool = (await balancer.poolsProvider.find(
+        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+      )) as Pool;
+
+      const spotPrice =
+        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+          '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+          '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993',
+          pool as SubgraphPoolBase
+        );
+
+      const nearPrice = await getNearPrice();
+
+      return (Number(nearPrice) * Number(spotPrice)).toFixed(2).toString();
+    };
+
+    let spolarPrice, xpolarPrice;
+    getSpolarPrice()
+      .then(e => (spolarPrice = e))
+      .catch(err => {
+        spolarPrice = 0;
+        console.log(err);
+      });
+
+    getXpolarPrice()
+      .then(e => {
+        xpolarPrice = e;
+      })
+      .catch(err => {
+        xpolarPrice = 0;
+        console.log(err);
+      });
+
     /**
      * Fetch price for a token
      */
     function priceFor(address: string): number {
+      if (
+        address.toLocaleLowerCase() ==
+        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729'.toLocaleLowerCase()
+      )
+        return spolarPrice;
+      else if (
+        address.toLocaleLowerCase() ==
+        '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993'.toLocaleLowerCase()
+      )
+        return xpolarPrice;
+
       if (address) address = getAddress(address);
       try {
         return prices.value[address][currency.value] || 0;
