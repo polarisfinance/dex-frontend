@@ -8,6 +8,9 @@ import { includesAddress } from '@/lib/utils';
 import { retryPromiseWithDelay } from '@/lib/utils/promise';
 import { configService as _configService } from '@/services/config/config.service';
 
+const NodeCache = require( "node-cache" );
+const coinGeckoPricesCache = new NodeCache();
+
 import { CoingeckoClient } from '../coingecko.client';
 import {
   CoingeckoService,
@@ -69,7 +72,12 @@ export class PriceService {
     addresses: string[],
     addressesPerRequest = 100
   ): Promise<TokenPrices> {
+    const cachedResult = coinGeckoPricesCache.get( "getTokens" );
+    if(cachedResult!=undefined)
+      return cachedResult;
+
     try {
+
       if (addresses.length / addressesPerRequest > 10)
         throw new Error('To many requests for rate limit.');
 
@@ -154,7 +162,7 @@ export class PriceService {
         results['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] =
           results['0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'];
       }
-
+      coinGeckoPricesCache.set( "getTokens", results, 120 );    //seconds
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
@@ -168,6 +176,11 @@ export class PriceService {
     addressesPerRequest = 1,
     aggregateBy: 'hour' | 'day' = 'day'
   ): Promise<HistoricalPrices> {
+
+    const cachedResult = coinGeckoPricesCache.get( addresses.join() +  aggregateBy);
+    if(cachedResult!=undefined)
+      return cachedResult;
+
     try {
       if (addresses.length / addressesPerRequest > 10)
         throw new Error('To many requests for rate limit.');
@@ -215,6 +228,9 @@ export class PriceService {
         start,
         aggregateBy
       );
+      
+      coinGeckoPricesCache.set( addresses.join() +  aggregateBy, results, 600 );    //seconds
+      localStorage.setItem("polarisDexPriceCache", JSON.stringify(coinGeckoPricesCache));
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
