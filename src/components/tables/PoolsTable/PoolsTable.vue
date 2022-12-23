@@ -529,7 +529,7 @@ export default defineComponent({
     </div>
     <div class="table-title flex justify-between">
       <div class="flex w-full items-center">
-        <img :src="img" class="mr-[12px] h-[14px] w-[24px]" />
+        <!-- <img :src="img" class="mr-[12px] h-[14px] w-[24px]" /> -->
         <div>Pool name</div>
       </div>
       <div class="w-full justify-end text-right">TVL & APR</div>
@@ -579,9 +579,15 @@ export default defineComponent({
                 </div>
               </template>
             </div>
+
             <div class="APR">
+              <template v-if="noApr">
+                <div class="h-4 w-12">
+                  {{ '0' + '%' }}
+                </div>
+              </template>
               <BalLoadingBlock
-                v-if="
+                v-else-if="
                   !aprs ||
                   !aprs[pool.address] ||
                   !aprs[pool.address]['dailyAPR']
@@ -594,8 +600,13 @@ export default defineComponent({
               </template>
             </div>
             <div class="APR">
+              <template v-if="noApr">
+                <div class="h-4 w-12">
+                  {{ '0' + '%' }}
+                </div>
+              </template>
               <BalLoadingBlock
-                v-if="
+                v-else-if="
                   !aprs ||
                   !aprs[pool.address] ||
                   !aprs[pool.address]['yearlyAPR']
@@ -618,7 +629,7 @@ export default defineComponent({
     </div>
     <div class="table-title mt-[48px] flex w-full">
       <div class="flex w-full items-center">
-        <img :src="img" class="mr-[12px]" />
+        <!-- <img :src="img" class="mr-[12px]" /> -->
         <div>Pool name</div>
       </div>
       <div class="grid-table">
