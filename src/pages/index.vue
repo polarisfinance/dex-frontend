@@ -236,8 +236,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <div :class="{ 'pg-bg': isDesktop }"></div>
-  <div :class="{ relative: isDesktop }">
     <HomePageHero />
 
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
@@ -248,6 +246,7 @@ export default defineComponent({
             'is-sticky': stickyPanel,
             'navbar-bg': stickyPanel,
             'not-sticky': !stickyPanel,
+            'filter-panel-mobile': isMobile,
           }"
         >
           <div
@@ -351,7 +350,9 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div id="segniorage">
+        <div id="segniorage" :class="{
+            'mt-[70px]': stickyPanel && isMobile,
+          }">
           <PoolsTable
             :key="filteredTokensList"
             :data="segnioragePools"
@@ -413,7 +414,6 @@ export default defineComponent({
         </div> -->
       </BalStack>
     </div>
-  </div>
 </template>
 
 <style scoped>
@@ -570,5 +570,8 @@ export default defineComponent({
 }
 .not-sticky {
   position: relative;
+}
+.is-sticky.filter-panel-mobile{
+  top: 69px;
 }
 </style>
