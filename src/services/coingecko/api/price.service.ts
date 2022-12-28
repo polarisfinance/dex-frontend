@@ -8,10 +8,8 @@ import { includesAddress } from '@/lib/utils';
 import { retryPromiseWithDelay } from '@/lib/utils/promise';
 import { configService as _configService } from '@/services/config/config.service';
 
-const NodeCache = require( "node-cache" );
-const coinGeckoPricesCache = new NodeCache();
-
 import { CoingeckoClient } from '../coingecko.client';
+import { CoingeckoCacheClient } from '../coingecko.cache.client';
 import {
   CoingeckoService,
   getNativeAssetId,
@@ -33,6 +31,7 @@ export type HistoricalPrices = { [timestamp: string]: number[] };
 
 export class PriceService {
   client: CoingeckoClient;
+  cacheClient: CoingeckoCacheClient;
   fiatParam: string;
   appNetwork: string;
   platformId: string;
@@ -45,6 +44,7 @@ export class PriceService {
     private readonly configService = _configService
   ) {
     this.client = service.client;
+    this.cacheClient = service.cacheClient;
     this.fiatParam = service.supportedFiat;
     this.appNetwork = this.configService.network.key;
     this.platformId = getPlatformId(this.appNetwork);
@@ -72,10 +72,6 @@ export class PriceService {
     addresses: string[],
     addressesPerRequest = 100
   ): Promise<TokenPrices> {
-    const cachedResult = coinGeckoPricesCache.get( "getTokens" );
-    if(cachedResult!=undefined)
-      return cachedResult;
-
     try {
 
       if (addresses.length / addressesPerRequest > 10)
@@ -123,16 +119,16 @@ export class PriceService {
           }
         }
 
-        const endpoint = `/simple/token_price/${this.platformId}?contract_addresses=${addressString}&vs_currencies=${this.fiatParam}`;
+        const endpoint = `/getTokens/?chain=${this.platformId}&contract_addresses=${addressString}&vs_currencies=${this.fiatParam}`;
         const request = retryPromiseWithDelay(
-          this.client.get<PriceResponse>(endpoint),
+          this.cacheClient.get<PriceResponse>(endpoint),
           3,
           2000
         );
         requests.push(request);
-        const bnbEndpoint = `/simple/token_price/binance-smart-chain?contract_addresses=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&vs_currencies=${this.fiatParam}`;
+        const bnbEndpoint = `/getTokens/?chain=binance-smart-chain&contract_addresses=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&vs_currencies=${this.fiatParam}`;
         const bnbRequest = retryPromiseWithDelay(
-          this.client.get<PriceResponse>(bnbEndpoint),
+          this.cacheClient.get<PriceResponse>(bnbEndpoint),
           3,
           2000
         );
@@ -162,7 +158,6 @@ export class PriceService {
         results['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] =
           results['0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'];
       }
-      coinGeckoPricesCache.set( "getTokens", results, 120 );    //seconds
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
@@ -176,10 +171,6 @@ export class PriceService {
     addressesPerRequest = 1,
     aggregateBy: 'hour' | 'day' = 'day'
   ): Promise<HistoricalPrices> {
-
-    const cachedResult = coinGeckoPricesCache.get( addresses.join() +  aggregateBy);
-    if(cachedResult!=undefined)
-      return cachedResult;
 
     try {
       if (addresses.length / addressesPerRequest > 10)
@@ -229,8 +220,6 @@ export class PriceService {
         aggregateBy
       );
       
-      coinGeckoPricesCache.set( addresses.join() +  aggregateBy, results, 600 );    //seconds
-      localStorage.setItem("polarisDexPriceCache", JSON.stringify(coinGeckoPricesCache));
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
