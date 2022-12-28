@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import useBreakpoints from '@/composables/useBreakpoints';
+import BondPageHero from '@/components/heros/BondPageHero.vue';
 
 import polarImg from './Pbond.svg';
 import orbitalImg from './Obond.svg';
@@ -27,12 +28,7 @@ const sunrises = computed(() =>
 </script>
 
 <template>
-  <div class="sunrise-title py-10">
-    <div class="flex-column">
-      <div class="sunrise-title-text">Bond</div>
-      <div class="sunrise-subtitle-text">Earn premiums upon redemption</div>
-    </div>
-  </div>
+  <BondPageHero />
   <div
     :class="{
       sunrisePlaceholder: isDesktop,

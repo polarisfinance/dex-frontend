@@ -237,7 +237,7 @@ export default defineComponent({
 
 <template>
     <HomePageHero />
-
+  
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
       <BalStack vertical>
         <div
@@ -417,6 +417,23 @@ export default defineComponent({
 </template>
 
 <style scoped>
+
+.title {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-text {
+  position: absolute;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 82px;
+  text-align: center;
+  color: #fdfdfd;
+}
+
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;

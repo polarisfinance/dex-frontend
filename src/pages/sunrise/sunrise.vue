@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import useBreakpoints from '@/composables/useBreakpoints';
-
+import SunrisePageHero from '@/components/heros/SunrisePageHero.vue';
 import polarImg from './polar.svg';
 import orbitalImg from './orbital.svg';
 import uspImg from './usp.svg';
@@ -29,12 +29,8 @@ onMounted(() => {});
 </script>
 
 <template>
-    <div class="sunrise-title py-10">
-      <div class="flex-column">
-        <div class="sunrise-title-text">Sunrise</div>
-        <div class="sunrise-subtitle-text">The right place for your $SPOLAR</div>
-      </div>
-    </div>
+  <SunrisePageHero/>
+   
     <div
       :class="{
         sunrisePlaceholder: isDesktop,
