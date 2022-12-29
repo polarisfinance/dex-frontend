@@ -4,7 +4,7 @@ export class CoingeckoCacheClient {
   baseUrl: string;
 
   constructor() {
-    this.baseUrl = 'http://iMacPro.local:8181/';
+    this.baseUrl = 'https://coingecko.polarisfinance.io';
   }
 
   async get<T>(endpoint: string): Promise<T> {
