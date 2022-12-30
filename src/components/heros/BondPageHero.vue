@@ -23,26 +23,12 @@ const classes = computed(() => ({
 }));
 </script>
 
+
 <template>
   <AppHero :class="classes">
     <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
-    <h1 class="home-title">Automated portfolio manager</h1>
-    <h1 class="home-subtitle">and trading platform</h1>
-    <template v-if="!isWalletReady && !isWalletConnecting">
-      <div class="mt-[60px] flex w-full justify-center">
-        <HeroConnectWalletButton class="mr-[16px]" />
-
-        <a
-          :href="EXTERNAL_LINKS.Balancer.Home"
-          target="_blank"
-          rel="noreferrer"
-          @click="trackGoal(Goals.ClickHeroLearnMore)"
-          class="learn-more-button font-semibold"
-        >
-          Learn more
-        </a>
-      </div>
-    </template>
+    <h1 class="home-title">Bond</h1>
+    <h1 class="home-subtitle">Earn premiums upon redemption</h1>
   </AppHero>
 </template>
 

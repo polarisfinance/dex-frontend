@@ -236,10 +236,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <div :class="{ 'pg-bg': isDesktop }"></div>
-  <div :class="{ relative: isDesktop }">
     <HomePageHero />
-
+  
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
       <BalStack vertical>
         <div
@@ -248,6 +246,7 @@ export default defineComponent({
             'is-sticky': stickyPanel,
             'navbar-bg': stickyPanel,
             'not-sticky': !stickyPanel,
+            'filter-panel-mobile': isMobile,
           }"
         >
           <div
@@ -351,7 +350,9 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div id="segniorage">
+        <div id="segniorage" :class="{
+            'mt-[70px]': stickyPanel && isMobile,
+          }">
           <PoolsTable
             :key="filteredTokensList"
             :data="segnioragePools"
@@ -413,10 +414,26 @@ export default defineComponent({
         </div> -->
       </BalStack>
     </div>
-  </div>
 </template>
 
 <style scoped>
+
+.title {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-text {
+  position: absolute;
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 82px;
+  text-align: center;
+  color: #fdfdfd;
+}
+
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   border-radius: 12px;
@@ -570,5 +587,8 @@ export default defineComponent({
 }
 .not-sticky {
   position: relative;
+}
+.is-sticky.filter-panel-mobile{
+  top: 69px;
 }
 </style>
