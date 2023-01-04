@@ -351,7 +351,7 @@ export default defineComponent({
           </div>
         </div>
         <div id="segniorage" :class="{
-            'mt-[70px]': stickyPanel && isMobile,
+            'mt-[100px]': stickyPanel && isMobile,
           }">
           <PoolsTable
             :key="filteredTokensList"
