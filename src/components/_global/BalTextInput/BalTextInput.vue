@@ -172,20 +172,10 @@ onMounted(() => {
 <style scoped>
 .input-container {
   @apply flex flex-col transition-colors;
-  background-color: #261737;
-  border-radius: 16px;
   border: none;
+  background: none;
   height: 86px;
   font-weight: 500;
-  border: 0.5px solid rgba(0, 0, 0, 0);
-
-}
-.input-container:hover {
-  border: 0.5px solid rgba(0,0,0,0)
-}
-.input-container:focus-within {
-  border: 0.5px solid rgba(215, 178, 255, 0.25);
-
 }
 
 ::placeholder {

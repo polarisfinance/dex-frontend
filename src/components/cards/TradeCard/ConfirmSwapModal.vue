@@ -373,8 +373,8 @@ watch(blockNumber, () => {
 
 <template>
   <BalModal show @close="onClose" class="confirm-swap">
-    <div class="p-0.5">
-      <div class="header flex items-center justify-between px-1.5 pb-[12px]">
+    <div>
+      <div class="header flex items-center justify-between px-[24px] py-[14px]">
         <div>Confirm Swap</div>
         <div><X @click="onClose" class="cursor-pointer" /></div>
       </div>
@@ -398,7 +398,7 @@ watch(blockNumber, () => {
       <div class="flex w-full justify-center">
         <div class="arrow absolute"><ArrowDownSwap /></div>
       </div>
-      <div class="token-input mt-2 flex justify-between p-4">
+      <div class="token-input mt-[1px] flex justify-between p-4">
         <div class="flex items-center">
           <BalAsset
             :address="props.trading.tokenOut.value.address"
@@ -415,15 +415,7 @@ watch(blockNumber, () => {
           </div>
         </div>
       </div>
-      <div class="price p-2">
-        Price:
-        {{
-          trading.exactIn.value
-            ? trading.effectivePriceMessage.value.tokenIn
-            : trading.effectivePriceMessage.value.tokenOut
-        }}
-      </div>
-      <div class="summary-card mb-3">
+      <div class="summary-card">
         <TradePreviewModalGP
           :trading="trading"
           @trade="trade"
@@ -431,7 +423,7 @@ watch(blockNumber, () => {
         />
       </div>
       <div
-        class="accept-update flex items-center justify-between"
+        class="accept-update flex items-center justify-between p-[12px]"
         v-if="priceUpdated.value"
       >
         <div class="flex items-center">
@@ -783,64 +775,66 @@ watch(blockNumber, () => {
           </div>
         </BalTooltip>
       </div> -->
-    <BalBtn
-      v-if="requiresGnosisRelayerApproval"
-      block
-      :loading="
-        gnosisRelayerApproval.init.value ||
-        gnosisRelayerApproval.approving.value
-      "
-      :loadingLabel="`${$t('approvingGnosisRelayer')}...`"
-      @click.prevent="gnosisRelayerApproval.approve"
-      color="gradient"
-    >
-      {{ $t('approveGnosisRelayer') }}
-    </BalBtn>
-    <BalBtn
-      v-else-if="requiresLidoRelayerApproval"
-      block
-      :loading="
-        lidoRelayerApproval.init.value || lidoRelayerApproval.approving.value
-      "
-      :loadingLabel="`${$t('approvingLidoRelayer')}...`"
-      @click.prevent="lidoRelayerApproval.approve"
-      color="gradient"
-    >
-      {{ $t('approveLidoRelayer') }}
-    </BalBtn>
-    <BalBtn
-      v-else-if="requiresTokenApproval"
-      :loading="tokenApproval.approving.value"
-      :loadingLabel="`${$t('approving')} ${trading.tokenIn.value.symbol}...`"
-      block
-      @click.prevent="approveToken"
-      color="gradient"
-    >
-      {{ `${$t('approve')} ${trading.tokenIn.value.symbol}` }}
-    </BalBtn>
-    <BalBtn
-      v-else
-      block
-      :loading="trading.isConfirming.value"
-      :loadingLabel="$t('confirming')"
-      :disabled="tradeDisabled"
-      class="relative"
-      @click.prevent="trade"
-      color="gradient"
-    >
-      {{ labels.confirmTrade }}
-    </BalBtn>
-    <BalAlert
-      v-if="trading.submissionError.value != null"
-      class="mt-4 p-3"
-      type="error"
-      size="md"
-      :title="$t('tradeSubmissionError.title')"
-      :description="trading.submissionError.value"
-      block
-      :actionLabel="$t('tradeSubmissionError.actionLabel')"
-      @action-click="trading.resetSubmissionError"
-    />
+      <div class="px-[12px] pb-[12px]">
+        <BalBtn
+          v-if="requiresGnosisRelayerApproval"
+          block
+          :loading="
+            gnosisRelayerApproval.init.value ||
+            gnosisRelayerApproval.approving.value
+          "
+          :loadingLabel="`${$t('approvingGnosisRelayer')}...`"
+          @click.prevent="gnosisRelayerApproval.approve"
+          color="gradient"
+        >
+          {{ $t('approveGnosisRelayer') }}
+        </BalBtn>
+        <BalBtn
+          v-else-if="requiresLidoRelayerApproval"
+          block
+          :loading="
+            lidoRelayerApproval.init.value || lidoRelayerApproval.approving.value
+          "
+          :loadingLabel="`${$t('approvingLidoRelayer')}...`"
+          @click.prevent="lidoRelayerApproval.approve"
+          color="gradient"
+        >
+          {{ $t('approveLidoRelayer') }}
+        </BalBtn>
+        <BalBtn
+          v-else-if="requiresTokenApproval"
+          :loading="tokenApproval.approving.value"
+          :loadingLabel="`${$t('approving')} ${trading.tokenIn.value.symbol}...`"
+          block
+          @click.prevent="approveToken"
+          color="gradient"
+        >
+          {{ `${$t('approve')} ${trading.tokenIn.value.symbol}` }}
+        </BalBtn>
+        <BalBtn
+          v-else
+          block
+          :loading="trading.isConfirming.value"
+          :loadingLabel="$t('confirming')"
+          :disabled="tradeDisabled"
+          class="relative"
+          @click.prevent="trade"
+          color="gradient"
+        >
+          {{ labels.confirmTrade }}
+        </BalBtn>
+        <BalAlert
+          v-if="trading.submissionError.value != null"
+          class="mt-4 p-3"
+          type="error"
+          size="md"
+          :title="$t('tradeSubmissionError.title')"
+          :description="trading.submissionError.value"
+          block
+          :actionLabel="$t('tradeSubmissionError.actionLabel')"
+          @action-click="trading.resetSubmissionError"
+        />
+      </div>
     <!-- </div> -->
     <!-- <TradeRoute
       v-if="showTradeRoute"
@@ -869,10 +863,7 @@ watch(blockNumber, () => {
 }
 
 .token-input {
-  background: #261737;
-  box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
-  border-radius: 16px;
-
+  background: #41365E;
   font-weight: 500;
   font-size: 24px;
   line-height: 31px;
@@ -901,10 +892,7 @@ watch(blockNumber, () => {
 }
 
 .summary-card {
-  background: #261737;
-  box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
-  border-radius: 16px;
-  padding: 0.5em 0.3em;
+  padding:16px;
 }
 
 .accept-update {

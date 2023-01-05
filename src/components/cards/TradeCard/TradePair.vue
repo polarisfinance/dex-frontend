@@ -145,16 +145,17 @@ watchEffect(() => {
 
 <template>
   <div>
-    <TokenInput
-      :amount="_tokenInAmount"
-      :address="_tokenInAddress"
-      name="tokenIn"
-      :excludedTokens="[veBalTokenInfo?.address]"
-      :ignoreWalletBalance="tradeLoading"
-      @update:amount="handleInAmountChange"
-      @update:address="handleInputTokenChange"
-    />
-
+    <div style="background-color: #41365E;">
+      <TokenInput
+        :amount="_tokenInAmount"
+        :address="_tokenInAddress"
+        name="tokenIn"
+        :excludedTokens="[veBalTokenInfo?.address]"
+        :ignoreWalletBalance="tradeLoading"
+        @update:amount="handleInAmountChange"
+        @update:address="handleInputTokenChange"
+      />
+    </div>
     <div class="my-[6px] flex justify-center align-middle">
       <div class="toggle absolute">
         <TradePairToggle @toggle="handleTokenSwitch" />
@@ -167,24 +168,26 @@ watchEffect(() => {
         v-html="rateLabel"
       /> -->
     </div>
-
-    <TokenInput
-      :amount="_tokenOutAmount"
-      :address="_tokenOutAddress"
-      name="tokenOut"
-      :priceImpact="priceImpact"
-      noRules
-      noMax
-      disableNativeAssetBuffer
-      :excludedTokens="[veBalTokenInfo?.address]"
-      @update:amount="handleOutAmountChange"
-      @update:address="handleOutputTokenChange"
-    />
+    <div >
+      <TokenInput
+        :amount="_tokenOutAmount"
+        :address="_tokenOutAddress"
+        name="tokenOut"
+        :priceImpact="priceImpact"
+        noRules
+        noMax
+        disableNativeAssetBuffer
+        :excludedTokens="[veBalTokenInfo?.address]"
+        @update:amount="handleOutAmountChange"
+        @update:address="handleOutputTokenChange"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped>
 .toggle {
-  transform: translateY(-50%);
+  transform: translateY(-60%);
 }
+
 </style>

@@ -145,10 +145,15 @@ export default defineComponent({
 
 .header {
   @apply flex items-center;
+  background-color: #41365E;
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+  
 }
 
 .header-content {
   @apply flex flex-1 items-center;
+  
 }
 
 .footer {

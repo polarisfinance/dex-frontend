@@ -1,12 +1,13 @@
 <template>
   <BalCard
     noPad
-    class="card-container relative px-[12px] py-[12px]"
+    noBorder
+    class="card-container relative"
     :shadow="tradeCardShadow"
   >
-    <template #header>
-      <div class="header mb-[12px] flex w-full items-center justify-between">
-        <h4 class="title ml-[10px]">{{ title }}</h4>
+    <template #header >
+      <div class="header mb-[12px] flex w-full items-center justify-between" >
+        <h4 class="title ml-[18px] mt-[14px]" >{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
           :isGasless="trading.tradeGasless.value"
@@ -47,22 +48,7 @@
         :description="warning.body"
         block
       />
-      <div
-        v-if="
-          tokenInAddress &&
-          tokenOutAddress &&
-          tokenInAmount > 0 &&
-          tokenOutAmount > 0
-        "
-        class="price"
-      >
-        Price:
-        {{
-          trading.exactIn.value
-            ? trading.effectivePriceMessage.value.tokenIn
-            : trading.effectivePriceMessage.value.tokenOut
-        }}
-      </div>
+      <div class="mx-[12px] mb-[12px]">
       <BalBtn
         v-if="trading.isLoading.value"
         loading
@@ -95,6 +81,8 @@
       >
         Connect Wallet
       </button>
+      </div>
+
       <div
         v-if="
           tokenInAddress &&
@@ -104,13 +92,15 @@
         "
         class="stats"
       >
-        <div>
+        
+        <div class="p-[16px]">
           <TradePreviewModalGP
             :trading="trading"
             @trade="trade"
             @close="handlePreviewModalClose"
           />
-          <div class="border" />
+          <div  />
+          <div class=""><div class="mx-[8px] my-[22px] border"></div></div>
           <TradeRoute
             :addressIn="trading.tokenIn.value.address"
             :amountIn="trading.tokenInAmountInput.value"
@@ -462,6 +452,7 @@ export default defineComponent({
 /* This is needed because the trade settings popover overflows */
 .card-container {
   overflow: unset;
+  background-color: #292043;
   /* width: 480px; */
 }
 
@@ -537,11 +528,7 @@ export default defineComponent({
   border-radius: 12px;
 }
 
-.border {
-  border: 0.5px solid rgba(111, 71, 115, 0.4);
-  margin-left: 0.55em !important;
-  margin-right: 0.55em !important;
-}
+
 
 .price {
   font-weight: 500;
@@ -556,6 +543,8 @@ export default defineComponent({
 .stats {
   margin-top: 1em !important;
 }
-
+.border{
+  border: 0.5px solid rgba(59, 68, 189, 0.4);
+}
 
 </style>

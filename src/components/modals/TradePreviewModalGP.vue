@@ -1,21 +1,33 @@
 <template>
   <div>
     <div noPad class="relative mb-2 overflow-auto">
-      <div class="my-0.5 mx-2 flex justify-between">
+
+      <div class="mt-0 mb-[12px]flex justify-between">
+        <div class="summary price">
+          Price:
+          {{
+            trading.exactIn.value
+              ? trading.effectivePriceMessage.value.tokenIn
+              : trading.effectivePriceMessage.value.tokenOut
+          }}
+          </div>
+        <div class="summary-stat"></div>
+      </div>
+      <div class="my-0.5 flex justify-between">
         <div class="summary">Minimum Received</div>
         <div class="summary-stat">{{ summary.totalWithSlippage }}</div>
       </div>
-      <div class="my-0.5 mx-2 flex justify-between">
+      <div class="my-0.5 flex justify-between">
         <div class="summary">Price Impact</div>
         <div class="slippage">
           {{ fNum2(trading.sor.priceImpact.value, FNumFormats.percent) }}
         </div>
       </div>
-      <div class="my-0.5 mx-2 flex justify-between">
+      <div class="my-0.5 flex justify-between">
         <div class="summary">Liquidity Provider Fee</div>
         <div class="summary-stat">{{ summary.tradeFees }}</div>
       </div>
-      <div class="my-0.5 mx-2 flex justify-between">
+      <div class="my-0.5 flex justify-between">
         <div class="summary">Routed Via</div>
         <div class="routed">Standard AMM</div>
       </div>
@@ -532,7 +544,11 @@ export default defineComponent({
   font-size: 12px;
   line-height: 15px;
 
-  color: #b9babb;
+  color: #FDFDFD;
+}
+.summary.price{
+  color: #BDB2DD;
+  font-weight: 500;
 }
 
 .summary-stat {

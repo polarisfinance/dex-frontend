@@ -232,6 +232,8 @@ watchEffect(() => {
     step="any"
     spellcheck="false"
     v-bind="$attrs"
+    noShadow
+    noBorder
     inputAlignRight
     @blur="emit('blur', $event)"
     @input="emit('input', $event)"
@@ -269,13 +271,13 @@ watchEffect(() => {
             <template v-if="hasBalance && !noMax && !disableMax">
               <span
                 v-if="!isMaxed"
-                class="mr-[4px] rounded-xl bg-[#200D30] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#D7B2FF] transition-colors"
+                class="transition-colors btn-max"
               >
                 MAX
               </span>
               <span
                 v-else
-                class="mr-[4px] rounded-xl bg-[#200D30] pl-[7px] pr-[7px] pt-[1px] text-[12px] leading-[15px] text-[#D7B2FF] transition-colors"
+                class="transition-colors transition-colors btn-max"
               >
                 MAXED
               </span>
@@ -314,7 +316,7 @@ watchEffect(() => {
           :width="maxPercentage"
           :bufferWidth="bufferPercentage"
           :color="barColor"
-          class="my-[3.5px]"
+          class="my-[0px]"
         />
         <!-- for tailwind jit to load color clases -->
         <div class="hidden bg-pink-primary"></div>
@@ -334,3 +336,26 @@ watchEffect(() => {
     </template>
   </BalTextInput>
 </template>
+<style scoped>
+.btn-max {
+   margin-right:8px;
+  padding: 1px 7px;
+  gap: 10px;
+
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.btn-max:hover {
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
+  );
+}
+</style>

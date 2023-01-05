@@ -7,7 +7,7 @@
       >
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
         <!-- <IconSettings class="mt-1 mr-[12px]" /> -->
-        <img :src="Picture" height="24" class="mr-[12px]" />
+        <img :src="Picture" height="24" class="mr-[12px] mt-[12px]" />
       </button>
     </template>
 
