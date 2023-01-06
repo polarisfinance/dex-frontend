@@ -71,7 +71,7 @@ function toggleModal(): void {
       :class="['token-select-input selected group', { selectable: !fixed }]"
       @click="toggleModal"
     >
-      <div class="grid content-center px-[6px]">
+      <div class="grid content-center px-[8px]">
         <BalAsset :address="token?.address" class="shadow" />
       </div>
       <span class="text-base text-[20px] font-semibold">
@@ -85,7 +85,7 @@ function toggleModal(): void {
           })
         }}
       </span>
-      <span v-if="!fixed" >
+      <span v-if="!fixed" class="mr-[7px]">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_155_801)">
         <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -160,7 +160,7 @@ function toggleModal(): void {
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
-      <span>
+      <span class="mr-[9px]">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_155_801)">
         <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -197,9 +197,8 @@ function toggleModal(): void {
 }
 
 .group:hover {
-  background: #392253 !important;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
-    inset 2px 2px 4px #18111c !important;
+  background: rgba(80, 69, 110, 0.7) !important;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25) !important;
 }
 
 .token-select-input {

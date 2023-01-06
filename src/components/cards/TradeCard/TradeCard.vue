@@ -472,23 +472,22 @@ export default defineComponent({
   content: '✍️';
 }
 
+
 .connect-wallet {
-  padding: 12px 0px;
+  padding: 10px 0px;
   gap: 12px;
-  left: 10px;
+  left: 12px;
   top: 226px;
 
-  background: #1e102d;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
-    inset 2px 2px 4px #010001;
+  background: #41365E;
   border-radius: 12px;
-  color: #d7b3ff;
+  color: #A99BC6;
 
   width: 100%;
 }
 
 .connect-wallet:hover {
-  background: #2C1842;
+
   box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3), inset 2px 2px 4px #010001;
 }
 

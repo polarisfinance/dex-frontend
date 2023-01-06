@@ -257,7 +257,7 @@ watchEffect(() => {
     <template v-if="!hideFooter" #footer>
       <div
         v-if="isWalletReady || (hasAmount && hasToken)"
-        class="flex flex-col pt-[4.51px]"
+        class="flex flex-col"
       >
         <div
           class="flex items-center justify-between text-sm leading-[18px] text-[#F5E1FF]"
@@ -265,7 +265,7 @@ watchEffect(() => {
           <div v-if="!isWalletReady || disableBalance" />
           <div
             v-else
-            class="ml-[12px] mb-[11px] flex cursor-pointer items-center"
+            class="ml-[12px] mt-[8px] mb-[12px] flex cursor-pointer items-center"
             @click="setMax"
           >
             <template v-if="hasBalance && !noMax && !disableMax">

@@ -135,6 +135,10 @@ export default defineComponent({
       if (props.color.includes('gradient')) return bgGradientClasses.value;
       else if (props.outline) return 'bg-transparent';
       else if (props.flat) return bgFlatClasses.value;
+      else if (props.color === 'transparent') 
+        return 'bg-transparent';
+      else if (props.color === 'gray')
+        return 'bg-[#50456E]';
       else if (props.color === 'white') {
         return 'bg-gray-50 hover:bg-white dark:bg-gray-800';
       } else {
@@ -247,11 +251,12 @@ export default defineComponent({
 .bal-btn {
   /* background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
   border-radius: 16px; */
+  border-radius: 16px;
  
 }
 
 .content {
-  @apply  pt-[5px] pb-[3px] inline-block selection:align-bottom font-semibold;
+  @apply  pt-[6px] pb-[4px] inline-block selection:align-bottom font-semibold;
 }
 
 .confirm-button {
@@ -262,16 +267,14 @@ export default defineComponent({
 
 .loading {
   @apply font-semibold;
-  padding: 12px 0px;
+  padding: 10px 0px;
   gap: 12px;
-  left: 10px;
+  left: 12px;
   top: 226px;
 
-  background: #1e102d;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
-    inset 2px 2px 4px #010001;
+  background: #41365E;
   border-radius: 12px;
-  color: #d7b3ff;
+  color: #A99BC6;
 
   width: 100%;
 }

@@ -1,12 +1,12 @@
 <template>
-  <div class="flex">
+  <div class="flex w-full switcher">
     <BalBtn
       v-for="option in options"
       :key="option.value"
       size="sm"
-      class="w-18 mr-2 capitalize"
+      class="w-18 capitalize flex-1"
       v-bind="attrs_"
-      :color="modelValue === option.value ? 'light' : 'dark'"
+      :color="modelValue === option.value ? 'gray' : 'transparent'"
       @click="onSelect(option)"
     >
       {{ 'best' === option.label ? $t(option.label) : option.label }}
@@ -54,3 +54,9 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.switcher{
+  background: #292043;
+  border-radius: 16px;
+}
+</style>

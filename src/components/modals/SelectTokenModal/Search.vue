@@ -37,19 +37,19 @@ export default {
 
 <style scoped>
 .search {
-  background: rgba(46, 36, 51, 0.5);
+  background: #41365E;
   box-shadow: inset 0px 0px 1px #6f4773;
-  border-radius: 12px;
+  border-radius: 24px;
 
-  padding-left: 8px;
+  padding-left: 16px;
   padding-top: 12px;
-  padding-bottom: 11px;
+  padding-bottom: 14px;
 }
 
 .search::placeholder {
-  color: #be95c0;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
+  color: #A99BC6;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
 }
 </style>

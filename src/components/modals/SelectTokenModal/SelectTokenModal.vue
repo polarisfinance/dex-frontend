@@ -48,7 +48,7 @@
         <Search
           v-model="query"
           :placeholder="$t('Search name or paste address')"
-          class="flex-auto px-[16px]"
+          class="flex-auto px-[16px] search-token"
         />
         <div>
           <div
@@ -76,14 +76,14 @@
           <Search
             v-model="query"
             :placeholder="$t('Search name or paste address')"
-            class="flex-auto px-[16px]"
+            class="flex-auto px-[16px] border-0"
           />
         </div>
         <!--  -->
         <div class="px-[24px] py-[12px]">
           <div class="common-bases-title mb-[12px]">Common bases</div>
           <div class="flex gap-[8px]" v-if="tokens[0]">
-            <a @click="onSelectToken(tokens[0].address)">
+            <a @click="onSelectToken(tokens[0].address)" class="flex-1">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[0].address"
@@ -91,10 +91,10 @@
                   :size="24"
                   class="mr-[4px]"
                 />
-                <div class="token-name">{{ tokens[0].name }}</div>
+                <div class="token-name">{{ tokens[0].symbol }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]">
+            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]" class="flex-1">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[1].address"
@@ -102,10 +102,10 @@
                   :size="24"
                   class="mr-[4px]"
                 />
-                <div class="token-name">{{ tokens[1].name }}</div>
+                <div class="token-name">{{ tokens[1].symbol }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]">
+            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-1">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[2].address"
@@ -113,7 +113,7 @@
                   :size="24"
                   class="mr-[4px]"
                 />
-                <div class="token-name">{{ tokens[2].name }}</div>
+                <div class="token-name">{{ tokens[2].symbol }}</div>
               </div>
             </a>
           </div>
@@ -341,22 +341,23 @@ export default defineComponent({
 
 <style scoped>
 .modal {
-  background: #231928;
-  border-radius: 44px;
+  border-radius: 22px;
 }
 
 .common-bases-title {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
-  line-height: 18px;
-
-  color: #b9babb;
+  line-height: 20px;
+  color: #BDB2DD;
 }
 
 .common-asset {
-  background: #2e2433;
   border-radius: 16px;
   padding: 4px 8px;
+}
+.common-asset:hover{
+  background: #50456E;
+  border-radius: 16px;
 }
 
 .token-name {
@@ -370,4 +371,5 @@ export default defineComponent({
 .border {
   border: 0.5px solid rgba(111, 71, 115, 0.4);
 }
+
 </style>

@@ -42,9 +42,9 @@ const isFixedSlippage = computed(() => {
 });
 
 const customInputClasses = computed(() => ({
-  'bg-purple-button-light text-text-white':
+  'bg-[#50456E] text-text-white':
     !isFixedSlippage.value || state.isCustomInput,
-  'bg-purple-button-dark text-text-purple-secondary ': isFixedSlippage.value && !state.isCustomInput,
+  'bg-[#292043] text-text-purple-secondary ': isFixedSlippage.value && !state.isCustomInput,
 }));
 
 /**
@@ -112,5 +112,7 @@ watch(
   font-weight: 500;
   font-size: 18px;
   line-height: 23px;
+  border-radius: 16px;
 }
+
 </style>

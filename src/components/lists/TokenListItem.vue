@@ -3,7 +3,7 @@
     <BalAsset
       :address="token.address"
       :iconURI="token.logoURI"
-      :size="34"
+      :size="36"
       class="mr-[12px]"
     />
     <div class="flex-auto">
