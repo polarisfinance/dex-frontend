@@ -56,12 +56,12 @@ export default defineComponent({
 }
 
 .bal-toggle-checkbox {
-  @apply absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-gray-200
+  @apply absolute block h-[25px] w-[25px] cursor-pointer appearance-none rounded-full border-2 border-gray-200
     bg-white transition-colors group-hover:border-gray-300 dark:border-gray-700 dark:group-hover:border-gray-900;
 }
 
 .bal-toggle-track {
-  @apply block h-6 cursor-pointer overflow-hidden rounded-full bg-gray-200 bg-none
+  @apply block h-[25px] cursor-pointer overflow-hidden rounded-full bg-gray-200 bg-none
     transition-colors group-hover:bg-gray-300 dark:bg-gray-700 dark:group-hover:bg-gray-900;
 }
 

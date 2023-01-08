@@ -188,7 +188,9 @@ export default defineComponent({
   min-height: 24px;
   min-width: 24px;
 }
-
+.settings-button:hover{
+  opacity: 0.5;
+}
 .trade-settings-option:hover {
   /* @apply text-blue-500 border-blue-500; */
 }

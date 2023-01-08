@@ -57,6 +57,7 @@ export default defineComponent({
           'red',
           'white',
           'blue',
+          'transparent',
         ].includes(val),
     },
     label: { type: String, default: '' },
@@ -173,10 +174,12 @@ export default defineComponent({
           return 'text-white hover:text-yellow-500 dark:hover:text-yellow-500';
         else return 'text-gray-800 hover:text-blue-600 dark:text-gray-100';
       }
+      if (props.color === 'transparent')
+        return 'text-[#A99BC6]';
       if (props.outline || props.flat)
         return `text-${props.color}-500 dark:text-${props.color}-400`;
       if (props.color === 'dark')
-        return 'text-text-purple-secondary'
+        return 'text-text-purple-secondary';
       return 'text-text-white';
     });
 

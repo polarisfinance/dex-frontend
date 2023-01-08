@@ -3,39 +3,42 @@
     <div class="modal">
       <div class="flex w-full items-center justify-between">
         <div class="flex w-full items-center p-[24px]">
-          <BalBtn
-            v-if="selectTokenList"
-            color="gray"
-            size="xs"
-            class="mr-2"
-            flat
-            circle
-            @click="onListExit"
-          >
-            <BalIcon name="arrow-left" size="sm" />
-          </BalBtn>
+          <div class="flex-none pr-2">
+            <BalBtn
+              v-if="selectTokenList"
+              color="transparent"
+              size="xs"
+              class="mr-2 back"
+              
+              circle
+              @click="onListExit"
+            >
+              <BalIcon name="arrow-left" size="sm" />
+            </BalBtn>
+          </div>
           <div class="flex w-full justify-between">
-            <h5>Select a list</h5>
+            <h5 v-if="!selectTokenList">Select a list</h5>
             <div
               v-if="!selectTokenList"
               class="group flex items-center cursor-pointer"
               @click="toggleSelectTokenList"
             >
-              <span class="text-xs text-secondary">{{ $t('tokenLists') }}</span>
-              <div class="mr-[10px]">
+              <div class="mr-[25px]">
                 <div class="flex items-center ml-2">
                   <span class="mr-1">
                     <img
                       v-for="(tokenlist, i) in activeTokenLists"
                       :key="i"
                       :src="resolve(tokenlist.logoURI)"
-                      class="inline-block w-6 h-6 bg-white rounded-full shadow"
+                      class="inline-block w-4 h-4 bg-white rounded-full shadow"
                     />
                   </span>
+                  <span class="text-[14px] color-[#BDB2DD] text-secondary">{{ $t('tokenLists') }}</span>
                   <BalIcon
-                    name="chevron-down"
+                    name="chevron-right"
                     size="sm"
-                    class="ml-1 text-blue-500 group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
+                    class="ml-1 text-white-500 group-hover:text-white-500 group-focus:text-white-500 transition-all duration-200 ease-out"
+                    style="margin-top:0px"
                   />
                 </div>
               </div>
@@ -46,6 +49,7 @@
       </div>
       <template v-if="selectTokenList">
         <Search
+          v-if="!selectTokenList"
           v-model="query"
           :placeholder="$t('Search name or paste address')"
           class="flex-auto px-[16px] search-token"
@@ -83,7 +87,7 @@
         <div class="px-[24px] py-[12px]">
           <div class="common-bases-title mb-[12px]">Common bases</div>
           <div class="flex gap-[8px]" v-if="tokens[0]">
-            <a @click="onSelectToken(tokens[0].address)" class="flex-1">
+            <a @click="onSelectToken(tokens[0].address)" class="flex-none">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[0].address"
@@ -94,7 +98,7 @@
                 <div class="token-name">{{ tokens[0].symbol }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]" class="flex-1">
+            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]" class="flex-none">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[1].address"
@@ -105,7 +109,7 @@
                 <div class="token-name">{{ tokens[1].symbol }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-1">
+            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-none">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[2].address"
@@ -353,7 +357,7 @@ export default defineComponent({
 
 .common-asset {
   border-radius: 16px;
-  padding: 4px 8px;
+  padding: 4px 12px 4px 4px;
 }
 .common-asset:hover{
   background: #50456E;
@@ -371,5 +375,7 @@ export default defineComponent({
 .border {
   border: 0.5px solid rgba(111, 71, 115, 0.4);
 }
-
+.back{
+  min-width: min-content;
+}
 </style>

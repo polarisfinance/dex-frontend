@@ -160,7 +160,7 @@ function toggleModal(): void {
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
-      <span class="mr-[9px]">
+      <span>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clip-path="url(#clip0_155_801)">
         <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -197,7 +197,7 @@ function toggleModal(): void {
 }
 
 .group:hover {
-  background: rgba(80, 69, 110, 0.7) !important;
+  background: rgba(80, 69, 110, 0.5) !important;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25) !important;
 }
 
@@ -227,7 +227,7 @@ function toggleModal(): void {
 
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 44px;
   font-style: normal;
   font-weight: 600;
   font-size: 20px;

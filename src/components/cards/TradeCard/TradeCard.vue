@@ -7,7 +7,7 @@
   >
     <template #header >
       <div class="header mb-[12px] flex w-full items-center justify-between" >
-        <h4 class="title ml-[18px] mt-[14px]" >{{ title }}</h4>
+        <h4 class="title ml-[18px] mt-[10px]" >{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
           :isGasless="trading.tradeGasless.value"
@@ -487,8 +487,8 @@ export default defineComponent({
 }
 
 .connect-wallet:hover {
-
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3), inset 2px 2px 4px #010001;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  color:#ffffff;
 }
 
 .connect-wallet:active {
