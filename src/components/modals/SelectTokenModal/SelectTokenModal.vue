@@ -16,8 +16,8 @@
               <BalIcon name="arrow-left" size="sm" />
             </BalBtn>
           </div>
-          <div class="flex w-full justify-between pr-[22px] pl-[18px] py-[14px]">
-            <h5 v-if="!selectTokenList" class="font-semibold">Select a list</h5>
+          <div class="flex w-full justify-between pr-[22px] pl-[18px] pt-[14px] pb-[24px]">
+            <h6 v-if="!selectTokenList" class="font-semibold">Select a list</h6>
             <div
               v-if="!selectTokenList"
               class="group flex items-center cursor-pointer"
@@ -84,7 +84,7 @@
           />
         </div>
         <!--  -->
-        <div class="px-[24px] py-[12px]">
+        <div class="px-[16px] pb-[12px] pt-[24px]">
           <div class="common-bases-title mb-[12px]">Common bases</div>
           <div class="flex gap-[8px]" v-if="tokens[0]">
             <a @click="onSelectToken(tokens[0].address)" class="flex-none">

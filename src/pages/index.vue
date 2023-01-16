@@ -238,10 +238,10 @@ export default defineComponent({
 <template>
     <HomePageHero />
   
-    <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
+    <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto ">
       <BalStack vertical>
         <div
-          class="container px-4 xl:px-0"
+          class="container px-4 xl:px-0 mb-4 pool-panel"
           :class="{
             'is-sticky': stickyPanel,
             'navbar-bg': stickyPanel,
@@ -250,7 +250,7 @@ export default defineComponent({
           }"
         >
           <div
-            class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center"
+            class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center mb-0"
             v-if="isDesktop"
           >
             <div class="flex gap-[18px]">
@@ -279,7 +279,7 @@ export default defineComponent({
                 </ul> -->
               </div>
               <div
-                class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
+                class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
               >
                 <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
                 <a href="#segniorage"
@@ -436,10 +436,11 @@ export default defineComponent({
 
 .create-pool-btn {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
-  border-radius: 12px;
-
-  padding: 10px 16px;
-  color: white;
+  border-radius: 24px;
+  padding: 10px 17px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .create-pool-btn:hover {
@@ -459,7 +460,7 @@ export default defineComponent({
 }
 
 .search {
-  background: #261737;
+
   border-radius: 12px;
   padding-left: 16px;
   padding-top: 10px;
@@ -474,13 +475,11 @@ export default defineComponent({
 }
 
 .pool-types {
-  background: #261737;
-  border-radius: 12px;
   text-align: center;
 }
 
 .input {
-  background-color: #261737;
+  background-color: transparent;
 }
 
 .input::placeholder {
@@ -500,10 +499,10 @@ export default defineComponent({
 }
 
 .segniorage-btn {
-  padding: 4px 16px;
+  padding: 9px 16px;
 
-  background: #2e2433;
-  border-radius: 12px;
+  background: #150128;
+  border-radius: 48px;
 
   font-weight: 600;
   font-size: 14px;
@@ -511,20 +510,18 @@ export default defineComponent({
 
   color: #fdfdfd;
   background: linear-gradient(#1e0d2c, #1e0d2c) padding-box,
-    linear-gradient(to bottom left, #fbaaff, #9747ff, #f89c01) border-box;
+    linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
 
 .pool-type-btn {
-  padding: 4px 16px;
-  background: #261737;
-  border-radius: 12px;
+  padding: 9px 16px;
+  border-radius: 48px;
 
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-
-  color: #fdfdfd;
+  color: rgba(189, 178, 221, 1);
 }
 
 .segniorage {
@@ -591,4 +588,10 @@ export default defineComponent({
 .is-sticky.filter-panel-mobile{
   top: 69px;
 }
+.pool-panel{
+  background-color: #292043;
+  border-radius: 48px;
+
+}
+
 </style>

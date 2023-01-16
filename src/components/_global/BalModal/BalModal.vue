@@ -117,7 +117,7 @@ defineExpose({ hide });
 .content {
   @apply absolute h-3/4 max-h-screen w-full sm:h-auto;
 
-  max-width: 450px;
+  max-width: 484px;
   transform-style: preserve-3d;
   overflow: none;
 }

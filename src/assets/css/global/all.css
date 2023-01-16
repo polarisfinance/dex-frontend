@@ -28,7 +28,8 @@ body {
 }
 
 input {
-  caret-color: theme('colors.pink.500');
+  caret-color: white;
+  /*caret-color: theme('colors.pink.500');*/
 }
 
 #app {
