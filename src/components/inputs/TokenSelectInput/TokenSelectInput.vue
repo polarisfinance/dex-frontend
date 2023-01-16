@@ -224,7 +224,6 @@ function toggleModal(): void {
 .no-token {
   padding: 5px 6px 5px 12px;
   gap: 6px;
-
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 44px;

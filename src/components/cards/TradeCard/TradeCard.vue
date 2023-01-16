@@ -482,7 +482,7 @@ export default defineComponent({
   background: #41365E;
   border-radius: 12px;
   color: #A99BC6;
-
+  font-size: 20px;
   width: 100%;
 }
 

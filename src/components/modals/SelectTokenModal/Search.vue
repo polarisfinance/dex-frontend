@@ -48,16 +48,16 @@ export default {
   background: #41365E;
   box-shadow: inset 0px 0px 1px #6f4773;
   border-radius: 24px;
-
+  line-height: 16px;
   padding-left: 16px;
   padding-top: 12px;
-  padding-bottom: 14px;
+  padding-bottom: 12px;
 }
 
 .search::placeholder {
   color: #A99BC6;
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 16px;
 }
 </style>

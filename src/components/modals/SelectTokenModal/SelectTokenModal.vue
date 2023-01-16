@@ -2,8 +2,8 @@
   <BalModal show noContentPad @close="$emit('close')">
     <div class="modal">
       <div class="flex w-full items-center justify-between">
-        <div class="flex w-full items-center p-[24px]">
-          <div class="flex-none pr-2">
+        <div class="flex w-full items-center">
+          <div class="flex-none">
             <BalBtn
               v-if="selectTokenList"
               color="transparent"
@@ -16,8 +16,8 @@
               <BalIcon name="arrow-left" size="sm" />
             </BalBtn>
           </div>
-          <div class="flex w-full justify-between">
-            <h5 v-if="!selectTokenList">Select a list</h5>
+          <div class="flex w-full justify-between pr-[22px] pl-[18px] py-[14px]">
+            <h5 v-if="!selectTokenList" class="font-semibold">Select a list</h5>
             <div
               v-if="!selectTokenList"
               class="group flex items-center cursor-pointer"
@@ -128,7 +128,7 @@
           <RecycleScroller
             v-if="tokens.length > 0"
             v-slot="{ item: token }"
-            class="h-96 overflow-y-scroll py-[24px]"
+            class="h-[530px] overflow-y-scroll py-[24px]"
             :items="tokens"
             :itemSize="64"
             keyField="address"
@@ -143,13 +143,13 @@
           </RecycleScroller>
           <div
             v-else-if="loading"
-            class="flex h-96 items-center justify-center"
+            class="flex h-[530px] items-center justify-center"
           >
             <BalLoadingIcon />
           </div>
           <div
             v-else
-            class="text-secondary h-96 text-center"
+            class="text-secondary h-[530px] text-center"
             v-text="$t('errorNoTokens')"
           />
         </div>
@@ -373,9 +373,12 @@ export default defineComponent({
 }
 
 .border {
-  border: 0.5px solid rgba(111, 71, 115, 0.4);
+  border: 0.5px solid rgba(151, 71, 255, 0.4)
+  
 }
 .back{
   min-width: min-content;
+  margin-left: 16px;
+  margin-top: 12px;
 }
 </style>
