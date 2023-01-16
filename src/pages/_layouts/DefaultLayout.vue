@@ -9,7 +9,7 @@ const { isDesktop } = useBreakpoints();
 </script>
 
 <template>
-  <div class="app-custom-background" :class="{ 'bond-bg': isBond && isDesktop, 'sunrise-bg': isSunrise && isDesktop, 'dawn-bg': isDawn && isDesktop }">
+  <div class="app-custom-background" :class="{ 'bond-bg': isBond && isDesktop, 'sunrise-bg': isSunrise && isDesktop }">
     <div class="app-body">
       <AppNav />
       <div class="pb-16">
