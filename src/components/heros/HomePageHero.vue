@@ -18,16 +18,16 @@ const { trackGoal, Goals } = useFathom();
  * COMPUTED
  */
 const classes = computed(() => ({
-  ['h-64']: !isWalletReady.value && !isWalletConnecting.value,
-  ['h-44']: isWalletReady.value || isWalletConnecting.value,
+  //['h-72']: !isWalletReady.value && !isWalletConnecting.value,
+  //['h-46']: isWalletReady.value || isWalletConnecting.value,
 }));
 </script>
 
 <template>
-  <AppHero :class="classes">
+  <AppHero :class="classes" class="app-hero">
     <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
-    <h1 class="home-title">Automated portfolio manager</h1>
-    <h1 class="home-subtitle">and trading platform</h1>
+    <h1 class="home-title max-w-2xl mx-auto">Put your assests to work.</h1>
+    <h1 class="home-subtitle max-w-md mx-auto">Collect fees from pool and rebalance automatically.</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
       <div class="mt-[60px] flex w-full justify-center">
         <HeroConnectWalletButton class="mr-[16px]" />
@@ -36,10 +36,10 @@ const classes = computed(() => ({
           :href="EXTERNAL_LINKS.Balancer.Home"
           target="_blank"
           rel="noreferrer"
-          @click="trackGoal(Goals.ClickHeroLearnMore)"
-          class="learn-more-button font-semibold"
+          @click="trackGoal(Goals.ClickStartEarning)"
+          class="start-earning-button font-semibold"
         >
-          Learn more
+          Start earning
         </a>
       </div>
     </template>
@@ -47,6 +47,9 @@ const classes = computed(() => ({
 </template>
 
 <style scoped>
+.app-hero{
+  margin-top:200px;
+}
 .headline {
   @apply pb-2 text-center font-display text-4xl font-black text-white md:text-5xl;
 
@@ -55,22 +58,21 @@ const classes = computed(() => ({
 }
 
 .home-title {
-  font-weight: 600;
-  font-size: 64px;
-  line-height: 82px;
+  font-weight: 800;
+  font-size: 84px;
+  line-height: 104px;
   text-align: center;
   color: #fdfdfd;
 }
 
 .home-subtitle {
-  font-weight: 400;
-  font-size: 36px;
-  line-height: 48px;
-  text-align: center;
-  color: #D7B3FF;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  color: #A99BC6;
 }
 
-.learn-more-button {
+.start-earning-button {
   padding: 10px 25px;
 
   border: 1px solid rgba(64, 51, 71, 0.5);
@@ -80,10 +82,13 @@ const classes = computed(() => ({
   align-items: center;
   justify-content: center;
 
-  color: #fbaaff;
+  font-weight: 600;
+font-size: 16px;
+line-height: 20px;
+color: #FDFDFD;
 }
 
-.learn-more-button:hover {
+.start-earning-button:hover {
   background: linear-gradient(
     94.14deg,
     rgba(45, 20, 51, 0.7) 23.11%,
@@ -91,7 +96,7 @@ const classes = computed(() => ({
   );
 }
 
-.learn-more-button:active {
+.start-earning-button:active {
   background: linear-gradient(
     94.14deg,
     rgba(47, 22, 53, 0.5) 23.11%,

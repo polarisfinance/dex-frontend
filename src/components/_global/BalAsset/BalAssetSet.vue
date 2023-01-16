@@ -10,18 +10,19 @@
         height: `${size}px`,
       }"
     >
-      <BalAsset
+      <BalAsset 
         v-for="(addressOrURI, i) in assetChunk"
         :key="i"
         v-bind="{ ...assetAttrsFor(addressOrURI), ...balAssetProps }"
         :size="size"
-        :class="['token-icon', { absolute: !wrap, relative: wrap }]"
+        :class="['token-icon', $props.borderClass,{ absolute: !wrap, relative: wrap }]"
         :style="{
           left: `${leftOffsetFor(i)}px`,
           zIndex: `${20 - i}`,
           width: `${size}px`,
           height: `${size}px`,
         }"
+        :bgImage="backImage"
         @click="$emit('click', addressOrURI)"
       />
     </div>
@@ -32,7 +33,6 @@
 import { isAddress } from '@ethersproject/address';
 import { chunk } from 'lodash';
 import { computed, defineComponent, PropType } from 'vue';
-
 import BalAsset from '@/components/_global/BalAsset/BalAsset.vue';
 
 type BalAssetProps = {
@@ -40,6 +40,7 @@ type BalAssetProps = {
   iconURI?: string;
   size?: number;
   button?: boolean;
+  backImage?: string;
 };
 
 export default defineComponent({
@@ -74,6 +75,13 @@ export default defineComponent({
     wrap: {
       type: Boolean,
     },
+    borderClass: {
+      type: String,
+      default: "",
+    },
+    backImage:{
+      type: Object,
+    }
   },
   emits: ['click'],
 
@@ -160,9 +168,8 @@ export default defineComponent({
 
   @apply overflow-hidden rounded-full shadow-none;
   @apply bg-white dark:bg-gray-850;
-  @apply border-2 border-white group-hover:border-gray-50 dark:border-gray-850 dark:group-hover:border-gray-800;
+  @apply border-white group-hover:border-gray-50 dark:border-gray-850 dark:group-hover:border-gray-800;
 }
-
 .my-wallet .token-icon {
   @apply ml-0;
 }

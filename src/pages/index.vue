@@ -11,9 +11,9 @@ import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useWeb3 from '@/services/web3/useWeb3';
 
-import segniorageImg from './segniorage.svg';
-import singleStakingImg from './single-staking.svg';
-import classicImg from './classic.svg';
+import segniorageImg from './pool-icon-seigniorage.svg';
+import classicImg from './pool-icon-classic.svg';
+import communityImg from './pool-icon-community.svg';
 import { InvestmentPool } from '@balancer-labs/typechain';
 
 import { TOKENS } from '@/constants/tokens';
@@ -366,6 +366,7 @@ export default defineComponent({
             :isLoading="isInvestmentPoolsTableLoading"
             @load-more="loadMore"
             :title="'Seigniorage Pools'"
+            :type="'seigniorage'"
             :img="segniorageImg"
             :prices="prices"
           />
@@ -384,8 +385,9 @@ export default defineComponent({
             :isLoading="isInvestmentPoolsTableLoading"
             @load-more="loadMore"
             :title="'Classic Pools'"
-            :img="classicImg"
             :prices="prices"
+            :type="'classic'"
+            :img="classicImg"
           />
         </div>
         <div id="communitypools">
@@ -402,7 +404,8 @@ export default defineComponent({
             :isLoading="isInvestmentPoolsTableLoading"
             @load-more="loadMore"
             :title="'Community Pools'"
-            :img="classicImg"
+            :type="'community'"
+            :img="communityImg"
             :noApr="true"
           />
         </div>
@@ -515,7 +518,7 @@ export default defineComponent({
 }
 
 .pool-type-btn {
-  padding: 9px 16px;
+  padding: 9px 35px;
   border-radius: 48px;
 
   font-weight: 600;

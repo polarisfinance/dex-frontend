@@ -13,13 +13,9 @@ import { bool } from 'prop-types';
 
 type Props = {
   tokens: PoolToken[];
-  bgClass: string;
-  headline: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-    headline:"",
-    bgClass:"",
 });
 
 const { fNum2 } = useNumbers();
@@ -70,7 +66,7 @@ function getBgClass(tokens: PoolToken[]): string{
     if(tokens.length==3)
         return 'bg-green';
     else if(isBalanced(tokens))
-        return 'bg-pink';
+        return 'bg-grey';
     else
         return 'bg-blue';
 }
@@ -80,8 +76,7 @@ const MAX_PILLS = 11;
 
 <template>
   <div class="weight ml-[12px] flex" :class="getBgClass(tokens)">
-    <div v-if="headline" class="title">{{ headline }}</div>
-    <div v-else="headline" class="title">{{ getTitle(tokens) }}</div>
+    <div class="title">{{ getTitle(tokens) }}</div>
     <div v-for="(token, idx) in visibleTokens"
       class="text-center"
     >
@@ -96,13 +91,16 @@ const MAX_PILLS = 11;
   background-color: rgba(255, 95, 109, 0.8);;
 }
 .bg-green{
-    background-color: rgba(39, 174, 96, 0.8);
+  background-color: rgba(39, 174, 96, 0.8);
 }
 .bg-pink{
-    background-color:#D04FB8;
+  background-color:#D04FB8;
 }
 .bg-blue{
-    background-color: rgba(47, 128, 237, 0.8);
+  background-color: rgba(47, 128, 237, 0.8);
+}
+.bg-grey{
+  background-color:#41365E;
 }
 .weight{
     border-radius: 12px;

@@ -30,6 +30,9 @@ import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
 import TokenPills from './TokenPills/TokenPills.vue';
 import TokenWeightsPills from './TokenPills/TokenWeightPill.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
+import seigniorageAssetBackImg from '@/assets/images/coins/seigniorage-border.svg';
+import communityAssetBackImg from '@/assets/images/coins/community-border.svg';
+import classicAssetBackImg from '@/assets/images/coins/classic-border.svg';
 const { isMobile, isDesktop } = useBreakpoints();
 
 /**
@@ -49,6 +52,8 @@ type Props = {
   title: String;
   prices: any;
   noApr?: boolean;
+  img: String;
+  type: String;
 };
 
 /**
@@ -267,7 +272,14 @@ function findCommonElements3(arr1, arr2) {
   }
   return true;
 }
-
+function poolAssetBackImage(type:String){
+  if(type=='seigniorage')
+    return seigniorageAssetBackImg;
+  if(type=='classic')
+    return classicAssetBackImg;
+  if(type=='community')
+    return communityAssetBackImg;
+}
 function selected(pool) {
   let found = true;
   const poolTokens = Object.values(pool.tokensList);
@@ -625,11 +637,11 @@ export default defineComponent({
     <div class="table-title mt-[48px] flex w-full">
       <div class="grid-table">
         <div class="heading h-4 ">
-          <div> <img
+          <div> <img v-if="img" 
                 width="24"
                 height="14"
-                class="pool-icon inline-block"
-                src="@/assets/images/icons/pool-icon-seigniorage.svg"
+                class="pool-icon inline-block mr-2"
+                :src="img"
               /> {{ title }}</div>
         </div>
         <div class="heading h-4">APR</div>
@@ -651,9 +663,10 @@ export default defineComponent({
           >
             <div class="flex w-full items-center">
               <BalAssetSet
-                :size="36"
+                :size="34"
                 :addresses="iconAddresses(pool)"
                 :width="100"
+                :backImage="poolAssetBackImage(type)"
               />
               <div v-if="POOLS.Metadata[pool.id]" class="text-left">
                 {{ POOLS.Metadata[pool.id].name }}
@@ -668,8 +681,6 @@ export default defineComponent({
                   :showWeight="false"
                 />
                 <TokenWeightsPills
-                  headline=""
-                  bgClass="bg-red"
                   :tokens="
                     orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
                   "
@@ -677,7 +688,7 @@ export default defineComponent({
               </div>
             </div>
           </router-link>
-            <div class="apr flex my-[18px] self-center">
+            <div v-if="selected(pool)" class="apr flex my-[18px] self-center" >
               <template v-if="noApr">
                 <div>{{ '0' + '%' }}</div>
               </template>
@@ -712,7 +723,7 @@ export default defineComponent({
                 </div>
               </template>
             </div>
-            <div class="flex my-[18px] self-center">
+            <div v-if="selected(pool)" class="flex my-[18px] self-center">
               <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
                 {{
@@ -723,7 +734,7 @@ export default defineComponent({
                 }}
               </span>
             </div>
-            <div class="flex my-[18px] self-center">
+            <div v-if="selected(pool)" class="flex my-[18px] self-center">
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
                 {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}

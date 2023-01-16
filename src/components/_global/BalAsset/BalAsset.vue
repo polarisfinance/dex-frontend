@@ -4,7 +4,6 @@ import { computed, ref, toRefs, watch } from 'vue';
 import useTokens from '@/composables/useTokens';
 import useUrls from '@/composables/useUrls';
 import { TokenInfo } from '@/types/TokenList';
-
 import Avatar from '../../images/Avatar.vue';
 
 type Props = {
@@ -12,6 +11,7 @@ type Props = {
   iconURI?: string;
   size?: number;
   button?: boolean;
+  bgImage?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -69,13 +69,26 @@ watch(iconSRC, newURL => {
     }"
     v-bind="rootElementAttrs"
   >
-    <img
-      v-if="iconSRC && !error"
-      :src="iconSRC"
-      class="rounded-full bg-transparent"
-      @error="error = true"
-    />
-    <Avatar v-else-if="!!address" :address="address" :size="size" />
+    <div v-if="iconSRC && !error">
+      <img v-if="bgImage"
+        :src="bgImage"
+        class="rounded-full bg-transparent absolute"
+        @error="error = true"
+      />
+      <img
+        :src="iconSRC"
+        class="rounded-full bg-transparent"
+        @error="error = true"
+      />
+    </div>
+    <div v-else-if="!!address">
+      <img v-if="bgImage"
+        :src="bgImage"
+        class="rounded-full bg-transparent absolute"
+        @error="error = true"
+      />
+      <Avatar :address="address" :size="size" />
+    </div>
     <div
       v-else
       class="overflow-visible rounded-full bg-gray-300 dark:bg-gray-700"

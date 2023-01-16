@@ -478,7 +478,7 @@ export default defineComponent({
   gap: 12px;
   left: 12px;
   top: 226px;
-
+  line-height:24px;
   background: #41365E;
   border-radius: 12px;
   color: #A99BC6;
