@@ -27,31 +27,22 @@ function onClickConnect() {
 
 <style scoped>
 .connect-wallet-button {
-  padding: 10px 25px;
-
-  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
   border-radius: 12px;
-
+  align-items: center;
+  padding: 12px 44px;
+  gap: 12px;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-
-  color: #ffffff;
+  color: #FDFDFD;
 }
 
 .connect-wallet-button:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 
 .connect-wallet-button:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 </style>

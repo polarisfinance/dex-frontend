@@ -27,8 +27,6 @@ import { PoolWithShares } from '@/services/pool/types';
 import { POOLS } from '@/constants/pools';
 
 import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
-import TokenPills from './TokenPills/TokenPills.vue';
-import TokenWeightsPills from './TokenPills/TokenWeightPill.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import seigniorageAssetBackImg from '@/assets/images/coins/seigniorage-border.svg';
 import communityAssetBackImg from '@/assets/images/coins/community-border.svg';
@@ -680,7 +678,7 @@ export default defineComponent({
                   :selectedTokens="selectedTokens"
                   :showWeight="false"
                 />
-                <TokenWeightsPills
+                <TokenWeightPill class="ml-[12px]"
                   :tokens="
                     orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
                   "

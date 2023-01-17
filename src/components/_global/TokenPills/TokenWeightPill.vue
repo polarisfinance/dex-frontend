@@ -75,7 +75,7 @@ const MAX_PILLS = 11;
 </script>
 
 <template>
-  <div class="weight ml-[12px] flex" :class="getBgClass(tokens)">
+  <div class="weight flex" :class="getBgClass(tokens)">
     <div class="title">{{ getTitle(tokens) }}</div>
     <div v-for="(token, idx) in visibleTokens"
       class="text-center"
@@ -108,7 +108,7 @@ const MAX_PILLS = 11;
     font-size: 12px;
     line-height: 14px;
     color: #FDFDFD;
-    padding: 2px 12px;
+    padding: 3px 12px 1px 12px;
 
 }
 .weight .title::after{

@@ -6,6 +6,7 @@ import HomePageHero from '@/components/heros/HomePageHero.vue';
 import TokenSearchInput from '@/components/inputs/TokenSearchInput.vue';
 import FeaturedProtocols from '@/components/sections/FeaturedProtocols.vue';
 import PoolsTable from '@/components/tables/PoolsTable/PoolsTable.vue';
+import PoolCard from '@/components/cards/PoolCard/PoolCard.vue';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -225,7 +226,7 @@ export default defineComponent({
       // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
       // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
 
-      if (scrollPos >= 380) {
+      if (scrollPos >= 1600) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
@@ -237,6 +238,18 @@ export default defineComponent({
 
 <template>
     <HomePageHero />
+
+    <div class="container mx-auto">
+      <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
+      <div class="grid grid-cols-3 gap-6">
+        <template v-for="(pool, idx) in segnioragePools.slice(0, 6)" :key="idx">
+          <PoolCard
+          :pool="pool"
+          :aprs="PoolsTable.aprs"
+          ></PoolCard>
+        </template>
+      </div>
+    </div>
   
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto ">
       <BalStack vertical>
@@ -446,20 +459,8 @@ export default defineComponent({
   line-height: 18px;
 }
 
-.create-pool-btn:hover {
-  /* background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  ); */
-}
-
-.create-pool-btn:active {
-  /* background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  ); */
+.create-pool-btn:hover{
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 
 .search {

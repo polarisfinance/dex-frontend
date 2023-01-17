@@ -80,7 +80,7 @@ export default defineComponent({
       default: "",
     },
     backImage:{
-      type: Object,
+      type: String,
     }
   },
   emits: ['click'],
