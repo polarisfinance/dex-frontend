@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router';
 
 import { ColumnDefinition } from '@/components/_global/BalTable/BalTable.vue';
 import ClaimBalBtn from '@/components/btns/ClaimBalBtn/ClaimBalBtn.vue';
-import TokenPills from '@/components/tables/PoolsTable/TokenPills/TokenPills.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import {

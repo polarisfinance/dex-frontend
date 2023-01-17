@@ -1,10 +1,8 @@
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { computed, defineComponent, ref, toRefs, PropType,watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { PoolWithShares } from '@/services/pool/types';
 import { PoolToken } from '@/services/pool/types';
-// import TokenPills from '@/components/tables/PoolsTable/TokenPills/TokenPills.vue';
-// import TokenWeightsPills from '@/components/tables/PoolsTable/TokenPills/TokenWeightPill.vue';
 
 import { POOLS } from '@/constants/pools';
 import {
@@ -29,7 +27,7 @@ export default defineComponent({
   },
   props: {
     pool: {
-      type: PoolWithShares,
+      type: Object as PropType<PoolWithShares>,
       default: null,
     },
     noApr:{

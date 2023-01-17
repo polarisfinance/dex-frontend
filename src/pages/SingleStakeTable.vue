@@ -27,7 +27,6 @@ import { PoolWithShares } from '@/services/pool/types';
 import { POOLS } from '@/constants/pools';
 
 import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
-// import TokenPills from './TokenPills/TokenPills.vue';
 
 const { isMobile, isDesktop } = useBreakpoints();
 const emit = defineEmits(['loadMore', 'triggerStake']);
