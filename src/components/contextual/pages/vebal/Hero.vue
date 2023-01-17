@@ -176,7 +176,7 @@ function navigateToGetVeBAL() {
 }
 
 .hero-content {
-  @apply z-10 mx-auto flex w-full max-w-screen-2xl flex-col py-4 md:flex-row md:items-center md:gap-4
+  @apply z-10 mx-auto flex w-full flex-col py-4 md:flex-row md:items-center md:gap-4
     md:py-8 lg:gap-8 xl:pl-4;
 }
 

@@ -322,8 +322,11 @@ import usePoolQuery from '@/composables/queries/usePoolQuery';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 
+import {AprProviderService} from '@/services/pool/apr.provider';
+
 export default defineComponent({
   data() {
+    
     return {
       xpolarPoolQuery: usePoolQuery(
         '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
@@ -372,16 +375,27 @@ export default defineComponent({
           loop();
         });
       }
-      const aprsPromises: any[] = [];
+
+      /*const aprsPromises: any[] = [];
       for (var i = 0; i < this.data.length; i++) {
         aprsPromises.push(this.fetch(this.data[i]));
       }
       const aprs = await Promise.all(aprsPromises);
       for (var i = 0; i < this.data.length; i++) {
         this.aprs[this.data[i].address] = aprs[i];
+      }*/
+      const aprProviderClass = new AprProviderService(
+        this.data,
+        this.prices,
+        this.xpolarPoolQuery
+      );
+      aprProviderClass.init();
+      aprProviderClass.aprsReceived = (aprs:any)=>{
+        this.aprs = aprs;
       }
+      aprProviderClass.fetchAll();
     },
-    async fetch(pool) {
+    /*async fetch(pool) {
       const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
       const xpolarRewardPoolAddress =
@@ -513,7 +527,7 @@ export default defineComponent({
         .toString();
 
       return { dailyAPR: dailyAPR, yearlyAPR: yearlyAPR };
-    },
+    },*/
   },
   created() {
     this.fetchAll();

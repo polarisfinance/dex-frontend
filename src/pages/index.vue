@@ -245,7 +245,7 @@ export default defineComponent({
         <template v-for="(pool, idx) in segnioragePools.slice(0, 6)" :key="idx">
           <PoolCard
           :pool="pool"
-          :aprs="PoolsTable.aprs"
+          :prices="prices"
           ></PoolCard>
         </template>
       </div>

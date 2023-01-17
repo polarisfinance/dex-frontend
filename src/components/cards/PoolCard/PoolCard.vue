@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, PropType,watch } from 'vue';
+import { computed, defineComponent, ref, toRefs, PropType,watch,ComputedRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { PoolWithShares } from '@/services/pool/types';
 import { PoolToken } from '@/services/pool/types';
@@ -14,14 +14,18 @@ import {
   totalAprLabel,
 } from '@/composables/usePool';
 
-
-
+import {AprProviderService} from '@/services/pool/apr.provider';
+import { TokenPrices } from '@/services/coingecko/api/price.service';
+import usePoolQuery from '@/composables/queries/usePoolQuery';
 
 
 export default defineComponent({
   data() {
     return {
         aprs: {},
+        xpolarPoolQuery: usePoolQuery(
+          '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+      ),
     }},
   components: {
   },
@@ -30,17 +34,43 @@ export default defineComponent({
       type: Object as PropType<PoolWithShares>,
       default: null,
     },
+    prices:{
+      type: Object as PropType<ComputedRef<TokenPrices>>,
+      default: null,
+    },
     noApr:{
         type:Boolean,
         default:false,
-    },
-    aprs:{
-        type:Object,
-        default:null,
     }
   },
   emits: ['click'],
   methods:{
+    async fetchApr() {
+      if (!this.pool) {
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+          this.pool !== undefined
+              ? resolve(this.pool)
+              : setTimeout(loop, 100);
+          loop();
+        });
+      }
+
+      /*const aprsPromises: any[] = [];
+      for (var i = 0; i < this.data.length; i++) {
+        aprsPromises.push(this.fetch(this.data[i]));
+      }
+      const aprs = await Promise.all(aprsPromises);
+      for (var i = 0; i < this.data.length; i++) {
+        this.aprs[this.data[i].address] = aprs[i];
+      }*/
+      const aprProviderClass = new AprProviderService([this.pool],this.prices,this.xpolarPoolQuery);
+      aprProviderClass.init();
+      aprProviderClass.aprsReceived = (aprs:any)=>{
+        this.aprs = aprs;
+      }
+      aprProviderClass.fetchAll();
+    },
   },
   setup(props) {
     /**
@@ -51,7 +81,6 @@ export default defineComponent({
      * METHODS
      */
     function iconAddresses(pool: PoolWithShares) {
-        console.log(orderedPoolTokens(pool.poolType, pool.address, pool.tokens));
         return POOLS.Metadata[pool.id]?.hasIcon
             ? [pool.address]
             : orderedTokenAddresses(pool);
@@ -65,6 +94,10 @@ export default defineComponent({
       orderedPoolTokens
     };
   },
+  created(){
+    if(!this.noApr)
+      this.fetchApr();
+  }
 });
 
 </script>
@@ -94,7 +127,7 @@ export default defineComponent({
         <div class="footer flex">
             <div class="apr">
                 <div class="title">APR</div>
-                <div class="value">859 %
+                <div class="value">
                 <template v-if="noApr">
                     <div class="h-4 w-12">
                     {{ '0' + '%' }}
