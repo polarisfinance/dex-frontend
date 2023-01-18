@@ -93,7 +93,7 @@ const classes = computed(() => ({
 }
 
 .home-title {
-  font-weight: 800;
+  font-weight: 600;
   font-size: 84px;
   line-height: 104px;
   text-align: center;
