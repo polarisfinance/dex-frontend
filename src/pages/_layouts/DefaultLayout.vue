@@ -9,7 +9,7 @@ const { isDesktop } = useBreakpoints();
 </script>
 
 <template>
-  <div class="app-custom-background" :class="{ 'bond-bg': isBond && isDesktop, 'sunrise-bg': isSunrise && isDesktop }">
+  <div class="app-custom-background" :class="{ 'bond-bg': isBond && isDesktop, 'sunrise-bg': isSunrise && isDesktop, 'dawn-bg': isDawn && isDesktop }">
     <div class="app-body">
       <AppNav />
       <div class="pb-16">
@@ -42,7 +42,7 @@ const { isDesktop } = useBreakpoints();
 .dawn-bg{
   background-image: url('../dawn_bg.svg');
   background-position-y: 0%;
-  background-position-x: right;
+  background-size: contain;
 }
 .bond-bg{
   background-image: url('../bond/bond_bg.svg');

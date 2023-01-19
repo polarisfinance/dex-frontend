@@ -172,7 +172,7 @@ export default defineComponent({
     border-radius: 24px;
   }
   .header{
-    padding:14px 14px 17px 14px;
+    padding:0px 14px 17px 14px;
     border-bottom: 1px solid rgba(65, 54, 94, 0.4);
   }
   .footer{
