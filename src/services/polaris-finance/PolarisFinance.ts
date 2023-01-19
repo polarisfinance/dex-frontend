@@ -102,7 +102,7 @@ export class PolarisFinance {
     }
     console.log(web3.chainId.value);
     const provider = new ethers.providers.JsonRpcBatchProvider(
-      'https://rpc.polarisfinance.io/',
+      'https://mainnet.aurora.dev/',
       web3.chainId.value
     );
     console.log(provider);
