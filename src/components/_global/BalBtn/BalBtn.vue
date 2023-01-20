@@ -75,7 +75,7 @@ export default defineComponent({
     const sizeClasses = computed(() => {
       switch (props.size) {
         case 'xs':
-          return 'px-2 h-6 text-xs';
+          return 'px-[12px] py-[4px] h-8 text-xs';
         case 'sm':
           return 'px-3 text-base';
         case 'lg':

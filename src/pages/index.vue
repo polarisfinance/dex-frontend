@@ -7,6 +7,7 @@ import TokenSearchInput from '@/components/inputs/TokenSearchInput.vue';
 import FeaturedProtocols from '@/components/sections/FeaturedProtocols.vue';
 import PoolsTable from '@/components/tables/PoolsTable/PoolsTable.vue';
 import PoolCard from '@/components/cards/PoolCard/PoolCard.vue';
+import ClaimCard from '@/components/cards/ClaimCard/ClaimCard.vue';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -240,6 +241,13 @@ export default defineComponent({
     <HomePageHero />
 
     <div class="container mx-auto">
+        <ClaimCard
+        :pools="segnioragePools"
+        :prices="prices"
+        />
+    </div>
+
+    <div class="container mx-auto">
       <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
       <div class="grid grid-cols-3 gap-6">
         <template v-for="(pool, idx) in segnioragePools.slice(0, 6)" :key="idx">
@@ -266,52 +274,36 @@ export default defineComponent({
             class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center mb-0"
             v-if="isDesktop"
           >
-            <div class="flex gap-[18px]">
-              <div class="relative" @click="inputFocused = true">
-                <div class="search flex items-center">
-                  <img src="./search.svg" class="mr-[12px]" />
-                  <input
-                    type="text"
-                    placeholder="Filter by token"
-                    class="input"
-                    v-on:input="filterToken"
-                    v-model="searchTerm"
-                  />
-                </div>
-                <!-- <ul class="absolute w-full text-center list" v-if="inputFocused">
-                  <li
-                    v-for="token in searchTokens"
-                    :key="token"
-                    @click="selectToken(token)"
-                  >
-                    <div class="flex justify-between px-[10px] py-[5px]">
-                      <BalAsset :address="mapping[token]" />
-                      <div>{{ token }}</div>
-                    </div>
-                  </li>
-                </ul> -->
-              </div>
-              <div
-                class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
+            <div class="search flex items-center" @click="inputFocused = true">
+              <img src="./search.svg" class="mr-[12px]" />
+              <input
+                type="text"
+                placeholder="Filter by token"
+                class="input w-full"
+                v-on:input="filterToken"
+                v-model="searchTerm"
+              />
+            </div>
+            <div
+              class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
+            >
+              <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
+              <a href="#segniorage"
+                ><div class="segniorage-btn cursor-pointer">
+                  Seigniorage Pools
+                </div></a
               >
-                <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
-                <a href="#segniorage"
-                  ><div class="segniorage-btn cursor-pointer">
-                    Seigniorage Pools
-                  </div></a
-                >
-                <a href="#singlestaking">
-                  <div class="pool-type-btn cursor-pointer">Single Staking</div>
-                </a>
-                <a href="#classicpools">
-                  <div class="pool-type-btn cursor-pointer">Classic Pools</div>
-                </a>
-                <a href="#communitypools">
-                  <div class="pool-type-btn cursor-pointer">
-                    Community Pools
-                  </div>
-                </a>
-              </div>
+              <a href="#singlestaking">
+                <div class="pool-type-btn cursor-pointer">Single Staking</div>
+              </a>
+              <a href="#classicpools">
+                <div class="pool-type-btn cursor-pointer">Classic Pools</div>
+              </a>
+              <a href="#communitypools">
+                <div class="pool-type-btn cursor-pointer">
+                  Community Pools
+                </div>
+              </a>
             </div>
 
             <button
@@ -465,12 +457,13 @@ export default defineComponent({
 
 .search {
 
+  max-width: 300px;
   border-radius: 12px;
   padding-left: 16px;
   padding-top: 10px;
   padding-bottom: 10px;
-  padding-right: 160px;
-
+  padding-right: 10px;
+  width: 100%;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
@@ -527,6 +520,9 @@ export default defineComponent({
   line-height: 18px;
   color: rgba(189, 178, 221, 1);
 }
+.pool-type-btn:hover{
+  color: #FDFDFD;
+}
 
 .segniorage {
   background: linear-gradient(#261737, #261737) padding-box,
@@ -577,7 +573,7 @@ export default defineComponent({
 .is-sticky {
   position: fixed;
   top: 79px;
-  z-index: 10;
+  z-index: 21;
   background: linear-gradient(
     90.08deg,
     rgba(19, 7, 25, 0.7) -0.61%,

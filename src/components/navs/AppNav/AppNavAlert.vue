@@ -87,7 +87,7 @@ export default defineComponent({
 <style scoped>
 .app-nav-alert {
   @apply flex content-start justify-between py-2 px-4 xs:py-4;
-
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
   min-height: 54px;
 }
 

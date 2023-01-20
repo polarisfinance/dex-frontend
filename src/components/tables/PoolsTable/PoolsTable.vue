@@ -648,29 +648,30 @@ export default defineComponent({
   <div class="pool-table mb-[40px]" v-if="isDesktop">
     <div class="table-title mt-[48px] flex w-full">
       <div class="grid-table">
-        <div class="heading h-4 ">
-          <div> <img v-if="img" 
-                width="24"
-                height="14"
-                class="pool-icon inline-block mr-2"
-                :src="img"
-              /> {{ title }}</div>
+        <div class="pool-header">
+          <div class="heading h-4 ">
+            <div> <img v-if="img" 
+                  width="24"
+                  height="14"
+                  class="pool-icon inline-block mr-2"
+                  :src="img"
+                /> {{ title }}</div>
+          </div>
+          <div class="h-4">APR</div>
+          <div class="h-4">Liquidity</div>
+          <div class="h-4">Volume (24h)</div>
         </div>
-        <div class="heading h-4">APR</div>
-        <div class="heading h-4">Liquidity</div>
-        <div class="heading h-4">Volume (24h)</div>
         <!-- div>To Claim</div -->
 
-        <div class="my-[24px] border" data-v-4eafebf8=""></div>
+        <div class="border"></div>
 
         <template
-          class="flex w-full items-center"
           v-for="(pool, idx) in data"
           :key="idx"
         >
-            <router-link
+          <router-link
             :to="'/pool/' + pool.id"
-            class="my-[18px] flex w-full items-center"
+            class="my-[18px] flex w-full items-center pool-row"
             v-if="selected(pool)"
           >
             <div class="flex w-full items-center">
@@ -699,8 +700,8 @@ export default defineComponent({
                 />
               </div>
             </div>
-          </router-link>
-            <div v-if="selected(pool)" class="apr flex my-[18px] self-center" >
+          
+            <div class="apr flex items-center self-center" >
               <template v-if="noApr">
                 <div>{{ '0' + '%' }}</div>
               </template>
@@ -735,7 +736,7 @@ export default defineComponent({
                 </div>
               </template>
             </div>
-            <div v-if="selected(pool)" class="flex my-[18px] self-center">
+            <div class="flex items-center self-center">
               <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
                 {{
@@ -746,7 +747,7 @@ export default defineComponent({
                 }}
               </span>
             </div>
-            <div v-if="selected(pool)" class="flex my-[18px] self-center">
+            <div  class="flex items-center self-center">
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-12 text-right">
                 {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}
@@ -763,8 +764,8 @@ export default defineComponent({
                 </div>
               </template>
             </div -->
-    </template>
-
+          </router-link>
+        </template>
       </div>
     </div>
     
@@ -942,12 +943,35 @@ export default defineComponent({
   width: 100%;
   color: rgba(253, 253, 253, 1);
 }
-.grid-table .heading{
-  color: #BDB2DD;;
-}
+
 .grid-table .border{
   grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
+  margin-bottom: 24px;
+}
+.pool-row, .pool-header{
+  display: contents;
+}
+.pool-row > div, .pool-header > div{
+  height: 100%;
+  padding:12px 0px;
+}
+.pool-header > div{
+  color: #BDB2DD;
+  padding-bottom: 24px;
+}
+.pool-row:hover > div {
+  background-color: #292043;
+}
+.pool-row:hover > div:first-child {
+  border-bottom-left-radius:48px;
+  border-top-left-radius:48px;
+  /*margin-left: -20px;*/
+  /*padding-left: 20px;*/
+}
+.pool-row:hover > div:last-child {
+  border-bottom-right-radius:48px;
+  border-top-right-radius:48px;
 }
 .tvl {
   font-weight: 600;
