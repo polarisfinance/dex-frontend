@@ -33,7 +33,7 @@ input {
 }
 
 #app {
-  background:rgba(21, 1, 40, 1);
+  background:#120326;
   @apply text-gray-900 dark:text-gray-50;
 }
 

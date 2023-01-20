@@ -43,7 +43,7 @@ export class ClaimProviderService {
   private xpolarPoolQuery
   private pools:PoolWithShares[]=[]
   private xpolarRewardPoolAddress='0x140e8a21d08CbB530929b012581a7C7e696145eF'
-  private claims = [];
+  private claims: Array < ClaimType > = [];
   public claimsReceived?: (claims:any) => void
 
   constructor(pools:any,prices:any, xpolarPoolQuery,account) {
@@ -61,20 +61,21 @@ export class ClaimProviderService {
     if(!this.pools)
       return;
 
-    let allClaims={};
+    let allClaims: ClaimType[] = [];
     for (var i = 0; i < this.pools.length; i++) {
 
       // promises.push(this.fetch(this.pools[i]));
       new Promise((resolve, reject) => {
         resolve(this.fetch(this.pools[i]));
       }).then((val:any) => {
-        
-        if(val.approved)
-          allClaims[val.pool.address]= val;
-        if (!this.claimsReceived) 
-          return; 
-          console.log(allClaims);
-        this.claimsReceived(allClaims);
+        if(val!=undefined){
+          const obj:ClaimType = val;
+          if(val.approved)
+            allClaims.push( obj );
+          if (!this.claimsReceived) 
+            return; 
+          this.claimsReceived(allClaims);
+        }
       });
 
     }
@@ -155,6 +156,7 @@ export class ClaimProviderService {
       14,
       4
     );
+    
     const TVL = new BigNumberJs(pool.totalLiquidity || '')
       .div(pool.totalShares || '')
       .times(stakedInPool)
@@ -175,7 +177,7 @@ export class ClaimProviderService {
     const yearlyAPR = Math.ceil(
       (totalRewardPricePerYear / Number(TVL)) * 100
     ).toString();
-
+    
 
     // const apr = await this.getPoolApr(poolAddress, poolId);
     // this.apr = apr.yearlyAPR;
@@ -186,13 +188,9 @@ export class ClaimProviderService {
     const stakedBal = await balance(pool.address, this.account);
 
     // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
-    const xpolToClaim =BigNumberToString(
-      await pendingShare(pool.address, this.account),
-      14,
-      4
-    );
+    const xpolToClaim = BigNumberToString(await pendingShare(pool.address, this.account),14,4);
+    
     const approval = await isApproved(pool.address, this.account);
-
     return { pool: pool, approved: approval, stakedBalance: stakedBal, xpolarToClaim: xpolToClaim };
   }
 

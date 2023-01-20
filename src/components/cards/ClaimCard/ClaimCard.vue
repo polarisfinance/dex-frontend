@@ -1,13 +1,16 @@
 <script lang="ts">
 import { PoolWithShares } from '@/services/pool/types';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
-import {ClaimProviderService} from '@/services/pool/claim.provider';
+import {ClaimType, ClaimProviderService} from '@/services/pool/claim.provider';
 import { computed, defineComponent, ref, toRefs, PropType,watch,ComputedRef } from 'vue';
 
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import useWeb3 from '@/services/web3/useWeb3';
 import { POOLS } from '@/constants/pools';
 import communityAssetBackImg from '@/assets/images/coins/community-border.svg';
+import useStake from '@/composables/PolarisFinance/useStake';
+import { TransactionResponse } from '@ethersproject/providers';
+import useTransactions from '@/composables/useTransactions';
 import {
   absMaxApr,
   isMigratablePool,
@@ -16,17 +19,29 @@ import {
   orderedTokenAddresses,
   totalAprLabel,
 } from '@/composables/usePool';
+import {
+    BigNumberToString,
+    sunriseNameToAddress,
+    SPOLAR,
+    getDisplayBalance,
+} from '@/composables/PolarisFinance/utils';
 import ArrowRightIcon from '@/components/_global/icons/ArrowRightIcon.vue';
+import { BigNumber } from 'ethers';
+import WalletIcon from '@/components/icons/IconWallet.vue'
+import FeeIcon from '@/components/icons/IconFees.vue'
 
 
 export default defineComponent({
+  
   data() {
     return {
-        claims: {},
+        claims: [] as Array < ClaimType >,
         noClaims:true,
+        totalClaims: 0,
         xpolarPoolQuery: usePoolQuery(
           '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
         ),
+        claimsCount: 0,
     }},
   components: {
     ArrowRightIcon
@@ -47,18 +62,14 @@ export default defineComponent({
   },
   emits: ['click'],
   methods:{
-    async claim() {
-      // const { withdraw } = useStake();
-      // let poolAddress = '';
-      // if (this.pool) {
-      //   poolAddress = this.pool.address;
-      // }
-      // const tx = await withdraw(
-      //   poolAddress,
-      //   BigNumber.from(0),
-      //   this.getProvider()
-      // );
-      // this.txHandler(tx);
+    async claimXpolar(address){
+      const { withdraw } = useStake();
+      const tx = await withdraw(
+        address,
+        BigNumber.from(0),
+        this.getProvider()
+      );
+      this.txHandler(tx);
     },
     async fetchClaims() {
       if (this.pools.length==0) {
@@ -81,9 +92,15 @@ export default defineComponent({
       }*/
       const claimer = new ClaimProviderService(this.pools,this.prices,this.xpolarPoolQuery,this.account);
       claimer.init();
-      claimer.claimsReceived = (claims:any)=>{
+      claimer.claimsReceived = (claims:Array < ClaimType >)=>{
         this.claims = claims;
-        this.$forceUpdate();
+        this.totalClaims = 0;
+        for (var i = 0; i < claims.length; i++) {
+          const xpolClaim:number = Number(claims[i].xpolarToClaim);
+          this.totalClaims=  this.totalClaims + xpolClaim;
+        }
+        this.claimsCount = this.claims.length;
+        this.$forceUpdate;
       }
       claimer.fetchAll();
     },
@@ -94,6 +111,17 @@ export default defineComponent({
      * COMPUTED
      */
      const { account, connector, startConnectWithInjectedProvider } = useWeb3();
+     const { getProvider } = useWeb3();
+     const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'approve',
+        summary: 'approve for staking',
+      });
+    };
+    const { addTransaction } = useTransactions();
+
     /**
      * METHODS
      */
@@ -110,6 +138,9 @@ export default defineComponent({
       orderedPoolTokens,
       communityAssetBackImg,
       // methods
+      getProvider,
+      txHandler,
+      BigNumberToString
     };
   },
   created(){
@@ -122,11 +153,44 @@ export default defineComponent({
 <template >
     <div class="claim-container flex" >
         <div class="stats grid flex-none">
-          <div class="flex justify-center items-center ">TVL</div>
-          <div class="flex justify-center items-center ">FEES</div>
+          
+          
+          <div class="flex justify-center items-center ">
+            <div class="flex">
+              <div class="mr-4 mt-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.6668 6.66659V2.66659C18.6668 2.31296 18.5264 1.97383 18.2763 1.72378C18.0263 1.47373 17.6871 1.33325 17.3335 1.33325H4.00016C3.29292 1.33325 2.61464 1.6142 2.11454 2.1143C1.61445 2.6144 1.3335 3.29267 1.3335 3.99992M1.3335 3.99992C1.3335 4.70716 1.61445 5.38544 2.11454 5.88554C2.61464 6.38563 3.29292 6.66659 4.00016 6.66659H20.0002C20.3538 6.66659 20.6929 6.80706 20.943 7.05711C21.193 7.30716 21.3335 7.6463 21.3335 7.99992V11.9999M1.3335 3.99992V19.9999C1.3335 20.7072 1.61445 21.3854 2.11454 21.8855C2.61464 22.3856 3.29292 22.6666 4.00016 22.6666H20.0002C20.3538 22.6666 20.6929 22.5261 20.943 22.2761C21.193 22.026 21.3335 21.6869 21.3335 21.3333V17.3333" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22.6665 12V17.3333H17.3332C16.6259 17.3333 15.9477 17.0524 15.4476 16.5523C14.9475 16.0522 14.6665 15.3739 14.6665 14.6667C14.6665 13.9594 14.9475 13.2811 15.4476 12.781C15.9477 12.281 16.6259 12 17.3332 12H22.6665Z" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="title">$125,458.23</div>
+                <div>Total value</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="flex justify-center items-center ">
+            <div class="flex">
+              <div class="mr-4 mt-3">
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.3332 9.00024C22.0151 9.00024 24.9998 7.20938 24.9998 5.00024C24.9998 2.79111 22.0151 1.00024 18.3332 1.00024C14.6513 1.00024 11.6665 2.79111 11.6665 5.00024C11.6665 7.20938 14.6513 9.00024 18.3332 9.00024Z" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M11.6665 5.00024V10.3336C11.6665 12.5429 14.6518 14.3336 18.3332 14.3336C22.0145 14.3336 24.9998 12.5429 24.9998 10.3336V5.00024" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M11.6665 10.3337V15.6671C11.6665 17.8764 14.6518 19.6671 18.3332 19.6671C22.0145 19.6671 24.9998 17.8764 24.9998 15.6671V10.3337" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M11.6665 15.667V21.0003C11.6665 23.2097 14.6518 25.0003 18.3332 25.0003C22.0145 25.0003 24.9998 23.2097 24.9998 21.0003V15.667" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6.33333 9.00024H3C2.46957 9.00024 1.96086 9.21096 1.58579 9.58603C1.21071 9.9611 1 10.4698 1 11.0002C1 11.5307 1.21071 12.0394 1.58579 12.4145C1.96086 12.7895 2.46957 13.0002 3 13.0002H4.33333C4.86377 13.0002 5.37247 13.211 5.74755 13.586C6.12262 13.9611 6.33333 14.4698 6.33333 15.0002C6.33333 15.5307 6.12262 16.0394 5.74755 16.4145C5.37247 16.7895 4.86377 17.0002 4.33333 17.0002H1" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3.6665 17.0003V18.3337M3.6665 7.66699V9.00033" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="title claim-amount">{{totalClaims.toLocaleString('en-US') }}</div>
+                <div>Total Rewards</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="pools flex flex-1">
-            <div class="grid-table">
+            <div class="grid-table" v-if="claims.length>0">
               <div class="pool-header">
                 <div class="h-4 ">My positions</div>
                 <div class="h-4">Tokens</div>
@@ -138,7 +202,7 @@ export default defineComponent({
 
               <div class="border"></div>
 
-              <template
+              <template 
                 v-for="(claim, idx) in claims"
                 :key="idx"
               >
@@ -167,10 +231,10 @@ export default defineComponent({
                     $ 0
                   </div>
                   <div class="flex items-center self-center claim-amount">
-                    $ {{claim.xpolarToClaim}}
+                    $ {{claim.xpolarToClaim }}
                   </div>
                   <div  class="flex items-center self-center">
-                    <button class="claim-btn flex items-center" @click="claim()">
+                    <button class="claim-btn flex items-center" @click="claimXpolar(claim.pool.address)">
                       Claim
                       <ArrowRightIcon class="ml-3"/>
                     </button>
@@ -198,10 +262,11 @@ export default defineComponent({
   .claim-container{
     background-color: #292043;;
     border-radius: 32px;
-    min-height: 400px;
+    min-height: 0px;
   }
   .stats{
     min-width: 300px;
+    color:rgba(189, 178, 221, 1);
   }
   .stats > div{
     background-color: #41365E;
@@ -278,9 +343,16 @@ export default defineComponent({
 }
 
 .claim-btn:hover{
+ 
   background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
+}
+.title{
+  font-weight: 600;
+  font-size: 32px;
+  color: #FDFDFD;
 }
 .claim-amount{
   color: #0CE6B5;
 }
+
  </style>

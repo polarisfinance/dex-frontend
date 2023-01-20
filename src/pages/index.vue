@@ -242,7 +242,7 @@ export default defineComponent({
 
     <div class="container mx-auto">
         <ClaimCard
-        :pools="segnioragePools"
+        :pools="segnioragePools.concat(communityPools).concat(investmentPoolsWithoutSeigniorage)"
         :prices="prices"
         />
     </div>
