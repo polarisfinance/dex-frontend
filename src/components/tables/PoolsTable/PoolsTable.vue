@@ -657,9 +657,9 @@ export default defineComponent({
                   :src="img"
                 /> {{ title }}</div>
           </div>
-          <div class="h-4">APR</div>
-          <div class="h-4">Liquidity</div>
-          <div class="h-4">Volume (24h)</div>
+          <div class="h-4 text-right mr-[65px]">APR</div>
+          <div class="h-4 text-right">Liquidity</div>
+          <div class="h-4 text-right">Volume (24h)</div>
         </div>
         <!-- div>To Claim</div -->
 
@@ -701,7 +701,7 @@ export default defineComponent({
               </div>
             </div>
           
-            <div class="apr flex items-center self-center" >
+            <div class="apr flex items-center justify-end" >
               <template v-if="noApr">
                 <div>{{ '0' + '%' }}</div>
               </template>
@@ -717,7 +717,7 @@ export default defineComponent({
                 <div>
                   {{ aprs[pool.address]['yearlyAPR'] + '%' }}
                 </div>
-                <div class="daily self-end">
+                <div class="daily pt-1">
                   <template v-if="noApr">
                     <div>
                       {{ '0' + '%' }} Daily
@@ -738,7 +738,7 @@ export default defineComponent({
             </div>
             <div class="flex items-center self-center">
               <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
-              <span v-else class="h-4 w-12 text-right">
+              <span v-else class="h-4 w-full text-right">
                 {{
                   fNum2(pool?.totalLiquidity, {
                     style: 'currency',
@@ -749,7 +749,7 @@ export default defineComponent({
             </div>
             <div  class="flex items-center self-center">
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
-              <span v-else class="h-4 w-12 text-right">
+              <span v-else class="h-4 w-full text-right">
                 {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}
               </span>
             </div>
@@ -960,14 +960,18 @@ export default defineComponent({
   color: #BDB2DD;
   padding-bottom: 24px;
 }
+.pool-header > div:first-child, .pool-row > div:first-child{
+  padding-left: 24px;
+}
+.pool-header > div:last-child, .pool-row > div:last-child{
+  padding-right: 24px;
+}
 .pool-row:hover > div {
   background-color: #292043;
 }
 .pool-row:hover > div:first-child {
   border-bottom-left-radius:48px;
   border-top-left-radius:48px;
-  /*margin-left: -20px;*/
-  /*padding-left: 20px;*/
 }
 .pool-row:hover > div:last-child {
   border-bottom-right-radius:48px;

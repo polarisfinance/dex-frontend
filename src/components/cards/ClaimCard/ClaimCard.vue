@@ -153,8 +153,6 @@ export default defineComponent({
 <template >
     <div class="claim-container flex" >
         <div class="stats grid flex-none">
-          
-          
           <div class="flex justify-center items-center ">
             <div class="flex">
               <div class="mr-4 mt-3">
@@ -268,14 +266,13 @@ export default defineComponent({
     min-width: 300px;
     color:rgba(189, 178, 221, 1);
   }
-  .stats > div{
-    background-color: #41365E;
-  }
   .stats > div:first-child{
     border-radius: 32px 0px 0px 0px;
+    background-color: #41365E;
   }
   .stats > div:last-child{
     border-radius: 0px 0px 0px 32px;
+    background-color: #50456E;
   }
   .earn-button{
     padding: 6px 12px 6px 16px;

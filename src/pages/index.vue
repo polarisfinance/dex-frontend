@@ -227,7 +227,7 @@ export default defineComponent({
       // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
       // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
 
-      if (scrollPos >= 1600) {
+      if (scrollPos >= 1900) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
@@ -356,7 +356,8 @@ export default defineComponent({
           </div>
         </div>
         <div id="segniorage" :class="{
-            'mt-[100px]': stickyPanel && isMobile,
+            'mt-[50px]': stickyPanel && isDesktop,
+            'mt-[250px]': stickyPanel && isMobile,
           }">
           <PoolsTable
             :key="filteredTokensList"
