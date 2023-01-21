@@ -896,7 +896,6 @@ export default defineComponent({
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
-  background-color: rgba(21, 1, 40, 1);
   color: #ffffff;
 }
 

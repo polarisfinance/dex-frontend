@@ -42,7 +42,22 @@ export default defineComponent({
           '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
         ),
         claimsCount: 0,
-    }},
+
+  }},
+  watch:{
+    pools(newValue,oldValue){
+      if(newValue.length!=0)
+        this.fetchClaimsIfPossible();
+    },
+    prices(newValue,oldValue){
+      if(newValue!=undefined)
+        this.fetchClaimsIfPossible();
+    },
+    xpolarPoolQuery(newValue,oldValue){
+      if(newValue.data!=undefined && newValue.data.value!=undefined)
+        this.fetchClaimsIfPossible();
+    },
+  },
   components: {
     ArrowRightIcon
 },
@@ -71,17 +86,24 @@ export default defineComponent({
       );
       this.txHandler(tx);
     },
-    async fetchClaims() {
-      if (this.pools.length==0) {
-        await new Promise((resolve, reject) => {
-          const loop = () =>
-          this.pools !== undefined
-              ? resolve(this.pools)
-              : setTimeout(loop, 100);
-          loop();
-        });
+    fetchClaimsIfPossible(){
+      if(this.pools.length!=0 && this.prices!=undefined && this.xpolarPoolQuery.data!=undefined){
+        this.fetchClaims();
       }
+    },
+    async fetchClaims() {
 
+      // if (this.pools.length==0) {
+      //   await new Promise((resolve, reject) => {
+      //     const loop = () =>
+      //     this.pools.length !== undefined
+      //         ? resolve(this.pools.length)
+      //         : setTimeout(loop, 100);
+      //     loop();
+      //   });
+      // }
+      console.log('Fetching claim info');
+      console.log('POOLCARD: '+ this.pools.length);
       /*const aprsPromises: any[] = [];
       for (var i = 0; i < this.data.length; i++) {
         aprsPromises.push(this.fetch(this.data[i]));
@@ -144,7 +166,7 @@ export default defineComponent({
     };
   },
   created(){
-      this.fetchClaims();
+    //this.fetchClaims();
   }
 });
 
@@ -154,7 +176,7 @@ export default defineComponent({
     <div class="claim-container flex" >
         <div class="stats grid flex-none">
           <div class="flex justify-center items-center ">
-            <div class="flex">
+            <div class="flex py-5">
               <div class="mr-4 mt-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.6668 6.66659V2.66659C18.6668 2.31296 18.5264 1.97383 18.2763 1.72378C18.0263 1.47373 17.6871 1.33325 17.3335 1.33325H4.00016C3.29292 1.33325 2.61464 1.6142 2.11454 2.1143C1.61445 2.6144 1.3335 3.29267 1.3335 3.99992M1.3335 3.99992C1.3335 4.70716 1.61445 5.38544 2.11454 5.88554C2.61464 6.38563 3.29292 6.66659 4.00016 6.66659H20.0002C20.3538 6.66659 20.6929 6.80706 20.943 7.05711C21.193 7.30716 21.3335 7.6463 21.3335 7.99992V11.9999M1.3335 3.99992V19.9999C1.3335 20.7072 1.61445 21.3854 2.11454 21.8855C2.61464 22.3856 3.29292 22.6666 4.00016 22.6666H20.0002C20.3538 22.6666 20.6929 22.5261 20.943 22.2761C21.193 22.026 21.3335 21.6869 21.3335 21.3333V17.3333" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -169,7 +191,7 @@ export default defineComponent({
 
           </div>
           <div class="flex justify-center items-center ">
-            <div class="flex">
+            <div class="flex py-5">
               <div class="mr-4 mt-3">
                 <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M18.3332 9.00024C22.0151 9.00024 24.9998 7.20938 24.9998 5.00024C24.9998 2.79111 22.0151 1.00024 18.3332 1.00024C14.6513 1.00024 11.6665 2.79111 11.6665 5.00024C11.6665 7.20938 14.6513 9.00024 18.3332 9.00024Z" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
