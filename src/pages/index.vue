@@ -239,7 +239,6 @@ export default defineComponent({
 
 <template>
     <HomePageHero />
-
     <div class="container mx-auto">
         <ClaimCard
         :pools="segnioragePools.concat(communityPools).concat(investmentPoolsWithoutSeigniorage)"
@@ -249,7 +248,7 @@ export default defineComponent({
 
     <div class="container mx-auto">
       <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
-      <div class="grid grid-cols-3 gap-6">
+      <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
         <template v-for="(pool, idx) in segnioragePools.slice(0, 6)" :key="idx">
           <PoolCard
           :pool="pool"

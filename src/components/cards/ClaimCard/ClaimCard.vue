@@ -2,7 +2,7 @@
 import { PoolWithShares } from '@/services/pool/types';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
 import {ClaimType, ClaimProviderService} from '@/services/pool/claim.provider';
-import { computed, defineComponent, ref, toRefs, PropType,watch,ComputedRef } from 'vue';
+import { computed, defineComponent, ref, PropType,watch,ComputedRef } from 'vue';
 
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import useWeb3 from '@/services/web3/useWeb3';
@@ -11,6 +11,9 @@ import communityAssetBackImg from '@/assets/images/coins/community-border.svg';
 import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
+import useNumbers, { FNumFormats } from '@/composables/useNumbers';
+import ClaimTotalFiat from '@/components/cards/ClaimCard/ClaimTotalFiat.vue';
+import useTokens from '@/composables/useTokens';
 import {
   absMaxApr,
   isMigratablePool,
@@ -27,8 +30,7 @@ import {
 } from '@/composables/PolarisFinance/utils';
 import ArrowRightIcon from '@/components/_global/icons/ArrowRightIcon.vue';
 import { BigNumber } from 'ethers';
-import WalletIcon from '@/components/icons/IconWallet.vue'
-import FeeIcon from '@/components/icons/IconFees.vue'
+import useBreakpoints from '@/composables/useBreakpoints';
 
 
 export default defineComponent({
@@ -53,14 +55,11 @@ export default defineComponent({
       if(newValue!=undefined)
         this.fetchClaimsIfPossible();
     },
-    xpolarPoolQuery(newValue,oldValue){
-      if(newValue.data!=undefined && newValue.data.value!=undefined)
-        this.fetchClaimsIfPossible();
-    },
   },
   components: {
-    ArrowRightIcon
-},
+    ArrowRightIcon,
+    ClaimTotalFiat,
+  },
   props: {
     pools: {
       type: Array as PropType<Array<PoolWithShares>>,
@@ -87,7 +86,7 @@ export default defineComponent({
       this.txHandler(tx);
     },
     fetchClaimsIfPossible(){
-      if(this.pools.length!=0 && this.prices!=undefined && this.xpolarPoolQuery.data!=undefined){
+      if(this.pools.length!=0 && this.prices!=undefined ){
         this.fetchClaims();
       }
     },
@@ -118,17 +117,25 @@ export default defineComponent({
         this.claims = claims;
         this.totalClaims = 0;
         for (var i = 0; i < claims.length; i++) {
-          const xpolClaim:number = Number(claims[i].xpolarToClaim);
-          this.totalClaims=  this.totalClaims + xpolClaim;
+          if(claims[i].xpolarToClaim!=undefined){
+            const xpolClaim:number = Number(claims[i].xpolarToClaim);
+            this.totalClaims=  this.totalClaims + xpolClaim;
+          }
         }
-        this.claimsCount = this.claims.length;
-        this.$forceUpdate;
+        // this.claimsCount = this.claims.length;
+        // this.$forceUpdate;
       }
       claimer.fetchAll();
     },
     
   },
   setup(props) {
+    /**
+     * COMPOSABLES
+     */
+    const { fNum2, toFiat } = useNumbers();
+    const { tokens, balances, balanceFor } = useTokens();
+    const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
     /**
      * COMPUTED
      */
@@ -143,6 +150,7 @@ export default defineComponent({
       });
     };
     const { addTransaction } = useTransactions();
+    const bptBalance = computed((pool): string => balanceFor(pool.address));
 
     /**
      * METHODS
@@ -162,7 +170,9 @@ export default defineComponent({
       // methods
       getProvider,
       txHandler,
-      BigNumberToString
+      BigNumberToString,
+      isMobile, 
+      isDesktop,
     };
   },
   created(){
@@ -173,8 +183,8 @@ export default defineComponent({
 </script>
   
 <template >
-    <div class="claim-container flex" >
-        <div class="stats grid flex-none">
+    <div class="claim-container flex flex-wrap" >
+        <div class="stats grid " :class="{'flex-none':isDesktop,'flex-1':isMobile}">
           <div class="flex justify-center items-center ">
             <div class="flex py-5">
               <div class="mr-4 mt-3">
@@ -209,7 +219,8 @@ export default defineComponent({
             </div>
           </div>
         </div>
-        <div class="pools flex flex-1">
+        <div  class="break" v-if="isMobile"></div>
+        <div class="pools flex flex-1" >
             <div class="grid-table" v-if="claims.length>0">
               <div class="pool-header">
                 <div class="h-4 ">My positions</div>
@@ -248,7 +259,7 @@ export default defineComponent({
                     {{claim.stakedBalance}}
                   </div>
                   <div class="flex items-center self-center" >
-                    $ 0
+                    <ClaimTotalFiat :pool="claim.pool"/>
                   </div>
                   <div class="flex items-center self-center claim-amount">
                     $ {{claim.xpolarToClaim }}
@@ -373,5 +384,8 @@ export default defineComponent({
 .claim-amount{
   color: #0CE6B5;
 }
-
+.break{
+  flex-basis: 100%;
+  height: 0;
+}
  </style>

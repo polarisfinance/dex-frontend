@@ -41,7 +41,6 @@ export class ClaimProviderService {
   private prices = []
   private account
   private xpolarPoolQuery
-  private xpolarPool
   private pools:PoolWithShares[]=[]
   private xpolarRewardPoolAddress='0x140e8a21d08CbB530929b012581a7C7e696145eF'
   private claims: Array < ClaimType > = [];
@@ -52,7 +51,6 @@ export class ClaimProviderService {
     this.pools = pools;
     this.prices = prices;
     this.account = account;
-    this.xpolarPool = computed(() => this.xpolarPoolQuery.data.value);
   }
 
   public init(){
@@ -133,13 +131,23 @@ export class ClaimProviderService {
       '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
     };
 
+    if (this.xpolarPoolQuery?.data === undefined) {
+      await new Promise((resolve, reject) => {
+        const loop = () =>
+        this.xpolarPoolQuery?.data !== undefined
+            ? resolve(this.xpolarPoolQuery?.data)
+            : setTimeout(loop, 100);
+        loop();
+      });
+    }
+    const xpolarPool = this.xpolarPoolQuery?.data;
     
     const xpolarBalance =
-    this.xpolarPool.value?.onchain?.tokens[
+    xpolarPool.value?.onchain?.tokens[
         '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
       ]?.balance;
     const nearBalance =
-    this.xpolarPool.value?.onchain?.tokens[
+    xpolarPool.value?.onchain?.tokens[
         '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
       ]?.balance;
 
