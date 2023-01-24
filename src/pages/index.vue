@@ -183,7 +183,7 @@ const selectToken = token => {
 import { defineComponent, ref, computed } from 'vue';
 import useTokens from '@/composables/useTokens';
 import { TokenInfo } from '@/types/TokenList';
-// var segnioragepools,classicpools,singlepools,communitypools;
+var segnioragepools,classicpools,singlepools,communitypools;
 export default defineComponent({
   created() {
     const { tokens, getToken } = useTokens();
@@ -208,7 +208,6 @@ export default defineComponent({
       classicpoolsTop:0,
       segnioragepoolsTop:0,
       communitypoolsTop:0,
-      segnioragepools:null,classicpools:null,singlepools:null,communitypools:null,
     };
   },
   mounted () {
@@ -244,19 +243,17 @@ export default defineComponent({
         this.stickyPanel = false;
       }
 
-      if(this.$refs!=undefined){
-        if(this.$refs['singlepools'] != undefined &&  (this.$refs['singlepools'] as any).getBoundingClientRect().top<100){
-          this.selectedPool = 'single';
-        }
-        else if(this.$refs['communitypools'] != undefined &&(this.$refs['communitypools'] as any).getBoundingClientRect().top<100){
-          this.selectedPool = 'community';
-        }
-        else if(this.$refs['classicpools'] != undefined && (this.$refs['classicpools'] as any).getBoundingClientRect().top<100){
-          this.selectedPool = 'classic';
-        }
-        else if(this.$refs['segnioragepools'] != undefined && (this.$refs['segnioragepools'] as any).getBoundingClientRect().top<100){
-          this.selectedPool = 'segniorage';
-        }
+      if(this.$refs['singlepools'] != undefined &&  (this.$refs['singlepools'] as any).getBoundingClientRect().top<100){
+        this.selectedPool = 'single';
+      }
+      else if(communitypools != undefined && communitypools.getBoundingClientRect().top<100){
+        this.selectedPool = 'community';
+      }
+      else if(classicpools != undefined && classicpools.getBoundingClientRect().top<100){
+        this.selectedPool = 'classic';
+      }
+      else if(segnioragepools != undefined && segnioragepools.getBoundingClientRect().top<100){
+        this.selectedPool = 'segniorage';
       }
       
     },
