@@ -53,6 +53,8 @@ const BondPage = () =>
   import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
 const VexPolarPage = () =>
   import(/* webpackChunkName: "VexPolarPage" */ '@/pages/VexPolar.vue');
+const AirdropPage = () =>
+  import(/* webpackChunkName: "VexPolarPage" */ '@/pages/airdrop.vue');
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -190,6 +192,11 @@ const routes: RouteRecordRaw[] = [
      name: 'vexpolar',
      component: VexPolarPage,
   },
+  {
+    path: '/airdrop',
+    name: 'airdrop',
+    component: AirdropPage,
+ },
 ];
 
 /**
