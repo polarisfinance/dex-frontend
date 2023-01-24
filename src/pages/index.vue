@@ -211,7 +211,10 @@ export default defineComponent({
     };
   },
   mounted () {
-    
+    singlepools = this.$refs['singlepools'];
+    segnioragepools = this.$refs['segnioragepools']
+    classicpools = this.$refs['classicpools']
+    communitypools = this.$refs['communitypools'];
   },
   methods: {
     filterToken(e) {
@@ -243,7 +246,7 @@ export default defineComponent({
         this.stickyPanel = false;
       }
 
-      if(this.$refs['singlepools'] != undefined &&  (this.$refs['singlepools'] as any).getBoundingClientRect().top<100){
+      if(singlepools != undefined &&  singlepools.getBoundingClientRect().top<100){
         this.selectedPool = 'single';
       }
       else if(communitypools != undefined && communitypools.getBoundingClientRect().top<100){

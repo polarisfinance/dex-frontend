@@ -31,28 +31,25 @@ onMounted(() => {});
 <template>
   <SunrisePageHero/>
    
-    <div
-      :class="{
-        sunrisePlaceholder: isDesktop,
-        sunrisePlaceholderMobile: isMobile,
-      }"
-    >
-      <div
-        v-for="(sunrise, idx) in sunrises"
-        :key="idx"
-        :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
-      >
-        <img :src="logo[sunrise.name]" class="logo" />
-        <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
-        <div class="sunrise-description mt-[12px] p-[10px]">
-          <p>
-            Stake your $SPOLAR to earn
-            <span class="uppercase">{{ '$' + sunrise.name }}</span>
-          </p>
+    <div class="container mx-auto">
+      <div class="grid gap-6 grid-cols-3">
+        <div
+          v-for="(sunrise, idx) in sunrises"
+          :key="idx"
+          :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
+        >
+          <img :src="logo[sunrise.name]" class="logo" />
+          <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
+          <div class="sunrise-description mt-[12px] p-[10px]">
+            <p>
+              Stake your $SPOLAR to earn
+              <span class="uppercase">{{ '$' + sunrise.name }}</span>
+            </p>
+          </div>
+          <router-link :to="'/sunrise/' + sunrise.name">
+            <button class="view-and-stake mt-[34px]">View and Stake</button>
+          </router-link>
         </div>
-        <router-link :to="'/sunrise/' + sunrise.name">
-          <button class="view-and-stake mt-[34px]">View and Stake</button>
-        </router-link>
       </div>
     </div>
 </template>
@@ -91,13 +88,11 @@ onMounted(() => {});
   border-radius: 22px;
   padding: 24px 0px;
   flex: 1 1 30%;
-  max-width: 30%;
   text-align: center;
 }
 
 .sunriseCardMobile {
   @apply bg-frame-dark;
-
   border-radius: 16px;
   padding: 24px 52px;
   text-align: center;
