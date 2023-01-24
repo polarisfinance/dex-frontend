@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch,Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HomePageHero from '@/components/heros/HomePageHero.vue';
@@ -30,7 +30,7 @@ const isElementSupported = appNetworkConfig.supportsElementPools;
 const { selectedTokens, addSelectedToken, removeSelectedToken } =
   usePoolFilters();
 
-var segnioragepools,classicpools,singlepools,communitypools;
+// var segnioragepools,classicpools,singlepools,communitypools;
 
 const {
   dataStates,
@@ -183,7 +183,7 @@ const selectToken = token => {
 import { defineComponent, ref, computed } from 'vue';
 import useTokens from '@/composables/useTokens';
 import { TokenInfo } from '@/types/TokenList';
-
+// var segnioragepools,classicpools,singlepools,communitypools;
 export default defineComponent({
   created() {
     const { tokens, getToken } = useTokens();
@@ -208,6 +208,7 @@ export default defineComponent({
       classicpoolsTop:0,
       segnioragepoolsTop:0,
       communitypoolsTop:0,
+      segnioragepools:null,classicpools:null,singlepools:null,communitypools:null,
     };
   },
   mounted () {
