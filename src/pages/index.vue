@@ -377,7 +377,7 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div id="segniorage" ref="segnioragepools" :class="{
+        <div id="segniorage" ref="sgnpools" :class="{
             'mt-[50px]': stickyPanel && isDesktop,
             'mt-[250px]': stickyPanel && isMobile,
           }">
