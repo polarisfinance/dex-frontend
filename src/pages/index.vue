@@ -30,7 +30,7 @@ const isElementSupported = appNetworkConfig.supportsElementPools;
 const { selectedTokens, addSelectedToken, removeSelectedToken } =
   usePoolFilters();
 
-
+var segnioragepools,classicpools,singlepools,communitypools;
 
 const {
   dataStates,
@@ -244,20 +244,19 @@ export default defineComponent({
       }
 
       if(this.$refs!=undefined){
-        if(this.$refs.singlepools != undefined &&  (this.$refs.singlepools as any).getBoundingClientRect().top<100){
+        if(this.$refs['singlepools'] != undefined &&  (this.$refs['singlepools'] as any).getBoundingClientRect().top<100){
           this.selectedPool = 'single';
         }
-        else if(this.$refs.communitypools != undefined &&(this.$refs.communitypools as any).getBoundingClientRect().top<100){
+        else if(this.$refs['communitypools'] != undefined &&(this.$refs['communitypools'] as any).getBoundingClientRect().top<100){
           this.selectedPool = 'community';
         }
-        else if(this.$refs.classicpools != undefined && (this.$refs.classicpools as any).getBoundingClientRect().top<100){
+        else if(this.$refs['classicpools'] != undefined && (this.$refs['classicpools'] as any).getBoundingClientRect().top<100){
           this.selectedPool = 'classic';
         }
-        // else if(this.$refs.segnioragepools != undefined && (this.$refs.segnioragepools as any).getBoundingClientRect().top<100){
-        //   this.selectedPool = 'segniorage';
-        // }
+        else if(this.$refs['segnioragepools'] != undefined && (this.$refs['segnioragepools'] as any).getBoundingClientRect().top<100){
+          this.selectedPool = 'segniorage';
+        }
       }
-      
       
     },
   },
@@ -377,7 +376,7 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div id="segniorage" ref="sgnpools" :class="{
+        <div id="segniorage" ref="segnioragepools" :class="{
             'mt-[50px]': stickyPanel && isDesktop,
             'mt-[250px]': stickyPanel && isMobile,
           }">
