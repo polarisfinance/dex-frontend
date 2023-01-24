@@ -243,16 +243,16 @@ export default defineComponent({
         this.stickyPanel = false;
       }
 
-      if(this.$refs['singlepools'] != undefined &&  (this.$refs['singlepools'] as any).getBoundingClientRect().top<100){
+      if(this.$refs.singlepools != undefined &&  (this.$refs.singlepools as any).getBoundingClientRect().top<100){
         this.selectedPool = 'single';
       }
-      else if(this.$refs['communitypools'] != undefined &&(this.$refs['communitypools'] as any).getBoundingClientRect().top<100){
+      else if(this.$refs.communitypools != undefined &&(this.$refs.communitypools as any).getBoundingClientRect().top<100){
         this.selectedPool = 'community';
       }
-      else if(this.$refs['classicpools'] != undefined && (this.$refs['classicpools'] as any).getBoundingClientRect().top<100){
+      else if(this.$refs.classicpools != undefined && (this.$refs.classicpools as any).getBoundingClientRect().top<100){
         this.selectedPool = 'classic';
       }
-      else if(this.$refs['segnioragepools'] != undefined && (this.$refs['segnioragepools'] as any).getBoundingClientRect().top<100){
+      else if(this.$refs.segnioragepools != undefined && (this.$refs.segnioragepools as any).getBoundingClientRect().top<100){
         this.selectedPool = 'segniorage';
       }
       
