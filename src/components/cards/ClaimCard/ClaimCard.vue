@@ -13,6 +13,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import ClaimTotalFiat from '@/components/cards/ClaimCard/ClaimTotalFiat.vue';
+import useEthers from '@/composables//useEthers';
 import useTokens from '@/composables/useTokens';
 import {
   absMaxApr,
@@ -43,7 +44,6 @@ export default defineComponent({
         xpolarPoolQuery: usePoolQuery(
           '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
         ),
-        claimsCount: 0,
 
   }},
   watch:{
@@ -54,6 +54,9 @@ export default defineComponent({
     prices(newValue,oldValue){
       if(newValue!=undefined)
         this.fetchClaimsIfPossible();
+    },
+    async account() {
+      this.fetchClaimsIfPossible();
     },
   },
   components: {
@@ -76,14 +79,20 @@ export default defineComponent({
   },
   emits: ['click'],
   methods:{
-    async claimXpolar(address){
+    async claimXpolar(pool){
       const { withdraw } = useStake();
       const tx = await withdraw(
-        address,
+        pool.address,
         BigNumber.from(0),
         this.getProvider()
       );
       this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchClaims();
+        },
+        onTxFailed: () => {},
+      });
     },
     fetchClaimsIfPossible(){
       if(this.pools.length!=0 && this.prices!=undefined ){
@@ -92,36 +101,27 @@ export default defineComponent({
     },
     async fetchClaims() {
 
-      // if (this.pools.length==0) {
-      //   await new Promise((resolve, reject) => {
-      //     const loop = () =>
-      //     this.pools.length !== undefined
-      //         ? resolve(this.pools.length)
-      //         : setTimeout(loop, 100);
-      //     loop();
-      //   });
-      // }
       console.log('Fetching claim info');
       console.log('POOLCARD: '+ this.pools.length);
-      /*const aprsPromises: any[] = [];
-      for (var i = 0; i < this.data.length; i++) {
-        aprsPromises.push(this.fetch(this.data[i]));
-      }
-      const aprs = await Promise.all(aprsPromises);
-      for (var i = 0; i < this.data.length; i++) {
-        this.aprs[this.data[i].address] = aprs[i];
-      }*/
       const claimer = new ClaimProviderService(this.pools,this.prices,this.xpolarPoolQuery,this.account);
       claimer.init();
-      claimer.claimsReceived = (claims:Array < ClaimType >)=>{
-        this.claims = claims;
-        this.totalClaims = 0;
-        for (var i = 0; i < claims.length; i++) {
-          if(claims[i].xpolarToClaim!=undefined){
-            const xpolClaim:number = Number(claims[i].xpolarToClaim);
-            this.totalClaims=  this.totalClaims + xpolClaim;
+        claimer.claimReceived = (claim:ClaimType)=>{
+
+        let existingIndex = -1;
+        this.claims.forEach(existingClaim => {
+          if(existingClaim.pool.address==claim.pool.address){
+            existingIndex = this.claims.indexOf(existingClaim);
           }
+        });
+        if(existingIndex!=-1){
+          this.claims[existingIndex] = claim;
+        }else{
+          this.claims.push(claim);
+          this.totalClaims=  this.totalClaims + Number(claim.xpolarToClaim);
         }
+
+        
+        
         // this.claimsCount = this.claims.length;
         // this.$forceUpdate;
       }
@@ -136,6 +136,7 @@ export default defineComponent({
     const { fNum2, toFiat } = useNumbers();
     const { tokens, balances, balanceFor } = useTokens();
     const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
+    const { txListener } = useEthers();
     /**
      * COMPUTED
      */
@@ -145,8 +146,8 @@ export default defineComponent({
       addTransaction({
         id: tx.hash,
         type: 'tx',
-        action: 'approve',
-        summary: 'approve for staking',
+        action: 'claim',
+        summary: 'claim staking reward',
       });
     };
     const { addTransaction } = useTransactions();
@@ -170,6 +171,7 @@ export default defineComponent({
       // methods
       getProvider,
       txHandler,
+      txListener,
       BigNumberToString,
       isMobile, 
       isDesktop,
@@ -183,6 +185,7 @@ export default defineComponent({
 </script>
   
 <template >
+  <div class="container mx-auto" v-if="account!= ''">
     <div class="claim-container flex flex-wrap" >
         <div class="stats grid " :class="{'flex-none':isDesktop,'flex-1':isMobile}">
           <div class="flex justify-center items-center ">
@@ -265,7 +268,7 @@ export default defineComponent({
                     $ {{claim.xpolarToClaim }}
                   </div>
                   <div  class="flex items-center self-center">
-                    <button class="claim-btn flex items-center" @click="claimXpolar(claim.pool.address)">
+                    <button class="claim-btn flex items-center" @click="claimXpolar(claim.pool)">
                       Claim
                       <ArrowRightIcon class="ml-3"/>
                     </button>
@@ -286,6 +289,7 @@ export default defineComponent({
             </div>
         </div>  
     </div>
+  </div>
 </template>
   
   <style scoped>

@@ -13,6 +13,7 @@ import { bool } from 'prop-types';
 
 type Props = {
   tokens: PoolToken[];
+  boosted:Boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -62,20 +63,22 @@ function isBalanced(tokens: PoolToken[]):boolean{
     });
     return out;
 }
-function getBgClass(tokens: PoolToken[]): string{
-    if(tokens.length==3)
-        return 'bg-green';
+function getBgClass(tokens: PoolToken[],boosted:Boolean): string{
+    if(boosted!=undefined && boosted)
+      return 'bg-red';
+    else if(tokens.length==3)
+      return 'bg-green';
     else if(isBalanced(tokens))
-        return 'bg-grey';
+      return 'bg-grey';
     else
-        return 'bg-blue';
+      return 'bg-blue';
 }
 
 const MAX_PILLS = 11;
 </script>
 
 <template>
-  <div class="weight flex" :class="getBgClass(tokens)">
+  <div class="weight flex" :class="getBgClass(tokens,boosted)">
     <div class="title">{{ getTitle(tokens) }}</div>
     <div v-for="(token, idx) in visibleTokens"
       class="text-center"

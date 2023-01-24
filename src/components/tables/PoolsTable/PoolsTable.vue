@@ -694,9 +694,8 @@ export default defineComponent({
                   :showWeight="false"
                 />
                 <TokenWeightPill class="ml-[12px]"
-                  :tokens="
-                    orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-                  "
+                  :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)"
+                  :boosted="pool.boost"
                 />
               </div>
             </div>
@@ -736,7 +735,7 @@ export default defineComponent({
                 </div>
               </template>
             </div>
-            <div class="flex items-center self-center">
+            <div class="flex items-center self-center liq">
               <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
               <span v-else class="h-4 w-full text-right">
                 {{
@@ -747,7 +746,7 @@ export default defineComponent({
                 }}
               </span>
             </div>
-            <div  class="flex items-center self-center">
+            <div  class="flex items-center self-center vol">
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-full text-right">
                 {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}
@@ -899,13 +898,6 @@ export default defineComponent({
   color: #ffffff;
 }
 
-.table-title {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-
-  color: #d7b3ff;
-}
 
 
 .pool-table-mobile {
@@ -984,7 +976,7 @@ export default defineComponent({
   color: rgba(189, 178, 221, 1)
 }
 
-.apr {
+.apr, .liq, .vol {
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
@@ -999,7 +991,7 @@ export default defineComponent({
 .token-pill{
   margin-top: 0px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 20px;
 }
 </style>

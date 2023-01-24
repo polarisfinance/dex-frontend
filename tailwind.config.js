@@ -62,7 +62,7 @@ module.exports = {
       colors: {
         frame: {
           dark: {
-            DEFAULT: '#1E0D2C',
+            DEFAULT: '#292043',
             ultra: '#160D22',
           },
           light: {

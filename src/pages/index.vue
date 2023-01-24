@@ -30,6 +30,8 @@ const isElementSupported = appNetworkConfig.supportsElementPools;
 const { selectedTokens, addSelectedToken, removeSelectedToken } =
   usePoolFilters();
 
+
+
 const {
   dataStates,
   result: investmentPools,
@@ -41,6 +43,7 @@ const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const isInvestmentPoolsTableLoading = computed(
   () => dataStates.value['basic'] === 'loading' || priceQueryLoading.value
 );
+
 
 const segniorageIds = [
   '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10000200000000000000000004',
@@ -173,6 +176,7 @@ const selectToken = token => {
   selectedToken.value = token;
   searchTerm.value = token;
 };
+
 </script>
 
 <script lang="ts">
@@ -189,7 +193,9 @@ export default defineComponent({
     });
 
     window.addEventListener('scroll', this.onScroll);
+    
   },
+  
   data() {
     return {
       filteredTokensList: [] as string[],
@@ -197,7 +203,15 @@ export default defineComponent({
       inputFocused: false,
       tokenNames: {},
       stickyPanel: false,
+      selectedPool:'segniorage',
+      singlepoolsTop:0,
+      classicpoolsTop:0,
+      segnioragepoolsTop:0,
+      communitypoolsTop:0,
     };
+  },
+  mounted () {
+    
   },
   methods: {
     filterToken(e) {
@@ -221,30 +235,41 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
-
     onScroll() {
-      var scrollPos = window.scrollY;
-      // var panelTop = (this.$refs['filterPanel'] as any).getBoundingClientRect().y;
-      // var senTop = (this.$refs['segniorage'] as any).getBoundingClientRect().y;
-
+      let scrollPos = window.scrollY;
       if (scrollPos >= 1900) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
       }
+
+      if(this.$refs['singlepools'] != undefined &&  (this.$refs['singlepools'] as any).getBoundingClientRect().top<100){
+        this.selectedPool = 'single';
+      }
+      else if(this.$refs['communitypools'] != undefined &&(this.$refs['communitypools'] as any).getBoundingClientRect().top<100){
+        this.selectedPool = 'community';
+      }
+      else if(this.$refs['classicpools'] != undefined && (this.$refs['classicpools'] as any).getBoundingClientRect().top<100){
+        this.selectedPool = 'classic';
+      }
+      else if(this.$refs['segnioragepools'] != undefined && (this.$refs['segnioragepools'] as any).getBoundingClientRect().top<100){
+        this.selectedPool = 'segniorage';
+      }
+      
+      
     },
   },
+  watch:{
+  }
 });
 </script>
 
 <template>
     <HomePageHero />
-    <div class="container mx-auto">
-        <ClaimCard
-        :pools="segnioragePools.concat(communityPools).concat(investmentPoolsWithoutSeigniorage)"
-        :prices="prices"
-        />
-    </div>
+    <ClaimCard
+    :pools="segnioragePools.concat(communityPools).concat(investmentPoolsWithoutSeigniorage)"
+    :prices="prices"
+    />
 
     <div class="container mx-auto">
       <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
@@ -287,21 +312,17 @@ export default defineComponent({
               class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
             >
               <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
-              <a href="#segniorage"
-                ><div class="segniorage-btn cursor-pointer">
-                  Seigniorage Pools
-                </div></a
-              >
-              <a href="#singlestaking">
-                <div class="pool-type-btn cursor-pointer">Single Staking</div>
+              <a href="#segniorage">
+                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
               </a>
               <a href="#classicpools">
-                <div class="pool-type-btn cursor-pointer">Classic Pools</div>
+                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='classic'}">Classic Pools</div>
               </a>
               <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer">
-                  Community Pools
-                </div>
+                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='community'}">Community Pools</div>
+              </a>
+              <a href="#singlestaking">
+                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
               </a>
             </div>
 
@@ -324,7 +345,7 @@ export default defineComponent({
             <div class="mt-[8px] flex justify-center gap-[8px]">
               <a href="#segniorage">
                 <div
-                  class="segniorage mobile-pool-btn cursor-pointer text-center"
+                  class="mobile-pool-btn cursor-pointer text-center"
                 >
                   Seigniorage Pools
                 </div>
@@ -354,7 +375,7 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div id="segniorage" :class="{
+        <div id="segniorage" ref="segnioragepools" :class="{
             'mt-[50px]': stickyPanel && isDesktop,
             'mt-[250px]': stickyPanel && isMobile,
           }">
@@ -376,7 +397,7 @@ export default defineComponent({
             :prices="prices"
           />
         </div>
-        <div id="classicpools">
+        <div id="classicpools" ref="classicpools">
           <PoolsTable
             :key="filteredTokensList"
             :data="investmentPoolsWithoutSeigniorage"
@@ -395,7 +416,7 @@ export default defineComponent({
             :img="classicImg"
           />
         </div>
-        <div id="communitypools">
+        <div id="communitypools" ref="communitypools" >
           <PoolsTable
             :key="filteredTokensList"
             :data="communityPools"
@@ -414,7 +435,7 @@ export default defineComponent({
             :noApr="true"
           />
         </div>
-        <div id="singlestaking">
+        <div id="singlestaking" ref="singlepools" >
           <SingleStake />
         </div>
         <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
@@ -422,8 +443,8 @@ export default defineComponent({
         </div> -->
       </BalStack>
     </div>
+    
 </template>
-
 <style scoped>
 
 .title {
@@ -495,7 +516,7 @@ export default defineComponent({
   color: #b9babb;
 }
 
-.segniorage-btn {
+.selected-pool {
   padding: 9px 16px;
 
   background: #150128;

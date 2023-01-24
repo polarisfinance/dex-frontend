@@ -44,7 +44,8 @@ export class ClaimProviderService {
   private pools:PoolWithShares[]=[]
   private xpolarRewardPoolAddress='0x140e8a21d08CbB530929b012581a7C7e696145eF'
   private claims: Array < ClaimType > = [];
-  public claimsReceived?: (claims:any) => void
+  // public claimsReceived?: (claims:any) => void
+  public claimReceived?: (claim:ClaimType) => void
 
   constructor(pools:any,prices:any, xpolarPoolQuery,account) {
     this.xpolarPoolQuery = xpolarPoolQuery;
@@ -61,7 +62,7 @@ export class ClaimProviderService {
     if(!this.pools)
       return;
 
-    let allClaims: ClaimType[] = [];
+    // let allClaims: ClaimType[] = [];
     for (var i = 0; i < this.pools.length; i++) {
 
       // promises.push(this.fetch(this.pools[i]));
@@ -70,11 +71,13 @@ export class ClaimProviderService {
       }).then((val:any) => {
         if(val!=undefined){
           const obj:ClaimType = val;
-          if(val.approved)
-            allClaims.push( obj );
-          if (!this.claimsReceived) 
-            return; 
-          this.claimsReceived(allClaims);
+          if(val.approved && this.claimReceived){
+            this.claimReceived(obj);
+          }
+            // allClaims.push( obj );
+          // if (!this.claimsReceived) 
+          //   return; 
+          // this.claimsReceived(allClaims);
         }
       });
 
