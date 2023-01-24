@@ -4,8 +4,10 @@ import {
   computed,
   ref,
 } from 'vue';
+import useWeb3 from '@/services/web3/useWeb3';
+import HeroConnectWalletButton from '@/components/heros/HeroConnectWalletButton.vue';
 const { isDesktop, isMobile } = useBreakpoints();
-
+const { isWalletReady, isWalletConnecting } = useWeb3();
 
 const totalProgress = ref(1);
 
@@ -25,11 +27,8 @@ const progress = (60-diffDays)/60;
             <div class="title">Airdrop for Polaris holders</div>
             <div class="subtitle">
             Connect your wallet and claim your airdrop!
-            <div class="flex gap-[28px] justify-center mt-[16px]">
-                <button class="get-btn">Get VexPolar</button>
-                <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" class="learn-btn">Learn More</a>
             </div>
-            </div>
+            <HeroConnectWalletButton class="my-10" v-if="!isWalletReady && !isWalletConnecting"/>
         </div>
         <div class="summary flex mx-auto">
             <div class="info-token flex-none pr-[55px]">
