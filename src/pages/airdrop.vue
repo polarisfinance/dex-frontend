@@ -126,7 +126,7 @@ export default defineComponent({
             >
           </div>
         </div>
-        <div class="progress-bar mt-[100px] h-[2px]">
+        <div class="progress-bar mt-[100px] h-[2px] rounded-[24px]">
           <div
             class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
             :style="{ width: `${(progress * 100).toFixed(0)}%` }"
@@ -426,7 +426,7 @@ export default defineComponent({
             In the next 45 days
           </div>
           <div>
-            <div class="progress-bar mx-10 mt-[32px] h-[2px]">
+            <div class="progress-bar mx-10 mt-[32px] h-[2px] rounded-[24px]">
               <div
                 class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
                 :style="{ width: `${(progress * 100).toFixed(0)}%` }"
@@ -661,7 +661,7 @@ h2 {
   height: 12px;
   border-radius: 6px;
   position: relative;
-  top: -6px;
+  top: -5px;
 }
 .progress-tracker span {
   position: relative;
