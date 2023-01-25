@@ -576,7 +576,7 @@ export default defineComponent({
 .is-sticky {
   position: fixed;
   top: 79px;
-  z-index: 10;
+  z-index: 21;
   background: linear-gradient(
     90.08deg,
     rgba(19, 7, 25, 0.7) -0.61%,
