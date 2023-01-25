@@ -224,17 +224,17 @@ export default defineComponent({
         </div>
         <div  class="break" v-if="isMobile"></div>
         <div class="pools flex flex-1" >
-            <div class="grid-table" v-if="claims.length>0">
+            <div class="grid-table" v-if="claims.length>0" :class="{ 'mobile':isMobile}">
               <div class="pool-header">
                 <div class="h-4 ">My positions</div>
-                <div class="h-4">Tokens</div>
-                <div class="h-4">$ Value</div>
+                <div class="h-4" v-if="isDesktop">Tokens</div>
+                <div class="h-4" v-if="isDesktop">$ Value</div>
                 <div class="h-4">To claim</div>
                 <div class="h-4"></div>
               </div>
               <!-- div>To Claim</div -->
 
-              <div class="border"></div>
+              <div class="border" :class="{'mobile':isMobile}"></div>
 
               <template 
                 v-for="(claim, idx) in claims"
@@ -258,10 +258,10 @@ export default defineComponent({
                     />
                     
                   </div>
-                  <div class="flex items-center self-center" >
+                  <div class="flex items-center self-center"  v-if="isDesktop" >
                     {{claim.stakedBalance}}
                   </div>
-                  <div class="flex items-center self-center" >
+                  <div class="flex items-center self-center"  v-if="isDesktop">
                     <ClaimTotalFiat :pool="claim.pool"/>
                   </div>
                   <div class="flex items-center self-center claim-amount">
@@ -333,13 +333,14 @@ export default defineComponent({
 
 .grid-table {
   display: grid;
-  grid-template-columns: 50% auto;
   width: 100%;
   color: rgba(253, 253, 253, 1);
+  grid-template-columns: 50% auto;
 }
-
+.grid-table.mobile{
+  grid-template-columns: 1fr 1fr 1fr;
+}
 .grid-table .border{
-  grid-column: 1 / span 5;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
   margin-bottom: 24px;
   height: 0px;
@@ -375,7 +376,12 @@ export default defineComponent({
   font-size: 14px;
   line-height: 18px;
 }
-
+.border{
+  grid-column: 1 / span 5;
+}
+.border.mobile{
+  grid-column: 1 / span 3;
+}
 .claim-btn:hover{
  
   background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);

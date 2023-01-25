@@ -183,7 +183,9 @@ const selectToken = token => {
 import { defineComponent, ref, computed } from 'vue';
 import useTokens from '@/composables/useTokens';
 import { TokenInfo } from '@/types/TokenList';
+import useBreakPoints from '@/composables/useBreakpoints';
 var segnioragepools,classicpools,singlepools,communitypools;
+const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakPoints();
 export default defineComponent({
   created() {
     const { tokens, getToken } = useTokens();
@@ -239,8 +241,10 @@ export default defineComponent({
       this.filteredTokensList = tokenList;
     },
     onScroll() {
-      let scrollPos = window.scrollY;
-      if (scrollPos >= 1900) {
+      if ( 
+        (segnioragepools.getBoundingClientRect().top<250 && isMobile.value) ||
+        (segnioragepools.getBoundingClientRect().top<125 && isDesktop.value) 
+      ) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
@@ -276,7 +280,7 @@ export default defineComponent({
     <div class="container mx-auto">
       <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
       <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
-        <template v-for="(pool, idx) in segnioragePools.slice(0, 6)" :key="idx">
+        <template v-for="(pool, idx)      in      (isDesktop) ? segnioragePools.slice(0, 6) :segnioragePools.slice(0, 3)  " :key="idx">
           <PoolCard
           :pool="pool"
           :prices="prices"
@@ -344,28 +348,18 @@ export default defineComponent({
               <img src="./search.svg" class="mr-[12px]" />
               <input type="text" placeholder="Filter by token" class="input" />
             </div>
-            <div class="mt-[8px] flex justify-center gap-[8px]">
+            <div class="mt-[8px] flex justify-center gap-[8px] px-5">
               <a href="#segniorage">
-                <div
-                  class="mobile-pool-btn cursor-pointer text-center"
-                >
-                  Seigniorage Pools
-                </div>
-              </a>
-              <a href="#singlestaking">
-                <div class="mobile-pool-btn cursor-pointer text-center">
-                  Single Staking
-                </div>
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
               </a>
               <a href="#classicpools">
-                <div class="mobile-pool-btn cursor-pointer text-center">
-                  Classic Pools
-                </div>
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='classic'}">Classic Pools</div>
               </a>
               <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer text-center">
-                  Community Pools
-                </div>
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='community'}">Community Pools</div>
+              </a>
+              <a href="#singlestaking">
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
               </a>
             </div>
             <button
@@ -533,11 +527,12 @@ export default defineComponent({
     linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
+.filter-panel-mobile .selected-pool{
+  margin-top: 5px;
+}
 
 .pool-type-btn {
-  padding: 9px 35px;
   border-radius: 48px;
-
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
@@ -608,13 +603,19 @@ export default defineComponent({
 .not-sticky {
   position: relative;
 }
-.is-sticky.filter-panel-mobile{
-  top: 69px;
-}
+
 .pool-panel{
   background-color: #292043;
   border-radius: 48px;
 
 }
-
+.filter-panel-mobile{
+  border-radius: 0px;
+  width: 100%;
+  max-width: none;
+  padding-top: 20px;
+}
+.is-sticky.filter-panel-mobile{
+  top: 69px;
+}
 </style>

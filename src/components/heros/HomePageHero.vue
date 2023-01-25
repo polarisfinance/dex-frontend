@@ -5,7 +5,7 @@ import AppHero from '@/components/heros/AppHero.vue';
 import useFathom from '@/composables/useFathom';
 import { EXTERNAL_LINKS } from '@/constants/links';
 import useWeb3 from '@/services/web3/useWeb3';
-
+import useBreakpoints from '@/composables/useBreakpoints';
 import HeroConnectWalletButton from './HeroConnectWalletButton.vue';
 import ArrowDownIcon2 from '../_global/icons/ArrowDownIcon2.vue';
 
@@ -14,7 +14,7 @@ import ArrowDownIcon2 from '../_global/icons/ArrowDownIcon2.vue';
  */
 const { isWalletReady, isWalletConnecting } = useWeb3();
 const { trackGoal, Goals } = useFathom();
-
+const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 /**
  * COMPUTED
  */
@@ -44,7 +44,7 @@ const classes = computed(() => ({
         </a>
       </div>
     </template>
-    <div class="my-[80px] flex w-full justify-center">
+    <div class="my-[80px] flex w-full justify-center" v-if="isDesktop">
       <div>
         <div class="boost flex my-12">
           <div>
