@@ -427,11 +427,10 @@ export default defineComponent({
 }
 
 .card {
+  @apply bg-frame-dark;
   padding: 24px 50px;
 
-  background: #1e0d2c;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 22px;
 
   flex: 1 1 30%;
   max-width: 30%;
@@ -439,10 +438,9 @@ export default defineComponent({
 }
 
 .cardMobile {
+  @apply bg-frame-dark;
   gap: 40px;
-  background: #1e0d2c;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 22px;
   padding: 24px;
 }
 
