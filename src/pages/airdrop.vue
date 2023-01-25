@@ -80,7 +80,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div :class="{ 'pg-bg': isDesktop }" >
+  <div class="pg-bg" v-if=" isDesktop " >
     <img :src="airdropbg" class="m-auto"/>
   </div>
   <div :class="{ relative: isDesktop }">
@@ -94,25 +94,25 @@ export default defineComponent({
         />
       </div>
       <div class="summary mx-auto flex">
-        <div class="info-token flex-none pr-[55px]">
+        <div class="info-token flex-none " v-if="isDesktop">
           <img class="w-[124px]" src="./xpolar.svg" />
         </div>
-        <div class="total w-full pt-[24px]">
+        <div class="total w-full pt-[24px] pl-[55px]">
           Total xPolars
           <h3>200,000</h3>
         </div>
-        <div class="share w-full pt-[24px]">
+        <div class="share w-full pt-[24px] pl-5">
           Your share
           <h3>myPendingShare</h3>
         </div>
       </div>
-      <div class="vesting">
+      <div class="vesting mx-10">
             <div class="flex">
-                <div class="w-full">
+                <div class="w-full mr-10">
                     <span class="inp-label">In progress</span>
                     <h2 >60 Days vesting</h2>
                 </div>
-                <div class="flex w-fit ">
+                <div class="flex w-fit" :class="{'flex-wrap':isMobile}">
                     <div class="basic-label w-[300px]">Full information about airdrop can <br/>be found on our medium</div>
                     <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" class="read-btn flex-none">Read our medium</a>
                 </div>
@@ -129,7 +129,7 @@ export default defineComponent({
             <div class="w-full text-center">2450 xPolars / 200 000 xPolars</div>
         </div>
         <div class="graphic mt-[180px] mb-[120px]">
-            <svg width="920" height="257" viewBox="0 0 920 257" fill="none" xmlns="http://www.w3.org/2000/svg" class="m-auto">
+            <svg width="920" height="257" viewBox="0 0 920 257" fill="none" xmlns="http://www.w3.org/2000/svg" class="m-auto w-full">
                 <g opacity="0.3" filter="url(#filter0_iiii_542_3490)">
                 <path d="M33.0957 256.613H5.35371C0 256.613 -1.33843 254.545 1.33843 250.408L43.5191 173.341C47.4819 166.101 47.4462 157.332 43.4247 150.124L2.43351 76.6554C-0.24335 72.5185 0.851727 70.45 5.71874 70.45H33.8257C38.4494 70.45 41.6129 72.5185 43.3164 76.6554L72.5766 138.788C72.7639 139.186 73.1641 139.44 73.6039 139.44C74.0535 139.44 74.4608 139.175 74.6425 138.763L102.086 76.6554C103.789 72.5185 106.831 70.45 111.211 70.45H138.953C144.064 70.45 145.28 72.5185 142.603 76.6554L102.912 149.737C98.9883 156.963 99.0362 165.694 103.039 172.876L146.254 250.408C148.687 254.545 147.592 256.613 142.968 256.613H114.131C109.994 256.613 107.074 254.545 105.371 250.408L74.6588 186.455C74.4661 186.053 74.0605 185.798 73.6154 185.798C73.1684 185.798 72.7613 186.056 72.5697 186.459L42.2213 250.408C40.5179 254.545 37.476 256.613 33.0957 256.613Z" fill="#010013"/>
                 <path d="M210.264 256.613H187.268C183.131 256.613 181.062 254.545 181.062 250.408V28.107C181.062 23.97 183.131 21.9016 187.268 21.9016H274.144C291.908 21.9016 305.779 26.8902 315.757 36.8676C325.734 46.6016 330.723 60.4726 330.723 78.4806V116.443C330.723 134.208 325.734 148.079 315.757 158.056C305.779 168.034 291.908 173.022 274.144 173.022H220.85C217.93 173.022 216.47 174.239 216.47 176.673V250.408C216.47 254.545 214.401 256.613 210.264 256.613ZM220.485 141.63H269.034C286.311 141.63 294.95 132.626 294.95 114.618V79.9407C294.95 61.9327 286.311 52.9288 269.034 52.9288H220.485C217.808 52.9288 216.47 54.1455 216.47 56.579V137.98C216.47 140.413 217.808 141.63 220.485 141.63Z" fill="#010013"/>
@@ -176,8 +176,8 @@ export default defineComponent({
                 </defs>
             </svg>
         </div>
-        <div class="claim-container flex flex-wrap" >
-            <div class="stats grid flex-none">
+        <div class="claim-container mx-5" :class="{'flex flex-wrap':isDesktop}">
+            <div class="stats grid flex-none" :class="{'stats-mobile':isMobile}">
                 <div class="flex justify-center items-center">
                     <div class="flex py-5" >
                         <div class="mr-4 mt-3">
@@ -345,6 +345,13 @@ h2 {
     background-color: #292043;
     border-radius: 32px;
     min-height: 0;
+}
+
+.stats-mobile>div{
+    border-radius: 0 0 0 0!important;
+}
+.stats-mobile>div:first-child{
+    border-radius: 32px 32px 0 0!important;
 }
 .card-claim{
     padding: 24px 24px 32px 24px;
