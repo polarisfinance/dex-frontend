@@ -55,6 +55,26 @@ module.exports = {
         '2xl': '1.25rem',
       },
       colors: {
+        styling: {
+          pink: {
+            DEFAULT: '#D04FB8',
+          },
+          green: {
+            DEFAULT: '#27AE60cc',
+          },
+          orange: {
+            DEFAULT: '#FF5F6Dcc',
+          },
+          blue: {
+            DEFAULT: '#2F80EDcc',
+          },
+          teal: {
+            DEFAULT: '#0CE6B5',
+          },
+          orange: {
+            DEFAULT: '#FFAA5F',
+          },
+        },
         frame: {
           dark: {
             DEFAULT: '#1E0D2C',
@@ -72,8 +92,8 @@ module.exports = {
           },
           purple: {
             DEFAULT: '#D7B3FF',
-            secondary: '#F5E1FF'
-          }
+            secondary: '#F5E1FF',
+          },
         },
 
         gray: {
@@ -157,7 +177,6 @@ module.exports = {
           },
           DEFAULT: '#D7B2FF',
           secondary: '#F5E1FF',
-
         },
         yellow: {
           50: '#FFFBEA',

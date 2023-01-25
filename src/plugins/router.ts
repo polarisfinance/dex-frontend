@@ -188,15 +188,15 @@ const routes: RouteRecordRaw[] = [
     component: PortfolioPage,
   },
   {
-     path: '/vexpolar',
-     name: 'vexpolar',
-     component: VexPolarPage,
+    path: '/vexpolar',
+    name: 'vexpolar',
+    component: VexPolarPage,
   },
   {
     path: '/airdrop',
     name: 'airdrop',
     component: AirdropPage,
- },
+  },
 ];
 
 /**
@@ -223,9 +223,17 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // if (to.hash) {
-    //   return { el: to.hash, behavior: 'smooth' };
-    // }
+    if (to.hash) {
+      console.log(to.name);
+      if (to.name === 'home') {
+        if (from.hash) {
+          return { el: to.hash, behavior: 'smooth', top: 160 };
+        }
+        return { el: to.hash, behavior: 'smooth', top: 200 };
+      } else {
+        return { el: to.hash, behavior: 'smooth', top: 90 };
+      }
+    }
     return { top: 0 };
   },
 });

@@ -40,18 +40,18 @@ function onClickConnect() {
 }
 
 .connect-wallet-button:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
   );
 }
 
 .connect-wallet-button:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
   );
 }
 </style>
