@@ -40,8 +40,11 @@ function isActive(page: string): boolean {
     <DesktopLinkItem to="/bond" :active="isActive('bond')">
       Bond
     </DesktopLinkItem>
-    <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
+    <!--DesktopLinkItem to="/vebal" :active="isActive('vebal')">
       Portfolio
+    </DesktopLinkItem -->
+    <DesktopLinkItem to="/airdrop" :active="isActive('airdrop')">
+      Airdrop
     </DesktopLinkItem>
     <DesktopLinkItem to="/vexpolar" :active="isActive('vexpolar')">
       vexPolar

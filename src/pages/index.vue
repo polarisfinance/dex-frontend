@@ -327,19 +327,8 @@ export default defineComponent({
                 <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
               </a>
             </div>
-
-            <button
-              class="create-pool-btn flex items-center"
-              @click="navigateToCreatePool"
-            >
-              <img src="./plus.svg" class="mr-[8px]" />
-              <div>Create a pool</div>
-            </button>
-          </div>
-
-          <div v-if="isMobile">
             <div
-              class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
+              class="pool-types flex items-center gap-[8px] pl-[12px] pt-[8px] pb-[8px] pr-[16px]"
             >
               <img src="./search.svg" class="mr-[12px]" />
               <input type="text" placeholder="Filter by token" class="input" />
@@ -350,32 +339,27 @@ export default defineComponent({
                   class="mobile-pool-btn cursor-pointer text-center"
                 >
                   Seigniorage Pools
-                </div>
+                </div></a
+              >
+              <a href="#/#singlestaking">
+                <div class="pool-type-btn cursor-pointer">Single Staking</div>
               </a>
-              <a href="#singlestaking">
-                <div class="mobile-pool-btn cursor-pointer text-center">
-                  Single Staking
-                </div>
+              <a href="#/#classicpools">
+                <div class="pool-type-btn cursor-pointer">Classic Pools</div>
               </a>
-              <a href="#classicpools">
-                <div class="mobile-pool-btn cursor-pointer text-center">
-                  Classic Pools
-                </div>
-              </a>
-              <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer text-center">
-                  Community Pools
-                </div>
+              <a href="#/#communitypools">
+                <div class="pool-type-btn cursor-pointer">Community Pools</div>
               </a>
             </div>
-            <button
-              class="create-pool-btn-mobile mt-[8px] flex w-full items-center justify-center"
-              @click="navigateToCreatePool"
-            >
-              <img src="./plus.svg" class="mr-[8px]" />
-              <div>Create a pool</div>
-            </button>
           </div>
+
+          <button
+            class="create-pool-btn flex items-center"
+            @click="navigateToCreatePool"
+          >
+            <img src="./plus.svg" class="mr-[8px]" />
+            <div>Create a pool</div>
+          </button>
         </div>
         <div id="segniorage" ref="segnioragepools" :class="{
             'mt-[50px]': stickyPanel && isDesktop,
@@ -448,7 +432,6 @@ export default defineComponent({
     
 </template>
 <style scoped>
-
 .title {
   position: relative;
   display: flex;
@@ -608,7 +591,7 @@ export default defineComponent({
 .not-sticky {
   position: relative;
 }
-.is-sticky.filter-panel-mobile{
+.is-sticky.filter-panel-mobile {
   top: 69px;
 }
 .pool-panel{
