@@ -35,6 +35,24 @@ import ArrowRightIcon from '@/components/_global/icons/ArrowRightIcon.vue';
 import { BigNumber } from 'ethers';
 import useBreakpoints from '@/composables/useBreakpoints';
 
+import polarImg from '@/pages/polar.svg';
+import orbitalImg from '@/pages/orbital.svg';
+import uspImg from '@/pages/usp.svg';
+import ethernalImg from '@/pages/ethernal.svg';
+import binarisImg from '@/pages/binaris.svg';
+
+const singlePools = [
+    { name: 'POLAR', id: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86', logo:polarImg},
+    { name: 'ORBITAL', id: '0x3AC55eA8D2082fAbda674270cD2367dA96092889', logo:orbitalImg },
+    { name: 'BINARIS', id: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370', logo:binarisImg },
+    { name: 'USP', id: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96', logo:uspImg },
+    { name: 'ETHERNAL', id: '0x17cbd9C274e90C537790C51b4015a65cD015497e', logo:ethernalImg },
+    // { name: 'PBOND', id: '0x3a4773e600086A753862621A26a2E3274610da43' },
+    // { name: 'OBOND', id: '0x192bdcdd7b95A97eC66dE5630a85967F6B79e695' },
+    // { name: 'BBOND', id: '0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9' },
+    // { name: 'USPBOND', id: '0xcE32b28c19C61B19823395730A0c7d91C671E54b' },
+    // { name: 'EBOND', id: '0x266437E6c7500A947012F19A3dE96a3881a0449E' },
+  ];
 
 export default defineComponent({
   
@@ -87,21 +105,22 @@ export default defineComponent({
   },
   emits: ['click'],
   methods:{
-    async claimXpolar(pool){
+    async claimXpolar(claim){
       const { withdraw } = useStake();
-      const tx = await withdraw(
-        pool.address,
-        BigNumber.from(0),
-        this.getProvider()
-      );
-      this.txHandler(tx);
-      this.txListener(tx, {
-        onTxConfirmed: () => {
-          this.fetchClaims();
-        },
-        onTxFailed: () => {},
-      });
-
+      if(claim.pool!=undefined){
+        const tx = await withdraw(
+          claim.pool.address,
+          BigNumber.from(0),
+          this.getProvider()
+        );
+        this.txHandler(tx);
+        this.txListener(tx, {
+          onTxConfirmed: () => {
+            this.fetchClaims();
+          },
+          onTxFailed: () => {},
+        });
+      }
       
     },
     fetchClaimsIfPossible(){
@@ -111,14 +130,13 @@ export default defineComponent({
     },
     async fetchClaims() {
 
-      console.log('Fetching claim info');
-      const claimer = new ClaimProviderService(this.pools,this.prices,this.xpolarPoolQuery,this.account);
+      const claimer = new ClaimProviderService(this.pools,singlePools,this.prices,this.xpolarPoolQuery,this.account);
       claimer.init();
-        claimer.claimReceived = (claim:ClaimType)=>{
+      claimer.claimReceived = (claim:ClaimType)=>{
 
         let existingIndex = -1;
         this.claims.forEach(existingClaim => {
-          if(existingClaim.pool.address==claim.pool.address){
+          if(existingClaim.address==claim.address){
             existingIndex = this.claims.indexOf(existingClaim);
           }
         });
@@ -144,32 +162,6 @@ export default defineComponent({
     
   },
   setup(props) {
-
-    const singlePools = computed(() => [
-    { name: 'POLAR', id: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86' },
-    { name: 'ORBITAL', id: '0x3AC55eA8D2082fAbda674270cD2367dA96092889' },
-    { name: 'BINARIS', id: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370' },
-    { name: 'USP', id: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96' },
-    { name: 'ETHERNAL', id: '0x17cbd9C274e90C537790C51b4015a65cD015497e' },
-    { name: 'PBOND', id: '0x3a4773e600086A753862621A26a2E3274610da43' },
-    { name: 'OBOND', id: '0x192bdcdd7b95A97eC66dE5630a85967F6B79e695' },
-    { name: 'BBOND', id: '0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9' },
-    { name: 'USPBOND', id: '0xcE32b28c19C61B19823395730A0c7d91C671E54b' },
-    { name: 'EBOND', id: '0x266437E6c7500A947012F19A3dE96a3881a0449E' },
-  ]);
-  
-  const poolQuery = usePoolQuery( '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86');
-  const singlePool = computed(() => poolQuery.data.value);
-
-  // const {
-  //   isStableLikePool,
-  //   isLiquidityBootstrappingPool,
-  //   isStablePhantomPool,
-  // } = usePool(poolQuery.data);
-  // props.singlePools.push(singlePool as Pool);
-
-
-
     /**
      * COMPOSABLES
      */
@@ -198,10 +190,29 @@ export default defineComponent({
      * METHODS
      */
 
-    function iconAddresses(pool: PoolWithShares) {
-      return POOLS.Metadata[pool.id]?.hasIcon
-          ? [pool.address]
-          : orderedTokenAddresses(pool);
+    function iconAddresses(claim: ClaimType) {
+      if(claim.pool!=undefined)
+        return POOLS.Metadata[claim.pool.id]?.hasIcon
+          ? [claim.pool.address]
+          : orderedTokenAddresses(claim.pool);
+    }
+
+    function getRooterLink(claim){
+      if(claim.pool!=undefined)
+        return '/pool/' + claim.pool.id;
+      else{
+        singlePools.forEach(singlePool => {
+          if(singlePool.id == claim.address)
+          return 'singlestake/'+singlePool.name.toLowerCase();
+        });
+        return '';
+      }
+    }
+    function getSingleStakeLogo(claim){
+      singlePools.forEach(singlePool => {
+          if(singlePool.id == claim.address)
+          return singlePool.logo;
+        });
     }
 
 
@@ -219,7 +230,9 @@ export default defineComponent({
       isMobile, 
       isDesktop,
       fNum2,
-      FNumFormats
+      FNumFormats,
+      getRooterLink,
+      getSingleStakeLogo,
     };
   },
   created(){
@@ -301,16 +314,17 @@ export default defineComponent({
                   class="my-[18px] flex w-full items-center pool-row"
                 >
                 <router-link
-                  :to="'/pool/' + claim.pool.id"
+                  :to="getRooterLink(claim)"
                   class="flex w-full items-center"
                 >
-                    <BalAssetSet
+                    <BalAssetSet v-if="claim.pool!=undefined"
                         :size="36"
-                        :addresses="iconAddresses(claim.pool)"
+                        :addresses="iconAddresses(claim)"
                         :width="100"
                         :backImage="communityAssetBackImg"
                     />
-                    <TokenPills class="token-pill"
+                    <img class="singlestake-logo" :src="getSingleStakeLogo(claim)"  v-if="claim.pool==undefined"/>
+                    <TokenPills class="token-pill" v-if="claim.pool!=undefined" 
                       :tokens="orderedPoolTokens(claim.pool.poolType, claim.pool.address, claim.pool.tokens)"
                       :isStablePool="false"
                       :selectedTokens="[]"
@@ -328,7 +342,7 @@ export default defineComponent({
                     {{claim.xpolarToClaim }}
                   </div>
                   <div  class="flex items-center self-center">
-                    <button class="claim-btn flex items-center" @click="claimXpolar(claim.pool)">
+                    <button class="claim-btn flex items-center" @click="claimXpolar(claim)">
                       Claim
                       <ArrowRightIcon class="ml-3"/>
                     </button>

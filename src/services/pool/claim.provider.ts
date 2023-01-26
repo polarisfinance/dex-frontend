@@ -2,7 +2,6 @@ import { PoolWithShares } from '@/services/pool/types';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import BigNumberJs from 'bignumber.js';
 import useStake from '@/composables/PolarisFinance/useStake';
-import { sunriseDefinitions } from '@/pages/config';
 import {
     spolarABI,
     sunriseABI,
@@ -43,14 +42,16 @@ export class ClaimProviderService {
   private account
   private xpolarPoolQuery
   private pools:PoolWithShares[]=[]
+  private singlePools:any;
   private xpolarRewardPoolAddress='0x140e8a21d08CbB530929b012581a7C7e696145eF'
   private claims: Array < ClaimType > = [];
   // public claimsReceived?: (claims:any) => void
   public claimReceived?: (claim:ClaimType) => void
 
-  constructor(pools:any,prices:any, xpolarPoolQuery,account) {
+  constructor(pools:any,singlePools:any,prices:any, xpolarPoolQuery,account) {
     this.xpolarPoolQuery = xpolarPoolQuery;
     this.pools = pools;
+    this.singlePools = singlePools;
     this.prices = prices;
     this.account = account;
   }
@@ -83,14 +84,20 @@ export class ClaimProviderService {
       });
 
     }
-    // const claims = await Promise.all(promises);
-    // for (var i = 0; i < this.pools.length; i++) {
-    //   if(claims[i].approved)
-    //   allClaims[this.pools[i].address]=claims[i];
-    // }
-    // if (!this.claimsReceived) 
-    //   return; 
-    // this.claimsReceived(allClaims);
+    return;
+    for(var i=0;i<this.singlePools.length;i++){
+      new Promise((resolve, reject) => {
+        resolve(this.fetchSingle(this.singlePools[i].id));
+      }).then((val:any) => {
+        if(val!=undefined){
+          const obj:ClaimType = val;
+          if(val.approved && this.claimReceived){
+            this.claimReceived(obj);
+          }
+        }
+      });
+
+    }
 
   }
 
@@ -209,25 +216,21 @@ export class ClaimProviderService {
     // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
     const xpolToClaim = BigNumberToString(await pendingShare(pool.address, this.account),14,4);
     
-    return { pool: pool, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
+    return { address: pool.address, pool: pool, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
   }
-  private async  fetchSingle(id:String) {
+  private async  fetchSingle(id:string) {
     const { balance, isApproved, pendingShare } = useStake();
 
-    let tokenAddress;
-      for (let sunrise of Object.values(sunriseDefinitions)) {
-        if (sunrise.name == id) 
-          tokenAddress= sunrise.tokenAddress;
-      }
-    const approval = await isApproved(tokenAddress, this.account);
-    const stakedBal = await balance(tokenAddress, this.account);
+    console.log('Fetching claim info for SingleStake: '+id);
+    const approval = await isApproved(id, this.account);
+    const stakedBal = await balance(id, this.account);
     const xpolToClaim = BigNumberToString(
-      await pendingShare(tokenAddress, this.account),
+      await pendingShare(id, this.account),
       14,
       4
     );
 
-    return { pool: undefined, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
+    return { address: id,pool:undefined, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
 
     
   }

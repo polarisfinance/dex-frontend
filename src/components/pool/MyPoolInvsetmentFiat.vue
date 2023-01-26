@@ -56,12 +56,16 @@ export default defineComponent({
     const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
 
     const tokenAddresses = computed((): string[] => {
-      if (isStablePhantomPool.value) {
-        // We're using mainToken balances for StablePhantom pools
-        // so return mainTokens here so that fiat values are correct.
-        return props.pool.mainTokens || [];
+      if(props.pool!=undefined){
+        if (isStablePhantomPool.value) {
+          // We're using mainToken balances for StablePhantom pools
+          // so return mainTokens here so that fiat values are correct.
+          return props.pool.mainTokens || [];
+        }
+        return props.pool.tokensList;
+      }else{
+        return new Array();
       }
-      return props.pool.tokensList;
     });
 
 
@@ -69,30 +73,35 @@ export default defineComponent({
     
     const fiatValue = computed(() => {
       let fiatVal = 0;
+      if(props.pool!=undefined){
+        props.pool.tokens.forEach(token => {
+          fiatVal +=
+            Number(token.weight) * Number(toFiat(props.tokens, token.address));
+        });
 
-      props.pool.tokens.forEach(token => {
-        fiatVal +=
-          Number(token.weight) * Number(toFiat(props.tokens, token.address));
-      });
-
-      return fNum2(Number(fiatVal), FNumFormats.fiat);
+        return fNum2(Number(fiatVal), FNumFormats.fiat);
+      }else{
+        return '-';
+      }
     });
 
     const fiatValue2 = computed(() =>{
       let total = bnum(0);
-      for (const token of props.pool.tokensList) {
-        total = total.plus(bnum(priceFor(token)).times(props.tokens));
+      if(props.pool!=undefined){
+        for (const token of props.pool.tokensList) {
+          total = total.plus(bnum(priceFor(token)).times(props.tokens));
+        }
       }
       return total;
     });
 
-    const fiatNumber = computed(() => {
-      const fiatval = tokenAddresses.value
-        .map((address, i) => toFiat(props.tokens, address))
-        .reduce((total, value) => bnum(total).plus(value).toString());
+    // const fiatNumber = computed(() => {
+    //   const fiatval = tokenAddresses.value
+    //     .map((address, i) => toFiat(props.tokens, address))
+    //     .reduce((total, value) => bnum(total).plus(value).toString());
 
-      return Number(fiatval);
-    });
+    //   return Number(fiatval);
+    // });
 
     // function fiatValue( propTokenAmount,pool){
     //   alert(pool.id);
@@ -107,7 +116,7 @@ export default defineComponent({
       upToLargeBreakpoint,
       fiatValue,
       fiatValue2,
-      fiatNumber,
+      // fiatNumber,
       FNumFormats,
       myalert,
     };
