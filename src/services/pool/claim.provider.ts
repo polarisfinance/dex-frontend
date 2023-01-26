@@ -84,7 +84,6 @@ export class ClaimProviderService {
       });
 
     }
-    return;
     for(var i=0;i<this.singlePools.length;i++){
       new Promise((resolve, reject) => {
         resolve(this.fetchSingle(this.singlePools[i].id));
