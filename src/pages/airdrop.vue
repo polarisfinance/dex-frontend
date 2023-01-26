@@ -1,72 +1,95 @@
-<script setup lang="ts">
+<script lang="ts">
 import { ref } from 'vue';
 import useBreakpoints from '@/composables/useBreakpoints';
-import useWeb3 from '@/services/web3/useWeb3';
 import HeroConnectWalletButton from '@/components/heros/HeroConnectWalletButton.vue';
+
+import { defineComponent } from 'vue';
+import airdropbg from './airdrop_bg.svg';
+import claimArrow from './claimArrow.svg';
 import useAirdrop from '@/composables/PolarisFinance/useAirdrop';
 import useEthers from '@/composables/useEthers';
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
-
-const { isDesktop, isMobile } = useBreakpoints();
-const { isWalletReady, isWalletConnecting } = useWeb3();
-
-const totalProgress = ref(1);
-
-const endDay: Date = new Date('2023-01-23');
-const today: Date = new Date();
-const diffTime = Math.abs((endDay as any) - (today as any));
-const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
-const progress = (60 - diffDays) / 60;
-
-const { account, getProvider } = useWeb3();
-const { pendingShare, claim } = useAirdrop(account.value);
-
-const { addTransaction } = useTransactions();
-const { txListener } = useEthers();
-const txHandler = (tx: TransactionResponse): void => {
-  addTransaction({
-    id: tx.hash,
-    type: 'tx',
-    action: 'claim',
-    summary: 'Claim airdrop',
-  });
-};
-const claimAirdrop = async () => {
-  alert();
-  /*const provider = getProvider();
-  const tx = await claim(provider);
-  txHandler(tx);
-  txListener(tx, {
-    onTxConfirmed: () => {
-      // TODO: add some function to update pendingShare after claim
-    },
-    onTxFailed: () => {},
-  });*/
-};
-</script>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import airdropbg from './airdrop_bg.svg';
-import claimArrow from './claimArrow.svg';
+import useWeb3 from '@/services/web3/useWeb3';
 
 // const { pendingShare, claim } = airdrop(account.value);
 
 export default defineComponent({
   data() {
-    return {};
+    return { pendingShare: '--', totalShares: '--', vested: '--' };
   },
-  components: {
-    airdropbg,
-    claimArrow,
-  },
-  methods: {},
-  created() {},
-  async mounted() {},
-  watch: {},
+
   setup(props) {
-    return {};
+    const { isDesktop, isMobile } = useBreakpoints();
+    const { isWalletReady, isWalletConnecting } = useWeb3();
+
+    const totalProgress = ref(1);
+
+    const startDay: Date = new Date(1674691200 * 1000);
+    const today: Date = new Date('2023-06-30');
+    const diffTime = Math.abs((startDay as any) - (today as any));
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
+    diffDays = diffDays > 60 ? 60 : diffDays;
+    const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
+    const diffDaysReverse = 60 - diffDays;
+
+    const vestedAll = ((diffTime / 1000) * 0.0385802469).toFixed(0);
+
+    const { account, getProvider } = useWeb3();
+
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'claim',
+        summary: 'Claim airdrop',
+      });
+    };
+
+    return {
+      account,
+      airdropbg,
+      claimArrow,
+      isDesktop,
+      isMobile,
+      isWalletReady,
+      isWalletConnecting,
+      totalProgress,
+      progress,
+      diffDays,
+      diffDaysReverse,
+      getProvider,
+      txListener,
+      vestedAll,
+    };
+  },
+  methods: {
+    async render() {
+      const { getPendingShare, totalShares, getVested } = useAirdrop();
+      this.vested = await getVested(this.account);
+      this.pendingShare = await getPendingShare(this.account);
+      this.totalShares = await totalShares(this.account);
+    },
+    async claim() {
+      const { claim } = useAirdrop();
+      const tx = await claim(this.getProvider());
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
+        },
+        onTxFailed: () => {},
+      });
+    },
+  },
+  async created() {
+    await this.render();
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.render();
+    },
   },
 });
 </script>
@@ -105,7 +128,7 @@ export default defineComponent({
         </div>
         <div class="share w-full pt-[24px] pl-5">
           Your share
-          <h3>--</h3>
+          <h3>{{ totalShares }}</h3>
         </div>
       </div>
       <div class="vesting mx-10">
@@ -135,14 +158,16 @@ export default defineComponent({
             class="progress-tracker"
             :style="{ left: `${(progress * 100).toFixed(0)}%` }"
           >
-            <span>Day 14</span>
+            <span>Day {{ diffDays }}</span>
           </div>
         </div>
         <div class="flex">
           <div class="w-full text-left">Day 1</div>
           <div class="w-full text-right">Day 60</div>
         </div>
-        <div class="w-full text-center">2450 xPolars / 200 000 xPolars</div>
+        <div class="w-full text-center">
+          {{ vestedAll }} xPolars / 200 000 xPolars
+        </div>
       </div>
       <div id="claim_airdrop" class="graphic mt-[180px] mb-[120px]">
         <svg
@@ -413,7 +438,7 @@ export default defineComponent({
                 </svg>
               </div>
               <div>
-                <div class="card-title claim-amount">4.489</div>
+                <div class="card-title claim-amount">{{ pendingShare }}</div>
                 <div>Claimable xPolars</div>
               </div>
             </div>
@@ -422,8 +447,10 @@ export default defineComponent({
         <div class="card-claim flex-1">
           <h3 class="h-my-airdrop w-full">My Airdrop</h3>
           <div class="w-full text-center">
-            <h2><span class="claim-amount">124.65</span> / 1534.76</h2>
-            In the next 45 days
+            <h2>
+              <span class="claim-amount">{{ vested }}</span> / {{ totalShares }}
+            </h2>
+            In the next {{ diffDaysReverse }} days
           </div>
           <div>
             <div class="progress-bar mx-10 mt-[32px] h-[2px] rounded-[24px]">
@@ -435,16 +462,16 @@ export default defineComponent({
                 class="progress-tracker"
                 :style="{ left: `${(progress * 100).toFixed(0)}%` }"
               >
-                <span>124.65 xPolars</span>
+                <span>{{ vested }} xPolars</span>
               </div>
             </div>
             <div class="mx-10 flex">
               <div class="w-full text-left">Already vested xPolars</div>
-              <div class="w-full text-right">1534.76 xPolars</div>
+              <div class="w-full text-right">{{ totalShares }} xPolars</div>
             </div>
           </div>
           <div class="text-center">
-            <button class="claim-btn" @click="claimAirdrop">
+            <button class="claim-btn" @click="claim">
               Claim xPolars
               <svg
                 style="display: inline; margin-left: 28px"
@@ -654,6 +681,22 @@ h2 {
   line-height: 20px;
   color: #fdfdfd;
   margin-top: 40px;
+}
+
+.claim-btn:hover {
+  background: linear-gradient(
+    92.92deg,
+    rgba(192, 4, 254, 0.7) 4.85%,
+    rgba(126, 2, 245, 0.7) 95.15%
+  );
+}
+
+.claim-btn:active {
+  background: linear-gradient(
+    92.92deg,
+    rgba(192, 4, 254, 0.7) 4.85%,
+    rgba(126, 2, 245, 0.7) 95.15%
+  );
 }
 .progress-tracker {
   @apply bg-styling-teal;
