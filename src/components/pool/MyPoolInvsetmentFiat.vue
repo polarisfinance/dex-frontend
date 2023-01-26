@@ -65,9 +65,6 @@ export default defineComponent({
       return props.pool.tokensList;
     });
 
-
-
-    
     const fiatValue = computed(() => {
       let fiatVal = 0;
 
@@ -79,14 +76,6 @@ export default defineComponent({
       const totalValue = lpVal * Number(props.tokens);
 
       return fNum2(totalValue, FNumFormats.fiat);
-    });
-
-    const fiatValue2 = computed(() =>{
-      let total = bnum(0);
-      for (const token of props.pool.tokensList) {
-        total = total.plus(bnum(priceFor(token)).times(props.tokens));
-      }
-      return total;
     });
 
     const fiatNumber = computed(() => {
@@ -109,7 +98,6 @@ export default defineComponent({
       fNum2,
       upToLargeBreakpoint,
       fiatValue,
-      fiatValue2,
       fiatNumber,
       FNumFormats,
       myalert,
