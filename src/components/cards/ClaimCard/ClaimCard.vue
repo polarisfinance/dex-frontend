@@ -293,7 +293,7 @@ export default defineComponent({
                     <MyPoolInvsetmentFiat :pool="claim.pool" :tokens="claim.stakedBalance" ref="poolTotalFiatValues"/>
                   </div>
                   <div class="flex items-center self-center claim-amount">
-                    $ {{claim.xpolarToClaim }}
+                    {{claim.xpolarToClaim }}
                   </div>
                   <div  class="flex items-center self-center">
                     <button class="claim-btn flex items-center" @click="claimXpolar(claim.pool)">
