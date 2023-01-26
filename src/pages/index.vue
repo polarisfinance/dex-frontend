@@ -70,6 +70,16 @@ const classicPoolsIds = [
   '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
 ];
 
+const superHotPoolsIds = [
+  '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
+  '0x293bbbef6087f681a8110f08bbdedadd13599fc3000200000000000000000007',
+  '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10000200000000000000000004',
+  '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
+  '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
+  '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a',
+  
+];
+
 const contains = (arr1, arr2) => {
   for (let el of arr1) {
     if (arr2.includes(el)) return true;
@@ -115,6 +125,11 @@ const communityPools = computed(
         !segniorageIds.includes(pool.id) && !classicPoolsIds.includes(pool.id)
     ) as InvestmentPool[]
 );
+const superHotPools = computed(() => {
+  return investmentPools.value.filter(pool =>
+    superHotPoolsIds.includes(pool.id)
+  ) as InvestmentPool[];
+});
 
 /**
  * METHODS
@@ -280,7 +295,7 @@ export default defineComponent({
     <div class="container mx-auto">
       <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
       <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
-        <template v-for="(pool, idx)      in      (isDesktop) ? segnioragePools.slice(0, 6) :segnioragePools.slice(0, 3)  " :key="idx">
+        <template v-for="(pool, idx)      in      (isDesktop) ? superHotPools.slice(0, 6) :superHotPools.slice(0, 3)  " :key="idx">
           <PoolCard
           :pool="pool"
           :prices="prices"
@@ -319,16 +334,16 @@ export default defineComponent({
             >
               <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
               <a href="#segniorage">
-                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
+                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
               </a>
               <a href="#classicpools">
-                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='classic'}">Classic Pools</div>
+                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='classic'}">Classic Pools</div>
               </a>
               <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='community'}">Community Pools</div>
+                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='community'}">Community Pools</div>
               </a>
               <a href="#singlestaking">
-                <div class="pool-type-btn cursor-pointer" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
+                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
               </a>
             </div>
 
@@ -588,6 +603,11 @@ export default defineComponent({
   z-index: 100;
   background: #231928;
 }
+.pool-panel{
+  background-color: #292043;
+  border-radius: 48px;
+
+}
 .is-sticky {
   position: fixed;
   top: 79px;
@@ -604,11 +624,7 @@ export default defineComponent({
   position: relative;
 }
 
-.pool-panel{
-  background-color: #292043;
-  border-radius: 48px;
 
-}
 .filter-panel-mobile{
   border-radius: 0px;
   width: 100%;

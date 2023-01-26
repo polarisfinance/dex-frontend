@@ -1,8 +1,8 @@
 <script lang="ts">
-import { PoolWithShares } from '@/services/pool/types';
+import { PoolWithShares,PoolType } from '@/services/pool/types';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
 import {ClaimType, ClaimProviderService} from '@/services/pool/claim.provider';
-import { computed, defineComponent, ref, PropType,watch,ComputedRef } from 'vue';
+import { computed, defineComponent, ref, PropType,watch,ComputedRef,toRef } from 'vue';
 
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import useWeb3 from '@/services/web3/useWeb3';
@@ -12,9 +12,10 @@ import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import ClaimTotalFiat from '@/components/cards/ClaimCard/ClaimTotalFiat.vue';
+import MyPoolInvsetmentFiat from '@/components/pool/MyPoolInvsetmentFiat.vue';
 import useEthers from '@/composables//useEthers';
 import useTokens from '@/composables/useTokens';
+import { bnum } from '@/lib/utils';
 import {
   absMaxApr,
   isMigratablePool,
@@ -22,6 +23,7 @@ import {
   orderedPoolTokens,
   orderedTokenAddresses,
   totalAprLabel,
+  usePool,
 } from '@/composables/usePool';
 import {
     BigNumberToString,
@@ -41,9 +43,11 @@ export default defineComponent({
         claims: [] as Array < ClaimType >,
         noClaims:true,
         totalClaims: 0,
+        totalPoolFiatValue:0,
         xpolarPoolQuery: usePoolQuery(
           '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
         ),
+        poolTotalFiatValues:[],
 
   }},
   watch:{
@@ -61,7 +65,7 @@ export default defineComponent({
   },
   components: {
     ArrowRightIcon,
-    ClaimTotalFiat,
+    MyPoolInvsetmentFiat,
   },
   props: {
     pools: {
@@ -93,6 +97,13 @@ export default defineComponent({
         },
         onTxFailed: () => {},
       });
+
+      
+    },
+    setPoolTatoalFiatValues(el){
+      if(el){
+        this.poolTotalFiatValues.push(el);
+      }
     },
     fetchClaimsIfPossible(){
       if(this.pools.length!=0 && this.prices!=undefined ){
@@ -118,14 +129,19 @@ export default defineComponent({
         }else{
           this.claims.push(claim);
           this.totalClaims=  this.totalClaims + Number(claim.xpolarToClaim);
-        }
 
-        
+        }
         
         // this.claimsCount = this.claims.length;
         // this.$forceUpdate;
       }
       claimer.fetchAll();
+    },
+    refreshTotalValue(){
+      this.totalPoolFiatValue = 0;
+      for (const [key, value] of Object.entries(this.poolTotalFiatValues)) {
+        this.totalPoolFiatValue = this.totalPoolFiatValue + value;
+      }
     },
     
   },
@@ -153,6 +169,7 @@ export default defineComponent({
     const { addTransaction } = useTransactions();
     const bptBalance = computed((pool): string => balanceFor(pool.address));
 
+
     /**
      * METHODS
      */
@@ -162,6 +179,8 @@ export default defineComponent({
           ? [pool.address]
           : orderedTokenAddresses(pool);
     }
+
+
 
     return {
       account,
@@ -175,10 +194,24 @@ export default defineComponent({
       BigNumberToString,
       isMobile, 
       isDesktop,
+      fNum2,
+      FNumFormats
     };
   },
   created(){
-    //this.fetchClaims();
+  },
+  beforeUpdate() {
+  },
+  mounted(){
+  },
+  updated(){
+    const target_copy = Object.assign({}, this.$refs['poolTotalFiatValues']) ;
+    // this.totalPoolFiatValue +=;
+    if(target_copy.fiatNumber!=undefined){
+      this.poolTotalFiatValues[target_copy.pool.address] = target_copy.fiatNumber;
+    }
+    this.refreshTotalValue();
+    
   }
 });
 
@@ -197,7 +230,7 @@ export default defineComponent({
                 </svg>
               </div>
               <div>
-                <div class="title">$125,458.23</div>
+                <div class="title">{{fNum2(Number(totalPoolFiatValue), FNumFormats.fiat)}}</div>
                 <div>Total value</div>
               </div>
             </div>
@@ -238,7 +271,7 @@ export default defineComponent({
 
               <template 
                 v-for="(claim, idx) in claims"
-                :key="idx"
+                :key="idx"  
               >
                 <div
                   class="my-[18px] flex w-full items-center pool-row"
@@ -262,7 +295,7 @@ export default defineComponent({
                     {{claim.stakedBalance}}
                   </div>
                   <div class="flex items-center self-center"  v-if="isDesktop">
-                    <ClaimTotalFiat :pool="claim.pool"/>
+                    <MyPoolInvsetmentFiat :pool="claim.pool" :tokens="claim.stakedBalance" ref="poolTotalFiatValues"/>
                   </div>
                   <div class="flex items-center self-center claim-amount">
                     $ {{claim.xpolarToClaim }}

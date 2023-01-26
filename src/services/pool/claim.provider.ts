@@ -32,7 +32,7 @@ export interface ClaimType{
   pool:PoolWithShares;
   address:String;
   approved:Boolean;
-  stakedBalance:String;
+  stakedBalance:Number;
   xpolarToClaim:String;
 }
 
@@ -204,7 +204,7 @@ export class ClaimProviderService {
     const xpolToClaim = BigNumberToString(await pendingShare(pool.address, this.account),14,4);
     
     const approval = await isApproved(pool.address, this.account);
-    return { pool: pool, approved: approval, stakedBalance: stakedBal, xpolarToClaim: xpolToClaim };
+    return { pool: pool, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
   }
 
 }
