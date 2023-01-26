@@ -73,7 +73,6 @@ export default defineComponent({
 
       const lpVal = fiatVal / Number(pool.value.totalShares);
       const totalValue = lpVal * Number(props.tokens);
-      console.log(lpVal);
 
       return fNum2(totalValue, FNumFormats.fiat);
     });
