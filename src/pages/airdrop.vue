@@ -73,14 +73,14 @@ export default defineComponent({
       this.totalShares = await totalShares(this.account);
     },
     async claim() {
-      const { claim } = useAirdrop();
+      /*const { claim } = useAirdrop();
       const tx = await claim(this.getProvider());
       this.txListener(tx, {
         onTxConfirmed: () => {
           this.render();
         },
         onTxFailed: () => {},
-      });
+      });*/
     },
   },
   async created() {
@@ -109,12 +109,14 @@ export default defineComponent({
           <HeroConnectWalletButton class="my-10" />
         </div>
         <div v-else>
-          <div class="subtitle">Claim your airdrop!</div>
+          <!-- <div class="subtitle">Claim your airdrop!</div> -->
+          <div class="subtitle">Claim will soon be available!</div>
+
           <div :style="{ paddingBottom: '40px', paddingTop: '40px' }">
-            <div class="claim-button">
+            <!-- <div class="claim-button">
               <a href="#/airdrop/#claim_airdrop"> Claim </a>
               <img :src="claimArrow" />
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -122,7 +124,7 @@ export default defineComponent({
         <div class="info-token flex-none" v-if="isDesktop">
           <img class="w-[124px]" src="./xpolar.svg" />
         </div>
-        <div class="total w-full pt-[24px] pl-[55px]">
+        <div class="total w-full pt-[24px] pl-[55px]" >
           Total xPolars
           <h3>200,000</h3>
         </div>
@@ -341,7 +343,7 @@ export default defineComponent({
         :class="{ 'flex flex-wrap': isDesktop }"
       >
         <div class="stats grid flex-none" :class="{ 'stats-mobile': isMobile }">
-          <div class="flex items-center justify-center">
+          <div class="flex items-center justify-center"  v-if="false">
             <div class="flex py-5">
               <div class="mr-4 mt-3">
                 <svg
@@ -471,7 +473,7 @@ export default defineComponent({
             </div>
           </div>
           <div class="text-center">
-            <button class="claim-btn" @click="claim">
+            <button class="claim-btn" @click="claim" disabled>
               Claim xPolars
               <svg
                 style="display: inline; margin-left: 28px"
@@ -628,25 +630,18 @@ h2 {
   color: #bdb2dd;
 }
 .stats > div:first-child {
-  border-radius: 32px 0 0 0;
   background-color: #41365e;
 }
 .stats > div:last-child {
-  border-radius: 0 0 0 32px;
   background-color: #50456e;
 }
 .claim-container {
   background-color: #292043;
   border-radius: 32px;
   min-height: 0;
+  overflow: hidden;
 }
 
-.stats-mobile > div {
-  border-radius: 0 0 0 0 !important;
-}
-.stats-mobile > div:first-child {
-  border-radius: 32px 32px 0 0 !important;
-}
 .card-claim {
   padding: 24px 24px 32px 24px;
 }
@@ -697,6 +692,10 @@ h2 {
     rgba(192, 4, 254, 0.7) 4.85%,
     rgba(126, 2, 245, 0.7) 95.15%
   );
+}
+.claim-btn:disabled, claim-btn[disabled]{
+  background: rgba(65, 54, 94, 1);
+  color: #A99BC6;
 }
 .progress-tracker {
   @apply bg-styling-teal;
