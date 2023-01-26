@@ -402,55 +402,7 @@ export default defineComponent({
 
           <template v-for="(claim, idx) in claims" :key="idx">
             <div class="pool-row my-[18px] flex w-full items-center">
-              <router-link
-                :to="getRooterLink(claim)"
-                class="flex w-full items-center"
-              >
-                <BalAssetSet
-                  v-if="claim.pool != undefined"
-                  :size="36"
-                  :addresses="iconAddresses(claim)"
-                  :width="100"
-                  :backImage="communityAssetBackImg"
-                />
-                <img
-                  class="singlestake-logo"
-                  :src="getSingleStakeLogo(claim)"
-                  v-if="claim.pool == undefined"
-                />
-                <TokenPills
-                  class="token-pill"
-                  v-if="claim.pool != undefined"
-                  :tokens="
-                    orderedPoolTokens(
-                      claim.pool.poolType,
-                      claim.pool.address,
-                      claim.pool.tokens
-                    )
-                  "
-                  :isStablePool="false"
-                  :selectedTokens="[]"
-                  :showWeight="false"
-                />
-              </router-link>
-              <div class="flex items-center self-center" v-if="isDesktop">
-                {{ claim.stakedBalance }}
-              </div>
-              <div class="flex items-center self-center" v-if="isDesktop">
-                <MyPoolInvsetmentFiat
-                  :pool="claim.pool"
-                  :tokens="claim.stakedBalance"
-                  ref="poolTotalFiatValues"
-                />
-              </div>
-              <div class="claim-amount flex items-center self-center">
-                {{ claim.xpolarToClaim }}
-              </div>
-              <div class="flex items-center self-center">
-                <button
-                  class="claim-btn flex items-center"
-                  @click="claimXpolar(claim)"
-                >
+              
                 <router-link
                   :to="getRooterLink(claim)"
                   class="flex w-full items-center"
