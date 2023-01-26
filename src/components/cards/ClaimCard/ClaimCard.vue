@@ -12,7 +12,7 @@ import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import MyPoolInvsetmentFiat from '@/components/pool/MyPoolInvsetmentFiat.vue';
+import MyPoolInvsetmentFiat, { MyPollInvestmentFiatType} from '@/components/pool/MyPoolInvsetmentFiat.vue';
 import useEthers from '@/composables//useEthers';
 import useTokens from '@/composables/useTokens';
 import { bnum } from '@/lib/utils';
@@ -99,11 +99,6 @@ export default defineComponent({
       });
 
       
-    },
-    setPoolTatoalFiatValues(el){
-      if(el){
-        this.poolTotalFiatValues.push(el);
-      }
     },
     fetchClaimsIfPossible(){
       if(this.pools.length!=0 && this.prices!=undefined ){
@@ -205,7 +200,7 @@ export default defineComponent({
   mounted(){
   },
   updated(){
-    const target_copy = Object.assign({}, this.$refs['poolTotalFiatValues']) ;
+    const target_copy:MyPollInvestmentFiatType = Object.assign({}, this.$refs['poolTotalFiatValues']) as  MyPollInvestmentFiatType;
     // this.totalPoolFiatValue +=;
     if(target_copy.fiatNumber!=undefined){
       this.poolTotalFiatValues[target_copy.pool.address] = target_copy.fiatNumber;

@@ -2,16 +2,20 @@
 import numeral from 'numeral';
 import { computed, defineComponent, PropType, Ref, toRefs,toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import { usePool } from '@/composables/usePool';
 import useTokens from '@/composables/useTokens';
 import { shortenLabel } from '@/lib/utils';
-import { Pool } from '@/services/pool/types';
+import { Pool,PoolWithShares } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { bnum } from '@/lib/utils';
 
+export interface MyPollInvestmentFiatType{
+  fiatValue:String;
+  fiatNumber:Number;
+  pool:PoolWithShares;
+}
 
 export default defineComponent({
   props: {
