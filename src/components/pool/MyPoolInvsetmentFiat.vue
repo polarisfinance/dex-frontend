@@ -1,20 +1,20 @@
 <script lang="ts">
 import numeral from 'numeral';
-import { computed, defineComponent, PropType, Ref, toRefs,toRef } from 'vue';
+import { computed, defineComponent, PropType, Ref, toRefs, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import { usePool } from '@/composables/usePool';
 import useTokens from '@/composables/useTokens';
 import { shortenLabel } from '@/lib/utils';
-import { Pool,PoolWithShares } from '@/services/pool/types';
+import { Pool, PoolWithShares } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { bnum } from '@/lib/utils';
 
-export interface MyPollInvestmentFiatType{
-  fiatValue:String;
-  fiatNumber:Number;
-  pool:PoolWithShares;
+export interface MyPollInvestmentFiatType {
+  fiatValue: String;
+  fiatNumber: Number;
+  pool: PoolWithShares;
 }
 
 export default defineComponent({
@@ -38,7 +38,7 @@ export default defineComponent({
     /**
      * COMPOSABLES
      */
-    const { fNum2,toFiat } = useNumbers();
+    const { fNum2, toFiat } = useNumbers();
     const { upToLargeBreakpoint } = useBreakpoints();
     const { priceFor } = useTokens();
 
@@ -55,7 +55,6 @@ export default defineComponent({
     });
     const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
 
-
     const tokenAddresses = computed((): string[] => {
       if (isStablePhantomPool.value) {
         // We're using mainToken balances for StablePhantom pools
@@ -65,11 +64,14 @@ export default defineComponent({
       return props.pool.tokensList;
     });
     const fiatValue = computed(() => {
-      const fiatval = tokenAddresses.value
-        .map((address, i) => toFiat(props.tokens, address))
-        .reduce((total, value) => bnum(total).plus(value).toString());
+      let fiatVal = 0;
 
-      return fNum2(Number(fiatval), FNumFormats.fiat);
+      props.pool.tokens.forEach(token => {
+        fiatVal +=
+          Number(token.weight) * Number(toFiat(props.tokens, token.address));
+      });
+
+      return fNum2(Number(fiatVal), FNumFormats.fiat);
     });
     const fiatNumber = computed(() => {
       const fiatval = tokenAddresses.value
@@ -83,7 +85,7 @@ export default defineComponent({
     //   alert(pool.id);
     //   return toFiat(propTokenAmount, pool.address)
     // };
-    function myalert(){
+    function myalert() {
       return fiatValue;
     }
 
@@ -93,16 +95,14 @@ export default defineComponent({
       fiatValue,
       fiatNumber,
       FNumFormats,
-      myalert
+      myalert,
     };
   },
 });
 </script>
 
-
 <template>
-  <div>{{ fiatValue  }}</div>
+  <div>{{ fiatValue }}</div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
