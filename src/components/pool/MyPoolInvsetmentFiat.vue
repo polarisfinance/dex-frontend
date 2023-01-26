@@ -10,6 +10,7 @@ import { shortenLabel } from '@/lib/utils';
 import { Pool, PoolWithShares } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { bnum } from '@/lib/utils';
+import BigNumber from 'bignumber.js';
 
 export interface MyPollInvestmentFiatType {
   fiatValue: String;
@@ -71,11 +72,13 @@ export default defineComponent({
       let fiatVal = 0;
 
       props.pool.tokens.forEach(token => {
-        fiatVal +=
-          Number(token.weight) * Number(toFiat(props.tokens, token.address));
+        fiatVal += Number(toFiat(token.balance, token.address));
       });
 
-      return fNum2(Number(fiatVal), FNumFormats.fiat);
+      const lpVal = fiatVal / Number(pool.value.totalShares);
+      const totalValue = lpVal * Number(props.tokens);
+
+      return fNum2(totalValue, FNumFormats.fiat);
     });
 
     const fiatValue2 = computed(() =>{
