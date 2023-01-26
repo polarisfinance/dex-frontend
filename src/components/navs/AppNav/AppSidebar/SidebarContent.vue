@@ -54,7 +54,8 @@ const navLinks = [
   { label: 'Dawn', path: '/', img: investImg },
   { label: 'Sunrise', path: '/sunrise', img: investImg },
   { label: 'Bond', path: '/bond', img: investImg },
-  { label: t('portfolio'), path: '/vebal', img: portfolioImg },
+  // { label: t('portfolio'), path: '/vebal', img: portfolioImg },
+  { label: 'Airdrop', path: '/airdrop', img: portfolioImg },
   { label: 'vexPOLAR', path: '/vexpolar', img: vexpolarImg },
   // { label: t('claim'), path: '/claim' },
 ];

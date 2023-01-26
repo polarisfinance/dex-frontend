@@ -31,12 +31,8 @@ onMounted(() => {});
 <template>
   <SunrisePageHero/>
    
-    <div
-      :class="{
-        sunrisePlaceholder: isDesktop,
-        sunrisePlaceholderMobile: isMobile,
-      }"
-    >
+  <div class="container mx-auto">
+    <div class="grid gap-6 " :class="{'grid-cols-3':isDesktop,'grid-cols-1':isMobile}">
       <div
         v-for="(sunrise, idx) in sunrises"
         :key="idx"
@@ -55,6 +51,7 @@ onMounted(() => {});
         </router-link>
       </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -88,18 +85,14 @@ onMounted(() => {});
 
 .sunriseCard {
   @apply bg-frame-dark;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 22px;
   padding: 24px 0px;
   flex: 1 1 30%;
-  max-width: 30%;
   text-align: center;
 }
 
 .sunriseCardMobile {
   @apply bg-frame-dark;
-
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   padding: 24px 52px;
   text-align: center;

@@ -83,7 +83,7 @@ defineExpose({ hide });
           <BalCard
             :title="title"
             shadow="lg"
-            :noPad="noPad"
+            noPad
             :noContentPad="noContentPad"
             class="modal-card"
             noBorder
@@ -117,7 +117,7 @@ defineExpose({ hide });
 .content {
   @apply absolute h-3/4 max-h-screen w-full sm:h-auto;
 
-  max-width: 450px;
+  max-width: 484px;
   transform-style: preserve-3d;
   overflow: none;
 }
@@ -135,7 +135,8 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full bg-frame-dark-ultra dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
+  @apply mx-auto h-full dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
+  background-color: #292043;
   overflow: none;
 }
 

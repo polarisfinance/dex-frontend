@@ -428,15 +428,15 @@ export default defineComponent({
 }
 
 .dotted-border {
-  background: linear-gradient(#160d22, #160d22) padding-box,
-    linear-gradient(94.84deg, #9747ff 6.12%, #3b44bd 100%) border-box;
+  background: linear-gradient(#292043, #292043) padding-box,
+    linear-gradient(94.84deg, #9747FF 6.12%, #3B44BD 100%) border-box;
   border-bottom: 0.5px dotted #160d22;
   opacity: 0.7;
 }
 
 .border-design {
-  background: linear-gradient(#160d22, #160d22) padding-box,
-    linear-gradient(94.84deg, #9747ff 6.12%, #3b44bd 100%) border-box;
+  background: linear-gradient(#292043, #292043) padding-box,
+    linear-gradient(94.84deg, #9747FF 6.12%, #3B44BD 100%) border-box;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   border-bottom: 1px solid transparent;
@@ -457,7 +457,7 @@ export default defineComponent({
   padding: 4px 6px;
   gap: 6px;
 
-  background: #261737;
+  background: #41365E;
   box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
   border-radius: 99px;
 }

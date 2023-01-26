@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative w-64 overflow-hidden rounded bg-white p-3 text-sm shadow-lg dark:border-gray-850 dark:bg-gray-800 dark:text-white"
+    class="relative w-64 overflow-hidden rounded p-3 text-sm notif-container"
   >
     <div class="group justify-between">
       <BalLink
@@ -17,7 +17,7 @@
             class="ml-1 text-gray-400 transition-colors group-hover:text-pink-500 dark:text-gray-600"
           />
         </div>
-        <div class="message">
+        <div class="message mb-[20px]">
           {{ notification.message }}
         </div>
       </BalLink>
@@ -25,7 +25,7 @@
         <div class="title mb-1 font-semibold">
           {{ notification.title }}
         </div>
-        <div class="message">
+        <div class="message mb-[20px]">
           {{ notification.message }}
         </div>
       </div>
@@ -109,7 +109,7 @@ export default defineComponent({
       }
 
       return `
-          progress-bar absolute bottom-0 left-0 opacity-80 w-0 transition duration-300 ease-linear h-1 ${bgClasses}
+          progress-bar absolute bottom-[12px] left-0 opacity-80 w-0 transition duration-300 ease-linear h-1 ${bgClasses}
         `;
     });
 
@@ -126,8 +126,16 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.notif-container{
+  background: #292043;
+  border-radius: 16px;
+}
 .title {
   @apply lowercase;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FDFDFD;
 }
 
 .title::first-letter {
@@ -136,7 +144,10 @@ export default defineComponent({
 
 .message {
   @apply overflow-hidden;
-
+  color: #BDB2DD;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

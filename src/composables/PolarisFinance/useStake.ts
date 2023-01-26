@@ -134,6 +134,22 @@ export default function useStake() {
     }
   };
 
+  const claimAll = async (provider: Web3Provider) => {
+    try {
+      const tx = await sendTransaction(
+        provider,
+        xpolarRewardPoolAddress,
+        xpolarRewardPoolABI,
+        'harvestAllRewards',
+        []
+      );
+      return tx;
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
   const balance = async (address: string, account: string) => {
     try {
       const pid = PID[address.toLowerCase()];
@@ -303,5 +319,6 @@ export default function useStake() {
     walletBalance,
     withdrawAll,
     getPoolApr,
+    claimAll,
   };
 }

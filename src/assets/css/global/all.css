@@ -28,15 +28,12 @@ body {
 }
 
 input {
-  caret-color: theme('colors.pink.500');
+  caret-color: white;
+  /*caret-color: theme('colors.pink.500');*/
 }
 
 #app {
-  background: radial-gradient(
-    50% 57.91% at 50% 48.1%,
-    #381f54 0%,
-    #130719 100%
-  );
+  background:#150128;
   @apply text-gray-900 dark:text-gray-50;
 }
 

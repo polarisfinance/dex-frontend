@@ -1,12 +1,13 @@
 <template>
   <BalCard
     noPad
-    class="card-container relative px-[12px] py-[12px]"
+    noBorder
+    class="card-container relative"
     :shadow="tradeCardShadow"
   >
-    <template #header>
-      <div class="header mb-[12px] flex w-full items-center justify-between">
-        <h4 class="title ml-[10px]">{{ title }}</h4>
+    <template #header >
+      <div class="header mb-[12px] flex w-full items-center justify-between" >
+        <h4 class="title ml-[18px] mt-[10px]" >{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
           :isGasless="trading.tradeGasless.value"
@@ -47,22 +48,7 @@
         :description="warning.body"
         block
       />
-      <div
-        v-if="
-          tokenInAddress &&
-          tokenOutAddress &&
-          tokenInAmount > 0 &&
-          tokenOutAmount > 0
-        "
-        class="price"
-      >
-        Price:
-        {{
-          trading.exactIn.value
-            ? trading.effectivePriceMessage.value.tokenIn
-            : trading.effectivePriceMessage.value.tokenOut
-        }}
-      </div>
+      <div class="mx-[12px] mb-[12px]">
       <BalBtn
         v-if="trading.isLoading.value"
         loading
@@ -95,6 +81,8 @@
       >
         Connect Wallet
       </button>
+      </div>
+
       <div
         v-if="
           tokenInAddress &&
@@ -104,13 +92,15 @@
         "
         class="stats"
       >
-        <div>
+        
+        <div class="p-[16px]">
           <TradePreviewModalGP
             :trading="trading"
             @trade="trade"
             @close="handlePreviewModalClose"
           />
-          <div class="border" />
+          <div  />
+          <div class=""><div class="mx-[8px] my-[22px] border"></div></div>
           <TradeRoute
             :addressIn="trading.tokenIn.value.address"
             :amountIn="trading.tokenInAmountInput.value"
@@ -462,6 +452,7 @@ export default defineComponent({
 /* This is needed because the trade settings popover overflows */
 .card-container {
   overflow: unset;
+  background-color: #292043;
   /* width: 480px; */
 }
 
@@ -481,24 +472,23 @@ export default defineComponent({
   content: '✍️';
 }
 
+
 .connect-wallet {
-  padding: 12px 0px;
+  padding: 10px 0px;
   gap: 12px;
-  left: 10px;
+  left: 12px;
   top: 226px;
-
-  background: #1e102d;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
-    inset 2px 2px 4px #010001;
+  line-height:24px;
+  background: #41365E;
   border-radius: 12px;
-  color: #d7b3ff;
-
+  color: #A99BC6;
+  font-size: 20px;
   width: 100%;
 }
 
 .connect-wallet:hover {
-  background: #2C1842;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3), inset 2px 2px 4px #010001;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  color:#ffffff;
 }
 
 .connect-wallet:active {
@@ -537,11 +527,7 @@ export default defineComponent({
   border-radius: 12px;
 }
 
-.border {
-  border: 0.5px solid rgba(111, 71, 115, 0.4);
-  margin-left: 0.55em !important;
-  margin-right: 0.55em !important;
-}
+
 
 .price {
   font-weight: 500;
@@ -556,6 +542,8 @@ export default defineComponent({
 .stats {
   margin-top: 1em !important;
 }
-
+.border{
+  border: 0.5px solid rgba(59, 68, 189, 0.4);
+}
 
 </style>

@@ -6,9 +6,9 @@
       width="34"
       height="34"
     />
-    <div class="flex-auto">
+    <div class="flex-auto text-[20px] font-semibold">
       {{ tokenlist.name }}
-      <div class="text-gray flex items-center text-sm">
+      <div class="text-gray flex items-center text-sm font-medium">
         {{
           fNum2(tokenlist.tokens.length, {
             style: 'decimal',

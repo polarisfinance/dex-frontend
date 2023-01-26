@@ -7,7 +7,7 @@
       >
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
         <!-- <IconSettings class="mt-1 mr-[12px]" /> -->
-        <img :src="Picture" height="24" class="mr-[12px]" />
+        <img :src="Picture" height="24" class="mr-[12px] mt-[12px]" />
       </button>
     </template>
 
@@ -188,7 +188,9 @@ export default defineComponent({
   min-height: 24px;
   min-width: 24px;
 }
-
+.settings-button:hover{
+  opacity: 0.5;
+}
 .trade-settings-option:hover {
   /* @apply text-blue-500 border-blue-500; */
 }

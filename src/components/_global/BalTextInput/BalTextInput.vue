@@ -14,6 +14,7 @@ import { HtmlInputEvent } from '@/types';
 import useInputEvents from './composables/useInputEvents';
 import useInputStyles from './composables/useInputStyles';
 import useInputValidation from './composables/useInputValidation';
+import useWeb3 from '@/services/web3/useWeb3';
 
 /**
  * TYPES
@@ -107,6 +108,7 @@ const {
   appendClasses,
   borderRadiusClasses,
 } = useInputStyles(props, isInvalid, isActive, isHover, attrs);
+const { isWalletReady } = useWeb3();
 
 /**
  * COMPUTED
@@ -137,7 +139,7 @@ onMounted(() => {
           </span>
         </slot>
       </div>
-      <div :class="['input-group']">
+      <div class="input-group" :class="{'mb-[40px]':!isWalletReady}">
         <div v-if="$slots.prepend" :class="['prepend', prependClasses]">
           <slot name="prepend" />
         </div>
@@ -172,20 +174,9 @@ onMounted(() => {
 <style scoped>
 .input-container {
   @apply flex flex-col transition-colors;
-  background-color: #261737;
-  border-radius: 16px;
   border: none;
-  height: 86px;
+  background: none;
   font-weight: 500;
-  border: 0.5px solid rgba(0, 0, 0, 0);
-
-}
-.input-container:hover {
-  border: 0.5px solid rgba(0,0,0,0)
-}
-.input-container:focus-within {
-  border: 0.5px solid rgba(215, 178, 255, 0.25);
-
 }
 
 ::placeholder {
@@ -193,7 +184,7 @@ onMounted(() => {
 }
 
 .input-group {
-  @apply flex px-[12px] pt-[16px];
+  @apply flex pl-[12px] pt-[16px] pr-[16px];
 }
 
 .input {

@@ -13,18 +13,18 @@
       </div>
       <div class="box">
         <div
-          class="w-ful font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm font-medium leading-none text-purple-secondary"
+          class="w-full mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 leading-none"
         >
           Connected with {{ connectorName }}
           <div class="flex flex-row justify-end gap-[8px]">
-            <button class="h-[22px] w-[86px] border" @click="disconnectWallet">
+            <button class="h-[22px] w-[86px] " @click="disconnectWallet">
               <div
                 class="text-center text-[14px] leading-[18px]"
                 v-text="$t('disconnect')"
               />
             </button>
             <button
-              class="h-[22px] w-[68px] border"
+              class="h-[22px] w-[68px]"
               @click="toggleWalletSelectModal"
               v-on:click="close"
             >
@@ -43,8 +43,8 @@
           />
         </div>
 
-        <div class="address mb-[12px] flex justify-start">
-          <button class="button p-0">
+        <div class="address mb-[12px] mt-1 flex justify-start">
+          <button class="button p-0 link" >
             <div
               class="link flex flex-row justify-start gap-[8px] align-baseline"
               @click="copyAddress"
@@ -237,7 +237,7 @@ export default defineComponent({
 
 .bal-card {
   @apply flex flex-col bg-frame-dark-ultra;
-  /* background-color: #231928; */
+  background:#292043;
   /* box-shadow: inset 0px 0px 2px #fbaaff; */
   border-radius: 22px;
   box-sizing: border-box;
@@ -250,16 +250,19 @@ export default defineComponent({
   /* @apply border dark:border-gray-900; */
   @apply bg-frame-light;
   @apply flex flex-col gap-[10px] rounded-md;
-  /* background: #2e2433; */
-  box-shadow: inset 0px 0px 1px rgba(255, 251, 251, 0.25);
+  background: #41365E !important; 
   border-radius: 16px;
   padding-left: 12px;
   padding-right: 12px;
   width: 100% !important;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.button {
-  background: #ffffff00 !important;
+button {
+  background-color: #50456E !important;
+  color: #BDB2DD;
+  border-radius: 16px;
 }
 
 .border {
@@ -271,11 +274,15 @@ export default defineComponent({
 }
 
 .link {
-  @apply fill-[#D7B3FF] font-semibold leading-[20px] text-text-purple;
+  @apply fill-[#D7B3FF] font-semibold leading-[20px] ;
+  background: none !important;;
+  color: #BDB2DD;
 }
 
 .link:focus,
 .link:hover {
   @apply fill-[#F5E1FF] font-semibold leading-[20px] text-[#F5E1FF] no-underline;
+  background: none;
+  color: #FFFFFF;
 }
 </style>

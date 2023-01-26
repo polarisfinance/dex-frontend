@@ -71,7 +71,7 @@ function toggleModal(): void {
       :class="['token-select-input selected group', { selectable: !fixed }]"
       @click="toggleModal"
     >
-      <div class="grid content-center px-[6px]">
+      <div class="grid content-center px-[8px]">
         <BalAsset :address="token?.address" class="shadow" />
       </div>
       <span class="text-base text-[20px] font-semibold">
@@ -85,12 +85,25 @@ function toggleModal(): void {
           })
         }}
       </span>
+      <span v-if="!fixed" class="mr-[7px]">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_155_801)">
+        <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_155_801">
+        <rect width="24" height="24" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+      </span>
+<!-- 
       <BalIcon
         v-if="!fixed"
         name="chevron-down"
         size="sm"
         class="mt-0 px-[6px]"
-      />
+      /> -->
     </div>
     <BalDropdown
       v-else-if="hasToken && fixed && options.length > 0"
@@ -113,7 +126,7 @@ function toggleModal(): void {
                 maximumFractionDigits: 0,
               })
             }}
-          </span>
+          </span>asdads
           <BalIcon
             name="chevron-down"
             size="sm"
@@ -147,7 +160,19 @@ function toggleModal(): void {
       @click="toggleModal"
     >
       {{ $t('selectToken') }}
-      <BalIcon name="chevron-down" size="sm" class="mt-0" />
+      <span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_155_801)">
+        <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_155_801">
+        <rect width="24" height="24" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+      </span>
+
     </div>
 
     <teleport to="#modal">
@@ -165,16 +190,15 @@ function toggleModal(): void {
 
 <style scoped>
 .group {
-  background: #261737 !important;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
-    inset 2px 2px 4px #18111c !important;
-  border-radius: 16px !important;
+  background: #50456E !important;
+  
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25)!important;
+  border-radius: 44px!important;
 }
 
 .group:hover {
-  background: #392253 !important;
-  box-shadow: inset -2px -2px 4px rgba(117, 92, 140, 0.3),
-    inset 2px 2px 4px #18111c !important;
+  background: rgba(80, 69, 110, 0.5) !important;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25) !important;
 }
 
 .token-select-input {
@@ -200,10 +224,9 @@ function toggleModal(): void {
 .no-token {
   padding: 5px 6px 5px 12px;
   gap: 6px;
-
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 44px;
   font-style: normal;
   font-weight: 600;
   font-size: 20px;

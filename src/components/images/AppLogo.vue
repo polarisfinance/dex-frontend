@@ -38,10 +38,10 @@ const fillColor = computed(() => {
 
 <template>
   <div class="app-logo flex min-w-[185px] items-center sm:mr-4">
-    <img src="./Logo.svg" width="62" height="62" class="mr-2" />
-    <nobr className="custom-logo-text self-center text-[20px] font-medium">
+    <img src="./Logo.svg" width="35" height="35" class="mr-2" />
+    <nobr className="custom-logo-text self-center font-medium">
       POLARIS
-      <nobr className="custom-logo-text self-center text-[20px] font-semibold">
+      <nobr className="custom-logo-text self-center font-bold">
         D E X
       </nobr>
     </nobr>
@@ -68,11 +68,9 @@ const fillColor = computed(() => {
 }
 
 .custom-logo-text {
-  background: linear-gradient(180deg, #4b5e98 30%, #403a4e 80%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-  color: transparent;
+font-style: normal;
+font-size: 14px;
+line-height: 18px;
+color: #FDFDFD;
 }
 </style>

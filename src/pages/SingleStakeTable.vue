@@ -25,9 +25,8 @@ import {
 import { bnum } from '@/lib/utils';
 import { PoolWithShares } from '@/services/pool/types';
 import { POOLS } from '@/constants/pools';
-
+import singleStakeImg from './pool-icon-single-stake.svg';
 import PoolsTableActionsCell from './PoolsTableActionsCell.vue';
-// import TokenPills from './TokenPills/TokenPills.vue';
 
 const { isMobile, isDesktop } = useBreakpoints();
 const emit = defineEmits(['loadMore', 'triggerStake']);
@@ -228,47 +227,44 @@ const pools = computed(() => [
     </div>
   </div>
   <div class="pool-table mb-[40px]" v-if="isDesktop">
-    <div>Single Stake</div>
     <div class="table-title mt-[48px] flex w-full">
-      <div class="flex w-full items-center">
-        <div>Pool name</div>
-      </div>
       <div class="grid-table">
-        <div class="mr h-4 w-12">Daily</div>
-        <div class="mr h-4 w-12">APR</div>
-        <div class="mr h-4 w-12">TVL</div>
-        <div class="mr h-4 w-12">Volume (24h)</div>
-        <div>To Claim</div>
-      </div>
-    </div>
-    <div class="mt-[24px] w-full border" />
-    <div
-      class="flex w-full items-center"
-      v-for="(pool, idx) in pools"
-      :key="idx"
-    >
-      <router-link
-        :to="'/singlestake/' + pool.name.toLowerCase()"
-        class="mt-[24px] flex w-full items-center"
-      >
-        <div class="flex w-full items-center">
-          <div class="flex w-full items-center">
+        <div class="pool-header">
+          <div class="heading h-4 ">
+            <div> <img  
+                  width="24"
+                  height="14"
+                  class="pool-icon inline-block mr-2"
+                  :src="singleStakeImg"
+                /> Single Stake</div>
+          </div>
+          <div class="h-4 text-right">APR</div>
+          <div class="h-4 text-right">Liquidity</div>
+          <div class="h-4 text-right">Volume (24h)</div>
+        </div>
+        <div class="border"></div>
+        <template
+          class="flex w-full items-center"
+          v-for="(pool, idx) in pools"
+          :key="idx"
+        >
+          <router-link
+            :to="'/singlestake/' + pool.name.toLowerCase()"
+            class="my-[18px] flex w-full items-center pool-row"
+          >
             <div class="flex w-full items-center">
               <BalAsset :address="pool.id" :size="36" width="100" />
-              <div class="ml-[24px] text-left">
+              <div class="ml-[24px] text-left pool-name">
                 {{ pool.name }}
               </div>
             </div>
-          </div>
-          <div class="grid justify-end">
-            <div>-</div>
-            <div>-</div>
-            <div>-</div>
-            <div>-</div>
-            <div>-</div>
-          </div>
-        </div>
-      </router-link>
+            <div class="flex items-center justify-end apr" >-</div>
+            <div class="flex items-center justify-end liq">-</div>
+            <div  class="flex items-center justify-end vol">-</div>
+          </router-link>
+        </template>
+
+      </div>
     </div>
   </div>
   <!-- <BalCard
@@ -392,14 +388,11 @@ const pools = computed(() => [
 
 <style scoped>
 .pool-table {
-  background: #1e0d2c;
-  border-radius: 16px;
-  padding: 24px 60px;
+  padding-top:0px;
 
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
-
   color: #ffffff;
 }
 
@@ -407,9 +400,9 @@ const pools = computed(() => [
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-
-  color: #be95c0;
+  color: rgba(189, 178, 221, 1)
 }
+
 
 .border {
   border: 0.5px solid rgba(151, 71, 255, 0.4);
@@ -428,15 +421,6 @@ const pools = computed(() => [
 
   padding: 8px 12px;
 }
-
-.table-title {
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-
-  color: #d7b3ff;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 0.5fr);
@@ -445,7 +429,47 @@ const pools = computed(() => [
 
 .grid-table {
   display: grid;
-  grid-template-columns: repeat(5, 10fr);
+  grid-template-columns: 50% auto;
   width: 100%;
+  color: rgba(253, 253, 253, 1);
+}
+
+.grid-table .border{
+  grid-column: 1 / span 4;
+  border: 0.5px solid rgba(151, 71, 255, 0.4);
+  margin-bottom: 24px;
+}
+.pool-row, .pool-header{
+  display: contents;
+}
+.pool-row > div, .pool-header > div{
+  height: 100%;
+  padding:12px 0px;
+}
+.pool-header > div{
+  color: #BDB2DD;
+  padding-bottom: 24px;
+}
+.pool-header > div:first-child, .pool-row > div:first-child{
+  padding-left: 24px;
+}
+.pool-header > div:last-child, .pool-row > div:last-child{
+  padding-right: 24px;
+}
+.pool-row:hover > div {
+  background-color: #292043;
+}
+.pool-row:hover > div:first-child {
+  border-bottom-left-radius:48px;
+  border-top-left-radius:48px;
+}
+.pool-row:hover > div:last-child {
+  border-bottom-right-radius:48px;
+  border-top-right-radius:48px;
+}
+.apr, .liq, .vol,.pool-name {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
 }
 </style>

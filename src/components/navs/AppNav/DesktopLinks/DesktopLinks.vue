@@ -40,8 +40,11 @@ function isActive(page: string): boolean {
     <DesktopLinkItem to="/bond" :active="isActive('bond')">
       Bond
     </DesktopLinkItem>
-    <DesktopLinkItem to="/vebal" :active="isActive('vebal')">
+    <!--DesktopLinkItem to="/vebal" :active="isActive('vebal')">
       Portfolio
+    </DesktopLinkItem -->
+    <DesktopLinkItem to="/airdrop" :active="isActive('airdrop')">
+      Airdrop
     </DesktopLinkItem>
     <DesktopLinkItem to="/vexpolar" :active="isActive('vexpolar')">
       vexPolar
@@ -121,20 +124,17 @@ function isActive(page: string): boolean {
 .dropdown-content {
   display: none;
   position: absolute;
-  background: #301d45;
-  border-radius: 24px;
-  background: #301d45;
-  border-radius: 24px;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 22px;
+  background: #292043;
+  min-width: 200px;
   z-index: 1;
   color: #ffffff;
-  padding: 24px;
+  padding: 10px 16px;
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
-  padding: 12px 16px;
+  padding: 6px 0px;
   text-decoration: none;
   display: block;
   color: white;

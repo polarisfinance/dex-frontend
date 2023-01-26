@@ -25,11 +25,10 @@
           <img
             src="../images/Logo.svg"
             alt="logo-no-bg"
-            height="62"
-            width="62"
+            width="35"
             className=" "
           />
-          <span className="colored-logo self-center text-[20px] font-medium">
+          <span className="colored-logo self-center text-[20px] font-medium ml-[7px]">
             POLARIS&nbsp;
           </span>
           <span className="colored-logo self-center text-[20px] font-semibold">
@@ -181,11 +180,7 @@ footer :deep(.logotype) {
 }
 
 .colored-logo {
-  background: linear-gradient(180deg, #4b5e98 23.08%, #403a4e 73.08%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
+  color: #FDFDFD;
   display: inline-block;
 }
 </style>

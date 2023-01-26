@@ -42,7 +42,7 @@ const { isDesktop } = useBreakpoints();
 .dawn-bg{
   background-image: url('../dawn_bg.svg');
   background-position-y: 0%;
-  background-position-x: right;
+  background-size: contain;
 }
 .bond-bg{
   background-image: url('../bond/bond_bg.svg');

@@ -501,16 +501,17 @@ export default defineComponent({
   /*background-image: url('./index_bg.svg');*/
 
   font-weight: 600;
-  font-size: 48px;
-  line-height: 61px;
+  font-size: 84px;
+  line-height: 104px;
   text-align: center;
+  margin:100px auto;
 }
 
 .sunrise-subtitle-text {
-  color: #d7b3ff;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 61px;
+  color: #BDB2DD;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 42px;
   text-align: center;
 }
 
@@ -521,8 +522,8 @@ export default defineComponent({
     rgba(126, 2, 245, 0.3) 97.02%
   );
   border-radius: 16px;
-  margin-left: 278px;
-  margin-right: 278px;
+  margin-left: 200px;
+  margin-right: 200px;
   padding: 12px 14px;
   font-weight: 600;
   font-size: 16px;
@@ -601,8 +602,7 @@ export default defineComponent({
   @apply bg-frame-dark;
   padding: 24px 50px;
 
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 22px;
 
   flex: 1 1 30%;
   max-width: 30%;
@@ -612,8 +612,7 @@ export default defineComponent({
 .cardMobile {
   @apply bg-frame-dark;
   gap: 40px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+  border-radius: 22px;
   padding: 24px;
 }
 
