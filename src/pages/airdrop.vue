@@ -26,7 +26,7 @@ export default defineComponent({
     const totalProgress = ref(1);
 
     const startDay: Date = new Date(1674691200 * 1000);
-    const today: Date = new Date('2023-06-30');
+    const today: Date = new Date();
     const diffTime = Math.abs((startDay as any) - (today as any));
     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
     diffDays = diffDays > 60 ? 60 : diffDays;
