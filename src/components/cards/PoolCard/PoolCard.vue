@@ -104,26 +104,29 @@ export default defineComponent({
   
 <template>
     <div class="card-container">
-        <div class="header flex">
-            <BalAssetSet
-                :size="44"
-                :addresses="iconAddresses(pool)"
-                :width="100"
+        <router-link
+          :to="'/pool/' + pool.id"
+          class="header flex"
+        >
+          <BalAssetSet
+            :size="44"
+            :addresses="iconAddresses(pool)"
+            :width="100"
+          />
+          <div class="w-full">
+            <TokenPills class="token-pill"
+              :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)"
+              :isStablePool="false"
+              :selectedTokens="[]"
+              :showWeight="false"
             />
-            <div class="w-full">
-                <TokenPills class="token-pill"
-                  :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)"
-                  :isStablePool="false"
-                  :selectedTokens="[]"
-                  :showWeight="false"
-                />
-                <TokenWeightPill class="mt-[8px] inline-block w-min"
-                  :tokens="
-                    orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-                  "
-                />
-            </div>
-        </div>
+            <TokenWeightPill class="mt-[8px] inline-block w-min"
+              :tokens="
+                orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+              "
+            />
+          </div>
+        </router-link>
         <div class="footer flex">
             <div class="apr">
                 <div class="title">APR</div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { PoolWithShares,PoolType } from '@/services/pool/types';
+import { PoolWithShares,PoolType,AnyPool,Pool } from '@/services/pool/types';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
 import {ClaimType, ClaimProviderService} from '@/services/pool/claim.provider';
 import { computed, defineComponent, ref, PropType,watch,ComputedRef,toRef } from 'vue';
@@ -69,7 +69,11 @@ export default defineComponent({
   },
   props: {
     pools: {
-      type: Array as PropType<Array<PoolWithShares>>,
+      type: Array as PropType<Array<PoolWithShares>>,  //PoolWithShares AnyPool
+      default: null,
+    },
+    singlePools: {
+      type: Array as PropType<Array<Pool>>,
       default: null,
     },
     prices:{
@@ -140,6 +144,32 @@ export default defineComponent({
     
   },
   setup(props) {
+
+    const singlePools = computed(() => [
+    { name: 'POLAR', id: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86' },
+    { name: 'ORBITAL', id: '0x3AC55eA8D2082fAbda674270cD2367dA96092889' },
+    { name: 'BINARIS', id: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370' },
+    { name: 'USP', id: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96' },
+    { name: 'ETHERNAL', id: '0x17cbd9C274e90C537790C51b4015a65cD015497e' },
+    { name: 'PBOND', id: '0x3a4773e600086A753862621A26a2E3274610da43' },
+    { name: 'OBOND', id: '0x192bdcdd7b95A97eC66dE5630a85967F6B79e695' },
+    { name: 'BBOND', id: '0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9' },
+    { name: 'USPBOND', id: '0xcE32b28c19C61B19823395730A0c7d91C671E54b' },
+    { name: 'EBOND', id: '0x266437E6c7500A947012F19A3dE96a3881a0449E' },
+  ]);
+  
+  const poolQuery = usePoolQuery( '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86');
+  const singlePool = computed(() => poolQuery.data.value);
+
+  // const {
+  //   isStableLikePool,
+  //   isLiquidityBootstrappingPool,
+  //   isStablePhantomPool,
+  // } = usePool(poolQuery.data);
+  // props.singlePools.push(singlePool as Pool);
+
+
+
     /**
      * COMPOSABLES
      */
@@ -255,7 +285,7 @@ export default defineComponent({
               <div class="pool-header">
                 <div class="h-4 ">My positions</div>
                 <div class="h-4" v-if="isDesktop">Tokens</div>
-                <div class="h-4" v-if="isDesktop">$ Value</div>
+                <div class="h-4" v-if="isDesktop">$ Tokens value</div>
                 <div class="h-4">To claim</div>
                 <div class="h-4"></div>
               </div>
@@ -270,7 +300,10 @@ export default defineComponent({
                 <div
                   class="my-[18px] flex w-full items-center pool-row"
                 >
-                  <div class="flex w-full items-center">
+                <router-link
+                  :to="'/pool/' + claim.pool.id"
+                  class="flex w-full items-center"
+                >
                     <BalAssetSet
                         :size="36"
                         :addresses="iconAddresses(claim.pool)"
@@ -284,7 +317,7 @@ export default defineComponent({
                       :showWeight="false"
                     />
                     
-                  </div>
+                </router-link>
                   <div class="flex items-center self-center"  v-if="isDesktop" >
                     {{claim.stakedBalance}}
                   </div>

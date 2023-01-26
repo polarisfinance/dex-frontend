@@ -2,6 +2,7 @@ import { PoolWithShares } from '@/services/pool/types';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import BigNumberJs from 'bignumber.js';
 import useStake from '@/composables/PolarisFinance/useStake';
+import { sunriseDefinitions } from '@/pages/config';
 import {
     spolarABI,
     sunriseABI,
@@ -95,6 +96,11 @@ export class ClaimProviderService {
 
   private async fetch(pool:PoolWithShares) {
     const { balance, isApproved, pendingShare } = useStake();
+    const approval = await isApproved(pool.address, this.account);
+    if(!approval)
+      return { pool: pool, approved: approval, stakedBalance: 0, xpolarToClaim: "" };
+
+    
     const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
     const xpolarRewardPoolAddress =
@@ -203,8 +209,27 @@ export class ClaimProviderService {
     // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
     const xpolToClaim = BigNumberToString(await pendingShare(pool.address, this.account),14,4);
     
-    const approval = await isApproved(pool.address, this.account);
     return { pool: pool, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
+  }
+  private async  fetchSingle(id:String) {
+    const { balance, isApproved, pendingShare } = useStake();
+
+    let tokenAddress;
+      for (let sunrise of Object.values(sunriseDefinitions)) {
+        if (sunrise.name == id) 
+          tokenAddress= sunrise.tokenAddress;
+      }
+    const approval = await isApproved(tokenAddress, this.account);
+    const stakedBal = await balance(tokenAddress, this.account);
+    const xpolToClaim = BigNumberToString(
+      await pendingShare(tokenAddress, this.account),
+      14,
+      4
+    );
+
+    return { pool: undefined, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
+
+    
   }
 
 }
