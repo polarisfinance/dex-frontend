@@ -457,7 +457,7 @@ export default defineComponent({
         <div class="mt-5 w-full text-center" v-else>Loading...</div>
         <div
           class="mt-[26px] flex items-center self-center"
-          v-if="claims.length > 0 && false"
+          v-if="claims.length > 0"
         >
           <button
             class="claim-btn-all flex items-center justify-center"
