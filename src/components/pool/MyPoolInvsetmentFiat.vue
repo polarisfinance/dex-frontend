@@ -10,6 +10,7 @@ import { shortenLabel } from '@/lib/utils';
 import { Pool, PoolWithShares } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { bnum } from '@/lib/utils';
+import BigNumber from 'bignumber.js';
 
 export interface MyPollInvestmentFiatType {
   fiatValue: String;
@@ -68,9 +69,6 @@ export default defineComponent({
       }
     });
 
-
-
-    
     const fiatValue = computed(() => {
       let fiatVal = 0;
       if(props.pool!=undefined){
