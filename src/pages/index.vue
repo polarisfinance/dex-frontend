@@ -228,15 +228,19 @@ export default defineComponent({
     };
   },
   mounted () {
-    let vm = this;
-    this.$nextTick(function () {
-      singlepools = this.$refs['singlepools'];
-      segnioragepools = this.$refs['segnioragepools'];
-      classicpools = this.$refs['classicpools'];
-      communitypools = this.$refs['communitypools'];
-      console.log(this.$refs['segnioragepools']);
-    });
-    
+    // let vm = this;
+    // this.$nextTick(function () {
+    //   singlepools = this.$refs['singlepools'];
+    //   segnioragepools = this.$refs['segnioragepools'];
+    //   classicpools = this.$refs['classicpools'];
+    //   communitypools = this.$refs['communitypools'];
+    //   console.log(this.$refs['segnioragepools']);
+    // });
+    singlepools = this.$refs.singlepools;
+    segnioragepools = this.$refs.segnioragepools;
+    classicpools = this.$refs.classicpools;
+    communitypools = this.$refs.communitypools;
+    console.log(this.$refs.segnioragepools);
   },
   methods: {
     filterToken(e) {
