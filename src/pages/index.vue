@@ -232,6 +232,7 @@ export default defineComponent({
     segnioragepools = this.$refs['segnioragepools']
     classicpools = this.$refs['classicpools']
     communitypools = this.$refs['communitypools'];
+    console.log('MOUNTED: '+segnioragepools);
   },
   methods: {
     filterToken(e) {
@@ -256,6 +257,7 @@ export default defineComponent({
       this.filteredTokensList = tokenList;
     },
     onScroll() {
+      console.log(segnioragepools);
       if ( 
         (segnioragepools.getBoundingClientRect().top<250 && isMobile.value) ||
         (segnioragepools.getBoundingClientRect().top<125 && isDesktop.value) 
