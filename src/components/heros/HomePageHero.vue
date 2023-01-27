@@ -67,11 +67,11 @@ const classes = computed(() => ({
         and rebalance automatically.
         </div>
         <a
-          :href="EXTERNAL_LINKS.Balancer.Home"
+          href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c"
           target="_blank"
           rel="noreferrer"
-          @click="trackGoal(Goals.ClickStartEarning)"
-          class="read-button "
+          @click="trackGoal(Goals.ClickHeroLearnMore)"
+          class="read-button"
         >
           Read our medium
         </a>
