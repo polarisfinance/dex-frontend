@@ -228,11 +228,15 @@ export default defineComponent({
     };
   },
   mounted () {
-    singlepools = this.$refs['singlepools'];
-    segnioragepools = this.$refs['segnioragepools']
-    classicpools = this.$refs['classicpools']
-    communitypools = this.$refs['communitypools'];
-    console.log('MOUNTED: '+segnioragepools);
+    let vm = this;
+    this.$nextTick(function () {
+      singlepools = this.$refs['singlepools'];
+      segnioragepools = this.$refs['segnioragepools'];
+      classicpools = this.$refs['classicpools'];
+      communitypools = this.$refs['communitypools'];
+      console.log(this.$refs['segnioragepools']);
+    });
+    
   },
   methods: {
     filterToken(e) {
@@ -257,7 +261,6 @@ export default defineComponent({
       this.filteredTokensList = tokenList;
     },
     onScroll() {
-      console.log(segnioragepools);
       if ( 
         (segnioragepools.getBoundingClientRect().top<250 && isMobile.value) ||
         (segnioragepools.getBoundingClientRect().top<125 && isDesktop.value) 
@@ -283,7 +286,7 @@ export default defineComponent({
     },
   },
   watch:{
-  }
+  },
 });
 </script>
 
