@@ -552,11 +552,11 @@ export default defineComponent({
     <div class="table-title flex justify-between">
       <div class="flex w-full items-center">
         <!-- <img :src="img" class="mr-[12px] h-[14px] w-[24px]" /> -->
-        <div>Pool name</div>
+        <div>{{ title }}</div>
       </div>
       <div class="w-full justify-end text-right">TVL & APR</div>
     </div>
-    <div class="mt-[12px]border w-full" />
+    <div class="mt-[12px] border w-full" />
     <div
       class="flex w-full items-center"
       v-for="(pool, idx) in data"
@@ -901,9 +901,6 @@ export default defineComponent({
 
 
 .pool-table-mobile {
-  background: #1e0d2c;
-  box-shadow: 0px 0.949153px 1.89831px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
 
   font-weight: 600;
   font-size: 20px;
@@ -935,7 +932,7 @@ export default defineComponent({
   color: rgba(253, 253, 253, 1);
 }
 
-.grid-table .border{
+.border{
   grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
   margin-bottom: 24px;

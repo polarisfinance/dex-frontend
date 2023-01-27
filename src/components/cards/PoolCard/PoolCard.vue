@@ -17,7 +17,7 @@ import {
 import {AprProviderService} from '@/services/pool/apr.provider';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
-
+import useBreakpoints from '@/composables/useBreakpoints';
 
 export default defineComponent({
   data() {
@@ -76,7 +76,7 @@ export default defineComponent({
     /**
      * COMPUTED
      */
-
+     const { isMobile, isDesktop } = useBreakpoints();
     /**
      * METHODS
      */
@@ -88,7 +88,8 @@ export default defineComponent({
 
     return {
       // computed
-
+      isMobile,
+      isDesktop,
       // methods
       iconAddresses,
       orderedPoolTokens
@@ -128,30 +129,31 @@ export default defineComponent({
           </div>
         </router-link>
         <div class="footer flex">
-            <div class="apr">
-                <div class="title">APR</div>
+            <div class="apr" :class="{'flex':isMobile}">
+                <div class="title" v-if="isDesktop">APR</div>
                 <div class="value">
-                <template v-if="noApr">
-                    <div class="h-4 w-12">
-                    {{ '0' + '%' }}
-                    </div>
-                </template>
-                <BalLoadingBlock
-                    v-else-if="
-                    !aprs ||
-                    !aprs[pool.address] ||
-                    !aprs[pool.address]['yearlyAPR']
-                    "
-                />
-                <template v-else>
-                    <div>
-                    {{ aprs[pool.address]['yearlyAPR'] + '%' }}
-                    </div>
-                </template>
+                  <template v-if="noApr">
+                      <div class="h-4 w-12">
+                      {{ '0' + '%' }}
+                      </div>
+                  </template>
+                  <BalLoadingBlock
+                      v-else-if="
+                      !aprs ||
+                      !aprs[pool.address] ||
+                      !aprs[pool.address]['yearlyAPR']
+                      "
+                  />
+                  <template v-else>
+                      <div>
+                      {{ aprs[pool.address]['yearlyAPR'] + '%' }}
+                      </div>
+                  </template>
                 </div>
+                <div class="title" v-if="isMobile">APR</div>
             </div>
             <div class="flex-1 text-right">
-                Earn swap fees and boost your APR
+                <div v-if="isDesktop">Earn swap fees and boost your APR</div>
                 <router-link
                     :to="'/pool/' + pool.id"
                     class="mt-[12px] block items-center"

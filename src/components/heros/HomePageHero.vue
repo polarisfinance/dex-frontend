@@ -25,9 +25,9 @@ const classes = computed(() => ({
 </script>
 
 <template>
-  <AppHero :class="classes" class="app-hero">
+  <AppHero :class="{'mt-[200px]':isDesktop,'mb-10':isMobile}" class="app-hero">
     <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
-    <h1 class="home-title mx-auto">Put your assests to work.</h1>
+    <h1 class="home-title mx-auto" :class="{'text-[84px] leading-[104px]':isDesktop,'text-[44px] leading-[50px]':isMobile}">Put your assests to work.</h1>
     <h1 class="home-subtitle max-w-md mx-auto mt-[32px]">Collect fees from pool and rebalance automatically.</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
       <div class="mt-[60px] flex w-full justify-center">
@@ -82,7 +82,7 @@ const classes = computed(() => ({
 
 <style scoped>
 .app-hero{
-  margin-top:200px;
+  
 }
 .headline {
   @apply pb-2 text-center font-display text-4xl font-black text-white md:text-5xl;
@@ -93,8 +93,6 @@ const classes = computed(() => ({
 
 .home-title {
   font-weight: 600;
-  font-size: 84px;
-  line-height: 104px;
   text-align: center;
   color: #fdfdfd;
   max-width:600px;

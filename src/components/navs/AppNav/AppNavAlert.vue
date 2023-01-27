@@ -92,6 +92,6 @@ export default defineComponent({
 }
 
 .alert-label {
-  @apply block pb-1 pr-4 font-medium md:inline;
+  @apply inline pb-1 pr-4 font-medium md:inline;
 }
 </style>

@@ -30,7 +30,6 @@ const isElementSupported = appNetworkConfig.supportsElementPools;
 const { selectedTokens, addSelectedToken, removeSelectedToken } =
   usePoolFilters();
 
-// var segnioragepools,classicpools,singlepools,communitypools;
 
 const {
   dataStates,
@@ -195,7 +194,7 @@ const selectToken = token => {
 </script>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed} from 'vue';
 import useTokens from '@/composables/useTokens';
 import { TokenInfo } from '@/types/TokenList';
 import useBreakPoints from '@/composables/useBreakpoints';
@@ -208,8 +207,7 @@ export default defineComponent({
     Object.entries(tokens.value).forEach(token => {
       this.tokenNames[getToken(token[0]).symbol] = token[0];
     });
-
-    window.addEventListener('scroll', this.onScroll);
+    window.addEventListener('scroll',this.onScroll);
     
   },
   
@@ -228,10 +226,20 @@ export default defineComponent({
     };
   },
   mounted () {
-    singlepools = this.$refs['singlepools'];
-    segnioragepools = this.$refs['segnioragepools']
-    classicpools = this.$refs['classicpools']
-    communitypools = this.$refs['communitypools'];
+    let vm = this;
+    // this.$nextTick(function () {
+    //   singlepools = this.$refs['singlepools'];
+    //   segnioragepools = this.$refs['segnioragepools'];
+    //   classicpools = this.$refs['classicpools'];
+    //   communitypools = this.$refs['communitypools'];
+    //   console.log(this.$refs['segnioragepools']);
+    // });
+    
+    // singlepools = this.$refs.singlepools;
+    // segnioragepools = this.$refs.segnioragepools;
+    // classicpools = this.$refs.classicpools;
+    // communitypools = this.$refs.communitypools;
+    // console.log(this.$refs.segnioragepools);
   },
   methods: {
     filterToken(e) {
@@ -255,33 +263,33 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
-    onScroll() {
+    onScroll(){
       if ( 
-        (segnioragepools.getBoundingClientRect().top<250 && isMobile.value) ||
-        (segnioragepools.getBoundingClientRect().top<125 && isDesktop.value) 
+        (document.querySelector("#segniorage")!.getBoundingClientRect().top<250 && isMobile.value) ||
+        (document.querySelector("#segniorage")!.getBoundingClientRect().top<125 && isDesktop.value) 
       ) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
       }
-
-      if(singlepools != undefined &&  singlepools.getBoundingClientRect().top<100){
+      
+      
+      if(document.querySelector("#singlestaking") != undefined &&  document.querySelector("#singlestaking")!.getBoundingClientRect().top<100){
         this.selectedPool = 'single';
       }
-      else if(communitypools != undefined && communitypools.getBoundingClientRect().top<100){
+      else if(document.querySelector("#communitypools") != undefined && document.querySelector("#communitypools")!.getBoundingClientRect().top<100){
         this.selectedPool = 'community';
       }
-      else if(classicpools != undefined && classicpools.getBoundingClientRect().top<100){
+      else if(document.querySelector("#classicpools") != undefined && document.querySelector("#classicpools")!.getBoundingClientRect().top<100){
         this.selectedPool = 'classic';
       }
-      else if(segnioragepools != undefined && segnioragepools.getBoundingClientRect().top<100){
+      else if(document.querySelector("#segniorage") != undefined && document.querySelector("#segniorage")!.getBoundingClientRect().top<100){
         this.selectedPool = 'segniorage';
       }
-      
     },
   },
   watch:{
-  }
+  },
 });
 </script>
 
@@ -386,7 +394,7 @@ export default defineComponent({
             </button>
           </div>
         </div>
-        <div id="segniorage" ref="segnioragepools" :class="{
+        <div id="segniorage" :class="{
             'mt-[50px]': stickyPanel && isDesktop,
             'mt-[250px]': stickyPanel && isMobile,
           }">
@@ -408,7 +416,7 @@ export default defineComponent({
             :prices="prices"
           />
         </div>
-        <div id="classicpools" ref="classicpools">
+        <div id="classicpools" >
           <PoolsTable
             :key="filteredTokensList"
             :data="investmentPoolsWithoutSeigniorage"
@@ -427,7 +435,7 @@ export default defineComponent({
             :img="classicImg"
           />
         </div>
-        <div id="communitypools" ref="communitypools" >
+        <div id="communitypools"  >
           <PoolsTable
             :key="filteredTokensList"
             :data="communityPools"
@@ -446,7 +454,7 @@ export default defineComponent({
             :noApr="true"
           />
         </div>
-        <div id="singlestaking" ref="singlepools" >
+        <div id="singlestaking"  >
           <SingleStake />
         </div>
         <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">

@@ -233,8 +233,10 @@ export default defineComponent({
     }
     function getSingleStakeName(claim){
       for(var i=0;i<singlePools.length;i++){
-        if(singlePools[i].id == claim.address)
-        return singlePools[i].name + ' - Single Stake';
+        if(singlePools[i].id == claim.address && isDesktop.value)
+          return singlePools[i].name + ' - Single Stake';
+        else if(singlePools[i].id == claim.address && isMobile.value)
+          return singlePools[i].name ;
       }
     }
 
@@ -394,7 +396,7 @@ export default defineComponent({
             <div class="h-4" v-if="isDesktop">Tokens</div>
             <div class="h-4" v-if="isDesktop">$ Tokens value</div>
             <div class="h-4">To claim</div>
-            <div class="h-4"></div>
+            <div class="h-4" v-if="isDesktop"></div>
           </div>
           <!-- div>To Claim</div -->
 
@@ -411,7 +413,7 @@ export default defineComponent({
                     <BalAssetSet 
                         :size="36"
                         :addresses="iconAddresses(claim)"
-                        :width="100"
+                        :width="82"
                     />
                     <TokenPills class="token-pill"
                       :tokens="orderedPoolTokens(claim.pool.poolType, claim.pool.address, claim.pool.tokens)"
@@ -431,10 +433,12 @@ export default defineComponent({
                   <div class="flex items-center self-center"  v-if="isDesktop">
                     <MyPoolInvsetmentFiat :pool="claim.pool" :tokens="claim.stakedBalance" ref="poolTotalFiatValues"/>
                   </div>
-                  <div class="flex items-center self-center claim-amount">
-                    {{claim.xpolarToClaim }}
+                  <div class="flex items-center self-center">
+                    <button class="claim-btn-mobile w-full items-center" @click="claimXpolar(claim)" v-if="isMobile">
+                      {{claim.xpolarToClaim }} | Claim
+                    </button>
                   </div>
-                  <div  class="flex items-center self-center">
+                  <div  class="flex items-center self-center" v-if="isDesktop">
                     <button class="claim-btn flex items-center" @click="claimXpolar(claim)">
                       Claim
                       <ArrowRightIcon class="ml-3"/>
@@ -518,7 +522,7 @@ export default defineComponent({
   grid-template-columns: 50% auto;
 }
 .grid-table.mobile {
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 65% auto;
 }
 .grid-table .border {
   border: 0.5px solid rgba(151, 71, 255, 0.4);
@@ -558,6 +562,16 @@ export default defineComponent({
   font-size: 14px;
   line-height: 18px;
 }
+.claim-btn-mobile{
+  padding: 6px 12px 6px 16px;
+  gap: 10px;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  background: linear-gradient(rgba(41, 32, 67, 1),rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
+  border: 1px solid transparent;
+}
 
 .claim-btn-all {
   width: 180px;
@@ -572,7 +586,7 @@ export default defineComponent({
   grid-column: 1 / span 5;
 }
 .border.mobile {
-  grid-column: 1 / span 3;
+  grid-column: 1 / span 2;
 }
 .claim-btn:hover {
   background: linear-gradient(
@@ -600,6 +614,6 @@ export default defineComponent({
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
-    padding-left: 65px;
+    padding-left: 20px;
 }
  </style>
