@@ -33,8 +33,7 @@ const classes = computed(() => ({
       <div class="mt-[60px] flex w-full justify-center">
         <HeroConnectWalletButton class="mr-[16px]" />
         <a
-          :href="EXTERNAL_LINKS.Balancer.Home"
-          target="_blank"
+          href="#hot-pools"
           rel="noreferrer"
           @click="trackGoal(Goals.ClickStartEarning)"
           class="start-earning-button"
