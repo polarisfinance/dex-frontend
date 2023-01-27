@@ -33,8 +33,7 @@ const classes = computed(() => ({
       <div class="mt-[60px] flex w-full justify-center">
         <HeroConnectWalletButton class="mr-[16px]" />
         <a
-          :href="EXTERNAL_LINKS.Balancer.Home"
-          target="_blank"
+          href="#hot-pools"
           rel="noreferrer"
           @click="trackGoal(Goals.ClickStartEarning)"
           class="start-earning-button"
@@ -67,11 +66,11 @@ const classes = computed(() => ({
         and rebalance automatically.
         </div>
         <a
-          :href="EXTERNAL_LINKS.Balancer.Home"
+          href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c"
           target="_blank"
           rel="noreferrer"
-          @click="trackGoal(Goals.ClickStartEarning)"
-          class="read-button "
+          @click="trackGoal(Goals.ClickHeroLearnMore)"
+          class="read-button"
         >
           Read our medium
         </a>

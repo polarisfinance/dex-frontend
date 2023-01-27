@@ -292,7 +292,7 @@ export default defineComponent({
     :prices="prices"
     />
 
-    <div class="container mx-auto">
+    <div class="container mx-auto" id="hot-pools">
       <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
       <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
         <template v-for="(pool, idx)      in      (isDesktop) ? superHotPools.slice(0, 6) :superHotPools.slice(0, 3)  " :key="idx">

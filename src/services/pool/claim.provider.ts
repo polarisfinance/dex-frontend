@@ -73,7 +73,7 @@ export class ClaimProviderService {
       }).then((val:any) => {
         if(val!=undefined){
           const obj:ClaimType = val;
-          if(val.approved && this.claimReceived){
+          if(val.approved && this.claimReceived && val.stakedBalance>0){
             this.claimReceived(obj);
           }
             // allClaims.push( obj );
@@ -90,7 +90,7 @@ export class ClaimProviderService {
       }).then((val:any) => {
         if(val!=undefined){
           const obj:ClaimType = val;
-          if(val.approved && this.claimReceived){
+          if(val.approved && this.claimReceived && val.stakedBalance>0){
             this.claimReceived(obj);
           }
         }
