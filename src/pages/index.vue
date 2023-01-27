@@ -369,7 +369,9 @@ export default defineComponent({
               class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
             >
               <img src="./search.svg" class="mr-[12px]" />
-              <input type="text" placeholder="Filter by token" class="input" />
+              <input type="text" placeholder="Filter by token" class="input" 
+              v-on:input="filterToken"
+              v-model="searchTerm"/>
             </div>
             <div class="mt-[8px] flex justify-center gap-[8px] px-5">
               <a href="#segniorage">
@@ -641,5 +643,6 @@ export default defineComponent({
 }
 .is-sticky.filter-panel-mobile{
   top: 69px;
+  padding-top: 0px;
 }
 </style>

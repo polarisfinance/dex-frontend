@@ -565,6 +565,7 @@ export default defineComponent({
       <router-link
         class="flex w-full items-center justify-between"
         :to="'/pool/' + pool.id"
+        v-if="selected(pool)"
       >
         <div class="flex-column mt-[20px]">
           <BalAssetSet
