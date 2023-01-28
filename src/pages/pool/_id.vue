@@ -1,27 +1,88 @@
 <template>
-  <div :class="{ 'px-8': isMobile }">
+  <div class="container mx-auto heading flex">
+    <div class="w-full">
+      <h1>Segniorage Pool</h1>
+      Dynamic swap fees: Currently {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
+    </div>
+    <div class="flex flex-none">
+      <div
+        v-for="(token, idx) in tableData"
+        :key="idx"
+        class="token-name flex"
+      >
+        <div>
+          {{ symbolFor(token.address) }}
+        </div>
+        <div v-if="idx < tableData.length - 1">-</div>
+      </div>
+      <div v-for="(token, idx) in tableData" :key="idx">
+        <BalAsset :address="token.address" :size="33" />
+      </div>
+    </div>
+  </div>
+  <div class="container mx-auto">
+    <div class="card-container">
+      <div class="chart">
+        <PoolChart
+          :pool="pool"
+          :historicalPrices="historicalPrices"
+          :snapshots="snapshots"
+          :loading="isLoadingSnapshots"
+          :totalLiquidity="pool?.totalLiquidity"
+          :tokensList="pool?.tokensList"
+          :poolType="pool?.poolType"
+        />
+      </div>
+      <div class="pool-data">
+        <PoolStatCards
+          :pool="pool"
+          :poolApr="poolApr"
+          :loading="loadingPool"
+          :loadingApr="loadingPool"
+          :aprString="apr"
+        />
+        <div class="pool-invest">
+          Invest in the pool and earn on swap fees!
+          <button
+              class="invest-btn flex items-center  w-full"
+              @click=""
+            >
+            <div class="text-center w-full">Invest in the pool</div>
+            <ArrowRightIcon class="ml-3 flex-none" />
+          </button>
+      </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="container mx-auto flex gap-8 justify-center mt-[120px]">
+      <PoolBalancesCard :pool="pool" :loading="loadingPool" />
+  </div>
+  <div class="container mx-auto" ref="intersectionSentinel" />
+  <div class="container mx-auto">
+      <PoolTransactionsCard
+        v-if="isSentinelIntersected"
+        :pool="pool"
+        :loading="loadingPool"
+      />
+  </div>
+
+
+
+
+  <!-- <div :class="{ 'px-8': isMobile }">
     <div class="mx-auto flex xl:container">
       <div class="flex-1 pt-8">
         <div class="mb-[24px] flex justify-between">
           <div class="flex-column">
             <div class="pool-title">Liquidity Pool</div>
             <div class="pool-subtitle">
-              Dynamic swap fees: Currently
-              {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
+              
             </div>
           </div>
           <div class="flex items-center" v-if="isDesktop">
             <div class="mr-[12px] flex items-center">
-              <div
-                v-for="(token, idx) in tableData"
-                :key="idx"
-                class="token-name flex"
-              >
-                <div>
-                  {{ symbolFor(token.address) }}
-                </div>
-                <div v-if="idx < tableData.length - 1">-</div>
-              </div>
+              
             </div>
             <div class="flex items-center">
               <div v-for="(token, idx) in tableData" :key="idx">
@@ -74,7 +135,6 @@
             <div>{{ stakedBalance }}</div>
           </div>
           <div class="incentives-text flex justify-between">
-            <!-- <div>Untaked LP tokens</div> -->
             <div>Unstaked LP tokens</div>
 
             <div>{{ balanceFor(address).slice(0, -15) }}</div>
@@ -121,17 +181,6 @@
           </div>
         </div>
         <div class="">
-          <!-- this shit doesnt work for some reason :( -->
-          <!-- <PoolPageHeader
-          :loadingPool="loadingPool"
-          :pool="pool"
-          :isStableLikePool="isStableLikePool"
-          :noInitLiquidity="noInitLiquidity"
-          :titleTokens="titleTokens"
-          :missingPrices="missingPrices"
-          :isLiquidityBootstrappingPool="isLiquidityBootstrappingPool"
-          :isStablePhantomPool="isLiquidityBootstrappingPool"
-        /> -->
           <div class="hidden lg:block" />
           <div class="order-2 col-span-2 lg:order-1">
             <div class="grid grid-cols-1 gap-y-8">
@@ -226,23 +275,8 @@
         </div>
       </div>
     </div>
-    <div class="mx-auto mb-4 xl:container">
-      <h4
-        class="table-title mb-[12px] px-4 lg:px-0"
-        v-text="$t('poolComposition')"
-      />
-      <PoolBalancesCard :pool="pool" :loading="loadingPool" />
-    </div>
 
-    <div class="mx-auto xl:container" ref="intersectionSentinel" />
-    <div class="mx-auto xl:container">
-      <PoolTransactionsCard
-        v-if="isSentinelIntersected"
-        :pool="pool"
-        :loading="loadingPool"
-      />
-    </div>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts">
@@ -821,8 +855,40 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.card-container{
+  background: #292043;
+  box-shadow: 0px 1.52198px 3.04396px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+  overflow: hidden;
+  color: #FDFDFD;
+}
+.pool-data{
+  background: #41365E;
+  padding: 24px;
+}
+.pool-invest{
+  border-top: 1px solid rgba(151, 71, 255, 0.4);
+  text-align: center;
+  padding-top: 24px;
+}
+.chart{
+  padding: 24px;
+}
 .pool-actions-card {
   @apply relative;
+}
+
+.invest-btn {
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #FDFDFD;
+  padding: 12px 20px;
+  margin: 12px auto 0px auto;
+  max-width: 520px;
 }
 
 @media (min-width: 768px) and (min-height: 600px) {
@@ -1016,20 +1082,7 @@ export default defineComponent({
   border-radius: 12px;
 }
 
-.invest-btn {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    #7b307f 0%,
-    rgba(123, 48, 127, 0.81) 100%
-  );
-  border-radius: 12px;
-  padding: 12px 0px;
-  color: #fdfdfd;
 
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-}
 
 .withdraw-btn {
   padding: 12px 0px;

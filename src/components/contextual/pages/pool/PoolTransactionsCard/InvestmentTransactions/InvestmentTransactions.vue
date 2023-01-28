@@ -8,7 +8,7 @@ import { Pool } from '@/services/pool/types';
 import BoostedActivities from '../BoostedPoolActivities/Activities.vue';
 import Activities from '../PoolActivities/Activities.vue';
 import { PoolTransactionsTab } from '../types';
-
+import TradeTransactions from '../TradeTransactions/TradeTransactions.vue';
 /**
  * TYPES
  */
@@ -48,6 +48,10 @@ const tabs = computed(() =>
           value: PoolTransactionsTab.USER_ACTIVITY,
           label: t('poolTransactions.tabs.myInvestments'),
         },
+        {
+          value: PoolTransactionsTab.TRADES,
+          label: t('poolTransactions.tabs.trades'),
+        },
       ]
 );
 
@@ -66,12 +70,8 @@ const activeTab = ref(tabs.value[0].value);
 <template>
   <div>
     <div>
-      <h4
-        class="table-title mb-[12px] px-4 lg:px-0"
-        v-text="$t('poolTransactions.tabs.allInvestments')"
-      />
-      <div class="mx-4 mb-[14px] flex items-end justify-between lg:mx-0">
-        <BalTabs v-model="activeTab" :tabs="tabs" noPad class="-mb-px" />
+      <div class="flex w-full">
+        <BalTabsSwitch v-model="activeTab" :tabs="tabs" noPad class="flex-1" />
       </div>
     </div>
 
@@ -100,6 +100,11 @@ const activeTab = ref(tabs.value[0].value);
         <Activities
           v-else-if="activeTab === PoolTransactionsTab.USER_ACTIVITY"
           :poolActivityType="PoolTransactionsTab.USER_ACTIVITY"
+          :pool="pool"
+          :loading="loading"
+        />
+        <TradeTransactions
+          v-else-if="activeTab === PoolTransactionsTab.TRADES"
           :pool="pool"
           :loading="loading"
         />

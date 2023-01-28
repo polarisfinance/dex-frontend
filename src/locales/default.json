@@ -543,6 +543,7 @@
   "poolTransactions": {
     "title": "Pool transactions",
     "tabs": {
+      "investmentsTrades": "Investments & trades",
       "allTransactions": "Transactions",
       "myTransactions": "My transactions",
       "allInvestments": "All investments",

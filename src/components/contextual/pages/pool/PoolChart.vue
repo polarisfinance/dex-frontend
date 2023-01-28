@@ -186,9 +186,17 @@ function getTVLData(periodSnapshots: PoolSnapshot[]) {
       tvlValues.push(Object.freeze([timestamp, snapshotPoolValue]));
     });
   }
-
   return {
-    color: [tailwind.theme.colors.blue['600']],
+    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        {
+          offset: 0,
+          color: '#3DDEED',
+        },
+        {
+          offset: 1,
+          color: 'rgba(61, 222, 237, 0)',
+        },
+      ]),
     hoverBorderColor: tailwind.theme.colors.pink['500'],
     hoverColor: darkMode.value
       ? tailwind.theme.colors.gray['900']
@@ -289,7 +297,16 @@ function getVolumeData(
       : Number(periodSnapshots[pariodLastSnapshotIdx].swapVolume));
 
   return {
-    color: [tailwind.theme.colors.green['400']],
+    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        {
+          offset: 0,
+          color: '#3DDEED',
+        },
+        {
+          offset: 1,
+          color: 'rgba(61, 222, 237, 0)',
+        },
+      ]),
     chartType: 'bar',
     hoverColor: tailwind.theme.colors.pink['500'],
     data: [
@@ -370,7 +387,7 @@ function setCurrentChartValue(payload: {
   <BalLoadingBlock v-if="loading || appLoading" class="h-96" />
 
   <div v-else-if="snapshotValues.length >= MIN_CHART_VALUES" class="chart">
-    <div class="mb-6 flex flex-col justify-between">
+    <div class="mb-6 flex justify-between">
       <div class="mb-4 flex">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="mr-6 -mb-px" />
         <div class="flex items-center">
@@ -388,7 +405,7 @@ function setCurrentChartValue(payload: {
           {{ isFocusedOnChart ? currentChartValue : defaultChartData.value }}
         </p>
         <div
-          class="text-secondary text-sm font-medium"
+          class="subtracking"
           :class="{ 'text-pink-500': isFocusedOnChart }"
         >
           <p>
@@ -438,8 +455,20 @@ function setCurrentChartValue(payload: {
 
 <style scoped>
 .chart {
-  @apply rounded-xl dark:border-transparent sm:border sm:px-5 sm:pt-5 sm:shadow;
-  background: #1e0d2c;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+}
+.tracking-tighter{
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 52px;
+  text-align: right;
+  color: #FDFDFD;
+
+}
+.subtracking{
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: right;
+  color: #BDB2DD;
 }
 </style>

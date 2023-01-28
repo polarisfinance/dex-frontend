@@ -27,7 +27,7 @@ defineProps<Props>();
           <div class="period-select-input__selected">
             {{ activeOption.text }}
           </div>
-          <BalIcon name="chevron-down" />
+          <BalIcon name="chevron-down" class="mt-[-2px]" />
         </div>
       </div>
     </template>
@@ -60,10 +60,14 @@ defineProps<Props>();
 
 <style scoped>
 .period-select-input {
-  @apply relative w-28 overflow-hidden rounded-lg bg-gray-50 px-2 shadow transition-all
+  @apply relative w-28 overflow-hidden  px-2 shadow transition-all
     hover:shadow-none focus:shadow-none;
 
-  background: #261737;
+    padding: 6px 12px 6px 24px;
+    gap: 12px;
+
+    background: #41365E;
+    border-radius: 40px;
 }
 
 .period-select-input__selected {

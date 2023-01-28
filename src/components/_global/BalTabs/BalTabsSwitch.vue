@@ -5,6 +5,7 @@
         v-for="(tab, i) in tabs"
         :key="i"
         :class="['bal-tab', stateClasses(tab)]"
+        class="flex-1 text-center"
         @click="onClick(tab)"
       >
         {{ tab.label }}
@@ -22,7 +23,7 @@ interface Tab {
 }
 
 export default defineComponent({
-  name: 'BalTabs',
+  name: 'BalTabsSwitch',
 
   props: {
     tabs: { type: Array as PropType<Tab[]>, required: true },
@@ -69,25 +70,29 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.bal-tab-container{
+  background: #292043;
+  border-radius: 22px;
+  overflow: hidden;
+}
 .bal-tab {
   @apply -mb-px mr-6 cursor-pointer py-3;
 }
 
 .tab-selected {
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
-
+  font-size: 16px;
+  line-height: 20px;
   color: #FDFDFD;
-
-  border-bottom: 1px solid #FDFDFD;
+  background: #41365E;
+  border-radius: 22px;
+  overflow: hidden;
 }
 
 .tab-unselected {
   font-weight: 600;
-  font-size: 18px;
-  line-height: 24px;
-
+  font-size: 16px;
+  line-height: 20px;
   color: #BDB2DD;
 }
 

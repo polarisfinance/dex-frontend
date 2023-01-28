@@ -1,99 +1,3 @@
-<template>
-  <!-- <BalCard
-    class="overflow-x-auto whitespace-nowrap"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
-    <BalTable
-      :columns="columns"
-      :data="tableData"
-      :isLoading="loading"
-      skeletonClass="h-64"
-      sticky="both"
-      :initialState="{
-        sortColumn: 'weight',
-        sortDirection: 'desc',
-      }"
-    >
-      <template #tokenColumnCell="token">
-        <div class="flex flex-row py-4 px-6 bg-[#231928]">
-          <BalLink
-            :href="explorer.addressLink(token.address)"
-            external
-            noStyle
-            class="flex items-center w-full"
-          >
-            <div>
-              <BalAsset :address="token.address" :size="36" />
-            </div>
-            <div
-              class="overflow-hidden pl-4 font-medium truncate eth-address text-ellipsis"
-            >
-              {{ symbolFor(token.address) }}
-            </div>
-            <BalIcon
-              name="arrow-up-right"
-              size="sm"
-              class="ml-2 text-gray-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-            />
-          </BalLink>
-        </div>
-      </template>
-      <template #tokenWeightCell="token">
-        <div class="py-4 px-6 text-right font-numeric bg-[#231928]">
-          {{ weightFor(token.address) }}
-        </div>
-      </template>
-      <template #tokenBalanceCell="token">
-        <div class="py-4 px-6 text-right font-numeric bg-[#231928]">
-          {{ balanceFor(token.address) }}
-        </div>
-      </template>
-      <template #tokenValueCell="token">
-        <div class="py-4 px-6 text-right font-numeric bg-[#231928]">
-          {{ fiatValueFor(token.address) }}
-        </div>
-      </template>
-    </BalTable>
-  </BalCard> -->
-  <div class="table-container">
-    <div class="flex w-full justify-between">
-      <div>Token</div>
-      <div :class="{ gapMobile: isMobile, gapDesktop: isDesktop }">
-        <div>Weight</div>
-        <div>Balance</div>
-        <div>Value</div>
-      </div>
-    </div>
-    <div class="mt-[24px] border" />
-    <div v-for="(token, index) in tableData" :key="index">
-      <a :href="explorer.addressLink(token.address)">
-        <div class="mt-[24px] flex items-center justify-between">
-          <div class="flex items-center">
-            <BalAsset :address="token.address" :size="33" />
-            <div class="token-name ml-[13.5px]">
-              {{ symbolFor(token.address) }}
-            </div>
-            <img :src="arrow" class="ml-[12px]" />
-          </div>
-          <div :class="{ gapMobile: isMobile, gapDesktop: isDesktop }">
-            <div class="token-detail w-[45px] text-center">
-              {{ weightFor(token.address) }}
-            </div>
-            <div class="token-detail w-[45px] text-center">
-              {{ balanceFor(token.address) }}
-            </div>
-            <div class="token-detail w-[45px] text-center">
-              {{ fiatValueFor(token.address) }}
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import numeral from 'numeral';
 import { computed, defineComponent, PropType, Ref, toRefs } from 'vue';
@@ -232,48 +136,72 @@ export default defineComponent({
 });
 </script>
 
+<template>
+  <div class="card w-full" v-for="(token, index) in tableData" :key="index">
+    <div class="subheadline text-center">Pool Composition</div>
+    <div class="flex mx-1 my-4">
+      <BalAsset :address="token.address" :size="48" />
+      <div class="token-name ml-[12px]">
+        {{ symbolFor(token.address) }}
+      </div>
+      <img :src="arrow" class="ml-[12px]" />
+    </div>
+    <div class="composition-data flex p-2">
+      <div class="flex-1 text-left">
+        <div class="subheadline">Weight</div>
+        {{ weightFor(token.address) }}
+      </div>
+      <div class="flex-1 text-center">
+        <div class="subheadline">Balance</div>
+        {{ balanceFor(token.address) }}
+      </div>
+      <div class="flex-1 text-right">
+        <div class="subheadline">Value</div>
+        {{ fiatValueFor(token.address) }}
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped>
-.table-container {
-  background: #1e0d2c;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
+.card{
+  padding: 12px ;
+  gap: 16px;
+  background: #292043;
+  border-radius: 20px;
+  max-width: 355px;
+}
+.subheadline{
+  background: #41365E;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  color: #FDFDFD;
+}
+.token-name{
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: #FDFDFD;
 
-  padding: 24px !important;
-
+}
+.composition-data{
+  border-top: 1px solid rgba(65, 54, 94, 0.4);
+  margin-top: 24px;
+  text-align: left;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-
-  color: #ffffff;
+  color: #FDFDFD;
 }
-
-.border {
-  border: 0.5px solid rgba(151, 71, 255, 0.4);
-}
-
-.token-name {
+.composition-data .subheadline{
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 20px;
-
-  color: #fdfdfd;
-}
-
-.token-detail {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-
-  color: rgba(245, 225, 255, 0.7);
-}
-
-.gapMobile {
-  display: flex;
-  gap: 50px;
-}
-
-.gapDesktop {
-  display: flex;
-  gap: 70px;
+  color: #BDB2DD;
+  background:none;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 </style>
