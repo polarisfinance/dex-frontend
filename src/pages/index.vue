@@ -365,35 +365,34 @@ export default defineComponent({
           </div>
 
           <div v-if="isMobile">
-            <div
-              class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
-            >
-              <img src="./search.svg" class="mr-[12px]" />
-              <input type="text" placeholder="Filter by token" class="input" 
-              v-on:input="filterToken"
-              v-model="searchTerm"/>
+            <div class="flex">
+              <div class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]">
+                <img src="./search.svg" class="mr-[12px]" />
+                <input type="text" placeholder="Filter by token" class="input" v-on:input="filterToken" v-model="searchTerm"/>
+              </div>
+              <button
+                class="create-pool-btn-mobile flex flex-none items-center justify-center ml-5"
+                @click="navigateToCreatePool"
+              >
+                <img src="./plus.svg" class="mr-[8px]" />
+                <div>Create a pool</div>
+              </button>
             </div>
             <div class="mt-[8px] flex justify-center gap-[8px] px-5">
+              <div class="flex-none mt-3 mr-4">Pools: </div>
               <a href="#segniorage">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage</div>
               </a>
               <a href="#classicpools">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='classic'}">Classic Pools</div>
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='classic'}">Classic</div>
               </a>
               <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='community'}">Community Pools</div>
+                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='community'}">Community</div>
               </a>
               <a href="#singlestaking">
                 <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
               </a>
             </div>
-            <button
-              class="create-pool-btn-mobile mt-[8px] flex w-full items-center justify-center"
-              @click="navigateToCreatePool"
-            >
-              <img src="./plus.svg" class="mr-[8px]" />
-              <div>Create a pool</div>
-            </button>
           </div>
         </div>
         <div id="segniorage" :class="{

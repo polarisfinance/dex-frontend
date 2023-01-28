@@ -407,15 +407,17 @@ export default defineComponent({
               
                 <router-link
                   :to="getRooterLink(claim)"
-                  class="flex w-full items-center"
+                  class="flex flex-1 items-center"
                 >
                   <template v-if="claim.pool!=undefined">
-                    <BalAssetSet 
-                        :size="36"
-                        :addresses="iconAddresses(claim)"
-                        :width="82"
-                    />
-                    <TokenPills class="token-pill"
+                    <div class="flex-none">
+                      <BalAssetSet 
+                          :size="36"
+                          :addresses="iconAddresses(claim)"
+                          :width="60"
+                      />
+                    </div>
+                    <TokenPills class="token-pill ml-4"
                       :tokens="orderedPoolTokens(claim.pool.poolType, claim.pool.address, claim.pool.tokens)"
                       :isStablePool="false"
                       :selectedTokens="[]"
@@ -433,15 +435,16 @@ export default defineComponent({
                   <div class="flex items-center self-center"  v-if="isDesktop">
                     <MyPoolInvsetmentFiat :pool="claim.pool" :tokens="claim.stakedBalance" ref="poolTotalFiatValues"/>
                   </div>
-                  <div class="flex items-center self-center">
-                    <button class="claim-btn-mobile w-full items-center" @click="claimXpolar(claim)" v-if="isMobile">
-                      {{claim.xpolarToClaim }} | Claim
-                    </button>
+                  <div class="flex items-center self-center claim-amount" v-if="isDesktop">
+                    {{claim.xpolarToClaim }}
                   </div>
-                  <div  class="flex items-center self-center" v-if="isDesktop">
-                    <button class="claim-btn flex items-center" @click="claimXpolar(claim)">
+                  <div  class="flex items-center self-center" >
+                    <button class="claim-btn flex items-center" @click="claimXpolar(claim)" v-if="isDesktop">
                       Claim
                       <ArrowRightIcon class="ml-3"/>
+                    </button>
+                    <button class="claim-btn-mobile w-full items-center" @click="claimXpolar(claim)" v-if="isMobile">
+                      {{claim.xpolarToClaim }} | Claim
                     </button>
                   </div>
                   <!-- div>
@@ -614,6 +617,6 @@ export default defineComponent({
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
-    padding-left: 20px;
+    padding-left: 40px;
 }
  </style>

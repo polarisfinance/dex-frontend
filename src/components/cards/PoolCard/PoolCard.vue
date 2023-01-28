@@ -113,6 +113,7 @@ export default defineComponent({
             :size="44"
             :addresses="iconAddresses(pool)"
             :width="100"
+            :maxOffset="35"
           />
           <div class="w-full">
             <TokenPills class="token-pill"

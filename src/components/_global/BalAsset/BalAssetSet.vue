@@ -4,7 +4,7 @@
     :key="assetChunkIndex"
   >
     <div
-      :class="['addresses-row', assetRowClasses]"
+      :class="['addresses-row flex-none', assetRowClasses]"
       :style="{
         width: `${width}px`,
         height: `${size}px`,
@@ -67,6 +67,10 @@ export default defineComponent({
     size: {
       type: Number,
       default: 26,
+    },
+    maxOffset: {
+      type: Number,
+      default: 25,
     },
     maxAssetsPerLine: {
       type: Number,
@@ -132,11 +136,18 @@ export default defineComponent({
      */
     function leftOffsetFor(i: number) {
       if (props.wrap) return 0;
-      return (
-        ((props.width - radius.value * 2 + spacer.value) /
-          (props.maxAssetsPerLine - 1)) *
-        i
-      );
+
+      const offset =   (props.width-props.size)/(props.addresses.length-1);
+      if(offset< props.maxOffset)
+        return offset*i;
+      else
+        return props.maxOffset*i;
+
+      // return (
+      //   ((props.width - radius.value * 2 + spacer.value) /
+      //     (props.maxAssetsPerLine - 1)) *
+      //   i
+      // );
     }
 
     function assetAttrsFor(addressOrURI: string) {
