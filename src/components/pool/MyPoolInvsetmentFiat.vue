@@ -20,12 +20,12 @@ export interface MyPollInvestmentFiatType {
 
 export default defineComponent({
   props: {
-    pool: {
+    pool: {                             //undefined for singlestake
       type: Object as PropType<Pool>,
       required: true,
     },
     tokens: {
-      type: String,
+      type: Number,
       required: true,
     },
     loading: { type: Boolean, default: false },
@@ -56,41 +56,43 @@ export default defineComponent({
     });
     const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
 
-    const tokenAddresses = computed((): string[] => {
-      if (props.pool != undefined) {
-        if (isStablePhantomPool.value) {
-          // We're using mainToken balances for StablePhantom pools
-          // so return mainTokens here so that fiat values are correct.
-          return props.pool.mainTokens || [];
-        }
-        return props.pool.tokensList;
-      } else {
-        return new Array();
-      }
-    });
+    // const tokenAddresses = computed((): string[] => {
+    //   if (props.pool != undefined) {
+    //     if (isStablePhantomPool.value) {
+    //       // We're using mainToken balances for StablePhantom pools
+    //       // so return mainTokens here so that fiat values are correct.
+    //       return props.pool.mainTokens || [];
+    //     }
+    //     return props.pool.tokensList;
+    //   } else {
+    //     return new Array();
+    //   }
+    // });
 
     const fiatValue = computed(() => {
       let fiatVal = 0;
+      if(props.pool!=undefined){
+        props.pool.tokens.forEach(token => {
+          fiatVal += Number(toFiat(token.balance, token.address));
+        });
+        const lpVal = fiatVal / Number(pool.value.totalShares);
+        const totalValue = lpVal * props.tokens;
 
-      props.pool.tokens.forEach(token => {
-        fiatVal += Number(toFiat(token.balance, token.address));
-      });
-
-      const lpVal = fiatVal / Number(pool.value.totalShares);
-      const totalValue = lpVal * Number(props.tokens);
-
-      return fNum2(totalValue, FNumFormats.fiat);
-    });
-
-    const fiatValue2 = computed(() => {
-      let total = bnum(0);
-      if (props.pool != undefined) {
-        for (const token of props.pool.tokensList) {
-          total = total.plus(bnum(priceFor(token)).times(props.tokens));
-        }
+        return fNum2(totalValue, FNumFormats.fiat);
+      }else{
+        return '-';
       }
-      return total;
     });
+
+    // const fiatValue2 = computed(() => {
+    //   let total = bnum(0);
+    //   if (props.pool != undefined) {
+    //     for (const token of props.pool.tokensList) {
+    //       total = total.plus(bnum(priceFor(token)).times( props.tokens));
+    //     }
+    //   }
+    //   return total;
+    // });
 
     // const fiatNumber = computed(() => {
     //   const fiatval = tokenAddresses.value
@@ -112,7 +114,7 @@ export default defineComponent({
       fNum2,
       upToLargeBreakpoint,
       fiatValue,
-      fiatValue2,
+      // fiatValue2,
       // fiatNumber,
       FNumFormats,
       myalert,
