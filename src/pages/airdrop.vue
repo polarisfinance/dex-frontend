@@ -73,14 +73,14 @@ export default defineComponent({
       this.totalShares = await totalShares(this.account);
     },
     async claim() {
-      /*const { claim } = useAirdrop();
-      const tx = await claim(this.getProvider());
+      const { claim } = useAirdrop();
+      const tx = await claim(this.getProvider(),this.account);
       this.txListener(tx, {
         onTxConfirmed: () => {
           this.render();
         },
         onTxFailed: () => {},
-      });*/
+      });
     },
   },
   async created() {
@@ -473,7 +473,7 @@ export default defineComponent({
             </div>
           </div>
           <div class="text-center">
-            <button class="claim-btn" @click="claim" disabled>
+            <button class="claim-btn" @click="claim">
               Claim xPolars
               <svg
                 style="display: inline; margin-left: 28px"
