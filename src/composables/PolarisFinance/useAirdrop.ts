@@ -10,9 +10,9 @@ import { Web3Provider } from '@ethersproject/providers';
 import { airdropABI } from './ABI';
 import { BigNumber } from 'ethers';
 
-import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree';
 
-import merkleTree from "./merkletree.json";
+import merkleTree from './merkletree.json';
 // // (1)
 // const tree = StandardMerkleTree.load(JSON.parse(merkleTree.toString()));
 
@@ -31,27 +31,39 @@ import merkleTree from "./merkletree.json";
 
 export default function useAirdrop() {
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
-  const airdropAddress = '0x75e6815C8451F29ABDE33F1D44e5982fc62d0ef2';
+  const airdropAddress = '0x904176c19Ae063aE35bcB9Ae67bAaE08aeE962a3';
 
   const airdropContract = new Contract(airdropAddress, airdropABI, w3);
-  const startTime = BigNumber.from(1674691200)
-
+  const startTime = BigNumber.from(1675116000);
 
   const getPendingShare = async (account: string) => {
-    const tree = StandardMerkleTree.load(JSON.parse(JSON.stringify(merkleTree)));
+    if (startTime.gt(BigNumber.from(Math.floor(Date.now() / 1000)))) {
+      return '0';
+    }
+    const tree = StandardMerkleTree.load(
+      JSON.parse(JSON.stringify(merkleTree))
+    );
 
     for (const [i, v] of tree.entries()) {
       if (v[0] === account.toLowerCase()) {
         // (3)
         const vested = await airdropContract.vested(account);
-        const runningTime = BigNumber.from(60).mul(BigNumber.from(24)).mul(BigNumber.from(60)).mul(BigNumber.from(60));
+        const runningTime = BigNumber.from(60)
+          .mul(BigNumber.from(24))
+          .mul(BigNumber.from(60))
+          .mul(BigNumber.from(60));
         const xpolarPerSecond = BigNumber.from(v[1]).div(runningTime);
         let pending: BigNumber;
-        if (BigNumber.from(Math.floor(Date.now() / 1000)).gt(startTime.add(runningTime))){
-          pending = v[1]
-
+        if (
+          BigNumber.from(Math.floor(Date.now() / 1000)).gt(
+            startTime.add(runningTime)
+          )
+        ) {
+          pending = v[1];
         } else {
-          pending = BigNumber.from(Math.floor(Date.now() / 1000)).sub(startTime).mul(xpolarPerSecond);
+          pending = BigNumber.from(Math.floor(Date.now() / 1000))
+            .sub(startTime)
+            .mul(xpolarPerSecond);
         }
         return Number(BigNumberToString(pending.sub(vested), 14, 4)).toFixed(2);
       }
@@ -64,19 +76,25 @@ export default function useAirdrop() {
     return Number(BigNumberToString(vested, 14, 4)).toFixed(2);
   };
   const totalShares = async (account: string) => {
-    const tree = StandardMerkleTree.load(JSON.parse(JSON.stringify(merkleTree)));
+    const tree = StandardMerkleTree.load(
+      JSON.parse(JSON.stringify(merkleTree))
+    );
 
     for (const [i, v] of tree.entries()) {
       if (v[0] === account.toLowerCase()) {
         // (3)
-        return Number(BigNumberToString(BigNumber.from(v[1]), 14, 4)).toFixed(2);
+        return Number(BigNumberToString(BigNumber.from(v[1]), 14, 4)).toFixed(
+          2
+        );
       }
     }
     return '0';
   };
 
   const claim = async (provider: Web3Provider, account: string) => {
-    const tree = StandardMerkleTree.load(JSON.parse(JSON.stringify(merkleTree)));
+    const tree = StandardMerkleTree.load(
+      JSON.parse(JSON.stringify(merkleTree))
+    );
     let amount;
     let proof;
     for (const [i, v] of tree.entries()) {
@@ -86,7 +104,7 @@ export default function useAirdrop() {
         amount = v[1];
       }
     }
-    
+
     try {
       const tx = await sendTransaction(
         provider,
