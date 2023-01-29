@@ -29,7 +29,7 @@ const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
 
 <template>
   <h4
-    class="mt-[95px]"
+    class="mt-[95px] mb-[24px]"
     v-text="$t('poolTransactions.tabs.investmentsTrades')"
   />
   <InvestmentTransactions :pool="pool" :loading="loading" />

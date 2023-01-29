@@ -189,83 +189,61 @@ const getRows = computed<ActivityRow[]>(() => {
     :noBorder="upToLargeBreakpoint"
     noPad
   >
-    <!-- <BalTable
-      :columns="columns"
-      :data="activityRows"
-      :isLoading="isLoading"
-      :isLoadingMore="isLoadingMore"
-      :isPaginated="isPaginated"
-      skeletonClass="h-64"
-      sticky="both"
-      :noResultsLabel="noResultsLabel"
-      :initialState="{
-        sortColumn: 'timeAgo',
-        sortDirection: 'desc',
-      }"
-      @load-more="emit('loadMore')"
-    > -->
-    <!-- <template #actionCell="action">
-        <div class="py-2 px-6">
-          <div class="flex items-center">
-            <div class="flex mr-3 center">
-              <BalIcon
-                v-if="action.type === 'Join'"
-                name="plus"
-                size="sm"
-                class="text-green-500 dark:text-green-400"
-              />
-              <BalIcon v-else name="minus" size="sm" class="text-red-500" />
+    <div class="grid-table">
+      <div class="header">
+        <div class="h-4 ml-[24px]">Action</div>
+        <div class="h-4">Value</div>
+        <div class="h-4">Tokens</div>
+        <div class="h-4">Time</div>
+      </div>
+      <div class="border"></div>
+
+      <div v-for="(action, index) in activityRows" :key="index" class="flex w-full items-center table-row">
+        <router-link
+          :to="explorerLinks.txLink(action.tx)"
+          class="my-[18px] flex w-full items-center pool-row" target= '_blank'
+        >
+          <div class="flex w-full items-center">
+            <img :src="plus" v-if="action.label == 'Invest'" />
+            <img :src="minus" v-else />
+            <div class="ml-[12px]">
+              {{ action.label }}
             </div>
-            <div>{{ action.label }}</div>
+          </div>
+        </router-link>
+        
+        <div class="flex items-center justify-start">
+          <div class="value-text mr-[16px]">
+            {{ action.formattedValue }}
           </div>
         </div>
-      </template>
 
-      <template #detailsCell="action">
-        <div class="flex flex-wrap py-4 px-6 -mt-1">
-          <template v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
-            <div
-              v-if="tokenAmount.amount !== '0'"
-              class="flex items-center p-1 px-2 m-1 bg-gray-50 dark:bg-gray-700 rounded-lg"
-            >
-              <BalAsset
-                :address="tokenAmount.address"
-                class="flex-shrink-0 mr-2"
-              />
-              <span class="font-numeric">{{ tokenAmount.amount }}</span>
+        <div class="flex items-center justify-start">
+          <div v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
+              <div
+                v-if="tokenAmount.amount !== '0'"
+                class="token-card text-center flex items-center mr-[8px]"
+              >
+                <BalAsset
+                  :size="16"
+                  :address="tokenAmount.address"
+                  class=""
+                />
+                <div class="font-numeric mx-[7px]">{{ tokenAmount.amount }}</div>
+              </div>
             </div>
-          </template>
         </div>
-      </template>
+        <div class="flex items-center justify-start">
+          {{ action.formattedDate }}
+        </div>
+      </div>
 
-      <template #valueCell="action">
-        <div class="flex justify-end py-4 px-6 font-numeric">
-          {{ action.formattedValue }}
-        </div>
-      </template>
+    </div>
 
-      <template #timeCell="action">
-        <div class="py-4 px-6">
-          <div
-            class="flex justify-end items-center text-right whitespace-nowrap wrap"
-          >
-            {{ action.formattedDate }}
-            <BalLink
-              :href="explorerLinks.txLink(action.tx)"
-              external
-              class="flex items-center ml-2"
-            >
-              <BalIcon
-                name="arrow-up-right"
-                size="sm"
-                class="text-gray-500 hover:text-blue-500 transition-colors"
-              />
-            </BalLink>
-          </div>
-        </div>
-      </template>
-    </BalTable> -->
-    <div class="grid">
+
+
+
+    <!-- <div class="grid">
       <div>Action</div>
       <div class="ml-[32px] flex w-full items-start gap-[40px]">
         <div>Value</div>
@@ -277,7 +255,6 @@ const getRows = computed<ActivityRow[]>(() => {
     <div v-for="(action, index) in activityRows" :key="index">
       <a :href="explorerLinks.txLink(action.tx)" target="_blank">
         <div class="grid">
-          <!-- <div class="flex items-center justify-between"> -->
           <div class="flex items-center">
             <img :src="plus" v-if="action.label == 'Invest'" />
             <img :src="minus" v-else />
@@ -308,13 +285,14 @@ const getRows = computed<ActivityRow[]>(() => {
           <div class="value-text text-right" v-if="isDesktop">
             {{ action.formattedDate }}
           </div>
-          <!-- </div> -->
         </div>
         <div class="value-text mt-[8px] flex justify-end" v-if="isMobile">
           {{ action.formattedDate }}
         </div>
       </a>
-    </div>
+    </div> -->
+
+
     <!-- <div class="w-full flex justify-center">
       <button class="load-more">
         <div class="flex items-center">
@@ -327,37 +305,30 @@ const getRows = computed<ActivityRow[]>(() => {
 </template>
 
 <style scoped>
-.table-container {
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 16px;
-
+.grid-table {
+  display: grid;
+  grid-template-columns: auto;
+  width: 100%;
   font-weight: 600;
   font-size: 16px;
-  line-height: 20px;
-
-  color: #fdfdfd;
-  /* padding-bottom: 0; */
+  line-height: 18px;
+  color: #FDFDFD;
 }
-
-.border {
+.table-row, .header{
+  display: contents;
+}
+.table-row > div, .header > div{
+  height: 100%;
+  padding:12px 0px;
+}
+.header > div{
+  color: #BDB2DD;
+  padding-bottom: 24px;
+}
+.border{
+  grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
-}
-
-.value-text {
-  color: rgba(245, 225, 255, 0.7);
-
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-}
-
-.token-card {
-  display: flex;
-  align-items: center;
-  background: #2e2433;
-  border-radius: 10px;
-  padding: 2px 4px;
-  gap: 8px;
+  margin-bottom: 24px;
 }
 
 .load-more {
@@ -368,10 +339,17 @@ const getRows = computed<ActivityRow[]>(() => {
   color: #be95c0;
   background: #231928;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-flow: column;
+.token-card{
+  background: #292043;
+  border-radius: 24px;
+  padding:8px;
 }
+.font-numeric{
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FDFDFD;
+
+}
+
 </style>

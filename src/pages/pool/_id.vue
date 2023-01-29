@@ -1,22 +1,41 @@
 <template>
-  <div class="container mx-auto heading flex">
-    <div class="w-full">
-      <h1>Segniorage Pool</h1>
-      Dynamic swap fees: Currently {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
-    </div>
-    <div class="flex flex-none">
-      <div
-        v-for="(token, idx) in tableData"
-        :key="idx"
-        class="token-name flex"
-      >
-        <div>
-          {{ symbolFor(token.address) }}
-        </div>
-        <div v-if="idx < tableData.length - 1">-</div>
+  <div class="container mx-auto heading flex px-7">
+    <div class="w-full ">
+      <h1 v-if="isSegnioragePool(poolID)==true">Segniorage Pool</h1>
+      <h1 v-if="isClassicPool(poolID)==true">Classic Pool</h1>
+      <h1 v-if="isCommunityPool(poolID)==true">Community Pool</h1>
+      <div class="current-fees mb-5">
+        Dynamic swap fees: Currently {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
       </div>
-      <div v-for="(token, idx) in tableData" :key="idx">
-        <BalAsset :address="token.address" :size="33" />
+    </div>
+    <div class="flex flex-none ">
+      <div class="px-3">
+        <div class="flex">
+          <div
+            v-for="(token, idx) in tableData"
+            :key="idx"
+            class="token-name flex "
+          >
+            <div>
+              {{ symbolFor(token.address) }}
+            </div>
+            <div v-if="idx < tableData.length - 1">-</div>
+            
+          </div>
+        </div>
+        <div>
+          <a href="" class="detail-link underline">
+            Pool details <img :src="arrow" class="inline ml-[12px]" />
+          </a>
+          
+        </div>
+      </div>
+      <div>
+        <BalAssetSet 
+          :size="36"
+          :addresses="iconAddresses(tableData)"
+          :width="60"
+        />
       </div>
     </div>
   </div>
@@ -302,7 +321,7 @@ import usePoolQuery from '@/composables/queries/usePoolQuery';
 import usePoolSnapshotsQuery from '@/composables/queries/usePoolSnapshotsQuery';
 import useAlerts, { AlertPriority, AlertType } from '@/composables/useAlerts';
 import { isL2 } from '@/composables/useNetwork';
-import { usePool } from '@/composables/usePool';
+import { usePool,orderedTokenAddresses } from '@/composables/usePool';
 import { usePoolWarning } from '@/composables/usePoolWarning';
 import useTokens from '@/composables/useTokens';
 import { POOLS } from '@/constants/pools';
@@ -321,6 +340,7 @@ import useTransactions from '@/composables/useTransactions';
 import useEthers from '../../composables/useEthers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
+import arrow from './table-arrow.svg';
 import {
   BigNumberToString,
   sunriseNameToAddress,
@@ -380,8 +400,13 @@ const classicPoolsIds = [
 ];
 
 const isCommunityPool = pool => {
-  console.log(pool);
   return !segniorageIds.includes(pool) && !classicPoolsIds.includes(pool);
+};
+const isSegnioragePool = pool => {
+  return segniorageIds.includes(pool);
+};
+const isClassicPool = pool => {
+  return classicPoolsIds.includes(pool);
 };
 
 export default defineComponent({
@@ -529,6 +554,19 @@ export default defineComponent({
       observer = new IntersectionObserver(callback, options);
       observer.observe(intersectionSentinel.value);
     }
+
+    function iconAddresses(tableData) {
+      console.log(tableData);
+      let addresses : string[] = [];
+      tableData.forEach(token => {
+        addresses.push(token?.address);
+      });
+      // if (pool != undefined)
+      //   return POOLS.Metadata[pool.id]?.hasIcon
+      //     ? [pool.address]
+      //     : orderedTokenAddresses(pool);
+      return addresses;
+    }
     // onMounted(() => {
     // });
     onBeforeUnmount(() => {
@@ -672,12 +710,16 @@ export default defineComponent({
       txListener,
       getProvider,
       isCommunityPool,
+      isSegnioragePool,
+      isClassicPool,
       poolID,
       getPoolApr,
       dailyApr,
       apr,
       balPrices,
       xpolarPoolQuery,
+      iconAddresses,
+      arrow,
     };
   },
   data() {
@@ -855,7 +897,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+h1{
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 52px;
+  color: #FDFDFD;
+}
+.current-fees{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #BDB2DD;
+}
 .card-container{
   background: #292043;
   box-shadow: 0px 1.52198px 3.04396px rgba(0, 0, 0, 0.25);
@@ -927,10 +980,9 @@ export default defineComponent({
 
 .token-name {
   font-weight: 600;
-  font-size: 18px;
-  line-height: 23px;
-
-  color: #ffffff;
+  font-size: 24px;
+  line-height: 32px;
+  color: #FDFDFD;
 }
 
 .my-pool-balance {
@@ -1118,7 +1170,11 @@ export default defineComponent({
     linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box !important;
 }
 
-.margin {
-  padding-right: 16px;
+.detail-link {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-decoration-line: underline;
+  color: #BDB2DD;
 }
 </style>

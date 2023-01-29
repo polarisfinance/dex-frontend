@@ -226,112 +226,101 @@ const swapRows = computed<SwapRow[]>(() =>
         </div>
       </template>
     </BalTable> -->
-    <div :class="{'grid': isDesktop , 'grid-mobile': isMobile,}">
-      <div>Action</div>
-      <div class="text-right ">Value</div>
-      <div v-if="isDesktop"></div>
-      <div :class="{'text-left': isDesktop , 'text-center': isMobile,}">Tokens</div>
-      <div  v-if="isDesktop" class="text-right">Time</div>
-      <div class="my-[24px] border"/>
-      <template v-for="(action, index) in swapRows" :key="index">
-        <a :href="explorerLinks.txLink(action.tx)" target="_blank"  class="flex" :class="{'items-center': isDesktop , 'items-top': isMobile,}">
-          <BalAsset
-            class="mr-2"
-            :address="action.userAddress"
-            :iconURI="action.ensAvatar"
-            :size="24"
-          />
-          <div class="ml-[12px] mr-[20px]">
+
+    <div class="grid-table">
+      <div class="header">
+        <div class="h-4 ml-[24px]">Action</div>
+        <div class="h-4">Value</div>
+        <div class="h-4">Tokens</div>
+        <div class="h-4">Time</div>
+      </div>
+      <div class="border"></div>
+
+      <div v-for="(action, index) in swapRows" :key="index" class="flex w-full items-center table-row">
+        <router-link
+          :to="explorerLinks.txLink(action.tx)"
+          class="my-[18px] flex w-full items-center pool-row" target= '_blank'
+        >
+          <div class="flex w-full items-center">
+            <BalAsset
+              class="mr-2"
+              :address="action.userAddress"
+              :iconURI="action.ensAvatar"
+              :size="24"
+            />
             {{ action.ensName || shortenLabel(action.userAddress) }}
           </div>
-        </a>
-        <a :href="explorerLinks.txLink(action.tx)" target="_blank"  >
-          <div class="text-right value-text ">{{ action.formattedValue }}</div>
-        </a>
-        <div v-if="isDesktop"></div>
-        <a :href="explorerLinks.txLink(action.tx)" target="_blank" class="flex " :class="{'justify-left': isDesktop , 'justify-end': isMobile,}">
-          <div :class="{'text-right': isMobile,'text-left': isDesktop,}">
-          
-            <div class="token-item" style="display:inline-flex">
-              <BalAsset
-                :address="action.tokenIn"
-                class="mr-[8px]"
-                :size="16"
-              />
-              <span class="font-numeric">{{
-                fNum2(action.tokenAmountIn, FNumFormats.token)
-              }}</span>
-            </div>
-            <img src="./swap.svg" class="mx-[12px]" style="display:inline-flex"/>
-            <div class="token-item" style="display:inline-flex">
-              <BalAsset
-                :address="action.tokenOut"
-                class="mr-[8px]"
-                :size="16"
-              />
-              <span class="font-numeric">{{
-                fNum2(action.tokenAmountOut, FNumFormats.token)
-              }}</span>
-            </div>
+        </router-link>
+        
+        <div class="flex items-center justify-start">
+          <a :href="explorerLinks.txLink(action.tx)" target="_blank"  >
+            <div class="text-right value-text ">{{ action.formattedValue }}</div>
+          </a>
+        </div>
 
-          
-            <div v-if="isMobile" class="value-text text-right my-[4px]">
-              {{ action.formattedDate }}
+        <div class="flex items-center justify-start">
+          <a :href="explorerLinks.txLink(action.tx)" target="_blank" class="flex " :class="{'justify-left': isDesktop , 'justify-end': isMobile,}">
+            <div class="flex">
+              <div class="token-item" >
+                <BalAsset
+                  :address="action.tokenIn"
+                  class="mr-[8px]"
+                  :size="16"
+                />
+                <span class="font-numeric  mx-[7px]">{{
+                  fNum2(action.tokenAmountIn, FNumFormats.token)
+                }}</span>
+              </div>
+              <img src="./swap.svg" class="mx-[12px]" />
+              <div class="token-item" >
+                <BalAsset
+                  :address="action.tokenOut"
+                  class="mr-[8px]"
+                  :size="16"
+                />
+                <span class="font-numeric mx-[7px]">{{
+                  fNum2(action.tokenAmountOut, FNumFormats.token)
+                }}</span>
+              </div>
             </div>
-          </div>
-        </a>
-        <a :href="explorerLinks.txLink(action.tx)" target="_blank"  class="value-text text-right" v-if="isDesktop">
-          {{ action.formattedDate }}
-        </a>
-      </template>
+          </a>
+        </div>
+        <div class="flex items-center justify-start">
+          <a :href="explorerLinks.txLink(action.tx)" target="_blank"  class="value-text text-right" v-if="isDesktop">
+            {{ action.formattedDate }}
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <style scoped>
-.token-item {
-  /* @apply m-1 flex items-center p-1 px-2 bg-gray-50 dark:bg-gray-700 rounded-lg; */
-  display: flex;
-  padding: 2px 4px;
-  align-items: center;
-  background: #2e2433;
-  border-radius: 10px;
-}
-
-.table-container {
-  border-radius: 16px;
-
+.grid-table {
+  display: grid;
+  grid-template-columns: auto;
+  width: 100%;
   font-weight: 600;
   font-size: 16px;
-  line-height: 20px;
-
-  color: #fdfdfd;
-  /* padding-bottom: 0; */
+  line-height: 18px;
+  color: #FDFDFD;
+}
+.table-row, .header{
+  display: contents;
+}
+.table-row > div, .header > div{
+  height: 100%;
+  padding:12px 0px;
+}
+.header > div{
+  color: #BDB2DD;
+  padding-bottom: 24px;
 }
 .border{
+  grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
-}
-.grid .border {
-  grid-column: 1 / span 5;
-}
-.grid-mobile .border {
-  grid-column: 1 / span 3;
-}
-.value-text {
-  color: rgba(245, 225, 255, 0.7);
-
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-}
-
-.token-card {
-  display: flex;
-  align-items: center;
-  background: #2e2433;
-  border-radius: 10px;
-  padding: 2px 4px;
-  gap: 8px;
+  margin-bottom: 24px;
 }
 
 .load-more {
@@ -342,14 +331,16 @@ const swapRows = computed<SwapRow[]>(() =>
   color: #be95c0;
   background: #231928;
 }
-.grid{
-  display: grid;
-  grid-template-columns: 145px auto;
+.token-item{
+  background: #292043;
+  border-radius: 24px;
+  padding:8px;
 }
-.grid-mobile{
-  display: grid;
+.font-numeric{
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FDFDFD;
 
-  grid-template-columns: 145px auto auto;
-  
 }
 </style>
