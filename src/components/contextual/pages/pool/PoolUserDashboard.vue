@@ -1,10 +1,10 @@
 <script lang="ts">
-import { computed,defineComponent,PropType,toRef } from 'vue';
+import { computed, defineComponent, PropType, toRef, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import APRTooltip from '@/components/tooltips/APRTooltip/APRTooltip.vue';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import { totalAprLabel,usePool} from '@/composables/usePool';
+import { totalAprLabel, usePool } from '@/composables/usePool';
 import { APR_THRESHOLD } from '@/constants/pools';
 import { Pool, PoolAPRs } from '@/services/pool/types';
 import { TransactionResponse } from '@ethersproject/providers';
@@ -21,14 +21,14 @@ import useBreakpoints from '@/composables/useBreakpoints';
 import { shortenLabel } from '@/lib/utils';
 import BalAsset from '@/components/_global/BalAsset/BalAsset.vue';
 import useTokens from '@/composables/useTokens';
+import PoolCalculator from '@/services/pool/calculator/calculator.sevice';
+import { bnum, isSameAddress } from '@/lib/utils';
 
 export default defineComponent({
   data() {
-    return {
-    };
+    return {};
   },
-  watch: {
-  },
+  watch: {},
   components: {
     MyPoolInvsetmentFiat,
     BalAsset,
@@ -40,51 +40,47 @@ export default defineComponent({
     },
     stakedBalance: {
       type: String,
-      default: "",
+      default: '',
     },
-    loading:{
-      type:Boolean,
-      default:true,
+    loading: {
+      type: Boolean,
+      default: true,
     },
-    poolApr:{
-      type:Object as PropType<PoolAPRs>,
-      default:0,
+    poolApr: {
+      type: Object as PropType<PoolAPRs>,
+      default: 0,
     },
-    loadingApr:{
-      type:Boolean,
-      default:true,
+    loadingApr: {
+      type: Boolean,
+      default: true,
     },
-    xpolarPrice:{
-      type:String,
-      default:"",
+    xpolarPrice: {
+      type: String,
+      default: '',
     },
-    xpolarToClaim:{
-      type:String,
-      default:"",
+    xpolarToClaim: {
+      type: String,
+      default: '',
     },
-
-
+    dailyAPR: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['click'],
   methods: {
     async claimXpolar(address) {
       const { withdraw } = useStake();
-        const tx = await withdraw(
-          address,
-          BigNumber.from(0),
-          this.getProvider()
-        );
-        this.txHandler(tx);
-        this.txListener(tx, {
-          onTxConfirmed: () => {
-            this.fetchClaims();
-          },
-          onTxFailed: () => {},
-        });
-      
+      const tx = await withdraw(address, BigNumber.from(0), this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchClaims();
+        },
+        onTxFailed: () => {},
+      });
     },
-    async fetchClaims() {
-    },
+    async fetchClaims() {},
   },
   setup(props) {
     const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
@@ -92,7 +88,7 @@ export default defineComponent({
     /**
      * COMPOSABLES
      */
-     const txHandler = (tx: TransactionResponse): void => {
+    const txHandler = (tx: TransactionResponse): void => {
       addTransaction({
         id: tx.hash,
         type: 'tx',
@@ -100,28 +96,33 @@ export default defineComponent({
         summary: 'approve for staking',
       });
     };
-    const { prices, balanceFor } = useTokens();
-    const { fNum2 } = useNumbers();
+    const { tokens, balances, balanceFor, getTokens } = useTokens();
+    const { fNum2, toFiat } = useNumbers();
     const { t } = useI18n();
-    const rewardFiat= computed(()=>{
-      return fNum2(Number(props.xpolarPrice)* Number(props.xpolarToClaim), FNumFormats.fiat)
-    })
+    const rewardFiat = computed(() => {
+      return fNum2(
+        Number(props.xpolarPrice) * Number(props.xpolarToClaim),
+        FNumFormats.fiat
+      );
+    });
     const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(
-      toRef(props,'pool')
+      toRef(props, 'pool')
     );
 
-    const unstakedTokens = computed(() => balanceFor(props.pool.address).slice(0, -15))
+    const unstakedTokens = computed((): string =>
+      balanceFor(props.pool.address)
+    );
 
+    const totalTokens = computed((): string =>
+      bnum(props.stakedBalance).plus(unstakedTokens.value).toString()
+    );
     const stakedPerc = computed(() => {
-      const unstakedTokensAmount = balanceFor(props.pool.address).slice(0, -15);
-      const perc = Number(props.stakedBalance)/(Number(props.stakedBalance) + Number(unstakedTokensAmount));
-      return  Math.round(perc * 1000) / 1000;
-        
-      
+      const perc = Number(props.stakedBalance) / Number(totalTokens.value);
+      return Math.round(perc * 1000) / 1000;
     });
 
     function symbolFor(address: string) {
-      if (!props.pool ) return '-';
+      if (!props.pool) return '-';
       const symbol = props.pool?.onchain?.tokens?.[address]?.symbol;
       return symbol ? symbol : shortenLabel(address);
     }
@@ -155,7 +156,7 @@ export default defineComponent({
           label: t('volumeTime', ['24h']),
           value: fNum2(props.pool.volumeSnapshot || '0', FNumFormats.fiat),
           loading: props.loading,
-        }
+        },
       ];
     });
 
@@ -167,23 +168,78 @@ export default defineComponent({
 
     const aprLabel = computed((): string => {
       const poolAPRs = props.poolApr;
-        if (!poolAPRs) return '0';
+      if (!poolAPRs) return '0';
 
       return totalAprLabel(poolAPRs, props.pool.boost);
     });
 
+    /*
+     * PoolBalances
+     */
+
+    const { isWalletReady } = useWeb3();
+
+    const poolCalculator = new PoolCalculator(
+      toRef(props, 'pool'),
+      tokens,
+      balances,
+      'exit',
+      ref(false)
+    );
+
+    const propTokenAmounts = computed((): string[] => {
+      const { receive } = poolCalculator.propAmountsGiven(
+        bnum(totalTokens.value).toString(),
+        0,
+        'send'
+      );
+
+      if (isStablePhantomPool.value) {
+        // Return linear pool's main token balance using the price rate.
+        // mainTokenBalance = linearPoolBPT * priceRate
+        return props.pool.tokensList.map((address, i) => {
+          if (!props.pool?.onchain?.linearPools) return '0';
+
+          const priceRate = props.pool.onchain.linearPools[address].priceRate;
+
+          return bnum(receive[i]).times(priceRate).toString();
+        });
+      }
+
+      return receive;
+    });
+    function fiatLabelFor(index: number, address: string): string {
+      const fiatValue = toFiat(propTokenAmounts.value[index], address);
+      return fNum2(fiatValue, FNumFormats.fiat);
+    }
+
+    const fiatValue = computed(() => {
+      let fiatVal = 0;
+      if (props.pool != undefined) {
+        props.pool.tokens.forEach(token => {
+          fiatVal += Number(toFiat(token.balance, token.address));
+        });
+        const lpVal = fiatVal / Number(props.pool.totalShares);
+        const totalValue = lpVal * Number(props.stakedBalance);
+
+        return fNum2(totalValue, FNumFormats.fiat);
+      } else {
+        return '-';
+      }
+    });
+
+    const dailyEarnings = Number(props.dailyAPR) * Number(props.stakedBalance);
 
     /**
      * METHODS
      */
-
 
     return {
       getProvider,
       txHandler,
       txListener,
       stats,
-      isMobile, 
+      isMobile,
       isDesktop,
       rewardFiat,
       xpolarToClaim,
@@ -191,15 +247,22 @@ export default defineComponent({
       balanceFor,
       unstakedTokens,
       stakedPerc,
+
+      isWalletReady,
+      fNum2,
+      propTokenAmounts,
+      FNumFormats,
+      fiatLabelFor,
+      totalTokens,
+      fiatValue,
+      dailyEarnings,
     };
   },
   created() {},
   beforeUpdate() {},
   mounted() {},
-  updated() {
-  },
+  updated() {},
 });
-
 </script>
 
 <template>
@@ -209,41 +272,63 @@ export default defineComponent({
         <h3>My dashboard</h3>
         <div class="break"></div>
         <div class="mt-[24px]">
-          <div v-for="(token, idx) in pool.tokens" :key="idx" class="flex my-[12px]">
+          <div
+            v-for="(token, idx) in pool.tokens"
+            :key="idx"
+            class="my-[12px] flex"
+          >
             <div class="flex flex-1">
-              <BalAsset :address="token.address" :size="33" class="mr-[12px]"/>
+              <BalAsset :address="token.address" :size="33" class="mr-[12px]" />
               <div class="flex flex-col">
                 <div class="token">{{ symbolFor(token.address) }}</div>
-                <div>{{ token.weight*100 }}%</div>
+                <div>{{ token.weight * 100 }}%</div>
               </div>
             </div>
-            <div class="flex flex-col flex-1 text-right token-value">
-                <div>XXX</div>
-                <div>$</div>
+            <div class="token-value flex flex-1 flex-col text-right">
+              <div>
+                {{
+                  isWalletReady
+                    ? fNum2(propTokenAmounts[idx], FNumFormats.token)
+                    : '-'
+                }}
+              </div>
+              <div>
+                {{ isWalletReady ? fiatLabelFor(idx, token.address) : '-' }}
+              </div>
             </div>
           </div>
         </div>
         <div class="break"></div>
-        <div class="grid grid-cols-2 mt-[24px]">
-          <div class="">Pool Share</div><div class="text-right"></div>
-          <div class="">Staked LP Tokens</div><div class="text-right">{{ stakedBalance }}</div>
-          <div class="">Unstaked LP Tokens</div><div class="text-right">{{ unstakedTokens }}</div>
-          <div class="">Daily earning</div><div class="text-right">-</div>
-          <div class="">xPolar to Claim</div><div class="claim text-right">{{ xpolarToClaim }}</div>
+        <div class="mt-[24px] grid grid-cols-2">
+          <div class="">Pool Share</div>
+          <div class="text-right">{{ totalTokens }}</div>
+          <div class="">Staked LP Tokens</div>
+          <div class="text-right">{{ stakedBalance }}</div>
+          <div class="">Unstaked LP Tokens</div>
+          <div class="text-right">{{ unstakedTokens }}</div>
+          <div class="">Daily earning</div>
+          <div class="text-right">{{ dailyEarnings }} $</div>
+          <div class="">xPolar to Claim</div>
+          <div class="claim text-right">{{ xpolarToClaim }}</div>
         </div>
       </div>
-      <div class="flex flex-1 flex-col m-[24px] justify-center">
+      <div class="m-[24px] flex flex-1 flex-col justify-center">
         <div class="mt-5 w-full text-center" v-if="loading">Loading...</div>
         <template v-else>
-          <div class="mt-[40px] w-full flex items-center self-center">
-            <div class="flex flex-1 items-center justify-center" >
+          <div class="mt-[40px] flex w-full items-center self-center">
+            <div class="flex flex-1 items-center justify-center">
               <div class="flex py-5">
                 <div class="mr-4 mt-3">
                   <WalletNewIcon />
                 </div>
                 <div>
                   <div class="title">
-                    <MyPoolInvsetmentFiat :pool="pool" :tokens="stakedBalance" ref="poolTotalFiatValues"/>
+                    <!-- <MyPoolInvsetmentFiat
+                      :pool="pool"
+                      :tokens="stakedBalance"
+                      ref="poolTotalFiatValues"
+                    /> -->
+                    {{ fiatValue }}
                   </div>
                   <div>Total value</div>
                 </div>
@@ -256,36 +341,41 @@ export default defineComponent({
                 </div>
                 <div>
                   <div class="title claim-amount">
-                    {{rewardFiat}}
+                    {{ rewardFiat }}
                   </div>
                   <div>Total Rewards</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="mx-10 max-w-md w-full self-center">
+          <div class="mx-10 w-full max-w-md self-center">
             <div class="progress-bar mt-[32px] h-[2px] rounded-[24px]">
               <div
                 class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
                 :style="{ width: `${(stakedPerc * 100).toFixed(0)}%` }"
               />
             </div>
-            <div class="text-right progress-perc">{{stakedPerc*100}}% of your LP tokens staked</div>
+            <div class="progress-perc text-right">
+              {{ stakedPerc * 100 }}% of your LP tokens staked
+            </div>
           </div>
           <div class="my-panel flex flex-1 pl-[24px]">
-            <div class="pool-invest flex-1 text-center self-end">
+            <div class="pool-invest flex-1 self-end text-center">
               Unstake and withdraw your position
               <router-link
-                class="withdraw-btn flex items-center "
+                class="withdraw-btn flex items-center"
                 :to="'/pool/' + pool?.id + '/withdraw'"
-                >
-                <div class="text-center w-full">Withdraw</div>
+              >
+                <div class="w-full text-center">Withdraw</div>
               </router-link>
             </div>
-            <div class="pool-invest flex-1 text-center self-end">
+            <div class="pool-invest flex-1 self-end text-center">
               You can claim in any time
-              <button class="claim-btn block flex items-center w-full" @click="claimXpolar(pool.address)" >
-                <div class="text-center w-full">Claim reward</div>
+              <button
+                class="claim-btn block flex w-full items-center"
+                @click="claimXpolar(pool.address)"
+              >
+                <div class="w-full text-center">Claim reward</div>
                 <ArrowRightIcon class="ml-3 flex-none" />
               </button>
             </div>
@@ -294,7 +384,6 @@ export default defineComponent({
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -306,18 +395,18 @@ export default defineComponent({
 }
 .stats {
   min-width: 300px;
-  background-color: #41365E;
+  background-color: #41365e;
   padding: 24px;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
-h3{
+h3 {
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: #FDFDFD;
+  color: #fdfdfd;
   padding-bottom: 16px;
 }
 .earn-button {
@@ -389,14 +478,17 @@ h3{
   font-size: 14px;
   line-height: 18px;
 }
-.claim-btn-mobile{
+.claim-btn-mobile {
   padding: 6px 12px 6px 16px;
   gap: 10px;
   border-radius: 24px;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1),rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
+  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1))
+      padding-box,
+    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
+      border-box;
   border: 1px solid transparent;
 }
 
@@ -434,14 +526,14 @@ h3{
   flex-basis: 100%;
   height: 0;
 }
-.singlestake-logo{
-  height:36px;
+.singlestake-logo {
+  height: 36px;
 }
-.singlestake-tokenpill{
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 32px;
-    padding-left: 40px;
+.singlestake-tokenpill {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  padding-left: 40px;
 }
 
 .progress-bar {
@@ -450,44 +542,49 @@ h3{
   margin-bottom: 10px;
 }
 
-.withdraw-btn, .claim-btn{
+.withdraw-btn,
+.claim-btn {
   border-radius: 50px;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-  
+
   padding: 12px 20px;
   margin: 12px auto 0px auto;
   max-width: 230px;
 }
 .claim-btn {
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
-  color: #FDFDFD;
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
+  color: #fdfdfd;
 }
-.withdraw-btn{
-  background: #50456E;
+.withdraw-btn {
+  background: #50456e;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
 }
-.stats .token{
+.stats .token {
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.break{
-  height:1px;
-  background: linear-gradient(90deg,rgba(151, 71, 255, 0.4),rgba(59, 68, 189, 0.4));
+.break {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(151, 71, 255, 0.4),
+    rgba(59, 68, 189, 0.4)
+  );
 }
-.token-value >div:first-child{
+.token-value > div:first-child {
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.progress-perc{
+.progress-perc {
   font-weight: 700;
   font-size: 12px;
   line-height: 18px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
- </style>
+</style>

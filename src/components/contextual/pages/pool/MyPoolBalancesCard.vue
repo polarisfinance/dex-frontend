@@ -184,7 +184,7 @@ const fiatTotal = computed(() => {
         <div
           v-for="(address, idx) in tokenAddresses"
           :key="idx"
-          class="token-name mb-[12px] flex items-center justify-between"
+          class="t oken-name mb-[12px] flex items-center justify-between"
         >
           <div class="flex items-center">
             <BalAsset :address="address" :size="32" class="mr-[12px]" />
@@ -206,7 +206,7 @@ const fiatTotal = computed(() => {
                   ? fNum2(propTokenAmounts[idx], FNumFormats.token)
                   : '-'
               }}
-              <span class="text-secondary text-sm txt">
+              <span class="text-secondary txt text-sm">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
             </span>
@@ -276,7 +276,7 @@ const fiatTotal = computed(() => {
                   ? fNum2(propTokenAmounts[idx], FNumFormats.token)
                   : '-'
               }}
-              <span class="text-secondary text-sm txt">
+              <span class="text-secondary txt text-sm">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
             </span>

@@ -1,37 +1,36 @@
 <template>
-  <div class="container mx-auto heading flex px-7">
-    <div class="w-full ">
-      <h1 v-if="isSegnioragePool(poolID)==true">Segniorage Pool</h1>
-      <h1 v-if="isClassicPool(poolID)==true">Classic Pool</h1>
-      <h1 v-if="isCommunityPool(poolID)==true">Community Pool</h1>
+  <div class="heading container mx-auto flex px-7">
+    <div class="w-full">
+      <h1 v-if="isSegnioragePool(poolID) == true">Segniorage Pool</h1>
+      <h1 v-if="isClassicPool(poolID) == true">Classic Pool</h1>
+      <h1 v-if="isCommunityPool(poolID) == true">Community Pool</h1>
       <div class="current-fees mb-5">
-        Dynamic swap fees: Currently {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
+        Dynamic swap fees: Currently
+        {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
       </div>
     </div>
-    <div class="flex flex-none ">
+    <div class="flex flex-none">
       <div class="px-3">
         <div class="flex">
           <div
             v-for="(token, idx) in tableData"
             :key="idx"
-            class="token-name flex "
+            class="token-name flex"
           >
             <div>
               {{ symbolFor(token.address) }}
             </div>
             <div v-if="idx < tableData.length - 1">-</div>
-            
           </div>
         </div>
         <div>
           <a href="" class="detail-link underline">
-            Pool details <img :src="arrow" class="inline ml-[12px]" />
+            Pool details <img :src="arrow" class="ml-[12px] inline" />
           </a>
-          
         </div>
       </div>
       <div>
-        <BalAssetSet 
+        <BalAssetSet
           :size="36"
           :addresses="iconAddresses(tableData)"
           :width="60"
@@ -41,56 +40,52 @@
   </div>
   <div class="container mx-auto">
     <div class="card-container">
-        <PoolChart
-          :pool="pool"
-          :historicalPrices="historicalPrices"
-          :snapshots="snapshots"
-          :loading="isLoadingSnapshots"
-          :totalLiquidity="pool?.totalLiquidity"
-          :tokensList="pool?.tokensList"
-          :poolType="pool?.poolType"
-         
-        />
+      <PoolChart
+        :pool="pool"
+        :historicalPrices="historicalPrices"
+        :snapshots="snapshots"
+        :loading="isLoadingSnapshots"
+        :totalLiquidity="pool?.totalLiquidity"
+        :tokensList="pool?.tokensList"
+        :poolType="pool?.poolType"
+      />
       <div class="pool-data">
-          <PoolStatCards
-            :pool="pool"
-            :stakedBalance="stakedBalance"
-            :poolApr="poolApr"
-            :loading="loadingPool"
-            :loadingApr="loadingPool"
-            :aprString="apr"
-            :xpolarPrice="xpolarPrice"
-            :xpolarToClaim="xpolarToClaim"
-          />
+        <PoolStatCards
+          :pool="pool"
+          :stakedBalance="stakedBalance"
+          :poolApr="poolApr"
+          :loading="loadingPool"
+          :loadingApr="loadingPool"
+          :aprString="apr.yearlyAPR"
+          :xpolarPrice="xpolarPrice"
+          :xpolarToClaim="xpolarToClaim"
+        />
       </div>
     </div>
-    
   </div>
-  <div class="container mx-auto flex gap-8 justify-center mt-[120px]">
-      <PoolBalancesCard :pool="pool" :loading="loadingPool" />
+  <div class="container mx-auto mt-[120px] flex justify-center gap-8">
+    <PoolBalancesCard :pool="pool" :loading="loadingPool" />
   </div>
-  <div class="container mx-auto flex gap-8 justify-center mt-[120px]">
+  <div class="container mx-auto mt-[120px] flex justify-center gap-8">
     <PoolUserDashboard
-          v-if="stakedBalance>0"
-          :pool="pool"
-            :stakedBalance="stakedBalance"
-            :poolApr="poolApr"
-            :loading="loadingPool"
-            :xpolarPrice="xpolarPrice"
-            :xpolarToClaim="xpolarToClaim"
-            />
+      v-if="stakedBalance > 0"
+      :pool="pool"
+      :stakedBalance="stakedBalance"
+      :poolApr="poolApr"
+      :loading="loadingPool"
+      :xpolarPrice="xpolarPrice"
+      :xpolarToClaim="xpolarToClaim"
+      :dailyAPR="apr.dailyAPR"
+    />
   </div>
   <div class="container mx-auto" ref="intersectionSentinel" />
   <div class="container mx-auto">
-      <PoolTransactionsCard
-        v-if="isSentinelIntersected"
-        :pool="pool"
-        :loading="loadingPool"
-      />
+    <PoolTransactionsCard
+      v-if="isSentinelIntersected"
+      :pool="pool"
+      :loading="loadingPool"
+    />
   </div>
-
-
-
 
   <!-- <div :class="{ 'px-8': isMobile }">
     <div class="mx-auto flex xl:container">
@@ -324,7 +319,7 @@ import usePoolQuery from '@/composables/queries/usePoolQuery';
 import usePoolSnapshotsQuery from '@/composables/queries/usePoolSnapshotsQuery';
 import useAlerts, { AlertPriority, AlertType } from '@/composables/useAlerts';
 import { isL2 } from '@/composables/useNetwork';
-import { usePool,orderedTokenAddresses } from '@/composables/usePool';
+import { usePool, orderedTokenAddresses } from '@/composables/usePool';
 import { usePoolWarning } from '@/composables/usePoolWarning';
 import useTokens from '@/composables/useTokens';
 import { POOLS } from '@/constants/pools';
@@ -376,6 +371,9 @@ import { getBptBalanceFiatValue } from '@/lib/utils/balancer/pool';
 import BigNumberJs from 'bignumber.js';
 
 import prices from '@/providers/tokens.provider';
+import { AprProviderService } from '@/services/pool/apr.provider';
+import { Pool } from '@/services/pool/types';
+
 interface PoolPageData {
   id: string;
 }
@@ -565,8 +563,7 @@ export default defineComponent({
     }
 
     function iconAddresses(tableData) {
-      console.log(tableData);
-      let addresses : string[] = [];
+      let addresses: string[] = [];
       tableData.forEach(token => {
         addresses.push(token?.address);
       });
@@ -666,9 +663,6 @@ export default defineComponent({
     const apr = ref('-');
 
     const { prices: balPrices } = useTokensBal();
-    const xpolarPoolQuery = usePoolQuery(
-      '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-    );
 
     onMounted(async () => {
       addIntersectionObserver();
@@ -726,7 +720,6 @@ export default defineComponent({
       dailyApr,
       apr,
       balPrices,
-      xpolarPoolQuery,
       iconAddresses,
       arrow,
       fNum2,
@@ -742,6 +735,10 @@ export default defineComponent({
       isApproved: false,
       apr: '0',
       address: '',
+      data: [] as Pool[],
+      xpolarPoolQuery: usePoolQuery(
+        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+      ),
     };
   },
   methods: {
@@ -786,95 +783,26 @@ export default defineComponent({
       } else {
         return;
       }
+      if (!this.pool) {
+        await new Promise((resolve, reject) => {
+          const loop = () =>
+            this.pool !== undefined
+              ? resolve(this.pool)
+              : setTimeout(loop, 100);
+          loop();
+        });
+      }
 
-      const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
-
-      const xpolarRewardPoolAddress =
-        '0x140e8a21d08CbB530929b012581a7C7e696145eF';
-      const xpolarRewardPool = new Contract(
-        xpolarRewardPoolAddress,
-        xpolarRewardPoolABI,
-        w3
+      const aprProviderClass = new AprProviderService(
+        [this.pool],
+        this.prices,
+        this.xpolarPoolQuery
       );
-
-      const PID = {
-        '0x0993fa12d3256e85da64866354ec3532f187e178': 0,
-        '0xf0b6cf745afe642c4565165922ad62d6a93857c1': 1,
-        '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10': 2,
-        '0xa83f9fa9b51fc26e9925a07bc3375617b473e051': 3,
-        '0xa215a58225b344cbb62fcf762e8e884dbedfbe58': 4,
-        '0x293bbbef6087f681a8110f08bbdedadd13599fc3': 5,
-        '0xceecce984f498ee00832670e9ca6d372f6ce155a': 6,
-        '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb5': 7,
-        '0x9cd44e44e8a61bc7dc34b04c762a3c0137a3707c': 8,
-        '0x454adaa07eec2c432c0df4379a709b1fa4c800ed': 9,
-        '0xb3a04902b78fbe61185b766866193630db4db8a3': 10,
-        '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed': 11,
-        '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b': 12,
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78': 13,
-        '0xf0f3b9eee32b1f490a4b8720cf6f005d4ae9ea86': 14,
-        '0x3ac55ea8d2082fabda674270cd2367da96092889': 15,
-        '0xafe0d6ca6aabb43cda024895d203120831ba0370': 16,
-        '0xa69d9ba086d41425f35988613c156db9a88a1a96': 17,
-        '0x17cbd9c274e90c537790c51b4015a65cd015497e': 18,
-        '0x3a4773e600086a753862621a26a2e3274610da43': 19,
-        '0x266437e6c7500a947012f19a3de96a3881a0449e': 20,
-        '0x192bdcdd7b95a97ec66de5630a85967f6b79e695': 21,
-        '0xce32b28c19c61b19823395730a0c7d91c671e54b': 22,
-        '0xfa32616447c51f056db97bc1d0e2d4c0c4d059c9': 23,
-        '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9': 24,
-        '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
+      aprProviderClass.init();
+      aprProviderClass.aprsReceived = (aprs: any) => {
+        this.apr = aprs[0];
       };
-
-      const xpolarPool = computed(() => this.xpolarPoolQuery.data.value);
-      const xpolarBalance =
-        xpolarPool.value?.onchain?.tokens[
-          '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
-        ]?.balance;
-      const nearBalance =
-        xpolarPool.value?.onchain?.tokens[
-          '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
-        ]?.balance;
-
-      const nearPrice =
-        this.balPrices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
-
-      this.xpolarPrice =
-        (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
-        Number(nearPrice);
-      const pid = PID[poolAddress.toLowerCase()];
-      const depositToken = new Contract(poolAddress, ERC20ABI, w3);
-      const depositTokenPrice = '0';
-      const stakedInPool = BigNumberToString(
-        await depositToken.balanceOf(xpolarRewardPoolAddress),
-        14,
-        4
-      );
-      const TVL = new BigNumberJs(this.pool.totalLiquidity || '')
-        .div(this.pool.totalShares || '')
-        .times(stakedInPool)
-        .toString();
-      const xpolarPerSecond = await xpolarRewardPool.xpolarPerSecond();
-      const allocPoint = (await xpolarRewardPool.poolInfo(pid)).allocPoint;
-      const finalXpolarPerSecond = BigNumberToString(
-        xpolarPerSecond.mul(allocPoint).div(800000),
-        14,
-        4
-      );
-      const tokenPerHour = Number(finalXpolarPerSecond) * 60 * 60;
-      const totalRewardPricePerYear = tokenPerHour * 24 * 365 * this.xpolarPrice;
-      const totalRewardPricePerDay = tokenPerHour * 24 * this.xpolarPrice;
-      const dailyAPR = Math.ceil(
-        (totalRewardPricePerDay / Number(TVL)) * 100
-      ).toString();
-      const yearlyAPR = Math.ceil(
-        (totalRewardPricePerYear / Number(TVL)) * 100
-      ).toString();
-
-      this.apr = yearlyAPR;
-
-      // const apr = await this.getPoolApr(poolAddress, poolId);
-      // this.apr = apr.yearlyAPR;
+      aprProviderClass.fetchAll();
 
       if (this.account != '') {
       } else {
@@ -911,35 +839,35 @@ export default defineComponent({
 </script>
 
 <style scoped>
-h1{
+h1 {
   font-weight: 600;
   font-size: 40px;
   line-height: 52px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.current-fees{
+.current-fees {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
-.card-container{
+.card-container {
   background: #292043;
   box-shadow: 0px 1.52198px 3.04396px rgba(0, 0, 0, 0.25);
   border-radius: 32px;
   overflow: hidden;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.pool-data{
-  background: #41365E;
+.pool-data {
+  background: #41365e;
   padding: 24px;
 }
-.pool-invest{
+.pool-invest {
   border-top: 1px solid rgba(151, 71, 255, 0.4);
   text-align: center;
   padding-top: 24px;
 }
-.chart{
+.chart {
   padding: 24px;
 }
 .pool-actions-card {
@@ -947,12 +875,12 @@ h1{
 }
 
 .invest-btn {
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 40px;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-  color: #FDFDFD;
+  color: #fdfdfd;
   padding: 12px 20px;
   margin: 12px auto 0px auto;
   max-width: 520px;
@@ -996,7 +924,7 @@ h1{
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
 
 .my-pool-balance {
@@ -1148,8 +1076,6 @@ h1{
   border-radius: 12px;
 }
 
-
-
 .withdraw-btn {
   padding: 12px 0px;
   background: #231928;
@@ -1189,24 +1115,23 @@ h1{
   font-size: 14px;
   line-height: 16px;
   text-decoration-line: underline;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
-
 
 .pool-stats-label {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
 
 .pool-stats-funds {
   font-weight: 600;
   font-size: 32px;
   line-height: 32px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.pool-stats-funds.claim{
-  color: #0CE6B5;
+.pool-stats-funds.claim {
+  color: #0ce6b5;
 }
 </style>

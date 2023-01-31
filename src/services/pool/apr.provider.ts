@@ -1,4 +1,4 @@
-import { PoolWithShares } from '@/services/pool/types';
+import { PoolWithShares, Pool } from '@/services/pool/types';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import BigNumberJs from 'bignumber.js';
 import {
@@ -30,7 +30,7 @@ export class AprProviderService {
   public aprs = {};
   private prices = [];
   private xpolarPoolQuery;
-  private pools: PoolWithShares[] = [];
+  private pools: PoolWithShares[] | Pool[] = [];
   private xpolarRewardPoolAddress =
     '0x140e8a21d08CbB530929b012581a7C7e696145eF';
   public aprsReceived?: (aprs: any) => void;
@@ -64,7 +64,7 @@ export class AprProviderService {
     this.aprsReceived(aprs);
   }
 
-  private async fetch(pool: PoolWithShares) {
+  private async fetch(pool: PoolWithShares | Pool) {
     const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
     const xpolarRewardPool = new Contract(
