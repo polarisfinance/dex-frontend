@@ -2,16 +2,16 @@ import { PoolWithShares } from '@/services/pool/types';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import BigNumberJs from 'bignumber.js';
 import {
-    spolarABI,
-    sunriseABI,
-    xpolarRewardPoolABI,
-    ERC20ABI,
+  spolarABI,
+  sunriseABI,
+  xpolarRewardPoolABI,
+  ERC20ABI,
 } from '@/composables/PolarisFinance/ABI';
 import {
-    BigNumberToString,
-    sunriseNameToAddress,
-    SPOLAR,
-    getDisplayBalance,
+  BigNumberToString,
+  sunriseNameToAddress,
+  SPOLAR,
+  getDisplayBalance,
 } from '@/composables/PolarisFinance/utils';
 import { Contract } from 'ethers';
 import {
@@ -26,25 +26,22 @@ import {
 import { accountToAddress, Network } from '@balancer-labs/sdk';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 
-
-
 export class AprProviderService {
-  public aprs = {}
-  private prices = []
-  private xpolarPoolQuery
-  private pools:PoolWithShares[]=[]
-  private xpolarRewardPoolAddress='0x140e8a21d08CbB530929b012581a7C7e696145eF'
-  public aprsReceived?: (aprs:any) => void
+  public aprs = {};
+  private prices = [];
+  private xpolarPoolQuery;
+  private pools: PoolWithShares[] = [];
+  private xpolarRewardPoolAddress =
+    '0x140e8a21d08CbB530929b012581a7C7e696145eF';
+  public aprsReceived?: (aprs: any) => void;
 
-  constructor(pools:any,prices:any, xpolarPoolQuery) {
+  constructor(pools: any, prices: any, xpolarPoolQuery) {
     this.xpolarPoolQuery = xpolarPoolQuery;
     this.pools = pools;
     this.prices = prices;
   }
 
-  public init(){
-    
-  }
+  public init() {}
   async fetchAll() {
     /*if (this.pools.length == 0) {
       await new Promise((resolve, reject) => {
@@ -63,14 +60,13 @@ export class AprProviderService {
     for (var i = 0; i < this.pools.length; i++) {
       aprs[this.pools[i].address] = aprs[i];
     }
-    if (!this.aprsReceived) 
-      return; 
+    if (!this.aprsReceived) return;
     this.aprsReceived(aprs);
   }
 
-  private async fetch(pool:PoolWithShares){
+  private async fetch(pool: PoolWithShares) {
     const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
-    
+
     const xpolarRewardPool = new Contract(
       this.xpolarRewardPoolAddress,
       xpolarRewardPoolABI,
@@ -111,7 +107,7 @@ export class AprProviderService {
     if (this.xpolarPoolQuery?.data === undefined) {
       await new Promise((resolve, reject) => {
         const loop = () =>
-        this.xpolarPoolQuery?.data !== undefined
+          this.xpolarPoolQuery?.data !== undefined
             ? resolve(this.xpolarPoolQuery?.data)
             : setTimeout(loop, 100);
         loop();
@@ -119,15 +115,13 @@ export class AprProviderService {
     }
 
     if (
-        this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'] === undefined
+      this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'] === undefined
     ) {
       await new Promise((resolve, reject) => {
         const loop = () =>
-        this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'] !==
+          this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'] !==
           undefined
-            ? resolve(
-                this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']
-              )
+            ? resolve(this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'])
             : setTimeout(loop, 100);
         loop();
       });
@@ -148,20 +142,21 @@ export class AprProviderService {
     const poolTotalLiquidty = pool.totalLiquidity;
     const xpolarPool = this.xpolarPoolQuery?.data;
 
-    const xpolarBalance = xpolarPool?.onchain?.tokens[
-        '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
-      ]?.balance;
+    const xpolarBalance =
+      xpolarPool?.onchain?.tokens['0xeaf7665969f1daa3726ceada7c40ab27b3245993']
+        ?.balance;
     const nearBalance =
-      xpolarPool?.onchain?.tokens[
-        '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
-      ]?.balance;
+      xpolarPool?.onchain?.tokens['0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6']
+        ?.balance;
 
-    const nearPrice = this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
+    const nearPrice =
+      this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
     const xpolarPrice =
       (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
       Number(nearPrice);
 
     const pid = PID[poolAddress.toLowerCase()];
+
     const depositToken = new Contract(poolAddress, ERC20ABI, w3);
 
     const [xpolarPerSecond, allocPoint, stakedInPoolBigNumber] =
@@ -180,9 +175,10 @@ export class AprProviderService {
 
     const finalXpolarPerSecond = BigNumberToString(
       xpolarPerSecond.mul(allocPoint.allocPoint).div(800000),
-      14,
-      4
+      8,
+      10
     );
+
     const tokenPerHour = Number(finalXpolarPerSecond) * 60 * 60;
     const totalRewardPricePerYear = tokenPerHour * 24 * 365 * xpolarPrice;
     const totalRewardPricePerDay = tokenPerHour * 24 * xpolarPrice;
@@ -196,7 +192,4 @@ export class AprProviderService {
 
     return { dailyAPR: dailyAPR, yearlyAPR: yearlyAPR };
   }
-
 }
-
-
