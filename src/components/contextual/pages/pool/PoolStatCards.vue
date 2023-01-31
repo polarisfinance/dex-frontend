@@ -183,7 +183,7 @@ const stats = computed(() => {
               <div class="text-secondary mb-[4px] flex text-sm font-medium">
                 <div class="label" >Your total value in $</div>
               </div><div class="funds flex items-center truncate text-xl font-medium" >
-                <MyPoolInvsetmentFiat :pool="pool" :tokens="stakedBalance" ref="poolTotalFiatValues"/>
+                <MyPoolInvsetmentFiat :pool="pool" :tokens="stakedBalance" />
               </div>
             </div>
           </div>
