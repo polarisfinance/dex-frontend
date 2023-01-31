@@ -109,6 +109,7 @@ export default defineComponent({
     },
     async account() {
       this.claims = [] as Array<ClaimType>;
+      this.totalClaims = 0;
       this.fetchClaimsIfPossible();
     },
   },
@@ -142,8 +143,8 @@ export default defineComponent({
       this.txHandler(tx);
       this.txListener(tx, {
         onTxConfirmed: () => {
+          this.totalClaims = 0;
           this.fetchClaims();
-          this.refreshTotalValue();
         },
         onTxFailed: () => {},
       });
@@ -159,12 +160,14 @@ export default defineComponent({
       this.txHandler(tx);
       this.txListener(tx, {
         onTxConfirmed: () => {
+          this.totalClaims = 0;
           this.fetchClaims();
         },
         onTxFailed: () => {},
       });
     },
     async fetchClaims() {
+      const updateTotalClaims = true ? this.totalClaims == 0 : false;
       const claimer = new ClaimProviderService(
         this.pools,
         singlePools,
@@ -184,6 +187,8 @@ export default defineComponent({
           this.claims[existingIndex] = claim;
         } else {
           this.claims.push(claim);
+        }
+        if (updateTotalClaims) {
           this.totalClaims = this.totalClaims + Number(claim.xpolarToClaim);
         }
 
