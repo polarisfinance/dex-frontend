@@ -16,7 +16,12 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 export default defineComponent({
   data() {
-    return { pendingShare: '--', totalShares: '--', vested: '--' };
+    return {
+      pendingShare: '--',
+      totalShares: '--',
+      vested: '--',
+      claimDisable: true,
+    };
   },
 
   setup(props) {
@@ -25,7 +30,7 @@ export default defineComponent({
 
     const totalProgress = ref(1);
 
-    const startDay: Date = new Date(1674691200 * 1000);
+    const startDay: Date = new Date(1675116000 * 1000);
     const today: Date = new Date();
     const diffTime = Math.abs((startDay as any) - (today as any));
     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
@@ -33,7 +38,8 @@ export default defineComponent({
     const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
     const diffDaysReverse = 60 - diffDays;
 
-    const vestedAll = ((diffTime / 1000) * 0.0385802469).toFixed(0);
+    //const vestedAll = ((diffTime / 1000) * 0.0385802469).toFixed(0);
+    const vestedAll = '0';
 
     const { account, getProvider } = useWeb3();
 
@@ -71,16 +77,19 @@ export default defineComponent({
       this.vested = await getVested(this.account);
       this.pendingShare = await getPendingShare(this.account);
       this.totalShares = await totalShares(this.account);
+      // if (Number(this.pendingShare) > 0) {
+      //   this.claimDisable = false;
+      // }
     },
     async claim() {
-      /*const { claim } = useAirdrop();
-      const tx = await claim(this.getProvider());
+      const { claim } = useAirdrop();
+      const tx = await claim(this.getProvider(), this.account);
       this.txListener(tx, {
         onTxConfirmed: () => {
           this.render();
         },
         onTxFailed: () => {},
-      });*/
+      });
     },
   },
   async created() {
@@ -124,7 +133,7 @@ export default defineComponent({
         <div class="info-token flex-none" v-if="isDesktop">
           <img class="w-[124px]" src="./xpolar.svg" />
         </div>
-        <div class="total w-full pt-[24px] pl-[55px]" >
+        <div class="total w-full pt-[24px] pl-[55px]">
           Total xPolars
           <h3>200,000</h3>
         </div>
@@ -343,7 +352,7 @@ export default defineComponent({
         :class="{ 'flex flex-wrap': isDesktop }"
       >
         <div class="stats grid flex-none" :class="{ 'stats-mobile': isMobile }">
-          <div class="flex items-center justify-center"  v-if="false">
+          <div class="flex items-center justify-center" v-if="false">
             <div class="flex py-5">
               <div class="mr-4 mt-3">
                 <svg
@@ -473,7 +482,7 @@ export default defineComponent({
             </div>
           </div>
           <div class="text-center">
-            <button class="claim-btn" @click="claim" disabled>
+            <button class="claim-btn" @click="claim" :disabled="claimDisable">
               Claim xPolars
               <svg
                 style="display: inline; margin-left: 28px"
@@ -693,9 +702,11 @@ h2 {
     rgba(126, 2, 245, 0.7) 95.15%
   );
 }
-.claim-btn:disabled, claim-btn[disabled]{
+.claim-btn:disabled,
+claim-btn[disabled] {
   background: rgba(65, 54, 94, 1);
-  color: #A99BC6;
+  color: #a99bc6;
+  cursor: not-allowed;
 }
 .progress-tracker {
   @apply bg-styling-teal;

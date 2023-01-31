@@ -26,4 +26,6 @@ module.exports = {
         'X-Requested-With, content-type, Authorization',
     },
   },
+  transpileDependencies: ['@openzeppelin/merkle-tree'],
+ 
 };
