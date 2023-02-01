@@ -55,8 +55,8 @@ export class PriceService {
 
   async getNativeAssetPrice(): Promise<Price> {
     try {
-      const response = await this.client.get<PriceResponse>(
-        `/simple/price?ids=${this.nativeAssetId}&vs_currencies=${this.fiatParam}`
+      const response = await this.cacheClient.get<PriceResponse>(
+        `/getNativeAsset/?id=${this.nativeAssetId}&vs_currency=${this.fiatParam}`
       );
       return response[this.nativeAssetId];
     } catch (error) {
