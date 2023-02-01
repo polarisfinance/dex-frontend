@@ -22,6 +22,7 @@ import { shortenLabel } from '@/lib/utils';
 import BalAsset from '@/components/_global/BalAsset/BalAsset.vue';
 import useTokens from '@/composables/useTokens';
 import PoolCalculator from '@/services/pool/calculator/calculator.sevice';
+import PoolUserStats from './PoolUserStats.vue';
 import { bnum, isSameAddress } from '@/lib/utils';
 
 export default defineComponent({
@@ -32,6 +33,7 @@ export default defineComponent({
   components: {
     MyPoolInvsetmentFiat,
     BalAsset,
+    PoolUserStats,
   },
   props: {
     pool: {
@@ -228,6 +230,7 @@ export default defineComponent({
       }
     });
 
+    const dailyAPR = props.dailyAPR;
     const dailyEarnings = Number(props.dailyAPR) * Number(props.stakedBalance);
 
     /**
@@ -247,7 +250,7 @@ export default defineComponent({
       balanceFor,
       unstakedTokens,
       stakedPerc,
-
+      dailyAPR,
       isWalletReady,
       fNum2,
       propTokenAmounts,
@@ -271,46 +274,7 @@ export default defineComponent({
       <div class="stats">
         <h3>My dashboard</h3>
         <div class="break"></div>
-        <div class="mt-[24px]">
-          <div
-            v-for="(token, idx) in pool.tokens"
-            :key="idx"
-            class="my-[12px] flex"
-          >
-            <div class="flex flex-1">
-              <BalAsset :address="token.address" :size="33" class="mr-[12px]" />
-              <div class="flex flex-col">
-                <div class="token">{{ symbolFor(token.address) }}</div>
-                <div>{{ token.weight * 100 }}%</div>
-              </div>
-            </div>
-            <div class="token-value flex flex-1 flex-col text-right">
-              <div>
-                {{
-                  isWalletReady
-                    ? fNum2(propTokenAmounts[idx], FNumFormats.token)
-                    : '-'
-                }}
-              </div>
-              <div>
-                {{ isWalletReady ? fiatLabelFor(idx, token.address) : '-' }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="break"></div>
-        <div class="mt-[24px] grid grid-cols-2">
-          <div class="">Pool Share</div>
-          <div class="text-right">{{ totalTokens }}</div>
-          <div class="">Staked LP Tokens</div>
-          <div class="text-right">{{ stakedBalance }}</div>
-          <div class="">Unstaked LP Tokens</div>
-          <div class="text-right">{{ unstakedTokens }}</div>
-          <div class="">Daily earning</div>
-          <div class="text-right">{{ dailyEarnings }} $</div>
-          <div class="">xPolar to Claim</div>
-          <div class="claim text-right">{{ xpolarToClaim }}</div>
-        </div>
+        <PoolUserStats :pool="pool" :xpolarToClaim="xpolarToClaim" :dailyAPR="dailyAPR" :stakedBalance="stakedBalance" />
       </div>
       <div class="m-[24px] flex flex-1 flex-col justify-center">
         <div class="mt-5 w-full text-center" v-if="loading">Loading...</div>
