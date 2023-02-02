@@ -1,9 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
-  mode: 'jit',
-  purge: {
-    content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-    options: {
+  content:
+    ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  options: {
       safelist: [
         /^shadow/,
         /^bg/,
@@ -19,8 +18,7 @@ module.exports = {
         /^w/,
       ],
     },
-  },
-  darkMode: 'class', // false or 'media' or 'class'
+  // darkMode: 'class', // false or 'media' or 'class'
   theme: {
     fontFamily: {
       body: ['Rajdhani', 'sans-serif'],
@@ -60,6 +58,8 @@ module.exports = {
         '2xl': '1.25rem',
       },
       colors: {
+        green: colors.emerald,
+
         styling: {
           pink: {
             DEFAULT: '#D04FB8',
@@ -210,14 +210,6 @@ module.exports = {
         polarisgreen: '#4ade80',
         bargreen: '#20B961',
       },
-    },
-  },
-  variants: {
-    extend: {
-      margin: ['first'],
-      borderRadius: ['first', 'last'],
-      zIndex: ['hover'],
-      borderWidth: ['dark', 'last'],
     },
   },
   plugins: [],
