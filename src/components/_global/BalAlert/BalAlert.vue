@@ -196,7 +196,7 @@ export default defineComponent({
 
 <style scoped>
 .bal-alert {
-  @apply inline-block rounded-2xl font-medium;
+  @apply inline-block font-medium;
 }
 
 .bal-alert-container {

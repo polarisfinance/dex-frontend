@@ -77,7 +77,7 @@ function toggleModal(): void {
       <span class="text-base text-[20px] font-semibold">
         {{ token?.symbol }}
       </span>
-      <span v-if="Number(weight) > 0" class="text-secondary ml-2">
+      <span v-if="Number(weight) > 0" class="text-secondary mx-2">
         {{
           fNum2(weight, {
             style: 'percent',
@@ -119,14 +119,14 @@ function toggleModal(): void {
           <span class="text-base font-medium">
             {{ token?.symbol }}
           </span>
-          <span v-if="Number(weight) > 0" class="text-secondary ml-2">
+          <span v-if="Number(weight) > 0" class="text-secondary mx-2">
             {{
               fNum2(weight, {
                 style: 'percent',
                 maximumFractionDigits: 0,
               })
             }}
-          </span>asdads
+          </span>
           <BalIcon
             name="chevron-down"
             size="sm"

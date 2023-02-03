@@ -14,7 +14,7 @@
         />
       </div>
     </template>
-    <div>
+    <div class="dark-back">
       <TradePair
         v-model:tokenInAmount="tokenInAmount"
         v-model:tokenInAddress="tokenInAddress"
@@ -48,7 +48,7 @@
         :description="warning.body"
         block
       />
-      <div class="mx-[12px] mb-[12px]">
+      <div class="px-[12px] pb-[12px] ">
       <BalBtn
         v-if="trading.isLoading.value"
         loading
@@ -451,7 +451,7 @@ export default defineComponent({
 
 /* This is needed because the trade settings popover overflows */
 .card-container {
-  overflow: unset;
+  overflow: hidden;
   background-color: #292043;
   /* width: 480px; */
 }
@@ -545,5 +545,7 @@ export default defineComponent({
 .border{
   border: 0.5px solid rgba(59, 68, 189, 0.4);
 }
-
+.dark-back{
+  background: #292043;
+}
 </style>

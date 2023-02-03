@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeMount, ref, toRef, watch } from 'vue';
+import { computed, nextTick, onBeforeMount, onMounted, ref, toRef, watch } from 'vue';
 // Composables
 import { useI18n } from 'vue-i18n';
 
@@ -20,8 +20,10 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 import InvestFormTotals from './components/InvestFormTotals.vue';
 import InvestPreviewModal from './components/InvestPreviewModal/InvestPreviewModal.vue';
+import InvestPreview from './components/InvestPreview/InvestPreview.vue';
 import useInvestMath from './composables/useInvestMath';
 import useInvestState from './composables/useInvestState';
+import { array } from 'prop-types';
 
 /**
  * TYPES
@@ -39,6 +41,7 @@ type Props = {
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
+const emits = defineEmits(['submit']);
 
 /**
  * STATE
@@ -70,6 +73,7 @@ const investMath = useInvestMath(
 );
 
 const {
+  fiatTotal,
   hasAmounts,
   highPriceImpact,
   maximizeAmounts,
@@ -77,6 +81,9 @@ const {
   proportionalAmounts,
   batchSwapLoading,
 } = investMath;
+
+let maxInvestTotal="0";
+
 
 const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } =
   useWeb3();
@@ -92,6 +99,10 @@ const hasValidInputs = computed(
   (): boolean =>
     validInputs.value.every(validInput => validInput === true) &&
     hasAcceptedHighPriceImpact.value
+);
+
+const getMaxInvestTotal = computed(
+  (): string => maxInvestTotal
 );
 
 const hasAcceptedHighPriceImpact = computed((): boolean =>
@@ -118,7 +129,7 @@ const investmentTokens = computed((): string[] => {
  */
 function handleAmountChange(value: string, index: number): void {
   amounts.value[index] = value;
-
+  // console.log(amounts);
   nextTick(() => {
     if (forceProportionalInputs.value) {
       amounts.value = [...proportionalAmounts.value];
@@ -151,7 +162,6 @@ function propAmountFor(index: number): string {
     ? proportionalAmounts.value[index]
     : '0.0';
 }
-
 function hint(index: number): string {
   return bnum(propAmountFor(index)).gt(0) ? t('proportionalSuggestion') : '';
 }
@@ -199,9 +209,15 @@ function setNativeAsset(to: NativeAsset): void {
  * CALLBACKS
  */
 onBeforeMount(() => {
+  maximizeAmounts();
+  maxInvestTotal = fiatTotal.value;
   resetAmounts();
+  
   tokenAddresses.value = [...investmentTokens.value];
   if (isWethPool.value) setNativeAssetByBalance();
+});
+onMounted(()=>{
+  
 });
 
 /**
@@ -217,103 +233,145 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 </script>
 
 <template>
-  <div>
-    <BalAlert
-      v-if="forceProportionalInputs"
-      type="warning"
-      :title="$t('investment.warning.managedPoolTradingHalted.title')"
-      :description="
-        $t('investment.warning.managedPoolTradingHalted.description')
-      "
-      class="mb-4"
-    />
-
-    <BalAlert
-      v-if="poolHasLowLiquidity"
-      type="warning"
-      :title="$t('investment.warning.lowLiquidity.title')"
-      :description="$t('investment.warning.lowLiquidity.description')"
-      class="mb-4"
-    />
-
-    <TokenInput
-      v-for="(n, i) in tokenAddresses.length"
-      :key="i"
-      v-model:address="tokenAddresses[i]"
-      v-model:amount="amounts[i]"
-      v-model:isValid="validInputs[i]"
-      :name="tokenAddresses[i]"
-      :weight="tokenWeight(tokenAddresses[i])"
-      :hintAmount="propAmountFor(i)"
-      :hint="hint(i)"
-      class="mb-4"
-      fixedToken
-      :options="tokenOptions(i)"
-      @update:amount="handleAmountChange($event, i)"
-      @update:address="handleAddressChange($event)"
-    />
-
-    <InvestFormTotals
-      :math="investMath"
-      @maximize="maximizeAmounts"
-      @optimize="optimizeAmounts"
-    />
-
-    <div
-      v-if="highPriceImpact"
-      class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
-    >
-      <BalCheckbox
-        v-model="highPriceImpactAccepted"
-        :rules="[isRequired($t('priceImpactCheckbox'))]"
-        name="highPriceImpactAccepted"
-        size="sm"
-        :label="$t('priceImpactAccept', [$t('depositing')])"
-      />
-    </div>
-
-    <WrapStEthLink :pool="pool" class="mt-4" />
-
-    <div class="mt-4">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
-        block
-        @click="startConnectWithInjectedProvider"
-      />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
-        color="gradient"
-        :disabled="
-          !hasAmounts ||
-          !hasValidInputs ||
-          isMismatchedNetwork ||
-          batchSwapLoading
-        "
-        block
-        @click="showInvestPreview = true"
-      />
-    </div>
-
-    <StakingProvider :poolAddress="pool.address">
-      <teleport to="#modal">
-        <InvestPreviewModal
-          v-if="showInvestPreview"
+  <Transition>
+  <div v-if="showInvestPreview" class="preview">
+    <StakingProvider :poolAddress="pool.address" >
+        <InvestPreview  class="preview"
           :pool="pool"
           :math="investMath"
           :tokenAddresses="tokenAddresses"
           @close="showInvestPreview = false"
           @show-stake-modal="showStakeModal = true"
         />
-        <StakePreviewModal
-          :pool="pool"
-          :isVisible="showStakeModal"
-          action="stake"
-          @close="showStakeModal = false"
-        />
-      </teleport>
     </StakingProvider>
   </div>
+  </Transition>
+  <Transition>
+    <div v-if="showInvestPreview==false">
+      <BalAlert
+        v-if="forceProportionalInputs"
+        type="warning"
+        :title="$t('investment.warning.managedPoolTradingHalted.title')"
+        :description="
+          $t('investment.warning.managedPoolTradingHalted.description')
+        "
+        class="mb-4"
+      />
+
+      <BalAlert
+        v-if="poolHasLowLiquidity"
+        type="warning"
+        :title="$t('investment.warning.lowLiquidity.title')"
+        :description="$t('investment.warning.lowLiquidity.description')"
+        class="mb-4"
+      />
+      <div class="tokens mx-[24px]">
+      <TokenInput
+        v-for="(n, i) in tokenAddresses.length"
+        :key="i"
+        v-model:address="tokenAddresses[i]"
+        v-model:amount="amounts[i]"
+        v-model:isValid="validInputs[i]"
+        :name="tokenAddresses[i]"
+        :weight="tokenWeight(tokenAddresses[i])"
+        :hintAmount="propAmountFor(i)"
+        :hint="hint(i)"
+        class="mb-4"
+        fixedToken
+        :options="tokenOptions(i)"
+        @update:amount="handleAmountChange($event, i)"
+        @update:address="handleAddressChange($event)"
+      />
+      </div>
+      <div class="footer">
+        <InvestFormTotals
+          :math="investMath"
+          :maxFiatValue="getMaxInvestTotal"
+          @maximize="maximizeAmounts"
+          @optimize="optimizeAmounts"
+        />
+
+        <div
+          v-if="highPriceImpact"
+          class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
+        >
+          <BalCheckbox
+            v-model="highPriceImpactAccepted"
+            :rules="[isRequired($t('priceImpactCheckbox'))]"
+            name="highPriceImpactAccepted"
+            size="sm"
+            :label="$t('priceImpactAccept', [$t('depositing')])"
+          />
+        </div>
+
+        <WrapStEthLink :pool="pool" class="mt-4" />
+
+        <div class="">
+          <button class="btn inactive w-full"
+            v-if="!isWalletReady"
+            @click="startConnectWithInjectedProvider"
+            >{{ $t('connectWallet') }}
+          </button>
+
+          <button class="btn active w-full"
+            v-else
+            @click="showInvestPreview = true; emits('submit')"
+            :disabled="
+              !hasAmounts ||
+              !hasValidInputs ||
+              isMismatchedNetwork ||
+              batchSwapLoading
+            "
+            >{{ $t('preview')}}
+          </button>
+
+        </div>
+      </div>
+
+      <!-- <StakingProvider :poolAddress="pool.address">
+        <teleport to="#modal">
+          <InvestPreviewModal
+            v-if="showInvestPreview"
+            :pool="pool"
+            :math="investMath"
+            :tokenAddresses="tokenAddresses"
+            @close="showInvestPreview = false"
+            @show-stake-modal="showStakeModal = true"
+          />
+          <StakePreviewModal
+            :pool="pool"
+            :isVisible="showStakeModal"
+            action="stake"
+            @close="showStakeModal = false"
+          />
+        </teleport>
+      </StakingProvider> -->
+    </div>
+  </Transition>
 </template>
+<style scoped>
+.tokens{
+
+}
+.footer{
+  background-color: #50456E;
+}
+.btn{
+  border-radius: 12px;
+  margin:16px 12px;
+  padding:10px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+}
+.btn.active{
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  color: #FDFDFD;
+}
+.btn.inactive{
+  background:#41365E;
+}
+.preview{
+  width: 100%!important;
+}
+</style>

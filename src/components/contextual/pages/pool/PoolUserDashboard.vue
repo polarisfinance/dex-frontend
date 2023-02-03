@@ -15,7 +15,6 @@ import useStake from '@/composables/PolarisFinance/useStake';
 import useWeb3 from '@/services/web3/useWeb3';
 import { BigNumber } from 'ethers';
 import useTransactions from '@/composables/useTransactions';
-import { string } from 'prop-types';
 import useEthers from '@/composables/useEthers';
 import useBreakpoints from '@/composables/useBreakpoints';
 import { shortenLabel } from '@/lib/utils';
@@ -24,6 +23,7 @@ import useTokens from '@/composables/useTokens';
 import PoolCalculator from '@/services/pool/calculator/calculator.sevice';
 import PoolUserStats from './PoolUserStats.vue';
 import { bnum, isSameAddress } from '@/lib/utils';
+import StakeModal from '@/pages/pool/StakeModal.vue';
 
 export default defineComponent({
   data() {
@@ -34,6 +34,7 @@ export default defineComponent({
     MyPoolInvsetmentFiat,
     BalAsset,
     PoolUserStats,
+    StakeModal,
   },
   props: {
     pool: {
@@ -87,6 +88,12 @@ export default defineComponent({
   setup(props) {
     const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
     const { txListener } = useEthers();
+    const isStakeModalVisible = ref(false);
+
+    const toggleStakeModal = (value?: boolean) => {
+      isStakeModalVisible.value = value ?? !isStakeModalVisible.value;
+    };
+
     /**
      * COMPOSABLES
      */
@@ -122,6 +129,7 @@ export default defineComponent({
       const perc = Number(props.stakedBalance) / Number(totalTokens.value);
       return Math.round(perc * 1000) / 1000;
     });
+
 
     function symbolFor(address: string) {
       if (!props.pool) return '-';
@@ -259,6 +267,8 @@ export default defineComponent({
       totalTokens,
       fiatValue,
       dailyEarnings,
+      toggleStakeModal,
+      isStakeModalVisible,
     };
   },
   created() {},
@@ -321,6 +331,7 @@ export default defineComponent({
             </div>
             <div class="progress-perc text-right">
               {{ stakedPerc * 100 }}% of your LP tokens staked
+              <button v-if="stakedPerc<1" class="stake-btn inline ml-2" @click="toggleStakeModal()">Stake the rest</button>
             </div>
           </div>
           <div class="my-panel flex flex-1 pl-[24px]">
@@ -348,6 +359,14 @@ export default defineComponent({
       </div>
     </div>
   </div>
+  <StakeModal
+      :depositBol="true"
+      :isVisible="isStakeModalVisible"
+      :token="``"
+      :balance="balanceFor(pool.address)"
+      :address="pool.address"
+      @close="toggleStakeModal"
+    />
 </template>
 
 <style scoped>
@@ -550,5 +569,16 @@ h3 {
   font-size: 12px;
   line-height: 18px;
   color: #bdb2dd;
+}
+.stake-btn{
+  margin-right: 8px;
+  padding: 1px 7px;
+  gap: 10px;
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  border-radius: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
 }
 </style>

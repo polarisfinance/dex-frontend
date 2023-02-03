@@ -103,7 +103,7 @@ const routes: RouteRecordRaw[] = [
     path: '/pool/:id/invest',
     name: 'invest',
     component: PoolInvestPage,
-    meta: { layout: 'PoolTransferLayout' },
+    // meta: { layout: 'SingleCardLayout' },
   },
   {
     path: '/sunrise',

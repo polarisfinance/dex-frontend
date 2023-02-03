@@ -11,6 +11,12 @@ import ArrowDownIcon2 from '@/components/_global/icons/ArrowDownIcon2.vue';
 import MyPoolInvsetmentFiat, {
   MyPollInvestmentFiatType,
 } from '@/components/pool/MyPoolInvsetmentFiat.vue';
+import useStake from '@/composables/PolarisFinance/useStake';
+import { BigNumber } from 'ethers';
+import { TransactionResponse } from '@ethersproject/providers';
+import useWeb3 from '@/services/web3/useWeb3';
+import useTransactions from '@/composables/useTransactions';
+import useEthers from '@/composables/useEthers';
 /**
  * TYPES
  */
@@ -94,6 +100,28 @@ const stats = computed(() => {
 
   return outStats;
 });
+const { addTransaction } = useTransactions();
+const txHandler = (tx: TransactionResponse): void => {
+  addTransaction({
+    id: tx.hash,
+    type: 'tx',
+    action: 'approve',
+    summary: 'approve for staking',
+  });
+};
+const { txListener } = useEthers();
+const { getProvider } = useWeb3();
+async function claimXpolar(address) {
+  const { withdraw } = useStake();
+  const tx = await withdraw(address, BigNumber.from(0), getProvider());
+  txHandler(tx);
+  txListener(tx, {
+    onTxConfirmed: () => {
+      
+    },
+    onTxFailed: () => {},
+  });
+}
 </script>
 
 <template>
@@ -332,13 +360,13 @@ const stats = computed(() => {
     <div class="my-panel flex flex-1 gap-4 pl-[24px]" v-if="stakedBalance > 0">
       <div class="pool-invest flex-1">
         You can claim in any time
-        <router-link
-          class="invest-btn flex w-full items-center"
-          :to="'/pool/' + pool?.id + '/invest'"
-        >
-          <div class="w-full text-center">Invest in the pool</div>
-          <ArrowRightIcon class="ml-3 flex-none" />
-        </router-link>
+        <button
+                class="invest-btn block flex w-full items-center"
+                @click="claimXpolar(pool.address)"
+              >
+                <div class="w-full text-center">Claim reward</div>
+                <ArrowRightIcon class="ml-3 flex-none" />
+              </button>
       </div>
       <div class="pool-invest flex-1">
         View more details about investment
@@ -346,7 +374,7 @@ const stats = computed(() => {
           class="goto-btn flex w-full items-center"
           :to="'#dashboard'"
         >
-          <div class="w-full text-center">Invest in the pool</div>
+          <div class="w-full text-center">View dashboard</div>
           <ArrowDownIcon2 class="ml-3 flex-none" />
         </router-link>
       </div>

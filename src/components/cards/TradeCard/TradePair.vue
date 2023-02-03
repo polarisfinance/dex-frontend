@@ -168,7 +168,7 @@ watchEffect(() => {
         v-html="rateLabel"
       /> -->
     </div>
-    <div >
+    <div class="dark-back">
       <TokenInput
         :amount="_tokenOutAmount"
         :address="_tokenOutAddress"
@@ -188,6 +188,9 @@ watchEffect(() => {
 <style scoped>
 .toggle {
   transform: translateY(-60%);
+}
+.dark-back{
+  background: #292043;
 }
 
 </style>

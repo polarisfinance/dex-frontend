@@ -48,23 +48,23 @@ export default defineComponent({
     rightAlignHeader: { type: Boolean, default: false },
     exposeOverflow: { type: Boolean, default: false },
     overflowYScroll: { type: Boolean, default: false },
-    shadow: {
-      type: String,
-      default: '',
-      validator: (val: string): boolean => {
-        return [
-          '',
-          'none',
-          'sm',
-          'md',
-          'lg',
-          'xl',
-          '2xl',
-          '3xl',
-          '4xl',
-        ].includes(val);
-      },
-    },
+    // shadow: {
+    //   type: String,
+    //   default: '',
+    //   validator: (val: string): boolean => {
+    //     return [
+    //       '',
+    //       'none',
+    //       'sm',
+    //       'md',
+    //       'lg',
+    //       'xl',
+    //       '2xl',
+    //       '3xl',
+    //       '4xl',
+    //     ].includes(val);
+    //   },
+    // },
   },
 
   setup(props) {
@@ -76,10 +76,10 @@ export default defineComponent({
       return {
         'rounded-lg': !props.square,
         'overflow-hidden': !props.exposeOverflow,
-        'bg-frame-dark-ultra': !props.lighterBg,
-        'bg-[#1E0D2C]': props.lighterBg,
-        [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,
-        [borderClasses.value]: !props.noBorder,
+        // 'bg-frame-dark-ultra': !props.lighterBg,
+        // 'bg-[#1E0D2C]': props.lighterBg,
+        // [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,
+        // [borderClasses.value]: !props.noBorder,
         'h-full': props.hFull,
       };
     });
@@ -132,11 +132,12 @@ export default defineComponent({
   /* background-color: #160D22; */
   /* border: 0.5px solid rgba(215, 179, 255, 0.5); */
   border-radius: 22px;
-  box-shadow: inset 0px 0px 2px #130719;
+  overflow: hidden;
 }
 
 .card-container {
   @apply flex flex-col;
+  background: #41365E;
 }
 
 .card-container::-webkit-scrollbar {
