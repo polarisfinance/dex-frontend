@@ -61,11 +61,11 @@ const optimizeBtnClasses = computed(() => ({
 <template>
   <div class="break mx-[16px]"></div>
   <div class="max-investment flex">
-    <div class="flex flex-col">
+    <div class="flex flex-col flex-1">
       <div class="max-amount">Totally you can invest</div>
       <div>You can use all your tokens to maximize your investment</div>
     </div>
-    <div class="flex flex-col data-table-number-col">
+    <div class="flex flex-col data-table-number-col  flex-1">
       <div class="max-amount">{{ fNum2(maxFiatValue, FNumFormats.fiat) }}</div>
       <div v-if="isWalletReady && !hasNoBalances" class="text-sm">
         <span v-if="maximized" class="">
@@ -114,27 +114,27 @@ const optimizeBtnClasses = computed(() => ({
       <div class="data-table-number-col  flex flex-col">
         <div>
           <div class="flex">
-            <span v-if="!batchSwapLoading">
+            <div
+              v-if="
+                isWalletReady && hasAllTokens && supportsPropotionalOptimization
+              "
+              class="text-sm font-semibold"
+            >
+              <span v-if="optimized" class="">
+                {{ $t('optimized') }}
+              </span>
+              <div
+                v-else
+                class="cursor-pointer small-btn"
+                @click="emit('optimize')"
+              >
+                {{ $t('optimize') }}
+              </div>
+            </div>
+            <span v-if="!batchSwapLoading" class="ml-[8px]">
               {{ fNum2(priceImpact, FNumFormats.percent) }}
             </span>
             <BalLoadingBlock v-else class="w-10" />
-          </div>
-        </div>
-        <div
-          v-if="
-            isWalletReady && hasAllTokens && supportsPropotionalOptimization
-          "
-          class="text-sm font-semibold"
-        >
-          <span v-if="optimized" class="">
-            {{ $t('optimized') }}
-          </span>
-          <div
-            v-else
-            class="cursor-pointer small-btn"
-            @click="emit('optimize')"
-          >
-            {{ $t('optimize') }}
           </div>
         </div>
       </div>

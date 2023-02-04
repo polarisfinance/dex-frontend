@@ -31,6 +31,7 @@ type Props = {
   xpolarToClaim: string;
 };
 
+
 /**
  * PROPS & EMITS
  */
@@ -62,6 +63,8 @@ const rewardFiat = computed(() => {
     FNumFormats.fiat
   );
 });
+
+
 const stats = computed(() => {
   if (!props.pool) return [];
 
@@ -271,7 +274,7 @@ async function claimXpolar(address) {
         </div>
       </div>
     </template>
-    <template v-if="stakedBalance > 0">
+    <template v-if="Number(stakedBalance) > 0">
       <div class="card-container flex flex-1">
         <div class="card-container flex flex-1">
           <div>
@@ -322,12 +325,12 @@ async function claimXpolar(address) {
               <div class="label">Your total value in $</div>
             </div>
             <div class="funds flex items-center truncate text-xl font-medium">
-              <MyPoolInvsetmentFiat :pool="pool" :tokens="stakedBalance" />
+              <MyPoolInvsetmentFiat :pool="pool" :tokens="Number(stakedBalance)" />
             </div>
           </div>
         </div>
       </div>
-      <div class="card-container flex flex-1" v-if="stakedBalance > 0">
+      <div class="card-container flex flex-1" v-if="Number(stakedBalance) > 0">
         <div class="card-container flex flex-1">
           <div>
             <CoinsIcon />
@@ -357,7 +360,7 @@ async function claimXpolar(address) {
         <div class="w-full text-center">Invest in the pool</div>
       </router-link>
     </div>
-    <div class="my-panel flex flex-1 gap-4 pl-[24px]" v-if="stakedBalance > 0">
+    <div class="my-panel flex flex-1 gap-4 pl-[24px]" v-if="Number(stakedBalance) > 0">
       <div class="pool-invest flex-1">
         You can claim in any time
         <button

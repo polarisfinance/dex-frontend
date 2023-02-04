@@ -35,20 +35,20 @@ enum NativeAsset {
 
 type Props = {
   pool: Pool;
+  step:number;
 };
 
 /**
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-const emits = defineEmits(['submit']);
+const emits = defineEmits(['preview','confirmInvestment']);
 
 /**
  * STATE
  */
-const showInvestPreview = ref(false);
+// const showInvestPreview = ref(false);
 const showStakeModal = ref(false);
-
 /**
  * COMPOSABLES
  */
@@ -221,6 +221,13 @@ onMounted(()=>{
 });
 
 /**
+ * METHODS
+ */
+ function onConfirmInvestment(): void {
+  emits('confirmInvestment');
+}
+
+/**
  * WATCHERS
  */
 watch(useNativeAsset, shouldUseNativeAsset => {
@@ -234,20 +241,19 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 
 <template>
   <Transition>
-  <div v-if="showInvestPreview" class="preview">
+  <div v-if="props.step==3" class="preview">
     <StakingProvider :poolAddress="pool.address" >
         <InvestPreview  class="preview"
           :pool="pool"
           :math="investMath"
           :tokenAddresses="tokenAddresses"
-          @close="showInvestPreview = false"
-          @show-stake-modal="showStakeModal = true"
+          @confirmInvestment="onConfirmInvestment"
         />
     </StakingProvider>
   </div>
   </Transition>
   <Transition>
-    <div v-if="showInvestPreview==false">
+    <div v-if="props.step==2">
       <BalAlert
         v-if="forceProportionalInputs"
         type="warning"
@@ -306,16 +312,16 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 
         <WrapStEthLink :pool="pool" class="mt-4" />
 
-        <div class="">
-          <button class="btn inactive w-full"
+        <div class=" mx-[16px]">
+          <button class="btn inactive w-full mb-[12px]"
             v-if="!isWalletReady"
             @click="startConnectWithInjectedProvider"
             >{{ $t('connectWallet') }}
           </button>
 
-          <button class="btn active w-full"
+          <button class="btn active w-full mb-[12px]"
             v-else
-            @click="showInvestPreview = true; emits('submit')"
+            @click=" emits('preview')"
             :disabled="
               !hasAmounts ||
               !hasValidInputs ||
@@ -358,7 +364,6 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 }
 .btn{
   border-radius: 12px;
-  margin:16px 12px;
   padding:10px;
   font-weight: 600;
   font-size: 20px;

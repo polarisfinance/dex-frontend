@@ -206,7 +206,7 @@ async function handleTransaction(
 </script>
 
 <template>
-  <div>
+  <div class="px-[12px] pb-[12px]">
     <AnimatePresence isVisible>
       <BalAlert
         v-if="currentActionState?.error && !isLoading"

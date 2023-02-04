@@ -1,6 +1,6 @@
 <template>
   <transition
-    class="relative pr-[10px]"
+    class="relative"
     appear
     :css="false"
     @enter="enter"

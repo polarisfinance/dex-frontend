@@ -27,7 +27,7 @@ import { Pool } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { TransactionActionInfo } from '@/types/transactions';
 
-import { InvestMathResponse } from '../../../composables/useInvestMath';
+import { InvestMathResponse } from '../../composables/useInvestMath';
 
 /**
  * TYPES
@@ -154,6 +154,7 @@ async function handleTransaction(tx): Promise<void> {
       investmentState.confirmedAt = dateTimeLabelFor(confirmedAt);
       investmentState.confirmed = true;
       investmentState.confirming = false;
+
     },
     onTxFailed: () => {
       console.error('Invest failed');
@@ -215,7 +216,7 @@ watch(blockNumber, async () => {
       :actions="actions"
       :disabled="disabled"
     />
-    <div v-else>
+    <div v-else class="px-[18px]">
       <ConfirmationIndicator :txReceipt="investmentState.receipt" />
       <BalBtn
         v-if="lockablePoolId === pool.id"
@@ -223,7 +224,7 @@ watch(blockNumber, async () => {
         :to="{ name: 'get-vebal' }"
         color="gradient"
         block
-        class="mt-2 flex"
+        class="mt-2 flex "
       >
         <StarsIcon class="mr-2 h-5 text-orange-300" />{{ $t('lockToGetVeBAL') }}
       </BalBtn>
@@ -231,7 +232,7 @@ watch(blockNumber, async () => {
         v-else-if="isStakablePool"
         color="gradient"
         block
-        class="mt-2 flex"
+        class="mt-2 flex "
         @click="emit('showStakeModal')"
       >
         <StarsIcon class="mr-2 h-5 text-orange-300" />{{
@@ -245,7 +246,7 @@ watch(blockNumber, async () => {
         color="gray"
         outline
         block
-        class="mt-2"
+        class="mt-2 "
       >
         {{ $t('returnToPool') }}
       </BalBtn>

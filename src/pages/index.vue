@@ -264,9 +264,10 @@ export default defineComponent({
       this.filteredTokensList = tokenList;
     },
     onScroll(){
-      if ( 
+      if ( document.querySelector("#segniorage")!=undefined && (
         (document.querySelector("#segniorage")!.getBoundingClientRect().top<250 && isMobile.value) ||
         (document.querySelector("#segniorage")!.getBoundingClientRect().top<125 && isDesktop.value) 
+        )
       ) {
         this.stickyPanel = true;
       } else {

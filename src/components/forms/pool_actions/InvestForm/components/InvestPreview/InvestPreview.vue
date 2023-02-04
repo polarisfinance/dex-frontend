@@ -11,7 +11,7 @@ import { TokenInfoMap } from '@/types/TokenList';
 import { InvestMathResponse } from '../../composables/useInvestMath';
 import useInvestState from '../../composables/useInvestState';
 import InvestPreviewActions from './InvestPreviewActions.vue';
-import InvestSummary from '../InvestPreviewModal/components/InvestSummary.vue';
+import InvestSummary from './InvestSummary.vue';
 import TokenAmounts from '../InvestPreviewModal/components/TokenAmounts.vue';
 
 /**
@@ -35,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {});
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'showStakeModal'): void;
+  (e: 'confirmInvestment'): void;
 }>();
 
 /**
@@ -96,13 +97,14 @@ const fiatTotal = computed((): string =>
 /**
  * METHODS
  */
-
+function onSuccess(): void {
+  emit('confirmInvestment');
+}
 </script>
 
 <template>
     <div class="content-container">
         <BalCard
-        :title="title"
         noPad
         noBorder
         >
@@ -134,6 +136,7 @@ const fiatTotal = computed((): string =>
                 :math="math"
                 :tokenAddresses="tokenAddresses"
                 :disabled="rektPriceImpact"
+                @success="onSuccess"
                 class="mt-4"
             />
         </div>
