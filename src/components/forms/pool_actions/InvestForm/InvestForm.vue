@@ -253,7 +253,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
   </div>
   </Transition>
   <Transition>
-    <div v-if="props.step==2">
+    <div v-if="props.step<=2">
       <BalAlert
         v-if="forceProportionalInputs"
         type="warning"
