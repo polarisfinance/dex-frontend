@@ -7,14 +7,13 @@ import { EXTERNAL_LINKS } from '@/constants/links';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import HeroConnectWalletButton from './HeroConnectWalletButton.vue';
-import step1 from './StepIcons/1.vue'
+// import step1 from './StepIcons/1.vue'
 
 
 /**
  * TYPES
  */
  type Props = {
-  step: number;
   headline:string;
 };
 
@@ -43,23 +42,18 @@ const stepIcon = computed(() => import( `./StepIcons/${props.step}.vue`));
 </script>
 
 <template>
-    <div class="container mx-auto step relative flex flex-col">
-        <step1 class="step-icon"/>
-        <component :is="stepIcon"/>
-        <div class="headline ml-[160px] mt-[105px] mb-[42px]">{{headline}}</div>
+    <div class="container mx-auto">
+        <!-- <component :is="stepIcon"/> -->
+        <div class="headline mx-auto my-[55px] text-center">{{headline}}</div>
     </div>
 </template>
 
 <style scoped>
-.step-icon{
-    position: absolute;
-}
 .headline{
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
     line-height: 32px;
     color: #FDFDFD;
-    max-width: 330px;
 }
 </style>
