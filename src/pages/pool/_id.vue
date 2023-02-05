@@ -63,12 +63,12 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto mt-[120px] flex justify-center gap-8">
+  <div class="container mx-auto mt-[120px] flex justify-center gap-8" :class="{'flex-wrap':isMobile}">
     <PoolBalancesCard :pool="pool" :loading="loadingPool" />
   </div>
-  <div class="container mx-auto mt-[120px] flex justify-center gap-8">
+  <div class="container mx-auto mt-[120px] flex justify-center gap-8" v-if="account">
     <PoolUserDashboard
-      v-if="stakedBalance > 0"
+      v-if="Number(stakedBalance) > 0"
       :pool="pool"
       :stakedBalance="stakedBalance"
       :poolApr="poolApr"

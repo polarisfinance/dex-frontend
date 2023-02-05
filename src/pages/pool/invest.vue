@@ -22,6 +22,8 @@ import useTransactions from '@/composables/useTransactions';
 import useEthers from '@/composables/useEthers';
 import useTokens from '@/composables/useTokens';
 import InvestHero from '@/components/heros/InvestHero.vue';
+import useBreakpoints from '@/composables/useBreakpoints';
+
 
 const steps = [
   {
@@ -78,6 +80,7 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
+    const { isMobile, isDesktop } = useBreakpoints();
     const {transfersAllowed } = usePoolTransfers();
     const route = useRoute();
     const id = ref<string>(route.params.id as string);
@@ -122,6 +125,8 @@ export default defineComponent({
       addTransaction,
       balanceFor,
       steps,
+      isDesktop,
+      isMobile,
     };
   },
   async mounted() {
@@ -150,6 +155,7 @@ export default defineComponent({
         activeStep:1,
         tokenAddresses:[]  as string[],
         poolApproved: false,
+        
     };
   },
   methods: {
@@ -157,8 +163,7 @@ export default defineComponent({
         this.activeStep = step;
     },
     handleLPPreview(){
-      //this.activeStep = this.activeStep+1;     //THIS WILL BE OK. TESTING BELOW
-      this.activeStep = 6;
+      this.activeStep = this.activeStep+1;     //THIS WILL BE OK. TESTING BELOW
        
       // this.handleStakeConfirmed();
       // this.activeStep = 3;
@@ -256,7 +261,7 @@ export default defineComponent({
     </div>
     <div class="container mx-auto">
         <div class="card flex flex-wrap mt-[60px]">
-          <div class="flex flex-col">
+          <div class="flex flex-col" v-if="isDesktop">
             <div class="stats-header flex-none">
               <div>
                 <h3>My pool balance</h3>

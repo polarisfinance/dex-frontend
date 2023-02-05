@@ -16,7 +16,9 @@ import { BigNumber } from 'ethers';
 import { TransactionResponse } from '@ethersproject/providers';
 import useWeb3 from '@/services/web3/useWeb3';
 import useTransactions from '@/composables/useTransactions';
-import useEthers from '@/composables/useEthers';
+import useEthers from '@/composables/useEthers'
+import useBreakpoints from '@/composables/useBreakpoints';
+
 /**
  * TYPES
  */
@@ -44,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
  */
 const { fNum2 } = useNumbers();
 const { t } = useI18n();
-
+const { isMobile, isDesktop } = useBreakpoints();
 /**
  * COMPUTED
  */
@@ -63,6 +65,8 @@ const rewardFiat = computed(() => {
     FNumFormats.fiat
   );
 });
+
+const { account } = useWeb3();
 
 
 const stats = computed(() => {
@@ -128,10 +132,10 @@ async function claimXpolar(address) {
 </script>
 
 <template>
-  <div class="mb-[24px] flex w-full">
+  <div class="flex w-full" :class="{'flex-wrap':isMobile,'mb-[24px]':isDesktop}">
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading" class="h-24" />
-      <div class="card-container flex flex-1" v-else>
+      <div v-else class="card-container flex flex-1" :class="{'justify-center':isDesktop,'justify-start mb-10':isMobile}"  >
         <div>
           <WalletNewIcon v-if="stat.id == 'poolValue'" />
           <svg
@@ -274,83 +278,7 @@ async function claimXpolar(address) {
         </div>
       </div>
     </template>
-    <template v-if="Number(stakedBalance) > 0">
-      <div class="card-container flex flex-1">
-        <div class="card-container flex flex-1">
-          <div>
-            <svg
-              width="33"
-              height="32"
-              viewBox="0 0 33 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clip-path="url(#clip0_699_6305)">
-                <path
-                  d="M16.6665 28C23.2939 28 28.6665 22.6274 28.6665 16C28.6665 9.37258 23.2939 4 16.6665 4C10.0391 4 4.6665 9.37258 4.6665 16C4.6665 22.6274 10.0391 28 16.6665 28Z"
-                  stroke="#BDB2DD"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M20.3998 12.0004C20.1583 11.5814 19.8074 11.236 19.3846 11.0011C18.9619 10.7662 18.4832 10.6508 17.9998 10.667H15.3332C14.6259 10.667 13.9477 10.948 13.4476 11.4481C12.9475 11.9482 12.6665 12.6265 12.6665 13.3337C12.6665 14.0409 12.9475 14.7192 13.4476 15.2193C13.9477 15.7194 14.6259 16.0004 15.3332 16.0004H17.9998C18.7071 16.0004 19.3854 16.2813 19.8855 16.7814C20.3856 17.2815 20.6665 17.9598 20.6665 18.667C20.6665 19.3743 20.3856 20.0526 19.8855 20.5527C19.3854 21.0528 18.7071 21.3337 17.9998 21.3337H15.3332C14.8498 21.35 14.3712 21.2345 13.9484 20.9996C13.5256 20.7648 13.1747 20.4194 12.9332 20.0004"
-                  stroke="#BDB2DD"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M16.6665 8V10.6667M16.6665 21.3333V24"
-                  stroke="#BDB2DD"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_699_6305">
-                  <rect
-                    width="32"
-                    height="32"
-                    fill="white"
-                    transform="translate(0.666504)"
-                  />
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-          <div class="ml-[16px]">
-            <div class="text-secondary mb-[4px] flex text-sm font-medium">
-              <div class="label">Your total value in $</div>
-            </div>
-            <div class="funds flex items-center truncate text-xl font-medium">
-              <MyPoolInvsetmentFiat :pool="pool" :tokens="Number(stakedBalance)" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-container flex flex-1" v-if="Number(stakedBalance) > 0">
-        <div class="card-container flex flex-1">
-          <div>
-            <CoinsIcon />
-          </div>
-          <div class="ml-[16px]">
-            <div class="text-secondary mb-[4px] flex text-sm font-medium">
-              <div class="label">Your reward in $</div>
-            </div>
-            <div
-              class="funds claim flex items-center truncate text-xl font-medium"
-            >
-              {{ rewardFiat }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </div>
-  <div class="buttons-panel flex text-center">
-    <div class="pool-invest flex-1">
+    <div class="pool-invest w-full text-center" v-if="isMobile">
       Invest in the pool and earn on swap fees!
       <router-link
         class="invest-btn flex w-full items-center"
@@ -360,7 +288,93 @@ async function claimXpolar(address) {
         <div class="w-full text-center">Invest in the pool</div>
       </router-link>
     </div>
-    <div class="my-panel flex flex-1 gap-4 pl-[24px]" v-if="Number(stakedBalance) > 0">
+    <template v-if="account && Number(stakedBalance) > 0">
+        <div class="card-container flex flex-1" :class="{'my-8':isMobile}">
+          <div class="card-container flex flex-1">
+            <div>
+              <svg
+                width="33"
+                height="32"
+                viewBox="0 0 33 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_699_6305)">
+                  <path
+                    d="M16.6665 28C23.2939 28 28.6665 22.6274 28.6665 16C28.6665 9.37258 23.2939 4 16.6665 4C10.0391 4 4.6665 9.37258 4.6665 16C4.6665 22.6274 10.0391 28 16.6665 28Z"
+                    stroke="#BDB2DD"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M20.3998 12.0004C20.1583 11.5814 19.8074 11.236 19.3846 11.0011C18.9619 10.7662 18.4832 10.6508 17.9998 10.667H15.3332C14.6259 10.667 13.9477 10.948 13.4476 11.4481C12.9475 11.9482 12.6665 12.6265 12.6665 13.3337C12.6665 14.0409 12.9475 14.7192 13.4476 15.2193C13.9477 15.7194 14.6259 16.0004 15.3332 16.0004H17.9998C18.7071 16.0004 19.3854 16.2813 19.8855 16.7814C20.3856 17.2815 20.6665 17.9598 20.6665 18.667C20.6665 19.3743 20.3856 20.0526 19.8855 20.5527C19.3854 21.0528 18.7071 21.3337 17.9998 21.3337H15.3332C14.8498 21.35 14.3712 21.2345 13.9484 20.9996C13.5256 20.7648 13.1747 20.4194 12.9332 20.0004"
+                    stroke="#BDB2DD"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M16.6665 8V10.6667M16.6665 21.3333V24"
+                    stroke="#BDB2DD"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_699_6305">
+                    <rect
+                      width="32"
+                      height="32"
+                      fill="white"
+                      transform="translate(0.666504)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+            <div class="ml-[16px]">
+              <div class="text-secondary mb-[4px] flex text-sm font-medium">
+                <div class="label">Your total value in $</div>
+              </div>
+              <div class="funds flex items-center truncate text-xl font-medium">
+                <MyPoolInvsetmentFiat :pool="pool" :tokens="Number(stakedBalance)" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-container flex flex-1"  :class="{'my-8':isMobile}" v-if="account && Number(stakedBalance) > 0">
+          <div class="card-container flex flex-1">
+            <div>
+              <CoinsIcon />
+            </div>
+            <div class="ml-[16px]">
+              <div class="text-secondary mb-[4px] flex text-sm font-medium">
+                <div class="label">Your reward in $</div>
+              </div>
+              <div
+                class="funds claim flex items-center truncate text-xl font-medium"
+              >
+                {{ rewardFiat }}
+              </div>
+            </div>
+          </div>
+        </div>
+    </template>
+  </div>
+  <div class="buttons-panel flex text-center" :class="{'flex-wrap':isMobile}" v-if="account">
+    <div class="pool-invest flex-1" v-if="isDesktop">
+      Invest in the pool and earn on swap fees!
+      <router-link
+        class="invest-btn flex w-full items-center"
+        :to="'/pool/' + pool?.id + '/invest'"
+      >
+        <PlusIcon class="ml-3 flex-none" />
+        <div class="w-full text-center">Invest in the pool</div>
+      </router-link>
+    </div>
+    <div class="my-panel flex flex-1 gap-4" v-if="account && Number(stakedBalance) > 0" :class="{'l-border pl-[24px]':isDesktop,'flex-col':isMobile}">
       <div class="pool-invest flex-1">
         You can claim in any time
         <button
@@ -387,7 +401,6 @@ async function claimXpolar(address) {
 
 <style scoped>
 .card-container {
-  justify-content: center;
 }
 
 .label {
@@ -441,7 +454,7 @@ async function claimXpolar(address) {
   background: #50456e;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
 }
-.my-panel {
+.my-panel.l-border {
   border-left: 1px solid rgba(151, 71, 255, 0.4);
 }
 .buttons-panel {

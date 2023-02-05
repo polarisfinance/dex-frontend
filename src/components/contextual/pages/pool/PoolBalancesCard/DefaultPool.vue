@@ -33,11 +33,9 @@ export default defineComponent({
     const { fNum2 } = useNumbers();
     const { explorerLinks } = useWeb3();
     const { t } = useI18n();
-    const { upToLargeBreakpoint } = useBreakpoints();
+    const { isMobile, isDesktop, upToLargeBreakpoint } = useBreakpoints();
     const { priceFor } = useTokens();
     const { isStableLikePool } = usePool(pool);
-
-    const { isMobile, isDesktop } = useBreakpoints();
 
     /**
      * COMPUTED
@@ -137,7 +135,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card w-full" v-for="(token, index) in tableData" :key="index">
+  <div class="card w-full" :class="{'max-w':isDesktop}" v-for="(token, index) in tableData" :key="index">
     <div class="subheadline text-center">Pool Composition</div>
     <div class="flex mx-1 my-4">
       <BalAsset :address="token.address" :size="48" />
@@ -169,6 +167,8 @@ export default defineComponent({
   gap: 16px;
   background: #292043;
   border-radius: 20px;
+}
+.card.max-w{
   max-width: 355px;
 }
 .subheadline{

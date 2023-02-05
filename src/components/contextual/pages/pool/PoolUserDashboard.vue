@@ -281,10 +281,10 @@ export default defineComponent({
 <template>
   <div class="container mx-auto" id="dashboard">
     <div class="card flex flex-wrap">
-      <div class="stats">
+      <div class="stats" v-if="isDesktop">
         <h3>My dashboard</h3>
         <div class="break"></div>
-        <PoolUserStats :pool="pool" :xpolarToClaim="xpolarToClaim" :dailyAPR="dailyAPR" :stakedBalance="stakedBalance" />
+        <PoolUserStats :pool="pool" :xpolarToClaim="xpolarToClaim" :dailyAPR="dailyAPR" :stakedBalance="stakedBalance"  />
       </div>
       <div class="m-[24px] flex flex-1 flex-col justify-center">
         <div class="mt-5 w-full text-center" v-if="loading">Loading...</div>
@@ -334,8 +334,8 @@ export default defineComponent({
               <button v-if="stakedPerc<1" class="stake-btn inline ml-2" @click="toggleStakeModal()">Stake the rest</button>
             </div>
           </div>
-          <div class="my-panel flex flex-1 pl-[24px]">
-            <div class="pool-invest flex-1 self-end text-center">
+          <div class="my-panel flex flex-1 pl-[24px] py-8" :class="{'flex-col items-center':isMobile}">
+            <div class="pool-invest flex-1 text-center">
               Unstake and withdraw your position
               <router-link
                 class="withdraw-btn flex items-center"
@@ -344,7 +344,7 @@ export default defineComponent({
                 <div class="w-full text-center">Withdraw</div>
               </router-link>
             </div>
-            <div class="pool-invest flex-1 self-end text-center">
+            <div class="pool-invest flex-1 text-center" :class="{'mt-8':isMobile}">
               You can claim in any time
               <button
                 class="claim-btn block flex w-full items-center"
@@ -580,5 +580,6 @@ h3 {
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
+  color: #fdfdfd;
 }
 </style>
