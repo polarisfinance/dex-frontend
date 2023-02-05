@@ -24,9 +24,13 @@
           </div>
         </div>
         <div>
-          <a href="" class="detail-link underline">
-            Pool details <img :src="arrow" class="ml-[12px] inline" />
-          </a>
+          <router-link
+            class="detail-link underline"
+            :to="'/pool/' + pool?.id + '/about'"
+          >
+            Pool details 
+            <img :src="arrow" class="ml-[12px] inline" />
+          </router-link>
         </div>
       </div>
       <div>

@@ -55,6 +55,8 @@ const VexPolarPage = () =>
   import(/* webpackChunkName: "VexPolarPage" */ '@/pages/VexPolar.vue');
 const AirdropPage = () =>
   import(/* webpackChunkName: "VexPolarPage" */ '@/pages/airdrop.vue');
+const PoolAboutPage = () =>
+  import(/* webpackChunkName: "VexPolarPage" */ '@/pages/pool/about.vue');
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -103,6 +105,12 @@ const routes: RouteRecordRaw[] = [
     path: '/pool/:id/invest',
     name: 'invest',
     component: PoolInvestPage,
+    // meta: { layout: 'SingleCardLayout' },
+  },
+  {
+    path: '/pool/:id/about',
+    name: 'about',
+    component: PoolAboutPage,
     // meta: { layout: 'SingleCardLayout' },
   },
   {
