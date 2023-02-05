@@ -175,11 +175,12 @@ export default defineComponent({
       // }
     },
     handleInvestConfirm(){
-      const approvedPool = false;
-      if(approvedPool){
+      // const poolApproved = false;      //TESTING
+      if(this.poolApproved){
         this.activeStep = this.activeStep+2;
       }else{
         this.activeStep = this.activeStep+1;
+        this.approvePool();
       }
     },
     handleStakeConfirmed(){
@@ -221,7 +222,6 @@ export default defineComponent({
           this.activeStep = this.activeStep+1;
         },
         onTxFailed: () => {
-          this.activeStep = this.activeStep+1;                                                    //IF POOL APPROVAL WAS REJECTED 
         },
       });
     },
@@ -314,7 +314,11 @@ export default defineComponent({
                           </BalCard>
                       </template>
                       <template v-if="activeStep==4">
-                        Approving pool. Info what it is about.
+                        <div class="text-center finished">
+                          <h1 >Pool staking approval</h1>
+                          <h3>Please, approve staking for this pool in your wallet!</h3>
+                          <button class="exit inline-block mt-[20px]" @click="approvePool">Approve staking</button>
+                        </div>
                       </template>
                       <template v-if="activeStep==5">
                         <StakeView :balance="balanceFor(pool?.address!)" :token="``" :address="pool?.address" @stakeConfirmed="handleStakeConfirmed"/>
