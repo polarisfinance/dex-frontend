@@ -184,7 +184,8 @@ export default defineComponent({
       }
     },
     handleStakeConfirmed(){
-      this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
+      this.activeStep = this.activeStep+1;
+      //this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
     },
     progressPerc(){
       if(this.activeStep==1){
