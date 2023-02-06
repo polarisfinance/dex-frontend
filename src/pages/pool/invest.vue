@@ -130,9 +130,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    if(this.isWalletReady && this.activeStep==1){
-        this.activeStep=2;
-    }
+    
     if (this.pool!=undefined && this.isStablePhantomPool) {
         // Initialise SOR for batch swap queries
         this.sorReady = await this.sor.fetchPools();
@@ -145,8 +143,9 @@ export default defineComponent({
 
   },
   onBeforeMount(){
-    
-    
+    if(this.isWalletReady && this.activeStep==1){
+        this.activeStep=2;
+    }
   },
   updated() {
   },
@@ -160,10 +159,12 @@ export default defineComponent({
   },
   methods: {
     setActiveStep(step){
+      alert(step+' vs '+steps.length);
+      if(step!=steps.length)
         this.activeStep = step;
     },
     handleLPPreview(){
-      this.activeStep = this.activeStep+1;     //THIS WILL BE OK. TESTING BELOW
+      this.setActiveStep(this.activeStep+1);     //THIS WILL BE OK. TESTING BELOW
        
       // this.handleStakeConfirmed();
       // this.activeStep = 3;
@@ -177,28 +178,24 @@ export default defineComponent({
     handleInvestConfirm(){
       // const poolApproved = false;      //TESTING
       if(this.poolApproved){
-        this.activeStep = this.activeStep+2;
+        this.setActiveStep(this.activeStep+2);
       }else{
-        this.activeStep = this.activeStep+1;
+        this.setActiveStep(this.activeStep+1);
         this.approvePool();
       }
     },
     handleStakeConfirmed(){
-      this.activeStep = this.activeStep+1;
+      this.setActiveStep(this.activeStep+1);
       //this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
     },
     progressPerc(){
-      if(this.activeStep==1){
-          return 0.1;
-      }
       if(this.activeStep==steps.length){
           return 1;
       }
-
-      return 1/steps.length *(this.activeStep-1);
+      return (1/(steps.length-1) *(this.activeStep-1))+0.05;
     },
     goBack(){
-      this.activeStep = this.activeStep-1;
+      this.setActiveStep(this.activeStep-1);
     },
     async approvePool() {
       const { approve } = useStake();
@@ -220,7 +217,7 @@ export default defineComponent({
       const { txListener } = useEthers();
       txListener(tx, {
         onTxConfirmed: () => {
-          this.activeStep = this.activeStep+1;
+          this.setActiveStep(this.activeStep+1);
         },
         onTxFailed: () => {
         },
