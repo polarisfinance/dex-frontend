@@ -9,6 +9,13 @@ import useVeBal from '@/composables/useVeBAL';
 import { bnum } from '@/lib/utils';
 
 import TradePairToggle from './TradePairToggle.vue';
+import { bondNameToAddress } from '../../../composables/PolarisFinance/utils';
+
+import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
+import usePoolFilters from '@/composables/pools/usePoolFilters';
+
+const { selectedTokens, addSelectedToken, removeSelectedToken } =
+  usePoolFilters();
 
 /**
  * TYPES
@@ -55,6 +62,13 @@ const _tokenOutAddress = ref<string>('');
 
 const isInRate = ref<boolean>(true);
 
+const {
+  dataStates,
+  result: investmentPools,
+  loadMore,
+  isLoadingMore,
+} = useStreamedPoolsQuery(selectedTokens);
+
 /**
  * COMPUTED
  */
@@ -68,6 +82,19 @@ const missingAmount = computed(
 
 const tokenIn = computed(() => getToken(_tokenInAddress.value));
 const tokenOut = computed(() => getToken(_tokenOutAddress.value));
+
+const excludedTokens = () => {
+  const excluded = [] as String[];
+
+  for (const pool of investmentPools.value) {
+    excluded.push(pool.address);
+  }
+
+  for (const [key, value] of Object.entries(bondNameToAddress)) {
+    excluded.push(value);
+  }
+  return excluded;
+};
 
 const rateLabel = computed(() => {
   if (missingToken.value || missingAmount.value) return '';
@@ -145,7 +172,7 @@ watchEffect(() => {
 
 <template>
   <div>
-    <div style="background-color: #41365E;">
+    <div style="background-color: #41365e">
       <TokenInput
         :amount="_tokenInAmount"
         :address="_tokenInAddress"
@@ -168,7 +195,7 @@ watchEffect(() => {
         v-html="rateLabel"
       /> -->
     </div>
-    <div >
+    <div>
       <TokenInput
         :amount="_tokenOutAmount"
         :address="_tokenOutAddress"
@@ -177,7 +204,7 @@ watchEffect(() => {
         noRules
         noMax
         disableNativeAssetBuffer
-        :excludedTokens="[veBalTokenInfo?.address]"
+        :excludedTokens="excludedTokens()"
         @update:amount="handleOutAmountChange"
         @update:address="handleOutputTokenChange"
       />
@@ -189,5 +216,4 @@ watchEffect(() => {
 .toggle {
   transform: translateY(-60%);
 }
-
 </style>
