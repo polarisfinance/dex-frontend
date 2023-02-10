@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="['bal-tab-container', containerClasses]">
+    <div class="items-center" :class="['bal-tab-container', containerClasses]">
       <div
         v-for="(tab, i) in tabs"
         :key="i"
@@ -76,7 +76,7 @@ export default defineComponent({
   overflow: hidden;
 }
 .bal-tab {
-  @apply -mb-px mr-6 cursor-pointer py-3;
+  @apply -mb-px mr-6 cursor-pointer py-3 px-3;
 }
 
 .tab-selected {

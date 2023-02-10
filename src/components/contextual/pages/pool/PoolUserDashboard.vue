@@ -279,7 +279,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container mx-auto" id="dashboard">
+  <div class="container mx-auto" id="dashboard" :class="{' mb-[20px]':isMobile,'mb-[95px]':isDesktop}">
     <div class="card flex flex-wrap">
       <div class="stats" v-if="isDesktop">
         <h3>My dashboard</h3>

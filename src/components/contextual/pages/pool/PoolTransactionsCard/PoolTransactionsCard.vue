@@ -3,7 +3,7 @@ import { toRef } from 'vue';
 
 import { usePool } from '@/composables/usePool';
 import { Pool } from '@/services/pool/types';
-
+import useBreakpoints from '@/composables/useBreakpoints';
 import InvestmentTransactions from './InvestmentTransactions/InvestmentTransactions.vue';
 
 /**
@@ -25,11 +25,14 @@ const props = withDefaults(defineProps<Props>(), {
  * COMPOSABLES
  */
 const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
+
+const { isMobile, isDesktop } = useBreakpoints();
+
 </script>
 
 <template>
   <h4
-    class="mt-[95px] mb-[24px]"
+    class=" mb-[24px]" 
     v-text="$t('poolTransactions.tabs.investmentsTrades')"
   />
   <InvestmentTransactions :pool="pool" :loading="loading" />

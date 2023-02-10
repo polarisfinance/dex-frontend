@@ -1,6 +1,6 @@
 <template>
   <div class="heading container mx-auto flex px-7">
-    <div class="w-full">
+    <div class="w-full" v-if="isDesktop">
       <h1 v-if="isSegnioragePool(poolID) == true">Segniorage Pool</h1>
       <h1 v-if="isClassicPool(poolID) == true">Classic Pool</h1>
       <h1 v-if="isCommunityPool(poolID) == true">Community Pool</h1>
@@ -23,7 +23,11 @@
             <div v-if="idx < tableData.length - 1">-</div>
           </div>
         </div>
-        <div>
+        <div class="current-fees mb-5" v-if="isMobile">
+          Dynamic swap fees: Currently
+          {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
+        </div>
+        <div v-if="false">
           <router-link
             class="detail-link underline"
             :to="'/pool/' + pool?.id + '/about'"
@@ -67,10 +71,10 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto mt-[120px] flex justify-center gap-8" :class="{'flex-wrap':isMobile}">
+  <div class="container mx-auto flex justify-center gap-8" :class="{'flex-wrap mt-[60px]':isMobile,'mt-[120px]':isDesktop}">
     <PoolBalancesCard :pool="pool" :loading="loadingPool" />
   </div>
-  <div class="container mx-auto mt-[120px] flex justify-center gap-8" v-if="account">
+  <div class="container mx-auto flex justify-center gap-8" v-if="account" :class="{' mt-[60px]':isMobile,'mt-[120px]':isDesktop}">
     <PoolUserDashboard
       v-if="Number(stakedBalance) > 0"
       :pool="pool"

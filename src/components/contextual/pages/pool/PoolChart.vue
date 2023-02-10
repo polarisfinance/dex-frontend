@@ -387,7 +387,7 @@ function setCurrentChartValue(payload: {
   <BalLoadingBlock v-if="loading || appLoading" class="h-96" />
 
   <div v-else-if="snapshotValues.length >= MIN_CHART_VALUES" class="chart">
-    <div class="mb-6 flex justify-between">
+    <div class="mb-6 flex justify-between " :class="{'flex-col':isMobile}">
       <div class="mb-4 flex">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="mr-6 -mb-px" />
         <div class="flex items-center">
