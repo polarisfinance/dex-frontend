@@ -380,7 +380,7 @@ export default defineComponent({
               </button>
             </div>
             <div class="mt-[8px] flex justify-center gap-[8px] px-5">
-              <div class="flex-none mt-3 mr-4">Pools: </div>
+              <!-- <div class="mt-3 mr-4">Pools:</div> -->
               <a href="#segniorage">
                 <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage</div>
               </a>

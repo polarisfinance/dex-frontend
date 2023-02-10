@@ -189,7 +189,7 @@ const getRows = computed<ActivityRow[]>(() => {
     :noBorder="upToLargeBreakpoint"
     noPad
   >
-    <div class="grid-table">
+    <div class="grid-table min-w-[480px]">
       <div class="header">
         <div class="h-4 ml-[24px]">Action</div>
         <div class="h-4">Value</div>
