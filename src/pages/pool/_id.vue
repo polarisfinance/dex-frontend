@@ -27,7 +27,7 @@
           Dynamic swap fees: Currently
           {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
         </div>
-        <div v-if="false">
+        <div>
           <router-link
             class="detail-link underline"
             :to="'/pool/' + pool?.id + '/about'"
@@ -676,6 +676,7 @@ export default defineComponent({
       addIntersectionObserver();
     });
 
+    console.log(pool.value);
     return {
       // data
       ...toRefs(data),

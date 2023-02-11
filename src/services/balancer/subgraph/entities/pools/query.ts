@@ -27,6 +27,8 @@ const defaultAttrs = {
   amp: true,
   createTime: true,
   swapEnabled: true,
+  name: true,
+  symbol: true,
   tokens: {
     address: true,
     balance: true,
