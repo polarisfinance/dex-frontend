@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { configService } from '@/services/config/config.service';
-import { GP_RELAYER_CONTRACT_ADDRESS } from '@/services/gnosis/constants';
+import { COW_RELAYER_CONTRACT_ADDRESS } from '@/services/cowswap/constants';
 import useWeb3 from '@/services/web3/useWeb3';
 import { TransactionActionInfo } from '@/types/transactions';
 
@@ -22,7 +22,7 @@ export enum Relayer {
 }
 
 const relayerAddressMap = {
-  [Relayer.GNOSIS]: GP_RELAYER_CONTRACT_ADDRESS,
+  [Relayer.GNOSIS]: COW_RELAYER_CONTRACT_ADDRESS,
   [Relayer.LIDO]: configService.network.addresses.lidoRelayer,
   [Relayer.BATCH]: configService.network.addresses.batchRelayer,
 };

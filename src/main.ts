@@ -15,7 +15,6 @@ import { createApp } from 'vue';
 import VueVirtualScroller from 'vue3-virtual-scroller';
 
 import blocknative from '@/plugins/blocknative';
-import { registerGlobalComponents } from '@/plugins/components';
 import registerDirectives from '@/plugins/directives';
 import i18n from '@/plugins/i18n';
 import mixins from '@/plugins/mixins';
@@ -25,8 +24,10 @@ import vueQuery from '@/plugins/vueQuery';
 import Web3Plugin from '@/services/web3/web3.plugin';
 import store from '@/store';
 
-import Root from './Root';
+import Root from './Root.vue';
+import { initDependencies } from './dependencies';
 
+initDependencies();
 echarts.use([
   TooltipComponent,
   CanvasRenderer,
@@ -47,7 +48,6 @@ const app = createApp(Root)
   .use(VueVirtualScroller);
 
 registerDirectives(app);
-registerGlobalComponents(app);
 initSentry(app);
 
 app.mount('#app');

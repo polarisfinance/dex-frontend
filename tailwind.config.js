@@ -58,7 +58,7 @@ module.exports = {
         '2xl': '1.25rem',
       },
       colors: {
-        green: colors.emerald,
+        // green: colors.emerald,
 
         styling: {
           pink: {

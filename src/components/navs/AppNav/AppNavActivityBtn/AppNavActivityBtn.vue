@@ -64,8 +64,8 @@ import { useI18n } from 'vue-i18n';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNotifications from '@/composables/useNotifications';
 import useTransactions from '@/composables/useTransactions';
-import { gnosisProtocolService } from '@/services/gnosis/gnosisProtocol.service';
-import { signOrderCancellation } from '@/services/gnosis/signing';
+import { cowswapProtocolService } from '@/services/cowswap/cowswapProtocol.service';
+import { signOrderCancellation } from '@/services/cowswap/signing';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import ActivityCounter from './ActivityCounter.vue';
@@ -110,7 +110,7 @@ export default defineComponent({
           getSigner()
         );
 
-        await gnosisProtocolService.sendSignedOrderCancellation({
+        await cowswapProtocolService.sendSignedOrderCancellation({
           cancellation: {
             orderUid: orderId,
             signature,

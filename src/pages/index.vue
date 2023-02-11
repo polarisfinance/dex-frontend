@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch,Ref } from 'vue';
+import { watch, Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import HomePageHero from '@/components/heros/HomePageHero.vue';
@@ -30,7 +30,6 @@ const isElementSupported = appNetworkConfig.supportsElementPools;
 const { selectedTokens, addSelectedToken, removeSelectedToken } =
   usePoolFilters();
 
-
 const {
   dataStates,
   result: investmentPools,
@@ -42,7 +41,6 @@ const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const isInvestmentPoolsTableLoading = computed(
   () => dataStates.value['basic'] === 'loading' || priceQueryLoading.value
 );
-
 
 const segniorageIds = [
   '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10000200000000000000000004',
@@ -76,7 +74,6 @@ const superHotPoolsIds = [
   '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
   '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
   '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a',
-  
 ];
 
 const contains = (arr1, arr2) => {
@@ -146,7 +143,7 @@ const getTokenNames = () => {
 
   for (const token of Object.entries(Tokens)) {
     const tokenName: string = token[1][1]['symbol'];
-    // console.log(token);
+    console.log(token);
     tokenList.push(tokenName);
   }
 
@@ -190,27 +187,29 @@ const selectToken = token => {
   selectedToken.value = token;
   searchTerm.value = token;
 };
-
 </script>
 
 <script lang="ts">
-import { defineComponent, ref, computed} from 'vue';
-import useTokens from '@/composables/useTokens';
+import { defineComponent, ref, computed } from 'vue';
+import { useTokens } from '@/providers/tokens.provider';
 import { TokenInfo } from '@/types/TokenList';
 import useBreakPoints from '@/composables/useBreakpoints';
-var segnioragepools,classicpools,singlepools,communitypools;
+var segnioragepools, classicpools, singlepools, communitypools;
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakPoints();
 export default defineComponent({
   created() {
     const { tokens, getToken } = useTokens();
+    console.log(Object.entries(tokens.value));
     this.tokens = Object.entries(tokens.value);
-    Object.entries(tokens.value).forEach(token => {
+
+    const Tokens = Object.entries(tokens.value);
+    for (const token of Tokens) {
       this.tokenNames[getToken(token[0]).symbol] = token[0];
-    });
-    window.addEventListener('scroll',this.onScroll);
-    
+    }
+
+    window.addEventListener('scroll', this.onScroll);
   },
-  
+
   data() {
     return {
       filteredTokensList: [] as string[],
@@ -218,14 +217,14 @@ export default defineComponent({
       inputFocused: false,
       tokenNames: {},
       stickyPanel: false,
-      selectedPool:'segniorage',
-      singlepoolsTop:0,
-      classicpoolsTop:0,
-      segnioragepoolsTop:0,
-      communitypoolsTop:0,
+      selectedPool: 'segniorage',
+      singlepoolsTop: 0,
+      classicpoolsTop: 0,
+      segnioragepoolsTop: 0,
+      communitypoolsTop: 0,
     };
   },
-  mounted () {
+  mounted() {
     let vm = this;
     // this.$nextTick(function () {
     //   singlepools = this.$refs['singlepools'];
@@ -234,7 +233,7 @@ export default defineComponent({
     //   communitypools = this.$refs['communitypools'];
     //   console.log(this.$refs['segnioragepools']);
     // });
-    
+
     // singlepools = this.$refs.singlepools;
     // segnioragepools = this.$refs.segnioragepools;
     // classicpools = this.$refs.classicpools;
@@ -263,210 +262,282 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
-    onScroll(){
-      if ( 
-        (document.querySelector("#segniorage")!.getBoundingClientRect().top<250 && isMobile.value) ||
-        (document.querySelector("#segniorage")!.getBoundingClientRect().top<125 && isDesktop.value) 
+    onScroll() {
+      if (
+        (document.querySelector('#segniorage')!.getBoundingClientRect().top <
+          250 &&
+          isMobile.value) ||
+        (document.querySelector('#segniorage')!.getBoundingClientRect().top <
+          125 &&
+          isDesktop.value)
       ) {
         this.stickyPanel = true;
       } else {
         this.stickyPanel = false;
       }
-      
-      
-      if(document.querySelector("#singlestaking") != undefined &&  document.querySelector("#singlestaking")!.getBoundingClientRect().top<100){
+
+      if (
+        document.querySelector('#singlestaking') != undefined &&
+        document.querySelector('#singlestaking')!.getBoundingClientRect().top <
+          100
+      ) {
         this.selectedPool = 'single';
-      }
-      else if(document.querySelector("#communitypools") != undefined && document.querySelector("#communitypools")!.getBoundingClientRect().top<100){
+      } else if (
+        document.querySelector('#communitypools') != undefined &&
+        document.querySelector('#communitypools')!.getBoundingClientRect().top <
+          100
+      ) {
         this.selectedPool = 'community';
-      }
-      else if(document.querySelector("#classicpools") != undefined && document.querySelector("#classicpools")!.getBoundingClientRect().top<100){
+      } else if (
+        document.querySelector('#classicpools') != undefined &&
+        document.querySelector('#classicpools')!.getBoundingClientRect().top <
+          100
+      ) {
         this.selectedPool = 'classic';
-      }
-      else if(document.querySelector("#segniorage") != undefined && document.querySelector("#segniorage")!.getBoundingClientRect().top<100){
+      } else if (
+        document.querySelector('#segniorage') != undefined &&
+        document.querySelector('#segniorage')!.getBoundingClientRect().top < 100
+      ) {
         this.selectedPool = 'segniorage';
       }
     },
   },
-  watch:{
-  },
+  watch: {},
 });
 </script>
 
 <template>
-    <HomePageHero />
-    <ClaimCard
-    :pools="segnioragePools.concat(communityPools).concat(investmentPoolsWithoutSeigniorage)"
+  <HomePageHero />
+  <ClaimCard
+    :pools="
+      segnioragePools
+        .concat(communityPools)
+        .concat(investmentPoolsWithoutSeigniorage)
+    "
     :prices="prices"
-    />
+  />
 
-    <div class="container mx-auto" id="hot-pools">
-      <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
-      <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
-        <template v-for="(pool, idx)      in      (isDesktop) ? superHotPools.slice(0, 6) :superHotPools.slice(0, 3)  " :key="idx">
-          <PoolCard
-          :pool="pool"
-          :prices="prices"
-          ></PoolCard>
-        </template>
-      </div>
+  <div class="container mx-auto" id="hot-pools">
+    <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
+    <div
+      class="grid gap-6"
+      :class="{ 'grid-cols-1': isMobile, 'grid-cols-3': isDesktop }"
+    >
+      <template
+        v-for="(pool, idx) in isDesktop
+          ? superHotPools.slice(0, 6)
+          : superHotPools.slice(0, 3)"
+        :key="idx"
+      >
+        <PoolCard :pool="pool" :prices="prices"></PoolCard>
+      </template>
     </div>
-  
-    <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto ">
-      <BalStack vertical>
+  </div>
+
+  <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto">
+    <BalStack vertical>
+      <div
+        class="container px-4 xl:px-0 mb-4 pool-panel"
+        :class="{
+          'is-sticky': stickyPanel,
+          'navbar-bg': stickyPanel,
+          'not-sticky': !stickyPanel,
+          'filter-panel-mobile': isMobile,
+        }"
+      >
         <div
-          class="container px-4 xl:px-0 mb-4 pool-panel"
-          :class="{
-            'is-sticky': stickyPanel,
-            'navbar-bg': stickyPanel,
-            'not-sticky': !stickyPanel,
-            'filter-panel-mobile': isMobile,
-          }"
+          class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center mb-0"
+          v-if="isDesktop"
         >
+          <div class="search flex items-center" @click="inputFocused = true">
+            <img src="./search.svg" class="mr-[12px]" />
+            <input
+              type="text"
+              placeholder="Filter by token"
+              class="input w-full"
+              v-on:input="filterToken"
+              v-model="searchTerm"
+            />
+          </div>
           <div
-            class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center mb-0"
-            v-if="isDesktop"
+            class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
           >
-            <div class="search flex items-center" @click="inputFocused = true">
+            <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
+            <a href="#segniorage">
+              <div
+                class="pool-type-btn cursor-pointer mx-[12px]"
+                :class="{ 'selected-pool': selectedPool == 'segniorage' }"
+              >
+                Seigniorage Pools
+              </div>
+            </a>
+            <a href="#classicpools">
+              <div
+                class="pool-type-btn cursor-pointer mx-[12px]"
+                :class="{ 'selected-pool': selectedPool == 'classic' }"
+              >
+                Classic Pools
+              </div>
+            </a>
+            <a href="#communitypools">
+              <div
+                class="pool-type-btn cursor-pointer mx-[12px]"
+                :class="{ 'selected-pool': selectedPool == 'community' }"
+              >
+                Community Pools
+              </div>
+            </a>
+            <a href="#singlestaking">
+              <div
+                class="pool-type-btn cursor-pointer mx-[12px]"
+                :class="{ 'selected-pool': selectedPool == 'single' }"
+              >
+                Single Staking
+              </div>
+            </a>
+          </div>
+
+          <button
+            class="create-pool-btn flex items-center"
+            @click="navigateToCreatePool"
+          >
+            <img src="./plus.svg" class="mr-[8px]" />
+            <div>Create a pool</div>
+          </button>
+        </div>
+
+        <div v-if="isMobile">
+          <div class="flex">
+            <div
+              class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]"
+            >
               <img src="./search.svg" class="mr-[12px]" />
               <input
                 type="text"
                 placeholder="Filter by token"
-                class="input w-full"
+                class="input"
                 v-on:input="filterToken"
                 v-model="searchTerm"
               />
             </div>
-            <div
-              class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
-            >
-              <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
-              <a href="#segniorage">
-                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
-              </a>
-              <a href="#classicpools">
-                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='classic'}">Classic Pools</div>
-              </a>
-              <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='community'}">Community Pools</div>
-              </a>
-              <a href="#singlestaking">
-                <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
-              </a>
-            </div>
-
             <button
-              class="create-pool-btn flex items-center"
+              class="create-pool-btn-mobile flex flex-none items-center justify-center ml-5"
               @click="navigateToCreatePool"
             >
               <img src="./plus.svg" class="mr-[8px]" />
               <div>Create a pool</div>
             </button>
           </div>
-
-          <div v-if="isMobile">
-            <div class="flex">
-              <div class="flex w-full items-center rounded-[12px] bg-[#261737] px-[24px] pb-[9px] pt-[9px] pl-[16px]">
-                <img src="./search.svg" class="mr-[12px]" />
-                <input type="text" placeholder="Filter by token" class="input" v-on:input="filterToken" v-model="searchTerm"/>
-              </div>
-              <button
-                class="create-pool-btn-mobile flex flex-none items-center justify-center ml-5"
-                @click="navigateToCreatePool"
+          <div class="mt-[8px] flex justify-center gap-[8px] px-5">
+            <div class="flex-none mt-3 mr-4">Pools:</div>
+            <a href="#segniorage">
+              <div
+                class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center"
+                :class="{ 'selected-pool': selectedPool == 'segniorage' }"
               >
-                <img src="./plus.svg" class="mr-[8px]" />
-                <div>Create a pool</div>
-              </button>
-            </div>
-            <div class="mt-[8px] flex justify-center gap-[8px] px-5">
-              <div class="flex-none mt-3 mr-4">Pools: </div>
-              <a href="#segniorage">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage</div>
-              </a>
-              <a href="#classicpools">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='classic'}">Classic</div>
-              </a>
-              <a href="#communitypools">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='community'}">Community</div>
-              </a>
-              <a href="#singlestaking">
-                <div class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center" :class="{'selected-pool': selectedPool =='single'}">Single Staking</div>
-              </a>
-            </div>
+                Seigniorage
+              </div>
+            </a>
+            <a href="#classicpools">
+              <div
+                class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center"
+                :class="{ 'selected-pool': selectedPool == 'classic' }"
+              >
+                Classic
+              </div>
+            </a>
+            <a href="#communitypools">
+              <div
+                class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center"
+                :class="{ 'selected-pool': selectedPool == 'community' }"
+              >
+                Community
+              </div>
+            </a>
+            <a href="#singlestaking">
+              <div
+                class="pool-type-btn cursor-pointer px-[9px] py-[16px] text-center"
+                :class="{ 'selected-pool': selectedPool == 'single' }"
+              >
+                Single Staking
+              </div>
+            </a>
           </div>
         </div>
-        <div id="segniorage" :class="{
-            'mt-[50px]': stickyPanel && isDesktop,
-            'mt-[250px]': stickyPanel && isMobile,
-          }">
-          <PoolsTable
-            :key="filteredTokensList"
-            :data="segnioragePools"
-            :noPoolsLabel="$t('noPoolsFound')"
-            :isLoadingMore="isLoadingMore"
-            :selectedTokens="filteredTokensList"
-            class="mb-8"
-            :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-            :columnStates="dataStates"
-            :isPaginated="true"
-            :isLoading="isInvestmentPoolsTableLoading"
-            @load-more="loadMore"
-            :title="'Seigniorage Pools'"
-            :type="'seigniorage'"
-            :img="segniorageImg"
-            :prices="prices"
-          />
-        </div>
-        <div id="classicpools" >
-          <PoolsTable
-            :key="filteredTokensList"
-            :data="investmentPoolsWithoutSeigniorage"
-            :noPoolsLabel="$t('noPoolsFound')"
-            :isLoadingMore="isLoadingMore"
-            :selectedTokens="filteredTokensList"
-            class="mb-8"
-            :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-            :columnStates="dataStates"
-            :isPaginated="true"
-            :isLoading="isInvestmentPoolsTableLoading"
-            @load-more="loadMore"
-            :title="'Classic Pools'"
-            :prices="prices"
-            :type="'classic'"
-            :img="classicImg"
-          />
-        </div>
-        <div id="communitypools"  >
-          <PoolsTable
-            :key="filteredTokensList"
-            :data="communityPools"
-            :noPoolsLabel="$t('noPoolsFound')"
-            :isLoadingMore="isLoadingMore"
-            :selectedTokens="filteredTokensList"
-            class="mb-8"
-            :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
-            :columnStates="dataStates"
-            :isPaginated="true"
-            :isLoading="isInvestmentPoolsTableLoading"
-            @load-more="loadMore"
-            :title="'Community Pools'"
-            :type="'community'"
-            :img="communityImg"
-            :noApr="true"
-          />
-        </div>
-        <div id="singlestaking"  >
-          <SingleStake />
-        </div>
-        <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
+      </div>
+      <div
+        id="segniorage"
+        :class="{
+          'mt-[50px]': stickyPanel && isDesktop,
+          'mt-[250px]': stickyPanel && isMobile,
+        }"
+      >
+        <PoolsTable
+          :key="filteredTokensList"
+          :data="segnioragePools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="filteredTokensList"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Seigniorage Pools'"
+          :type="'seigniorage'"
+          :img="segniorageImg"
+          :prices="prices"
+        />
+      </div>
+      <div id="classicpools">
+        <PoolsTable
+          :key="filteredTokensList"
+          :data="investmentPoolsWithoutSeigniorage"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="filteredTokensList"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Classic Pools'"
+          :prices="prices"
+          :type="'classic'"
+          :img="classicImg"
+        />
+      </div>
+      <div id="communitypools">
+        <PoolsTable
+          :key="filteredTokensList"
+          :data="communityPools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoadingMore="isLoadingMore"
+          :selectedTokens="filteredTokensList"
+          class="mb-8"
+          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :columnStates="dataStates"
+          :isPaginated="true"
+          :isLoading="isInvestmentPoolsTableLoading"
+          @load-more="loadMore"
+          :title="'Community Pools'"
+          :type="'community'"
+          :img="communityImg"
+          :noApr="true"
+        />
+      </div>
+      <div id="singlestaking">
+        <SingleStake />
+      </div>
+      <!-- <div v-if="isElementSupported" class="mt-16 p-4 xl:p-0">
           <FeaturedProtocols />
         </div> -->
-      </BalStack>
-    </div>
-    
+    </BalStack>
+  </div>
 </template>
 <style scoped>
-
 .title {
   position: relative;
   display: flex;
@@ -492,12 +563,15 @@ export default defineComponent({
   line-height: 18px;
 }
 
-.create-pool-btn:hover{
-  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
+.create-pool-btn:hover {
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
+  );
 }
 
 .search {
-
   max-width: 300px;
   border-radius: 12px;
   padding-left: 16px;
@@ -548,10 +622,11 @@ export default defineComponent({
 
   color: #fdfdfd;
   background: linear-gradient(#1e0d2c, #1e0d2c) padding-box,
-    linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
+    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
+      border-box;
   border: 1px solid transparent;
 }
-.filter-panel-mobile .selected-pool{
+.filter-panel-mobile .selected-pool {
   margin-top: 5px;
 }
 
@@ -562,8 +637,8 @@ export default defineComponent({
   line-height: 18px;
   color: rgba(189, 178, 221, 1);
 }
-.pool-type-btn:hover{
-  color: #FDFDFD;
+.pool-type-btn:hover {
+  color: #fdfdfd;
 }
 
 .segniorage {
@@ -612,10 +687,9 @@ export default defineComponent({
   z-index: 100;
   background: #231928;
 }
-.pool-panel{
+.pool-panel {
   background-color: #292043;
   border-radius: 48px;
-
 }
 .is-sticky {
   position: fixed;
@@ -633,14 +707,13 @@ export default defineComponent({
   position: relative;
 }
 
-
-.filter-panel-mobile{
+.filter-panel-mobile {
   border-radius: 0px;
   width: 100%;
   max-width: none;
   padding-top: 20px;
 }
-.is-sticky.filter-panel-mobile{
+.is-sticky.filter-panel-mobile {
   top: 69px;
   padding-top: 0px;
 }

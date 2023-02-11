@@ -17,7 +17,7 @@
         >
           Connected with {{ connectorName }}
           <div class="flex flex-row justify-end gap-[8px]">
-            <button class="h-[22px] w-[86px] " @click="disconnectWallet">
+            <button class="h-[22px] w-[86px]" @click="disconnectWallet">
               <div
                 class="text-center text-[14px] leading-[18px]"
                 v-text="$t('disconnect')"
@@ -44,7 +44,7 @@
         </div>
 
         <div class="address mb-[12px] mt-1 flex justify-start">
-          <button class="button p-0 link" >
+          <button class="button p-0 link">
             <div
               class="link flex flex-row justify-start gap-[8px] align-baseline"
               @click="copyAddress"
@@ -83,7 +83,7 @@ import AppSlippageForm from '@/components/forms/AppSlippageForm.vue';
 import Avatar from '@/components/images/Avatar.vue';
 import useEthereumTxType from '@/composables/useEthereumTxType';
 import { ethereumTxTypeOptions } from '@/constants/options';
-import { GP_SUPPORTED_NETWORKS } from '@/services/gnosis/constants';
+import { COW_SUPPORTED_NETWORKS } from '@/services/cowswap/constants';
 import useWeb3 from '@/services/web3/useWeb3';
 import {
   getConnectorLogo,
@@ -164,8 +164,8 @@ export default defineComponent({
       getConnectorLogo(connector.value?.id, provider.value)
     );
     const hideDisconnect = computed(() => connector.value?.id == 'gnosis');
-    const isGnosisSupportedNetwork = computed(() =>
-      GP_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId)
+    const isCowswapSupportedNetwork = computed(() =>
+      COW_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId)
     );
 
     // METHODS
@@ -195,7 +195,7 @@ export default defineComponent({
       connectorLogo,
       hideDisconnect,
       isEIP1559SupportedNetwork,
-      isGnosisSupportedNetwork,
+      isCowswapSupportedNetwork,
       isUnsupportedNetwork,
       // methods
       disconnectWallet,
@@ -237,7 +237,7 @@ export default defineComponent({
 
 .bal-card {
   @apply flex flex-col bg-frame-dark-ultra;
-  background:#292043;
+  background: #292043;
   /* box-shadow: inset 0px 0px 2px #fbaaff; */
   border-radius: 22px;
   box-sizing: border-box;
@@ -250,7 +250,7 @@ export default defineComponent({
   /* @apply border dark:border-gray-900; */
   @apply bg-frame-light;
   @apply flex flex-col gap-[10px] rounded-md;
-  background: #41365E !important; 
+  background: #41365e !important;
   border-radius: 16px;
   padding-left: 12px;
   padding-right: 12px;
@@ -260,8 +260,8 @@ export default defineComponent({
 }
 
 button {
-  background-color: #50456E !important;
-  color: #BDB2DD;
+  background-color: #50456e !important;
+  color: #bdb2dd;
   border-radius: 16px;
 }
 
@@ -274,15 +274,15 @@ button {
 }
 
 .link {
-  @apply fill-[#D7B3FF] font-semibold leading-[20px] ;
-  background: none !important;;
-  color: #BDB2DD;
+  @apply fill-[#D7B3FF] font-semibold leading-[20px];
+  background: none !important;
+  color: #bdb2dd;
 }
 
 .link:focus,
 .link:hover {
   @apply fill-[#F5E1FF] font-semibold leading-[20px] text-[#F5E1FF] no-underline;
   background: none;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 </style>

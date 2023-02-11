@@ -36,6 +36,8 @@ export enum ApiErrorCodes {
 function _mapActionToErrorDetail(action?: ApiActionType) {
   switch (action) {
     case 'get':
+      // https://www.i18next.com/overview/typescript#type-error-excessively-deep-and-possibly-infinite
+      //@ts-ignore
       return i18n.global.t('apiErrorCodeDetails.UnhandledGetError');
     case 'create':
       return i18n.global.t('apiErrorCodeDetails.UnhandledCreateError');
@@ -55,7 +57,7 @@ export default class OperatorError extends Error {
   description: ApiErrorObject['description'];
 
   // Status 400 errors
-  // https://github.com/gnosis/gp-v2-services/blob/9014ae55412a356e46343e051aefeb683cc69c41/orderbook/openapi.yml#L563
+  // https://github.com/cowprotocol/services/blob/6d56663e7b6296597599a5accce746278243606c/crates/orderbook/openapi.yml#L863
 
   public static getErrorMessage(
     orderPostError: ApiErrorObject,

@@ -12,8 +12,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./DiscordIcon.svg'),
-      hoveredPicture: require('./HoveredDiscordIcon.svg'),
+      picture: import('./DiscordIcon.svg'),
+      hoveredPicture: import('./HoveredDiscordIcon.svg'),
       hover: false,
     };
   },

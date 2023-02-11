@@ -3,7 +3,6 @@
     :src="pictureHover"
     @mouseover="hover = true"
     @mouseleave="hover = false"
-
     class="mr-2"
   />
 </template>
@@ -13,8 +12,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./MediumIcon.svg'),
-      hoveredPicture: require('./HoveredMediumIcon.svg'),
+      picture: import('./MediumIcon.svg'),
+      hoveredPicture: import('./HoveredMediumIcon.svg'),
       hover: false,
     };
   },

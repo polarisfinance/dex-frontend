@@ -12,8 +12,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./GithubIcon.svg'),
-      hoveredPicture: require('./HoveredGithubIcon.svg'),
+      picture: import('./GithubIcon.svg'),
+      hoveredPicture: import('./HoveredGithubIcon.svg'),
       hover: false,
     };
   },

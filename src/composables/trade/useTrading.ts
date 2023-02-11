@@ -6,14 +6,14 @@ import LS_KEYS from '@/constants/local-storage.keys';
 import { NATIVE_ASSET_ADDRESS } from '@/constants/tokens';
 import { bnum, lsGet, lsSet } from '@/lib/utils';
 import { getWrapAction, WrapType } from '@/lib/utils/balancer/wrapper';
-import { GP_SUPPORTED_NETWORKS } from '@/services/gnosis/constants';
+import { COW_SUPPORTED_NETWORKS } from '@/services/cowswap/constants';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import { networkId } from '../useNetwork';
 import useNumbers, { FNumFormats } from '../useNumbers';
 import useTokens from '../useTokens';
 import useUserSettings from '../useUserSettings';
-import useGnosis from './useGnosis';
+import useCowswap from './useCowswap';
 import useSor from './useSor';
 
 export type TradeRoute = 'wrapUnwrap' | 'balancer' | 'gnosis';
@@ -93,7 +93,7 @@ export default function useTrading(
   });
 
   const isGnosisSupportedOnNetwork = computed(() =>
-    GP_SUPPORTED_NETWORKS.includes(networkId.value)
+    COW_SUPPORTED_NETWORKS.includes(networkId.value)
   );
 
   const tradeRoute = computed<TradeRoute>(() => {
@@ -141,7 +141,7 @@ export default function useTrading(
     slippageBufferRate,
   });
 
-  const gnosis = useGnosis({
+  const gnosis = useCowswap({
     exactIn,
     tokenInAddressInput,
     tokenInAmountInput,

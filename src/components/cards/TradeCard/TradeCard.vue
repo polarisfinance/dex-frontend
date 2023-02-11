@@ -5,9 +5,9 @@
     class="card-container relative"
     :shadow="tradeCardShadow"
   >
-    <template #header >
-      <div class="header mb-[12px] flex w-full items-center justify-between" >
-        <h4 class="title ml-[18px] mt-[10px]" >{{ title }}</h4>
+    <template #header>
+      <div class="header mb-[12px] flex w-full items-center justify-between">
+        <h4 class="title ml-[18px] mt-[10px]">{{ title }}</h4>
         <TradeSettingsPopover
           :context="TradeSettingsContext.trade"
           :isGasless="trading.tradeGasless.value"
@@ -49,38 +49,38 @@
         block
       />
       <div class="mx-[12px] mb-[12px]">
-      <BalBtn
-        v-if="trading.isLoading.value"
-        loading
-        disabled
-        :loadingLabel="
-          trading.isGnosisTrade.value ? $t('loadingBestPrice') : $t('loading')
-        "
-        class="font-semibold"
-        block
-      />
-      <button
-        v-else-if="tokenInAmount == 0 && tokenOutAmount == 0 && account"
-        :disabled="true"
-        class="amount-button font-semibold"
-      >
-        Enter an amount
-      </button>
-      <button
-        v-else-if="account"
-        :disabled="false"
-        @click="handlePreviewButton"
-        class="swap-button text-[16px] font-semibold"
-      >
-        Swap
-      </button>
-      <button
-        v-else
-        class="connect-wallet font-semibold"
-        @click="startConnectWithInjectedProvider"
-      >
-        Connect Wallet
-      </button>
+        <BalBtn
+          v-if="trading.isLoading.value"
+          loading
+          disabled
+          :loadingLabel="
+            trading.isGnosisTrade.value ? $t('loadingBestPrice') : $t('loading')
+          "
+          class="font-semibold"
+          block
+        />
+        <button
+          v-else-if="tokenInAmount == 0 && tokenOutAmount == 0 && account"
+          :disabled="true"
+          class="amount-button font-semibold"
+        >
+          Enter an amount
+        </button>
+        <button
+          v-else-if="account"
+          :disabled="false"
+          @click="handlePreviewButton"
+          class="swap-button text-[16px] font-semibold"
+        >
+          Swap
+        </button>
+        <button
+          v-else
+          class="connect-wallet font-semibold"
+          @click="startConnectWithInjectedProvider"
+        >
+          Connect Wallet
+        </button>
       </div>
 
       <div
@@ -92,14 +92,13 @@
         "
         class="stats"
       >
-        
         <div class="p-[16px]">
           <TradePreviewModalGP
             :trading="trading"
             @trade="trade"
             @close="handlePreviewModalClose"
           />
-          <div  />
+          <div />
           <div class=""><div class="mx-[8px] my-[22px] border"></div></div>
           <TradeRoute
             :addressIn="trading.tokenIn.value.address"
@@ -148,7 +147,7 @@ import { TOKENS } from '@/constants/tokens';
 import { lsGet } from '@/lib/utils';
 import { WrapType } from '@/lib/utils/balancer/wrapper';
 import { isRequired } from '@/lib/utils/validations';
-import { ApiErrorCodes } from '@/services/gnosis/errors/OperatorError';
+import { ApiErrorCodes } from '@/services/cowswap/errors/OperatorError';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import TradePair from './TradePair.vue';
@@ -472,23 +471,22 @@ export default defineComponent({
   content: '✍️';
 }
 
-
 .connect-wallet {
   padding: 10px 0px;
   gap: 12px;
   left: 12px;
   top: 226px;
-  line-height:24px;
-  background: #41365E;
+  line-height: 24px;
+  background: #41365e;
   border-radius: 12px;
-  color: #A99BC6;
+  color: #a99bc6;
   font-size: 20px;
   width: 100%;
 }
 
 .connect-wallet:hover {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
-  color:#ffffff;
+  color: #ffffff;
 }
 
 .connect-wallet:active {
@@ -505,15 +503,19 @@ export default defineComponent({
   gap: 12px;
   left: 10px;
 
-  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
   border-radius: 12px;
   width: 100%;
 }
 
 .swap-button:hover {
-  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  background: linear-gradient(
+    93.62deg,
+    rgba(192, 4, 254, 0.7) 2.98%,
+    rgba(126, 2, 245, 0.7) 97.02%
+  );
+  /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
   border-radius: 12px;
 }
 
@@ -526,8 +528,6 @@ export default defineComponent({
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   border-radius: 12px;
 }
-
-
 
 .price {
   font-weight: 500;
@@ -542,8 +542,7 @@ export default defineComponent({
 .stats {
   margin-top: 1em !important;
 }
-.border{
+.border {
   border: 0.5px solid rgba(59, 68, 189, 0.4);
 }
-
 </style>

@@ -12,8 +12,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./TelegramIcon.svg'),
-      hoveredPicture: require('./HoveredTelegramIcon.svg'),
+      picture: import('./TelegramIcon.svg'),
+      hoveredPicture: import('./HoveredTelegramIcon.svg'),
       hover: false,
     };
   },

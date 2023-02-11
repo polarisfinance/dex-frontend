@@ -74,7 +74,7 @@ import { useStore } from 'vuex';
 
 import useEthereumTxType from '@/composables/useEthereumTxType';
 import { ethereumTxTypeOptions } from '@/constants/options';
-import { GP_SUPPORTED_NETWORKS } from '@/services/gnosis/constants';
+import { COW_SUPPORTED_NETWORKS } from '@/services/cowswap/constants';
 import useWeb3 from '@/services/web3/useWeb3';
 import {
   getConnectorLogo,
@@ -152,8 +152,8 @@ export default defineComponent({
       getConnectorLogo(connector.value?.id, provider.value)
     );
     const hideDisconnect = computed(() => connector.value?.id == 'gnosis');
-    const isGnosisSupportedNetwork = computed(() =>
-      GP_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId)
+    const isCowswapSupportedNetwork = computed(() =>
+      COW_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId)
     );
 
     // METHODS
@@ -183,7 +183,7 @@ export default defineComponent({
       connectorLogo,
       hideDisconnect,
       isEIP1559SupportedNetwork,
-      isGnosisSupportedNetwork,
+      isCowswapSupportedNetwork,
       isUnsupportedNetwork,
       // methods
       disconnectWallet,

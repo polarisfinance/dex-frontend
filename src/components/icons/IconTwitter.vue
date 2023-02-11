@@ -12,8 +12,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./TwitterIcon.svg'),
-      hoveredPicture: require('./HoveredTwitterIcon.svg'),
+      picture: import('./TwitterIcon.svg'),
+      hoveredPicture: import('./HoveredTwitterIcon.svg'),
       hover: false,
     };
   },

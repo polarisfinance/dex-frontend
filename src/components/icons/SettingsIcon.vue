@@ -14,8 +14,8 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./SettingsIcon.svg'),
-      hoveredPicture: require('./HoveredSettingsIcon.svg'),
+      picture: import('./SettingsIcon.svg'),
+      hoveredPicture: import('./HoveredSettingsIcon.svg'),
       hover: false,
     };
   },

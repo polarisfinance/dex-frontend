@@ -7,12 +7,12 @@ import { useI18n } from 'vue-i18n';
 import LS_KEYS from '@/constants/local-storage.keys';
 import { lsGet, lsSet } from '@/lib/utils';
 import { configService } from '@/services/config/config.service';
-import { gnosisExplorer } from '@/services/gnosis/explorer.service';
-import { gnosisProtocolService } from '@/services/gnosis/gnosisProtocol.service';
-import { OrderMetaData } from '@/services/gnosis/types';
+import { cowswapExplorer } from '@/services/cowswap/explorer.service';
+import { cowswapProtocolService } from '@/services/cowswap/cowswapProtocol.service';
+import { OrderMetaData } from '@/services/cowswap/types';
 import useWeb3 from '@/services/web3/useWeb3';
 
-import { GnosisTransactionDetails } from './trade/useGnosis';
+import { GnosisTransactionDetails } from './trade/useCowswap';
 import { processedTxs } from './useEthers';
 import useNotifications from './useNotifications';
 import useNumbers, { FNumFormats } from './useNumbers';
@@ -378,7 +378,7 @@ export default function useTransactions() {
   }
 
   function checkOrderActivity(transaction: Transaction) {
-    gnosisProtocolService
+    cowswapProtocolService
       .getOrder(transaction.id)
       .then(order => {
         console.log(order);
@@ -436,7 +436,7 @@ export default function useTransactions() {
     if (type === 'tx') {
       return explorerLinks.txLink(id);
     }
-    return gnosisExplorer.orderLink(id);
+    return cowswapExplorer.orderLink(id);
   }
 
   return {
