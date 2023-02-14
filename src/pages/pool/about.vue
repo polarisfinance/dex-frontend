@@ -50,7 +50,7 @@ export default defineComponent({
     });
     const poolAddress = computed(() => {
       if (pool.value?.id) {
-        return shortenLabel(pool.value.id);
+        return shortenLabel(pool.value.address);
       }
       return '';
     });
@@ -65,7 +65,7 @@ export default defineComponent({
     });
     const poolAddressLink = computed(() => {
       if (pool.value?.id) {
-        return explorer.addressLink(pool.value.id);
+        return explorer.addressLink(pool.value.address);
       }
       return '';
     });
