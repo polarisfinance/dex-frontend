@@ -159,7 +159,6 @@ export default defineComponent({
   },
   methods: {
     setActiveStep(step){
-      alert(step+' vs '+steps.length);
       if(step!=steps.length)
         this.activeStep = step;
     },

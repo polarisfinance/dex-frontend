@@ -89,9 +89,14 @@ export default defineComponent({
     const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
     const { txListener } = useEthers();
     const isStakeModalVisible = ref(false);
+    const isUnstakeModalVisible = ref(false);
 
     const toggleStakeModal = (value?: boolean) => {
       isStakeModalVisible.value = value ?? !isStakeModalVisible.value;
+    };
+
+    const toggleUnstakeModal = (value?: boolean) => {
+      isUnstakeModalVisible.value = value ?? !isUnstakeModalVisible.value;
     };
 
     /**
@@ -269,6 +274,8 @@ export default defineComponent({
       dailyEarnings,
       toggleStakeModal,
       isStakeModalVisible,
+      toggleUnstakeModal,
+      isUnstakeModalVisible,
     };
   },
   created() {},
@@ -336,7 +343,17 @@ export default defineComponent({
           </div>
           <div class="my-panel flex flex-1 pl-[24px] py-8" :class="{'flex-col items-center':isMobile}">
             <div class="pool-invest flex-1 text-center">
-              Unstake and withdraw your position
+              Unstake your LP tokens
+              <button
+                class="withdraw-btn flex items-center w-full"
+                @click="toggleUnstakeModal()"
+              >
+                <div class="w-full text-center">Unstake</div>
+                
+            </button>
+            </div>
+            <div class="pool-invest flex-1 text-center">
+              Withdraw your position
               <router-link
                 class="withdraw-btn flex items-center"
                 :to="'/pool/' + pool?.id + '/withdraw'"
@@ -366,6 +383,14 @@ export default defineComponent({
       :balance="balanceFor(pool.address)"
       :address="pool.address"
       @close="toggleStakeModal"
+    />
+    <StakeModal
+      :depositBol="false"
+      :isVisible="isUnstakeModalVisible"
+      :token="``"
+      :balance="balanceFor(pool.address)"
+      :address="pool.address"
+      @close="toggleUnstakeModal"
     />
 </template>
 
