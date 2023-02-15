@@ -11,7 +11,7 @@ export default function useStakingIncentives(
   account: string,
   lpAddress: string
 ) {
-  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
   const contract = new Contract(xpolarPool, xpolarABI, w3);
 
   const isApproved = async () => {

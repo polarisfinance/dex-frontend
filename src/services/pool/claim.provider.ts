@@ -107,7 +107,7 @@ export class ClaimProviderService {
       return { pool: pool, approved: approval, stakedBalance: 0, xpolarToClaim: "" };
 
     
-    const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+    const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
 
     const xpolarRewardPoolAddress =
       '0x140e8a21d08CbB530929b012581a7C7e696145eF';

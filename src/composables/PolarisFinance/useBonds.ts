@@ -19,7 +19,7 @@ import { treasuryABI, polarTreasuryABI } from './ABI';
 import { TokenAmount } from '@trisolaris/sdk';
 
 export default function useBonds(account: string, tokenName: string) {
-  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
   const bondAddress = bondNameToAddress[tokenName];
   const tokenAddress = tokenNameToAddress[tokenName];
   const treasuryAddress = treasuryNameToAddress[tokenName];

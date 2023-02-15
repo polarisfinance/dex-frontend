@@ -270,13 +270,10 @@ function findCommonElements3(arr1, arr2) {
   }
   return true;
 }
-function poolAssetBackImage(type:String){
-  if(type=='seigniorage')
-    return seigniorageAssetBackImg;
-  if(type=='classic')
-    return classicAssetBackImg;
-  if(type=='community')
-    return communityAssetBackImg;
+function poolAssetBackImage(type: String) {
+  if (type == 'seigniorage') return seigniorageAssetBackImg;
+  if (type == 'classic') return classicAssetBackImg;
+  if (type == 'community') return communityAssetBackImg;
 }
 function selected(pool) {
   let found = true;
@@ -322,11 +319,10 @@ import usePoolQuery from '@/composables/queries/usePoolQuery';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 
-import {AprProviderService} from '@/services/pool/apr.provider';
+import { AprProviderService } from '@/services/pool/apr.provider';
 
 export default defineComponent({
   data() {
-    
     return {
       xpolarPoolQuery: usePoolQuery(
         '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
@@ -390,13 +386,13 @@ export default defineComponent({
         this.xpolarPoolQuery
       );
       aprProviderClass.init();
-      aprProviderClass.aprsReceived = (aprs:any)=>{
+      aprProviderClass.aprsReceived = (aprs: any) => {
         this.aprs = aprs;
-      }
+      };
       aprProviderClass.fetchAll();
     },
     /*async fetch(pool) {
-      const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+      const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
 
       const xpolarRewardPoolAddress =
         '0x140e8a21d08CbB530929b012581a7C7e696145eF';
@@ -556,7 +552,7 @@ export default defineComponent({
       </div>
       <div class="w-full justify-end text-right">TVL & APR</div>
     </div>
-    <div class="mt-[12px] border w-full" />
+    <div class="mt-[12px] w-full border" />
     <div
       class="flex w-full items-center"
       v-for="(pool, idx) in data"
@@ -650,15 +646,19 @@ export default defineComponent({
     <div class="table-title mt-[48px] flex w-full">
       <div class="grid-table">
         <div class="pool-header">
-          <div class="heading h-4 ">
-            <div> <img v-if="img" 
-                  width="24"
-                  height="14"
-                  class="pool-icon inline-block mr-2"
-                  :src="img"
-                /> {{ title }}</div>
+          <div class="heading h-4">
+            <div>
+              <img
+                v-if="img"
+                width="24"
+                height="14"
+                class="pool-icon mr-2 inline-block"
+                :src="img"
+              />
+              {{ title }}
+            </div>
           </div>
-          <div class="h-4 text-right mr-[65px]">APR</div>
+          <div class="mr-[65px] h-4 text-right">APR</div>
           <div class="h-4 text-right">Liquidity</div>
           <div class="h-4 text-right">Volume (24h)</div>
         </div>
@@ -666,13 +666,10 @@ export default defineComponent({
 
         <div class="border"></div>
 
-        <template
-          v-for="(pool, idx) in data"
-          :key="idx"
-        >
+        <template v-for="(pool, idx) in data" :key="idx">
           <router-link
             :to="'/pool/' + pool.id"
-            class="my-[18px] flex w-full items-center pool-row"
+            class="pool-row my-[18px] flex w-full items-center"
             v-if="selected(pool)"
           >
             <div class="flex w-full items-center">
@@ -686,7 +683,8 @@ export default defineComponent({
                 {{ POOLS.Metadata[pool.id].name }}
               </div>
               <div v-else class="flex">
-                <TokenPills class="token-pill"
+                <TokenPills
+                  class="token-pill"
                   :tokens="
                     orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
                   "
@@ -694,14 +692,17 @@ export default defineComponent({
                   :selectedTokens="selectedTokens"
                   :showWeight="false"
                 />
-                <TokenWeightPill class="ml-[12px]"
-                  :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)"
+                <TokenWeightPill
+                  class="ml-[12px]"
+                  :tokens="
+                    orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
+                  "
                   :boosted="pool.boost"
                 />
               </div>
             </div>
-          
-            <div class="apr flex items-center justify-end" >
+
+            <div class="apr flex items-center justify-end">
               <template v-if="noApr">
                 <div>{{ '0' + '%' }}</div>
               </template>
@@ -711,7 +712,6 @@ export default defineComponent({
                   !aprs[pool.address] ||
                   !aprs[pool.address]['yearlyAPR']
                 "
-                
               />
               <template v-else>
                 <div>
@@ -719,9 +719,7 @@ export default defineComponent({
                 </div>
                 <div class="daily pt-1">
                   <template v-if="noApr">
-                    <div>
-                      {{ '0' + '%' }} Daily
-                    </div>
+                    <div>{{ '0' + '%' }} Daily</div>
                   </template>
                   <BalLoadingBlock
                     v-else-if="
@@ -731,12 +729,12 @@ export default defineComponent({
                     "
                   />
                   <template v-else>
-                      {{ aprs[pool.address]['dailyAPR'] + '%' }} Daily
+                    {{ aprs[pool.address]['dailyAPR'] + '%' }} Daily
                   </template>
                 </div>
               </template>
             </div>
-            <div class="flex items-center self-center liq">
+            <div class="liq flex items-center self-center">
               <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
               <span v-else class="h-4 w-full text-right">
                 {{
@@ -747,7 +745,7 @@ export default defineComponent({
                 }}
               </span>
             </div>
-            <div  class="flex items-center self-center vol">
+            <div class="vol flex items-center self-center">
               <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
               <span v-else class="h-4 w-full text-right">
                 {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}
@@ -768,7 +766,6 @@ export default defineComponent({
         </template>
       </div>
     </div>
-    
   </div>
   <!-- <BalCard
     shadow="lg"
@@ -891,7 +888,7 @@ export default defineComponent({
 
 <style scoped>
 .pool-table {
-  padding-top:0px;
+  padding-top: 0px;
 
   font-weight: 600;
   font-size: 20px;
@@ -899,10 +896,7 @@ export default defineComponent({
   color: #ffffff;
 }
 
-
-
 .pool-table-mobile {
-
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
@@ -917,7 +911,7 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 
-  color: rgba(189, 178, 221, 1)
+  color: rgba(189, 178, 221, 1);
 }
 
 .grid {
@@ -933,60 +927,66 @@ export default defineComponent({
   color: rgba(253, 253, 253, 1);
 }
 
-.border{
+.border {
   grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
   margin-bottom: 24px;
 }
-.pool-row, .pool-header{
+.pool-row,
+.pool-header {
   display: contents;
 }
-.pool-row > div, .pool-header > div{
+.pool-row > div,
+.pool-header > div {
   height: 100%;
-  padding:12px 0px;
+  padding: 12px 0px;
 }
-.pool-header > div{
-  color: #BDB2DD;
+.pool-header > div {
+  color: #bdb2dd;
   padding-bottom: 24px;
 }
-.pool-header > div:first-child, .pool-row > div:first-child{
+.pool-header > div:first-child,
+.pool-row > div:first-child {
   padding-left: 24px;
 }
-.pool-header > div:last-child, .pool-row > div:last-child{
+.pool-header > div:last-child,
+.pool-row > div:last-child {
   padding-right: 24px;
 }
 .pool-row:hover > div {
   background-color: #292043;
 }
 .pool-row:hover > div:first-child {
-  border-bottom-left-radius:48px;
-  border-top-left-radius:48px;
+  border-bottom-left-radius: 48px;
+  border-top-left-radius: 48px;
 }
 .pool-row:hover > div:last-child {
-  border-bottom-right-radius:48px;
-  border-top-right-radius:48px;
+  border-bottom-right-radius: 48px;
+  border-top-right-radius: 48px;
 }
 .tvl {
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
 
-  color: rgba(189, 178, 221, 1)
+  color: rgba(189, 178, 221, 1);
 }
 
-.apr, .liq, .vol {
+.apr,
+.liq,
+.vol {
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
 }
-.daily{
-  color: #BDB2DD;
+.daily {
+  color: #bdb2dd;
   font-weight: 700;
   font-size: 12px;
   line-height: 14px;
   padding-left: 12px;
 }
-.token-pill{
+.token-pill {
   margin-top: 0px;
   font-weight: 600;
   font-size: 20px;

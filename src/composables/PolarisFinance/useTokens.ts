@@ -12,7 +12,7 @@ import { Network } from '@balancer-labs/sdk';
 export default function useTokens() {
   const w3 = new Web3(config.rpc);
   
-  const provider = rpcProviderService.getJsonProvider(Network.AURORA);
+  const provider = rpcProviderService.getJsonProvider(Network.AURORATEST);
   
   const getSpolarBalance = async (account: string) => {
     const spolarContract = new Contract(SPOLAR, spolarABI, provider);

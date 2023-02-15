@@ -1,0 +1,87 @@
+{
+  "key": "1313161555",
+  "chainId": 1313161555,
+  "chainName": "Aurora",
+  "name": "Aurora Testnet",
+  "shortName": "Aurora",
+  "network": "homestead",
+  "portisNetwork": "aurora",
+  "unknown": false,
+  "rpc": "https://testnet.aurora.dev",
+  "publicRpc": "https://testnet.aurora.dev",
+  "ws": "wss://testnet.aurora.dev",
+  "loggingRpc": "https://testnet.aurora.dev",
+  "explorer": "https://aurorascan.dev",
+  "explorerName": "Aurorascan",
+  "subgraph": "https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-dex-testnet",
+  "poolsUrlV2": "",
+  "subgraphs": {
+    "aave": "",
+    "gauge": "https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-gauges-arbitrum"
+  },
+  "supportsEIP1559": true,
+  "supportsElementPools": true,
+  "nativeAsset": {
+    "name": "Ether",
+    "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+    "symbol": "ETH",
+    "decimals": 18,
+    "deeplinkId": "ether",
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+    "minTransactionBuffer": "0.001"
+  },
+  "addresses": {
+    "bFactory": "",
+    "bActions": "",
+    "dsProxyRegistry": "",
+    "merkleRedeem": "",
+    "merkleOrchard": "",
+    "multicall": "0x7afd06811120462e86dbd41554445928C7AFBCAD",
+    "authorizer": "0x3a4773e600086A753862621A26a2E3274610da43",
+    "vault": "0x8563a92E4E5960A489E614a7F369F57586B48AB0",
+    "weightedPoolFactory": "0x6C13F3df404855a3a3E9aAB5bdf22a1c13962bfC",
+    "stablePoolFactory": "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729",
+    "tokenFactory": "",
+    "weth": "0x8886e7a8883e9a40b30bd4e16e0e25c2c3f29cd8",
+    "stETH": "",
+    "wstETH": "",
+    "lidoRelayer": "",
+    "MockFlashLoanReceiver": "",
+    "balancerHelpers": "0x57642e05Be5951Ef344d10867Cb2172BeE43b21f",
+    "batchRelayer": "0x9Ff7C3a8cb7cf8E3bdeF2701d38F1a1abB4a2618",
+    "veBAL": "",
+    "gaugeController": "",
+    "gaugeFactory": "",
+    "balancerMinter": "",
+    "tokenAdmin": "",
+    "veDelegationProxy": "",
+    "veBALHelpers": "",
+    "feeDistributor": "",
+    "feeDistributorDeprecated": "",
+    "faucet": "",
+    "pNear": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+    "pStnear": "0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465"
+  },
+  "keys": {
+    "infura": "daaa68ec242643719749dd1caba2fc66",
+    "alchemy": "cQGZUiTLRCFsQS7kbRxPJK4eH4fTTu88"
+  },
+  "strategies": {
+    "0": {
+      "type": "0",
+      "name": "stablePool"
+    },
+    "1": {
+      "type": "1",
+      "name": "weightedPool"
+    },
+    "2": {
+      "type": "2",
+      "name": "weightedPool"
+    }
+  },
+  "gauges": {
+    "type": 2,
+    "weight": 100
+  }
+}

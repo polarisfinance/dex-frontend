@@ -182,6 +182,19 @@ export const TOKENS_AURORA: TokenConstants = {
   PriceChainMap: {},
 };
 
+export const TOKENS_AURORATEST: TokenConstants = {
+  Popular: {
+    Symbols: ['WBTC', 'DAI', 'USDC', 'WETH'],
+  },
+  Addresses: {
+    nativeAsset: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    wNativeAsset: '0x8886e7a8883e9a40b30bd4e16e0e25c2c3f29cd8',
+    WETH: '0x8886e7a8883e9a40b30bd4e16e0e25c2c3f29cd8',
+    BAL: '0x0000000000000000000000000000000000000000',
+  },
+  PriceChainMap: {},
+};
+
 const TOKENS_MAP = {
   [Network.KOVAN]: TOKENS_KOVAN,
   [Network.GOERLI]: TOKENS_GOERLI,
@@ -189,6 +202,7 @@ const TOKENS_MAP = {
   [Network.POLYGON]: TOKENS_POLYGON,
   [Network.ARBITRUM]: TOKENS_ARBITRUM,
   [Network.AURORA]: TOKENS_AURORA,
+  [Network.AURORATEST]: TOKENS_AURORATEST,
 };
 
 export const TOKENS: TokenConstants = TOKENS_MAP[networkId.value]

@@ -9,7 +9,7 @@ import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service
 import { Network } from '@balancer-labs/sdk';
 
 export default function useTreasury(treasuryName) {
-  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
 
   const treasuryAddress = treasuryNameToAddress[treasuryName];
 

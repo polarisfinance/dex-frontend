@@ -65,7 +65,7 @@ export class AprProviderService {
   }
 
   private async fetch(pool: PoolWithShares | Pool) {
-    const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+    const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
 
     const xpolarRewardPool = new Contract(
       this.xpolarRewardPoolAddress,

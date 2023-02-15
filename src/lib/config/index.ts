@@ -9,6 +9,7 @@ import kovan from './kovan.json';
 import polygon from './polygon.json';
 import rinkeby from './rinkeby.json';
 import test from './test.json';
+import auroraTestnet from './auroraTestnet.json';
 
 export interface Config {
   key: string;
@@ -93,6 +94,7 @@ const config: Record<Network | number, Config> = {
   [Network.POLYGON]: polygon,
   [Network.ARBITRUM]: arbitrum,
   [Network.AURORA]: aurora,
+  [Network.AURORATEST]: auroraTestnet,
   12345: test,
   // @ts-ignore
   17: docker,

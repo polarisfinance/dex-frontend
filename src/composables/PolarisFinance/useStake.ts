@@ -30,7 +30,7 @@ import BigNumberJs from 'bignumber.js';
 import prices from '@/providers/tokens.provider';
 
 export default function useStake() {
-  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
 
   const xpolarRewardPoolAddress = '0x140e8a21d08CbB530929b012581a7C7e696145eF';
   const xpolarRewardPool = new Contract(

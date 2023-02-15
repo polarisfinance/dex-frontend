@@ -30,7 +30,7 @@ import merkleTree from './merkletree.json';
 // }
 
 export default function useAirdrop() {
-  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
   const airdropAddress = '0x904176c19Ae063aE35bcB9Ae67bAaE08aeE962a3';
 
   const airdropContract = new Contract(airdropAddress, airdropABI, w3);

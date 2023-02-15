@@ -37,7 +37,7 @@ export default class Web3Service {
     private readonly config: ConfigService = configService
   ) {
     this.appProvider = this.rpcProviderService.jsonProvider;
-    this.ensProvider = this.rpcProviderService.getJsonProvider(Network.AURORA);
+    this.ensProvider = this.rpcProviderService.getJsonProvider(Network.AURORATEST);
   }
 
   public setUserProvider(provider: ComputedRef<Web3Provider>) {

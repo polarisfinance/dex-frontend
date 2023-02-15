@@ -24,7 +24,7 @@ import { computed } from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 
 export default function useSunrise(sunriseName) {
-  const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
+  const w3 = rpcProviderService.getJsonProvider(Network.AURORATEST);
 
   const sunriseAddress = sunriseNameToAddress[sunriseName];
   const spolarContract = new Contract(SPOLAR, spolarABI, w3);
