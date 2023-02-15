@@ -363,7 +363,7 @@ async function claimXpolar(address) {
         </div>
     </template>
   </div>
-  <div class="buttons-panel flex text-center" :class="{'flex-wrap':isMobile}" v-if="account">
+  <div class="buttons-panel flex text-center" :class="{'flex-wrap':isMobile}" >
     <div class="pool-invest flex-1" v-if="isDesktop">
       Invest in the pool and earn on swap fees!
       <router-link
