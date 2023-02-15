@@ -135,7 +135,6 @@ export default defineComponent({
       return Math.round(perc * 1000) / 1000;
     });
 
-
     function symbolFor(address: string) {
       if (!props.pool) return '-';
       const symbol = props.pool?.onchain?.tokens?.[address]?.symbol;
@@ -286,12 +285,21 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container mx-auto" id="dashboard" :class="{' mb-[20px]':isMobile,'mb-[95px]':isDesktop}">
+  <div
+    class="container mx-auto"
+    id="dashboard"
+    :class="{ ' mb-[20px]': isMobile, 'mb-[95px]': isDesktop }"
+  >
     <div class="card flex flex-wrap">
       <div class="stats" v-if="isDesktop">
         <h3>My dashboard</h3>
         <div class="break"></div>
-        <PoolUserStats :pool="pool" :xpolarToClaim="xpolarToClaim" :dailyAPR="dailyAPR" :stakedBalance="stakedBalance"  />
+        <PoolUserStats
+          :pool="pool"
+          :xpolarToClaim="xpolarToClaim"
+          :dailyAPR="dailyAPR"
+          :stakedBalance="stakedBalance"
+        />
       </div>
       <div class="m-[24px] flex flex-1 flex-col justify-center">
         <div class="mt-5 w-full text-center" v-if="loading">Loading...</div>
@@ -338,19 +346,27 @@ export default defineComponent({
             </div>
             <div class="progress-perc text-right">
               {{ stakedPerc * 100 }}% of your LP tokens staked
-              <button v-if="stakedPerc<1" class="stake-btn inline ml-2" @click="toggleStakeModal()">Stake the rest</button>
+              <button
+                v-if="stakedPerc < 1"
+                class="stake-btn ml-2 inline"
+                @click="toggleStakeModal()"
+              >
+                Stake the rest
+              </button>
             </div>
           </div>
-          <div class="my-panel flex flex-1 pl-[24px] py-8" :class="{'flex-col items-center':isMobile}">
+          <div
+            class="my-panel flex flex-1 py-8 pl-[24px]"
+            :class="{ 'flex-col items-center': isMobile }"
+          >
             <div class="pool-invest flex-1 text-center">
               Unstake your LP tokens
               <button
-                class="withdraw-btn flex items-center w-full"
+                class="withdraw-btn flex w-full items-center"
                 @click="toggleUnstakeModal()"
               >
                 <div class="w-full text-center">Unstake</div>
-                
-            </button>
+              </button>
             </div>
             <div class="pool-invest flex-1 text-center">
               Withdraw your position
@@ -361,7 +377,10 @@ export default defineComponent({
                 <div class="w-full text-center">Withdraw</div>
               </router-link>
             </div>
-            <div class="pool-invest flex-1 text-center" :class="{'mt-8':isMobile}">
+            <div
+              class="pool-invest flex-1 text-center"
+              :class="{ 'mt-8': isMobile }"
+            >
               You can claim in any time
               <button
                 class="claim-btn block flex w-full items-center"
@@ -377,21 +396,21 @@ export default defineComponent({
     </div>
   </div>
   <StakeModal
-      :depositBol="true"
-      :isVisible="isStakeModalVisible"
-      :token="``"
-      :balance="balanceFor(pool.address)"
-      :address="pool.address"
-      @close="toggleStakeModal"
-    />
-    <StakeModal
-      :depositBol="false"
-      :isVisible="isUnstakeModalVisible"
-      :token="``"
-      :balance="balanceFor(pool.address)"
-      :address="pool.address"
-      @close="toggleUnstakeModal"
-    />
+    :depositBol="true"
+    :isVisible="isStakeModalVisible"
+    :token="``"
+    :balance="balanceFor(pool.address)"
+    :address="pool.address"
+    @close="toggleStakeModal"
+  />
+  <StakeModal
+    :depositBol="false"
+    :isVisible="isUnstakeModalVisible"
+    :token="``"
+    :balance="stakedBalance"
+    :address="pool.address"
+    @close="toggleUnstakeModal"
+  />
 </template>
 
 <style scoped>
@@ -595,11 +614,11 @@ h3 {
   line-height: 18px;
   color: #bdb2dd;
 }
-.stake-btn{
+.stake-btn {
   margin-right: 8px;
   padding: 1px 7px;
   gap: 10px;
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 20px;
   font-style: normal;
   font-weight: 600;
