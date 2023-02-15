@@ -34,7 +34,7 @@ export default function useAirdrop() {
   const airdropAddress = '0x1ad14bbF3D38BDA4D0F7Fbe75892F1130f896F0F';
 
   const airdropContract = new Contract(airdropAddress, airdropABI, w3);
-  const startTime = BigNumber.from(1675116000);
+  const startTime = BigNumber.from(1676581200);
 
   const getPendingShare = async (account: string) => {
     if (startTime.gt(BigNumber.from(Math.floor(Date.now() / 1000)))) {
