@@ -30,16 +30,17 @@ export default defineComponent({
 
     const totalProgress = ref(1);
 
-    const startDay: Date = new Date(1675116000 * 1000);
+    const startDay: Date = new Date(1676581200 * 1000);
     const today: Date = new Date();
     const diffTime = Math.abs((startDay as any) - (today as any));
     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
     diffDays = diffDays > 60 ? 60 : diffDays;
     const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
     const diffDaysReverse = 60 - diffDays;
-
-    //const vestedAll = ((diffTime / 1000) * 0.0385802469).toFixed(0);
-    const vestedAll = '0';
+    const vestedAll = (
+      ((startDay > today ? 0 : diffTime) / 1000) *
+      0.0385802469
+    ).toFixed(0);
 
     const { account, getProvider } = useWeb3();
 
@@ -77,9 +78,9 @@ export default defineComponent({
       this.vested = await getVested(this.account);
       this.pendingShare = await getPendingShare(this.account);
       this.totalShares = await totalShares(this.account);
-      // if (Number(this.pendingShare) > 0) {
-      //   this.claimDisable = false;
-      // }
+      if (Number(this.pendingShare) > 0) {
+        this.claimDisable = false;
+      }
     },
     async claim() {
       const { claim } = useAirdrop();
