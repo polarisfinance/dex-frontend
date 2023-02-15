@@ -441,14 +441,12 @@ async function claimXpolar(address) {
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-
   padding: 12px 20px;
   margin: 12px auto 0px auto;
   max-width: 520px;
-}
-.invest-btn {
   background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   color: #fdfdfd;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
 }
 .goto-btn {
   background: #50456e;
