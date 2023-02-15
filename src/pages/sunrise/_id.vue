@@ -12,7 +12,7 @@
     <img src="./alert.svg" class="mr-[12px]" />
     <div>
       As we are in recovery mode, it is important to not sell your reward.
-      Please stake your {{ sunrise.name.toUpperCase() }} in the DAWN single
+      Please stake your {{ sunrise.name.toUpperCase() }} in the EARN single
       stake.
     </div>
   </div>
@@ -504,11 +504,11 @@ export default defineComponent({
   font-size: 84px;
   line-height: 104px;
   text-align: center;
-  margin:100px auto;
+  margin: 100px auto;
 }
 
 .sunrise-subtitle-text {
-  color: #BDB2DD;
+  color: #bdb2dd;
   font-weight: 400;
   font-size: 36px;
   line-height: 42px;

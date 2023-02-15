@@ -29,7 +29,7 @@ function isActive(page: string): boolean {
       {{ $t('Swap') }}
     </DesktopLinkItem>
     <DesktopLinkItem to="/" :active="isActive('home')">
-      {{ $t('Dawn') }}
+      {{ $t('Earn') }}
     </DesktopLinkItem>
     <!-- <DesktopLinkItem v-if="isGoerli" to="/faucet" :active="isActive('faucet')">
       Faucet

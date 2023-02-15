@@ -51,7 +51,7 @@ const blockIcon = ref<HTMLDivElement>();
 
 const navLinks = [
   { label: t('swap'), path: '/trade', img: swapImg },
-  { label: 'Dawn', path: '/', img: investImg },
+  { label: 'Earn', path: '/', img: investImg },
   { label: 'Sunrise', path: '/sunrise', img: investImg },
   { label: 'Bond', path: '/bond', img: investImg },
   // { label: t('portfolio'), path: '/vebal', img: portfolioImg },
