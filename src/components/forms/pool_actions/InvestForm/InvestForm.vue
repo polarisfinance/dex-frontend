@@ -271,7 +271,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         :description="$t('investment.warning.lowLiquidity.description')"
         class="mb-4"
       />
-      <div class="tokens mx-[24px]">
+      <div class="tokens mx-[24px] mt-[12px]">
       <TokenInput
         v-for="(n, i) in tokenAddresses.length"
         :key="i"

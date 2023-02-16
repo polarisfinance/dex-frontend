@@ -194,7 +194,8 @@ export default defineComponent({
       return (1/(steps.length-1) *(this.activeStep-1))+0.05;
     },
     goBack(){
-      this.setActiveStep(this.activeStep-1);
+      if(this.activeStep!=1)
+        this.setActiveStep(this.activeStep-1);
     },
     async approvePool() {
       const { approve } = useStake();
@@ -240,9 +241,9 @@ export default defineComponent({
           <div class=" mt-[40px] w-full items-center self-center">
             <div class="steps flex justify-between ">
               <template v-for="step in steps">
-                <button @click="setActiveStep(step.step)">
-                  <TickIcon v-if="step.step<activeStep || activeStep==steps.length" class="inline mr-1"/>
-                  <QuestionIcon v-else class="inline mr-1"/>
+                <button @click="setActiveStep(step.step)" class="self-start">
+                  <TickIcon v-if="step.step<activeStep || activeStep==steps.length" class="" :class="{'block mx-auto':isMobile,'mr-1 inline':isDesktop}"/>
+                  <QuestionIcon v-else class="" :class="{'block mx-auto':isMobile,'mr-1 inline':isDesktop}"/>
                   
                   {{step.button}}</button>
               </template>
