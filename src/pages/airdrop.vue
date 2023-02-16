@@ -78,9 +78,9 @@ export default defineComponent({
       this.vested = await getVested(this.account);
       this.pendingShare = await getPendingShare(this.account);
       this.totalShares = await totalShares(this.account);
-      if (Number(this.pendingShare) > 0) {
-        this.claimDisable = false;
-      }
+      // if (Number(this.pendingShare) > 0) {
+      //   this.claimDisable = false;
+      // }
     },
     async claim() {
       const { claim } = useAirdrop();
