@@ -139,7 +139,7 @@ onMounted(() => {
           </span>
         </slot>
       </div>
-      <div class="input-group" :class="{'mb-[40px]':!isWalletReady}">
+      <div class="input-group flex-wrap" :class="{'mb-[40px]':!isWalletReady}">
         <div v-if="$slots.prepend" :class="['prepend', prependClasses]">
           <slot name="prepend" />
         </div>
@@ -150,7 +150,7 @@ onMounted(() => {
           :value="modelValue"
           v-bind="inputAttrs"
           :disabled="disabled"
-          :class="['input', inputClasses]"
+          :class="['input flex-1', inputClasses]"
           @blur="onBlur"
           @input="onInput"
           @keydown="onKeydown"
@@ -184,7 +184,7 @@ onMounted(() => {
 }
 
 .input-group {
-  @apply flex pl-[12px] pt-[16px] pr-[16px];
+  @apply flex pt-[16px];/* pl-[12px] pr-[16px];*/
 }
 
 .input {

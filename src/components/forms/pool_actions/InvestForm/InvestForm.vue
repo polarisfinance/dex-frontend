@@ -271,7 +271,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         :description="$t('investment.warning.lowLiquidity.description')"
         class="mb-4"
       />
-      <div class="tokens mx-[24px]">
+      <div class="tokens mx-[24px] mt-[12px]">
       <TokenInput
         v-for="(n, i) in tokenAddresses.length"
         :key="i"
@@ -299,7 +299,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 
         <div
           v-if="highPriceImpact"
-          class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
+          class="mt-4 px-6"
         >
           <BalCheckbox
             v-model="highPriceImpactAccepted"

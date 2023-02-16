@@ -145,7 +145,7 @@ watchEffect(() => {
 
 <template>
   <div>
-    <div style="background-color: #41365E;">
+    <div class="px-[12px]" style="background-color: #41365E;">
       <TokenInput
         :amount="_tokenInAmount"
         :address="_tokenInAddress"
@@ -168,7 +168,7 @@ watchEffect(() => {
         v-html="rateLabel"
       /> -->
     </div>
-    <div class="dark-back">
+    <div class="dark-back px-[12px]">
       <TokenInput
         :amount="_tokenOutAmount"
         :address="_tokenOutAddress"
