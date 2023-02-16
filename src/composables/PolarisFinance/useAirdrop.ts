@@ -31,10 +31,10 @@ import merkleTree from './merkletree.json';
 
 export default function useAirdrop() {
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
-  const airdropAddress = '0x1ad14bbF3D38BDA4D0F7Fbe75892F1130f896F0F';
+  const airdropAddress = '0x3F1F62b6363D11Bd90f2be776A74E0F0C26705D0';
 
   const airdropContract = new Contract(airdropAddress, airdropABI, w3);
-  const startTime = BigNumber.from(1676581200);
+  const startTime = BigNumber.from(1676667600);
 
   const getPendingShare = async (account: string) => {
     if (startTime.gt(BigNumber.from(Math.floor(Date.now() / 1000)))) {
