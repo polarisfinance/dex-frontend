@@ -32,7 +32,7 @@
             class="detail-link underline"
             :to="'/pool/' + pool?.id + '/about'"
           >
-            Pool details 
+            Pool details
             <img :src="arrow" class="ml-[12px] inline" />
           </router-link>
         </div>
@@ -71,10 +71,17 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto flex justify-center gap-8" :class="{'flex-wrap mt-[60px]':isMobile,'mt-[120px]':isDesktop}">
+  <div
+    class="container mx-auto flex justify-center gap-8"
+    :class="{ 'mt-[60px] flex-wrap': isMobile, 'mt-[120px]': isDesktop }"
+  >
     <PoolBalancesCard :pool="pool" :loading="loadingPool" />
   </div>
-  <div class="container mx-auto flex justify-center gap-8" v-if="account" :class="{' mt-[60px]':isMobile,'mt-[120px]':isDesktop}">
+  <div
+    class="container mx-auto flex justify-center gap-8"
+    v-if="account"
+    :class="{ ' mt-[60px]': isMobile, 'mt-[120px]': isDesktop }"
+  >
     <PoolUserDashboard
       v-if="Number(stakedBalance) > 0"
       :pool="pool"
@@ -503,7 +510,7 @@ export default defineComponent({
         Boolean(poolQuery.error.value)
     );
     const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
-    
+
     const {
       isStableLikePool,
       isLiquidityBootstrappingPool,
@@ -819,22 +826,23 @@ export default defineComponent({
       }
 
       const xpolarPool = this.xpolarPoolQuery?.data;
-    
+
       const xpolarBalance =
-      xpolarPool?.onchain?.tokens[
+        xpolarPool?.onchain?.tokens[
           '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
         ]?.balance;
       const nearBalance =
-      xpolarPool?.onchain?.tokens[
+        xpolarPool?.onchain?.tokens[
           '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
         ]?.balance;
       const nearPrice =
-      this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
+        this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
 
-      this.xpolarPrice =(Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *Number(nearPrice);
-      
+      this.xpolarPrice =
+        (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
+        Number(nearPrice);
+
       this.stakedBalance = await balance(poolAddress, this.account);
-
 
       // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
 

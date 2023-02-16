@@ -52,9 +52,7 @@ export default defineComponent({
     },
   },
   emits: ['click'],
-  methods: {
-    
-  },
+  methods: {},
   setup(props) {
     const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
     /**
@@ -91,6 +89,14 @@ export default defineComponent({
      * COMPUTED
      */
 
+    const tokenAddresses = computed((): string[] => {
+      if (isStablePhantomPool.value) {
+        // We're using mainToken balances for StablePhantom pools
+        // so return mainTokens here so that fiat values are correct.
+        return props.pool.mainTokens || [];
+      }
+      return props.pool.tokensList;
+    });
 
     /*
      * PoolBalances
@@ -105,7 +111,8 @@ export default defineComponent({
       'exit',
       ref(false)
     );
-
+    const bptBalance = computed((): string => balanceFor(props.pool.address));
+    console.log('bptBalance', props.pool.address);
     const propTokenAmounts = computed((): string[] => {
       const { receive } = poolCalculator.propAmountsGiven(
         bnum(totalTokens.value).toString(),
@@ -149,6 +156,12 @@ export default defineComponent({
 
     const dailyEarnings = Number(props.dailyAPR) * Number(props.stakedBalance);
 
+    function tokenWeightFor(address: string): string {
+      if (!props.pool) return '0';
+      const weight = props.pool?.onchain?.tokens?.[address]?.weight;
+      return weight ? (weight * 100).toString() : '0';
+    }
+
     /**
      * METHODS
      */
@@ -167,6 +180,8 @@ export default defineComponent({
       fiatLabelFor,
       totalTokens,
       dailyEarnings,
+      tokenAddresses,
+      tokenWeightFor,
     };
   },
   created() {},
@@ -179,15 +194,15 @@ export default defineComponent({
 <template>
   <div class="mt-[24px]">
     <div
-      v-for="(token, idx) in pool.tokens"
+      v-for="(address, idx) in tokenAddresses"
       :key="idx"
       class="my-[12px] flex"
     >
       <div class="flex flex-1">
-        <BalAsset :address="token.address" :size="33" class="mr-[12px]" />
+        <BalAsset :address="address" :size="33" class="mr-[12px]" />
         <div class="flex flex-col">
-          <div class="token">{{ symbolFor(token.address) }}</div>
-          <div>{{ token.weight * 100 }}%</div>
+          <div class="token">{{ symbolFor(address) }}</div>
+          <div>{{ tokenWeightFor(address) }}%</div>
         </div>
       </div>
       <div class="token-value flex flex-1 flex-col text-right">
@@ -199,7 +214,7 @@ export default defineComponent({
           }}
         </div>
         <div>
-          {{ isWalletReady ? fiatLabelFor(idx, token.address) : '-' }}
+          {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
         </div>
       </div>
     </div>
@@ -220,15 +235,11 @@ export default defineComponent({
 </template>
 
 <style scoped>
-
-
-
 .token-pill {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
 }
-
 
 .title {
   font-weight: 600;
@@ -247,8 +258,6 @@ export default defineComponent({
   line-height: 32px;
   padding-left: 40px;
 }
-
-
 
 .stats .token {
   font-weight: 600;
@@ -270,5 +279,4 @@ export default defineComponent({
   line-height: 20px;
   color: #fdfdfd;
 }
-
 </style>
