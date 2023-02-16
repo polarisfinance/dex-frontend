@@ -194,8 +194,12 @@ export default defineComponent({
       return (1/(steps.length-1) *(this.activeStep-1))+0.05;
     },
     goBack(){
-      if(this.activeStep!=1)
-        this.setActiveStep(this.activeStep-1);
+      if(this.isWalletReady && this.activeStep==2)
+        return;
+      if(!this.isWalletReady && this.activeStep==1)
+        return;
+
+      this.setActiveStep(this.activeStep-1);
     },
     async approvePool() {
       const { approve } = useStake();
