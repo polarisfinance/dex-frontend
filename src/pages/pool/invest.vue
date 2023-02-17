@@ -1,5 +1,5 @@
 <script lang="ts">
-import {ref, defineComponent,computed,toRef,toRefs,reactive,onBeforeMount} from 'vue';
+import {ref, defineComponent,computed,toRef,toRefs,reactive} from 'vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import { isStableLike, isStablePhantom, usePool } from '@/composables/usePool';
 import useInvestState from '@/components/forms/pool_actions/InvestForm/composables/useInvestState';
@@ -111,6 +111,7 @@ export default defineComponent({
 
     
     return {
+      id,
       account,
       transfersAllowed,
       sorReady,
@@ -140,9 +141,10 @@ export default defineComponent({
     const {isApproved} = useStake();
     const approval = await isApproved(this.pool?.address!, this.account);
     this.poolApproved = approval;
+    
 
   },
-  onBeforeMount(){
+  beforeMount(){
     if(this.isWalletReady && this.activeStep==1){
         this.activeStep=2;
     }
@@ -159,7 +161,7 @@ export default defineComponent({
   },
   methods: {
     setActiveStep(step){
-      if(step!=steps.length)
+      if(step<=steps.length)
         this.activeStep = step;
     },
     handleLPPreview(){
@@ -290,7 +292,7 @@ export default defineComponent({
                   </div>
                   <div class="flex-1 text-right">
                     <router-link
-                      :to="{ name: 'pool', params: { id: pool?.id } }"
+                      :to="{ name: 'pool', params: { id: id} }"
                       >
                       Exit <CloseIcon class="inline ml-[12px]"/>
                     </router-link>
@@ -335,7 +337,7 @@ export default defineComponent({
                           <h1 >Good job!</h1>
                           <h3>Now, you are earning!</h3>
                           <router-link class="exit inline-block mt-[20px]"
-                            :to="{ name: 'pool', params: { id: pool?.id } }"
+                            :to="{ name: 'pool', params: { id: id } }"
                             >
                             Return to pool
                           </router-link>
