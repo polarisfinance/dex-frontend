@@ -27,7 +27,7 @@ const classes = computed(() => ({
 <template>
   <AppHero :class="{'mt-[200px]':isDesktop,'mb-10':isMobile}" class="app-hero">
     <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
-    <h1 class="home-title mx-auto" :class="{'text-[84px] leading-[104px]':isDesktop,'text-[44px] leading-[50px]':isMobile}">Put your assests to work.</h1>
+    <h1 class="home-title mx-auto" :class="{'text-[84px] leading-[104px]':isDesktop,'text-[44px] leading-[50px]':isMobile}">Put your assets to work.</h1>
     <h1 class="home-subtitle max-w-md mx-auto mt-[32px]">Collect fees from pool and rebalance automatically.</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
       <div class="mt-[60px] flex w-full justify-center">
