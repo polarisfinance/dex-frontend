@@ -1,42 +1,7 @@
-<template>
-    <div class="stake-card flex flex-col mt-8">
-      <div class="flex available px-[22px] py-[22px]">
-        <div class="flex-1 flex flex-col">
-          <div class="main">LP Tokens to stake</div>
-          <div>Amount of available LP tokens on your wallet</div>
-        </div>
-        <div class="flex-1 text-right main">{{ balance }}</div>
-      </div>
-      <div class="flex total px-[12px] pb-[12px] pt-[22px] flex-col">
-        <div class="flex px-[10px]">
-          <div class="flex-1">Total to stake</div>
-          <div class="flex-1 text-right">
-            <input
-              ref="textInput"
-              class="bg-transparent total text-right inline"
-              v-model="inputValue"
-            />
-            <button
-              class="max inline"
-              @click="maxBalance"
-            >
-              MAX
-            </button>
-          </div>
-        </div>
-        <button class="confirm-btn mt-8  w-full" @click="deposit(inputValue)">
-          Confirm
-        </button>
-      </div>
-
-      
-    </div>
-</template>
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import X from '@/components/web3/x.vue';
 import useTokens from '../../composables/PolarisFinance/useTokens';
-import { useRoute } from 'vue-router';
 import useWeb3 from '@/services/web3/useWeb3';
 import useStake from '../../composables/PolarisFinance/useStake';
 import { parseFixed } from '@ethersproject/bignumber';
@@ -63,13 +28,13 @@ export default defineComponent({
     balance: { type: String, default: '0' },
     token: String,
     address: { type: String, default: '' },
+    
   },
   setup(props, { emit }) {
     const { getProvider } = useWeb3();
-    const route = useRoute();
     const { addTransaction } = useTransactions();
     const { txListener } = useEthers();
-
+    
     const txHandler = (tx: TransactionResponse): void => {
       addTransaction({
         id: tx.hash,
@@ -78,42 +43,97 @@ export default defineComponent({
         summary: 'deposit lp to xpolarRewardPool',
       });
     };
+    const address = props.address;
 
-    async function deposit(amount: string) {
-      const formatedAmount = parseFixed(amount, 18);
-      console.log(formatedAmount);
-      const { deposit } = useStake();
-      console.log(props.address);
-      const tx = await deposit(props.address, formatedAmount, getProvider());
-      txHandler(tx);
-      txListener(tx, {
-        onTxConfirmed: () => {
-          emit('close');
-          emit('stakeConfirmed');
-        },
-        onTxFailed: () => {},
-      });
-    }
 
     return {
-      deposit,
+      txHandler,
+      txListener,
+      getProvider,
+      emit,
     };
   },
 
   data() {
     return {
       inputValue: '0.0',
+      poolAddress:this.address,
+      confirming:false,
     };
+  },
+  computed:{
+    
   },
   methods: {
     maxBalance() {
       this.inputValue = this.balance;
+    },
+    async deposit(amount: string) {
+      const formatedAmount = parseFixed(amount, 18);
+      console.log(formatedAmount);
+      const { deposit } = useStake();
+      console.log(this.poolAddress);
+
+      this.confirming=true;
+      const tx = await deposit(this.poolAddress, formatedAmount, this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.confirming=false;
+          this.emit('close');
+          this.emit('stakeConfirmed');
+        },
+        onTxFailed: () => {
+          this.confirming=false;
+        },
+      });
+      
     },
   },
 
   emits: ['close', 'stakeConfirmed'],
 });
 </script>
+
+<template>
+  <div class="stake-card flex flex-col mt-8">
+    <div class="flex available px-[22px] py-[22px]">
+      <div class="flex-1 flex flex-col">
+        <div class="main">LP Tokens to stake</div>
+        <div>Amount of available LP tokens on your wallet</div>
+      </div>
+      <div class="flex-1 text-right main">{{ balance }}</div>
+    </div>
+    <div class="flex total px-[12px] pb-[12px] pt-[22px] flex-col">
+      <div class="flex px-[10px]">
+        <div class="flex-1">Total to stake</div>
+        <div class="flex-1 text-right">
+          <input
+            ref="textInput"
+            class="bg-transparent total text-right inline"
+            v-model="inputValue"
+          />
+          <button
+            class="max inline"
+            @click="maxBalance"
+          >
+            MAX
+          </button>
+        </div>
+      </div>
+
+      <button class="confirm-btn mt-8  w-full" disabled  v-if="confirming==true" >
+        Confirming...
+      </button>
+      <button class="confirm-btn mt-8  w-full" @click="deposit(inputValue)" v-else>
+        Confirm
+      </button>
+    </div>
+
+    
+  </div>
+</template>
+
 <style scoped>
 .title {
   color: #ffffff !important;
@@ -142,6 +162,10 @@ export default defineComponent({
   font-size: 20px;
   line-height: 24px;
   color: #FDFDFD;
+}
+button.confirm-btn[disabled]{
+  background: #41365E;
+  color: #A99BC6;
 }
 .stake-card{
   background:#41365E;
