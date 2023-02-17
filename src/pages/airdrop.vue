@@ -105,9 +105,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="pg-bg" v-if="isDesktop">
+  <!-- <div class="pg-bg" v-if="isDesktop">
     <img :src="airdropbg" class="m-auto" />
-  </div>
+  </div> -->
   <div :class="{ relative: isDesktop }">
     <div class="container mx-auto mt-[160px]">
       <div class="text-center">
@@ -119,8 +119,8 @@ export default defineComponent({
           <HeroConnectWalletButton class="my-10" />
         </div>
         <div v-else>
-          <!-- <div class="subtitle">Claim your airdrop!</div> -->
-          <div class="subtitle">Claim will soon be available!</div>
+          <div class="subtitle">Claim your airdrop!</div>
+          <!-- <div class="subtitle">Claim will soon be available!</div> -->
 
           <div :style="{ paddingBottom: '40px', paddingTop: '40px' }">
             <!-- <div class="claim-button">
@@ -728,12 +728,6 @@ claim-btn[disabled] {
   text-align: center;
   color: #fdfdfd;
   margin-left: -90px;
-}
-.pg-bg img {
-  position: absolute;
-  left: 50%;
-  top: 0px;
-  margin-left: -463px;
 }
 </style>
 

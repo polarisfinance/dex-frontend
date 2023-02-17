@@ -8,7 +8,7 @@
  *
  * @dev to use, set route meta.bgColors attribute in router.ts for page.
  */
-import { computed,ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 /**
@@ -18,6 +18,7 @@ const defaultBg = 'default';
 const sunriseBg = 'sunrise';
 const bondBg = 'bond';
 const dawnBg = 'dawn';
+const airdropBg = 'airdrop';
 
 /**
  * STATE
@@ -27,7 +28,6 @@ const backgroundImage = ref(defaultBg);
 /**
  * COMPOSABLES
  */
-
 
 /**
  * METHODS
@@ -47,6 +47,10 @@ const isDawn = computed(() => {
   return backgroundImage.value == dawnBg;
 });
 
+const isAirdrop = computed(() => {
+  return backgroundImage.value == airdropBg;
+});
+
 /**
  * INIT
  */
@@ -57,11 +61,13 @@ export default function useBackgrounds() {
   watch(route, newRoute => {
     if (route.path === '/') {
       setBackgroundImage(dawnBg);
-    } else if (route.path.includes('/sunrise') ) {
+    } else if (route.path.includes('/sunrise')) {
       setBackgroundImage(sunriseBg);
     } else if (route.path.includes('/bond')) {
       setBackgroundImage(bondBg);
-    }else{
+    } else if (route.path.includes('/airdrop')) {
+      setBackgroundImage(airdropBg);
+    } else {
       setBackgroundImage(defaultBg);
     }
   });
@@ -69,6 +75,6 @@ export default function useBackgrounds() {
     isSunrise,
     isBond,
     isDawn,
+    isAirdrop,
   };
 }
-

@@ -4,12 +4,20 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 import useBackgrounds from '@/composables/useBackgrounds';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-const { isSunrise, isBond, isDawn } = useBackgrounds();
+const { isSunrise, isBond, isDawn, isAirdrop } = useBackgrounds();
 const { isDesktop } = useBreakpoints();
 </script>
 
 <template>
-  <div class="app-custom-background" :class="{ 'bond-bg': isBond && isDesktop, 'sunrise-bg': isSunrise && isDesktop, 'dawn-bg': isDawn && isDesktop }">
+  <div
+    class="app-custom-background"
+    :class="{
+      'bond-bg': isBond && isDesktop,
+      'sunrise-bg': isSunrise && isDesktop,
+      'dawn-bg': isDawn && isDesktop,
+      'airdrop-bg': isAirdrop && isDesktop,
+    }"
+  >
     <div class="app-body">
       <AppNav />
       <div class="pb-16">
@@ -30,23 +38,29 @@ const { isDesktop } = useBreakpoints();
 
   min-height: calc(100vh - 2rem);
 }
-.app-custom-background{
+.app-custom-background {
   background-repeat: no-repeat;
-  top:0px;
+  top: 0px;
 }
-.sunrise-bg{
+.sunrise-bg {
   background-image: url('../sunrise/sunrise_bg.svg');
   background-position-y: 0%;
   background-position-x: center;
 }
-.dawn-bg{
+.dawn-bg {
   background-image: url('../dawn_bg.svg');
   background-position-y: 0%;
   background-size: contain;
 }
-.bond-bg{
+.bond-bg {
   background-image: url('../bond/bond_bg.svg');
   background-position-y: 0%;
   background-position-x: right;
+}
+
+.airdrop-bg {
+  background-image: url('../airdrop_bg.svg');
+  background-position-y: 0%;
+  background-position-x: center;
 }
 </style>
