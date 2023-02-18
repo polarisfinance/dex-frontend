@@ -21,6 +21,7 @@ import { isStETH } from '@/lib/utils/balancer/lido';
 import { getWrapAction, WrapType } from '@/lib/utils/balancer/wrapper';
 import useWeb3 from '@/services/web3/useWeb3';
 import X from './x.vue';
+import CloseIcon from '@/components/_global/icons/CloseIcon.vue';
 import ArrowDownSwap from './ArrowDownSwap.vue';
 import TradePreviewModalGP from '@/components/modals/TradePreviewModalGP.vue';
 
@@ -374,9 +375,9 @@ watch(blockNumber, () => {
 <template>
   <BalModal show @close="onClose" class="confirm-swap">
     <div>
-      <div class="header flex items-center justify-between px-[24px] py-[14px]">
+      <div class="header flex items-center justify-between pl-[18px] pr-[12px] py-[14px]">
         <div>Confirm Swap</div>
-        <div><X @click="onClose" class="cursor-pointer" /></div>
+        <div><CloseIcon @click="onClose" class="cursor-pointer" /></div>
       </div>
       <div class="token-input flex justify-between p-4">
         <div class="flex items-center">
@@ -398,7 +399,7 @@ watch(blockNumber, () => {
       <div class="flex w-full justify-center">
         <div class="arrow absolute"><ArrowDownSwap /></div>
       </div>
-      <div class="token-input mt-[1px] flex justify-between p-4">
+      <div class="token-input mt-[1px] flex justify-between p-4 dark-back">
         <div class="flex items-center">
           <BalAsset
             :address="props.trading.tokenOut.value.address"
@@ -415,7 +416,8 @@ watch(blockNumber, () => {
           </div>
         </div>
       </div>
-      <div class="summary-card">
+      <div class="px-[12px] dark-back"><div class="break"></div></div>
+      <div class="summary-card dark-back">
         <TradePreviewModalGP
           :trading="trading"
           @trade="trade"
@@ -423,14 +425,14 @@ watch(blockNumber, () => {
         />
       </div>
       <div
-        class="accept-update flex items-center justify-between p-[12px]"
+        class="accept-update flex items-center justify-between p-[12px] dark-back"
         v-if="priceUpdated.value"
       >
         <div class="flex items-center">
           <img src="./price-updated.svg" class="mr-[8px]" />
           <div>Price updated</div>
         </div>
-        <button @click="confirmPriceUpdate" class="confirm-update-btn">
+        <button @click="confirmPriceUpdate" class="confirm-update-btn dark-back">
           Accept
         </button>
       </div>
@@ -775,7 +777,7 @@ watch(blockNumber, () => {
           </div>
         </BalTooltip>
       </div> -->
-      <div class="px-[12px] pb-[12px]">
+      <div class="px-[12px] pb-[12px] dark-back">
         <BalBtn
           v-if="requiresGnosisRelayerApproval"
           block
@@ -918,5 +920,17 @@ watch(blockNumber, () => {
   line-height: 20px;
 
   color: #ffffff;
+}
+.dark-back{
+  background: #292043;
+}
+.break {
+  height: 1px;
+  background-color: #292043;
+  background: linear-gradient(
+    90deg,
+    rgba(151, 71, 255, 0.4),
+    rgba(59, 68, 189, 0.4)
+  );
 }
 </style>
