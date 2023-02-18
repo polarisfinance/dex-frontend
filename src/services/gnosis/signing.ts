@@ -26,8 +26,7 @@ const METHOD_NOT_FOUND_ERROR_CODE = -32601;
 const V4_ERROR_MSG_REGEX = /eth_signTypedData_v4 does not exist/i;
 const V3_ERROR_MSG_REGEX = /eth_signTypedData_v3 does not exist/i;
 const RPC_REQUEST_FAILED_REGEX = /RPC request failed/i;
-const METAMASK_STRING_CHAINID_REGEX =
-  /provided chainid .* must match the active chainid/i;
+const METAMASK_STRING_CHAINID_REGEX = /provided chainid .* must match the active chainid/i;
 
 export type UnsignedOrder = Omit<Order, 'receiver'> & { receiver: string };
 
@@ -62,9 +61,7 @@ const mapSigningSchema: Map<SigningScheme, SchemaInfo> = new Map([
   [SigningScheme.ETHSIGN, { libraryValue: 1, apiValue: 'ethsign' }],
 ]);
 
-function _getSigningSchemeInfo(
-  ecdaSigningScheme: EcdsaSigningScheme
-): SchemaInfo {
+function _getSigningSchemeInfo(ecdaSigningScheme: EcdsaSigningScheme): SchemaInfo {
   const value = mapSigningSchema.get(ecdaSigningScheme);
   if (value === undefined) {
     throw new Error('Unknown schema ' + ecdaSigningScheme);
@@ -73,15 +70,11 @@ function _getSigningSchemeInfo(
   return value;
 }
 
-export function getSigningSchemeApiValue(
-  ecdaSigningScheme: EcdsaSigningScheme
-) {
+export function getSigningSchemeApiValue(ecdaSigningScheme: EcdsaSigningScheme) {
   return _getSigningSchemeInfo(ecdaSigningScheme).apiValue;
 }
 
-export function getSigningSchemeLibValue(
-  ecdaSigningScheme: EcdsaSigningScheme
-) {
+export function getSigningSchemeLibValue(ecdaSigningScheme: EcdsaSigningScheme) {
   return _getSigningSchemeInfo(ecdaSigningScheme).libraryValue;
 }
 
@@ -96,17 +89,10 @@ async function _signOrder(params: SignOrderParams): Promise<Signature> {
     signer,
   });
 
-  return signOrderGp(
-    domain,
-    order,
-    signer,
-    getSigningSchemeLibValue(signingScheme)
-  );
+  return signOrderGp(domain, order, signer, getSigningSchemeLibValue(signingScheme));
 }
 
-async function _signOrderCancellation(
-  params: SingOrderCancellationParams
-): Promise<Signature> {
+async function _signOrderCancellation(params: SingOrderCancellationParams): Promise<Signature> {
   const { signer, signingScheme, orderId } = params;
 
   const domain = domainGp(networkId.value, GP_SETTLEMENT_CONTRACT_ADDRESS);
@@ -117,12 +103,7 @@ async function _signOrderCancellation(
     signer,
   });
 
-  return signOrderCancellationGp(
-    domain,
-    orderId,
-    signer,
-    getSigningSchemeLibValue(signingScheme)
-  );
+  return signOrderCancellationGp(domain, orderId, signer, getSigningSchemeLibValue(signingScheme));
 }
 
 type SigningResult = { signature: string; signingScheme: EcdsaSigningScheme };
@@ -133,8 +114,7 @@ async function _signPayload(
   signer: Signer,
   signingMethod: 'v4' | 'int_v4' | 'v3' | 'eth_sign' = 'v4'
 ): Promise<SigningResult> {
-  const signingScheme =
-    signingMethod === 'eth_sign' ? SigningScheme.ETHSIGN : SigningScheme.EIP712;
+  const signingScheme = signingMethod === 'eth_sign' ? SigningScheme.ETHSIGN : SigningScheme.EIP712;
   let signature: Signature | null = null;
 
   let _signer;
@@ -162,10 +142,7 @@ async function _signPayload(
     })) as EcdsaSignature; // Only ECDSA signing supported for now
   } catch (e) {
     const error = e as WalletError;
-    if (
-      error.code === METHOD_NOT_FOUND_ERROR_CODE ||
-      RPC_REQUEST_FAILED_REGEX.test(error.message)
-    ) {
+    if (error.code === METHOD_NOT_FOUND_ERROR_CODE || RPC_REQUEST_FAILED_REGEX.test(error.message)) {
       // Maybe the wallet returns the proper error code? We can only hope 🤞
       // OR it failed with a generic message, there's no error code set, and we also hope it'll work
       // with other methods...
@@ -202,16 +179,10 @@ async function _signPayload(
   return { signature: signature.data.toString(), signingScheme };
 }
 
-export async function signOrder(
-  order: UnsignedOrder,
-  signer: Signer
-): Promise<SigningResult> {
+export async function signOrder(order: UnsignedOrder, signer: Signer): Promise<SigningResult> {
   return _signPayload({ order }, _signOrder, signer);
 }
 
-export async function signOrderCancellation(
-  orderId: string,
-  signer: Signer
-): Promise<SigningResult> {
+export async function signOrderCancellation(orderId: string, signer: Signer): Promise<SigningResult> {
   return _signPayload({ orderId }, _signOrderCancellation, signer);
 }

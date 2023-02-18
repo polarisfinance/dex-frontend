@@ -23,53 +23,29 @@ export function useLock() {
    * QUERIES
    */
   const shouldFetchLockPool = computed((): boolean => !isL2.value);
-  const lockPoolQuery = usePoolQuery(
-    lockablePoolId.value as string,
-    shouldFetchLockPool
-  );
+  const lockPoolQuery = usePoolQuery(lockablePoolId.value as string, shouldFetchLockPool);
   const lockQuery = useVeBalLockInfoQuery();
 
   /**
    * COMPUTED
    */
-  const isLoadingLockPool = computed(
-    (): boolean => lockPoolQuery.isLoading.value || lockPoolQuery.isIdle.value
-  );
+  const isLoadingLockPool = computed((): boolean => lockPoolQuery.isLoading.value || lockPoolQuery.isIdle.value);
 
-  const isLoadingLockInfo = computed(
-    (): boolean => lockQuery.isLoading.value || lockQuery.isIdle.value
-  );
+  const isLoadingLockInfo = computed((): boolean => lockQuery.isLoading.value || lockQuery.isIdle.value);
 
-  const isLoadingLock = computed(
-    (): boolean => isLoadingLockPool.value || isLoadingLockInfo.value
-  );
+  const isLoadingLock = computed((): boolean => isLoadingLockPool.value || isLoadingLockInfo.value);
 
   const lockPool = computed<Pool | undefined>(() => lockPoolQuery.data.value);
 
-  const lockPoolToken = computed((): TokenInfo | null =>
-    lockPool.value != null ? getToken(lockPool.value.address) : null
-  );
+  const lockPoolToken = computed((): TokenInfo | null => (lockPool.value != null ? getToken(lockPool.value.address) : null));
 
   const lock = computed(() => lockQuery.data.value);
 
-  const poolShares = computed(
-    (): BigNumber =>
-      lockPool.value
-        ? bnum(lockPool.value.totalLiquidity).div(lockPool.value.totalShares)
-        : bnum(0)
-  );
+  const poolShares = computed((): BigNumber => (lockPool.value ? bnum(lockPool.value.totalLiquidity).div(lockPool.value.totalShares) : bnum(0)));
 
-  const lockFiatValue = computed((): string =>
-    lock.value && lock.value.hasExistingLock
-      ? poolShares.value.times(lock.value.lockedAmount).toString()
-      : '0'
-  );
+  const lockFiatValue = computed((): string => (lock.value && lock.value.hasExistingLock ? poolShares.value.times(lock.value.lockedAmount).toString() : '0'));
 
-  const lockedFiatTotal = computed(() =>
-    lockPool.value && lock.value?.hasExistingLock
-      ? getBptBalanceFiatValue(lockPool.value, lock.value.lockedAmount)
-      : '0'
-  );
+  const lockedFiatTotal = computed(() => (lockPool.value && lock.value?.hasExistingLock ? getBptBalanceFiatValue(lockPool.value, lock.value.lockedAmount) : '0'));
 
   return {
     isLoadingLockPool,

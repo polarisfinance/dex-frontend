@@ -7,9 +7,7 @@ jest.mock('@/services/rpc-provider/rpc-provider.service');
 
 describe('FeeDistributor', () => {
   it('Instantiates the class', () => {
-    const feeDistributor = new FeeDistributor(
-      configService.network.addresses.feeDistributor
-    );
+    const feeDistributor = new FeeDistributor(configService.network.addresses.feeDistributor);
     expect(feeDistributor).toBeTruthy();
   });
 });

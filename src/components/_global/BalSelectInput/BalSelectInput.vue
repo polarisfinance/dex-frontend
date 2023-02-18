@@ -7,23 +7,11 @@
             {{ label }}
           </slot>
         </div>
-        <select
-          ref="balSelectInput"
-          :value="modelValue"
-          :name="name"
-          :class="[inputClasses]"
-          v-bind="$attrs"
-          @change="onChange"
-        >
+        <select ref="balSelectInput" :value="modelValue" :name="name" :class="[inputClasses]" v-bind="$attrs" @change="onChange">
           <option v-if="defaultText" value="" hidden>
             {{ defaultText }}
           </option>
-          <option
-            v-for="(option, i) in options"
-            :key="i"
-            :value="valFor(option)"
-            class=""
-          >
+          <option v-for="(option, i) in options" :key="i" :value="valFor(option)" class="">
             {{ textFor(option) }}
           </option>
         </select>

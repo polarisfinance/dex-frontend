@@ -1,11 +1,7 @@
 import { getAddress } from '@ethersproject/address';
 import { formatUnits } from '@ethersproject/units';
 
-import {
-  isStableLike,
-  isStablePhantom,
-  isWeightedLike,
-} from '@/composables/usePool';
+import { isStableLike, isStablePhantom, isWeightedLike } from '@/composables/usePool';
 import { FiatCurrency } from '@/constants/currency';
 import { bnum } from '@/lib/utils';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
@@ -19,18 +15,11 @@ interface OnchainTokenInfo extends OnchainTokenData {
 export default class LiquidityConcern {
   poolTokens: OnchainTokenInfo[] | PoolToken[];
 
-  constructor(
-    public readonly pool: AnyPool,
-    private readonly poolType = pool.poolType
-  ) {
+  constructor(public readonly pool: AnyPool, private readonly poolType = pool.poolType) {
     this.poolTokens = this.onchainPoolTokens || this.pool.tokens;
   }
 
-  public calcTotal(
-    prices: TokenPrices,
-    currency: FiatCurrency,
-    tokenMeta: TokenInfoMap = {}
-  ): string {
+  public calcTotal(prices: TokenPrices, currency: FiatCurrency, tokenMeta: TokenInfoMap = {}): string {
     if (!this.hasPoolTokens) throw new Error('Missing pool token data');
 
     if (isWeightedLike(this.poolType)) {
@@ -54,25 +43,17 @@ export default class LiquidityConcern {
       const tokenMap = this.pool.onchain.tokens;
       const addresses = Object.keys(tokenMap);
       const tokens = Object.values(tokenMap);
-      return tokens.map<OnchainTokenInfo>(
-        (token: OnchainTokenData, i: number) => ({
-          ...token,
-          address: addresses[i],
-        })
-      );
+      return tokens.map<OnchainTokenInfo>((token: OnchainTokenData, i: number) => ({
+        ...token,
+        address: addresses[i],
+      }));
     }
     return null;
   }
 
-  public calcWeightedTotal(
-    prices: TokenPrices,
-    currency: FiatCurrency
-  ): string {
+  public calcWeightedTotal(prices: TokenPrices, currency: FiatCurrency): string {
     const weights = this.poolTokens.map<number>(token => token.weight);
-    const totalWeight = weights.reduce(
-      (total, weight) => total + Number(weight),
-      0
-    );
+    const totalWeight = weights.reduce((total, weight) => total + Number(weight), 0);
     let sumWeight = bnum(0);
     let sumValue = bnum(0);
 
@@ -103,10 +84,7 @@ export default class LiquidityConcern {
   public calcStableTotal(prices: TokenPrices, currency: FiatCurrency): string {
     let tokens = this.poolTokens;
 
-    if (
-      isStablePhantom(this.poolType) &&
-      this.pool.linearPoolTokensMap != null
-    ) {
+    if (isStablePhantom(this.poolType) && this.pool.linearPoolTokensMap != null) {
       tokens = Object.values(this.pool.linearPoolTokensMap);
     }
 
@@ -156,50 +134,26 @@ export default class LiquidityConcern {
     return '0';
   }
 
-  private calcStablePhantom(
-    prices: TokenPrices,
-    currency: FiatCurrency,
-    tokenMeta: TokenInfoMap
-  ): string {
+  private calcStablePhantom(prices: TokenPrices, currency: FiatCurrency, tokenMeta: TokenInfoMap): string {
     let totalLiquidity = bnum(0);
 
-    Object.entries(this.pool?.onchain?.linearPools || {}).forEach(
-      ([address, token]) => {
-        const tokenShare = bnum(
-          this.pool?.onchain?.tokens?.[address]?.balance || '0'
-        ).div(token.totalSupply);
+    Object.entries(this.pool?.onchain?.linearPools || {}).forEach(([address, token]) => {
+      const tokenShare = bnum(this.pool?.onchain?.tokens?.[address]?.balance || '0').div(token.totalSupply);
 
-        const mainTokenBalance = formatUnits(
-          token.mainToken.balance,
-          tokenMeta[getAddress(token.mainToken.address)]?.decimals
-        );
+      const mainTokenBalance = formatUnits(token.mainToken.balance, tokenMeta[getAddress(token.mainToken.address)]?.decimals);
 
-        const wrappedTokenBalance = formatUnits(
-          token.wrappedToken.balance,
-          tokenMeta[getAddress(token.wrappedToken.address)]?.decimals
-        );
+      const wrappedTokenBalance = formatUnits(token.wrappedToken.balance, tokenMeta[getAddress(token.wrappedToken.address)]?.decimals);
 
-        const mainTokenPrice =
-          prices[token.mainToken.address] != null
-            ? prices[token.mainToken.address].usd
-            : null;
+      const mainTokenPrice = prices[token.mainToken.address] != null ? prices[token.mainToken.address].usd : null;
 
-        if (mainTokenPrice != null) {
-          const mainTokenValue = bnum(mainTokenBalance)
-            .times(tokenShare)
-            .times(mainTokenPrice);
+      if (mainTokenPrice != null) {
+        const mainTokenValue = bnum(mainTokenBalance).times(tokenShare).times(mainTokenPrice);
 
-          const wrappedTokenValue = bnum(wrappedTokenBalance)
-            .times(tokenShare)
-            .times(mainTokenPrice)
-            .times(token.wrappedToken.priceRate);
+        const wrappedTokenValue = bnum(wrappedTokenBalance).times(tokenShare).times(mainTokenPrice).times(token.wrappedToken.priceRate);
 
-          totalLiquidity = bnum(totalLiquidity)
-            .plus(mainTokenValue)
-            .plus(wrappedTokenValue);
-        }
+        totalLiquidity = bnum(totalLiquidity).plus(mainTokenValue).plus(wrappedTokenValue);
       }
-    );
+    });
 
     return totalLiquidity.toString();
   }

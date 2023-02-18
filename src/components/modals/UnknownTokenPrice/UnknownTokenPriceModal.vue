@@ -42,8 +42,7 @@ const unknownTokenPrices = computed((): TokenPrices => {
   const _unknownTokenPrices = {};
   for (const token of props.unknownTokens) {
     _unknownTokenPrices[token] = {
-      [FiatCurrency.usd]:
-        injectedPrices.value?.[token]?.[FiatCurrency.usd] || null,
+      [FiatCurrency.usd]: injectedPrices.value?.[token]?.[FiatCurrency.usd] || null,
     };
   }
   return _unknownTokenPrices;
@@ -53,19 +52,13 @@ const unknownTokenPrices = computed((): TokenPrices => {
  * COMPUTED
  */
 const readableUnknownTokenSymbols = computed(() => {
-  const tokenSymbols = (props.unknownTokens || []).map(
-    tokenAddress => getToken(tokenAddress).symbol
-  );
+  const tokenSymbols = (props.unknownTokens || []).map(tokenAddress => getToken(tokenAddress).symbol);
   return formatWordListAsSentence(tokenSymbols, t);
 });
 
 const isSubmitDisabled = computed(() => {
-  const noPricesEntered = props.unknownTokens.some(token =>
-    [null, ''].includes(unknownTokenPrices[token])
-  );
-  const hasLargePrice = props.unknownTokens.some(token =>
-    bnum(unknownTokenPrices?.[token]?.[FiatCurrency.usd] || '0').gt(PRICE_CAP)
-  );
+  const noPricesEntered = props.unknownTokens.some(token => [null, ''].includes(unknownTokenPrices[token]));
+  const hasLargePrice = props.unknownTokens.some(token => bnum(unknownTokenPrices?.[token]?.[FiatCurrency.usd] || '0').gt(PRICE_CAP));
   return noPricesEntered || hasLargePrice;
 });
 
@@ -73,9 +66,7 @@ const isSubmitDisabled = computed(() => {
  * METHODS
  */
 function getIndexOfUnknownToken(address: string) {
-  return seedTokens.value.findIndex(token =>
-    isSameAddress(address, token.tokenAddress)
-  );
+  return seedTokens.value.findIndex(token => isSameAddress(address, token.tokenAddress));
 }
 
 function injectUnknownPrices() {
@@ -85,18 +76,10 @@ function injectUnknownPrices() {
 </script>
 
 <template>
-  <BalModal
-    :title="t('unknownTokenPrice')"
-    :show="isVisible"
-    @close="$emit('close')"
-  >
+  <BalModal :title="t('unknownTokenPrice')" :show="isVisible" @close="$emit('close')">
     <BalStack vertical isDynamic>
       <p>
-        {{
-          $t('createAPool.unknownTokenPriceWarning', [
-            readableUnknownTokenSymbols,
-          ])
-        }}
+        {{ $t('createAPool.unknownTokenPriceWarning', [readableUnknownTokenSymbols]) }}
       </p>
 
       <span class="font-semibold">
@@ -110,9 +93,7 @@ function injectUnknownPrices() {
           fixedToken
           placeholder="$0.00"
           :address="address"
-          :name="`initial-token-${
-            seedTokens[getIndexOfUnknownToken(address)].tokenAddress
-          }`"
+          :name="`initial-token-${seedTokens[getIndexOfUnknownToken(address)].tokenAddress}`"
           noMax
           hideFooter
           :rules="[isLessThanOrEqualTo(PRICE_CAP)]"

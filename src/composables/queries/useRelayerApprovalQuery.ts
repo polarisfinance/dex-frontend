@@ -16,10 +16,7 @@ import useNetwork from '../useNetwork';
  */
 type QueryResponse = boolean;
 
-export default function useRelayerApprovalQuery(
-  relayer: Ref<string>,
-  options: UseQueryOptions<QueryResponse> = {}
-) {
+export default function useRelayerApprovalQuery(relayer: Ref<string>, options: UseQueryOptions<QueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
@@ -31,31 +28,19 @@ export default function useRelayerApprovalQuery(
    */
   const enabled = computed(() => isWalletReady.value);
 
-  const vaultContract = computed(
-    () =>
-      new Contract(
-        configService.network.addresses.vault,
-        Vault__factory.abi,
-        getProvider()
-      )
-  );
+  const vaultContract = computed(() => new Contract(configService.network.addresses.vault, Vault__factory.abi, getProvider()));
 
   /**
    * QUERY INPUTS
    */
-  const queryKey = reactive(
-    QUERY_KEYS.Account.RelayerApprovals(networkId, account, relayer)
-  );
+  const queryKey = reactive(QUERY_KEYS.Account.RelayerApprovals(networkId, account, relayer));
 
   const queryFn = async (): Promise<boolean> => {
     if (!relayer.value) {
       return true;
     }
 
-    const approved = await vaultContract.value.hasApprovedRelayer(
-      account.value,
-      relayer.value
-    );
+    const approved = await vaultContract.value.hasApprovedRelayer(account.value, relayer.value);
 
     return approved;
   };

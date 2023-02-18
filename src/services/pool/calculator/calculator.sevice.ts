@@ -51,10 +51,7 @@ export default class CalculatorService {
     this.stablePhantom = new stablePhantomClass(this);
   }
 
-  public priceImpact(
-    tokenAmounts: string[],
-    opts: PiOptions = { exactOut: false, tokenIndex: 0 }
-  ): OldBigNumber {
+  public priceImpact(tokenAmounts: string[], opts: PiOptions = { exactOut: false, tokenIndex: 0 }): OldBigNumber {
     if (this.isStableLikePool) {
       if (this.isStablePhantomPool) {
         return this.stablePhantom.priceImpact(tokenAmounts, opts);
@@ -72,20 +69,14 @@ export default class CalculatorService {
     return this.weighted.exactTokensInForBPTOut(tokenAmounts);
   }
 
-  public exactBPTInForTokenOut(
-    bptAmount: string,
-    tokenIndex: number
-  ): OldBigNumber {
+  public exactBPTInForTokenOut(bptAmount: string, tokenIndex: number): OldBigNumber {
     if (this.isStableLikePool) {
       return this.stable.exactBPTInForTokenOut(bptAmount, tokenIndex);
     }
     return this.weighted.exactBPTInForTokenOut(bptAmount, tokenIndex);
   }
 
-  public bptInForExactTokenOut(
-    amount: string,
-    tokenIndex: number
-  ): OldBigNumber {
+  public bptInForExactTokenOut(amount: string, tokenIndex: number): OldBigNumber {
     if (this.isStableLikePool) {
       return this.stable.bptInForExactTokenOut(amount, tokenIndex);
     }
@@ -104,18 +95,14 @@ export default class CalculatorService {
       let hasBalance = true;
       let balance;
       if (token === this.config.network.nativeAsset.address) {
-        balance = bnum(this.balances.value[getAddress(token)])
-          .minus(this.config.network.nativeAsset.minTransactionBuffer)
-          .toString();
+        balance = bnum(this.balances.value[getAddress(token)]).minus(this.config.network.nativeAsset.minTransactionBuffer).toString();
       } else {
         balance = this.balances.value[getAddress(token)] || '0';
       }
       const amounts = this.propAmountsGiven(balance, tokenIndex, type);
 
       amounts.send.forEach((amount, amountIndex) => {
-        const greaterThanBalance = bnum(amount).gt(
-          this.balances.value[this.tokenOf(type, amountIndex)]
-        );
+        const greaterThanBalance = bnum(amount).gt(this.balances.value[this.tokenOf(type, amountIndex)]);
         if (greaterThanBalance) hasBalance = false;
       });
 
@@ -132,13 +119,8 @@ export default class CalculatorService {
     return maxAmounts;
   }
 
-  public propAmountsGiven(
-    fixedAmount: string,
-    index: number,
-    type: 'send' | 'receive'
-  ): Amounts {
-    if (fixedAmount.trim() === '')
-      return { send: [], receive: [], fixedToken: 0 };
+  public propAmountsGiven(fixedAmount: string, index: number, type: 'send' | 'receive'): Amounts {
+    if (fixedAmount.trim() === '') return { send: [], receive: [], fixedToken: 0 };
 
     const types = ['send', 'receive'];
     const fixedTokenAddress = this.tokenOf(type, index);
@@ -158,10 +140,7 @@ export default class CalculatorService {
         if (i !== index || type !== types[ratioType]) {
           const tokenAddress = this.tokenOf(types[ratioType], i);
           const token = this.allTokens.value[tokenAddress];
-          amounts[types[ratioType]][i] = formatUnits(
-            fixedDenormAmount.mul(ratio).div(fixedRatio),
-            token?.decimals
-          );
+          amounts[types[ratioType]][i] = formatUnits(fixedDenormAmount.mul(ratio).div(fixedRatio), token?.decimals);
         }
       });
     });
@@ -184,8 +163,7 @@ export default class CalculatorService {
   public get tokenAddresses(): string[] {
     if (this.useNativeAsset.value) {
       return this.pool.value.tokensList.map(address => {
-        if (isSameAddress(address, this.config.network.addresses.weth))
-          return this.config.network.nativeAsset.address;
+        if (isSameAddress(address, this.config.network.addresses.weth)) return this.config.network.nativeAsset.address;
         return address;
       });
     }
@@ -200,12 +178,8 @@ export default class CalculatorService {
   public get poolTokenBalances(): BigNumber[] {
     if (!this.pool.value?.onchain?.tokens) return [];
 
-    const normalizedBalances = Object.values(this.poolTokens).map(
-      t => t.balance
-    );
-    return normalizedBalances.map((balance, i) =>
-      parseUnits(balance, this.poolTokenDecimals[i])
-    );
+    const normalizedBalances = Object.values(this.poolTokens).map(t => t.balance);
+    return normalizedBalances.map((balance, i) => parseUnits(balance, this.poolTokenDecimals[i]));
   }
 
   public get poolTokenDecimals(): number[] {
@@ -218,10 +192,7 @@ export default class CalculatorService {
   }
 
   public get poolTotalSupply(): BigNumber {
-    return parseUnits(
-      this.pool.value?.onchain?.totalSupply || '0',
-      this.poolDecimals
-    );
+    return parseUnits(this.pool.value?.onchain?.totalSupply || '0', this.poolDecimals);
   }
 
   public get poolSwapFee(): BigNumber {

@@ -7,11 +7,7 @@ import { ColumnDefinition } from '@/components/_global/BalTable/BalTable.vue';
 import ClaimBalBtn from '@/components/btns/ClaimBalBtn/ClaimBalBtn.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import {
-  isStableLike,
-  orderedPoolTokens,
-  orderedTokenAddresses,
-} from '@/composables/usePool';
+import { isStableLike, orderedPoolTokens, orderedTokenAddresses } from '@/composables/usePool';
 import { bnum } from '@/lib/utils';
 import { GaugePool } from '@/pages/claim.vue';
 import { Gauge } from '@/services/balancer/gauges/types';
@@ -92,21 +88,11 @@ const columns = ref<ColumnDefinition<RewardRow>[]>([
 /**
  * COMPUTED
  */
-const allGauges = computed((): Gauge[] =>
-  props.rewardsData.map(row => row.gauge)
-);
+const allGauges = computed((): Gauge[] => props.rewardsData.map(row => row.gauge));
 
-const totalClaimAmount = computed((): string =>
-  props.rewardsData
-    .reduce((acc, row) => acc.plus(row.amount), bnum('0'))
-    .toString()
-);
+const totalClaimAmount = computed((): string => props.rewardsData.reduce((acc, row) => acc.plus(row.amount), bnum('0')).toString());
 
-const totalClaimValue = computed((): string =>
-  props.rewardsData
-    .reduce((acc, row) => acc.plus(row.value), bnum('0'))
-    .toString()
-);
+const totalClaimValue = computed((): string => props.rewardsData.reduce((acc, row) => acc.plus(row.value), bnum('0')).toString());
 
 /**
  * METHODS
@@ -117,20 +103,8 @@ function redirectToPool({ pool }: { pool: GaugePool }) {
 </script>
 
 <template>
-  <BalCard
-    shadow="lg"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
-    <BalTable
-      :columns="columns"
-      :data="rewardsData"
-      :isLoading="isLoading"
-      :onRowClick="redirectToPool"
-      skeletonClass="h-64"
-      :square="upToLargeBreakpoint"
-    >
+  <BalCard shadow="lg" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad>
+    <BalTable :columns="columns" :data="rewardsData" :isLoading="isLoading" :onRowClick="redirectToPool" skeletonClass="h-64" :square="upToLargeBreakpoint">
       <template #iconsColumnCell="{ pool }">
         <div class="py-4 px-6">
           <BalAssetSet :addresses="orderedTokenAddresses(pool)" :width="100" />
@@ -138,27 +112,16 @@ function redirectToPool({ pool }: { pool: GaugePool }) {
       </template>
       <template #pillsColumnCell="{ pool }">
         <div class="py-4 px-6">
-          <TokenPills
-            :tokens="
-              orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-            "
-            :isStablePool="isStableLike(pool.poolType)"
-          />
+          <TokenPills :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)" :isStablePool="isStableLike(pool.poolType)" />
         </div>
       </template>
       <template #claimColumnCell="{ gauge, amount }">
         <div class="py-4 px-6">
-          <ClaimBalBtn
-            :label="$t('claim')"
-            :gauges="[gauge]"
-            :amount="amount"
-          />
+          <ClaimBalBtn :label="$t('claim')" :gauges="[gauge]" :amount="amount" />
         </div>
       </template>
       <template #totalAmountCell>
-        <div class="flex justify-end">
-          {{ fNum2(totalClaimAmount, FNumFormats.token) }} BAL
-        </div>
+        <div class="flex justify-end">{{ fNum2(totalClaimAmount, FNumFormats.token) }} BAL</div>
       </template>
       <template #totalValueCell>
         <div class="flex justify-end">
@@ -166,11 +129,7 @@ function redirectToPool({ pool }: { pool: GaugePool }) {
         </div>
       </template>
       <template #claimTotalCell>
-        <ClaimBalBtn
-          :label="$t('claimAll')"
-          :gauges="allGauges"
-          :amount="totalClaimAmount"
-        />
+        <ClaimBalBtn :label="$t('claimAll')" :gauges="allGauges" :amount="totalClaimAmount" />
       </template>
     </BalTable>
   </BalCard>

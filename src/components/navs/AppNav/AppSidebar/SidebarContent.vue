@@ -131,12 +131,7 @@ const toggleMobileWallet = () => {
     </div> -->
 
     <div class="link-container">
-      <div
-        v-for="link in navLinks"
-        :key="link.label"
-        class="side-bar-link flex justify-between"
-        @click="navTo(link.path)"
-      >
+      <div v-for="link in navLinks" :key="link.label" class="side-bar-link flex justify-between" @click="navTo(link.path)">
         <div>
           {{ link.label }}
         </div>
@@ -146,14 +141,7 @@ const toggleMobileWallet = () => {
 
     <div class="link-container mt-[66px]">
       <!-- <span class="px-4 pb-1 font-medium text-secondary">Ecosystem</span> -->
-      <BalLink
-        v-for="link in ecosystemLinks"
-        :key="link.url"
-        :href="link.url"
-        class="side-bar-link flex items-center justify-between"
-        external
-        noStyle
-      >
+      <BalLink v-for="link in ecosystemLinks" :key="link.url" :href="link.url" class="side-bar-link flex items-center justify-between" external noStyle>
         <div>
           {{ link.label }}
         </div>
@@ -165,9 +153,7 @@ const toggleMobileWallet = () => {
     <div v-if="account">
       <MobileWalletBtn @toggle-mobile-wallet="toggleMobileWallet" />
     </div>
-    <button class="btn" v-else @click="startConnectWithInjectedProvider">
-      Connect Wallet
-    </button>
+    <button class="btn" v-else @click="startConnectWithInjectedProvider">Connect Wallet</button>
   </div>
 </template>
 

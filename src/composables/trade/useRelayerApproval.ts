@@ -27,10 +27,7 @@ const relayerAddressMap = {
   [Relayer.BATCH]: configService.network.addresses.batchRelayer,
 };
 
-export default function useRelayerApproval(
-  relayer: Relayer,
-  isEnabled: Ref<boolean> = ref(true)
-) {
+export default function useRelayerApproval(relayer: Relayer, isEnabled: Ref<boolean> = ref(true)) {
   /**
    * STATE
    */
@@ -51,17 +48,9 @@ export default function useRelayerApproval(
   /**
    * COMPUTED
    */
-  const isUnlocked = computed(
-    () =>
-      approved.value || (!isEnabled.value ? true : !!relayerApproval.data.value)
-  );
+  const isUnlocked = computed(() => approved.value || (!isEnabled.value ? true : !!relayerApproval.data.value));
 
-  const loading = computed(
-    (): boolean =>
-      relayerApproval.isLoading.value ||
-      relayerApproval.isError.value ||
-      relayerApproval.isIdle.value
-  );
+  const loading = computed((): boolean => relayerApproval.isLoading.value || relayerApproval.isError.value || relayerApproval.isIdle.value);
 
   const action = computed(
     (): TransactionActionInfo => ({
@@ -80,13 +69,7 @@ export default function useRelayerApproval(
     try {
       init.value = true;
 
-      const tx = await sendTransaction(
-        getProvider(),
-        configService.network.addresses.vault,
-        Vault__factory.abi,
-        'setRelayerApproval',
-        [account.value, relayerAddress.value, true]
-      );
+      const tx = await sendTransaction(getProvider(), configService.network.addresses.vault, Vault__factory.abi, 'setRelayerApproval', [account.value, relayerAddress.value, true]);
 
       init.value = false;
       approving.value = true;

@@ -28,21 +28,19 @@ const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
     <!-- <DarkModeToggle v-if="isDesktop" /> -->
     <!-- <AppNavActivityBtn v-if="account" /> -->
     <AppNavAccountBtn v-if="account && !upToSmallBreakpoint" />
-    <button
-      class="btn"
-      v-else-if="isDesktop"
-      :size="isMobile ? 'md' : 'sm'"
-      @click="startConnectWithInjectedProvider"
-    >
+    <button class="btn" v-else-if="isDesktop" :size="isMobile ? 'md' : 'sm'" @click="startConnectWithInjectedProvider">
       <!-- <WalletIcon class="mr-2" /> -->
-      <span class="hidden lg:inline-block w-[100px]" v-text="$t('connectWallet')" />
+      <span class="hidden w-[100px] lg:inline-block" v-text="$t('connectWallet')" />
       <span class="lg:hidden" v-text="$t('connect')" />
     </button>
     <AppNavMenu />
     <button v-if="isMobile" @click="setSidebarOpen(true)" class="menu-btn">
       <!-- <BalIcon name="menu" size="lg" /> -->
       <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M22.6667 6.66667H1.33333C0.533333 6.66667 0 7.2 0 8C0 8.8 0.533333 9.33333 1.33333 9.33333H22.6667C23.4667 9.33333 24 8.8 24 8C24 7.2 23.4667 6.66667 22.6667 6.66667ZM1.33333 2.66667H22.6667C23.4667 2.66667 24 2.13333 24 1.33333C24 0.533333 23.4667 0 22.6667 0H1.33333C0.533333 0 0 0.533333 0 1.33333C0 2.13333 0.533333 2.66667 1.33333 2.66667ZM22.6667 13.3333C22.6667 13.3333 12.1333 13.3333 11.3333 13.3333C10.5333 13.3333 10 13.8667 10 14.6667C10 15.4667 10.5333 16 11.3333 16H22.6667C23.4667 16 24 15.4667 24 14.6667C24 13.8667 23.4667 13.3333 22.6667 13.3333Z" fill="#FDFDFD"/>
+        <path
+          d="M22.6667 6.66667H1.33333C0.533333 6.66667 0 7.2 0 8C0 8.8 0.533333 9.33333 1.33333 9.33333H22.6667C23.4667 9.33333 24 8.8 24 8C24 7.2 23.4667 6.66667 22.6667 6.66667ZM1.33333 2.66667H22.6667C23.4667 2.66667 24 2.13333 24 1.33333C24 0.533333 23.4667 0 22.6667 0H1.33333C0.533333 0 0 0.533333 0 1.33333C0 2.13333 0.533333 2.66667 1.33333 2.66667ZM22.6667 13.3333C22.6667 13.3333 12.1333 13.3333 11.3333 13.3333C10.5333 13.3333 10 13.8667 10 14.6667C10 15.4667 10.5333 16 11.3333 16H22.6667C23.4667 16 24 15.4667 24 14.6667C24 13.8667 23.4667 13.3333 22.6667 13.3333Z"
+          fill="#FDFDFD"
+        />
       </svg>
     </button>
   </div>
@@ -70,10 +68,8 @@ button {
 }
 
 .btn:hover {
-
 }
 
 .btn:active {
-
 }
 </style>

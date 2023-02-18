@@ -18,24 +18,13 @@ export type JoinStablePoolTokenInForExactBPTOut = {
   enterTokenIndex: number;
 };
 
-export function encodeJoinStablePool(
-  joinData:
-    | JoinStablePoolInit
-    | JoinStablePoolExactTokensInForBPTOut
-    | JoinStablePoolTokenInForExactBPTOut
-): string {
+export function encodeJoinStablePool(joinData: JoinStablePoolInit | JoinStablePoolExactTokensInForBPTOut | JoinStablePoolTokenInForExactBPTOut): string {
   if (joinData.kind == 'Init') {
     return StablePoolEncoder.joinInit(joinData.amountsIn);
   } else if (joinData.kind == 'ExactTokensInForBPTOut') {
-    return StablePoolEncoder.joinExactTokensInForBPTOut(
-      joinData.amountsIn,
-      joinData.minimumBPT
-    );
+    return StablePoolEncoder.joinExactTokensInForBPTOut(joinData.amountsIn, joinData.minimumBPT);
   } else {
-    return StablePoolEncoder.joinTokenInForExactBPTOut(
-      joinData.bptAmountOut,
-      joinData.enterTokenIndex
-    );
+    return StablePoolEncoder.joinTokenInForExactBPTOut(joinData.bptAmountOut, joinData.enterTokenIndex);
   }
 }
 
@@ -56,23 +45,12 @@ export type ExitStablePoolBPTInForExactTokensOut = {
   maxBPTAmountIn: BigNumberish;
 };
 
-export function encodeExitStablePool(
-  exitData:
-    | ExitStablePoolExactBPTInForOneTokenOut
-    | ExitStablePoolExactBPTInForTokensOut
-    | ExitStablePoolBPTInForExactTokensOut
-): string {
+export function encodeExitStablePool(exitData: ExitStablePoolExactBPTInForOneTokenOut | ExitStablePoolExactBPTInForTokensOut | ExitStablePoolBPTInForExactTokensOut): string {
   if (exitData.kind == 'ExactBPTInForOneTokenOut') {
-    return StablePoolEncoder.exitExactBPTInForOneTokenOut(
-      exitData.bptAmountIn,
-      exitData.exitTokenIndex
-    );
+    return StablePoolEncoder.exitExactBPTInForOneTokenOut(exitData.bptAmountIn, exitData.exitTokenIndex);
   } else if (exitData.kind == 'ExactBPTInForTokensOut') {
     return StablePoolEncoder.exitExactBPTInForTokensOut(exitData.bptAmountIn);
   } else {
-    return StablePoolEncoder.exitBPTInForExactTokensOut(
-      exitData.amountsOut,
-      exitData.maxBPTAmountIn
-    );
+    return StablePoolEncoder.exitBPTInForExactTokensOut(exitData.amountsOut, exitData.maxBPTAmountIn);
   }
 }

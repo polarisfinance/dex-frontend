@@ -10,11 +10,7 @@ import BalTextInput from '@/components/_global/BalTextInput/BalTextInput.vue';
 import ConfirmationIndicator from '@/components/web3/ConfirmationIndicator.vue';
 import useEthers from '@/composables/useEthers';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import {
-  dateTimeLabelFor,
-  toJsTimestamp,
-  toUtcTime,
-} from '@/composables/useTime';
+import { dateTimeLabelFor, toJsTimestamp, toUtcTime } from '@/composables/useTime';
 import useTransactions from '@/composables/useTransactions';
 import useVeBal from '@/composables/useVeBAL';
 import { WEIGHT_VOTE_DELAY } from '@/constants/gauge-controller';
@@ -86,14 +82,10 @@ const voteInputDisabled = computed((): boolean => {
 });
 
 const currentWeight = computed(() => props.gauge.userVotes);
-const currentWeightNormalized = computed(() =>
-  scale(bnum(currentWeight.value), -2).toString()
-);
+const currentWeightNormalized = computed(() => scale(bnum(currentWeight.value), -2).toString());
 const hasVotes = computed((): boolean => bnum(currentWeight.value).gt(0));
 
-const isVeBalGauge = computed((): boolean =>
-  isSameAddress(props.gauge.address, VEBAL_VOTING_GAUGE?.address || '')
-);
+const isVeBalGauge = computed((): boolean => isSameAddress(props.gauge.address, VEBAL_VOTING_GAUGE?.address || ''));
 
 // Is votes next period value above 10%?
 const votesNextPeriodGt10pct = computed((): boolean => {
@@ -101,30 +93,17 @@ const votesNextPeriodGt10pct = computed((): boolean => {
   return gaugeVoteWeightNormalized.gte(bnum('0.1'));
 });
 
-const voteTitle = computed(() =>
-  hasVotes.value
-    ? t('veBAL.liquidityMining.popover.title.edit')
-    : t('veBAL.liquidityMining.popover.title.vote')
-);
+const voteTitle = computed(() => (hasVotes.value ? t('veBAL.liquidityMining.popover.title.edit') : t('veBAL.liquidityMining.popover.title.vote')));
 
-const voteButtonText = computed(() =>
-  hasVotes.value
-    ? t('veBAL.liquidityMining.popover.button.edit')
-    : t('veBAL.liquidityMining.popover.button.vote')
-);
+const voteButtonText = computed(() => (hasVotes.value ? t('veBAL.liquidityMining.popover.button.edit') : t('veBAL.liquidityMining.popover.button.vote')));
 
 const votedToRecentlyWarning = computed(() => {
   const lastUserVoteTime = toJsTimestamp(props.gauge.lastUserVoteTime);
   if (Date.now() < lastUserVoteTime + WEIGHT_VOTE_DELAY) {
-    const remainingTime = formatDistanceToNow(
-      lastUserVoteTime + WEIGHT_VOTE_DELAY
-    );
+    const remainingTime = formatDistanceToNow(lastUserVoteTime + WEIGHT_VOTE_DELAY);
     return {
       title: t('veBAL.liquidityMining.popover.warnings.votedTooRecently.title'),
-      description: t(
-        'veBAL.liquidityMining.popover.warnings.votedTooRecently.description',
-        [remainingTime]
-      ),
+      description: t('veBAL.liquidityMining.popover.warnings.votedTooRecently.description', [remainingTime]),
     };
   }
   return null;
@@ -141,9 +120,7 @@ const noVeBalWarning = computed(() => {
   }
   return {
     title: t('veBAL.liquidityMining.popover.warnings.noVeBal.title'),
-    description: t(
-      'veBAL.liquidityMining.popover.warnings.noVeBal.description'
-    ),
+    description: t('veBAL.liquidityMining.popover.warnings.noVeBal.description'),
   };
 });
 
@@ -152,12 +129,8 @@ const veBalLockTooShortWarning = computed(() => {
     const lockEndDate = props.veBalLockInfo.lockedEndDate;
     if (lockEndDate < Date.now() + MINIMUM_LOCK_TIME) {
       return {
-        title: t(
-          'veBAL.liquidityMining.popover.warnings.veBalLockTooShort.title'
-        ),
-        description: t(
-          'veBAL.liquidityMining.popover.warnings.veBalLockTooShort.description'
-        ),
+        title: t('veBAL.liquidityMining.popover.warnings.veBalLockTooShort.title'),
+        description: t('veBAL.liquidityMining.popover.warnings.veBalLockTooShort.description'),
       };
     }
   }
@@ -168,12 +141,8 @@ const veBalLockTooShortWarning = computed(() => {
 const veBalVoteOverLimitWarning = computed(() => {
   if (isVeBalGauge.value && votesNextPeriodGt10pct.value) {
     return {
-      title: t(
-        'veBAL.liquidityMining.popover.warnings.veBalVoteOverLimitWarning.title'
-      ),
-      description: t(
-        'veBAL.liquidityMining.popover.warnings.veBalVoteOverLimitWarning.description'
-      ),
+      title: t('veBAL.liquidityMining.popover.warnings.veBalVoteOverLimitWarning.title'),
+      description: t('veBAL.liquidityMining.popover.warnings.veBalVoteOverLimitWarning.description'),
     };
   }
 
@@ -203,25 +172,16 @@ const voteError = computed(
   }
 );
 
-const transactionInProgress = computed(
-  (): boolean => voteState.init || voteState.confirming
-);
+const transactionInProgress = computed((): boolean => voteState.init || voteState.confirming);
 
 const hasEnoughVotes = computed((): boolean => {
   return isVoteWeightValid(voteWeight.value);
 });
 
-const unallocatedVotesFormatted = computed((): string =>
-  fNum2(
-    scale(bnum(props.unallocatedVoteWeight), -4).toString(),
-    FNumFormats.percent
-  )
-);
+const unallocatedVotesFormatted = computed((): string => fNum2(scale(bnum(props.unallocatedVoteWeight), -4).toString(), FNumFormats.percent));
 
 const unallocatedVotesClass = computed(() => {
-  return hasEnoughVotes.value
-    ? ['text-gray-600 dark:text-gray-400']
-    : ['text-red-600'];
+  return hasEnoughVotes.value ? ['text-gray-600 dark:text-gray-400'] : ['text-red-600'];
 });
 
 const remainingVotes = computed(() => {
@@ -229,26 +189,11 @@ const remainingVotes = computed(() => {
   if (!hasEnoughVotes.value) {
     remainingVotesText = 'veBAL.liquidityMining.popover.remainingVotesExceeded';
   } else {
-    remainingVotesText = hasVotes.value
-      ? 'veBAL.liquidityMining.popover.remainingVotesEditing'
-      : 'veBAL.liquidityMining.popover.remainingVotes';
+    remainingVotesText = hasVotes.value ? 'veBAL.liquidityMining.popover.remainingVotesEditing' : 'veBAL.liquidityMining.popover.remainingVotes';
   }
-  const remainingVotesFormatted = fNum2(
-    scale(
-      bnum(props.unallocatedVoteWeight).plus(bnum(currentWeight.value)),
-      -4
-    ).toString(),
-    FNumFormats.percent
-  );
-  const currentVotesFormatted = fNum2(
-    scale(bnum(currentWeight.value), -4).toString(),
-    FNumFormats.percent
-  );
-  return t(remainingVotesText, [
-    remainingVotesFormatted,
-    currentVotesFormatted,
-    unallocatedVotesFormatted.value,
-  ]);
+  const remainingVotesFormatted = fNum2(scale(bnum(props.unallocatedVoteWeight).plus(bnum(currentWeight.value)), -4).toString(), FNumFormats.percent);
+  const currentVotesFormatted = fNum2(scale(bnum(currentWeight.value), -4).toString(), FNumFormats.percent);
+  return t(remainingVotesText, [remainingVotesFormatted, currentVotesFormatted, unallocatedVotesFormatted.value]);
 });
 
 const inputRules = [v => !v || isVoteWeightValid(v) || '', isPositive()];
@@ -259,8 +204,7 @@ const inputRules = [v => !v || isVoteWeightValid(v) || '', isPositive()];
 function isVoteWeightValid(voteWeight) {
   if (voteWeight === '') return true;
   const currentValue = scale(voteWeight, 2).toNumber();
-  const isValid =
-    currentValue <= props.unallocatedVoteWeight + Number(currentWeight.value);
+  const isValid = currentValue <= props.unallocatedVoteWeight + Number(currentWeight.value);
   return isValid;
 }
 
@@ -269,10 +213,7 @@ async function submitVote() {
   try {
     voteState.init = true;
     voteState.error = null;
-    const tx = await gaugeControllerService.voteForGaugeWeights(
-      props.gauge.address,
-      BigNumber.from(totalVoteShares)
-    );
+    const tx = await gaugeControllerService.voteForGaugeWeights(props.gauge.address, BigNumber.from(totalVoteShares));
     voteState.init = false;
     voteState.confirming = true;
     handleTransaction(tx);
@@ -293,10 +234,7 @@ async function handleTransaction(tx) {
     id: tx.hash,
     type: 'tx',
     action: 'voteForGauge',
-    summary: t('veBAL.liquidityMining.popover.voteForGauge', [
-      fNum2(scale(voteWeight.value, -2).toString(), FNumFormats.percent),
-      props.gauge.pool.symbol,
-    ]),
+    summary: t('veBAL.liquidityMining.popover.voteForGauge', [fNum2(scale(voteWeight.value, -2).toString(), FNumFormats.percent), props.gauge.pool.symbol]),
     details: {
       voteWeight: voteWeight.value,
     },
@@ -335,12 +273,7 @@ onMounted(() => {
   <BalModal show :fireworks="voteState.confirmed" @close="emit('close')">
     <template #header>
       <div class="flex items-center">
-        <BalCircle
-          v-if="voteState.confirmed"
-          size="8"
-          color="green"
-          class="mr-2 text-white"
-        >
+        <BalCircle v-if="voteState.confirmed" size="8" color="green" class="mr-2 text-white">
           <BalIcon name="check" />
         </BalCircle>
         <h4>
@@ -358,33 +291,14 @@ onMounted(() => {
             {{ t('veBAL.liquidityMining.popover.resubmitVote') }}
           </li>
           <li>
-            {{
-              t('veBAL.liquidityMining.popover.voteLockInfo', [
-                voteLockedUntilText,
-              ])
-            }}
+            {{ t('veBAL.liquidityMining.popover.voteLockInfo', [voteLockedUntilText]) }}
           </li>
         </ul>
       </div>
-      <BalAlert
-        v-if="voteWarning"
-        type="warning"
-        :title="voteWarning.title"
-        :description="voteWarning.description"
-        class="mb-4 w-full rounded"
-      />
-      <BalAlert
-        v-if="voteError"
-        type="error"
-        :title="voteError.title"
-        :description="voteError.description"
-        block
-        class="mt-2 mb-4"
-      />
+      <BalAlert v-if="voteWarning" type="warning" :title="voteWarning.title" :description="voteWarning.description" class="mb-4 w-full rounded" />
+      <BalAlert v-if="voteError" type="error" :title="voteError.title" :description="voteError.description" block class="mt-2 mb-4" />
 
-      <div
-        class="mb-4 flex items-center justify-between rounded-lg border p-2 dark:border-gray-800"
-      >
+      <div class="mb-4 flex items-center justify-between rounded-lg border p-2 dark:border-gray-800">
         <div class="flex h-full items-center gap-4">
           <BalAssetSet :logoURIs="logoURIs" :width="100" :size="32" />
           <div v-if="gauge.pool.name">
@@ -401,16 +315,8 @@ onMounted(() => {
             </p>
           </div>
         </div>
-        <BalLink
-          :href="poolURL"
-          external
-          noStyle
-          class="group flex items-center"
-        >
-          <BalIcon
-            name="arrow-up-right"
-            class="text-gray-500 transition-colors group-hover:text-pink-500"
-          />
+        <BalLink :href="poolURL" external noStyle class="group flex items-center">
+          <BalIcon name="arrow-up-right" class="text-gray-500 transition-colors group-hover:text-pink-500" />
         </BalLink>
       </div>
       <BalForm class="vote-form">
@@ -425,24 +331,18 @@ onMounted(() => {
           placeholder="0"
           validateOn="input"
           :rules="inputRules"
-          :disabled="
-            voteInputDisabled || transactionInProgress || voteState.receipt
-          "
+          :disabled="voteInputDisabled || transactionInProgress || voteState.receipt"
           size="md"
           autoFocus
         >
           <template #append>
-            <div
-              class="flex h-full flex-row items-center justify-center rounded-r-lg border-gray-100 px-2 dark:border-gray-800"
-            >
+            <div class="flex h-full flex-row items-center justify-center rounded-r-lg border-gray-100 px-2 dark:border-gray-800">
               <span class="text-xl text-black dark:text-white">%</span>
             </div>
           </template>
         </BalTextInput>
         <div v-if="voteError" class="text-secondary mt-2 text-sm">
-          {{
-            t('veBAL.liquidityMining.popover.warnings.noVeBal.inputHintText')
-          }}
+          {{ t('veBAL.liquidityMining.popover.warnings.noVeBal.inputHintText') }}
         </div>
         <div v-else :class="['mt-2 text-sm'].concat(unallocatedVotesClass)">
           {{ remainingVotes }}
@@ -450,17 +350,8 @@ onMounted(() => {
 
         <div class="mt-4">
           <template v-if="voteState.receipt">
-            <ConfirmationIndicator
-              :txReceipt="voteState.receipt"
-              class="mb-2"
-            />
-            <BalBtn
-              v-if="voteState.receipt"
-              color="gray"
-              outline
-              block
-              @click="emit('close')"
-            >
+            <ConfirmationIndicator :txReceipt="voteState.receipt" class="mb-2" />
+            <BalBtn v-if="voteState.receipt" color="gray" outline block @click="emit('close')">
               {{ $t('getVeBAL.previewModal.returnToVeBalPage') }}
             </BalBtn>
           </template>
@@ -470,11 +361,7 @@ onMounted(() => {
             block
             :disabled="voteButtonDisabled"
             :loading="transactionInProgress"
-            :loadingLabel="
-              voteState.init
-                ? $t('veBAL.liquidityMining.popover.actions.vote.loadingLabel')
-                : $t('veBAL.liquidityMining.popover.actions.vote.confirming')
-            "
+            :loadingLabel="voteState.init ? $t('veBAL.liquidityMining.popover.actions.vote.loadingLabel') : $t('veBAL.liquidityMining.popover.actions.vote.confirming')"
             @click.prevent="submitVote"
           >
             {{ voteButtonText }}

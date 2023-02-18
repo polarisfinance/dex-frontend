@@ -10,11 +10,7 @@ import { configService as _configService } from '@/services/config/config.servic
 
 import { CoingeckoClient } from '../coingecko.client';
 import { CoingeckoCacheClient } from '../coingecko.cache.client';
-import {
-  CoingeckoService,
-  getNativeAssetId,
-  getPlatformId,
-} from '../coingecko.service';
+import { CoingeckoService, getNativeAssetId, getPlatformId } from '../coingecko.service';
 
 /**
  * TYPES
@@ -39,10 +35,7 @@ export class PriceService {
   nativeAssetAddress: string;
   appAddresses: { [key: string]: string };
 
-  constructor(
-    service: CoingeckoService,
-    private readonly configService = _configService
-  ) {
+  constructor(service: CoingeckoService, private readonly configService = _configService) {
     this.client = service.client;
     this.cacheClient = service.cacheClient;
     this.fiatParam = service.supportedFiat;
@@ -55,9 +48,7 @@ export class PriceService {
 
   async getNativeAssetPrice(): Promise<Price> {
     try {
-      const response = await this.cacheClient.get<PriceResponse>(
-        `/getNativeAsset/?id=${this.nativeAssetId}&vs_currency=${this.fiatParam}`
-      );
+      const response = await this.cacheClient.get<PriceResponse>(`/getNativeAsset/?id=${this.nativeAssetId}&vs_currency=${this.fiatParam}`);
       return response[this.nativeAssetId];
     } catch (error) {
       console.error('Unable to fetch Ether price', error);
@@ -68,14 +59,9 @@ export class PriceService {
   /**
    *  Rate limit for the CoinGecko API is 10 calls each second per IP address.
    */
-  async getTokens(
-    addresses: string[],
-    addressesPerRequest = 100
-  ): Promise<TokenPrices> {
+  async getTokens(addresses: string[], addressesPerRequest = 100): Promise<TokenPrices> {
     try {
-
-      if (addresses.length / addressesPerRequest > 10)
-        throw new Error('To many requests for rate limit.');
+      if (addresses.length / addressesPerRequest > 10) throw new Error('To many requests for rate limit.');
 
       addresses = addresses.map(address => this.addressMapIn(address));
       const pageCount = Math.ceil(addresses.length / addressesPerRequest);
@@ -87,51 +73,31 @@ export class PriceService {
       let replaceBnb = false;
       let replaceEth = false;
       pages.forEach(page => {
-        const addressString = addresses.slice(
-          addressesPerRequest * page,
-          addressesPerRequest * (page + 1)
-        );
+        const addressString = addresses.slice(addressesPerRequest * page, addressesPerRequest * (page + 1));
         for (let i = 0; i < addressString.length; i++) {
-          if (
-            addressString[i] == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
-          ) {
+          if (addressString[i] == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') {
             addressString[i] = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
             replaceNear = true;
           }
-          if (
-            addressString[i] == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
-          ) {
+          if (addressString[i] == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') {
             addressString[i] = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
             replaceStnear = true;
           }
-          if (
-            addressString[i] == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762'
-          ) {
+          if (addressString[i] == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762') {
             addressString[i] = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
             replaceBnb = true;
           }
-          if (
-            addressString[i] == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-          )
-          {
+          if (addressString[i] == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
             addressString[i] = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
             replaceEth = true;
           }
         }
 
         const endpoint = `/getTokens/?chain=${this.platformId}&contract_addresses=${addressString}&vs_currencies=${this.fiatParam}`;
-        const request = retryPromiseWithDelay(
-          this.cacheClient.get<PriceResponse>(endpoint),
-          3,
-          2000
-        );
+        const request = retryPromiseWithDelay(this.cacheClient.get<PriceResponse>(endpoint), 3, 2000);
         requests.push(request);
         const bnbEndpoint = `/getTokens/?chain=binance-smart-chain&contract_addresses=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c&vs_currencies=${this.fiatParam}`;
-        const bnbRequest = retryPromiseWithDelay(
-          this.cacheClient.get<PriceResponse>(bnbEndpoint),
-          3,
-          2000
-        );
+        const bnbRequest = retryPromiseWithDelay(this.cacheClient.get<PriceResponse>(bnbEndpoint), 3, 2000);
         requests.push(bnbRequest);
       });
 
@@ -143,20 +109,16 @@ export class PriceService {
         results[this.nativeAssetAddress] = await this.getNativeAssetPrice();
       }
       if (replaceNear) {
-        results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] =
-          results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
+        results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] = results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
       }
       if (replaceStnear) {
-        results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] =
-          results['0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30'];
+        results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] = results['0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30'];
       }
       if (replaceBnb) {
-        results['0xb14674C7264eC7d948B904Aab2c0E0F906F6e762'] =
-          results['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'];
+        results['0xb14674C7264eC7d948B904Aab2c0E0F906F6e762'] = results['0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'];
       }
       if (replaceEth) {
-        results['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] =
-          results['0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'];
+        results['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] = results['0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB'];
       }
       return results;
     } catch (error) {
@@ -165,20 +127,12 @@ export class PriceService {
     }
   }
 
-  async getTokensHistorical(
-    addresses: string[],
-    days: number,
-    addressesPerRequest = 1,
-    aggregateBy: 'hour' | 'day' = 'day'
-  ): Promise<HistoricalPrices> {
-
+  async getTokensHistorical(addresses: string[], days: number, addressesPerRequest = 1, aggregateBy: 'hour' | 'day' = 'day'): Promise<HistoricalPrices> {
     try {
-      if (addresses.length / addressesPerRequest > 10)
-        throw new Error('To many requests for rate limit.');
+      if (addresses.length / addressesPerRequest > 10) throw new Error('To many requests for rate limit.');
 
       const now = Math.floor(Date.now() / 1000);
-      const end =
-        aggregateBy === 'hour' ? now : now - (now % twentyFourHoursInSecs);
+      const end = aggregateBy === 'hour' ? now : now - (now % twentyFourHoursInSecs);
       const start = end - days * twentyFourHoursInSecs;
 
       addresses = addresses.map(address => this.addressMapIn(address));
@@ -199,11 +153,7 @@ export class PriceService {
         if (address == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
           address = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
         }
-        const endpoint = `/coins/${
-          bnb ? 'binance-smart-chain' : this.platformId
-        }/contract/${address.toLowerCase()}/market_chart/range?vs_currency=${
-          this.fiatParam
-        }&from=${start}&to=${end}`;
+        const endpoint = `/coins/${bnb ? 'binance-smart-chain' : this.platformId}/contract/${address.toLowerCase()}/market_chart/range?vs_currency=${this.fiatParam}&from=${start}&to=${end}`;
         const request = retryPromiseWithDelay(
           this.client.get<HistoricalPriceResponse>(endpoint),
           2, // retryCount
@@ -213,13 +163,8 @@ export class PriceService {
       });
 
       const paginatedResults = await Promise.all(requests);
-      const results = this.parseHistoricalPrices(
-        paginatedResults,
-        addresses,
-        start,
-        aggregateBy
-      );
-      
+      const results = this.parseHistoricalPrices(paginatedResults, addresses, start, aggregateBy);
+
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
@@ -228,23 +173,13 @@ export class PriceService {
   }
 
   private parsePaginatedTokens(paginatedResults: TokenPrices[]): TokenPrices {
-    const results = paginatedResults.reduce(
-      (result, page) => ({ ...result, ...page }),
-      {}
-    );
+    const results = paginatedResults.reduce((result, page) => ({ ...result, ...page }), {});
     const entries = Object.entries(results);
-    const parsedEntries = entries
-      .filter(result => Object.keys(result[1]).length > 0)
-      .map(result => [this.addressMapOut(result[0]), result[1]]);
+    const parsedEntries = entries.filter(result => Object.keys(result[1]).length > 0).map(result => [this.addressMapOut(result[0]), result[1]]);
     return Object.fromEntries(parsedEntries);
   }
 
-  private parseHistoricalPrices(
-    results: HistoricalPriceResponse[],
-    addresses: string[],
-    start: number,
-    aggregateBy: 'day' | 'hour' = 'day'
-  ): HistoricalPrices {
+  private parseHistoricalPrices(results: HistoricalPriceResponse[], addresses: string[], start: number, aggregateBy: 'day' | 'hour' = 'day'): HistoricalPrices {
     const assetPrices = Object.fromEntries(
       addresses.map((address, index) => {
         address = this.addressMapOut(address);
@@ -252,9 +187,7 @@ export class PriceService {
         const prices = {};
 
         if (aggregateBy === 'hour') {
-          const pricesByHour = groupBy(result, r =>
-            getUnixTime(startOfHour(fromUnixTime(r[0] / 1000)))
-          );
+          const pricesByHour = groupBy(result, r => getUnixTime(startOfHour(fromUnixTime(r[0] / 1000))));
           for (const key of Object.keys(pricesByHour)) {
             const price = (last(pricesByHour[key]) || [])[1] || 0;
             prices[Number(key) * 1000] = price;

@@ -1,8 +1,6 @@
 import { computed, reactive, Ref, toRefs } from 'vue';
 
-import useRelayerApproval, {
-  Relayer,
-} from '@/composables/trade/useRelayerApproval';
+import useRelayerApproval, { Relayer } from '@/composables/trade/useRelayerApproval';
 import { isStablePhantom } from '@/composables/usePool';
 import useTokens from '@/composables/useTokens';
 import { isSameAddress } from '@/lib/utils';
@@ -64,9 +62,7 @@ export function parseError(error: WithdrawalError): BaseContent {
     case WithdrawalError.SINGLE_ASSET_WITHDRAWAL_MIN_BPT_LIMIT:
       return {
         title: i18n.global.t('warning'),
-        description: i18n.global.t(
-          `withdraw.errors.${WithdrawalError.SINGLE_ASSET_WITHDRAWAL_MIN_BPT_LIMIT}`
-        ),
+        description: i18n.global.t(`withdraw.errors.${WithdrawalError.SINGLE_ASSET_WITHDRAWAL_MIN_BPT_LIMIT}`),
       };
     default:
       return {
@@ -88,9 +84,7 @@ export default function useWithdrawalState(pool: Ref<Pool | undefined>) {
    */
   const tokensOut = computed(() => {
     if (!pool.value) return [];
-    const poolTokens = isStablePhantom(pool.value.poolType)
-      ? pool.value.mainTokens || []
-      : pool.value.tokensList;
+    const poolTokens = isStablePhantom(pool.value.poolType) ? pool.value.mainTokens || [] : pool.value.tokensList;
 
     if (!state.isProportional && state.tokenOut === nativeAsset.address)
       // replace WETH with ETH

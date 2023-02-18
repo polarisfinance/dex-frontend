@@ -1,17 +1,10 @@
 import { BigNumber } from 'ethers';
 
 export const BigNumberToString = (number, decimals, fixed) => {
-  return (
-    Number(number.div(BigNumber.from(10).pow(decimals))) / Math.pow(10, fixed)
-  ).toString();
+  return (Number(number.div(BigNumber.from(10).pow(decimals))) / Math.pow(10, fixed)).toString();
 };
 
-export const getDisplayBalance = (
-  balance: BigNumber,
-  decimals = 18,
-  fractionDigits = 4,
-  isTruncated: boolean = false
-) => {
+export const getDisplayBalance = (balance: BigNumber, decimals = 18, fractionDigits = 4, isTruncated: boolean = false) => {
   if (decimals === 0) {
     fractionDigits = 0;
   }
@@ -26,11 +19,7 @@ export const getDisplayBalance = (
   return ret;
 };
 
-export const getFullDisplayBalance = (
-  balance: BigNumber,
-  decimals = 18,
-  isTruncated = false
-) => {
+export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, isTruncated = false) => {
   return getDisplayBalance(balance, decimals, 6, isTruncated);
 };
 

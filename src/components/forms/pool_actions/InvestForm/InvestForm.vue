@@ -35,14 +35,14 @@ enum NativeAsset {
 
 type Props = {
   pool: Pool;
-  step:number;
+  step: number;
 };
 
 /**
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-const emits = defineEmits(['preview','confirmInvestment']);
+const emits = defineEmits(['preview', 'confirmInvestment']);
 
 /**
  * STATE
@@ -55,67 +55,30 @@ const showStakeModal = ref(false);
 const { t } = useI18n();
 const { balanceFor, nativeAsset, wrappedNativeAsset } = useTokens();
 const { useNativeAsset } = usePoolTransfers();
-const {
-  tokenAddresses,
-  amounts,
-  validInputs,
-  highPriceImpactAccepted,
-  resetAmounts,
-  sor,
-} = useInvestState();
+const { tokenAddresses, amounts, validInputs, highPriceImpactAccepted, resetAmounts, sor } = useInvestState();
 
-const investMath = useInvestMath(
-  toRef(props, 'pool'),
-  tokenAddresses,
-  amounts,
-  useNativeAsset,
-  sor
-);
+const investMath = useInvestMath(toRef(props, 'pool'), tokenAddresses, amounts, useNativeAsset, sor);
 
-const {
-  fiatTotal,
-  hasAmounts,
-  highPriceImpact,
-  maximizeAmounts,
-  optimizeAmounts,
-  proportionalAmounts,
-  batchSwapLoading,
-} = investMath;
+const { fiatTotal, hasAmounts, highPriceImpact, maximizeAmounts, optimizeAmounts, proportionalAmounts, batchSwapLoading } = investMath;
 
-let maxInvestTotal="0";
+let maxInvestTotal = '0';
 
+const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } = useWeb3();
 
-const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } =
-  useWeb3();
-
-const { managedPoolWithTradingHalted, isWethPool, isStableLikePool } = usePool(
-  toRef(props, 'pool')
-);
+const { managedPoolWithTradingHalted, isWethPool, isStableLikePool } = usePool(toRef(props, 'pool'));
 
 /**
  * COMPUTED
  */
-const hasValidInputs = computed(
-  (): boolean =>
-    validInputs.value.every(validInput => validInput === true) &&
-    hasAcceptedHighPriceImpact.value
-);
+const hasValidInputs = computed((): boolean => validInputs.value.every(validInput => validInput === true) && hasAcceptedHighPriceImpact.value);
 
-const getMaxInvestTotal = computed(
-  (): string => maxInvestTotal
-);
+const getMaxInvestTotal = computed((): string => maxInvestTotal);
 
-const hasAcceptedHighPriceImpact = computed((): boolean =>
-  highPriceImpact.value ? highPriceImpactAccepted.value : true
-);
+const hasAcceptedHighPriceImpact = computed((): boolean => (highPriceImpact.value ? highPriceImpactAccepted.value : true));
 
-const forceProportionalInputs = computed(
-  (): boolean => managedPoolWithTradingHalted.value
-);
+const forceProportionalInputs = computed((): boolean => managedPoolWithTradingHalted.value);
 
-const poolHasLowLiquidity = computed((): boolean =>
-  bnum(props.pool.totalLiquidity).lt(LOW_LIQUIDITY_THRESHOLD)
-);
+const poolHasLowLiquidity = computed((): boolean => bnum(props.pool.totalLiquidity).lt(LOW_LIQUIDITY_THRESHOLD));
 
 const investmentTokens = computed((): string[] => {
   if (isStablePhantom(props.pool.poolType)) {
@@ -146,10 +109,7 @@ function tokenWeight(address: string): number {
   if (!props.pool?.onchain?.tokens) return 0;
 
   if (isSameAddress(address, nativeAsset.address)) {
-    return (
-      findByAddress(props.pool.onchain.tokens, wrappedNativeAsset.value.address)
-        ?.weight || 1
-    );
+    return findByAddress(props.pool.onchain.tokens, wrappedNativeAsset.value.address)?.weight || 1;
   }
 
   return findByAddress(props.pool.onchain.tokens, address)?.weight || 1;
@@ -158,29 +118,20 @@ function tokenWeight(address: string): number {
 function propAmountFor(index: number): string {
   if (isStableLikePool.value) return '0.0';
 
-  return bnum(proportionalAmounts.value[index]).gt(0)
-    ? proportionalAmounts.value[index]
-    : '0.0';
+  return bnum(proportionalAmounts.value[index]).gt(0) ? proportionalAmounts.value[index] : '0.0';
 }
 function hint(index: number): string {
   return bnum(propAmountFor(index)).gt(0) ? t('proportionalSuggestion') : '';
 }
 
 function tokenOptions(index: number): string[] {
-  return isSameAddress(
-    props.pool.tokensList[index],
-    wrappedNativeAsset.value.address
-  )
-    ? [wrappedNativeAsset.value.address, nativeAsset.address]
-    : [];
+  return isSameAddress(props.pool.tokensList[index], wrappedNativeAsset.value.address) ? [wrappedNativeAsset.value.address, nativeAsset.address] : [];
 }
 
 // If ETH has a higher balance than WETH then use it for the input.
 function setNativeAssetByBalance(): void {
   const nativeAssetBalance = balanceFor(nativeAsset.address);
-  const wrappedNativeAssetBalance = balanceFor(
-    wrappedNativeAsset.value.address
-  );
+  const wrappedNativeAssetBalance = balanceFor(wrappedNativeAsset.value.address);
 
   if (bnum(nativeAssetBalance).gt(wrappedNativeAssetBalance)) {
     setNativeAsset(NativeAsset.unwrapped);
@@ -189,14 +140,8 @@ function setNativeAssetByBalance(): void {
 }
 
 function setNativeAsset(to: NativeAsset): void {
-  const fromAddress =
-    to === NativeAsset.wrapped
-      ? nativeAsset.address
-      : wrappedNativeAsset.value.address;
-  const toAddress =
-    to === NativeAsset.wrapped
-      ? wrappedNativeAsset.value.address
-      : nativeAsset.address;
+  const fromAddress = to === NativeAsset.wrapped ? nativeAsset.address : wrappedNativeAsset.value.address;
+  const toAddress = to === NativeAsset.wrapped ? wrappedNativeAsset.value.address : nativeAsset.address;
 
   const indexOfAsset = tokenAddresses.value.indexOf(fromAddress);
 
@@ -212,18 +157,16 @@ onBeforeMount(() => {
   maximizeAmounts();
   maxInvestTotal = fiatTotal.value;
   resetAmounts();
-  
+
   tokenAddresses.value = [...investmentTokens.value];
   if (isWethPool.value) setNativeAssetByBalance();
 });
-onMounted(()=>{
-  
-});
+onMounted(() => {});
 
 /**
  * METHODS
  */
- function onConfirmInvestment(): void {
+function onConfirmInvestment(): void {
   emits('confirmInvestment');
 }
 
@@ -241,66 +184,45 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 
 <template>
   <Transition>
-  <div v-if="props.step==3" class="preview">
-    <StakingProvider :poolAddress="pool.address" >
-        <InvestPreview  class="preview"
-          :pool="pool"
-          :math="investMath"
-          :tokenAddresses="tokenAddresses"
-          @confirmInvestment="onConfirmInvestment"
-        />
-    </StakingProvider>
-  </div>
+    <div v-if="props.step == 3" class="preview">
+      <StakingProvider :poolAddress="pool.address">
+        <InvestPreview class="preview" :pool="pool" :math="investMath" :tokenAddresses="tokenAddresses" @confirmInvestment="onConfirmInvestment" />
+      </StakingProvider>
+    </div>
   </Transition>
   <Transition>
-    <div v-if="props.step<=2">
+    <div v-if="props.step <= 2">
       <BalAlert
         v-if="forceProportionalInputs"
         type="warning"
         :title="$t('investment.warning.managedPoolTradingHalted.title')"
-        :description="
-          $t('investment.warning.managedPoolTradingHalted.description')
-        "
+        :description="$t('investment.warning.managedPoolTradingHalted.description')"
         class="mb-4"
       />
 
-      <BalAlert
-        v-if="poolHasLowLiquidity"
-        type="warning"
-        :title="$t('investment.warning.lowLiquidity.title')"
-        :description="$t('investment.warning.lowLiquidity.description')"
-        class="mb-4"
-      />
+      <BalAlert v-if="poolHasLowLiquidity" type="warning" :title="$t('investment.warning.lowLiquidity.title')" :description="$t('investment.warning.lowLiquidity.description')" class="mb-4" />
       <div class="tokens mx-[24px] mt-[12px]">
-      <TokenInput
-        v-for="(n, i) in tokenAddresses.length"
-        :key="i"
-        v-model:address="tokenAddresses[i]"
-        v-model:amount="amounts[i]"
-        v-model:isValid="validInputs[i]"
-        :name="tokenAddresses[i]"
-        :weight="tokenWeight(tokenAddresses[i])"
-        :hintAmount="propAmountFor(i)"
-        :hint="hint(i)"
-        class="mb-4"
-        fixedToken
-        :options="tokenOptions(i)"
-        @update:amount="handleAmountChange($event, i)"
-        @update:address="handleAddressChange($event)"
-      />
+        <TokenInput
+          v-for="(n, i) in tokenAddresses.length"
+          :key="i"
+          v-model:address="tokenAddresses[i]"
+          v-model:amount="amounts[i]"
+          v-model:isValid="validInputs[i]"
+          :name="tokenAddresses[i]"
+          :weight="tokenWeight(tokenAddresses[i])"
+          :hintAmount="propAmountFor(i)"
+          :hint="hint(i)"
+          class="mb-4"
+          fixedToken
+          :options="tokenOptions(i)"
+          @update:amount="handleAmountChange($event, i)"
+          @update:address="handleAddressChange($event)"
+        />
       </div>
       <div class="footer">
-        <InvestFormTotals
-          :math="investMath"
-          :maxFiatValue="getMaxInvestTotal"
-          @maximize="maximizeAmounts"
-          @optimize="optimizeAmounts"
-        />
+        <InvestFormTotals :math="investMath" :maxFiatValue="getMaxInvestTotal" @maximize="maximizeAmounts" @optimize="optimizeAmounts" />
 
-        <div
-          v-if="highPriceImpact"
-          class="mt-4 px-6"
-        >
+        <div v-if="highPriceImpact" class="mt-4 px-6">
           <BalCheckbox
             v-model="highPriceImpactAccepted"
             :rules="[isRequired($t('priceImpactCheckbox'))]"
@@ -312,25 +234,12 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 
         <WrapStEthLink :pool="pool" class="mt-4" />
 
-        <div class=" mx-[16px]">
-          <button class="btn inactive w-full mb-[12px]"
-            v-if="!isWalletReady"
-            @click="startConnectWithInjectedProvider"
-            >{{ $t('connectWallet') }}
-          </button>
+        <div class="mx-[16px]">
+          <button class="btn inactive mb-[12px] w-full" v-if="!isWalletReady" @click="startConnectWithInjectedProvider">{{ $t('connectWallet') }}</button>
 
-          <button class="btn active w-full mb-[12px]"
-            v-else
-            @click=" emits('preview')"
-            :disabled="
-              !hasAmounts ||
-              !hasValidInputs ||
-              isMismatchedNetwork ||
-              batchSwapLoading
-            "
-            >{{ $t('preview')}}
+          <button class="btn active mb-[12px] w-full" v-else @click="emits('preview')" :disabled="!hasAmounts || !hasValidInputs || isMismatchedNetwork || batchSwapLoading">
+            {{ $t('preview') }}
           </button>
-
         </div>
       </div>
 
@@ -356,27 +265,26 @@ watch(useNativeAsset, shouldUseNativeAsset => {
   </Transition>
 </template>
 <style scoped>
-.tokens{
-
+.tokens {
 }
-.footer{
-  background-color: #50456E;
+.footer {
+  background-color: #50456e;
 }
-.btn{
+.btn {
   border-radius: 12px;
-  padding:10px;
+  padding: 10px;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
 }
-.btn.active{
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
-  color: #FDFDFD;
+.btn.active {
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
+  color: #fdfdfd;
 }
-.btn.inactive{
-  background:#41365E;
+.btn.inactive {
+  background: #41365e;
 }
-.preview{
-  width: 100%!important;
+.preview {
+  width: 100% !important;
 }
 </style>

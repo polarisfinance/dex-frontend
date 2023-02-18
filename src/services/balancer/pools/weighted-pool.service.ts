@@ -1,18 +1,10 @@
 import { toNormalizedWeights } from '@balancer-labs/sdk';
-import {
-  Vault__factory,
-  WeightedPool__factory,
-  WeightedPoolFactory__factory,
-} from '@balancer-labs/typechain';
+import { Vault__factory, WeightedPool__factory, WeightedPoolFactory__factory } from '@balancer-labs/typechain';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber as EPBigNumber } from '@ethersproject/bignumber';
 import { AddressZero } from '@ethersproject/constants';
 import { Contract } from '@ethersproject/contracts';
-import {
-  JsonRpcProvider,
-  TransactionResponse,
-  Web3Provider,
-} from '@ethersproject/providers';
+import { JsonRpcProvider, TransactionResponse, Web3Provider } from '@ethersproject/providers';
 import BigNumber from 'bignumber.js';
 import { formatUnits } from 'ethers/lib/utils';
 
@@ -39,18 +31,10 @@ export interface JoinPoolRequest {
 }
 
 export default class WeightedPoolService {
-  public async create(
-    provider: Web3Provider,
-    name: string,
-    symbol: string,
-    swapFee: string,
-    tokens: PoolSeedToken[],
-    owner: Address
-  ): Promise<TransactionResponse> {
+  public async create(provider: Web3Provider, name: string, symbol: string, swapFee: string, tokens: PoolSeedToken[], owner: Address): Promise<TransactionResponse> {
     if (!owner.length) return Promise.reject('No pool owner specified');
 
-    const weightedPoolFactoryAddress =
-      configService.network.addresses.weightedPoolFactory;
+    const weightedPoolFactoryAddress = configService.network.addresses.weightedPoolFactory;
 
     const tokenAddresses: Address[] = tokens.map((token: PoolSeedToken) => {
       return token.tokenAddress;
@@ -59,28 +43,12 @@ export default class WeightedPoolService {
     const seedTokens = this.calculateTokenWeights(tokens);
     const swapFeeScaled = scale(new BigNumber(swapFee), 18);
 
-    const params = [
-      name,
-      symbol,
-      tokenAddresses,
-      seedTokens,
-      swapFeeScaled.toString(),
-      owner,
-    ];
+    const params = [name, symbol, tokenAddresses, seedTokens, swapFeeScaled.toString(), owner];
 
-    return sendTransaction(
-      provider,
-      weightedPoolFactoryAddress,
-      WeightedPoolFactory__factory.abi,
-      'create',
-      params
-    );
+    return sendTransaction(provider, weightedPoolFactoryAddress, WeightedPoolFactory__factory.abi, 'create', params);
   }
 
-  public async retrievePoolIdAndAddress(
-    provider: Web3Provider | JsonRpcProvider,
-    createHash: string
-  ): Promise<CreatePoolReturn> {
+  public async retrievePoolIdAndAddress(provider: Web3Provider | JsonRpcProvider, createHash: string): Promise<CreatePoolReturn> {
     const receipt: any = await provider.getTransactionReceipt(createHash);
     let poolAddress;
     if (receipt.events) {
@@ -91,9 +59,7 @@ export default class WeightedPoolService {
     }
 
     if (!poolAddress) {
-      const logs = receipt.logs.filter(
-        l => l.topics?.length > 0 && l.topics[0] === TOPICS.PoolCreated
-      );
+      const logs = receipt.logs.filter(l => l.topics?.length > 0 && l.topics[0] === TOPICS.PoolCreated);
       poolAddress = logs[0].address;
     }
 
@@ -108,19 +74,12 @@ export default class WeightedPoolService {
     return poolDetails;
   }
 
-  public async retrievePoolDetailsFromCall(
-    provider: Web3Provider | JsonRpcProvider,
-    hash: string
-  ) {
+  public async retrievePoolDetailsFromCall(provider: Web3Provider | JsonRpcProvider, hash: string) {
     if (!hash) return;
     const transaction = await provider.getTransaction(hash);
 
-    const weightedPoolInterface =
-      WeightedPoolFactory__factory.createInterface();
-    const decodedInputData = weightedPoolInterface.decodeFunctionData(
-      'create',
-      transaction.data
-    );
+    const weightedPoolInterface = WeightedPoolFactory__factory.createInterface();
+    const decodedInputData = weightedPoolInterface.decodeFunctionData('create', transaction.data);
 
     const details = {
       weights: decodedInputData.weights.map(weight => formatUnits(weight, 18)),
@@ -132,18 +91,8 @@ export default class WeightedPoolService {
     return details;
   }
 
-  public async initJoin(
-    provider: Web3Provider,
-    poolId: string,
-    sender: Address,
-    receiver: Address,
-    tokenAddresses: Address[],
-    initialBalancesString: string[]
-  ): Promise<TransactionResponse> {
-    const initUserData = defaultAbiCoder.encode(
-      ['uint256', 'uint256[]'],
-      [JOIN_KIND_INIT, initialBalancesString]
-    );
+  public async initJoin(provider: Web3Provider, poolId: string, sender: Address, receiver: Address, tokenAddresses: Address[], initialBalancesString: string[]): Promise<TransactionResponse> {
+    const initUserData = defaultAbiCoder.encode(['uint256', 'uint256[]'], [JOIN_KIND_INIT, initialBalancesString]);
 
     const value = this.value(initialBalancesString, tokenAddresses);
 
@@ -157,21 +106,12 @@ export default class WeightedPoolService {
     };
 
     const vaultAddress = configService.network.addresses.vault;
-    return sendTransaction(
-      provider,
-      vaultAddress,
-      Vault__factory.abi,
-      'joinPool',
-      [poolId, sender, receiver, joinPoolRequest],
-      { value }
-    );
+    return sendTransaction(provider, vaultAddress, Vault__factory.abi, 'joinPool', [poolId, sender, receiver, joinPoolRequest], { value });
   }
 
   public calculateTokenWeights(tokens: PoolSeedToken[]): string[] {
     const weights: EPBigNumber[] = tokens.map((token: PoolSeedToken) => {
-      const normalizedWeight = new BigNumber(token.weight).multipliedBy(
-        new BigNumber(1e16)
-      );
+      const normalizedWeight = new BigNumber(token.weight).multipliedBy(new BigNumber(1e16));
       return EPBigNumber.from(normalizedWeight.toString());
     });
     const normalizedWeights = toNormalizedWeights(weights);
@@ -198,8 +138,6 @@ export default class WeightedPoolService {
   private parseTokensIn(tokensIn: string[]): string[] {
     const nativeAsset = configService.network.nativeAsset;
 
-    return tokensIn.map(address =>
-      isSameAddress(address, nativeAsset.address) ? AddressZero : address
-    );
+    return tokensIn.map(address => (isSameAddress(address, nativeAsset.address) ? AddressZero : address));
   }
 }

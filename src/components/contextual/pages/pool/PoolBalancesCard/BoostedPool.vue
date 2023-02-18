@@ -66,16 +66,9 @@ function getTokenShare(address: string) {
 </script>
 
 <template>
-  <BalCard
-    class="overflow-x-auto whitespace-nowrap"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
+  <BalCard class="overflow-x-auto whitespace-nowrap" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad>
     <template #header>
-      <div
-        class="grid w-full grid-cols-3 border-b p-4 text-base font-semibold dark:border-gray-900"
-      >
+      <div class="grid w-full grid-cols-3 border-b p-4 text-base font-semibold dark:border-gray-900">
         <div>{{ $t('token') }}</div>
         <div class="justify-self-end">
           {{ $t('balance') }}
@@ -88,35 +81,14 @@ function getTokenShare(address: string) {
 
     <div class="-mt-2 p-4">
       <div v-for="address in pool.tokensList" :key="address" class="py-4">
-        <BalBreakdown
-          :items="getUnderlyingTokens(address)"
-          class="w-full"
-          offsetClassOverrides="mt-4 ml-3"
-          initVertBarClassOverrides="h-6 -mt-6"
-          size="lg"
-        >
-          <BalLink
-            :href="explorerLinks.addressLink(address)"
-            external
-            noStyle
-            class="flex items-center"
-          >
+        <BalBreakdown :items="getUnderlyingTokens(address)" class="w-full" offsetClassOverrides="mt-4 ml-3" initVertBarClassOverrides="h-6 -mt-6" size="lg">
+          <BalLink :href="explorerLinks.addressLink(address)" external noStyle class="flex items-center">
             <BalAsset :address="address" class="mr-2" />
             {{ pool?.onchain?.tokens?.[address]?.symbol || '---' }}
-            <BalIcon
-              name="arrow-up-right"
-              size="sm"
-              class="ml-2 text-gray-500 transition-colors hover:text-blue-500"
-            />
+            <BalIcon name="arrow-up-right" size="sm" class="ml-2 text-gray-500 transition-colors hover:text-blue-500" />
           </BalLink>
           <template #item="{ item: asset }">
-            <AssetRow
-              :address="asset.address"
-              :mainTokenAddress="asset.mainTokenAddress"
-              :balance="asset.balance"
-              :priceRate="asset.priceRate"
-              :share="getTokenShare(address)"
-            />
+            <AssetRow :address="asset.address" :mainTokenAddress="asset.mainTokenAddress" :balance="asset.balance" :priceRate="asset.priceRate" :share="getTokenShare(address)" />
           </template>
         </BalBreakdown>
       </div>

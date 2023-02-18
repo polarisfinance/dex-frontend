@@ -1,20 +1,7 @@
 <template>
   <div class="inline-flex items-start">
-    <input
-      type="radio"
-      :value="value"
-      :checked="modelValue === value"
-      :name="name"
-      :class="['bal-radio-input', inputClasses]"
-      :disabled="disabled"
-      @change="onChange(value)"
-    />
-    <label
-      v-if="$slots.label || label"
-      :for="name"
-      :class="['bal-radio-label', labelClasses]"
-      @click.prevent="onChange(value)"
-    >
+    <input type="radio" :value="value" :checked="modelValue === value" :name="name" :class="['bal-radio-input', inputClasses]" :disabled="disabled" @change="onChange(value)" />
+    <label v-if="$slots.label || label" :for="name" :class="['bal-radio-label', labelClasses]" @click.prevent="onChange(value)">
       <slot name="label">
         {{ label }}
       </slot>

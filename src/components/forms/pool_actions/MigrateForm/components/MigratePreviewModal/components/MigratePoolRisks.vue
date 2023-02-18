@@ -15,18 +15,9 @@ defineProps<Props>();
 </script>
 
 <template>
-  <BalAlert
-    type="warning"
-    :title="$t('migratePool.previewModal.riskWarnings.title')"
-    block
-    class="mb-4"
-  >
+  <BalAlert type="warning" :title="$t('migratePool.previewModal.riskWarnings.title')" block class="mb-4">
     <ul class="list-disc pl-6">
-      <li
-        v-for="i18nLabel in poolMigrationInfo.riskI18nLabels"
-        :key="i18nLabel"
-        class="pt-2"
-      >
+      <li v-for="i18nLabel in poolMigrationInfo.riskI18nLabels" :key="i18nLabel" class="pt-2">
         {{ $t(i18nLabel) }}
       </li>
     </ul>

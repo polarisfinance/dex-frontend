@@ -20,14 +20,10 @@ jest.mock('@/composables/useUserSettings');
 jest.mock('@/composables/useTokens', () => {
   return jest.fn().mockImplementation(() => {
     return {
-      priceFor: jest
-        .fn()
-        .mockImplementation((address, currency = mockDefaultCurrency) => {
-          const token = Object.values(mockTokens).find(
-            token => address === token.address
-          );
-          return token?.price[currency];
-        }),
+      priceFor: jest.fn().mockImplementation((address, currency = mockDefaultCurrency) => {
+        const token = Object.values(mockTokens).find(token => address === token.address);
+        return token?.price[currency];
+      }),
     };
   });
 });

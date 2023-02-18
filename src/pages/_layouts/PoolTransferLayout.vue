@@ -24,8 +24,7 @@ const id = ref<string>(route.params.id as string);
  */
 const { getReturnRoute } = useReturnRoute();
 const { upToLargeBreakpoint } = useBreakpoints();
-const { pool, loadingPool, useNativeAsset, transfersAllowed } =
-  usePoolTransfers();
+const { pool, loadingPool, useNativeAsset, transfersAllowed } = usePoolTransfers();
 usePoolTransfersGuard();
 </script>
 
@@ -41,11 +40,7 @@ usePoolTransfersGuard();
     <Col3Layout offsetGutters mobileHideGutters>
       <template v-if="!upToLargeBreakpoint" #gutterLeft>
         <BalLoadingBlock v-if="loadingPool || !transfersAllowed" class="h-64" />
-        <MyWalletTokensCard
-          v-else
-          v-model:useNativeAsset="useNativeAsset"
-          :pool="pool"
-        />
+        <MyWalletTokensCard v-else v-model:useNativeAsset="useNativeAsset" :pool="pool" />
       </template>
 
       <router-view :key="$route.path" />
@@ -65,24 +60,11 @@ usePoolTransfersGuard();
         ]"
       >
         <template #myWalletTokens>
-          <BalLoadingBlock
-            v-if="loadingPool || !transfersAllowed"
-            class="h-64"
-          />
-          <MyWalletTokensCard
-            v-else
-            v-model:useNativeAsset="useNativeAsset"
-            :pool="pool"
-            hideHeader
-            noBorder
-            square
-          />
+          <BalLoadingBlock v-if="loadingPool || !transfersAllowed" class="h-64" />
+          <MyWalletTokensCard v-else v-model:useNativeAsset="useNativeAsset" :pool="pool" hideHeader noBorder square />
         </template>
         <template #myPoolBalances>
-          <BalLoadingBlock
-            v-if="loadingPool || !transfersAllowed"
-            class="h-64"
-          />
+          <BalLoadingBlock v-if="loadingPool || !transfersAllowed" class="h-64" />
           <MyPoolBalancesCard v-else :pool="pool" hideHeader noBorder square />
         </template>
       </BalAccordion>

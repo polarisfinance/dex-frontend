@@ -1,19 +1,8 @@
 <script lang="ts">
 import { PoolWithShares, PoolType, AnyPool, Pool } from '@/services/pool/types';
 import { TokenPrices } from '@/services/coingecko/api/price.service';
-import {
-  ClaimType,
-  ClaimProviderService,
-} from '@/services/pool/claim.provider';
-import {
-  computed,
-  defineComponent,
-  ref,
-  PropType,
-  watch,
-  ComputedRef,
-  toRef,
-} from 'vue';
+import { ClaimType, ClaimProviderService } from '@/services/pool/claim.provider';
+import { computed, defineComponent, ref, PropType, watch, ComputedRef, toRef } from 'vue';
 
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import useWeb3 from '@/services/web3/useWeb3';
@@ -23,27 +12,12 @@ import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import MyPoolInvsetmentFiat, {
-  MyPollInvestmentFiatType,
-} from '@/components/pool/MyPoolInvsetmentFiat.vue';
+import MyPoolInvsetmentFiat, { MyPollInvestmentFiatType } from '@/components/pool/MyPoolInvsetmentFiat.vue';
 import useEthers from '@/composables//useEthers';
 import useTokens from '@/composables/useTokens';
 import { bnum } from '@/lib/utils';
-import {
-  absMaxApr,
-  isMigratablePool,
-  isStableLike,
-  orderedPoolTokens,
-  orderedTokenAddresses,
-  totalAprLabel,
-  usePool,
-} from '@/composables/usePool';
-import {
-  BigNumberToString,
-  sunriseNameToAddress,
-  SPOLAR,
-  getDisplayBalance,
-} from '@/composables/PolarisFinance/utils';
+import { absMaxApr, isMigratablePool, isStableLike, orderedPoolTokens, orderedTokenAddresses, totalAprLabel, usePool } from '@/composables/usePool';
+import { BigNumberToString, sunriseNameToAddress, SPOLAR, getDisplayBalance } from '@/composables/PolarisFinance/utils';
 import ArrowRightIcon from '@/components/_global/icons/ArrowRightIcon.vue';
 import { BigNumber } from 'ethers';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -55,17 +29,17 @@ import ethernalImg from '@/pages/ethernal.svg';
 import binarisImg from '@/pages/binaris.svg';
 
 const singlePools = [
-      { name: 'POLAR', id: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86', logo:polarImg},
-      { name: 'ORBITAL', id: '0x3AC55eA8D2082fAbda674270cD2367dA96092889', logo:orbitalImg },
-      { name: 'BINARIS', id: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370', logo:binarisImg },
-      { name: 'USP', id: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96', logo:uspImg },
-      { name: 'ETHERNAL', id: '0x17cbd9C274e90C537790C51b4015a65cD015497e', logo:ethernalImg },
-      // { name: 'PBOND', id: '0x3a4773e600086A753862621A26a2E3274610da43' },
-      // { name: 'OBOND', id: '0x192bdcdd7b95A97eC66dE5630a85967F6B79e695' },
-      // { name: 'BBOND', id: '0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9' },
-      // { name: 'USPBOND', id: '0xcE32b28c19C61B19823395730A0c7d91C671E54b' },
-      // { name: 'EBOND', id: '0x266437E6c7500A947012F19A3dE96a3881a0449E' },
-    ];
+  { name: 'POLAR', id: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86', logo: polarImg },
+  { name: 'ORBITAL', id: '0x3AC55eA8D2082fAbda674270cD2367dA96092889', logo: orbitalImg },
+  { name: 'BINARIS', id: '0xafE0d6ca6AAbB43CDA024895D203120831Ba0370', logo: binarisImg },
+  { name: 'USP', id: '0xa69d9Ba086D41425f35988613c156Db9a88a1A96', logo: uspImg },
+  { name: 'ETHERNAL', id: '0x17cbd9C274e90C537790C51b4015a65cD015497e', logo: ethernalImg },
+  // { name: 'PBOND', id: '0x3a4773e600086A753862621A26a2E3274610da43' },
+  // { name: 'OBOND', id: '0x192bdcdd7b95A97eC66dE5630a85967F6B79e695' },
+  // { name: 'BBOND', id: '0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9' },
+  // { name: 'USPBOND', id: '0xcE32b28c19C61B19823395730A0c7d91C671E54b' },
+  // { name: 'EBOND', id: '0x266437E6c7500A947012F19A3dE96a3881a0449E' },
+];
 
 export default defineComponent({
   data() {
@@ -74,9 +48,7 @@ export default defineComponent({
       noClaims: true,
       totalClaims: 0,
       totalPoolFiatValue: 0,
-      xpolarPoolQuery: usePoolQuery(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      ),
+      xpolarPoolQuery: usePoolQuery('0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'),
       poolTotalFiatValues: [],
     };
   },
@@ -100,7 +72,7 @@ export default defineComponent({
       type: Array as PropType<Array<PoolWithShares>>, //PoolWithShares AnyPool
       default: null,
     },
-    prices:{
+    prices: {
       type: Object as PropType<ComputedRef<TokenPrices>>,
       default: null,
     },
@@ -113,19 +85,14 @@ export default defineComponent({
   methods: {
     async claimXpolar(claim) {
       const { withdraw } = useStake();
-        const tx = await withdraw(
-          claim.address,
-          BigNumber.from(0),
-          this.getProvider()
-        );
-        this.txHandler(tx);
-        this.txListener(tx, {
-          onTxConfirmed: () => {
-            this.fetchClaims();
-          },
-          onTxFailed: () => {},
-        });
-      
+      const tx = await withdraw(claim.address, BigNumber.from(0), this.getProvider());
+      this.txHandler(tx);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchClaims();
+        },
+        onTxFailed: () => {},
+      });
     },
     fetchClaimsIfPossible() {
       if (this.pools.length != 0 && this.prices != undefined) {
@@ -144,13 +111,7 @@ export default defineComponent({
       });
     },
     async fetchClaims() {
-      const claimer = new ClaimProviderService(
-        this.pools,
-        singlePools,
-        this.prices,
-        this.xpolarPoolQuery,
-        this.account
-      );
+      const claimer = new ClaimProviderService(this.pools, singlePools, this.prices, this.xpolarPoolQuery, this.account);
       claimer.init();
       claimer.claimReceived = (claim: ClaimType) => {
         let existingIndex = -1;
@@ -179,7 +140,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    
     /**
      * COMPOSABLES
      */
@@ -208,35 +168,27 @@ export default defineComponent({
      */
 
     function iconAddresses(claim: ClaimType) {
-      if (claim.pool != undefined)
-        return POOLS.Metadata[claim.pool.id]?.hasIcon
-          ? [claim.pool.address]
-          : orderedTokenAddresses(claim.pool);
+      if (claim.pool != undefined) return POOLS.Metadata[claim.pool.id]?.hasIcon ? [claim.pool.address] : orderedTokenAddresses(claim.pool);
     }
 
-    function getRooterLink(claim){
-      if(claim.pool!=undefined)
-        return '/pool/' + claim.pool.id;
-      else{
-        for(var i=0;i<singlePools.length;i++){
-          if(singlePools[i].id == claim.address)
-            return '/singlestake/'+singlePools[i].name.toLowerCase();
+    function getRooterLink(claim) {
+      if (claim.pool != undefined) return '/pool/' + claim.pool.id;
+      else {
+        for (var i = 0; i < singlePools.length; i++) {
+          if (singlePools[i].id == claim.address) return '/singlestake/' + singlePools[i].name.toLowerCase();
         }
       }
       return '';
     }
-    function getSingleStakeLogo(claim){
-      for(var i=0;i<singlePools.length;i++){
-        if(singlePools[i].id == claim.address)
-        return singlePools[i].logo;
+    function getSingleStakeLogo(claim) {
+      for (var i = 0; i < singlePools.length; i++) {
+        if (singlePools[i].id == claim.address) return singlePools[i].logo;
       }
     }
-    function getSingleStakeName(claim){
-      for(var i=0;i<singlePools.length;i++){
-        if(singlePools[i].id == claim.address && isDesktop.value)
-          return singlePools[i].name + ' - Single Stake';
-        else if(singlePools[i].id == claim.address && isMobile.value)
-          return singlePools[i].name ;
+    function getSingleStakeName(claim) {
+      for (var i = 0; i < singlePools.length; i++) {
+        if (singlePools[i].id == claim.address && isDesktop.value) return singlePools[i].name + ' - Single Stake';
+        else if (singlePools[i].id == claim.address && isMobile.value) return singlePools[i].name;
       }
     }
 
@@ -263,14 +215,10 @@ export default defineComponent({
   beforeUpdate() {},
   mounted() {},
   updated() {
-    const target_copy: MyPollInvestmentFiatType = Object.assign(
-      {},
-      this.$refs['poolTotalFiatValues']
-    ) as MyPollInvestmentFiatType;
+    const target_copy: MyPollInvestmentFiatType = Object.assign({}, this.$refs['poolTotalFiatValues']) as MyPollInvestmentFiatType;
     // this.totalPoolFiatValue +=;
     if (target_copy.fiatNumber != undefined) {
-      this.poolTotalFiatValues[target_copy.pool.address] =
-        target_copy.fiatNumber;
+      this.poolTotalFiatValues[target_copy.pool.address] = target_copy.fiatNumber;
     }
     this.refreshTotalValue();
   },
@@ -280,23 +228,11 @@ export default defineComponent({
 <template>
   <div class="container mx-auto" v-if="account != ''">
     <div class="claim-container flex flex-wrap">
-      <div
-        class="stats grid"
-        :class="{ 'flex-none': isDesktop, 'flex-1': isMobile }"
-      >
-        <div
-          class="flex items-center justify-center"
-          v-if="totalPoolFiatValue > 0"
-        >
+      <div class="stats grid" :class="{ 'flex-none': isDesktop, 'flex-1': isMobile }">
+        <div class="flex items-center justify-center" v-if="totalPoolFiatValue > 0">
           <div class="flex py-5">
             <div class="mr-4 mt-3">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M18.6668 6.66659V2.66659C18.6668 2.31296 18.5264 1.97383 18.2763 1.72378C18.0263 1.47373 17.6871 1.33325 17.3335 1.33325H4.00016C3.29292 1.33325 2.61464 1.6142 2.11454 2.1143C1.61445 2.6144 1.3335 3.29267 1.3335 3.99992M1.3335 3.99992C1.3335 4.70716 1.61445 5.38544 2.11454 5.88554C2.61464 6.38563 3.29292 6.66659 4.00016 6.66659H20.0002C20.3538 6.66659 20.6929 6.80706 20.943 7.05711C21.193 7.30716 21.3335 7.6463 21.3335 7.99992V11.9999M1.3335 3.99992V19.9999C1.3335 20.7072 1.61445 21.3854 2.11454 21.8855C2.61464 22.3856 3.29292 22.6666 4.00016 22.6666H20.0002C20.3538 22.6666 20.6929 22.5261 20.943 22.2761C21.193 22.026 21.3335 21.6869 21.3335 21.3333V17.3333"
                   stroke="#BDB2DD"
@@ -324,13 +260,7 @@ export default defineComponent({
         <div class="flex items-center justify-center">
           <div class="flex py-5">
             <div class="mr-4 mt-3">
-              <svg
-                width="26"
-                height="26"
-                viewBox="0 0 26 26"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M18.3332 9.00024C22.0151 9.00024 24.9998 7.20938 24.9998 5.00024C24.9998 2.79111 22.0151 1.00024 18.3332 1.00024C14.6513 1.00024 11.6665 2.79111 11.6665 5.00024C11.6665 7.20938 14.6513 9.00024 18.3332 9.00024Z"
                   stroke="#BDB2DD"
@@ -366,13 +296,7 @@ export default defineComponent({
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
-                <path
-                  d="M3.6665 17.0003V18.3337M3.6665 7.66699V9.00033"
-                  stroke="#BDB2DD"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                <path d="M3.6665 17.0003V18.3337M3.6665 7.66699V9.00033" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
             <div>
@@ -386,11 +310,7 @@ export default defineComponent({
       </div>
       <div class="break" v-if="isMobile"></div>
       <div class="pools flex flex-1 flex-col">
-        <div
-          class="grid-table"
-          v-if="claims.length > 0"
-          :class="{ mobile: isMobile }"
-        >
+        <div class="grid-table" v-if="claims.length > 0" :class="{ mobile: isMobile }">
           <div class="pool-header">
             <div class="h-4">My positions</div>
             <div class="h-4" v-if="isDesktop">Tokens</div>
@@ -404,50 +324,41 @@ export default defineComponent({
 
           <template v-for="(claim, idx) in claims" :key="idx">
             <div class="pool-row my-[18px] flex w-full items-center">
-              
-                <router-link
-                  :to="getRooterLink(claim)"
-                  class="flex flex-1 items-center"
-                >
-                  <template v-if="claim.pool!=undefined">
-                    <div class="flex-none">
-                      <BalAssetSet 
-                          :size="36"
-                          :addresses="iconAddresses(claim)"
-                          :width="60"
-                      />
-                    </div>
-                    <TokenPills class="token-pill ml-4"
-                      :tokens="orderedPoolTokens(claim.pool.poolType, claim.pool.address, claim.pool.tokens)"
-                      :isStablePool="false"
-                      :selectedTokens="[]"
-                      :showWeight="false"
-                    />
-                    </template>
-                    <template v-else>
-                      <img class="singlestake-logo" :src="getSingleStakeLogo(claim)"/>
-                      <div class="singlestake-tokenpill">{{ getSingleStakeName(claim) }}</div>
-                    </template>
-                </router-link>
-                  <div class="flex items-center self-center"  v-if="isDesktop" >
-                    {{claim.stakedBalance}}
+              <router-link :to="getRooterLink(claim)" class="flex flex-1 items-center">
+                <template v-if="claim.pool != undefined">
+                  <div class="flex-none">
+                    <BalAssetSet :size="36" :addresses="iconAddresses(claim)" :width="60" />
                   </div>
-                  <div class="flex items-center self-center"  v-if="isDesktop">
-                    <MyPoolInvsetmentFiat :pool="claim.pool" :tokens="claim.stakedBalance" ref="poolTotalFiatValues"/>
-                  </div>
-                  <div class="flex items-center self-center claim-amount" v-if="isDesktop">
-                    {{claim.xpolarToClaim }}
-                  </div>
-                  <div  class="flex items-center self-center" >
-                    <button class="claim-btn flex items-center" @click="claimXpolar(claim)" v-if="isDesktop">
-                      Claim
-                      <ArrowRightIcon class="ml-3"/>
-                    </button>
-                    <button class="claim-btn-mobile w-full items-center" @click="claimXpolar(claim)" v-if="isMobile">
-                      {{claim.xpolarToClaim }} | Claim
-                    </button>
-                  </div>
-                  <!-- div>
+                  <TokenPills
+                    class="token-pill ml-4"
+                    :tokens="orderedPoolTokens(claim.pool.poolType, claim.pool.address, claim.pool.tokens)"
+                    :isStablePool="false"
+                    :selectedTokens="[]"
+                    :showWeight="false"
+                  />
+                </template>
+                <template v-else>
+                  <img class="singlestake-logo" :src="getSingleStakeLogo(claim)" />
+                  <div class="singlestake-tokenpill">{{ getSingleStakeName(claim) }}</div>
+                </template>
+              </router-link>
+              <div class="flex items-center self-center" v-if="isDesktop">
+                {{ claim.stakedBalance }}
+              </div>
+              <div class="flex items-center self-center" v-if="isDesktop">
+                <MyPoolInvsetmentFiat :pool="claim.pool" :tokens="claim.stakedBalance" ref="poolTotalFiatValues" />
+              </div>
+              <div class="claim-amount flex items-center self-center" v-if="isDesktop">
+                {{ claim.xpolarToClaim }}
+              </div>
+              <div class="flex items-center self-center">
+                <button class="claim-btn flex items-center" @click="claimXpolar(claim)" v-if="isDesktop">
+                  Claim
+                  <ArrowRightIcon class="ml-3" />
+                </button>
+                <button class="claim-btn-mobile w-full items-center" @click="claimXpolar(claim)" v-if="isMobile">{{ claim.xpolarToClaim }} | Claim</button>
+              </div>
+              <!-- div>
                     <BalLoadingBlock
                       v-if="!pool?.apr?.total?.unstaked"
                       class="h-4 w-12"
@@ -462,14 +373,8 @@ export default defineComponent({
           </template>
         </div>
         <div class="mt-5 w-full text-center" v-else>Loading...</div>
-        <div
-          class="mt-[26px] flex items-center self-center"
-          v-if="claims.length > 0"
-        >
-          <button
-            class="claim-btn-all flex items-center justify-center"
-            @click="claimXpolarAll()"
-          >
+        <div class="mt-[26px] flex items-center self-center" v-if="claims.length > 0">
+          <button class="claim-btn-all flex items-center justify-center" @click="claimXpolarAll()">
             Claim All
             <ArrowRightIcon class="ml-3" />
           </button>
@@ -503,10 +408,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1))
-      padding-box,
-    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
-      border-box;
+  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
 .earn-button:hover {
@@ -565,14 +467,14 @@ export default defineComponent({
   font-size: 14px;
   line-height: 18px;
 }
-.claim-btn-mobile{
+.claim-btn-mobile {
   padding: 6px 12px 6px 16px;
   gap: 10px;
   border-radius: 24px;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1),rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
+  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
 
@@ -592,11 +494,7 @@ export default defineComponent({
   grid-column: 1 / span 2;
 }
 .claim-btn:hover {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.7) 2.98%,
-    rgba(126, 2, 245, 0.7) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 .title {
   font-weight: 600;
@@ -610,13 +508,13 @@ export default defineComponent({
   flex-basis: 100%;
   height: 0;
 }
-.singlestake-logo{
-  height:36px;
+.singlestake-logo {
+  height: 36px;
 }
-.singlestake-tokenpill{
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 32px;
-    padding-left: 40px;
+.singlestake-tokenpill {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  padding-left: 40px;
 }
- </style>
+</style>

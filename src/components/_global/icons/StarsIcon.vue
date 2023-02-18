@@ -27,28 +27,13 @@ const { theme } = useTailwind();
 /**
  * COMPUTED
  */
-const gradientId = computed(
-  (): string => `stars-gradient-${props.gradFrom}-${props.gradTo}`
-);
+const gradientId = computed((): string => `stars-gradient-${props.gradFrom}-${props.gradTo}`);
 </script>
 
 <template>
-  <svg
-    width="24"
-    height="25"
-    viewBox="0 0 24 25"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient
-        :id="gradientId"
-        x1="24"
-        y1="-11.5"
-        x2="2.7273"
-        y2="16.3182"
-        gradientUnits="userSpaceOnUse"
-      >
+      <linearGradient :id="gradientId" x1="24" y1="-11.5" x2="2.7273" y2="16.3182" gradientUnits="userSpaceOnUse">
         <stop :stop-color="theme.colors[gradTo]['500']" />
         <stop offset="1" :stop-color="theme.colors[gradFrom]['500']" />
       </linearGradient>

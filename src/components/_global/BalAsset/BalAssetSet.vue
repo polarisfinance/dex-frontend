@@ -1,8 +1,5 @@
 <template>
-  <template
-    v-for="(assetChunk, assetChunkIndex) in assetChunks"
-    :key="assetChunkIndex"
-  >
+  <template v-for="(assetChunk, assetChunkIndex) in assetChunks" :key="assetChunkIndex">
     <div
       :class="['addresses-row flex-none', assetRowClasses]"
       :style="{
@@ -10,12 +7,12 @@
         height: `${size}px`,
       }"
     >
-      <BalAsset 
+      <BalAsset
         v-for="(addressOrURI, i) in assetChunk"
         :key="i"
         v-bind="{ ...assetAttrsFor(addressOrURI), ...balAssetProps }"
         :size="size"
-        :class="['token-icon', $props.borderClass,{ absolute: !wrap, relative: wrap }]"
+        :class="['token-icon', $props.borderClass, { absolute: !wrap, relative: wrap }]"
         :style="{
           left: `${leftOffsetFor(i)}px`,
           zIndex: `${20 - i}`,
@@ -81,11 +78,11 @@ export default defineComponent({
     },
     borderClass: {
       type: String,
-      default: "",
+      default: '',
     },
-    backImage:{
+    backImage: {
       type: String,
-    }
+    },
   },
   emits: ['click'],
 
@@ -93,12 +90,8 @@ export default defineComponent({
     /**
      * COMPUTED
      */
-    const hasAddresses = computed(
-      (): boolean => !!props.addresses && props.addresses.length > 0
-    );
-    const hasURIs = computed(
-      (): boolean => !!props.logoURIs && props.logoURIs.length > 0
-    );
+    const hasAddresses = computed((): boolean => !!props.addresses && props.addresses.length > 0);
+    const hasURIs = computed((): boolean => !!props.logoURIs && props.logoURIs.length > 0);
 
     const assetLength = computed((): number => {
       if (hasAddresses.value) {
@@ -126,10 +119,7 @@ export default defineComponent({
 
     const radius = computed(() => props.size / 2);
 
-    const spacer = computed(
-      () =>
-        (props.maxAssetsPerLine / assetLength.value - 1) * (radius.value * 2)
-    );
+    const spacer = computed(() => (props.maxAssetsPerLine / assetLength.value - 1) * (radius.value * 2));
 
     /**
      * METHODS
@@ -137,11 +127,9 @@ export default defineComponent({
     function leftOffsetFor(i: number) {
       if (props.wrap) return 0;
 
-      const offset =   (props.width-props.size)/(props.addresses.length-1);
-      if(offset< props.maxOffset)
-        return offset*i;
-      else
-        return props.maxOffset*i;
+      const offset = (props.width - props.size) / (props.addresses.length - 1);
+      if (offset < props.maxOffset) return offset * i;
+      else return props.maxOffset * i;
 
       // return (
       //   ((props.width - radius.value * 2 + spacer.value) /
@@ -151,9 +139,7 @@ export default defineComponent({
     }
 
     function assetAttrsFor(addressOrURI: string) {
-      return isAddress(addressOrURI)
-        ? { address: addressOrURI }
-        : { iconURI: addressOrURI };
+      return isAddress(addressOrURI) ? { address: addressOrURI } : { iconURI: addressOrURI };
     }
 
     return {

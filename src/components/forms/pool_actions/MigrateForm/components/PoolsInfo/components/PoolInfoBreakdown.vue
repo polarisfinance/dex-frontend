@@ -47,9 +47,7 @@ const { getToken } = useTokens();
         </div>
       </div>
       <template #item="{ item: address }">
-        <div
-          class="ml-2 inline-flex items-center rounded-lg border bg-gray-50 py-1 px-2 dark:border-gray-800 dark:bg-gray-700"
-        >
+        <div class="ml-2 inline-flex items-center rounded-lg border bg-gray-50 py-1 px-2 dark:border-gray-800 dark:bg-gray-700">
           <BalAsset :address="address" class="mr-2" />
           {{ getToken(address).symbol }}
         </div>

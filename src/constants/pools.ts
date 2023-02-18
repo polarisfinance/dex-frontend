@@ -8,13 +8,7 @@ export const MIN_FIAT_VALUE_POOL_MIGRATION = isMainnet.value ? 100_000 : 1; // 1
 // These can arise from pools with extremely low balances (e.g., completed LBPs)
 export const APR_THRESHOLD = 10_000;
 
-export type FactoryType =
-  | 'oracleWeightedPool'
-  | 'weightedPool'
-  | 'stablePool'
-  | 'managedPool'
-  | 'liquidityBootstrappingPool'
-  | 'boostedPool';
+export type FactoryType = 'oracleWeightedPool' | 'weightedPool' | 'stablePool' | 'managedPool' | 'liquidityBootstrappingPool' | 'boostedPool';
 
 type PoolMetadata = {
   name: string;
@@ -50,12 +44,9 @@ export type Pools = {
 
 const POOLS_KOVAN: Pools = {
   IdsMap: {
-    staBAL:
-      '0xd387dfd3a786e7caa06e6cf0c675352c7ffff30400000000000000000000063e',
-    bbAaveUSD:
-      '0x8fd162f338b770f7e879030830cde9173367f3010000000000000000000004d8',
-    'B-80BAL-20WETH':
-      '0xdc2ecfdf2688f92c85064be0b929693acc6dbca6000200000000000000000701',
+    staBAL: '0xd387dfd3a786e7caa06e6cf0c675352c7ffff30400000000000000000000063e',
+    bbAaveUSD: '0x8fd162f338b770f7e879030830cde9173367f3010000000000000000000004d8',
+    'B-80BAL-20WETH': '0xdc2ecfdf2688f92c85064be0b929693acc6dbca6000200000000000000000701',
   },
   Pagination: {
     PerPage: 10,
@@ -129,10 +120,8 @@ const POOLS_KOVAN: Pools = {
 
 const POOLS_GOERLI: Pools = {
   IdsMap: {
-    bbAaveUSD:
-      '0x13acd41c585d7ebb4a9460f7c8f50be60dc080cd00000000000000000000005f',
-    'B-80BAL-20WETH':
-      '0xf8a0623ab66f985effc1c69d05f1af4badb01b00000200000000000000000060',
+    bbAaveUSD: '0x13acd41c585d7ebb4a9460f7c8f50be60dc080cd00000000000000000000005f',
+    'B-80BAL-20WETH': '0xf8a0623ab66f985effc1c69d05f1af4badb01b00000200000000000000000060',
   },
   Pagination: {
     PerPage: 10,
@@ -144,9 +133,7 @@ const POOLS_GOERLI: Pools = {
   DynamicFees: {
     Gauntlet: [],
   },
-  BlockList: [
-    '0x22d398c68030ef6b1c55321cca6e0cecc5c93b2f000200000000000000000678',
-  ],
+  BlockList: ['0x22d398c68030ef6b1c55321cca6e0cecc5c93b2f000200000000000000000678'],
   ExcludedPoolTypes: ['Element', 'AaveLinear', 'Linear', 'ERC4626Linear'],
   Stable: {
     AllowList: [
@@ -169,9 +156,7 @@ const POOLS_GOERLI: Pools = {
     '0x41e9036ae350baedcc7107760a020dca3c0731ec': 'boostedPool',
   },
   Stakable: {
-    AllowList: [
-      '0x16faf9f73748013155b7bc116a3008b57332d1e600020000000000000000005b',
-    ],
+    AllowList: ['0x16faf9f73748013155b7bc116a3008b57332d1e600020000000000000000005b'],
   },
   Metadata: {
     '0x13acd41c585d7ebb4a9460f7c8f50be60dc080cd00000000000000000000005f': {
@@ -183,12 +168,9 @@ const POOLS_GOERLI: Pools = {
 
 const POOLS_MAINNET: Pools = {
   IdsMap: {
-    staBAL:
-      '0x06df3b2bbb68adc8b0e302443692037ed9f91b42000000000000000000000063',
-    bbAaveUSD:
-      '0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb20000000000000000000000fe',
-    'B-80BAL-20WETH':
-      '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014',
+    staBAL: '0x06df3b2bbb68adc8b0e302443692037ed9f91b42000000000000000000000063',
+    bbAaveUSD: '0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb20000000000000000000000fe',
+    'B-80BAL-20WETH': '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014',
   },
   Pagination: {
     PerPage: 10,
@@ -609,6 +591,4 @@ const POOLS_MAP = {
   [Network.AURORA]: POOLS_AURORA,
 };
 
-export const POOLS: Pools = POOLS_MAP[networkId.value]
-  ? POOLS_MAP[networkId.value]
-  : POOLS_GENERIC;
+export const POOLS: Pools = POOLS_MAP[networkId.value] ? POOLS_MAP[networkId.value] : POOLS_GENERIC;

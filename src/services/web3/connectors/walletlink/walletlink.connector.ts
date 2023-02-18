@@ -14,10 +14,7 @@ export class WalletLinkConnector extends Connector {
       appLogoUrl: '~@/assets/images/logo-dark.svg',
       darkMode: false,
     });
-    const provider = walletLink.makeWeb3Provider(
-      configService.rpc,
-      configService.network.chainId
-    );
+    const provider = walletLink.makeWeb3Provider(configService.rpc, configService.network.chainId);
     this.provider = provider;
 
     try {

@@ -30,13 +30,7 @@ const chartInstance = ref<echarts.ECharts>();
  * COMPOSABLES
  */
 const { getToken } = useTokens();
-const {
-  seedTokens,
-  updateTokenColors,
-  totalLiquidity,
-  tokensList,
-  hasRestoredFromSavedState,
-} = usePoolCreation();
+const { seedTokens, updateTokenColors, totalLiquidity, tokensList, hasRestoredFromSavedState } = usePoolCreation();
 const { upToLargeBreakpoint } = useBreakpoints();
 const { darkMode } = useDarkMode();
 const { fNum2 } = useNumbers();
@@ -65,9 +59,7 @@ const chartConfig = computed(() => {
       selectedMode: false,
       top: 'bottom',
       textStyle: {
-        color: darkMode.value
-          ? tailwind.theme.colors.gray['300']
-          : tailwind.theme.colors.gray['850'],
+        color: darkMode.value ? tailwind.theme.colors.gray['300'] : tailwind.theme.colors.gray['850'],
       },
     },
     series: [
@@ -78,9 +70,7 @@ const chartConfig = computed(() => {
         stillShowZeroSum: true,
         showEmptyCircle: true,
         itemStyle: {
-          borderColor: darkMode.value
-            ? tailwind.theme.colors.gray['850']
-            : '#fff',
+          borderColor: darkMode.value ? tailwind.theme.colors.gray['850'] : '#fff',
           borderWidth: 5,
           borderCap: 'butt',
           borderJoin: 'round',
@@ -98,9 +88,7 @@ const chartConfig = computed(() => {
           ...seedTokens.value
             // .filter(t => t.tokenAddress !== '')
             .map((t, i) => {
-              const tokenLogoURI = resolve(
-                getToken(t.tokenAddress)?.logoURI || ''
-              );
+              const tokenLogoURI = resolve(getToken(t.tokenAddress)?.logoURI || '');
               return {
                 name: t.tokenAddress,
                 value: t.weight,
@@ -124,10 +112,7 @@ const chartConfig = computed(() => {
                   },
                 },
                 itemStyle: {
-                  color:
-                    t.tokenAddress === ''
-                      ? tailwind.theme.colors.gray[`${i + 1}00`]
-                      : colors.value[i],
+                  color: t.tokenAddress === '' ? tailwind.theme.colors.gray[`${i + 1}00`] : colors.value[i],
                 },
               };
             }),
@@ -167,8 +152,7 @@ async function calculateColors() {
         if (manualColorMap[token.symbol]) {
           return manualColorMap[token.symbol];
         }
-        if (color[0] === '#ffffff' || color[0] === '#000000')
-          return color[1] as string;
+        if (color[0] === '#ffffff' || color[0] === '#000000') return color[1] as string;
         return color[0] as string;
       } catch {
         return null;
@@ -195,12 +179,7 @@ async function calculateColors() {
         autoresize
       /> -->
     </div>
-    <BalStack
-      class="mb-2 text placeholder"
-      vertical
-      spacing="none"
-      align="center"
-    >
+    <BalStack class="text placeholder mb-2" vertical spacing="none" align="center">
       <BalStack horizontal spacing="xs">
         <h6>{{ $t('inYourWallet') }}</h6>
         <!-- <BalTooltip iconSize="sm" class="mt-1">

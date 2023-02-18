@@ -47,10 +47,7 @@ const mutations = {
     i18n.global.locale = locale;
   },
 
-  setTransactionDeadline(
-    state: AppState,
-    transactionDeadline: AppState['transactionDeadline']
-  ) {
+  setTransactionDeadline(state: AppState, transactionDeadline: AppState['transactionDeadline']) {
     state.transactionDeadline = transactionDeadline;
     lsSet(LS_KEYS.App.TradeDeadline, state.transactionDeadline);
   },

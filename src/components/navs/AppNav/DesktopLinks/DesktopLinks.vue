@@ -37,23 +37,15 @@ function isActive(page: string): boolean {
     <DesktopLinkItem to="/sunrise" :active="isActive('sunrise')">
       {{ $t('Sunrise') }}
     </DesktopLinkItem>
-    <DesktopLinkItem to="/bond" :active="isActive('bond')">
-      Bond
-    </DesktopLinkItem>
+    <DesktopLinkItem to="/bond" :active="isActive('bond')"> Bond </DesktopLinkItem>
     <!--DesktopLinkItem to="/vebal" :active="isActive('vebal')">
       Portfolio
     </DesktopLinkItem -->
-    <DesktopLinkItem to="/airdrop" :active="isActive('airdrop')">
-      Airdrop
-    </DesktopLinkItem>
-    <DesktopLinkItem to="/vexpolar" :active="isActive('vexpolar')">
-      vexPolar
-    </DesktopLinkItem>
+    <DesktopLinkItem to="/airdrop" :active="isActive('airdrop')"> Airdrop </DesktopLinkItem>
+    <DesktopLinkItem to="/vexpolar" :active="isActive('vexpolar')"> vexPolar </DesktopLinkItem>
 
     <div class="dropdown">
-      <div class="dropdown-title flex w-full gap-[12px]">
-        Bridges <img :src="ArrowDown" />
-      </div>
+      <div class="dropdown-title flex w-full gap-[12px]">Bridges <img :src="ArrowDown" /></div>
       <div class="dropdown-content w-full">
         <a href="https://synapseprotocol.com/"
           ><div class="flex w-full justify-between">

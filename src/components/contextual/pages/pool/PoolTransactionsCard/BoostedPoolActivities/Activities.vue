@@ -41,24 +41,15 @@ const id = route.params.id as string;
  * QUERIES
  */
 
-const poolSwapsQuery =
-  props.poolActivityType === PoolTransactionsTab.ALL_ACTIVITY
-    ? usePoolSwapsQuery(id)
-    : useUserPoolSwapsQuery(id);
+const poolSwapsQuery = props.poolActivityType === PoolTransactionsTab.ALL_ACTIVITY ? usePoolSwapsQuery(id) : useUserPoolSwapsQuery(id);
 
 /**
  * COMPUTED
  */
-const poolSwaps = computed(() =>
-  poolSwapsQuery.data.value
-    ? flatten(poolSwapsQuery.data.value.pages.map(page => page.poolSwaps))
-    : []
-);
+const poolSwaps = computed(() => (poolSwapsQuery.data.value ? flatten(poolSwapsQuery.data.value.pages.map(page => page.poolSwaps)) : []));
 const isLoadingPoolSwaps = computed(() => poolSwapsQuery.isLoading.value);
 const poolSwapsHasNextPage = computed(() => poolSwapsQuery.hasNextPage?.value);
-const poolSwapsIsFetchingNextPage = computed(
-  () => poolSwapsQuery.isFetchingNextPage?.value
-);
+const poolSwapsIsFetchingNextPage = computed(() => poolSwapsQuery.isFetchingNextPage?.value);
 
 /**
  * METHODS
@@ -76,11 +67,7 @@ function loadMorePoolSwaps() {
     :isLoading="loading || isLoadingPoolSwaps"
     :isLoadingMore="poolSwapsIsFetchingNextPage"
     :isPaginated="poolSwapsHasNextPage"
-    :noResultsLabel="
-      poolActivityType === PoolTransactionsTab.ALL_ACTIVITY
-        ? $t('poolTransactions.noResults.allTransactions')
-        : $t('poolTransactions.noResults.myTransactions')
-    "
+    :noResultsLabel="poolActivityType === PoolTransactionsTab.ALL_ACTIVITY ? $t('poolTransactions.noResults.allTransactions') : $t('poolTransactions.noResults.myTransactions')"
     @load-more="loadMorePoolSwaps"
   />
 </template>

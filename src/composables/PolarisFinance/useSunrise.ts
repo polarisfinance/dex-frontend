@@ -2,12 +2,7 @@ import { Contract } from 'ethers';
 import { BigNumber } from 'ethers';
 import { TransactionResponse } from '@ethersproject/providers';
 
-import {
-  BigNumberToString,
-  sunriseNameToAddress,
-  SPOLAR,
-  getDisplayBalance,
-} from './utils';
+import { BigNumberToString, sunriseNameToAddress, SPOLAR, getDisplayBalance } from './utils';
 import { spolarABI, sunriseABI } from './ABI';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
@@ -74,13 +69,7 @@ export default function useSunrise(sunriseName) {
 
   const deposit = async (amount: BigNumber, provider: Web3Provider) => {
     try {
-      const tx = await sendTransaction(
-        provider,
-        sunriseAddress,
-        sunriseABI,
-        'stake',
-        [amount]
-      );
+      const tx = await sendTransaction(provider, sunriseAddress, sunriseABI, 'stake', [amount]);
       return tx;
     } catch (error) {
       console.error(error);
@@ -91,10 +80,7 @@ export default function useSunrise(sunriseName) {
   const approve = async (provider: Web3Provider) => {
     const amount = MaxUint256.toString();
     try {
-      const tx = await sendTransaction(provider, SPOLAR, spolarABI, 'approve', [
-        sunriseAddress,
-        amount,
-      ]);
+      const tx = await sendTransaction(provider, SPOLAR, spolarABI, 'approve', [sunriseAddress, amount]);
 
       return tx;
     } catch (error) {
@@ -105,13 +91,7 @@ export default function useSunrise(sunriseName) {
 
   const withdraw = async (amount: BigNumber, provider: Web3Provider) => {
     try {
-      const tx = await sendTransaction(
-        provider,
-        sunriseAddress,
-        sunriseABI,
-        'withdraw',
-        [amount]
-      );
+      const tx = await sendTransaction(provider, sunriseAddress, sunriseABI, 'withdraw', [amount]);
 
       return tx;
     } catch (error) {
@@ -122,13 +102,7 @@ export default function useSunrise(sunriseName) {
 
   const claim = async (provider: Web3Provider) => {
     try {
-      const tx = await sendTransaction(
-        provider,
-        sunriseAddress,
-        sunriseABI,
-        'claimReward',
-        []
-      );
+      const tx = await sendTransaction(provider, sunriseAddress, sunriseABI, 'claimReward', []);
       return tx;
     } catch (error) {
       console.error(error);
@@ -147,25 +121,20 @@ export default function useSunrise(sunriseName) {
     // const tokenPrice = await getTokenPriceInUSD(sunriseName);
     // const masonrytShareBalanceOf = await getSpolarStakedBigNumber();
 
-    const [lastHistory, spolarPrice, tokenPrice, masonrytShareBalanceOf] =
-      await Promise.all([
-        sunriseContract.masonryHistory(latestSnapshotIndex),
-        getSpolarPrice(),
-        getTokenPriceInUSD(sunriseName),
-        spolarContract.balanceOf(sunriseAddress),
-      ]);
+    const [lastHistory, spolarPrice, tokenPrice, masonrytShareBalanceOf] = await Promise.all([
+      sunriseContract.masonryHistory(latestSnapshotIndex),
+      getSpolarPrice(),
+      getTokenPriceInUSD(sunriseName),
+      spolarContract.balanceOf(sunriseAddress),
+    ]);
     const lastRewardsReceived = lastHistory[1];
     const epochRewardsPerShare = lastRewardsReceived / 1e18;
 
     const amountOfRewardsPerDay = epochRewardsPerShare * Number(tokenPrice) * 4;
 
-    const masonryTVL =
-      Number(getDisplayBalance(masonrytShareBalanceOf, 18)) *
-      Number(spolarPrice);
+    const masonryTVL = Number(getDisplayBalance(masonrytShareBalanceOf, 18)) * Number(spolarPrice);
 
-    return (((amountOfRewardsPerDay * 100) / masonryTVL) * 365)
-      .toFixed(2)
-      .toString();
+    return (((amountOfRewardsPerDay * 100) / masonryTVL) * 365).toFixed(2).toString();
   };
 
   const getUnstakePeriod = async (account: string) => {
@@ -183,8 +152,7 @@ export default function useSunrise(sunriseName) {
     const startTimeEpoch = mason.epochTimerStart;
     const PeriodInHours = period / 60 / 60;
 
-    const targetEpochForClaimUnlock =
-      Number(startTimeEpoch) + Number(withdrawLockupEpochs);
+    const targetEpochForClaimUnlock = Number(startTimeEpoch) + Number(withdrawLockupEpochs);
     const delta = targetEpochForClaimUnlock - Number(currentEpoch) - 1;
     const toDate = new Date(nextEpochTimestamp * 1000);
 
@@ -210,8 +178,7 @@ export default function useSunrise(sunriseName) {
     const startTimeEpoch = mason.epochTimerStart;
     const periodInHours = period / 60 / 60;
 
-    const targetEpochForClaimUnlock =
-      Number(startTimeEpoch) + Number(rewardLockupEpochs);
+    const targetEpochForClaimUnlock = Number(startTimeEpoch) + Number(rewardLockupEpochs);
     const toDate = new Date(nextEpochTimestamp * 1000);
     const delta = targetEpochForClaimUnlock - currentEpoch - 1;
     return moment(toDate)

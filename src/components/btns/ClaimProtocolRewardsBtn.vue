@@ -26,12 +26,8 @@ const props = defineProps<Props>();
 /**
  * SERVICES
  */
-const feeDistributorV1 = new FeeDistributor(
-  configService.network.addresses.feeDistributorDeprecated
-);
-const feeDistributorV2 = new FeeDistributor(
-  configService.network.addresses.feeDistributor
-);
+const feeDistributorV1 = new FeeDistributor(configService.network.addresses.feeDistributorDeprecated);
+const feeDistributorV2 = new FeeDistributor(configService.network.addresses.feeDistributor);
 
 /**
  * COMPOSABLES
@@ -47,8 +43,7 @@ const protocolRewardsQuery = useProtocolRewardsQuery();
 function claimTx() {
   const feeDistributor = props.deprecated ? feeDistributorV1 : feeDistributorV2;
 
-  if (props.tokenAddress)
-    return feeDistributor.claimBalance(account.value, props.tokenAddress);
+  if (props.tokenAddress) return feeDistributor.claimBalance(account.value, props.tokenAddress);
   return feeDistributor.claimBalances(account.value);
 }
 </script>

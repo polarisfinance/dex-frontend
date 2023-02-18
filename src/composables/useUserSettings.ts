@@ -1,9 +1,6 @@
 import { inject } from 'vue';
 
-import {
-  UserSettingsProviderResponse,
-  UserSettingsProviderSymbol,
-} from '@/providers/user-settings.provider';
+import { UserSettingsProviderResponse, UserSettingsProviderSymbol } from '@/providers/user-settings.provider';
 
 const defaultProviderResponse = {} as UserSettingsProviderResponse;
 

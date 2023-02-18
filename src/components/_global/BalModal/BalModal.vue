@@ -80,15 +80,7 @@ defineExpose({ hide });
             content: !upToSmallBreakpoint,
           }"
         >
-          <BalCard
-            :title="title"
-            shadow="lg"
-            noPad
-            :noContentPad="noContentPad"
-            class="modal-card"
-            noBorder
-            overflowYScroll
-          >
+          <BalCard :title="title" shadow="lg" noPad :noContentPad="noContentPad" class="modal-card" noBorder overflowYScroll>
             <template v-if="$slots.header" #header>
               <slot name="header" />
             </template>
@@ -135,7 +127,7 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full dark:border-0 rounded-t-[22px] rounded-b-none sm:rounded-[22px];
+  @apply mx-auto h-full rounded-t-[22px] rounded-b-none dark:border-0 sm:rounded-[22px];
   background-color: #292043;
   overflow: none;
 }

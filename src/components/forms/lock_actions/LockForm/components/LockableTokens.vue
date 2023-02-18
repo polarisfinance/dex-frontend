@@ -33,12 +33,7 @@ const { fNum2 } = useNumbers();
  */
 const bptBalance = computed(() => balanceFor(props.lockablePool.address));
 
-const fiatTotal = computed((): string =>
-  bnum(props.lockablePool.totalLiquidity)
-    .div(props.lockablePool.totalShares)
-    .times(bptBalance.value)
-    .toString()
-);
+const fiatTotal = computed((): string => bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares).times(bptBalance.value).toString());
 </script>
 
 <template>
@@ -57,17 +52,8 @@ const fiatTotal = computed((): string =>
         <div>{{ lockablePoolTokenInfo.name }}</div>
         <div>{{ fNum2(fiatTotal, FNumFormats.fiat) }}</div>
       </div>
-      <BalLink
-        tag="router-link"
-        :to="{ name: 'invest', params: { id: lockablePool.id } }"
-        external
-        class="mt-2 block text-sm"
-      >
-        {{
-          $t('getVeBAL.lockableTokens.getMoreVeBAL', [
-            lockablePoolTokenInfo.symbol,
-          ])
-        }}
+      <BalLink tag="router-link" :to="{ name: 'invest', params: { id: lockablePool.id } }" external class="mt-2 block text-sm">
+        {{ $t('getVeBAL.lockableTokens.getMoreVeBAL', [lockablePoolTokenInfo.symbol]) }}
       </BalLink>
     </div>
   </BalCard>

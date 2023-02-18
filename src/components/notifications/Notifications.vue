@@ -1,12 +1,7 @@
 <template>
   <div class="fixed bottom-2 left-2 z-50 px-4">
     <transition-group name="slide">
-      <Notification
-        v-for="notification in notifications"
-        :key="notification.id"
-        :notification="notification"
-        class="mt-2"
-      />
+      <Notification v-for="notification in notifications" :key="notification.id" :notification="notification" class="mt-2" />
     </transition-group>
   </div>
 </template>

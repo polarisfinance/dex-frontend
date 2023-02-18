@@ -22,36 +22,28 @@ const logo = {
 const { isMobile, isDesktop } = useBreakpoints();
 import { sunriseDefinitions } from './config';
 
-const sunrises = computed(() =>
-  Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired)
-);
+const sunrises = computed(() => Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired));
 </script>
 
 <template>
   <BondPageHero />
   <div class="container mx-auto">
-      <div class="grid gap-6 " :class="{'grid-cols-3':isDesktop,'grid-cols-1':isMobile}">
-        <div
-          v-for="(sunrise, idx) in sunrises"
-          :key="idx"
-          :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
-        >
-          <img :src="logo[sunrise.name]" class="logo" />
-          <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
-          <div class="sunrise-description mt-[12px] p-[10px]">
-            <p>
-              Stake your $SPOLAR to earn
-              <span class="uppercase">{{ '$' + sunrise.name }}</span>
-            </p>
-          </div>
-          <router-link :to="'/bond/' + sunrise.name">
-            <button class="view-and-stake mt-[34px]">View and Stake</button>
-          </router-link>
+    <div class="grid gap-6" :class="{ 'grid-cols-3': isDesktop, 'grid-cols-1': isMobile }">
+      <div v-for="(sunrise, idx) in sunrises" :key="idx" :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }">
+        <img :src="logo[sunrise.name]" class="logo" />
+        <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
+        <div class="sunrise-description mt-[12px] p-[10px]">
+          <p>
+            Stake your $SPOLAR to earn
+            <span class="uppercase">{{ '$' + sunrise.name }}</span>
+          </p>
         </div>
+        <router-link :to="'/bond/' + sunrise.name">
+          <button class="view-and-stake mt-[34px]">View and Stake</button>
+        </router-link>
       </div>
     </div>
-
-
+  </div>
 </template>
 
 <style scoped>
@@ -140,11 +132,7 @@ const sunrises = computed(() =>
 
 .view-and-stake:hover,
 .view-and-stake:active {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.7) 2.98%,
-    rgba(126, 2, 245, 0.7) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 }
 

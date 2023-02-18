@@ -55,36 +55,21 @@ const {
   reactive({ enabled: isQueryEnabled })
 );
 
-const isLoading = computed(
-  (): boolean =>
-    isFetchingConfirmationDate.value || isIdle.value || !!error.value
-);
+const isLoading = computed((): boolean => isFetchingConfirmationDate.value || isIdle.value || !!error.value);
 </script>
 
 <template>
   <BalLoadingBlock v-if="isLoading" class="h-6" />
-  <div
-    v-else
-    class="flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
-  >
+  <div v-else class="flex items-center justify-between text-sm text-gray-400 dark:text-gray-600">
     <div class="flex items-center">
       <BalIcon name="clock" />
       <span class="ml-2">
         {{ confirmationData?.confirmedAt }}
       </span>
     </div>
-    <BalLink
-      :href="confirmationData?.explorerLink"
-      external
-      noStyle
-      class="group flex items-center"
-    >
+    <BalLink :href="confirmationData?.explorerLink" external noStyle class="group flex items-center">
       {{ networkConfig.explorerName }}
-      <BalIcon
-        name="arrow-up-right"
-        size="sm"
-        class="ml-px transition-colors group-hover:text-pink-500"
-      />
+      <BalIcon name="arrow-up-right" size="sm" class="ml-px transition-colors group-hover:text-pink-500" />
     </BalLink>
   </div>
 </template>

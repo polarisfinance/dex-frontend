@@ -10,9 +10,7 @@ export class MerkleTree {
   public layers: any;
 
   constructor(elements) {
-    this.elements = elements
-      .filter(el => el)
-      .map(el => Buffer.from(hexToBytes(el)));
+    this.elements = elements.filter(el => el).map(el => Buffer.from(hexToBytes(el)));
 
     // Sort elements
     this.elements.sort(Buffer.compare);
@@ -153,10 +151,7 @@ export function loadTree(balances, decimals = 18) {
   const elements = [];
   Object.keys(balances).forEach(address => {
     const balance: string = scale(balances[address], decimals).toString(10);
-    const leaf = soliditySha3(
-      { t: 'address', v: address },
-      { t: 'uint', v: balance }
-    );
+    const leaf = soliditySha3({ t: 'address', v: address }, { t: 'uint', v: balance });
     // @ts-ignore
     elements.push(leaf);
   });

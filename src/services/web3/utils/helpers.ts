@@ -55,20 +55,14 @@ export async function importNetworkDetailsToWallet(provider: ExternalProvider) {
     if (provider?.request) {
       const response = await provider.request(request);
       if (response?.error) {
-        throw new Error(
-          `Failed to add network information to wallet. ${response.error.code}:${response.error.message}`
-        );
+        throw new Error(`Failed to add network information to wallet. ${response.error.code}:${response.error.message}`);
       }
       return true;
     } else {
       throw new Error(`Could not find an external provider with 'request'`);
     }
   } catch (err) {
-    console.error(
-      `An error occurred while attempting to add network information to wallet. ${
-        (err as Error).message
-      }`
-    );
+    console.error(`An error occurred while attempting to add network information to wallet. ${(err as Error).message}`);
     return false;
   }
 }

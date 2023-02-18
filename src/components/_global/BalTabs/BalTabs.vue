@@ -1,12 +1,7 @@
 <template>
   <div>
     <div :class="['bal-tab-container', containerClasses]">
-      <div
-        v-for="(tab, i) in tabs"
-        :key="i"
-        :class="['bal-tab', stateClasses(tab)]"
-        @click="onClick(tab)"
-      >
+      <div v-for="(tab, i) in tabs" :key="i" :class="['bal-tab', stateClasses(tab)]" @click="onClick(tab)">
         {{ tab.label }}
       </div>
     </div>
@@ -78,9 +73,9 @@ export default defineComponent({
   font-size: 18px;
   line-height: 24px;
 
-  color: #FDFDFD;
+  color: #fdfdfd;
 
-  border-bottom: 1px solid #FDFDFD;
+  border-bottom: 1px solid #fdfdfd;
 }
 
 .tab-unselected {
@@ -88,7 +83,7 @@ export default defineComponent({
   font-size: 18px;
   line-height: 24px;
 
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
 
 .bal-tab:last-child {

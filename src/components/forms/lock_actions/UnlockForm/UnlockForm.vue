@@ -28,29 +28,17 @@ const veBalLockInfoQuery = useVeBalLockInfoQuery();
 /**
  * COMPUTED
  */
-const lockablePoolLoading = computed(
-  () => lockablePoolQuery.isLoading.value || lockablePoolQuery.isIdle.value
-);
+const lockablePoolLoading = computed(() => lockablePoolQuery.isLoading.value || lockablePoolQuery.isIdle.value);
 
-const veBalQueryLoading = computed(
-  () => veBalLockInfoQuery.isLoading.value || veBalLockInfoQuery.isIdle.value
-);
+const veBalQueryLoading = computed(() => veBalLockInfoQuery.isLoading.value || veBalLockInfoQuery.isIdle.value);
 
-const lockablePool = computed<Pool | undefined>(
-  () => lockablePoolQuery.data.value
-);
+const lockablePool = computed<Pool | undefined>(() => lockablePoolQuery.data.value);
 
-const lockablePoolTokenInfo = computed(() =>
-  lockablePool.value != null ? getToken(lockablePool.value.address) : null
-);
+const lockablePoolTokenInfo = computed(() => (lockablePool.value != null ? getToken(lockablePool.value.address) : null));
 
 const veBalLockInfo = computed(() => veBalLockInfoQuery.data.value);
 
-const isLoading = computed(() =>
-  isWalletReady.value
-    ? lockablePoolLoading.value || veBalQueryLoading.value
-    : lockablePoolLoading.value
-);
+const isLoading = computed(() => (isWalletReady.value ? lockablePoolLoading.value || veBalQueryLoading.value : lockablePoolLoading.value));
 </script>
 
 <template>
@@ -58,11 +46,7 @@ const isLoading = computed(() =>
     <BalLoadingBlock v-if="isLoading" class="h-96" />
     <VeBalUnlockForm
       v-else
-      :key="
-        veBalLockInfo?.hasExistingLock
-          ? 'veBalUnlockForm-hasLock'
-          : 'veBalUnlockForm-noLock'
-      "
+      :key="veBalLockInfo?.hasExistingLock ? 'veBalUnlockForm-hasLock' : 'veBalUnlockForm-noLock'"
       :lockablePool="lockablePool"
       :lockablePoolTokenInfo="lockablePoolTokenInfo"
       :veBalLockInfo="veBalLockInfo"

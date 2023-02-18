@@ -29,41 +29,32 @@ const { currency } = useUserSettings();
 <template>
   <div class="summary-table">
     <div class="flex">
-        <div class="summary-table-label flex-1">
-          {{ $t('total') }}
-          <BalTooltip
-            :text="$t('tooltips.invest.total', [currency.toUpperCase()])"
-            iconSize="xs"
-            class="ml-1 inline"
-          />
-        </div>
-        <div class="summary-table-label flex-1 text-right">
-          {{ fNum2(fiatTotal, FNumFormats.fiat) }}
-        </div>
+      <div class="summary-table-label flex-1">
+        {{ $t('total') }}
+        <BalTooltip :text="$t('tooltips.invest.total', [currency.toUpperCase()])" iconSize="xs" class="ml-1 inline" />
+      </div>
+      <div class="summary-table-label flex-1 text-right">
+        {{ fNum2(fiatTotal, FNumFormats.fiat) }}
+      </div>
     </div>
     <div
       :class="[
         'flex',
         {
-          'bg-red-50 text-red-500 dark:bg-red-500 dark:text-white':
-            highPriceImpact,
+          'bg-red-50 text-red-500 dark:bg-red-500 dark:text-white': highPriceImpact,
         },
       ]"
     >
       <div class="flex-1">
-        {{ $t('priceImpact') }} 
+        {{ $t('priceImpact') }}
         <BalTooltip
-            :text="$t('tooltips.invest.priceImpact')"
-            iconSize="xs"
-            :iconName="highPriceImpact ? 'alert-triangle' : 'info'"
-            :iconClass="
-              highPriceImpact
-                ? 'text-red-500 dark:text-white'
-                : 'text-gray-300'
-            "
-            width="50"
-            class="ml-1 inline"
-          />
+          :text="$t('tooltips.invest.priceImpact')"
+          iconSize="xs"
+          :iconName="highPriceImpact ? 'alert-triangle' : 'info'"
+          :iconClass="highPriceImpact ? 'text-red-500 dark:text-white' : 'text-gray-300'"
+          width="50"
+          class="ml-1 inline"
+        />
       </div>
       <div class="summary-table-number flex-1">
         <BalLoadingBlock v-if="isLoadingPriceImpact" class="h-6 w-10" />
@@ -77,17 +68,15 @@ const { currency } = useUserSettings();
 
 <style scoped>
 .summary-table {
-  @apply mt-4 ;
-  padding:0px 18px;
+  @apply mt-4;
+  padding: 0px 18px;
 }
-
 
 .summary-table-label {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
 
 .summary-table-number {

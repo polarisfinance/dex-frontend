@@ -6,9 +6,7 @@ import { useI18n } from 'vue-i18n';
 
 import AnimatePresence from '@/components/animate/AnimatePresence.vue';
 import TokenWeightInput from '@/components/inputs/TokenInput/TokenWeightInput.vue';
-import usePoolCreation, {
-  PoolSeedToken,
-} from '@/composables/pools/usePoolCreation';
+import usePoolCreation, { PoolSeedToken } from '@/composables/pools/usePoolCreation';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useDarkMode from '@/composables/useDarkMode';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
@@ -30,17 +28,7 @@ const emptyTokenWeight: PoolSeedToken = {
 /**
  * COMPOSABLES
  */
-const {
-  updateTokenWeights,
-  proceed,
-  acceptCustomTokenDisclaimer,
-  setTokensList,
-  seedTokens,
-  tokensList,
-  totalLiquidity,
-  hasInjectedToken,
-  acceptedCustomTokenDisclaimer,
-} = usePoolCreation();
+const { updateTokenWeights, proceed, acceptCustomTokenDisclaimer, setTokensList, seedTokens, tokensList, totalLiquidity, hasInjectedToken, acceptedCustomTokenDisclaimer } = usePoolCreation();
 const { upToLargeBreakpoint } = useBreakpoints();
 const { fNum2 } = useNumbers();
 const { nativeAsset, getToken } = useTokens();
@@ -64,9 +52,7 @@ const cardWrapperHeight = ref(0);
 /**
  * COMPUTED
  */
-const tokenWeightItemHeight = computed(() =>
-  upToLargeBreakpoint.value ? 56 : 64
-);
+const tokenWeightItemHeight = computed(() => (upToLargeBreakpoint.value ? 56 : 64));
 
 const zeroWeightToken = computed(() => {
   const validTokens = seedTokens.value.filter(t => t.tokenAddress !== '');
@@ -103,8 +89,7 @@ const isProceedDisabled = computed(() => {
   if (Number(totalAllocatedWeight.value) !== 100) return true;
   if (seedTokens.value.length < 2) return true;
   if (zeroWeightToken.value) return true;
-  if (hasInjectedToken.value && !acceptedCustomTokenDisclaimer.value)
-    return true;
+  if (hasInjectedToken.value && !acceptedCustomTokenDisclaimer.value) return true;
   return false;
 });
 
@@ -114,12 +99,7 @@ const showLiquidityAlert = computed(() => {
 });
 
 const excludedTokens = computed((): string[] => {
-  return [
-    nativeAsset.address,
-    ...tokensList.value,
-    '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
-    '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30',
-  ];
+  return [nativeAsset.address, ...tokensList.value, '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d', '0x07f9f7f963c5cd2bbffd30ccfb964be114332e30'];
 });
 
 const maxTokenAmountReached = computed(() => {
@@ -127,10 +107,7 @@ const maxTokenAmountReached = computed(() => {
 });
 
 const progressBarColor = computed(() => {
-  if (
-    Number(totalAllocatedWeight.value) > 100 ||
-    Number(totalAllocatedWeight.value) <= 0
-  ) {
+  if (Number(totalAllocatedWeight.value) > 100 || Number(totalAllocatedWeight.value) <= 0) {
     return 'red-400';
   }
   return 'green-400';
@@ -205,9 +182,7 @@ function handleLockedWeight(isLocked: boolean, id: number) {
 async function animateHeight(offset = 0) {
   // animate the height initially
   emit('update:height', {
-    height:
-      (cardWrapper.value?.offsetHeight || 0) +
-      tokenWeightItemHeight.value * offset,
+    height: (cardWrapper.value?.offsetHeight || 0) + tokenWeightItemHeight.value * offset,
   });
   anime({
     targets: tokenWeightListWrapper.value,
@@ -238,10 +213,7 @@ async function animateHeight(offset = 0) {
 }
 
 async function addTokenToPool() {
-  const newWeights: PoolSeedToken[] = [
-    ...seedTokens.value,
-    { ...emptyTokenWeight, id: uniqueId() } as PoolSeedToken,
-  ];
+  const newWeights: PoolSeedToken[] = [...seedTokens.value, { ...emptyTokenWeight, id: uniqueId() } as PoolSeedToken];
   updateTokenWeights(newWeights);
   await animateHeight(1);
   distributeWeights();
@@ -249,24 +221,16 @@ async function addTokenToPool() {
 
 function distributeWeights() {
   // get all the locked weights and sum those bad boys
-  let lockedPct = sum(
-    seedTokens.value.filter(w => w.isLocked).map(w => w.weight / 100)
-  );
+  let lockedPct = sum(seedTokens.value.filter(w => w.isLocked).map(w => w.weight / 100));
   // makes it so that new allocations are set as 0
   if (lockedPct > 1) lockedPct = 1;
   const pctAvailableToDistribute = bnum(1).minus(lockedPct);
   const unlockedWeights = seedTokens.value.filter(w => !w.isLocked);
-  const evenDistributionWeight = pctAvailableToDistribute.div(
-    unlockedWeights.length
-  );
+  const evenDistributionWeight = pctAvailableToDistribute.div(unlockedWeights.length);
 
-  const error = pctAvailableToDistribute.minus(
-    evenDistributionWeight.times(unlockedWeights.length)
-  );
+  const error = pctAvailableToDistribute.minus(evenDistributionWeight.times(unlockedWeights.length));
   const isErrorDivisible = error.mod(unlockedWeights.length).eq(0);
-  const distributableError = isErrorDivisible
-    ? error.div(unlockedWeights.length)
-    : error;
+  const distributableError = isErrorDivisible ? error.div(unlockedWeights.length) : error;
 
   const normalisedWeights = unlockedWeights.map((_, i) => {
     const evenDistributionWeight4DP = Number(evenDistributionWeight.toFixed(4));
@@ -295,9 +259,7 @@ function addTokenListElementRef(el: HTMLElement) {
 async function handleRemoveToken(index: number) {
   updateTokenWeights(seedTokens.value.filter((_, i) => i !== index));
   await nextTick();
-  seedTokenElements.value = seedTokenElements.value.filter(
-    (_, i) => i !== index
-  );
+  seedTokenElements.value = seedTokenElements.value.filter((_, i) => i !== index);
   distributeWeights();
   animateHeight(-1);
 }
@@ -321,19 +283,12 @@ function onAlertMountChange() {
   <div ref="cardWrapper" class="mb-16">
     <BalStack vertical spacing="sm">
       <div>
-        <div
-          class="flex w-full justify-between px-4 text-[16px] font-semibold leading-[20px]"
-        >
+        <div class="flex w-full justify-between px-4 text-[16px] font-semibold leading-[20px]">
           <span>{{ $t('token') }}</span>
           <span>{{ $t('weight') }}</span>
         </div>
         <div class="mt-[8px] grid w-full max-w-full gap-[4px]">
-          <div
-            v-for="(token, i) of seedTokens"
-            :key="`tokenweight-${token.id}`"
-            :ref="addTokenListElementRef"
-            class="w-full max-w-full"
-          >
+          <div v-for="(token, i) of seedTokens" :key="`tokenweight-${token.id}`" :ref="addTokenListElementRef" class="w-full max-w-full">
             <AnimatePresence isVisible>
               <TokenWeightInput
                 v-model:weight="seedTokens[i].weight"
@@ -361,84 +316,40 @@ function onAlertMountChange() {
             {{ $t('addToken') }}
           </BalBtn> -->
           <button
-            class="text-pink-third leading-[18px] text-[14px] font-medium disabled:cursor-not-allowed py-[9.5px] px-[25px] bg-none border-[0.7px] border-[rgba(245,225,255,0.1)] rounded-2xl disabled:bg-red-600"
+            class="rounded-2xl border-[0.7px] border-[rgba(245,225,255,0.1)] bg-none py-[9.5px] px-[25px] text-[14px] font-medium leading-[18px] text-pink-third disabled:cursor-not-allowed disabled:bg-red-600"
             :disabled="maxTokenAmountReached"
             @click="addTokenToPool"
           >
             {{ $t('addToken') }}
           </button>
         </div>
-        <div class="p-2 px-4 w-full">
-          <div class="flex justify-between w-full">
-            <span class="font-semibold text-[16px] leading-[20px]">{{
-              $t('totalAllocated')
-            }}</span>
+        <div class="w-full p-2 px-4">
+          <div class="flex w-full justify-between">
+            <span class="text-[16px] font-semibold leading-[20px]">{{ $t('totalAllocated') }}</span>
             <BalStack horizontal spacing="xs" align="center">
-              <span
-                class="font-semibold text-[16px] leading-[20px]"
-                :class="weightColor"
-                >{{ totalAllocatedWeight }}%</span
-              >
-              <BalIcon
-                v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
-                class="mt-px text-red-500"
-                name="alert-circle"
-                size="sm"
-              />
+              <span class="text-[16px] font-semibold leading-[20px]" :class="weightColor">{{ totalAllocatedWeight }}%</span>
+              <BalIcon v-if="Number(totalWeight) > 100 || Number(totalWeight) <= 0" class="mt-px text-red-500" name="alert-circle" size="sm" />
             </BalStack>
           </div>
-          <BalProgressBar
-            :color="progressBarColor"
-            :width="totalAllocatedWeight"
-            :bufferWidth="0"
-            :size="'[3px]'"
-            class="my-2"
-          />
+          <BalProgressBar :color="progressBarColor" :width="totalAllocatedWeight" :bufferWidth="0" :size="'[3px]'" class="my-2" />
         </div>
       </div>
-      <AnimatePresence
-        :isVisible="showLiquidityAlert && isWalletReady"
-        unmountInstantly
-        @on-presence="onAlertMountChange"
-        @on-exit="onAlertMountChange"
-      >
-        <BalAlert
-          :title="$t('createAPool.recommendedLiquidity')"
-          type="warning"
-        >
-          {{
-            $t('createAPool.youCanFundWithThisPoolWith', [
-              fNum2(totalLiquidity.toString(), FNumFormats.fiat),
-            ])
-          }}
+      <AnimatePresence :isVisible="showLiquidityAlert && isWalletReady" unmountInstantly @on-presence="onAlertMountChange" @on-exit="onAlertMountChange">
+        <BalAlert :title="$t('createAPool.recommendedLiquidity')" type="warning">
+          {{ $t('createAPool.youCanFundWithThisPoolWith', [fNum2(totalLiquidity.toString(), FNumFormats.fiat)]) }}
         </BalAlert>
       </AnimatePresence>
-      <AnimatePresence
-        :isVisible="zeroWeightToken"
-        unmountInstantly
-        @on-presence="onAlertMountChange"
-        @on-exit="onAlertMountChange"
-      >
+      <AnimatePresence :isVisible="zeroWeightToken" unmountInstantly @on-presence="onAlertMountChange" @on-exit="onAlertMountChange">
         <BalAlert :title="$t('createAPool.zeroWeightTitle')" type="error">
           {{ $t('createAPool.zeroWeightInfo') }}
         </BalAlert>
       </AnimatePresence>
-      <AnimatePresence
-        :isVisible="Number(totalWeight) > 100 || Number(totalWeight) <= 0"
-        unmountInstantly
-        @on-presence="onAlertMountChange"
-        @on-exit="onAlertMountChange"
-      >
+      <AnimatePresence :isVisible="Number(totalWeight) > 100 || Number(totalWeight) <= 0" unmountInstantly @on-presence="onAlertMountChange" @on-exit="onAlertMountChange">
         <BalAlert :title="$t('createAPool.totalWeightAlertTitle')" type="error">
           {{ $t('createAPool.totalWeightAlert', [zeroWeightToken?.symbol]) }}
         </BalAlert>
       </AnimatePresence>
-      <AnimatePresence
-        :isVisible="hasInjectedToken && !acceptedCustomTokenDisclaimer"
-        unmountInstantly
-        @on-presence="onAlertMountChange"
-        @on-exit="onAlertMountChange"
-      >
+      <AnimatePresence :isVisible="hasInjectedToken && !acceptedCustomTokenDisclaimer" unmountInstantly @on-presence="onAlertMountChange" @on-exit="onAlertMountChange">
         <BalAlert :title="$t('tokenWarningTitle')" type="warning">
           <BalStack vertical spacing="xs">
             <span>{{ $t('tokenWarning') }}</span>
@@ -450,12 +361,7 @@ function onAlertMountChange() {
           </BalStack>
         </BalAlert>
       </AnimatePresence>
-      <BalBtn
-        block
-        color="gradient"
-        :disabled="isProceedDisabled"
-        @click="handleProceed"
-      >
+      <BalBtn block color="gradient" :disabled="isProceedDisabled" @click="handleProceed">
         {{ walletLabel }}
       </BalBtn>
     </BalStack>

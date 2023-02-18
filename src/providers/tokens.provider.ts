@@ -1,16 +1,6 @@
 import { getAddress, isAddress } from '@ethersproject/address';
 import { compact, pick } from 'lodash';
-import {
-  computed,
-  ComputedRef,
-  InjectionKey,
-  onBeforeMount,
-  provide,
-  reactive,
-  Ref,
-  toRef,
-  toRefs,
-} from 'vue';
+import { computed, ComputedRef, InjectionKey, onBeforeMount, provide, reactive, Ref, toRef, toRefs } from 'vue';
 
 import useAllowancesQuery from '@/composables/queries/useAllowancesQuery';
 import useBalancesQuery from '@/composables/queries/useBalancesQuery';
@@ -26,12 +16,7 @@ import { configService } from '@/services/config/config.service';
 import { ContractAllowancesMap } from '@/services/token/concerns/allowances.concern';
 import { BalanceMap } from '@/services/token/concerns/balances.concern';
 import { tokenService } from '@/services/token/token.service';
-import {
-  NativeAsset,
-  TokenInfo,
-  TokenInfoMap,
-  TokenList,
-} from '@/types/TokenList';
+import { NativeAsset, TokenInfo, TokenInfoMap, TokenList } from '@/types/TokenList';
 
 import { balancer } from '@/lib/balancer.sdk';
 import { Pool, SubgraphPoolBase } from '@balancer-labs/sdk';
@@ -69,22 +54,10 @@ export interface TokensProviderResponse {
   refetchBalances: Ref<() => void>;
   refetchAllowances: Ref<() => void>;
   injectTokens: (addresses: string[]) => Promise<void>;
-  searchTokens: (
-    query: string,
-    excluded: string[],
-    disableInjection?: boolean
-  ) => Promise<TokenInfoMap>;
+  searchTokens: (query: string, excluded: string[], disableInjection?: boolean) => Promise<TokenInfoMap>;
   hasBalance: (address: string) => boolean;
-  approvalRequired: (
-    tokenAddress: string,
-    amount: string,
-    contractAddress?: string
-  ) => boolean;
-  approvalsRequired: (
-    tokenAddresses: string[],
-    amounts: string[],
-    contractAddress?: string
-  ) => string[];
+  approvalRequired: (tokenAddress: string, amount: string, contractAddress?: string) => boolean;
+  approvalsRequired: (tokenAddresses: string[], amounts: string[], contractAddress?: string) => string[];
   priceFor: (address: string) => number;
   balanceFor: (address: string) => string;
   getTokens: (addresses: string[]) => TokenInfoMap;
@@ -95,8 +68,7 @@ export interface TokensProviderResponse {
 /**
  * SETUP
  */
-export const TokensProviderSymbol: InjectionKey<TokensProviderResponse> =
-  Symbol(symbolKeys.Providers.Tokens);
+export const TokensProviderSymbol: InjectionKey<TokensProviderResponse> = Symbol(symbolKeys.Providers.Tokens);
 
 /**
  * TokensProvider
@@ -110,8 +82,7 @@ export default {
      * COMPOSABLES
      */
     const { networkConfig } = useConfig();
-    const { allTokenLists, activeTokenLists, balancerTokenLists } =
-      useTokenLists();
+    const { allTokenLists, activeTokenLists, balancerTokenLists } = useTokenLists();
     const { currency } = useUserSettings();
 
     /**
@@ -154,18 +125,12 @@ export default {
     /**
      * All tokens from token lists that are toggled on.
      */
-    const activeTokenListTokens = computed(
-      (): TokenInfoMap =>
-        mapTokenListTokens(Object.values(activeTokenLists.value))
-    );
+    const activeTokenListTokens = computed((): TokenInfoMap => mapTokenListTokens(Object.values(activeTokenLists.value)));
 
     /**
      * All tokens from Balancer token lists, e.g. 'listed' and 'vetted'.
      */
-    const balancerTokenListTokens = computed(
-      (): TokenInfoMap =>
-        mapTokenListTokens(Object.values(balancerTokenLists.value))
-    );
+    const balancerTokenListTokens = computed((): TokenInfoMap => mapTokenListTokens(Object.values(balancerTokenLists.value)));
 
     /**
      * The main tokens map
@@ -182,9 +147,7 @@ export default {
 
     const tokenAddresses = computed((): string[] => Object.keys(tokens.value));
 
-    const wrappedNativeAsset = computed(
-      (): TokenInfo => getToken(TOKENS.Addresses.wNativeAsset)
-    );
+    const wrappedNativeAsset = computed((): TokenInfo => getToken(TOKENS.Addresses.wNativeAsset));
 
     /****************************************************************
      * Dynamic metadata
@@ -218,30 +181,13 @@ export default {
       refetch: refetchAllowances,
     } = useAllowancesQuery(tokens, toRef(state, 'allowanceContracts'));
 
-    const prices = computed(
-      (): TokenPrices => (priceData.value ? priceData.value : {})
-    );
-    const balances = computed(
-      (): BalanceMap => (balanceData.value ? balanceData.value : {})
-    );
-    const allowances = computed(
-      (): ContractAllowancesMap =>
-        allowanceData.value ? allowanceData.value : {}
-    );
+    const prices = computed((): TokenPrices => (priceData.value ? priceData.value : {}));
+    const balances = computed((): BalanceMap => (balanceData.value ? balanceData.value : {}));
+    const allowances = computed((): ContractAllowancesMap => (allowanceData.value ? allowanceData.value : {}));
 
-    const dynamicDataLoaded = computed(
-      () =>
-        priceQuerySuccess.value &&
-        balanceQuerySuccess.value &&
-        allowanceQuerySuccess.value
-    );
+    const dynamicDataLoaded = computed(() => priceQuerySuccess.value && balanceQuerySuccess.value && allowanceQuerySuccess.value);
 
-    const dynamicDataLoading = computed(
-      () =>
-        priceQueryLoading.value ||
-        balanceQueryLoading.value ||
-        allowanceQueryLoading.value
-    );
+    const dynamicDataLoading = computed(() => priceQueryLoading.value || balanceQueryLoading.value || allowanceQueryLoading.value);
 
     /**
      * METHODS
@@ -281,15 +227,10 @@ export default {
       const existingAddresses = Object.keys(tokens.value);
 
       // Only inject tokens that aren't already in tokens
-      const injectable = addresses.filter(
-        address => !includesAddress(existingAddresses, address)
-      );
+      const injectable = addresses.filter(address => !includesAddress(existingAddresses, address));
       if (injectable.length === 0) return;
 
-      const newTokens = await tokenService.metadata.get(
-        injectable,
-        allTokenLists
-      );
+      const newTokens = await tokenService.metadata.get(injectable, allTokenLists);
 
       state.injectedTokens = { ...state.injectedTokens, ...newTokens };
     }
@@ -298,11 +239,7 @@ export default {
      * Given query, filters tokens map by name, symbol or address.
      * If address is provided, search for address in tokens or injectToken
      */
-    async function searchTokens(
-      query: string,
-      excluded: string[] = [],
-      disableInjection = false
-    ): Promise<TokenInfoMap> {
+    async function searchTokens(query: string, excluded: string[] = [], disableInjection = false): Promise<TokenInfoMap> {
       if (!query) return removeExcluded(tokens.value, excluded);
 
       if (isAddress(query)) {
@@ -320,11 +257,7 @@ export default {
         }
       } else {
         const tokensArray = Object.entries(allTokenListTokens.value);
-        const results = tokensArray.filter(
-          ([, token]) =>
-            token.name.toLowerCase().includes(query.toLowerCase()) ||
-            token.symbol.toLowerCase().includes(query.toLowerCase())
-        );
+        const results = tokensArray.filter(([, token]) => token.name.toLowerCase().includes(query.toLowerCase()) || token.symbol.toLowerCase().includes(query.toLowerCase()));
         return removeExcluded(Object.fromEntries(results), excluded);
       }
     }
@@ -332,10 +265,7 @@ export default {
     /**
      * Remove excluded tokens from given token map.
      */
-    function removeExcluded(
-      tokens: TokenInfoMap,
-      excluded: string[]
-    ): TokenInfoMap {
+    function removeExcluded(tokens: TokenInfoMap, excluded: string[]): TokenInfoMap {
       return Object.keys(tokens)
         .filter(address => !includesAddress(excluded, address))
         .reduce((result, address) => {
@@ -348,18 +278,12 @@ export default {
      * Check if approval is required for given contract address
      * for a token and amount.
      */
-    function approvalRequired(
-      tokenAddress: string,
-      amount: string,
-      contractAddress = networkConfig.addresses.vault
-    ): boolean {
+    function approvalRequired(tokenAddress: string, amount: string, contractAddress = networkConfig.addresses.vault): boolean {
       if (!amount || bnum(amount).eq(0)) return false;
       if (!contractAddress) return false;
       if (isSameAddress(tokenAddress, nativeAsset.address)) return false;
 
-      const allowance = bnum(
-        (allowances.value[contractAddress] || {})[getAddress(tokenAddress)]
-      );
+      const allowance = bnum((allowances.value[contractAddress] || {})[getAddress(tokenAddress)]);
       console.log(allowance);
       return allowance.lt(amount);
     }
@@ -368,11 +292,7 @@ export default {
      * Check which tokens require approvals for given amounts
      * @returns a subset of the token addresses passed in.
      */
-    function approvalsRequired(
-      tokenAddresses: string[],
-      amounts: string[],
-      contractAddress: string = networkConfig.addresses.vault
-    ): string[] {
+    function approvalsRequired(tokenAddresses: string[], amounts: string[], contractAddress: string = networkConfig.addresses.vault): string[] {
       return tokenAddresses.filter((address, index) => {
         if (!contractAddress) return false;
         return approvalRequired(address, amounts[index], contractAddress);
@@ -380,31 +300,25 @@ export default {
     }
 
     const getNearPrice = async () => {
-      const pool = (await balancer.poolsProvider.find(
-        '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a'
-      )) as Pool;
+      const pool = (await balancer.poolsProvider.find('0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a')) as Pool;
 
-      const spotPrice =
-        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
-          '0xb12bfca5a55806aaf64e99521918a4bf0fc40802',
-          '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6',
-          pool as SubgraphPoolBase
-        );
+      const spotPrice = balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+        '0xb12bfca5a55806aaf64e99521918a4bf0fc40802',
+        '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6',
+        pool as SubgraphPoolBase
+      );
 
       return spotPrice;
     };
 
     const getSpolarPrice = async () => {
-      const pool = (await balancer.poolsProvider.find(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      )) as Pool;
+      const pool = (await balancer.poolsProvider.find('0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015')) as Pool;
 
-      const spotPrice =
-        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
-          '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
-          '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
-          pool as SubgraphPoolBase
-        );
+      const spotPrice = balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+        '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
+        pool as SubgraphPoolBase
+      );
 
       const nearPrice = await getNearPrice();
 
@@ -412,16 +326,13 @@ export default {
     };
 
     const getXpolarPrice = async () => {
-      const pool = (await balancer.poolsProvider.find(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      )) as Pool;
+      const pool = (await balancer.poolsProvider.find('0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015')) as Pool;
 
-      const spotPrice =
-        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
-          '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
-          '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993',
-          pool as SubgraphPoolBase
-        );
+      const spotPrice = balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+        '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+        '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993',
+        pool as SubgraphPoolBase
+      );
 
       const nearPrice = await getNearPrice();
 
@@ -449,16 +360,8 @@ export default {
      * Fetch price for a token
      */
     function priceFor(address: string): number {
-      if (
-        address.toLocaleLowerCase() ==
-        '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729'.toLocaleLowerCase()
-      )
-        return spolarPrice;
-      else if (
-        address.toLocaleLowerCase() ==
-        '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993'.toLocaleLowerCase()
-      )
-        return xpolarPrice;
+      if (address.toLocaleLowerCase() == '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729'.toLocaleLowerCase()) return spolarPrice;
+      else if (address.toLocaleLowerCase() == '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993'.toLocaleLowerCase()) return xpolarPrice;
 
       if (address) address = getAddress(address);
       try {

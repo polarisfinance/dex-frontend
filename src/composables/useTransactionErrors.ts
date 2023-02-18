@@ -29,9 +29,7 @@ export default function useTranasactionErrors() {
   function defaultError(message = ''): TransactionError {
     return {
       title: t('transactionErrors.default.title'),
-      description: `${message} ${t(
-        'transactionErrors.default.description'
-      )}`.trim(),
+      description: `${message} ${t('transactionErrors.default.description')}`.trim(),
     };
   }
 
@@ -40,8 +38,7 @@ export default function useTranasactionErrors() {
    */
   function parseError(error): TransactionError | null {
     if (error?.code && error.code === 4001) return null; // User rejected transaction
-    if (error?.code && error.code === 'UNPREDICTABLE_GAS_LIMIT')
-      return cannotEstimateGasError;
+    if (error?.code && error.code === 'UNPREDICTABLE_GAS_LIMIT') return cannotEstimateGasError;
 
     if (error?.message) {
       if (error.message.includes('-32010')) return gasTooLowError;

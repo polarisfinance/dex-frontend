@@ -1,21 +1,7 @@
 <template>
-  <svg
-    id="youtube"
-    class="social-icon"
-    role="img"
-    aria-labelledby="youtubeTitle"
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg id="youtube" class="social-icon" role="img" aria-labelledby="youtubeTitle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <title id="youtubeTitle">Link to Balancer's Youtube page</title>
-    <path
-      d="M16 0C7.164 0 0 7.164 0 16C0 24.836 7.164 32 16 32C24.836 32 32 24.836 32 16C32 7.164 24.836 0 16 0Z"
-      class="bg"
-      fill="#FFF"
-    />
+    <path d="M16 0C7.164 0 0 7.164 0 16C0 24.836 7.164 32 16 32C24.836 32 32 24.836 32 16C32 7.164 24.836 0 16 0Z" class="bg" fill="#FFF" />
     <path
       fill-rule="evenodd"
       clip-rule="evenodd"

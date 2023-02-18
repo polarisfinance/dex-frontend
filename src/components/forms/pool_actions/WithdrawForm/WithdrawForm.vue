@@ -35,53 +35,22 @@ const showPreview = ref(false);
  */
 const { t } = useI18n();
 
-const {
-  isProportional,
-  tokenOut,
-  tokenOutIndex,
-  highPriceImpactAccepted,
-  validInput,
-  maxSlider,
-  tokensOut,
-  error,
-  parseError,
-  setError,
-} = useWithdrawalState(toRef(props, 'pool'));
+const { isProportional, tokenOut, tokenOutIndex, highPriceImpactAccepted, validInput, maxSlider, tokensOut, error, parseError, setError } = useWithdrawalState(toRef(props, 'pool'));
 
-const withdrawMath = useWithdrawMath(
-  toRef(props, 'pool'),
-  isProportional,
-  tokenOut,
-  tokenOutIndex
-);
+const withdrawMath = useWithdrawMath(toRef(props, 'pool'), isProportional, tokenOut, tokenOutIndex);
 
-const {
-  hasAmounts,
-  highPriceImpact,
-  singleAssetMaxes,
-  tokenOutAmount,
-  tokenOutPoolBalance,
-  initMath,
-  loadingAmountsOut,
-} = withdrawMath;
+const { hasAmounts, highPriceImpact, singleAssetMaxes, tokenOutAmount, tokenOutPoolBalance, initMath, loadingAmountsOut } = withdrawMath;
 
-const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } =
-  useWeb3();
+const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } = useWeb3();
 
 /**
  * COMPUTED
  */
-const hasAcceptedHighPriceImpact = computed((): boolean =>
-  highPriceImpact.value ? highPriceImpactAccepted.value : true
-);
+const hasAcceptedHighPriceImpact = computed((): boolean => (highPriceImpact.value ? highPriceImpactAccepted.value : true));
 
-const hasValidInputs = computed(
-  (): boolean => validInput.value && hasAcceptedHighPriceImpact.value
-);
+const hasValidInputs = computed((): boolean => validInput.value && hasAcceptedHighPriceImpact.value);
 
-const singleAssetRules = computed(() => [
-  isLessThanOrEqualTo(tokenOutPoolBalance.value, t('exceedsPoolBalance')),
-]);
+const singleAssetRules = computed(() => [isLessThanOrEqualTo(tokenOutPoolBalance.value, t('exceedsPoolBalance'))]);
 
 /**
  * WATCHERS
@@ -107,12 +76,7 @@ onBeforeMount(() => {
 
 <template>
   <div>
-    <ProportionalWithdrawalInput
-      v-if="isProportional"
-      :pool="pool"
-      :tokenAddresses="tokensOut"
-      :math="withdrawMath"
-    />
+    <ProportionalWithdrawalInput v-if="isProportional" :pool="pool" :tokenAddresses="tokensOut" :math="withdrawMath" />
     <TokenInput
       v-else
       v-model:amount="tokenOutAmount"
@@ -134,17 +98,8 @@ onBeforeMount(() => {
 
     <WithdrawTotals :math="withdrawMath" class="mt-4" />
 
-    <div
-      v-if="highPriceImpact"
-      class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
-    >
-      <BalCheckbox
-        v-model="highPriceImpactAccepted"
-        :rules="[isRequired($t('priceImpactCheckbox'))]"
-        name="highPriceImpactAccepted"
-        size="sm"
-        :label="$t('priceImpactAccept', [$t('withdrawing')])"
-      />
+    <div v-if="highPriceImpact" class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700">
+      <BalCheckbox v-model="highPriceImpactAccepted" :rules="[isRequired($t('priceImpactCheckbox'))]" name="highPriceImpactAccepted" size="sm" :label="$t('priceImpactAccept', [$t('withdrawing')])" />
     </div>
 
     <BalAlert
@@ -159,35 +114,12 @@ onBeforeMount(() => {
     />
 
     <div class="mt-4">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
-        block
-        @click="startConnectWithInjectedProvider"
-      />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
-        color="gradient"
-        :disabled="
-          !hasAmounts ||
-          !hasValidInputs ||
-          isMismatchedNetwork ||
-          loadingAmountsOut
-        "
-        block
-        @click="showPreview = true"
-      />
+      <BalBtn v-if="!isWalletReady" :label="$t('connectWallet')" color="gradient" block @click="startConnectWithInjectedProvider" />
+      <BalBtn v-else :label="$t('preview')" color="gradient" :disabled="!hasAmounts || !hasValidInputs || isMismatchedNetwork || loadingAmountsOut" block @click="showPreview = true" />
     </div>
 
     <teleport to="#modal">
-      <WithdrawPreviewModal
-        v-if="showPreview"
-        :pool="pool"
-        :math="withdrawMath"
-        @close="showPreview = false"
-      />
+      <WithdrawPreviewModal v-if="showPreview" :pool="pool" :math="withdrawMath" @close="showPreview = false" />
     </teleport>
   </div>
 </template>

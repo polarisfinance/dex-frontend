@@ -103,34 +103,19 @@ const amountBN = computed(() => bnum(_amount.value));
 const tokenBalanceBN = computed(() => bnum(tokenBalance.value));
 const hasAmount = computed(() => amountBN.value.gt(0));
 const hasBalance = computed(() => tokenBalanceBN.value.gt(0));
-const shouldUseTxBuffer = computed(
-  () =>
-    _address.value === nativeAsset.address && !props.disableNativeAssetBuffer
-);
-const amountExceedsTokenBalance = computed(() =>
-  amountBN.value.gt(tokenBalance.value)
-);
+const shouldUseTxBuffer = computed(() => _address.value === nativeAsset.address && !props.disableNativeAssetBuffer);
+const amountExceedsTokenBalance = computed(() => amountBN.value.gt(tokenBalance.value));
 const shouldShowTxBufferMessage = computed(() => {
-  if (
-    amountExceedsTokenBalance.value ||
-    !shouldUseTxBuffer.value ||
-    !hasBalance.value ||
-    !hasAmount.value
-  ) {
+  if (amountExceedsTokenBalance.value || !shouldUseTxBuffer.value || !hasBalance.value || !hasAmount.value) {
     return false;
   }
 
-  return amountBN.value.gte(
-    tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer)
-  );
+  return amountBN.value.gte(tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer));
 });
 
 const isMaxed = computed(() => {
   if (shouldUseTxBuffer.value) {
-    return (
-      _amount.value ===
-      tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer).toString()
-    );
+    return _amount.value === tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer).toString();
   } else {
     return _amount.value === tokenBalance.value;
   }
@@ -171,21 +156,14 @@ const maxPercentage = computed(() => {
 const bufferPercentage = computed(() => {
   if (!shouldShowTxBufferMessage.value) return '0';
 
-  return bnum(nativeAsset.minTransactionBuffer)
-    .div(tokenBalance.value)
-    .times(100)
-    .toFixed(2);
+  return bnum(nativeAsset.minTransactionBuffer).div(tokenBalance.value).times(100).toFixed(2);
 });
 
-const barColor = computed(() =>
-  amountExceedsTokenBalance.value ? 'red-600' : 'pink-primary'
-);
+const barColor = computed(() => (amountExceedsTokenBalance.value ? 'red-600' : 'pink-primary'));
 
 const priceImpactSign = computed(() => (props.priceImpact >= 0 ? '-' : '+'));
 
-const priceImpactClass = computed(() =>
-  props.priceImpact >= 0.01 ? 'text-red-500' : ''
-);
+const priceImpactClass = computed(() => (props.priceImpact >= 0.01 ? 'text-red-500' : ''));
 
 /**
  * METHODS
@@ -193,18 +171,12 @@ const priceImpactClass = computed(() =>
 const setMax = () => {
   if (props.disableMax) return;
 
-  if (
-    _address.value === nativeAsset.address &&
-    !props.disableNativeAssetBuffer
-  ) {
+  if (_address.value === nativeAsset.address && !props.disableNativeAssetBuffer) {
     // Subtract buffer for gas
-    _amount.value = tokenBalanceBN.value.gt(nativeAsset.minTransactionBuffer)
-      ? tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer).toString()
-      : '0';
+    _amount.value = tokenBalanceBN.value.gt(nativeAsset.minTransactionBuffer) ? tokenBalanceBN.value.minus(nativeAsset.minTransactionBuffer).toString() : '0';
   } else {
     _amount.value = tokenBalance.value;
   }
-
 
   emit('update:amount', _amount.value);
 };
@@ -255,32 +227,13 @@ watchEffect(() => {
       </slot>
     </template>
     <template v-if="!hideFooter" #footer>
-      <div
-        v-if="isWalletReady || (hasAmount && hasToken)"
-        class="flex flex-col"
-      >
-        <div
-          class="flex items-center justify-between text-sm leading-[18px] text-[#F5E1FF]"
-        >
+      <div v-if="isWalletReady || (hasAmount && hasToken)" class="flex flex-col">
+        <div class="flex items-center justify-between text-sm leading-[18px] text-[#F5E1FF]">
           <div v-if="!isWalletReady || disableBalance" />
-          <div
-            v-else
-            class="ml-[12px] mt-[8px] mb-[12px] flex cursor-pointer items-center"
-            @click="setMax"
-          >
+          <div v-else class="ml-[12px] mt-[8px] mb-[12px] flex cursor-pointer items-center" @click="setMax">
             <template v-if="hasBalance && !noMax && !disableMax">
-              <span
-                v-if="!isMaxed"
-                class="transition-colors btn-max"
-              >
-                MAX
-              </span>
-              <span
-                v-else
-                class="transition-colors transition-colors btn-max"
-              >
-                MAXED
-              </span>
+              <span v-if="!isMaxed" class="btn-max transition-colors"> MAX </span>
+              <span v-else class="btn-max transition-colors transition-colors"> MAXED </span>
             </template>
             {{ balanceLabel ? balanceLabel : $t('balance') }}:
 
@@ -295,29 +248,16 @@ watchEffect(() => {
                 {{ fNum2(tokenValue, FNumFormats.fiat) }}
               </div>
 
-              <span v-if="priceImpact" :class="priceImpactClass">
-                ({{
-                  priceImpactSign + fNum2(priceImpact, FNumFormats.percent)
-                }})
-              </span>
+              <span v-if="priceImpact" :class="priceImpactClass"> ({{ priceImpactSign + fNum2(priceImpact, FNumFormats.percent) }}) </span>
             </template>
             <template v-else-if="hint">
-              <span
-                class="cursor-pointer lowercase text-blue-500"
-                @click="emit('update:amount', hintAmount)"
-              >
+              <span class="cursor-pointer lowercase text-blue-500" @click="emit('update:amount', hintAmount)">
                 {{ hint }}
               </span>
             </template>
           </div>
         </div>
-        <BalProgressBar
-          v-if="hasBalance && !noMax"
-          :width="maxPercentage"
-          :bufferWidth="bufferPercentage"
-          :color="barColor"
-          class="my-[0px]"
-        />
+        <BalProgressBar v-if="hasBalance && !noMax" :width="maxPercentage" :bufferWidth="bufferPercentage" :color="barColor" class="my-[0px]" />
         <!-- for tailwind jit to load color clases -->
         <div class="hidden bg-pink-primary"></div>
         <div class="hidden bg-red-600"></div>
@@ -338,11 +278,11 @@ watchEffect(() => {
 </template>
 <style scoped>
 .btn-max {
-   margin-right:8px;
+  margin-right: 8px;
   padding: 1px 7px;
   gap: 10px;
 
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
 
   border-radius: 20px;
   font-style: normal;
@@ -352,10 +292,6 @@ watchEffect(() => {
 }
 
 .btn-max:hover {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.7) 2.98%,
-    rgba(126, 2, 245, 0.7) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 </style>

@@ -30,9 +30,7 @@ const tailwind = useTailwind();
 const fillColor = computed(() => {
   if (props.forceDark) return tailwind.theme.colors.white;
 
-  return darkMode.value
-    ? tailwind.theme.colors.white
-    : tailwind.theme.colors.gray['900'];
+  return darkMode.value ? tailwind.theme.colors.white : tailwind.theme.colors.gray['900'];
 });
 </script>
 
@@ -41,9 +39,7 @@ const fillColor = computed(() => {
     <img src="./Logo.svg" width="35" height="35" class="mr-2" />
     <nobr className="custom-logo-text self-center font-medium">
       POLARIS
-      <nobr className="custom-logo-text self-center font-bold">
-        D E X
-      </nobr>
+      <nobr className="custom-logo-text self-center font-bold"> D E X </nobr>
     </nobr>
   </div>
 </template>
@@ -68,9 +64,9 @@ const fillColor = computed(() => {
 }
 
 .custom-logo-text {
-font-style: normal;
-font-size: 14px;
-line-height: 18px;
-color: #FDFDFD;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 18px;
+  color: #fdfdfd;
 }
 </style>

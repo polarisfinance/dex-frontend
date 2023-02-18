@@ -1,35 +1,18 @@
 // import { Fetcher, Route, Token } from '@uniswap/sdk';
 // import { Fetcher, Route, Token } from '@trisolaris/sdk';
 import { Configuration } from './configTypes';
-import {
-  ContractName,
-  TokenStat,
-  AllocationTime,
-  LPStat,
-  Bank,
-  AcBank,
-  PoolStats,
-  TShareSwapperStat,
-  Sunrise,
-} from './types';
+import { ContractName, TokenStat, AllocationTime, LPStat, Bank, AcBank, PoolStats, TShareSwapperStat, Sunrise } from './types';
 import { BigNumber, Contract, ethers, EventFilter } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import ERC20 from './ERC20';
-import {
-  getFullDisplayBalance,
-  getDisplayBalance,
-} from '../utils/formatBalance';
+import { getFullDisplayBalance, getDisplayBalance } from '../utils/formatBalance';
 import useWeb3 from '../web3/useWeb3';
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
 import config, { bankDefinitions, sunriseDefinitions } from './config';
 import moment from 'moment';
 import { parseUnits } from 'ethers/lib/utils';
-import {
-  FTM_TICKER,
-  SPOOKY_ROUTER_ADDR,
-  POLAR_TICKER,
-} from '../utils/constants';
+import { FTM_TICKER, SPOOKY_ROUTER_ADDR, POLAR_TICKER } from '../utils/constants';
 import { Deployments } from './deployments/index';
 /**
  * An API module of Polaris Finance contracts.
@@ -101,10 +84,7 @@ export class PolarisFinance {
       console.log('wallet ready');
     }
     console.log(web3.chainId.value);
-    const provider = new ethers.providers.JsonRpcBatchProvider(
-      'https://mainnet.aurora.dev/',
-      web3.chainId.value
-    );
+    const provider = new ethers.providers.JsonRpcBatchProvider('https://mainnet.aurora.dev/', web3.chainId.value);
     console.log(provider);
 
     // loads contracts from deployments
@@ -118,31 +98,17 @@ export class PolarisFinance {
         return;
       }
       for (const [name, deployment] of Object.entries(contract)) {
-        this.contracts[name] = new Contract(
-          deployment.address,
-          deployment.abi,
-          provider
-        );
+        this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
       }
     });
 
     this.externalTokens = {};
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
-      this.externalTokens[symbol] = new ERC20(
-        address,
-        provider,
-        symbol,
-        decimal
-      );
+      this.externalTokens[symbol] = new ERC20(address, provider, symbol, decimal);
     }
     this.externalTokensMetamask = {};
     for (const [symbol, [address, decimal]] of Object.entries(externalTokens)) {
-      this.externalTokensMetamask[symbol] = new ERC20(
-        address,
-        provider,
-        symbol,
-        decimal
-      );
+      this.externalTokensMetamask[symbol] = new ERC20(address, provider, symbol, decimal);
     }
     this.POLAR = new ERC20(this.contracts.polar.address, provider, 'POLAR');
     this.SPOLAR = new ERC20(this.contracts.sPolar.address, provider, 'SPOLAR');
@@ -152,51 +118,23 @@ export class PolarisFinance {
     this.LUNAR = new ERC20(this.contracts.lunar.address, provider, 'LUNAR');
     this.LBOND = new ERC20(this.contracts.lBond.address, provider, 'LBOND');
 
-    this.TRIPOLAR = new ERC20(
-      this.contracts.tripolar.address,
-      provider,
-      'TRIPOLAR'
-    );
-    this.TRIBOND = new ERC20(
-      this.contracts.triBond.address,
-      provider,
-      'TRIBOND'
-    );
+    this.TRIPOLAR = new ERC20(this.contracts.tripolar.address, provider, 'TRIPOLAR');
+    this.TRIBOND = new ERC20(this.contracts.triBond.address, provider, 'TRIBOND');
 
-    this.ETHERNAL = new ERC20(
-      this.contracts.ethernal.address,
-      provider,
-      'ETHERNAL'
-    );
+    this.ETHERNAL = new ERC20(this.contracts.ethernal.address, provider, 'ETHERNAL');
     this.EBOND = new ERC20(this.contracts.eBond.address, provider, 'EBOND');
 
-    this.ORBITAL = new ERC20(
-      this.contracts.orbital.address,
-      provider,
-      'ORBITAL'
-    );
+    this.ORBITAL = new ERC20(this.contracts.orbital.address, provider, 'ORBITAL');
     this.OBOND = new ERC20(this.contracts.oBond.address, provider, 'OBOND');
 
     this.USP = new ERC20(this.contracts.usp.address, provider, 'USP');
-    this.USPBOND = new ERC20(
-      this.contracts.uspBond.address,
-      provider,
-      'USPBOND'
-    );
+    this.USPBOND = new ERC20(this.contracts.uspBond.address, provider, 'USPBOND');
 
-    this.BINARIS = new ERC20(
-      this.contracts.binaris.address,
-      provider,
-      'BINARIS'
-    );
+    this.BINARIS = new ERC20(this.contracts.binaris.address, provider, 'BINARIS');
     this.BBOND = new ERC20(this.contracts.bBond.address, provider, 'BBOND');
 
     // Uniswap V2 Pair
-    this.POLARWFTM_LP = new Contract(
-      externalTokens['POLAR-NEAR-LP'][0],
-      IUniswapV2PairABI,
-      provider
-    );
+    this.POLARWFTM_LP = new Contract(externalTokens['POLAR-NEAR-LP'][0], IUniswapV2PairABI, provider);
 
     this.POLAR_METAMASK = this.POLAR;
     this.SPOLAR_METAMASK = this.SPOLAR;
@@ -253,10 +191,7 @@ export class PolarisFinance {
    * @param account An address of unlocked wallet account.
    */
   unlockWallet(provider: any, account: string) {
-    const newProvider = new ethers.providers.Web3Provider(
-      provider,
-      this.config.chainId
-    );
+    const newProvider = new ethers.providers.Web3Provider(provider, this.config.chainId);
     this.signer = newProvider.getSigner(0);
     this.myAccount = account;
     for (const [name, contract] of Object.entries(this.contracts)) {
@@ -686,16 +621,9 @@ export class PolarisFinance {
     const { NEAR, USDC } = this.externalTokens;
     try {
       const near_usdc_lp_pair = this.externalTokens['NEAR-USDC-LP'];
-      let [near_amount_BN, usdc_amount_BN] = await Promise.all([
-        NEAR.balanceOf(near_usdc_lp_pair.address),
-        USDC.balanceOf(near_usdc_lp_pair.address),
-      ]);
-      let near_amount = Number(
-        getFullDisplayBalance(near_amount_BN, NEAR.decimal)
-      );
-      let usdc_amount = Number(
-        getFullDisplayBalance(usdc_amount_BN, USDC.decimal)
-      );
+      let [near_amount_BN, usdc_amount_BN] = await Promise.all([NEAR.balanceOf(near_usdc_lp_pair.address), USDC.balanceOf(near_usdc_lp_pair.address)]);
+      let near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
+      let usdc_amount = Number(getFullDisplayBalance(usdc_amount_BN, USDC.decimal));
       return (usdc_amount / near_amount).toString();
     } catch (err) {
       console.error(`Failed to fetch token price of WFTM: ${err}`);
@@ -708,20 +636,14 @@ export class PolarisFinance {
     try {
       const near_usdc_lp_pair = this.externalTokens['NEAR-USDC-LP'];
       let near_amount_BN = await NEAR.balanceOf(near_usdc_lp_pair.address);
-      let near_amount = Number(
-        getFullDisplayBalance(near_amount_BN, NEAR.decimal)
-      );
+      let near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       let usdc_amount_BN = await USDC.balanceOf(near_usdc_lp_pair.address);
-      let usdc_amount = Number(
-        getFullDisplayBalance(usdc_amount_BN, USDC.decimal)
-      );
+      let usdc_amount = Number(getFullDisplayBalance(usdc_amount_BN, USDC.decimal));
       const near_price = usdc_amount / near_amount;
 
       const luna_near_lp_pair = this.externalTokens['LUNA-NEAR-LP'];
       var luna_amount_BN = await LUNA.balanceOf(luna_near_lp_pair.address);
-      var luna_amount = Number(
-        getFullDisplayBalance(luna_amount_BN, LUNA.decimal)
-      );
+      var luna_amount = Number(getFullDisplayBalance(luna_amount_BN, LUNA.decimal));
       near_amount_BN = await NEAR.balanceOf(luna_near_lp_pair.address);
       near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       const luna_price = near_amount / luna_amount;
@@ -737,31 +659,21 @@ export class PolarisFinance {
     try {
       const near_usdc_lp_pair = this.externalTokens['NEAR-USDC-LP'];
       let near_amount_BN = await NEAR.balanceOf(near_usdc_lp_pair.address);
-      let near_amount = Number(
-        getFullDisplayBalance(near_amount_BN, NEAR.decimal)
-      );
+      let near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       let usdc_amount_BN = await USDC.balanceOf(near_usdc_lp_pair.address);
-      let usdc_amount = Number(
-        getFullDisplayBalance(usdc_amount_BN, USDC.decimal)
-      );
+      let usdc_amount = Number(getFullDisplayBalance(usdc_amount_BN, USDC.decimal));
       const near_price = usdc_amount / near_amount;
 
       const stnear_near_lp_pair = this.externalTokens['STNEAR-NEAR-LP'];
-      var stnear_amount_BN = await STNEAR.balanceOf(
-        stnear_near_lp_pair.address
-      );
-      var stnear_amount = Number(
-        getFullDisplayBalance(stnear_amount_BN, STNEAR.decimal)
-      );
+      var stnear_amount_BN = await STNEAR.balanceOf(stnear_near_lp_pair.address);
+      var stnear_amount = Number(getFullDisplayBalance(stnear_amount_BN, STNEAR.decimal));
       near_amount_BN = await NEAR.balanceOf(stnear_near_lp_pair.address);
       near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       const stnear_price = near_amount / stnear_amount;
 
       const tri_near_lp_pair = this.externalTokens['NEAR-TRI-LP'];
       var tri_amount_BN = await TRI.balanceOf(tri_near_lp_pair.address);
-      var tri_amount = Number(
-        getFullDisplayBalance(tri_amount_BN, TRI.decimal)
-      );
+      var tri_amount = Number(getFullDisplayBalance(tri_amount_BN, TRI.decimal));
       near_amount_BN = await NEAR.balanceOf(tri_near_lp_pair.address);
       near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       const tri_price = near_amount / tri_amount;
@@ -776,20 +688,14 @@ export class PolarisFinance {
     try {
       const near_usdc_lp_pair = this.externalTokens['NEAR-USDC-LP'];
       let near_amount_BN = await NEAR.balanceOf(near_usdc_lp_pair.address);
-      let near_amount = Number(
-        getFullDisplayBalance(near_amount_BN, NEAR.decimal)
-      );
+      let near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       let usdc_amount_BN = await USDC.balanceOf(near_usdc_lp_pair.address);
-      let usdc_amount = Number(
-        getFullDisplayBalance(usdc_amount_BN, USDC.decimal)
-      );
+      let usdc_amount = Number(getFullDisplayBalance(usdc_amount_BN, USDC.decimal));
       const near_price = usdc_amount / near_amount;
 
       const luna_near_lp_pair = this.externalTokens['WETH-NEAR-LP'];
       var luna_amount_BN = await WETH.balanceOf(luna_near_lp_pair.address);
-      var luna_amount = Number(
-        getFullDisplayBalance(luna_amount_BN, WETH.decimal)
-      );
+      var luna_amount = Number(getFullDisplayBalance(luna_amount_BN, WETH.decimal));
       near_amount_BN = await NEAR.balanceOf(luna_near_lp_pair.address);
       near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       const luna_price = near_amount / luna_amount;
@@ -805,20 +711,14 @@ export class PolarisFinance {
     try {
       const near_usdc_lp_pair = this.externalTokens['NEAR-USDC-LP'];
       let near_amount_BN = await NEAR.balanceOf(near_usdc_lp_pair.address);
-      let near_amount = Number(
-        getFullDisplayBalance(near_amount_BN, NEAR.decimal)
-      );
+      let near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       let usdc_amount_BN = await USDC.balanceOf(near_usdc_lp_pair.address);
-      let usdc_amount = Number(
-        getFullDisplayBalance(usdc_amount_BN, USDC.decimal)
-      );
+      let usdc_amount = Number(getFullDisplayBalance(usdc_amount_BN, USDC.decimal));
       const near_price = usdc_amount / near_amount;
 
       const luna_near_lp_pair = this.externalTokens['BTC-NEAR-LP'];
       var luna_amount_BN = await WBTC.balanceOf(luna_near_lp_pair.address);
-      var luna_amount = Number(
-        getFullDisplayBalance(luna_amount_BN, WBTC.decimal)
-      );
+      var luna_amount = Number(getFullDisplayBalance(luna_amount_BN, WBTC.decimal));
       near_amount_BN = await NEAR.balanceOf(luna_near_lp_pair.address);
       near_amount = Number(getFullDisplayBalance(near_amount_BN, NEAR.decimal));
       const luna_price = near_amount / luna_amount;
@@ -837,12 +737,7 @@ export class PolarisFinance {
   //   return (Number(uspPrice) * Number(binarisUspPrice)).toFixed(4);
   // }
 
-  async earnedFromBank(
-    poolName: ContractName,
-    earnTokenName: String,
-    poolId: Number,
-    account = this.myAccount
-  ): Promise<BigNumber> {
+  async earnedFromBank(poolName: ContractName, earnTokenName: String, poolId: Number, account = this.myAccount): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
       if (earnTokenName === 'POLAR') {
@@ -869,9 +764,7 @@ export class PolarisFinance {
         return await pool.pendingShare(poolId, account);
       }
     } catch (err) {
-      console.error(
-        `Failed to call earned() on pool ${pool.address} ${poolId}: ${err}`
-      );
+      console.error(`Failed to call earned() on pool ${pool.address} ${poolId}: ${err}`);
       return BigNumber.from(0);
     }
   }
@@ -985,12 +878,7 @@ export class PolarisFinance {
    * @param poolContract the actual contract of the pool
    * @returns
    */
-  async getTokenPerSecond(
-    earnTokenName: string,
-    contractName: string,
-    poolContract: Contract,
-    depositTokenName: string
-  ) {
+  async getTokenPerSecond(earnTokenName: string, contractName: string, poolContract: Contract, depositTokenName: string) {
     if (earnTokenName === 'POLAR') {
       if (!contractName.endsWith('PolarRewardPool')) {
         const rewardPerSecond = await poolContract.polarPerSecond();
@@ -1523,10 +1411,7 @@ export class PolarisFinance {
   async getTokenEstimatedTWAP(sunrise: Sunrise): Promise<string> {
     let expectedPrice: BigNumber;
     const token = sunrise.earnTokenName;
-    expectedPrice = await this.contracts[sunrise.oracle].twap(
-      sunrise.tokenAddress,
-      ethers.utils.parseEther('1')
-    );
+    expectedPrice = await this.contracts[sunrise.oracle].twap(sunrise.tokenAddress, ethers.utils.parseEther('1'));
     return token === 'POLAR'
       ? getDisplayBalance(expectedPrice.div(1e6))
       : token === 'ORBITAL'
@@ -1541,9 +1426,7 @@ export class PolarisFinance {
   }
 
   async getTokenPreviousEpochTWAP(sunrise: Sunrise): Promise<BigNumber> {
-    return this.contracts[sunrise.treasury][
-      sunrise.getTokenPreviousEpochTWAP
-    ]();
+    return this.contracts[sunrise.treasury][sunrise.getTokenPreviousEpochTWAP]();
   }
 
   async getBondsPurchasable(sunrise: Sunrise): Promise<BigNumber> {
@@ -1640,14 +1523,8 @@ export class PolarisFinance {
    * Buy bonds with cash.
    * @param amount amount of cash to purchase bonds with.
    */
-  async buyBonds(
-    amount: string | number,
-    sunrise
-  ): Promise<TransactionResponse> {
-    return await this.contracts[sunrise.treasury + 'metamask'].buyBonds(
-      decimalToBalance(amount),
-      await this.contracts[sunrise.treasury][sunrise.getPrice]()
-    );
+  async buyBonds(amount: string | number, sunrise): Promise<TransactionResponse> {
+    return await this.contracts[sunrise.treasury + 'metamask'].buyBonds(decimalToBalance(amount), await this.contracts[sunrise.treasury][sunrise.getPrice]());
   }
 
   /**
@@ -1656,10 +1533,7 @@ export class PolarisFinance {
    */
 
   async redeemBonds(amount: string, sunrise): Promise<TransactionResponse> {
-    return await this.contracts[sunrise.treasury + 'metamask'].redeemBonds(
-      decimalToBalance(amount),
-      await this.contracts[sunrise.treasury][sunrise.getPrice]()
-    );
+    return await this.contracts[sunrise.treasury + 'metamask'].redeemBonds(decimalToBalance(amount), await this.contracts[sunrise.treasury][sunrise.getPrice]());
   }
 
   // async getTotalValueLocked(): Promise<Number> {
@@ -1788,19 +1662,13 @@ export class PolarisFinance {
   //   return tokenPrice;
   // }
 
-  async stakedBalanceOnBank(
-    poolName: ContractName,
-    poolId: Number,
-    account = this.myAccount
-  ): Promise<BigNumber> {
+  async stakedBalanceOnBank(poolName: ContractName, poolId: Number, account = this.myAccount): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
       let userInfo = await pool.userInfo(poolId, account);
       return await userInfo.amount;
     } catch (err) {
-      console.error(
-        `Failed to call balanceOf() on pool ${pool.address}: ${err}`
-      );
+      console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err}`);
       return BigNumber.from(0);
     }
   }
@@ -1811,42 +1679,30 @@ export class PolarisFinance {
       const multiplyer = await pool.getPricePerFullShare();
       return multiplyer;
     } catch (err) {
-      console.error(
-        `Failed to call balanceOf() on pool ${pool.address}: ${err}`
-      );
+      console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err}`);
       return BigNumber.from(0);
     }
   }
 
-  async depositedBalanceOnAC(
-    poolName: ContractName,
-    account = this.myAccount
-  ): Promise<BigNumber> {
+  async depositedBalanceOnAC(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
       const multiplyer = await pool.getPricePerFullShare();
       const tokenBalance = await pool.balanceOf(account);
       return tokenBalance.mul(multiplyer).div(BigNumber.from(10).pow(18));
     } catch (err) {
-      console.error(
-        `Failed to call balanceOf() on pool ${pool.address}: ${err}`
-      );
+      console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err}`);
       return BigNumber.from(0);
     }
   }
 
-  async depositedSharesOnAC(
-    poolName: ContractName,
-    account = this.myAccount
-  ): Promise<BigNumber> {
+  async depositedSharesOnAC(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
     const pool = this.contracts[poolName];
     try {
       const tokenBalance = await pool.balanceOf(account);
       return tokenBalance;
     } catch (err) {
-      console.error(
-        `Failed to call balanceOf() on pool ${pool.address}: ${err}`
-      );
+      console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err}`);
       return BigNumber.from(0);
     }
   }
@@ -1857,19 +1713,12 @@ export class PolarisFinance {
    * @param amount Number of tokens with decimals applied. (e.g. 1.45 DAI * 10^18)
    * @returns {string} Transaction hash
    */
-  async stake(
-    poolName: ContractName,
-    poolId: Number,
-    amount: BigNumber
-  ): Promise<TransactionResponse> {
+  async stake(poolName: ContractName, poolId: Number, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName + 'metamask'];
     return await pool.deposit(poolId, amount);
   }
 
-  async deposit(
-    poolName: ContractName,
-    amound: BigNumber
-  ): Promise<TransactionResponse> {
+  async deposit(poolName: ContractName, amound: BigNumber): Promise<TransactionResponse> {
     const acPool = this.contracts[poolName + 'metamask'];
     return await acPool.deposit(amound);
   }
@@ -1880,19 +1729,12 @@ export class PolarisFinance {
    * @param amount Number of tokens with decimals applied. (e.g. 1.45 DAI * 10^18)
    * @returns {string} Transaction hash
    */
-  async unstake(
-    poolName: ContractName,
-    poolId: Number,
-    amount: BigNumber
-  ): Promise<TransactionResponse> {
+  async unstake(poolName: ContractName, poolId: Number, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName + 'metamask'];
     return await pool.withdraw(poolId, amount);
   }
 
-  async withdraw(
-    poolName: ContractName,
-    amount: BigNumber
-  ): Promise<TransactionResponse> {
+  async withdraw(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
     const pool = this.contracts[poolName + 'metamask'];
     return await pool.withdraw(amount);
   }
@@ -1900,10 +1742,7 @@ export class PolarisFinance {
   /**
    * Transfers earned token reward from given pool to my account.
    */
-  async harvest(
-    poolName: ContractName,
-    poolId: Number
-  ): Promise<TransactionResponse> {
+  async harvest(poolName: ContractName, poolId: Number): Promise<TransactionResponse> {
     const pool = this.contracts[poolName + 'metamask'];
     //By passing 0 as the amount, we are asking the contract to only redeem the reward and not the currently staked token
     return await pool.withdraw(poolId, 0);
@@ -1912,11 +1751,7 @@ export class PolarisFinance {
   /**
    * Harvests and withdraws deposited tokens from the pool.
    */
-  async exit(
-    poolName: ContractName,
-    poolId: Number,
-    account = this.myAccount
-  ): Promise<TransactionResponse> {
+  async exit(poolName: ContractName, poolId: Number, account = this.myAccount): Promise<TransactionResponse> {
     const pool = this.contracts[poolName + 'metamask'];
     let userInfo = await pool.userInfo(poolId, account);
     return await pool.withdraw(poolId, userInfo.amount);
@@ -1976,12 +1811,8 @@ export class PolarisFinance {
   async canUserUnstakeFromSunrise(sunrise: Sunrise): Promise<boolean> {
     let canWithdraw: boolean, stakedAmount: BigNumber;
     const contract = this.contracts[sunrise.contract];
-    [canWithdraw, stakedAmount] = await Promise.all([
-      contract.canWithdraw(this.myAccount),
-      this.getStakedSpolarOnSunrise(sunrise),
-    ]);
-    const notStaked =
-      Number(getDisplayBalance(stakedAmount, this.SPOLAR.decimal)) === 0;
+    [canWithdraw, stakedAmount] = await Promise.all([contract.canWithdraw(this.myAccount), this.getStakedSpolarOnSunrise(sunrise)]);
+    const notStaked = Number(getDisplayBalance(stakedAmount, this.SPOLAR.decimal)) === 0;
     const result = notStaked ? true : canWithdraw;
     return result;
   }
@@ -1990,13 +1821,8 @@ export class PolarisFinance {
     return await this.contracts[sunrise.contract].totalSupply();
   }
 
-  async stakeSpolarToSunrise(
-    amount: string,
-    sunrise: Sunrise
-  ): Promise<TransactionResponse> {
-    return await this.contracts[sunrise.contract + 'metamask'].stake(
-      decimalToBalance(amount)
-    );
+  async stakeSpolarToSunrise(amount: string, sunrise: Sunrise): Promise<TransactionResponse> {
+    return await this.contracts[sunrise.contract + 'metamask'].stake(decimalToBalance(amount));
   }
 
   async getStakedSpolarOnSunrise(sunrise: Sunrise): Promise<BigNumber> {
@@ -2007,13 +1833,8 @@ export class PolarisFinance {
     return await this.contracts[sunrise.contract].earned(this.myAccount);
   }
 
-  async withdrawSpolarFromSunrise(
-    amount: string,
-    sunrise: Sunrise
-  ): Promise<TransactionResponse> {
-    return await this.contracts[sunrise.contract + 'metamask'].withdraw(
-      decimalToBalance(amount)
-    );
+  async withdrawSpolarFromSunrise(amount: string, sunrise: Sunrise): Promise<TransactionResponse> {
+    return await this.contracts[sunrise.contract + 'metamask'].withdraw(decimalToBalance(amount));
   }
 
   async claimRewardFromSunrise(sunrise: Sunrise): Promise<TransactionResponse> {
@@ -2024,9 +1845,7 @@ export class PolarisFinance {
     return await this.contracts[sunrise.contract + 'metamask'].exit();
   }
 
-  async getTreasuryNextAllocationTime(
-    sunrise: Sunrise
-  ): Promise<AllocationTime> {
+  async getTreasuryNextAllocationTime(sunrise: Sunrise): Promise<AllocationTime> {
     let treasury: Contract;
     treasury = this.contracts[sunrise.treasury];
     const nextEpochTimestamp: BigNumber = await treasury.nextEpochPoint();
@@ -2047,21 +1866,13 @@ export class PolarisFinance {
     let treasury: Contract, contract: Contract;
     treasury = this.contracts[sunrise.treasury];
     contract = this.contracts[sunrise.contract];
-    const [nextEpochTimestamp, currentEpoch, period] = await Promise.all([
-      contract.nextEpochPoint(),
-      contract.epoch(),
-      treasury.PERIOD(),
-    ]);
+    const [nextEpochTimestamp, currentEpoch, period] = await Promise.all([contract.nextEpochPoint(), contract.epoch(), treasury.PERIOD()]);
 
-    const [mason, rewardLockupEpochs] = await Promise.all([
-      contract.masons(this.myAccount),
-      contract.rewardLockupEpochs(),
-    ]);
+    const [mason, rewardLockupEpochs] = await Promise.all([contract.masons(this.myAccount), contract.rewardLockupEpochs()]);
 
     const startTimeEpoch = mason.epochTimerStart;
     const periodInHours = period / 60 / 60; // 6 hours, period is displayed in seconds which is 21600
-    const targetEpochForClaimUnlock =
-      Number(startTimeEpoch) + Number(rewardLockupEpochs);
+    const targetEpochForClaimUnlock = Number(startTimeEpoch) + Number(rewardLockupEpochs);
 
     const fromDate = new Date(Date.now());
     if (targetEpochForClaimUnlock - currentEpoch <= 0) {
@@ -2090,27 +1901,14 @@ export class PolarisFinance {
     treasury = this.contracts[sunrise.treasury];
     contract = this.contracts[sunrise.contract];
 
-    const [nextEpochTimestamp, currentEpoch, period, withdrawLockupEpochs] =
-      await Promise.all([
-        contract.nextEpochPoint(),
-        contract.epoch(),
-        treasury.PERIOD(),
-        contract.withdrawLockupEpochs(),
-      ]);
+    const [nextEpochTimestamp, currentEpoch, period, withdrawLockupEpochs] = await Promise.all([contract.nextEpochPoint(), contract.epoch(), treasury.PERIOD(), contract.withdrawLockupEpochs()]);
 
-    const [mason, stakedAmount] = await Promise.all([
-      contract.masons(this.myAccount),
-      this.getStakedSpolarOnSunrise(sunrise),
-    ]);
+    const [mason, stakedAmount] = await Promise.all([contract.masons(this.myAccount), this.getStakedSpolarOnSunrise(sunrise)]);
     const startTimeEpoch = mason.epochTimerStart;
     const PeriodInHours = period / 60 / 60;
     const fromDate = new Date(Date.now());
-    const targetEpochForClaimUnlock =
-      Number(startTimeEpoch) + Number(withdrawLockupEpochs);
-    if (
-      currentEpoch <= targetEpochForClaimUnlock &&
-      Number(stakedAmount) === 0
-    ) {
+    const targetEpochForClaimUnlock = Number(startTimeEpoch) + Number(withdrawLockupEpochs);
+    if (currentEpoch <= targetEpochForClaimUnlock && Number(stakedAmount) === 0) {
       return { from: fromDate, to: fromDate };
     } else if (targetEpochForClaimUnlock - currentEpoch === 1) {
       const toDate = new Date(nextEpochTimestamp * 1000);
@@ -2126,41 +1924,22 @@ export class PolarisFinance {
   }
 
   /* old tomb functions */
-  async provideTombFtmLP(
-    ftmAmount: string,
-    tombAmount: BigNumber
-  ): Promise<TransactionResponse> {
+  async provideTombFtmLP(ftmAmount: string, tombAmount: BigNumber): Promise<TransactionResponse> {
     const { TaxOffice } = this.contracts;
     let overrides = {
       value: parseUnits(ftmAmount, 18),
     };
-    return await TaxOffice.addLiquidityETHTaxFree(
-      tombAmount,
-      tombAmount.mul(992).div(1000),
-      parseUnits(ftmAmount, 18).mul(992).div(1000),
-      overrides
-    );
+    return await TaxOffice.addLiquidityETHTaxFree(tombAmount, tombAmount.mul(992).div(1000), parseUnits(ftmAmount, 18).mul(992).div(1000), overrides);
   }
 
-  async quoteFromSpooky(
-    tokenAmount: string,
-    tokenName: string
-  ): Promise<string> {
+  async quoteFromSpooky(tokenAmount: string, tokenName: string): Promise<string> {
     const { SpookyRouter } = this.contracts;
     const { _reserve0, _reserve1 } = await this.POLARWFTM_LP.getReserves();
     let quote;
     if (tokenName === 'POLAR') {
-      quote = await SpookyRouter.quote(
-        parseUnits(tokenAmount),
-        _reserve1,
-        _reserve0
-      );
+      quote = await SpookyRouter.quote(parseUnits(tokenAmount), _reserve1, _reserve0);
     } else {
-      quote = await SpookyRouter.quote(
-        parseUnits(tokenAmount),
-        _reserve0,
-        _reserve1
-      );
+      quote = await SpookyRouter.quote(parseUnits(tokenAmount), _reserve0, _reserve1);
     }
     return (quote / 1e18).toString();
   }
@@ -2234,81 +2013,45 @@ export class PolarisFinance {
    * @param to block number
    * @returns the amount of bonds events emitted based on the filter provided during a specific period
    */
-  async getBondsWithFilterForPeriod(
-    filter: EventFilter,
-    from: number,
-    to: number
-  ): Promise<number> {
+  async getBondsWithFilterForPeriod(filter: EventFilter, from: number, to: number): Promise<number> {
     const { Treasury } = this.contracts;
     const bondsAmount = await Treasury.queryFilter(filter, from, to);
     return bondsAmount.length;
   }
 
-  async estimateZapIn(
-    tokenName: string,
-    lpName: string,
-    amount: string
-  ): Promise<number[]> {
+  async estimateZapIn(tokenName: string, lpName: string, amount: string): Promise<number[]> {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
     let estimate;
     if (tokenName === FTM_TICKER) {
-      estimate = await zapper.estimateZapIn(
-        lpToken.address,
-        SPOOKY_ROUTER_ADDR,
-        parseUnits(amount, 18)
-      );
+      estimate = await zapper.estimateZapIn(lpToken.address, SPOOKY_ROUTER_ADDR, parseUnits(amount, 18));
     } else {
       const token = tokenName === POLAR_TICKER ? this.POLAR : this.SPOLAR;
-      estimate = await zapper.estimateZapInToken(
-        token.address,
-        lpToken.address,
-        SPOOKY_ROUTER_ADDR,
-        parseUnits(amount, 18)
-      );
+      estimate = await zapper.estimateZapInToken(token.address, lpToken.address, SPOOKY_ROUTER_ADDR, parseUnits(amount, 18));
     }
     return [estimate[0] / 1e18, estimate[1] / 1e18];
   }
-  async zapIn(
-    tokenName: string,
-    lpName: string,
-    amount: string
-  ): Promise<TransactionResponse> {
+  async zapIn(tokenName: string, lpName: string, amount: string): Promise<TransactionResponse> {
     const { zapper } = this.contracts;
     const lpToken = this.externalTokens[lpName];
     if (tokenName === FTM_TICKER) {
       let overrides = {
         value: parseUnits(amount, 18),
       };
-      return await zapper.zapIn(
-        lpToken.address,
-        SPOOKY_ROUTER_ADDR,
-        this.myAccount,
-        overrides
-      );
+      return await zapper.zapIn(lpToken.address, SPOOKY_ROUTER_ADDR, this.myAccount, overrides);
     } else {
       const token = tokenName === POLAR_TICKER ? this.POLAR : this.SPOLAR;
-      return await zapper.zapInToken(
-        token.address,
-        parseUnits(amount, 18),
-        lpToken.address,
-        SPOOKY_ROUTER_ADDR,
-        this.myAccount
-      );
+      return await zapper.zapInToken(token.address, parseUnits(amount, 18), lpToken.address, SPOOKY_ROUTER_ADDR, this.myAccount);
     }
   }
-  async swapTBondToTShare(
-    tbondAmount: BigNumber
-  ): Promise<TransactionResponse> {
+  async swapTBondToTShare(tbondAmount: BigNumber): Promise<TransactionResponse> {
     const { TShareSwapper } = this.contracts;
     return await TShareSwapper.swapTBondToTShare(tbondAmount);
   }
   async estimateAmountOfTShare(tbondAmount: string): Promise<string> {
     const { TShareSwapper } = this.contracts;
     try {
-      const estimateBN = await TShareSwapper.estimateAmountOfTShare(
-        parseUnits(tbondAmount, 18)
-      );
+      const estimateBN = await TShareSwapper.estimateAmountOfTShare(parseUnits(tbondAmount, 18));
       return getDisplayBalance(estimateBN, 18, 6);
     } catch (err) {
       console.error(`Failed to fetch estimate tshare amount: ${err}`);

@@ -16,12 +16,7 @@ export default class PoolShares {
     this.query = query;
   }
 
-  public async get(
-    poolId: string,
-    days: number,
-    args = {},
-    attrs = {}
-  ): Promise<PoolSnapshots> {
+  public async get(poolId: string, days: number, args = {}, attrs = {}): Promise<PoolSnapshots> {
     const currentTimestamp = Math.ceil(Date.now() / 1000);
     const dayTimestamp = currentTimestamp - (currentTimestamp % DAY);
     const timestamps: number[] = [];
@@ -50,8 +45,7 @@ export default class PoolShares {
           if (!data) {
             return [timestamp, null];
           }
-          const { amounts, totalShares, swapVolume, swapFees, liquidity } =
-            data;
+          const { amounts, totalShares, swapVolume, swapFees, liquidity } = data;
 
           return [
             timestamp,

@@ -5,8 +5,7 @@ import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service
 
 import { includesAddress } from '..';
 
-const { stETH: stEthAddress, wstETH: wstEthAddress } =
-  configService.network.addresses;
+const { stETH: stEthAddress, wstETH: wstEthAddress } = configService.network.addresses;
 
 export function isStETH(tokenInAddress: string, tokenOutAddress: string) {
   if (!tokenInAddress || !tokenOutAddress || !stEthAddress) return false;
@@ -23,10 +22,7 @@ export function isWstEthAddress(address: string): boolean {
   return address.toLowerCase() === wstEthAddress.toLowerCase();
 }
 
-export function includesWstEth(
-  addresses: string[],
-  wstEthAddress = configService.network.addresses.wstETH
-): boolean {
+export function includesWstEth(addresses: string[], wstEthAddress = configService.network.addresses.wstETH): boolean {
   if (!wstEthAddress) return false;
 
   return includesAddress(addresses, wstEthAddress);
@@ -36,13 +32,7 @@ export function includesWstEth(
  * @notice Get amount of wstETH for a given amount of stETH
  */
 export function getWstETHByStETH(stETHAmount: BigNumberish) {
-  const wstETH = new Contract(
-    wstEthAddress,
-    [
-      'function getWstETHByStETH(uint256 stETHAmount) external view returns (uint256)',
-    ],
-    rpcProviderService.jsonProvider
-  );
+  const wstETH = new Contract(wstEthAddress, ['function getWstETHByStETH(uint256 stETHAmount) external view returns (uint256)'], rpcProviderService.jsonProvider);
   return wstETH.getWstETHByStETH(stETHAmount);
 }
 
@@ -50,12 +40,6 @@ export function getWstETHByStETH(stETHAmount: BigNumberish) {
  * @notice Get amount of stETH for a given amount of wstETH
  */
 export function getStETHByWstETH(wstETHAmount: BigNumberish) {
-  const wstETH = new Contract(
-    wstEthAddress,
-    [
-      'function getStETHByWstETH(uint256 wstETHAmount) external view returns (uint256)',
-    ],
-    rpcProviderService.jsonProvider
-  );
+  const wstETH = new Contract(wstEthAddress, ['function getStETHByWstETH(uint256 wstETHAmount) external view returns (uint256)'], rpcProviderService.jsonProvider);
   return wstETH.getStETHByWstETH(wstETHAmount);
 }

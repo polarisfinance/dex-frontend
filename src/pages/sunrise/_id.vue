@@ -5,25 +5,13 @@
       <div class="sunrise-subtitle-text">Sunrise</div>
     </div>
   </div>
-  <div
-    class="flex justify-center"
-    :class="{ sunriseWarning: isDesktop, sunriseWarningMobile: isMobile }"
-  >
+  <div class="flex justify-center" :class="{ sunriseWarning: isDesktop, sunriseWarningMobile: isMobile }">
     <img src="./alert.svg" class="mr-[12px]" />
-    <div>
-      As we are in recovery mode, it is important to not sell your reward.
-      Please stake your {{ sunrise.name.toUpperCase() }} in the EARN single
-      stake.
-    </div>
+    <div>As we are in recovery mode, it is important to not sell your reward. Please stake your {{ sunrise.name.toUpperCase() }} in the EARN single stake.</div>
   </div>
-  <div :class="{ info: isDesktop, infoMobile: isMobile }">
-    Staked SPOLARs can only be withdrawn after 3 epochs since deposit.
-  </div>
+  <div :class="{ info: isDesktop, infoMobile: isMobile }">Staked SPOLARs can only be withdrawn after 3 epochs since deposit.</div>
 
-  <div
-    :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="justify-center text-center"
-  >
+  <div :class="{ sunrise: isDesktop, sunriseMobile: isMobile }" class="justify-center text-center">
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" src="./spolar.svg" />
       <div class="num-tokens">{{ depositedBalance }}</div>
@@ -32,17 +20,13 @@
 
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
         <button class="claim-btn" @click="approve">Approve Spolar</button>
-        <div class="absolute mt-[80px]">
-          Withdraw possible in: {{ withdrawTime }}
-        </div>
+        <div class="absolute mt-[80px]">Withdraw possible in: {{ withdrawTime }}</div>
       </div>
       <div class="container mt-[24px] flex justify-center gap-[12px]" v-else>
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button> -->
-        <button class="claim-btn" @click="toggleSpolarModal(true)">
-          Deposit
-        </button>
+        <button class="claim-btn" @click="toggleSpolarModal(true)">Deposit</button>
         <SpolarModal
           :depositBol="true"
           :isVisible="isSpolarModalVisible"
@@ -53,25 +37,12 @@
             fetchData();
           "
         />
-        <SpolarModal
-          :isVisible="isSpolarWithdrawModalVisible"
-          :deposit="depositToken"
-          :balance="depositedBalance"
-          @close="toggleSpolarWithdrawModal"
-        />
+        <SpolarModal :isVisible="isSpolarWithdrawModalVisible" :deposit="depositToken" :balance="depositedBalance" @close="toggleSpolarWithdrawModal" />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button
-          class="withdraw-btn"
-          :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
-          @click="toggleSpolarWithdrawModal(false)"
-        >
-          Withdraw
-        </button>
-        <div class="absolute mt-[80px]">
-          Withdraw possible in: {{ withdrawTime }}
-        </div>
+        <button class="withdraw-btn" :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)" @click="toggleSpolarWithdrawModal(false)">Withdraw</button>
+        <div class="absolute mt-[80px]">Withdraw possible in: {{ withdrawTime }}</div>
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -102,13 +73,7 @@
         <span class="uppercase">{{ sunrise.name }}</span> Earned
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]">
-        <button
-          class="claim-btn"
-          @click="claim"
-          :disabled="!(parseFloat(earned) > 0) || !canClaim"
-        >
-          Claim
-        </button>
+        <button class="claim-btn" @click="claim" :disabled="!(parseFloat(earned) > 0) || !canClaim">Claim</button>
         <router-link :to="'/singlestake/' + sunrise['name']">
           <button class="single-stake-btn">
             <div class="single-stake-btn-text">Single Stake</div>
@@ -118,14 +83,7 @@
       </div>
     </div>
     <div class="w-full">
-      <button
-        class="claim-btn"
-        text-center
-        @click="withdrawAll"
-        :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
-      >
-        Claim and withdraw
-      </button>
+      <button class="claim-btn" text-center @click="withdrawAll" :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)">Claim and withdraw</button>
     </div>
   </div>
 </template>
@@ -170,13 +128,7 @@ function formatDateNumber(number) {
 }
 
 function formatDate(hours, minutes, seconds) {
-  return (
-    formatDateNumber(hours) +
-    ':' +
-    formatDateNumber(minutes) +
-    ':' +
-    formatDateNumber(seconds)
-  );
+  return formatDateNumber(hours) + ':' + formatDateNumber(minutes) + ':' + formatDateNumber(seconds);
 }
 
 // async function setDate(event, instance, property, epochTimer = true) {
@@ -252,12 +204,8 @@ export default defineComponent({
       depositToken.value = depositProp;
     };
 
-    const toggleSpolarWithdrawModal = (
-      depositProp: boolean,
-      value?: boolean
-    ) => {
-      isSpolarWithdrawModalVisible.value =
-        value ?? !isSpolarWithdrawModalVisible.value;
+    const toggleSpolarWithdrawModal = (depositProp: boolean, value?: boolean) => {
+      isSpolarWithdrawModalVisible.value = value ?? !isSpolarWithdrawModalVisible.value;
       depositToken.value = depositProp;
     };
     return {
@@ -349,9 +297,7 @@ export default defineComponent({
       var distance = time.getTime() - now;
 
       if (distance >= 0) {
-        var hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -361,25 +307,9 @@ export default defineComponent({
       }
     },
     async render() {
-      const {
-        isApproved,
-        getEpoch,
-        getRewardsEarned,
-        canWithdraw,
-        canClaimReward,
-        getSpolarStaked,
-        getBalance,
-        getSunriseAPR,
-        getUnstakePeriod,
-        getClaimPeriod,
-      } = useSunrise(this.sunriseName);
+      const { isApproved, getEpoch, getRewardsEarned, canWithdraw, canClaimReward, getSpolarStaked, getBalance, getSunriseAPR, getUnstakePeriod, getClaimPeriod } = useSunrise(this.sunriseName);
 
-      const {
-        getLastEpochTWAP,
-        getPrintTWAP,
-        getCurrentTWAP,
-        getNextEpochTime,
-      } = useTreasury(this.sunriseName);
+      const { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP, getNextEpochTime } = useTreasury(this.sunriseName);
 
       const { getSpolarBalance } = useTokens();
 
@@ -393,15 +323,7 @@ export default defineComponent({
       // this.twap = await getCurrentTWAP();
       // this.APR = await getSunriseAPR();
       if (this.account === '') {
-        [
-          this.nextEpochDate,
-          this.epoch,
-          this.spolarsStaked,
-          this.lastEpochTwap,
-          this.printTwap,
-          this.twap,
-          this.APR,
-        ] = await Promise.all([
+        [this.nextEpochDate, this.epoch, this.spolarsStaked, this.lastEpochTwap, this.printTwap, this.twap, this.APR] = await Promise.all([
           getNextEpochTime(),
           getEpoch(),
           getSpolarStaked(),
@@ -448,15 +370,9 @@ export default defineComponent({
           getClaimPeriod(this.account),
           getUnstakePeriod(this.account),
         ]);
-        this.depositedInDollars = (
-          parseFloat(this.depositedBalance) * spolarPrice
-        )
-          .toFixed(2)
-          .toString();
+        this.depositedInDollars = (parseFloat(this.depositedBalance) * spolarPrice).toFixed(2).toString();
 
-        this.earnedAmountInDollars = (parseFloat(this.earned) * tokenUsdPrice)
-          .toFixed(2)
-          .toString();
+        this.earnedAmountInDollars = (parseFloat(this.earned) * tokenUsdPrice).toFixed(2).toString();
 
         this.balance = await getSpolarBalance(this.account);
       }
@@ -466,19 +382,9 @@ export default defineComponent({
     },
   },
   async created() {
-    setInterval(
-      async () => (this.claimTime = await this.setDate(this.claimTimeDate)),
-      1000
-    );
-    setInterval(
-      async () =>
-        (this.withdrawTime = await this.setDate(this.withdrawTimeDate)),
-      1000
-    );
-    setInterval(
-      async () => (this.nextEpoch = await this.setDate(this.nextEpochDate)),
-      1000
-    );
+    setInterval(async () => (this.claimTime = await this.setDate(this.claimTimeDate)), 1000);
+    setInterval(async () => (this.withdrawTime = await this.setDate(this.withdrawTimeDate)), 1000);
+    setInterval(async () => (this.nextEpoch = await this.setDate(this.nextEpochDate)), 1000);
     await this.render();
   },
   watch: {
@@ -516,11 +422,7 @@ export default defineComponent({
 }
 
 .sunriseWarning {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.3) 2.98%,
-    rgba(126, 2, 245, 0.3) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.3) 2.98%, rgba(126, 2, 245, 0.3) 97.02%);
   border-radius: 16px;
   margin-left: 200px;
   margin-right: 200px;
@@ -536,11 +438,7 @@ export default defineComponent({
 }
 
 .sunriseWarningMobile {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.3) 2.98%,
-    rgba(126, 2, 245, 0.3) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.3) 2.98%, rgba(126, 2, 245, 0.3) 97.02%);
   border-radius: 16px;
   margin-left: 24px;
   margin-right: 24px;
@@ -664,11 +562,7 @@ export default defineComponent({
 
 .claim-btn:hover,
 .claim-btn:active {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.7) 2.98%,
-    rgba(126, 2, 245, 0.7) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 
 .withdraw-btn {

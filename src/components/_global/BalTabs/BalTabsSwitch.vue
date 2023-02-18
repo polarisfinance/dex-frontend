@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="items-center" :class="['bal-tab-container', containerClasses]">
-      <div
-        v-for="(tab, i) in tabs"
-        :key="i"
-        :class="['bal-tab', stateClasses(tab)]"
-        class="flex-1 text-center"
-        @click="onClick(tab)"
-      >
+      <div v-for="(tab, i) in tabs" :key="i" :class="['bal-tab', stateClasses(tab)]" class="flex-1 text-center" @click="onClick(tab)">
         {{ tab.label }}
       </div>
     </div>
@@ -70,7 +64,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.bal-tab-container{
+.bal-tab-container {
   background: #292043;
   border-radius: 22px;
   overflow: hidden;
@@ -83,8 +77,8 @@ export default defineComponent({
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
-  background: #41365E;
+  color: #fdfdfd;
+  background: #41365e;
   border-radius: 22px;
   overflow: hidden;
 }
@@ -93,7 +87,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
 
 .bal-tab:last-child {

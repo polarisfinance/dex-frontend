@@ -45,18 +45,8 @@ const priceImpactClasses = computed(() => ({
 
           <BalTooltip :text="$t('withdraw.tooltips.priceImpact')">
             <template #activator>
-              <BalIcon
-                v-if="highPriceImpact"
-                name="alert-triangle"
-                size="xs"
-                class="-mb-px ml-1"
-              />
-              <BalIcon
-                v-else
-                name="info"
-                size="xs"
-                class="-mb-px ml-1 text-gray-400"
-              />
+              <BalIcon v-if="highPriceImpact" name="alert-triangle" size="xs" class="-mb-px ml-1" />
+              <BalIcon v-else name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
             </template>
           </BalTooltip>
         </div>

@@ -1,9 +1,4 @@
-import {
-  FundManagement,
-  SingleSwap,
-  SwapType,
-  SwapV2,
-} from '@balancer-labs/sdk';
+import { FundManagement, SingleSwap, SwapType, SwapV2 } from '@balancer-labs/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 
 import { SwapToken, SwapTokenType } from '../swap/swap.service';
@@ -17,8 +12,7 @@ const userAddress = '0xAAA00fB39c06E7b41bEdFf8A6a4e013666141d40';
 describe('vault.service', () => {
   let swaps: SwapV2[] = [];
   const tokens: Record<string, SwapToken> = {};
-  const poolId =
-    'AAAF4E2F1E7A1B8B9D09D2F2739AC6753F5BA5CB00020000000000000000031A';
+  const poolId = 'AAAF4E2F1E7A1B8B9D09D2F2739AC6753F5BA5CB00020000000000000000031A';
   const funds: FundManagement = {
     sender: userAddress,
     recipient: userAddress,
@@ -62,8 +56,7 @@ describe('vault.service', () => {
       const tokenOutAmount = '10';
 
       await vaultService.swap(single, funds, tokenOutAmount);
-      const sendTransactionArgs = require('@/services/web3/web3.service')
-        .web3Service.sendTransaction.mock.calls[0];
+      const sendTransactionArgs = require('@/services/web3/web3.service').web3Service.sendTransaction.mock.calls[0];
       expect(sendTransactionArgs[0]).toEqual(vaultService.address);
       expect(sendTransactionArgs[1]).toEqual(vaultService.abi);
       expect(sendTransactionArgs[2]).toEqual('swap');
@@ -79,15 +72,8 @@ describe('vault.service', () => {
       const swapKind = SwapType.SwapExactIn;
       const tokenAddresses = [tokens.USDC.address, tokens.DAI.address];
       const limits = ['10', '10'];
-      await vaultService.batchSwap(
-        swapKind,
-        swaps,
-        tokenAddresses,
-        funds,
-        limits
-      );
-      const sendTransactionArgs = require('@/services/web3/web3.service')
-        .web3Service.sendTransaction.mock.calls[0];
+      await vaultService.batchSwap(swapKind, swaps, tokenAddresses, funds, limits);
+      const sendTransactionArgs = require('@/services/web3/web3.service').web3Service.sendTransaction.mock.calls[0];
       expect(sendTransactionArgs[0]).toEqual(vaultService.address);
       expect(sendTransactionArgs[1]).toEqual(vaultService.abi);
       expect(sendTransactionArgs[2]).toEqual('batchSwap');

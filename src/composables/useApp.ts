@@ -1,9 +1,6 @@
 import { inject } from 'vue';
 
-import {
-  AppProviderResponse,
-  AppProviderSymbol,
-} from '@/providers/app.provider';
+import { AppProviderResponse, AppProviderSymbol } from '@/providers/app.provider';
 
 const defaultProviderResponse = {} as AppProviderResponse;
 

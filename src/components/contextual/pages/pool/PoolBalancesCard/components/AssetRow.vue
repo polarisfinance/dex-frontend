@@ -37,16 +37,12 @@ const token = computed(() => getToken(props.address));
 
 const balance = computed(() => {
   const formattedBalance = formatUnits(props.balance, token.value.decimals);
-  return props.share != null
-    ? bnum(formattedBalance).times(props.share).toString()
-    : formattedBalance;
+  return props.share != null ? bnum(formattedBalance).times(props.share).toString() : formattedBalance;
 });
 
 const balanceLabel = computed(() => {
   if (props.priceRate && props.mainTokenAddress) {
-    const equivMainTokenBalance = bnum(balance.value)
-      .times(props.priceRate)
-      .toString();
+    const equivMainTokenBalance = bnum(balance.value).times(props.priceRate).toString();
 
     return fNum2(equivMainTokenBalance, FNumFormats.token);
   }
@@ -56,9 +52,7 @@ const balanceLabel = computed(() => {
 
 const fiatLabel = computed(() => {
   if (props.priceRate && props.mainTokenAddress) {
-    const equivMainTokenBalance = bnum(balance.value)
-      .times(props.priceRate)
-      .toString();
+    const equivMainTokenBalance = bnum(balance.value).times(props.priceRate).toString();
 
     const fiatValue = toFiat(equivMainTokenBalance, props.mainTokenAddress);
     return fNum2(fiatValue, FNumFormats.fiat);
@@ -72,19 +66,10 @@ const fiatLabel = computed(() => {
 <template>
   <div class="grid grid-cols-3">
     <div>
-      <BalLink
-        :href="explorerLinks.addressLink(token.address)"
-        external
-        noStyle
-        class="flex items-center"
-      >
+      <BalLink :href="explorerLinks.addressLink(token.address)" external noStyle class="flex items-center">
         <BalAsset :address="token.address" class="mr-2" />
         {{ token.symbol }}
-        <BalIcon
-          name="arrow-up-right"
-          size="sm"
-          class="text-secondary ml-2 transition-colors hover:text-blue-500"
-        />
+        <BalIcon name="arrow-up-right" size="sm" class="text-secondary ml-2 transition-colors hover:text-blue-500" />
       </BalLink>
     </div>
 

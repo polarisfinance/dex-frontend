@@ -16,11 +16,7 @@ import { isBlocked, lpTokensFor } from '../usePool';
 import useUserSettings from '../useUserSettings';
 import useGaugesQuery from './useGaugesQuery';
 
-export default function usePoolQuery(
-  id: string,
-  isEnabled: Ref<boolean> = ref(true),
-  options: QueryObserverOptions<Pool> = {}
-) {
+export default function usePoolQuery(id: string, isEnabled: Ref<boolean> = ref(true), options: QueryObserverOptions<Pool> = {}) {
   /**
    * @description
    * If pool is already downloaded, we can use it instantly
@@ -44,9 +40,7 @@ export default function usePoolQuery(
   /**
    * COMPUTED
    */
-  const enabled = computed(
-    () => !appLoading.value && !dynamicDataLoading.value && isEnabled.value
-  );
+  const enabled = computed(() => !appLoading.value && !dynamicDataLoading.value && isEnabled.value);
 
   /**
    * QUERY INPUTS
@@ -72,19 +66,10 @@ export default function usePoolQuery(
 
     // Decorate subgraph data with additional data
     const poolDecorator = new PoolDecorator([pool]);
-    const [decoratedPool] = await poolDecorator.decorate(
-      undefined,
-      prices.value,
-      currency.value,
-      tokens.value
-    );
+    const [decoratedPool] = await poolDecorator.decorate(undefined, prices.value, currency.value, tokens.value);
 
     // Inject pool tokens into token registry
-    await injectTokens([
-      ...decoratedPool.tokensList,
-      ...lpTokensFor(decoratedPool),
-      decoratedPool.address,
-    ]);
+    await injectTokens([...decoratedPool.tokensList, ...lpTokensFor(decoratedPool), decoratedPool.address]);
     return decoratedPool;
   };
 

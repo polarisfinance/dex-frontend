@@ -23,31 +23,14 @@ export default class ExitParams {
     this.pool = exchange.pool;
     this.config = exchange.config;
     this.isStableLike = isStableLike(exchange.pool.value.poolType);
-    this.dataEncodeFn = this.isStableLike
-      ? encodeExitStablePool
-      : encodeExitWeightedPool;
+    this.dataEncodeFn = this.isStableLike ? encodeExitStablePool : encodeExitWeightedPool;
   }
 
-  public serialize(
-    account: string,
-    amountsOut: string[],
-    tokensOut: string[],
-    bptIn: string,
-    exitTokenIndex: number | null,
-    exactOut: boolean
-  ): any[] {
+  public serialize(account: string, amountsOut: string[], tokensOut: string[], bptIn: string, exitTokenIndex: number | null, exactOut: boolean): any[] {
     const parsedAmountsOut = this.parseAmounts(amountsOut);
-    const parsedBptIn = parseUnits(
-      bptIn,
-      this.pool.value?.onchain?.decimals || 18
-    );
+    const parsedBptIn = parseUnits(bptIn, this.pool.value?.onchain?.decimals || 18);
     const assets = this.parseTokensOut(tokensOut);
-    const txData = this.txData(
-      parsedAmountsOut,
-      parsedBptIn,
-      exitTokenIndex,
-      exactOut
-    );
+    const txData = this.txData(parsedAmountsOut, parsedBptIn, exitTokenIndex, exactOut);
 
     return [
       this.pool.value.id,
@@ -69,27 +52,17 @@ export default class ExitParams {
   private parseAmounts(amounts: string[]): BigNumber[] {
     return amounts.map((amount, i) => {
       const token = this.pool.value.tokensList[i];
-      return parseUnits(
-        amount,
-        this.pool.value?.onchain?.tokens?.[token]?.decimals || 18
-      );
+      return parseUnits(amount, this.pool.value?.onchain?.tokens?.[token]?.decimals || 18);
     });
   }
 
   private parseTokensOut(tokensOut: string[]): string[] {
     const nativeAsset = this.config.network.nativeAsset;
 
-    return tokensOut.map(address =>
-      isSameAddress(address, nativeAsset.address) ? AddressZero : address
-    );
+    return tokensOut.map(address => (isSameAddress(address, nativeAsset.address) ? AddressZero : address));
   }
 
-  private txData(
-    amountsOut: BigNumberish[],
-    bptIn: BigNumberish,
-    exitTokenIndex: number | null,
-    exactOut: boolean
-  ): string {
+  private txData(amountsOut: BigNumberish[], bptIn: BigNumberish, exitTokenIndex: number | null, exactOut: boolean): string {
     const isSingleAssetOut = exitTokenIndex !== null;
 
     if (isSingleAssetOut) {

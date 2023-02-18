@@ -36,20 +36,12 @@ const emit = defineEmits<{
 /**
  * STATE
  */
-const {
-  batchSwapLoaded,
-  highPriceImpact,
-  fiatTotal,
-  fiatTotalLabel,
-  priceImpact,
-} = toRefs(props.math);
+const { batchSwapLoaded, highPriceImpact, fiatTotal, fiatTotalLabel, priceImpact } = toRefs(props.math);
 
 const migrateConfirmed = ref(false);
 const highPriceImpactAccepted = ref(false);
 
-const hasAcceptedHighPriceImpact = computed((): boolean =>
-  highPriceImpact.value ? highPriceImpactAccepted.value : true
-);
+const hasAcceptedHighPriceImpact = computed((): boolean => (highPriceImpact.value ? highPriceImpactAccepted.value : true));
 
 const isLoadingPriceImpact = computed(() => !batchSwapLoaded.value);
 
@@ -61,11 +53,7 @@ const { t } = useI18n();
 /**
  * COMPUTED
  */
-const title = computed((): string =>
-  migrateConfirmed.value
-    ? t('migratePool.previewModal.titles.confirmed')
-    : t('migratePool.previewModal.titles.default')
-);
+const title = computed((): string => (migrateConfirmed.value ? t('migratePool.previewModal.titles.confirmed') : t('migratePool.previewModal.titles.default')));
 
 /**
  * METHODS
@@ -79,12 +67,7 @@ function handleClose() {
   <BalModal show :fireworks="migrateConfirmed" @close="handleClose">
     <template #header>
       <div class="flex items-center">
-        <BalCircle
-          v-if="migrateConfirmed"
-          size="8"
-          color="green"
-          class="mr-2 text-white"
-        >
+        <BalCircle v-if="migrateConfirmed" size="8" color="green" class="mr-2 text-white">
           <BalIcon name="check" />
         </BalCircle>
         <h4>
@@ -93,35 +76,14 @@ function handleClose() {
       </div>
     </template>
 
-    <MigratePoolRisks
-      v-if="poolMigrationInfo.riskI18nLabels != null"
-      :poolMigrationInfo="poolMigrationInfo"
-    />
+    <MigratePoolRisks v-if="poolMigrationInfo.riskI18nLabels != null" :poolMigrationInfo="poolMigrationInfo" />
 
-    <MigratePoolsInfo
-      :fromPoolTokenInfo="fromPoolTokenInfo"
-      :toPoolTokenInfo="toPoolTokenInfo"
-    />
+    <MigratePoolsInfo :fromPoolTokenInfo="fromPoolTokenInfo" :toPoolTokenInfo="toPoolTokenInfo" />
 
-    <InvestSummary
-      :pool="toPool"
-      :fiatTotal="fiatTotal"
-      :priceImpact="priceImpact"
-      :isLoadingPriceImpact="isLoadingPriceImpact"
-      :highPriceImpact="highPriceImpact"
-    />
+    <InvestSummary :pool="toPool" :fiatTotal="fiatTotal" :priceImpact="priceImpact" :isLoadingPriceImpact="isLoadingPriceImpact" :highPriceImpact="highPriceImpact" />
 
-    <div
-      v-if="highPriceImpact"
-      class="mt-4 rounded-lg border p-3 dark:border-gray-700"
-    >
-      <BalCheckbox
-        v-model="highPriceImpactAccepted"
-        name="highPriceImpactAccepted"
-        size="sm"
-        :label="$t('migratePool.previewModal.priceImpactAccept')"
-        noMargin
-      />
+    <div v-if="highPriceImpact" class="mt-4 rounded-lg border p-3 dark:border-gray-700">
+      <BalCheckbox v-model="highPriceImpactAccepted" name="highPriceImpactAccepted" size="sm" :label="$t('migratePool.previewModal.priceImpactAccept')" noMargin />
     </div>
 
     <MigrateActions

@@ -23,34 +23,19 @@ export type JoinWeightedPoolAllTokensInForExactBPTOut = {
   bptAmountOut: BigNumberish;
 };
 
-export type JoinData =
-  | JoinWeightedPoolInit
-  | JoinWeightedPoolExactTokensInForBPTOut
-  | JoinWeightedPoolTokenInForExactBPTOut
-  | JoinWeightedPoolAllTokensInForExactBPTOut;
+export type JoinData = JoinWeightedPoolInit | JoinWeightedPoolExactTokensInForBPTOut | JoinWeightedPoolTokenInForExactBPTOut | JoinWeightedPoolAllTokensInForExactBPTOut;
 
-export type ExitData =
-  | ExitWeightedPoolExactBPTInForOneTokenOut
-  | ExitWeightedPoolExactBPTInForTokensOut
-  | ExitWeightedPoolBPTInForExactTokensOut;
+export type ExitData = ExitWeightedPoolExactBPTInForOneTokenOut | ExitWeightedPoolExactBPTInForTokensOut | ExitWeightedPoolBPTInForExactTokensOut;
 
 export function encodeJoinWeightedPool(joinData: JoinData): string {
   if (joinData.kind == 'Init') {
     return WeightedPoolEncoder.joinInit(joinData.amountsIn);
   } else if (joinData.kind == 'ExactTokensInForBPTOut') {
-    return WeightedPoolEncoder.joinExactTokensInForBPTOut(
-      joinData.amountsIn,
-      joinData.minimumBPT
-    );
+    return WeightedPoolEncoder.joinExactTokensInForBPTOut(joinData.amountsIn, joinData.minimumBPT);
   } else if (joinData.kind == 'AllTokensInForExactBPTOut') {
-    return WeightedPoolEncoder.joinAllTokensInForExactBPTOut(
-      joinData.bptAmountOut
-    );
+    return WeightedPoolEncoder.joinAllTokensInForExactBPTOut(joinData.bptAmountOut);
   } else {
-    return WeightedPoolEncoder.joinTokenInForExactBPTOut(
-      joinData.bptAmountOut,
-      joinData.enterTokenIndex
-    );
+    return WeightedPoolEncoder.joinTokenInForExactBPTOut(joinData.bptAmountOut, joinData.enterTokenIndex);
   }
 }
 
@@ -73,16 +58,10 @@ export type ExitWeightedPoolBPTInForExactTokensOut = {
 
 export function encodeExitWeightedPool(exitData: ExitData): string {
   if (exitData.kind == 'ExactBPTInForOneTokenOut') {
-    return WeightedPoolEncoder.exitExactBPTInForOneTokenOut(
-      exitData.bptAmountIn,
-      exitData.exitTokenIndex
-    );
+    return WeightedPoolEncoder.exitExactBPTInForOneTokenOut(exitData.bptAmountIn, exitData.exitTokenIndex);
   } else if (exitData.kind == 'ExactBPTInForTokensOut') {
     return WeightedPoolEncoder.exitExactBPTInForTokensOut(exitData.bptAmountIn);
   } else {
-    return WeightedPoolEncoder.exitBPTInForExactTokensOut(
-      exitData.amountsOut,
-      exitData.maxBPTAmountIn
-    );
+    return WeightedPoolEncoder.exitBPTInForExactTokensOut(exitData.amountsOut, exitData.maxBPTAmountIn);
   }
 }

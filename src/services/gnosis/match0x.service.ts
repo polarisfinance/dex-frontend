@@ -70,11 +70,7 @@ export default class Match0xService {
       const swapSide = kind === OrderKind.BUY ? 'buyAmount' : 'sellAmount';
 
       const response = await axios.get<MatchaPriceQuote | null>(
-        `${this.baseURL}/price?sellToken=${toErc20Address(
-          sellToken
-        )}&buyToken=${toErc20Address(
-          buyToken
-        )}&${swapSide}=${amount}&${MATCHA_DEFAULT_OPTIONS}`
+        `${this.baseURL}/price?sellToken=${toErc20Address(sellToken)}&buyToken=${toErc20Address(buyToken)}&${swapSide}=${amount}&${MATCHA_DEFAULT_OPTIONS}`
       );
       return this.toPriceInformation(response.data, kind);
     } catch (e) {
@@ -84,16 +80,12 @@ export default class Match0xService {
     return null;
   }
 
-  private toPriceInformation(
-    priceRaw: MatchaPriceQuote | null,
-    kind: OrderKind
-  ): PriceInformation | null {
+  private toPriceInformation(priceRaw: MatchaPriceQuote | null, kind: OrderKind): PriceInformation | null {
     if (!priceRaw || !priceRaw.price) {
       return null;
     }
 
-    const { sellAmount, buyAmount, sellTokenAddress, buyTokenAddress } =
-      priceRaw;
+    const { sellAmount, buyAmount, sellTokenAddress, buyTokenAddress } = priceRaw;
 
     if (kind === OrderKind.BUY) {
       return { amount: sellAmount, token: sellTokenAddress };

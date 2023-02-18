@@ -21,13 +21,7 @@ const WEEK_MS = 86_400_000 * 7;
 // Please update the schema version when making changes to the transaction structure.
 const TRANSACTIONS_SCHEMA_VERSION = '1.1.3';
 
-export type TransactionStatus =
-  | 'pending'
-  | 'fulfilled'
-  | 'expired'
-  | 'cancelling'
-  | 'cancelled'
-  | 'failed';
+export type TransactionStatus = 'pending' | 'fulfilled' | 'expired' | 'cancelling' | 'cancelled' | 'failed';
 
 export type TransactionAction =
   | 'claim'
@@ -49,17 +43,7 @@ export type TransactionAction =
 
 export type TransactionType = 'order' | 'tx';
 
-export type TxReceipt = Pick<
-  TransactionReceipt,
-  | 'blockHash'
-  | 'blockNumber'
-  | 'contractAddress'
-  | 'from'
-  | 'status'
-  | 'to'
-  | 'transactionHash'
-  | 'transactionIndex'
->;
+export type TxReceipt = Pick<TransactionReceipt, 'blockHash' | 'blockNumber' | 'contractAddress' | 'from' | 'status' | 'to' | 'transactionHash' | 'transactionIndex'>;
 
 export type OrderReceipt = OrderMetaData;
 
@@ -81,10 +65,7 @@ export type Transaction = {
   status: TransactionStatus;
 };
 
-export type NewTransaction = Pick<
-  Transaction,
-  'id' | 'type' | 'summary' | 'receipt' | 'action' | 'details'
->;
+export type NewTransaction = Pick<Transaction, 'id' | 'type' | 'summary' | 'receipt' | 'action' | 'details'>;
 
 const networkId = configService.network.chainId;
 
@@ -95,36 +76,18 @@ export type TransactionState = {
 };
 
 // TODO: What happens if the structure changes? Either keep a version or schema validator.
-export const transactionsState = ref<TransactionState>(
-  lsGet<TransactionState>(LS_KEYS.Transactions, {}, TRANSACTIONS_SCHEMA_VERSION)
-);
+export const transactionsState = ref<TransactionState>(lsGet<TransactionState>(LS_KEYS.Transactions, {}, TRANSACTIONS_SCHEMA_VERSION));
 
 // COMPUTED
-const transactions = computed(() =>
-  orderBy(Object.values(getTransactions()), 'addedTime', 'desc').filter(
-    isTransactionRecent
-  )
-);
+const transactions = computed(() => orderBy(Object.values(getTransactions()), 'addedTime', 'desc').filter(isTransactionRecent));
 
-const pendingTransactions = computed(() =>
-  transactions.value.filter(transaction =>
-    isPendingTransactionStatus(transaction.status)
-  )
-);
+const pendingTransactions = computed(() => transactions.value.filter(transaction => isPendingTransactionStatus(transaction.status)));
 
-const finalizedTransactions = computed(() =>
-  transactions.value.filter(transaction =>
-    isFinalizedTransactionStatus(transaction.status)
-  )
-);
+const finalizedTransactions = computed(() => transactions.value.filter(transaction => isFinalizedTransactionStatus(transaction.status)));
 
-const pendingOrderActivity = computed(() =>
-  pendingTransactions.value.filter(({ type }) => type === 'order')
-);
+const pendingOrderActivity = computed(() => pendingTransactions.value.filter(({ type }) => type === 'order'));
 
-const pendingTxActivity = computed(() =>
-  pendingTransactions.value.filter(({ type }) => type === 'tx')
-);
+const pendingTxActivity = computed(() => pendingTransactions.value.filter(({ type }) => type === 'tx'));
 
 // METHODS
 function normalizeTxReceipt(receipt: TransactionReceipt) {
@@ -161,11 +124,7 @@ function getTransactions(): TransactionsMap {
 function setTransactions(transactionsMap: TransactionsMap) {
   transactionsState.value[networkId] = transactionsMap;
 
-  lsSet(
-    LS_KEYS.Transactions,
-    transactionsState.value,
-    TRANSACTIONS_SCHEMA_VERSION
-  );
+  lsSet(LS_KEYS.Transactions, transactionsState.value, TRANSACTIONS_SCHEMA_VERSION);
 }
 
 function getTransaction(id: string, type: TransactionType) {
@@ -175,11 +134,7 @@ function getTransaction(id: string, type: TransactionType) {
   return transactionsMap[txId] ?? null;
 }
 
-function updateTransaction(
-  id: string,
-  type: TransactionType,
-  updates: Partial<Transaction>
-) {
+function updateTransaction(id: string, type: TransactionType, updates: Partial<Transaction>) {
   const transactionsMap = getTransactions();
   const txId = getId(id, type);
   const transaction = transactionsMap[txId];
@@ -219,10 +174,7 @@ function isFinalizedTransactionStatus(status: TransactionStatus) {
 
 // Adapted from Uniswap code
 function shouldCheckTx(transaction: Transaction, lastBlockNumber: number) {
-  if (
-    processedTxs.value.has(transaction.id) ||
-    isFinalizedTransactionStatus(transaction.status)
-  ) {
+  if (processedTxs.value.has(transaction.id) || isFinalizedTransactionStatus(transaction.status)) {
     return false;
   }
 
@@ -250,12 +202,7 @@ function shouldCheckTx(transaction: Transaction, lastBlockNumber: number) {
 
 export default function useTransactions() {
   // COMPOSABLES
-  const {
-    account,
-    explorerLinks,
-    getProvider: getWeb3Provider,
-    blockNumber,
-  } = useWeb3();
+  const { account, explorerLinks, getProvider: getWeb3Provider, blockNumber } = useWeb3();
   const { addNotification } = useNotifications();
   const { t } = useI18n();
   const { fNum2 } = useNumbers();
@@ -264,28 +211,17 @@ export default function useTransactions() {
   const provider = computed(() => getWeb3Provider());
 
   // METHODS
-  function getSettledOrderSummary(
-    transaction: Transaction,
-    receipt: OrderReceipt
-  ) {
+  function getSettledOrderSummary(transaction: Transaction, receipt: OrderReceipt) {
     const details = transaction.details as GnosisTransactionDetails;
 
     if (details != null) {
       const { tokenIn, tokenOut } = details;
 
-      const tokenInAmount = formatUnits(
-        receipt.executedSellAmount,
-        tokenIn.decimals
-      );
+      const tokenInAmount = formatUnits(receipt.executedSellAmount, tokenIn.decimals);
 
-      const tokenOutAmount = formatUnits(
-        receipt.executedBuyAmount,
-        tokenOut.decimals
-      );
+      const tokenOutAmount = formatUnits(receipt.executedBuyAmount, tokenOut.decimals);
 
-      return `${fNum2(tokenInAmount, FNumFormats.token)} ${
-        tokenIn.symbol
-      } -> ${fNum2(tokenOutAmount, FNumFormats.token)} ${tokenOut.symbol}`;
+      return `${fNum2(tokenInAmount, FNumFormats.token)} ${tokenIn.symbol} -> ${fNum2(tokenOutAmount, FNumFormats.token)} ${tokenOut.symbol}`;
     }
 
     return transaction.summary;
@@ -310,11 +246,7 @@ export default function useTransactions() {
     addNotificationForTransaction(newTransaction.id, newTransaction.type);
   }
 
-  function finalizeTransaction(
-    id: string,
-    type: TransactionType,
-    receipt: Transaction['receipt']
-  ) {
+  function finalizeTransaction(id: string, type: TransactionType, receipt: Transaction['receipt']) {
     if (receipt != null) {
       const transaction = getTransaction(id, type);
 
@@ -359,14 +291,8 @@ export default function useTransactions() {
 
     if (transaction != null) {
       addNotification({
-        type: isFinalizedTransactionStatus(transaction.status)
-          ? isSuccessfulTransaction(transaction)
-            ? 'success'
-            : 'error'
-          : 'info',
-        title: `${t(`transactionAction.${transaction.action}`)} ${t(
-          `transactionStatus.${transaction.status}`
-        )}`,
+        type: isFinalizedTransactionStatus(transaction.status) ? (isSuccessfulTransaction(transaction) ? 'success' : 'error') : 'info',
+        title: `${t(`transactionAction.${transaction.action}`)} ${t(`transactionStatus.${transaction.status}`)}`,
         message: transaction.summary,
         transactionMetadata: {
           id: transaction.id,
@@ -386,13 +312,7 @@ export default function useTransactions() {
           finalizeTransaction(transaction.id, 'order', order);
         }
       })
-      .catch(e =>
-        console.log(
-          '[Transactions]: Failed to fetch order information',
-          transaction,
-          e
-        )
-      )
+      .catch(e => console.log('[Transactions]: Failed to fetch order information', transaction, e))
       .finally(() => {
         updateTransaction(transaction.id, 'order', {
           lastCheckedBlockNumber: blockNumber.value,
@@ -409,13 +329,7 @@ export default function useTransactions() {
             finalizeTransaction(transaction.id, 'tx', tx);
           }
         })
-        .catch(e =>
-          console.log(
-            '[Transactions]: Failed to fetch tx information',
-            transaction,
-            e
-          )
-        )
+        .catch(e => console.log('[Transactions]: Failed to fetch tx information', transaction, e))
         .finally(() =>
           updateTransaction(transaction.id, 'tx', {
             lastCheckedBlockNumber: blockNumber.value,
@@ -427,9 +341,7 @@ export default function useTransactions() {
   async function handlePendingTransactions() {
     pendingOrderActivity.value.forEach(checkOrderActivity);
 
-    pendingTxActivity.value
-      .filter(transaction => shouldCheckTx(transaction, blockNumber.value))
-      .forEach(checkTxActivity);
+    pendingTxActivity.value.filter(transaction => shouldCheckTx(transaction, blockNumber.value)).forEach(checkTxActivity);
   }
 
   function getExplorerLink(id: string, type: TransactionType) {

@@ -11,22 +11,13 @@ import { PoolAPRs } from '../pool/types';
 const MIN_BOOST = 1;
 const MAX_BOOST = 2.5;
 
-export function calculateWeeklyReward(
-  workingBalance = 0.4,
-  workingSupply: BigNumber,
-  balPayableToGauge: BigNumber
-) {
-  const shareForOneBpt = bnum(workingBalance).div(
-    workingSupply.plus(workingBalance)
-  );
+export function calculateWeeklyReward(workingBalance = 0.4, workingSupply: BigNumber, balPayableToGauge: BigNumber) {
+  const shareForOneBpt = bnum(workingBalance).div(workingSupply.plus(workingBalance));
   const weeklyReward = shareForOneBpt.times(balPayableToGauge);
   return weeklyReward;
 }
 
-export function calculateTokenPayableToGauge(
-  inflationRate: BigNumber,
-  gaugeRelativeWeight: BigNumber
-) {
+export function calculateTokenPayableToGauge(inflationRate: BigNumber, gaugeRelativeWeight: BigNumber) {
   return bnum(inflationRate).times(7).times(86400).times(gaugeRelativeWeight);
 }
 
@@ -49,10 +40,7 @@ export function calculateRewardTokenAprs({
   return Object.fromEntries(
     Object.keys(rewardTokensMeta).map(rewardTokenAddress => {
       const data = rewardTokensMeta[rewardTokenAddress];
-      const inflationRate = formatUnits(
-        data.rate,
-        tokens[getAddress(rewardTokenAddress)]?.decimals || 18
-      );
+      const inflationRate = formatUnits(data.rate, tokens[getAddress(rewardTokenAddress)]?.decimals || 18);
       // if the period is finished for a reward token,
       // it should be 0 as emissions are no longer seeded
       if (Date.now() / 1000 > data.period_finish.toNumber()) {
@@ -61,10 +49,7 @@ export function calculateRewardTokenAprs({
 
       // for reward tokens, there is no relative weight
       // all tokens go to the gauge depositors
-      const tokenPayable = calculateTokenPayableToGauge(
-        bnum(inflationRate),
-        bnum(1)
-      );
+      const tokenPayable = calculateTokenPayableToGauge(bnum(inflationRate), bnum(1));
       // for reward tokens we need to use the raw balance (1BPT = 1)
       const weeklyReward = calculateWeeklyReward(1, totalSupply, tokenPayable);
       const yearlyReward = weeklyReward
@@ -97,10 +82,7 @@ export function calculateGaugeApr({
 }) {
   const workingSupply = bnum((workingSupplies || {})[gaugeAddress]) || '0';
   const relativeWeight = bnum((relativeWeights || {})[gaugeAddress]) || '0';
-  const balPayable = calculateTokenPayableToGauge(
-    bnum(inflationRate),
-    relativeWeight
-  );
+  const balPayable = calculateTokenPayableToGauge(bnum(inflationRate), relativeWeight);
   // 0.4 is the working balance for 1 BPT
   const weeklyReward = calculateWeeklyReward(0.4, workingSupply, balPayable);
   const yearlyReward = weeklyReward.times(boost).times(52).times(balPrice);
@@ -127,10 +109,7 @@ export function getAprRange(apr: string) {
 export function hasStakingRewards(aprs?: PoolAPRs) {
   if (!aprs?.staking) return false;
 
-  return (
-    bnum(aprs.staking?.bal?.min || 0).gt(0) ||
-    bnum(aprs.staking?.rewards || 0).gt(0)
-  );
+  return bnum(aprs.staking?.bal?.min || 0).gt(0) || bnum(aprs.staking?.rewards || 0).gt(0);
 }
 
 /**

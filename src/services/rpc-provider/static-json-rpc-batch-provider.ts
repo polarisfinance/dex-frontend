@@ -10,9 +10,7 @@ class StaticJsonRpcBatchProvider extends providers.JsonRpcBatchProvider {
       network = await super.detectNetwork();
 
       if (!network) {
-        logger.throwError(
-          'no network detected',
-        );
+        logger.throwError('no network detected');
       }
 
       // If still not set, set it

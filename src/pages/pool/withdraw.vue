@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import WithdrawForm from '@/components/forms/pool_actions/WithdrawForm/WithdrawForm.vue';
-import TradeSettingsPopover, {
-  TradeSettingsContext,
-} from '@/components/popovers/TradeSettingsPopover.vue';
+import TradeSettingsPopover, { TradeSettingsContext } from '@/components/popovers/TradeSettingsPopover.vue';
 // Composables
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import { configService } from '@/services/config/config.service';

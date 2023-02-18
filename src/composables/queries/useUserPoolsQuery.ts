@@ -26,27 +26,17 @@ type UserPoolsQueryResponse = {
   tokens: string[];
 };
 
-export default function useUserPoolsQuery(
-  options: UseQueryOptions<UserPoolsQueryResponse> = {}
-) {
+export default function useUserPoolsQuery(options: UseQueryOptions<UserPoolsQueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
-  const {
-    injectTokens,
-    prices,
-    dynamicDataLoading,
-    getTokens,
-    tokens: tokenMeta,
-  } = useTokens();
+  const { injectTokens, prices, dynamicDataLoading, getTokens, tokens: tokenMeta } = useTokens();
   const { account, isWalletReady } = useWeb3();
   const { currency } = useUserSettings();
   const { networkId } = useNetwork();
   const { data: subgraphGauges } = useGaugesQuery();
 
-  const gaugeAddresses = computed(() =>
-    (subgraphGauges.value || []).map(gauge => gauge.id)
-  );
+  const gaugeAddresses = computed(() => (subgraphGauges.value || []).map(gauge => gauge.id));
   /**
    * COMPUTED
    */
@@ -55,9 +45,7 @@ export default function useUserPoolsQuery(
   /**
    * QUERY PROPERTIES
    */
-  const queryKey = reactive(
-    QUERY_KEYS.Pools.User(networkId, account, gaugeAddresses)
-  );
+  const queryKey = reactive(QUERY_KEYS.Pools.User(networkId, account, gaugeAddresses));
 
   const queryFn = async () => {
     const poolShares = await balancerSubgraphService.poolShares.get({
@@ -96,12 +84,7 @@ export default function useUserPoolsQuery(
     await forChange(dynamicDataLoading, false);
 
     const poolDecorator = new PoolDecorator(pools);
-    const decoratedPools = await poolDecorator.decorate(
-      subgraphGauges.value || [],
-      prices.value,
-      currency.value,
-      tokenMeta.value
-    );
+    const decoratedPools = await poolDecorator.decorate(subgraphGauges.value || [], prices.value, currency.value, tokenMeta.value);
 
     // TODO - cleanup and extract elsewhere in refactor
     for (let i = 0; i < decoratedPools.length; i++) {
@@ -112,59 +95,29 @@ export default function useUserPoolsQuery(
 
         const poolTokenMeta = getTokens(decoratedPool.tokensList);
 
-        const onchainData = await balancerContractsService.vault.getPoolData(
-          decoratedPool.id,
-          decoratedPool.poolType,
-          poolTokenMeta
-        );
+        const onchainData = await balancerContractsService.vault.getPoolData(decoratedPool.id, decoratedPool.poolType, poolTokenMeta);
 
-        if (
-          onchainData != null &&
-          onchainData.linearPools != null &&
-          decoratedPool.linearPoolTokensMap != null
-        ) {
+        if (onchainData != null && onchainData.linearPools != null && decoratedPool.linearPoolTokensMap != null) {
           let totalLiquidity = bnum(0);
-          const tokensMap = getTokens(
-            Object.keys(decoratedPool.linearPoolTokensMap)
-          );
+          const tokensMap = getTokens(Object.keys(decoratedPool.linearPoolTokensMap));
 
-          Object.entries(onchainData.linearPools).forEach(
-            ([address, token]) => {
-              const tokenShare = bnum(onchainData.tokens[address].balance).div(
-                token.totalSupply
-              );
+          Object.entries(onchainData.linearPools).forEach(([address, token]) => {
+            const tokenShare = bnum(onchainData.tokens[address].balance).div(token.totalSupply);
 
-              const mainTokenBalance = formatUnits(
-                token.mainToken.balance,
-                tokensMap[token.mainToken.address].decimals
-              );
+            const mainTokenBalance = formatUnits(token.mainToken.balance, tokensMap[token.mainToken.address].decimals);
 
-              const wrappedTokenBalance = formatUnits(
-                token.wrappedToken.balance,
-                tokensMap[token.wrappedToken.address].decimals
-              );
+            const wrappedTokenBalance = formatUnits(token.wrappedToken.balance, tokensMap[token.wrappedToken.address].decimals);
 
-              const mainTokenPrice =
-                prices.value[token.mainToken.address] != null
-                  ? prices.value[token.mainToken.address].usd
-                  : null;
+            const mainTokenPrice = prices.value[token.mainToken.address] != null ? prices.value[token.mainToken.address].usd : null;
 
-              if (mainTokenPrice != null) {
-                const mainTokenValue = bnum(mainTokenBalance)
-                  .times(tokenShare)
-                  .times(mainTokenPrice);
+            if (mainTokenPrice != null) {
+              const mainTokenValue = bnum(mainTokenBalance).times(tokenShare).times(mainTokenPrice);
 
-                const wrappedTokenValue = bnum(wrappedTokenBalance)
-                  .times(tokenShare)
-                  .times(mainTokenPrice)
-                  .times(token.wrappedToken.priceRate);
+              const wrappedTokenValue = bnum(wrappedTokenBalance).times(tokenShare).times(mainTokenPrice).times(token.wrappedToken.priceRate);
 
-                totalLiquidity = bnum(totalLiquidity)
-                  .plus(mainTokenValue)
-                  .plus(wrappedTokenValue);
-              }
+              totalLiquidity = bnum(totalLiquidity).plus(mainTokenValue).plus(wrappedTokenValue);
             }
-          );
+          });
 
           decoratedPools[i].onchain = onchainData;
           decoratedPools[i].totalLiquidity = totalLiquidity.toString();
@@ -174,10 +127,7 @@ export default function useUserPoolsQuery(
 
     const poolsWithShares = decoratedPools.map(pool => ({
       ...pool,
-      shares: bnum(pool.totalLiquidity)
-        .div(pool.totalShares)
-        .times(poolSharesMap[pool.id].balance)
-        .toString(),
+      shares: bnum(pool.totalLiquidity).div(pool.totalShares).times(poolSharesMap[pool.id].balance).toString(),
       bpt: poolSharesMap[pool.id].balance,
     }));
 

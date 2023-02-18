@@ -39,9 +39,7 @@ const { account, connector, startConnectWithInjectedProvider } = useWeb3();
 const { tokens, balances, balanceFor, getTokens } = useTokens();
 const { fNum2, toFiat } = useNumbers();
 const { isWalletReady } = useWeb3();
-const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(
-  toRef(props, 'pool')
-);
+const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(toRef(props, 'pool'));
 // const {
 //   userData: { stakedSharesForProvidedPool },
 // } = useStaking();
@@ -50,29 +48,17 @@ const router = useRouter();
 /**
  * SERVICES
  */
-const poolCalculator = new PoolCalculator(
-  toRef(props, 'pool'),
-  tokens,
-  balances,
-  'exit',
-  ref(false)
-);
+const poolCalculator = new PoolCalculator(toRef(props, 'pool'), tokens, balances, 'exit', ref(false));
 
 /**
  * COMPUTED
  */
 const bptBalance = computed((): string => balanceFor(props.pool.address));
 
-const poolTokens = computed(() =>
-  Object.values(getTokens(props.pool.tokensList))
-);
+const poolTokens = computed(() => Object.values(getTokens(props.pool.tokensList)));
 
 const propTokenAmounts = computed((): string[] => {
-  const { receive } = poolCalculator.propAmountsGiven(
-    bnum(bptBalance.value).toString(),
-    0,
-    'send'
-  );
+  const { receive } = poolCalculator.propAmountsGiven(bnum(bptBalance.value).toString(), 0, 'send');
 
   if (isStablePhantomPool.value) {
     // Return linear pool's main token balance using the price rate.
@@ -98,11 +84,7 @@ const tokenAddresses = computed((): string[] => {
   return props.pool.tokensList;
 });
 
-const fiatValue = computed(() =>
-  tokenAddresses.value
-    .map((address, i) => toFiat(propTokenAmounts.value[i], address))
-    .reduce((total, value) => bnum(total).plus(value).toString())
-);
+const fiatValue = computed(() => tokenAddresses.value.map((address, i) => toFiat(propTokenAmounts.value[i], address)).reduce((total, value) => bnum(total).plus(value).toString()));
 
 const showMigrateButton = computed(
   () =>
@@ -155,9 +137,7 @@ const fiatTotal = computed(() => {
       if (isSameAddress(address, wrappedNativeAsset.value.address)) {
         const wrappedBalance = balanceFor(address);
         const nativeBalance = balanceFor(nativeAsset.address);
-        tokenBalance = bnum(nativeBalance).gt(wrappedBalance)
-          ? nativeBalance
-          : wrappedBalance;
+        tokenBalance = bnum(nativeBalance).gt(wrappedBalance) ? nativeBalance : wrappedBalance;
       } else {
         tokenBalance = balanceFor(address);
       }
@@ -181,11 +161,7 @@ const fiatTotal = computed(() => {
       </div>
       <div class="my-[12px] border" />
       <div>
-        <div
-          v-for="(address, idx) in tokenAddresses"
-          :key="idx"
-          class="t oken-name mb-[12px] flex items-center justify-between"
-        >
+        <div v-for="(address, idx) in tokenAddresses" :key="idx" class="t oken-name mb-[12px] flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset :address="address" :size="32" class="mr-[12px]" />
             <div class="flex-column">
@@ -201,11 +177,7 @@ const fiatTotal = computed(() => {
           </div>
           <div>
             <span class="flex flex-grow flex-col text-right">
-              {{
-                isWalletReady
-                  ? fNum2(propTokenAmounts[idx], FNumFormats.token)
-                  : '-'
-              }}
+              {{ isWalletReady ? fNum2(propTokenAmounts[idx], FNumFormats.token) : '-' }}
               <span class="text-secondary txt text-sm">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
@@ -220,25 +192,11 @@ const fiatTotal = computed(() => {
         <div>You can invest</div>
         <div>{{ fiatTotal }}</div>
       </div>
-      <button
-        v-if="!account"
-        @click="startConnectWithInjectedProvider"
-        class="connect-btn-pool w-full"
-      >
-        Connect Wallet
-      </button>
+      <button v-if="!account" @click="startConnectWithInjectedProvider" class="connect-btn-pool w-full">Connect Wallet</button>
       <div v-else>
         <div class="flex w-full gap-[8px]">
-          <router-link
-            class="invest-btn w-full text-center"
-            :to="'/pool/' + pool.id + '/invest'"
-            >Invest</router-link
-          >
-          <router-link
-            class="withdraw-btn w-full text-center"
-            :to="'/pool/' + pool.id + '/withdraw'"
-            >Withdraw</router-link
-          >
+          <router-link class="invest-btn w-full text-center" :to="'/pool/' + pool.id + '/invest'">Invest</router-link>
+          <router-link class="withdraw-btn w-full text-center" :to="'/pool/' + pool.id + '/withdraw'">Withdraw</router-link>
         </div>
       </div>
     </div>
@@ -253,11 +211,7 @@ const fiatTotal = computed(() => {
       </div>
       <div class="my-[12px] border" />
       <div>
-        <div
-          v-for="(address, idx) in tokenAddresses"
-          :key="idx"
-          class="token-name mb-[12px] flex items-center justify-between"
-        >
+        <div v-for="(address, idx) in tokenAddresses" :key="idx" class="token-name mb-[12px] flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset :address="address" :size="32" class="mr-[12px]" />
             <div class="flex-column">
@@ -271,11 +225,7 @@ const fiatTotal = computed(() => {
           </div>
           <div>
             <span class="flex flex-grow flex-col text-right">
-              {{
-                isWalletReady
-                  ? fNum2(propTokenAmounts[idx], FNumFormats.token)
-                  : '-'
-              }}
+              {{ isWalletReady ? fNum2(propTokenAmounts[idx], FNumFormats.token) : '-' }}
               <span class="text-secondary txt text-sm">
                 {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
               </span>
@@ -287,25 +237,11 @@ const fiatTotal = computed(() => {
     <div class="bg-[#261737] p-[12px]">
       <div class="small-text">Based on pool tokens in your wallet</div>
       <div class="mb-[12px]">You can invest</div>
-      <button
-        class="connect-btn-pool w-full"
-        @click="startConnectWithInjectedProvider"
-        v-if="!account"
-      >
-        Connect Wallet
-      </button>
+      <button class="connect-btn-pool w-full" @click="startConnectWithInjectedProvider" v-if="!account">Connect Wallet</button>
       <div v-else>
         <div class="flex w-full gap-[8px]">
-          <router-link
-            class="invest-btn w-full text-center"
-            :to="'/pool/' + pool.id + '/invest'"
-            >Invest</router-link
-          >
-          <router-link
-            class="withdraw-btn w-full text-center"
-            :to="'/pool/' + pool.id + '/withdraw'"
-            >Withdraw</router-link
-          >
+          <router-link class="invest-btn w-full text-center" :to="'/pool/' + pool.id + '/invest'">Invest</router-link>
+          <router-link class="withdraw-btn w-full text-center" :to="'/pool/' + pool.id + '/withdraw'">Withdraw</router-link>
         </div>
       </div>
     </div>
@@ -492,16 +428,11 @@ const fiatTotal = computed(() => {
 }
 
 .connect-btn-pool:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.5) 0%, rgba(123, 48, 127, 0.405) 100%);
 }
 
 .AC-container {
-  background: linear-gradient(#180a1e, #180a1e) padding-box,
-    linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box;
+  background: linear-gradient(#180a1e, #180a1e) padding-box, linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box;
   border: 1px solid transparent;
   border-radius: 22px;
 
@@ -531,12 +462,7 @@ const fiatTotal = computed(() => {
   font-size: 16px;
   line-height: 20px;
 
-  background: linear-gradient(
-    90.64deg,
-    #fbaaff -20.45%,
-    #f89c35 36.77%,
-    #7b307f 100.27%
-  );
+  background: linear-gradient(90.64deg, #fbaaff -20.45%, #f89c35 36.77%, #7b307f 100.27%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

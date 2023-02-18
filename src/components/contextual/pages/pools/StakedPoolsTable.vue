@@ -10,13 +10,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 /** COMPOSABLES */
 const {
-  userData: {
-    stakedPools,
-    isLoadingUserStakingData,
-    isLoadingStakedPools,
-    isLoadingUserPools,
-    poolBoosts,
-  },
+  userData: { stakedPools, isLoadingUserStakingData, isLoadingStakedPools, isLoadingUserPools, poolBoosts },
 } = useStaking();
 const { isWalletReady, isWalletConnecting } = useWeb3();
 const { t } = useI18n();
@@ -24,17 +18,11 @@ const networkName = configService.network.shortName;
 
 /** COMPUTED */
 const isLoading = computed(() => {
-  return (
-    isLoadingUserStakingData.value ||
-    isLoadingStakedPools.value ||
-    isLoadingUserPools.value
-  );
+  return isLoadingUserStakingData.value || isLoadingStakedPools.value || isLoadingUserPools.value;
 });
 
 const noPoolsLabel = computed(() => {
-  return isWalletReady.value || isWalletConnecting.value
-    ? t('noStakedInvestments', [networkName])
-    : t('connectYourWallet');
+  return isWalletReady.value || isWalletConnecting.value ? t('noStakedInvestments', [networkName]) : t('connectYourWallet');
 });
 
 const poolsWithBoost = computed(() => {
@@ -45,13 +33,7 @@ const poolsWithBoost = computed(() => {
 });
 
 const hiddenColumns = computed(() => {
-  const _hiddenColumns = [
-    'poolVolume',
-    'poolValue',
-    'migrate',
-    'actions',
-    'lockEndDate',
-  ];
+  const _hiddenColumns = ['poolVolume', 'poolValue', 'migrate', 'actions', 'lockEndDate'];
   if (isL2.value) _hiddenColumns.push('myBoost');
   return _hiddenColumns;
 });
@@ -63,15 +45,7 @@ const hiddenColumns = computed(() => {
       <h5 class="px-4 xl:px-0">
         {{ $t('staking.stakedPools') }}
       </h5>
-      <PoolsTable
-        :key="poolsWithBoost"
-        :data="poolsWithBoost"
-        :noPoolsLabel="noPoolsLabel"
-        :hiddenColumns="hiddenColumns"
-        :isLoading="isLoading"
-        showPoolShares
-        showBoost
-      />
+      <PoolsTable :key="poolsWithBoost" :data="poolsWithBoost" :noPoolsLabel="noPoolsLabel" :hiddenColumns="hiddenColumns" :isLoading="isLoading" showPoolShares showBoost />
     </BalStack>
   </div>
 </template>

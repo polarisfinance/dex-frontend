@@ -1,11 +1,7 @@
 import { Network } from '@balancer-labs/sdk';
 import { Contract } from '@ethersproject/contracts';
 import { ErrorCode } from '@ethersproject/logger';
-import {
-  JsonRpcProvider,
-  TransactionResponse,
-  Web3Provider,
-} from '@ethersproject/providers';
+import { JsonRpcProvider, TransactionResponse, Web3Provider } from '@ethersproject/providers';
 import { resolveENSAvatar } from '@tomfrench/ens-avatar-resolver';
 import { ComputedRef } from 'vue';
 
@@ -14,10 +10,7 @@ import ConfigService, { configService } from '@/services/config/config.service';
 import { gasPriceService } from '@/services/gas-price/gas-price.service';
 import { WalletError } from '@/types';
 
-import {
-  rpcProviderService as _rpcProviderService,
-  rpcProviderService,
-} from '../rpc-provider/rpc-provider.service';
+import { rpcProviderService as _rpcProviderService, rpcProviderService } from '../rpc-provider/rpc-provider.service';
 
 interface Web3Profile {
   ens: string | null;
@@ -32,10 +25,7 @@ export default class Web3Service {
   ensProvider: JsonRpcProvider;
   userProvider!: ComputedRef<Web3Provider>;
 
-  constructor(
-    private readonly rpcProviderService = _rpcProviderService,
-    private readonly config: ConfigService = configService
-  ) {
+  constructor(private readonly rpcProviderService = _rpcProviderService, private readonly config: ConfigService = configService) {
     this.appProvider = this.rpcProviderService.jsonProvider;
     this.ensProvider = this.rpcProviderService.getJsonProvider(Network.AURORA);
   }
@@ -89,37 +79,17 @@ export default class Web3Service {
     console.log('Params: ', params);
 
     try {
-      const gasPriceSettings =
-        await gasPriceService.getGasSettingsForContractCall(
-          contract,
-          action,
-          params,
-          options,
-          forceEthereumLegacyTxType
-        );
+      const gasPriceSettings = await gasPriceService.getGasSettingsForContractCall(contract, action, params, options, forceEthereumLegacyTxType);
       options = { ...options, ...gasPriceSettings };
 
       return await contract[action](...params, options);
     } catch (e) {
       const error = e as WalletError;
 
-      if (
-        error.code === RPC_INVALID_PARAMS_ERROR_CODE &&
-        EIP1559_UNSUPPORTED_REGEX.test(error.message)
-      ) {
+      if (error.code === RPC_INVALID_PARAMS_ERROR_CODE && EIP1559_UNSUPPORTED_REGEX.test(error.message)) {
         // Sending tx as EIP1559 has failed, retry with legacy tx type
-        return this.sendTransaction(
-          contractAddress,
-          abi,
-          action,
-          params,
-          options,
-          true
-        );
-      } else if (
-        error.code === ErrorCode.UNPREDICTABLE_GAS_LIMIT &&
-        this.config.env.APP_ENV !== 'development'
-      ) {
+        return this.sendTransaction(contractAddress, abi, action, params, options, true);
+      } else if (error.code === ErrorCode.UNPREDICTABLE_GAS_LIMIT && this.config.env.APP_ENV !== 'development') {
         const sender = await signer.getAddress();
         logFailedTx(sender, contract, action, params, options);
       }
@@ -131,13 +101,7 @@ export default class Web3Service {
     return await rpcProviderService.getBlockNumber();
   }
 
-  public async callStatic<T>(
-    contractAddress: string,
-    abi: any[],
-    action: string,
-    params: any[] = [],
-    options: Record<string, any> = {}
-  ): Promise<T> {
+  public async callStatic<T>(contractAddress: string, abi: any[], action: string, params: any[] = [], options: Record<string, any> = {}): Promise<T> {
     console.log('Sending transaction');
     console.log('Contract', contractAddress);
     console.log('Action', `"${action}"`);

@@ -5,23 +5,13 @@ import { formatUnits } from '@ethersproject/units';
 import { isStableLike, isWeightedLike } from '@/composables/usePool';
 import { TokenInfoMap } from '@/types/TokenList';
 
-import {
-  LinearPoolDataMap,
-  OnchainPoolData,
-  OnchainTokenDataMap,
-  Pool,
-  RawOnchainPoolData,
-} from '../types';
+import { LinearPoolDataMap, OnchainPoolData, OnchainTokenDataMap, Pool, RawOnchainPoolData } from '../types';
 
 /**
  * @summary Takes map of pool ids to onchain data and formats.
  */
 export class OnchainDataFormater {
-  constructor(
-    private readonly pool: Pool,
-    private readonly rawData: RawOnchainPoolData,
-    private readonly tokenMeta: TokenInfoMap
-  ) {}
+  constructor(private readonly pool: Pool, private readonly rawData: RawOnchainPoolData, private readonly tokenMeta: TokenInfoMap) {}
 
   public format(): OnchainPoolData {
     const poolData = <OnchainPoolData>{};
@@ -30,9 +20,7 @@ export class OnchainDataFormater {
 
     poolData.amp = '0';
     if (this.rawData?.amp) {
-      poolData.amp = this.rawData.amp.value
-        .div(this.rawData.amp.precision)
-        .toString();
+      poolData.amp = this.rawData.amp.value.div(this.rawData.amp.precision).toString();
     }
 
     poolData.swapEnabled = true;
@@ -45,15 +33,10 @@ export class OnchainDataFormater {
     }
 
     if (this.rawData.tokenRates) {
-      poolData.tokenRates = this.rawData.tokenRates.map(rate =>
-        formatUnits(rate.toString(), 18)
-      );
+      poolData.tokenRates = this.rawData.tokenRates.map(rate => formatUnits(rate.toString(), 18));
     }
 
-    poolData.totalSupply = formatUnits(
-      this.rawData.totalSupply,
-      this.rawData.decimals
-    );
+    poolData.totalSupply = formatUnits(this.rawData.totalSupply, this.rawData.decimals);
     poolData.decimals = this.rawData.decimals;
     poolData.swapFee = formatUnits(this.rawData.swapFee, 18);
 
@@ -87,16 +70,7 @@ export class OnchainDataFormater {
     const _linearPools = <LinearPoolDataMap>{};
 
     for (const address in this.rawData.linearPools) {
-      const {
-        id,
-        mainToken,
-        wrappedToken,
-        priceRate,
-        unwrappedTokenAddress,
-        unwrappedERC4626Address,
-        tokenData,
-        totalSupply,
-      } = this.rawData.linearPools[address];
+      const { id, mainToken, wrappedToken, priceRate, unwrappedTokenAddress, unwrappedERC4626Address, tokenData, totalSupply } = this.rawData.linearPools[address];
 
       const unwrappedAddress = unwrappedTokenAddress || unwrappedERC4626Address;
 
@@ -125,13 +99,9 @@ export class OnchainDataFormater {
   private normalizeWeights(): number[] {
     if (isWeightedLike(this.pool.poolType)) {
       // toNormalizedWeights returns weights as 18 decimal fixed point
-      return toNormalizedWeights(this.rawData.weights || []).map(w =>
-        Number(formatUnits(w, 18))
-      );
+      return toNormalizedWeights(this.rawData.weights || []).map(w => Number(formatUnits(w, 18)));
     } else if (isStableLike(this.pool.poolType)) {
-      const value = this.pool.tokensList.map(
-        () => 1 / this.pool.tokensList.length
-      );
+      const value = this.pool.tokensList.map(() => 1 / this.pool.tokensList.length);
       return this.rawData.poolTokens.tokens.map(() => value[0]);
     } else {
       return [];

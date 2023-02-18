@@ -30,11 +30,7 @@ type FilterOptions = {
   pageSize?: number;
 };
 
-export default function usePoolsQuery(
-  tokenList: Ref<string[]> = ref([]),
-  options: UseInfiniteQueryOptions<PoolsQueryResponse> = {},
-  filterOptions?: FilterOptions
-) {
+export default function usePoolsQuery(tokenList: Ref<string[]> = ref([]), options: UseInfiniteQueryOptions<PoolsQueryResponse> = {}, filterOptions?: FilterOptions) {
   /**
    * COMPOSABLES
    */
@@ -43,9 +39,7 @@ export default function usePoolsQuery(
   const { appLoading } = useApp();
   const { networkId } = useNetwork();
   const { data: subgraphGauges } = useGaugesQuery();
-  const gaugeAddresses = computed(() =>
-    (subgraphGauges.value || []).map(gauge => gauge.id)
-  );
+  const gaugeAddresses = computed(() => (subgraphGauges.value || []).map(gauge => gauge.id));
 
   /**
    * COMPUTED
@@ -56,9 +50,7 @@ export default function usePoolsQuery(
    * METHODS
    */
   function getQueryArgs(pageParam = 0) {
-    const tokensListFilterKey = filterOptions?.isExactTokensList
-      ? 'tokensList'
-      : 'tokensList_contains';
+    const tokensListFilterKey = filterOptions?.isExactTokensList ? 'tokensList' : 'tokensList_contains';
 
     const queryArgs: any = {
       first: filterOptions?.pageSize || POOLS.Pagination.PerPage,
@@ -80,13 +72,7 @@ export default function usePoolsQuery(
   /**
    * QUERY KEY
    */
-  const queryKey = QUERY_KEYS.Pools.All(
-    networkId,
-    tokenList,
-    filterOptions?.poolIds,
-    filterOptions?.poolAddresses,
-    gaugeAddresses
-  );
+  const queryKey = QUERY_KEYS.Pools.All(networkId, tokenList, filterOptions?.poolIds, filterOptions?.poolAddresses, gaugeAddresses);
 
   /**
    * QUERY FUNCTION
@@ -96,29 +82,15 @@ export default function usePoolsQuery(
     const pools = await balancerSubgraphService.pools.get(queryArgs);
 
     const poolDecorator = new PoolDecorator(pools);
-    const decoratedPools = await poolDecorator.decorate(
-      subgraphGauges.value || [],
-      prices.value,
-      currency.value,
-      tokenMeta.value
-    );
+    const decoratedPools = await poolDecorator.decorate(subgraphGauges.value || [], prices.value, currency.value, tokenMeta.value);
 
-    const tokens = flatten(
-      pools.map(pool => [
-        ...pool.tokensList,
-        ...lpTokensFor(pool),
-        pool.address,
-      ])
-    );
+    const tokens = flatten(pools.map(pool => [...pool.tokensList, ...lpTokensFor(pool), pool.address]));
     await injectTokens(tokens);
 
     return {
       pools: decoratedPools,
       tokens,
-      skip:
-        pools.length >= POOLS.Pagination.PerPage
-          ? pageParam + POOLS.Pagination.PerPage
-          : undefined,
+      skip: pools.length >= POOLS.Pagination.PerPage ? pageParam + POOLS.Pagination.PerPage : undefined,
     };
   };
 

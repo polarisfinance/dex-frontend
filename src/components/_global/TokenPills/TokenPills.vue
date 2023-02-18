@@ -32,15 +32,9 @@ const visibleTokens = computed(() => props.tokens.slice(0, MAX_PILLS));
 
 const hiddenTokens = computed(() => props.tokens.slice(MAX_PILLS));
 
-const hasBalanceInHiddenTokens = computed(() =>
-  hiddenTokens.value.some(token => hasBalance(token.address))
-);
+const hasBalanceInHiddenTokens = computed(() => hiddenTokens.value.some(token => hasBalance(token.address)));
 
-const isSelectedInHiddenTokens = computed(() =>
-  hiddenTokens.value.some(token =>
-    includesAddress(props.selectedTokens, token.address)
-  )
-);
+const isSelectedInHiddenTokens = computed(() => hiddenTokens.value.some(token => includesAddress(props.selectedTokens, token.address)));
 
 /**
  * METHODS
@@ -83,12 +77,7 @@ const MAX_PILLS = 11;
         :lastToken="idx == visibleTokens.length - 1"
         :showWeight="showWeight"
       />
-      <HiddenTokensPills
-        v-if="hiddenTokens.length > 0"
-        :tokens="hiddenTokens"
-        :hasBalance="hasBalanceInHiddenTokens"
-        :isSelected="isSelectedInHiddenTokens"
-      />
+      <HiddenTokensPills v-if="hiddenTokens.length > 0" :tokens="hiddenTokens" :hasBalance="hasBalanceInHiddenTokens" :isSelected="isSelectedInHiddenTokens" />
     </template>
   </div>
 </template>

@@ -28,21 +28,10 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
 
 <template>
   <div class="flex justify-center py-4 px-2">
-    <BalBtn
-      v-if="stakablePoolIds.includes(pool.id)"
-      color="gradient"
-      size="sm"
-      @click.prevent="emit('click:stake', pool)"
-    >
+    <BalBtn v-if="stakablePoolIds.includes(pool.id)" color="gradient" size="sm" @click.prevent="emit('click:stake', pool)">
       {{ $t('stake') }}
     </BalBtn>
-    <BalBtn
-      v-else-if="showVeBalLock"
-      tag="router-link"
-      :to="{ name: 'get-vebal', query: { returnRoute: $route.name } }"
-      color="gradient-pink-yellow"
-      size="sm"
-    >
+    <BalBtn v-else-if="showVeBalLock" tag="router-link" :to="{ name: 'get-vebal', query: { returnRoute: $route.name } }" color="gradient-pink-yellow" size="sm">
       {{ $t('transactionAction.createLock') }}
     </BalBtn>
     <div v-else>

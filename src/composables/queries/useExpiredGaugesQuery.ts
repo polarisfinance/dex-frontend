@@ -15,17 +15,11 @@ import useNetwork from '../useNetwork';
 type QueryResponse = Address[];
 type MulticallerResult = Record<Address, { isKilled: boolean }>;
 
-function callGaugesIsKilledStatus(
-  gaugeAddresses: Address[]
-): Promise<MulticallerResult> {
+function callGaugesIsKilledStatus(gaugeAddresses: Address[]): Promise<MulticallerResult> {
   const multicaller = LiquidityGauge.getMulticaller();
 
   for (const gaugeAddress of gaugeAddresses) {
-    multicaller.call(
-      `${getAddress(gaugeAddress)}.isKilled`,
-      getAddress(gaugeAddress),
-      'is_killed'
-    );
+    multicaller.call(`${getAddress(gaugeAddress)}.isKilled`, getAddress(gaugeAddress), 'is_killed');
   }
   return multicaller.execute<MulticallerResult>();
 }
@@ -34,10 +28,7 @@ function callGaugesIsKilledStatus(
  * @summary Given a list of gauge addresses, fetches their is_killed status onchain
  * and returns the addresses that have is_killed status.
  */
-export default function useExpiredGaugesQuery(
-  gaugeAddresses: Ref<Address[] | undefined>,
-  options: UseQueryOptions<QueryResponse> = {}
-) {
+export default function useExpiredGaugesQuery(gaugeAddresses: Ref<Address[] | undefined>, options: UseQueryOptions<QueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
@@ -53,9 +44,7 @@ export default function useExpiredGaugesQuery(
   /**
    * QUERY KEY
    */
-  const queryKey = reactive(
-    QUERY_KEYS.Gauges.Expired(gaugeAddresses, networkId)
-  );
+  const queryKey = reactive(QUERY_KEYS.Gauges.Expired(gaugeAddresses, networkId));
 
   /**
    * QUERY FUNCTION
@@ -63,9 +52,7 @@ export default function useExpiredGaugesQuery(
   async function queryFn() {
     const expiredGaugeAddresses: Address[] = [];
     if (gaugeAddresses.value?.length) {
-      const gaugesExpiredStatus = await callGaugesIsKilledStatus(
-        gaugeAddresses.value
-      ).catch(error => {
+      const gaugesExpiredStatus = await callGaugesIsKilledStatus(gaugeAddresses.value).catch(error => {
         console.error('Error when fetching voting gauges is_killed status', {
           error,
         });

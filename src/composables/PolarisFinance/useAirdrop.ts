@@ -40,25 +40,16 @@ export default function useAirdrop() {
     if (startTime.gt(BigNumber.from(Math.floor(Date.now() / 1000)))) {
       return '0';
     }
-    const tree = StandardMerkleTree.load(
-      JSON.parse(JSON.stringify(merkleTree))
-    );
+    const tree = StandardMerkleTree.load(JSON.parse(JSON.stringify(merkleTree)));
 
     for (const [i, v] of tree.entries()) {
       if (v[0] === account.toLowerCase()) {
         // (3)
         const vested = await airdropContract.vested(account);
-        const runningTime = BigNumber.from(60)
-          .mul(BigNumber.from(24))
-          .mul(BigNumber.from(60))
-          .mul(BigNumber.from(60));
+        const runningTime = BigNumber.from(60).mul(BigNumber.from(24)).mul(BigNumber.from(60)).mul(BigNumber.from(60));
         const xpolarPerSecond = BigNumber.from(v[1]).div(runningTime);
         let pending: BigNumber;
-        if (
-          BigNumber.from(Math.floor(Date.now() / 1000)).gt(
-            startTime.add(runningTime)
-          )
-        ) {
+        if (BigNumber.from(Math.floor(Date.now() / 1000)).gt(startTime.add(runningTime))) {
           pending = v[1];
         } else {
           pending = BigNumber.from(Math.floor(Date.now() / 1000))
@@ -76,25 +67,19 @@ export default function useAirdrop() {
     return Number(BigNumberToString(vested, 14, 4)).toFixed(2);
   };
   const totalShares = async (account: string) => {
-    const tree = StandardMerkleTree.load(
-      JSON.parse(JSON.stringify(merkleTree))
-    );
+    const tree = StandardMerkleTree.load(JSON.parse(JSON.stringify(merkleTree)));
 
     for (const [i, v] of tree.entries()) {
       if (v[0] === account.toLowerCase()) {
         // (3)
-        return Number(BigNumberToString(BigNumber.from(v[1]), 14, 4)).toFixed(
-          2
-        );
+        return Number(BigNumberToString(BigNumber.from(v[1]), 14, 4)).toFixed(2);
       }
     }
     return '0';
   };
 
   const claim = async (provider: Web3Provider, account: string) => {
-    const tree = StandardMerkleTree.load(
-      JSON.parse(JSON.stringify(merkleTree))
-    );
+    const tree = StandardMerkleTree.load(JSON.parse(JSON.stringify(merkleTree)));
     let amount;
     let proof;
     for (const [i, v] of tree.entries()) {
@@ -106,13 +91,7 @@ export default function useAirdrop() {
     }
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        airdropAddress,
-        airdropABI,
-        'claim',
-        [proof, account, amount]
-      );
+      const tx = await sendTransaction(provider, airdropAddress, airdropABI, 'claim', [proof, account, amount]);
       return tx;
     } catch (error) {
       console.error(error);

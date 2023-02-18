@@ -33,11 +33,7 @@ function handleInternalClose() {
 </script>
 
 <template>
-  <BalModal
-    ref="redirectModal"
-    :show="showRedirectModal"
-    @close="setShowRedirectModal(false)"
-  >
+  <BalModal ref="redirectModal" :show="showRedirectModal" @close="setShowRedirectModal(false)">
     <!-- <template #header>
       <h3>
         {{ $t('modals.veBalRedirectModal.title') }}
@@ -63,12 +59,8 @@ function handleInternalClose() {
         />
       </div>
     </div> -->
-    <div class="text-center coming-soon-text overflow" v-if="isDesktop">
-      Coming Soon
-    </div>
-    <div class="text-center coming-soon-text mobile overflow" v-else>
-      Coming Soon
-    </div>
+    <div class="coming-soon-text overflow text-center" v-if="isDesktop">Coming Soon</div>
+    <div class="coming-soon-text mobile overflow text-center" v-else>Coming Soon</div>
   </BalModal>
 </template>
 

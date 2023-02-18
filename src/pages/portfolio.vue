@@ -38,18 +38,10 @@ const migratableUserPools = computed(() => {
         <BalStack vertical spacing="2xl">
           <UnstakedPoolsTable />
           <StakedPoolsTable />
-          <VeBalPoolTable
-            v-if="lockPool && Number(lock?.lockedAmount) > 0"
-            :lock="lock"
-            :lockPool="lockPool"
-          />
+          <VeBalPoolTable v-if="lockPool && Number(lock?.lockedAmount) > 0" :lock="lock" :lockPool="lockPool" />
 
           <div>
-            <BalStack
-              v-if="migratableUserPools.length > 0"
-              vertical
-              spacing="sm"
-            >
+            <BalStack v-if="migratableUserPools.length > 0" vertical spacing="sm">
               <h5 class="px-4 xl:px-0">
                 {{ $t('poolsToMigrate') }}
               </h5>
@@ -60,12 +52,7 @@ const migratableUserPools = computed(() => {
                 :noPoolsLabel="$t('noInvestments')"
                 showPoolShares
                 :selectedTokens="selectedTokens"
-                :hiddenColumns="[
-                  'poolVolume',
-                  'poolValue',
-                  'actions',
-                  'lockEndDate',
-                ]"
+                :hiddenColumns="['poolVolume', 'poolValue', 'actions', 'lockEndDate']"
               />
             </BalStack>
           </div>

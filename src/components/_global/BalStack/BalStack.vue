@@ -73,9 +73,7 @@ export default defineComponent({
     const borderType = this.vertical ? 'b' : 'r';
     const widthClass = this.expandChildren ? 'w-full' : '';
     const borderClass = this.withBorder ? `border-${borderType}` : '';
-    const stackNodeClass = `${spacingType}-${
-      SpacingMap[this.spacing]
-    } ${borderClass} ${widthClass}`;
+    const stackNodeClass = `${spacingType}-${SpacingMap[this.spacing]} ${borderClass} ${widthClass}`;
 
     // @ts-ignore
     const vNodes = this.$slots.default() || [];
@@ -89,20 +87,13 @@ export default defineComponent({
       // those children are rendered as part of a 'v-for directive'
       if (Array.isArray(styledNestedChildren)) {
         // and those children can be nullish too
-        const nonNullishChildren = styledNestedChildren.filter(
-          nestedChild => nestedChild !== undefined || nestedChild !== null
-        );
-        styledNestedChildren = nonNullishChildren.map(
-          (nestedChild, nestedChildIndex) => {
-            //@ts-ignore
-            return h(nestedChild, {
-              class:
-                nestedChildIndex !== nonNullishChildren.length - 1
-                  ? stackNodeClass
-                  : null,
-            });
-          }
-        );
+        const nonNullishChildren = styledNestedChildren.filter(nestedChild => nestedChild !== undefined || nestedChild !== null);
+        styledNestedChildren = nonNullishChildren.map((nestedChild, nestedChildIndex) => {
+          //@ts-ignore
+          return h(nestedChild, {
+            class: nestedChildIndex !== nonNullishChildren.length - 1 ? stackNodeClass : null,
+          });
+        });
         return h(
           child,
           {

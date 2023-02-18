@@ -5,9 +5,7 @@ import { Connector, ConnectorId } from '../connector';
 export class TallyConnector extends Connector {
   id = ConnectorId.InjectedTally;
   async connect() {
-    const provider =
-      (window as any).ethereum ||
-      ((window as any).web3 && (window as any).web3.currentProvider);
+    const provider = (window as any).ethereum || ((window as any).web3 && (window as any).web3.currentProvider);
 
     if (provider) {
       this.provider = provider;
@@ -47,9 +45,7 @@ export class TallyConnector extends Connector {
         this.handleAccountsChanged(accounts);
       }
     } else {
-      console.error(
-        'Tried to connect to MetaMask but it was not detected. Please install MetaMask.'
-      );
+      console.error('Tried to connect to MetaMask but it was not detected. Please install MetaMask.');
     }
     return {
       // TODO type this

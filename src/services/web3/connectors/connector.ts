@@ -37,15 +37,11 @@ export abstract class Connector {
       this.handleDisconnect();
     } else {
       if (this.selectedAccount !== '') {
-        const account = accounts.find(
-          account => getAddress(account) === getAddress(this.selectedAccount)
-        );
+        const account = accounts.find(account => getAddress(account) === getAddress(this.selectedAccount));
         // sense check the account that was previously connected
         if (!account) {
           this.account.value = accounts[0];
-          console.warn(
-            `Previously connected account [${this.selectedAccount}] was not found in the connection. Defaulting to the first.`
-          );
+          console.warn(`Previously connected account [${this.selectedAccount}] was not found in the connection. Defaulting to the first.`);
         }
         this.account.value = getAddress(this.selectedAccount);
       }
@@ -76,9 +72,7 @@ export abstract class Connector {
 
   registerListeners() {
     if (!this.provider) {
-      throw new Error(
-        'No provider registered for this connector. Something is very wrong.'
-      );
+      throw new Error('No provider registered for this connector. Something is very wrong.');
     }
 
     this.provider.on('accountsChanged', this.handleAccountsChanged);

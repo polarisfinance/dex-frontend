@@ -85,17 +85,9 @@ const columns = ref<ColumnDefinition<ProtocolRewardRow>[]>([
 /**
  * COMPUTED
  */
-const totalClaimAmount = computed((): string =>
-  props.rewardsData
-    .reduce((acc, row) => acc.plus(row.amount), bnum('0'))
-    .toString()
-);
+const totalClaimAmount = computed((): string => props.rewardsData.reduce((acc, row) => acc.plus(row.amount), bnum('0')).toString());
 
-const totalClaimValue = computed((): string =>
-  props.rewardsData
-    .reduce((acc, row) => acc.plus(row.value), bnum('0'))
-    .toString()
-);
+const totalClaimValue = computed((): string => props.rewardsData.reduce((acc, row) => acc.plus(row.value), bnum('0')).toString());
 
 const hasClaimableBalance = computed((): boolean => {
   if (props.isLoading) return true;
@@ -109,21 +101,8 @@ const hasClaimableBalance = computed((): boolean => {
       <h6>{{ $t('pastEarnings.title') }}</h6>
       <p>{{ $t('pastEarnings.description') }}</p>
     </div>
-    <BalCard
-      v-if="hasClaimableBalance || !deprecated"
-      shadow="lg"
-      :square="upToLargeBreakpoint"
-      :noBorder="upToLargeBreakpoint"
-      noPad
-      class="mb-8"
-    >
-      <BalTable
-        :columns="columns"
-        :data="rewardsData"
-        :isLoading="isLoading"
-        skeletonClass="h-64"
-        :square="upToLargeBreakpoint"
-      >
+    <BalCard v-if="hasClaimableBalance || !deprecated" shadow="lg" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad class="mb-8">
+      <BalTable :columns="columns" :data="rewardsData" :isLoading="isLoading" skeletonClass="h-64" :square="upToLargeBreakpoint">
         <template #tokenColumnCell="{ token }">
           <div class="flex py-4 px-6">
             <BalAsset :address="token.address" />
@@ -142,20 +121,11 @@ const hasClaimableBalance = computed((): boolean => {
         </template>
         <template #claimColumnCell="{ token, amount, value }">
           <div class="py-4 px-6">
-            <ClaimProtocolRewardsBtn
-              :tokenAddress="token.address"
-              :fiatValue="value"
-              :disabled="bnum(amount).eq(0)"
-              :deprecated="deprecated"
-            />
+            <ClaimProtocolRewardsBtn :tokenAddress="token.address" :fiatValue="value" :disabled="bnum(amount).eq(0)" :deprecated="deprecated" />
           </div>
         </template>
         <template #claimTotalCell>
-          <ClaimProtocolRewardsBtn
-            :fiatValue="totalClaimValue"
-            :disabled="!hasClaimableBalance"
-            :deprecated="deprecated"
-          />
+          <ClaimProtocolRewardsBtn :fiatValue="totalClaimValue" :disabled="!hasClaimableBalance" :deprecated="deprecated" />
         </template>
       </BalTable>
     </BalCard>

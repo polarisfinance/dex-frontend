@@ -54,23 +54,14 @@ function formatWeightLabel(weight: string) {
     <div class="flex items-center justify-between p-3">
       <div>
         <div class="font-semibold">
-          {{
-            $t('getVeBAL.previewModal.lpTokens', [
-              fNum2(totalLpTokens, FNumFormats.token),
-            ])
-          }}
+          {{ $t('getVeBAL.previewModal.lpTokens', [fNum2(totalLpTokens, FNumFormats.token)]) }}
         </div>
         <div class="text-gray-400 dark:text-gray-600">
           {{ poolWeightsLabel }}
         </div>
       </div>
       <div class="grid grid-cols-2 gap-1">
-        <BalAsset
-          v-for="tokenAddress in lockablePool.tokensList"
-          :key="tokenAddress"
-          :address="tokenAddress"
-          :size="30"
-        />
+        <BalAsset v-for="tokenAddress in lockablePool.tokensList" :key="tokenAddress" :address="tokenAddress" :size="30" />
       </div>
     </div>
   </div>

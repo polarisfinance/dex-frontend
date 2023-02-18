@@ -26,24 +26,13 @@ export default class JoinParams {
     this.config = exchange.config;
     this.isStableLikePool = isStableLike(this.pool.value.poolType);
     this.isManagedPool = isManaged(this.pool.value.poolType);
-    this.isSwapEnabled =
-      this.isManagedPool && !!this.pool.value?.onchain?.swapEnabled;
-    this.dataEncodeFn = this.isStableLikePool
-      ? encodeJoinStablePool
-      : encodeJoinWeightedPool;
+    this.isSwapEnabled = this.isManagedPool && !!this.pool.value?.onchain?.swapEnabled;
+    this.dataEncodeFn = this.isStableLikePool ? encodeJoinStablePool : encodeJoinWeightedPool;
   }
 
-  public serialize(
-    account: string,
-    amountsIn: string[],
-    tokensIn: string[],
-    bptOut: string
-  ): any[] {
+  public serialize(account: string, amountsIn: string[], tokensIn: string[], bptOut: string): any[] {
     const parsedAmountsIn = this.parseAmounts(amountsIn, tokensIn);
-    const parsedBptOut = parseUnits(
-      bptOut,
-      this.pool.value?.onchain?.decimals || 18
-    );
+    const parsedBptOut = parseUnits(bptOut, this.pool.value?.onchain?.decimals || 18);
     const txData = this.txData(parsedAmountsIn, parsedBptOut);
     const assets = this.parseTokensIn(tokensIn);
 
@@ -80,9 +69,7 @@ export default class JoinParams {
       const token = tokensIn[i];
       // In WETH pools, tokenIn can include ETH so we need to check for this
       // and return the correct decimals.
-      const decimals = isSameAddress(nativeAsset.address, token)
-        ? nativeAsset.decimals
-        : this.pool.value?.onchain?.tokens?.[token]?.decimals || 18;
+      const decimals = isSameAddress(nativeAsset.address, token) ? nativeAsset.decimals : this.pool.value?.onchain?.tokens?.[token]?.decimals || 18;
 
       return parseUnits(amount, decimals);
     });
@@ -91,9 +78,7 @@ export default class JoinParams {
   private parseTokensIn(tokensIn: string[]): string[] {
     const nativeAsset = this.config.network.nativeAsset;
 
-    return tokensIn.map(address =>
-      isSameAddress(address, nativeAsset.address) ? AddressZero : address
-    );
+    return tokensIn.map(address => (isSameAddress(address, nativeAsset.address) ? AddressZero : address));
   }
 
   private txData(amountsIn: BigNumberish[], minimumBPT: BigNumberish): string {

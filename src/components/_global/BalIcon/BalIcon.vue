@@ -50,7 +50,7 @@ onMounted(() => feather.replace());
 </script>
 
 <template>
-  <div class="bal-icon inline-block mt-2">
+  <div class="bal-icon mt-2 inline-block">
     <i :data-feather="name" :width="iconSize" :height="iconSize" :fill="fill" />
   </div>
 </template>

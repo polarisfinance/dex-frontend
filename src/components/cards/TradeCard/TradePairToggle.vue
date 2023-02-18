@@ -1,12 +1,6 @@
 <template>
   <div class="toggle-btn cursor-pointer" @click="toggle">
-    <img
-      :src="pictureHover"
-      @mouseover="hover = true"
-      @mouseleave="hover = false"
-      width="32"
-      height="32"
-    />
+    <img :src="pictureHover" @mouseover="hover = true" @mouseleave="hover = false" width="32" height="32" />
   </div>
 </template>
 

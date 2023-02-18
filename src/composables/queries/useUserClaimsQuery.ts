@@ -5,10 +5,7 @@ import { useQuery } from 'vue-query';
 import useNetwork from '@/composables/useNetwork';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { claimService } from '@/services/claim/claim.service';
-import {
-  MultiTokenCurrentRewardsEstimate,
-  MultiTokenPendingClaims,
-} from '@/services/claim/types';
+import { MultiTokenCurrentRewardsEstimate, MultiTokenPendingClaims } from '@/services/claim/types';
 import useWeb3 from '@/services/web3/useWeb3';
 
 type UserClaimsQueryResponse = {
@@ -17,9 +14,7 @@ type UserClaimsQueryResponse = {
   timestamp: string | null;
 };
 
-export default function useUserClaimsQuery(
-  options: UseQueryOptions<UserClaimsQueryResponse> = {}
-) {
+export default function useUserClaimsQuery(options: UseQueryOptions<UserClaimsQueryResponse> = {}) {
   // COMPOSABLES
   const { account, isWalletReady } = useWeb3();
   const { networkId } = useNetwork();
@@ -32,11 +27,10 @@ export default function useUserClaimsQuery(
 
   // METHODS
   const queryFn = async () => {
-    const [multiTokenPendingClaims, multiTokenCurrentRewardsEstimate] =
-      await Promise.all([
-        claimService.getMultiTokensPendingClaims(account.value),
-        claimService.getMultiTokensCurrentRewardsEstimate(account.value),
-      ]);
+    const [multiTokenPendingClaims, multiTokenCurrentRewardsEstimate] = await Promise.all([
+      claimService.getMultiTokensPendingClaims(account.value),
+      claimService.getMultiTokensCurrentRewardsEstimate(account.value),
+    ]);
 
     return {
       multiTokenPendingClaims,

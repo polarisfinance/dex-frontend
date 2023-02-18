@@ -8,10 +8,7 @@ import { usePool } from '@/composables/usePool';
 import usePromiseSequence from '@/composables/usePromiseSequence';
 import useSlippage from '@/composables/useSlippage';
 import useTokens from '@/composables/useTokens';
-import {
-  HIGH_PRICE_IMPACT,
-  REKT_PRICE_IMPACT,
-} from '@/constants/poolLiquidity';
+import { HIGH_PRICE_IMPACT, REKT_PRICE_IMPACT } from '@/constants/poolLiquidity';
 import { bnum, isSameAddress } from '@/lib/utils';
 import { balancerContractsService } from '@/services/balancer/contracts/balancer-contracts.service';
 import PoolCalculator from '@/services/pool/calculator/calculator.sevice';
@@ -21,13 +18,7 @@ import { TokenInfo } from '@/types/TokenList';
 
 export type InvestMathResponse = ReturnType<typeof useInvestMath>;
 
-export default function useInvestMath(
-  pool: Ref<Pool>,
-  tokenAddresses: Ref<string[]>,
-  amounts: Ref<string[]>,
-  useNativeAsset: Ref<boolean>,
-  sor: SOR
-) {
+export default function useInvestMath(pool: Ref<Pool>, tokenAddresses: Ref<string[]>, amounts: Ref<string[]>, useNativeAsset: Ref<boolean>, sor: SOR) {
   /**
    * STATE
    */
@@ -42,73 +33,39 @@ export default function useInvestMath(
   const { tokens, getToken, balances, balanceFor, nativeAsset } = useTokens();
   const { minusSlippageScaled } = useSlippage();
   const { managedPoolWithTradingHalted, isStablePhantomPool } = usePool(pool);
-  const {
-    promises: batchSwapPromises,
-    processing: processingBatchSwaps,
-    processAll: processBatchSwaps,
-  } = usePromiseSequence();
+  const { promises: batchSwapPromises, processing: processingBatchSwaps, processAll: processBatchSwaps } = usePromiseSequence();
 
   /**
    * Services
    */
-  const poolCalculator = new PoolCalculator(
-    pool,
-    tokens,
-    balances,
-    'join',
-    useNativeAsset
-  );
+  const poolCalculator = new PoolCalculator(pool, tokens, balances, 'join', useNativeAsset);
 
   /**
    * COMPUTED
    */
   const tokenCount = computed(() => tokenAddresses.value.length);
 
-  const poolTokens = computed((): TokenInfo[] =>
-    tokenAddresses.value.map(address => getToken(address))
-  );
+  const poolTokens = computed((): TokenInfo[] => tokenAddresses.value.map(address => getToken(address)));
 
   // Input amounts can be null so fullAmounts returns amounts for all tokens
   // and zero if null.
-  const fullAmounts = computed((): string[] =>
-    new Array(tokenCount.value).fill('0').map((_, i) => amounts.value[i] || '0')
-  );
+  const fullAmounts = computed((): string[] => new Array(tokenCount.value).fill('0').map((_, i) => amounts.value[i] || '0'));
 
-  const fullAmountsScaled = computed((): BigNumber[] =>
-    fullAmounts.value.map((amount, i) =>
-      parseUnits(amount, poolTokens.value[i].decimals)
-    )
-  );
+  const fullAmountsScaled = computed((): BigNumber[] => fullAmounts.value.map((amount, i) => parseUnits(amount, poolTokens.value[i].decimals)));
 
   const batchSwapAmountMap = computed((): Record<string, BigNumber> => {
-    const allTokensWithAmounts = fullAmountsScaled.value.map((amount, i) => [
-      tokenAddresses.value[i].toLowerCase(),
-      amount,
-    ]);
-    const onlyTokensWithAmounts = allTokensWithAmounts.filter(([, amount]) =>
-      (amount as BigNumber).gt(0)
-    );
+    const allTokensWithAmounts = fullAmountsScaled.value.map((amount, i) => [tokenAddresses.value[i].toLowerCase(), amount]);
+    const onlyTokensWithAmounts = allTokensWithAmounts.filter(([, amount]) => (amount as BigNumber).gt(0));
     return Object.fromEntries(onlyTokensWithAmounts);
   });
 
-  const fiatAmounts = computed((): string[] =>
-    fullAmounts.value.map((_, i) => fiatAmount(i))
-  );
+  const fiatAmounts = computed((): string[] => fullAmounts.value.map((_, i) => fiatAmount(i)));
 
-  const fiatTotal = computed((): string =>
-    fiatAmounts.value.reduce(
-      (total, amount) => bnum(total).plus(amount).toString(),
-      '0'
-    )
-  );
+  const fiatTotal = computed((): string => fiatAmounts.value.reduce((total, amount) => bnum(total).plus(amount).toString(), '0'));
 
-  const fiatTotalLabel = computed((): string =>
-    fNum2(fiatTotal.value, FNumFormats.fiat)
-  );
+  const fiatTotalLabel = computed((): string => fNum2(fiatTotal.value, FNumFormats.fiat));
 
-  const hasAmounts = computed(() =>
-    fullAmounts.value.some(amount => bnum(amount).gt(0))
-  );
+  const hasAmounts = computed(() => fullAmounts.value.some(amount => bnum(amount).gt(0)));
 
   const priceImpact = computed((): number => {
     if (!hasAmounts.value) return 0;
@@ -139,10 +96,7 @@ export default function useInvestMath(
     fullAmounts.value.every((amount, i) => {
       if (isSameAddress(tokenAddresses.value[i], nativeAsset.address)) {
         const balance = balanceFor(tokenAddresses.value[i]);
-        return (
-          amount ===
-          bnum(balance).minus(nativeAsset.minTransactionBuffer).toString()
-        );
+        return amount === bnum(balance).minus(nativeAsset.minTransactionBuffer).toString();
       } else {
         return amount === balanceFor(tokenAddresses.value[i]);
       }
@@ -158,13 +112,9 @@ export default function useInvestMath(
     let _bptOut: string;
 
     if (isStablePhantomPool.value) {
-      _bptOut = batchSwap.value
-        ? bnum(batchSwap.value.amountTokenOut).abs().toString()
-        : '0';
+      _bptOut = batchSwap.value ? bnum(batchSwap.value.amountTokenOut).abs().toString() : '0';
     } else {
-      _bptOut = poolCalculator
-        .exactTokensInForBPTOut(fullAmounts.value)
-        .toString();
+      _bptOut = poolCalculator.exactTokensInForBPTOut(fullAmounts.value).toString();
     }
 
     console.log('query BPT', _bptOut.toString());
@@ -177,29 +127,17 @@ export default function useInvestMath(
     return minusSlippageScaled(fullBPTOut.value);
   });
 
-  const poolTokenBalances = computed((): string[] =>
-    tokenAddresses.value.map(token => balanceFor(token))
-  );
+  const poolTokenBalances = computed((): string[] => tokenAddresses.value.map(token => balanceFor(token)));
 
-  const hasZeroBalance = computed((): boolean =>
-    poolTokenBalances.value.map(balance => bnum(balance).eq(0)).includes(true)
-  );
+  const hasZeroBalance = computed((): boolean => poolTokenBalances.value.map(balance => bnum(balance).eq(0)).includes(true));
 
-  const hasNoBalances = computed((): boolean =>
-    poolTokenBalances.value.every(balance => bnum(balance).eq(0))
-  );
+  const hasNoBalances = computed((): boolean => poolTokenBalances.value.every(balance => bnum(balance).eq(0)));
 
-  const hasAllTokens = computed((): boolean =>
-    poolTokenBalances.value.every(balance => bnum(balance).gt(0))
-  );
+  const hasAllTokens = computed((): boolean => poolTokenBalances.value.every(balance => bnum(balance).gt(0)));
 
-  const shouldFetchBatchSwap = computed(
-    (): boolean => pool.value && isStablePhantomPool.value && hasAmounts.value
-  );
+  const shouldFetchBatchSwap = computed((): boolean => pool.value && isStablePhantomPool.value && hasAmounts.value);
 
-  const supportsPropotionalOptimization = computed(
-    (): boolean => !isStablePhantomPool.value
-  );
+  const supportsPropotionalOptimization = computed((): boolean => !isStablePhantomPool.value);
 
   /**
    * METHODS
@@ -216,9 +154,7 @@ export default function useInvestMath(
     fullAmounts.value.forEach((_, i) => {
       if (isSameAddress(tokenAddresses.value[i], nativeAsset.address)) {
         const balance = balanceFor(tokenAddresses.value[i]);
-        amounts.value[i] = bnum(balance).gt(nativeAsset.minTransactionBuffer)
-          ? bnum(balance).minus(nativeAsset.minTransactionBuffer).toString()
-          : '0';
+        amounts.value[i] = bnum(balance).gt(nativeAsset.minTransactionBuffer) ? bnum(balance).minus(nativeAsset.minTransactionBuffer).toString() : '0';
       } else {
         amounts.value[i] = balanceFor(tokenAddresses.value[i]);
       }
@@ -244,9 +180,7 @@ export default function useInvestMath(
   }
 
   watch(fullAmounts, async (newAmounts, oldAmounts) => {
-    const changedIndex = newAmounts.findIndex(
-      (amount, i) => oldAmounts[i] !== amount
-    );
+    const changedIndex = newAmounts.findIndex((amount, i) => oldAmounts[i] !== amount);
 
     if (changedIndex >= 0) {
       if (shouldFetchBatchSwap.value) {
@@ -254,11 +188,7 @@ export default function useInvestMath(
         if (!processingBatchSwaps.value) processBatchSwaps();
       }
 
-      const { send } = poolCalculator.propAmountsGiven(
-        fullAmounts.value[changedIndex],
-        changedIndex,
-        'send'
-      );
+      const { send } = poolCalculator.propAmountsGiven(fullAmounts.value[changedIndex], changedIndex, 'send');
       proportionalAmounts.value = send;
     }
   });

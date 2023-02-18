@@ -15,19 +15,10 @@ export async function call(provider, abi: any[], call: any[], options?) {
   }
 }
 
-export async function multicall<T>(
-  network: string,
-  provider,
-  abi: any[],
-  calls: any[],
-  options: any = {},
-  requireSuccess = false
-): Promise<(T | null)[]> {
+export async function multicall<T>(network: string, provider, abi: any[], calls: any[], options: any = {}, requireSuccess = false): Promise<(T | null)[]> {
   const multi = new Contract(
     configs[network].addresses.multicall,
-    [
-      'function tryAggregate(bool requireSuccess, tuple(address, bytes)[] memory calls) public view returns (tuple(bool, bytes)[] memory returnData)',
-    ],
+    ['function tryAggregate(bool requireSuccess, tuple(address, bytes)[] memory calls) public view returns (tuple(bool, bytes)[] memory returnData)'],
     provider
   );
   const itf = new Interface(abi);
@@ -35,10 +26,7 @@ export async function multicall<T>(
     const res: [boolean, string][] = await multi.tryAggregate(
       // if false, allows individual calls to fail without causing entire multicall to fail
       requireSuccess,
-      calls.map(call => [
-        call[0].toLowerCase(),
-        itf.encodeFunctionData(call[1], call[2]),
-      ]),
+      calls.map(call => [call[0].toLowerCase(), itf.encodeFunctionData(call[1], call[2])]),
       options
     );
 
@@ -61,12 +49,7 @@ export class Multicaller {
   public calls: any[] = [];
   public paths: any[] = [];
 
-  constructor(
-    network: string,
-    provider: JsonRpcProvider,
-    abi: any[],
-    options?
-  ) {
+  constructor(network: string, provider: JsonRpcProvider, abi: any[], options?) {
     this.network = network;
     this.provider = provider;
     this.abi = abi;
@@ -81,13 +64,7 @@ export class Multicaller {
 
   async execute<T = any>(from?: any): Promise<T> {
     const obj = from || {};
-    const result = await multicall(
-      this.network,
-      this.provider,
-      this.abi,
-      this.calls,
-      this.options
-    );
+    const result = await multicall(this.network, this.provider, this.abi, this.calls, this.options);
     result.forEach((r, i) => set(obj, this.paths[i], r));
     this.calls = [];
     this.paths = [];

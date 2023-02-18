@@ -16,67 +16,44 @@ interface TokenListMapByNetwork {
 export const TOKEN_LIST_MAP: TokenListMapByNetwork = {
   '1': {
     Balancer: {
-      Default:
-        'https://raw.githubusercontent.com/balancer-labs/assets/master/generated/listed.tokenlist.json',
-      Vetted:
-        'https://raw.githubusercontent.com/balancer-labs/assets/master/generated/vetted.tokenlist.json',
+      Default: 'https://raw.githubusercontent.com/balancer-labs/assets/master/generated/listed.tokenlist.json',
+      Vetted: 'https://raw.githubusercontent.com/balancer-labs/assets/master/generated/vetted.tokenlist.json',
     },
-    External: [
-      'ipns://tokens.uniswap.org',
-      'https://www.gemini.com/uniswap/manifest.json',
-    ],
+    External: ['ipns://tokens.uniswap.org', 'https://www.gemini.com/uniswap/manifest.json'],
   },
   '5': {
     Balancer: {
-      Default:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/goerli.listed.tokenlist.json',
-      Vetted:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/goerli.vetted.tokenlist.json',
+      Default: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/goerli.listed.tokenlist.json',
+      Vetted: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/goerli.vetted.tokenlist.json',
     },
     External: [],
   },
   '42': {
     Balancer: {
-      Default:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/kovan.listed.tokenlist.json',
-      Vetted:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/kovan.vetted.tokenlist.json',
+      Default: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/kovan.listed.tokenlist.json',
+      Vetted: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/kovan.vetted.tokenlist.json',
     },
-    External: [
-      'ipns://tokens.uniswap.org',
-      'https://umaproject.org/uma.tokenlist.json',
-    ],
+    External: ['ipns://tokens.uniswap.org', 'https://umaproject.org/uma.tokenlist.json'],
   },
   '137': {
     Balancer: {
-      Default:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/polygon.listed.tokenlist.json',
-      Vetted:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/polygon.vetted.tokenlist.json',
+      Default: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/polygon.listed.tokenlist.json',
+      Vetted: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/polygon.vetted.tokenlist.json',
     },
-    External: [
-      'https://unpkg.com/quickswap-default-token-list@1.0.67/build/quickswap-default.tokenlist.json',
-    ],
+    External: ['https://unpkg.com/quickswap-default-token-list@1.0.67/build/quickswap-default.tokenlist.json'],
   },
   '42161': {
     Balancer: {
-      Default:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/arbitrum.listed.tokenlist.json',
-      Vetted:
-        'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/arbitrum.vetted.tokenlist.json',
+      Default: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/arbitrum.listed.tokenlist.json',
+      Vetted: 'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/arbitrum.vetted.tokenlist.json',
     },
     External: ['https://tracer.finance/tokens'],
   },
   '1313161554': {
     Balancer: {
-      Default:
-        'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.listed.tokenlist.json',
-      Vetted:
-        'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.vetted.tokenlist.json',
+      Default: 'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.listed.tokenlist.json',
+      Vetted: 'https://raw.githubusercontent.com/polarisfinance/dex-assets/main/generated/aurora.vetted.tokenlist.json',
     },
-    External: [
-      'https://aurora.dev/tokens.json',
-      'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json',
-    ],
+    External: ['https://aurora.dev/tokens.json', 'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json'],
   },
 };

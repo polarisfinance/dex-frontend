@@ -49,9 +49,7 @@ const options = computed(() => ['all', ...tokenAddresses.value]);
 
 const selectedToken = computed((): TokenInfo => getToken(selectedOption.value));
 
-const assetSetWidth = computed(
-  () => 40 + (tokenAddresses.value.length - 2) * 10
-);
+const assetSetWidth = computed(() => 40 + (tokenAddresses.value.length - 2) * 10);
 
 function isOptionSelected(option: string): boolean {
   if (selectedOption.value === 'all' || option === 'all') {
@@ -80,26 +78,14 @@ function handleSelected(newToken: string): void {
     <template #activator>
       <div class="token-select-input selected selectable group">
         <div>
-          <BalAssetSet
-            v-if="isProportional"
-            :addresses="tokenAddresses"
-            :width="50"
-          />
-          <BalAsset
-            v-else
-            :address="selectedToken.address"
-            class="mr-2 shadow"
-          />
+          <BalAssetSet v-if="isProportional" :addresses="tokenAddresses" :width="50" />
+          <BalAsset v-else :address="selectedToken.address" class="mr-2 shadow" />
         </div>
         <span class="text-base font-medium">
           <span v-if="isProportional">All tokens</span>
           <span v-else>{{ selectedToken.symbol }}</span>
         </span>
-        <BalIcon
-          name="chevron-down"
-          size="sm"
-          class="ml-2 text-blue-500 transition-colors group-hover:text-pink-500 dark:text-blue-400 dark:group-hover:text-yellow-500"
-        />
+        <BalIcon name="chevron-down" size="sm" class="ml-2 text-blue-500 transition-colors group-hover:text-pink-500 dark:text-blue-400 dark:group-hover:text-yellow-500" />
       </div>
     </template>
     <template #option="{ option }">
@@ -108,22 +94,14 @@ function handleSelected(newToken: string): void {
           <BalAssetSet :addresses="tokenAddresses" :width="assetSetWidth" />
           {{ $t('allTokens') }}
         </div>
-        <BalIcon
-          v-if="isOptionSelected(option)"
-          name="check"
-          class="ml-2 text-blue-500 dark:text-blue-400"
-        />
+        <BalIcon v-if="isOptionSelected(option)" name="check" class="ml-2 text-blue-500 dark:text-blue-400" />
       </div>
       <div v-else class="flex items-center justify-between">
         <div class="flex items-center">
           <BalAsset :address="option" class="mr-2" />
           {{ getToken(option)?.symbol }}
         </div>
-        <BalIcon
-          v-if="isOptionSelected(option)"
-          name="check"
-          class="ml-2 text-blue-500 dark:text-blue-400"
-        />
+        <BalIcon v-if="isOptionSelected(option)" name="check" class="ml-2 text-blue-500 dark:text-blue-400" />
       </div>
     </template>
   </BalDropdown>

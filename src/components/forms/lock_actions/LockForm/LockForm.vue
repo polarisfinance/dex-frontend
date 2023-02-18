@@ -32,68 +32,39 @@ const veBalLockInfoQuery = useVeBalLockInfoQuery();
 /**
  * COMPUTED
  */
-const lockablePoolLoading = computed(
-  () => lockablePoolQuery.isLoading.value || lockablePoolQuery.isIdle.value
-);
+const lockablePoolLoading = computed(() => lockablePoolQuery.isLoading.value || lockablePoolQuery.isIdle.value);
 
-const veBalQueryLoading = computed(
-  () => veBalLockInfoQuery.isLoading.value || veBalLockInfoQuery.isIdle.value
-);
+const veBalQueryLoading = computed(() => veBalLockInfoQuery.isLoading.value || veBalLockInfoQuery.isIdle.value);
 
-const lockablePool = computed<Pool | undefined>(
-  () => lockablePoolQuery.data.value
-);
+const lockablePool = computed<Pool | undefined>(() => lockablePoolQuery.data.value);
 
-const lockablePoolTokenInfo = computed(() =>
-  lockablePool.value != null ? getToken(lockablePool.value.address) : null
-);
+const lockablePoolTokenInfo = computed(() => (lockablePool.value != null ? getToken(lockablePool.value.address) : null));
 
 const veBalLockInfo = computed(() => veBalLockInfoQuery.data.value);
 
-const isLoading = computed(() =>
-  isWalletReady.value
-    ? lockablePoolLoading.value || veBalQueryLoading.value
-    : lockablePoolLoading.value
-);
+const isLoading = computed(() => (isWalletReady.value ? lockablePoolLoading.value || veBalQueryLoading.value : lockablePoolLoading.value));
 </script>
 
 <template>
   <Col3Layout offsetGutters>
     <template #gutterLeft>
       <BalLoadingBlock v-if="isLoading" class="h-36" />
-      <LockableTokens
-        v-else
-        :lockablePool="lockablePool"
-        :lockablePoolTokenInfo="lockablePoolTokenInfo"
-      />
+      <LockableTokens v-else :lockablePool="lockablePool" :lockablePoolTokenInfo="lockablePoolTokenInfo" />
       <template v-if="isDesktop">
         <BalLoadingBlock v-if="isLoading" class="mt-4 h-12" />
-        <HowToLock
-          v-else
-          :lockablePool="lockablePool"
-          :lockablePoolTokenInfo="lockablePoolTokenInfo"
-        />
+        <HowToLock v-else :lockablePool="lockablePool" :lockablePoolTokenInfo="lockablePoolTokenInfo" />
       </template>
     </template>
 
     <BalLoadingBlock v-if="isLoading" class="h-96" />
-    <VeBalForm
-      v-else
-      :lockablePool="lockablePool"
-      :lockablePoolTokenInfo="lockablePoolTokenInfo"
-      :veBalLockInfo="veBalLockInfo"
-    />
+    <VeBalForm v-else :lockablePool="lockablePool" :lockablePoolTokenInfo="lockablePoolTokenInfo" :veBalLockInfo="veBalLockInfo" />
 
     <template #gutterRight>
       <BalLoadingBlock v-if="isLoading" class="h-64" />
       <MyVeBAL v-else :veBalLockInfo="veBalLockInfo" />
       <template v-if="isMobile">
         <BalLoadingBlock v-if="isLoading" class="mt-4 h-12" />
-        <HowToLock
-          v-else
-          :lockablePool="lockablePool"
-          :lockablePoolTokenInfo="lockablePoolTokenInfo"
-        />
+        <HowToLock v-else :lockablePool="lockablePool" :lockablePoolTokenInfo="lockablePoolTokenInfo" />
       </template>
     </template>
   </Col3Layout>

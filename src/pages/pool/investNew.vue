@@ -1,6 +1,5 @@
 <script lang="ts">
-
-import {ref, defineComponent,onBeforeMount} from 'vue';
+import { ref, defineComponent, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
 import useWeb3 from '@/services/web3/useWeb3';
@@ -8,9 +7,7 @@ import usePoolQuery from '@/composables/queries/usePoolQuery';
 import useStake from '@/composables/PolarisFinance/useStake';
 import useInvestState from '@/components/forms/pool_actions/InvestForm/composables/useInvestState';
 import InvestForm from '@/components/forms/pool_actions/InvestForm/InvestForm.vue';
-import TradeSettingsPopover, {
-  TradeSettingsContext,
-} from '@/components/popovers/TradeSettingsPopover.vue';
+import TradeSettingsPopover, { TradeSettingsContext } from '@/components/popovers/TradeSettingsPopover.vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import { usePool } from '@/composables/usePool';
 import { forChange } from '@/lib/utils';
@@ -23,28 +20,26 @@ import useTransactions from '@/composables/useTransactions';
 
 const steps = [
   {
-  "step":1,
-  "headline":"Swap tokens to create an LP and profit on swap fees"
+    step: 1,
+    headline: 'Swap tokens to create an LP and profit on swap fees',
   },
   {
-  "step":2,
-  "headline":"Preview your investment"
+    step: 2,
+    headline: 'Preview your investment',
   },
   {
-  "step":3,
-  "headline":"Approve pool for investing"
+    step: 3,
+    headline: 'Approve pool for investing',
   },
   {
-  "step":4,
-  "headline":"Swap3 tokens to create an LP and profit on swap fees"
+    step: 4,
+    headline: 'Swap3 tokens to create an LP and profit on swap fees',
   },
 ];
 
-
-
 const { pool, loadingPool, transfersAllowed } = usePoolTransfers();
 const { isStablePhantomPool } = usePool(pool);
-const {sor,sorReady} = useInvestState();
+const { sor, sorReady } = useInvestState();
 onBeforeMount(async () => {
   await forChange(loadingPool, false);
 
@@ -56,14 +51,10 @@ onBeforeMount(async () => {
   }
 });
 
-
 export default defineComponent({
-  components: {
-  },
-  props: {
-  },
+  components: {},
+  props: {},
   setup(props, { emit }) {
-
     const { txListener } = useEthers();
     const { addTransaction } = useTransactions();
     const approveTxHandler = (tx: TransactionResponse): void => {
@@ -92,14 +83,12 @@ export default defineComponent({
 
     // const pool = computed(() => poolQuery.data.value);
 
-
     const { balance, isApproved, pendingShare } = useStake();
     const { getReturnRoute } = useReturnRoute();
     const { network } = configService;
-    
-    
+
     const { useNativeAsset } = usePoolTransfers();
-    
+
     // const investMath = useInvestMath(
     //   pool,
     //   tokenAddresses,
@@ -109,10 +98,10 @@ export default defineComponent({
     // );
 
     // const stepPerc = 1/steps.length *(this.activeStep-1);
-    const stepPerc=0.3;
-    const handleLPPreview = (event) => {
+    const stepPerc = 0.3;
+    const handleLPPreview = event => {
       alert();
-    }
+    };
 
     return {
       stepPerc,
@@ -131,23 +120,21 @@ export default defineComponent({
       sor,
     };
   },
-  onMounted(){
-
-  },
+  onMounted() {},
   data() {
     return {
       pool: Object,
-      activeStep:1,
+      activeStep: 1,
     };
   },
   methods: {
-    getActiveStep(){
+    getActiveStep() {
       // return steps[this.activeStep];
     },
-    async loadPool(){
+    async loadPool() {
       // await forChange(this.loadingPool, false);
 
-      if (this.pool!=undefined && this.isStablePhantomPool) {
+      if (this.pool != undefined && this.isStablePhantomPool) {
         // Initialise SOR for batch swap queries
         this.sorReady = await this.sor.fetchPools();
       } else {
@@ -169,7 +156,6 @@ export default defineComponent({
         onTxFailed: () => {},
       });
     },
-    
   },
 
   emits: [],
@@ -185,83 +171,74 @@ export default defineComponent({
     </div>
 
     <div>
-        <!-- <InvestHero :step="getActiveStep(activeStep).step" :headline="getActiveStep(activeStep).headline"/> -->
-        <div class="container mx-auto">
-          <div class=" mt-[40px] w-full items-center self-center">
-            <div class="steps flex justify-between ">
-              <div>Create LP</div>
-              <div>Preview</div>
-              <div>Approve pool</div>  
-              <div>Stake LP</div>
-              <div>Done</div>
-            </div>
-            <div class="progress-bar mt-[32px] h-[2px] rounded-[24px] w-full">
-              <div
-                  class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
-                  :style="{ width: `${(stepPerc * 100).toFixed(0)}%` }"
-              />
+      <!-- <InvestHero :step="getActiveStep(activeStep).step" :headline="getActiveStep(activeStep).headline"/> -->
+      <div class="container mx-auto">
+        <div class="mt-[40px] w-full items-center self-center">
+          <div class="steps flex justify-between">
+            <div>Create LP</div>
+            <div>Preview</div>
+            <div>Approve pool</div>
+            <div>Stake LP</div>
+            <div>Done</div>
+          </div>
+          <div class="progress-bar mt-[32px] h-[2px] w-full rounded-[24px]">
+            <div
+              class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
+              :style="{ width: `${(stepPerc * 100).toFixed(0)}%` }"
+            />
           </div>
         </div>
       </div>
     </div>
     <div class="container mx-auto">
-        <div class="card flex flex-wrap mt-[60px]">
+      <div class="card mt-[60px] flex flex-wrap">
         <div class="stats">
-            <h3>My pool balance</h3>
-            <div class="break"></div>
-            <BalLoadingBlock
-                v-if="loadingPool || !transfersAllowed || !sorReady"
-                class="h-96"
-                />
-            <PoolUserStats v-else :pool="pool" :xpolarToClaim="`0`" :dailyAPR="`1`" :stakedBalance="`0`" /> 
+          <h3>My pool balance</h3>
+          <div class="break"></div>
+          <BalLoadingBlock v-if="loadingPool || !transfersAllowed || !sorReady" class="h-96" />
+          <PoolUserStats v-else :pool="pool" :xpolarToClaim="`0`" :dailyAPR="`1`" :stakedBalance="`0`" />
         </div>
-        <div class="m-[24px] flex flex-1 flex-col justify-center max-w-[480px] mx-auto">
-            <div class="nested-card mt-[16px]">
-              <template v-if="activeStep==1">
-                <BalLoadingBlock
-                v-if="loadingPool || !transfersAllowed || !sorReady"
-                class="h-96"
-                />
-                <BalCard  exposeOverflow noBorder noPad  v-else>
+        <div class="m-[24px] mx-auto flex max-w-[480px] flex-1 flex-col justify-center">
+          <div class="nested-card mt-[16px]">
+            <template v-if="activeStep == 1">
+              <BalLoadingBlock v-if="loadingPool || !transfersAllowed || !sorReady" class="h-96" />
+              <BalCard exposeOverflow noBorder noPad v-else>
                 <template #header>
-                    <div class="w-full">
+                  <div class="w-full">
                     <div class="flex items-center justify-between">
-                        <h4 class="title ml-[18px] mt-[10px]" >{{ $t('investInPool') }}</h4>
-                        <TradeSettingsPopover :context="TradeSettingsContext.invest" />
+                      <h4 class="title ml-[18px] mt-[10px]">{{ $t('investInPool') }}</h4>
+                      <TradeSettingsPopover :context="TradeSettingsContext.invest" />
                     </div>
-                    </div>
+                  </div>
                 </template>
-                <InvestForm :pool="pool" @submit="handleLPPreview"/>
-                </BalCard>
-              </template>
-              <template v-if="activeStep==2">
-                <!-- <InvestPreviewModal
+                <InvestForm :pool="pool" @submit="handleLPPreview" />
+              </BalCard>
+            </template>
+            <template v-if="activeStep == 2">
+              <!-- <InvestPreviewModal
                   :pool="pool"
                   :math="investMath"
                   :tokenAddresses="tokenAddresses"
                   @close="showInvestPreview = false"
                   @show-stake-modal="showStakeModal = true"
                 /> -->
-              </template>
-              <template v-if="activeStep==3">
-                <BalLoadingBlock
-                v-if="loadingPool || !transfersAllowed || !sorReady"
-                class="h-96"
-                />
-                <BalCard  exposeOverflow noBorder noPad  v-else>
+            </template>
+            <template v-if="activeStep == 3">
+              <BalLoadingBlock v-if="loadingPool || !transfersAllowed || !sorReady" class="h-96" />
+              <BalCard exposeOverflow noBorder noPad v-else>
                 <template #header>
-                    <div class="w-full">
+                  <div class="w-full">
                     <div class="flex items-center justify-between">
-                        <h4 class="title ml-[18px] mt-[10px]" >{{ $t('investInPool') }}</h4>
-                        <TradeSettingsPopover :context="TradeSettingsContext.invest" />
+                      <h4 class="title ml-[18px] mt-[10px]">{{ $t('investInPool') }}</h4>
+                      <TradeSettingsPopover :context="TradeSettingsContext.invest" />
                     </div>
-                    </div>
+                  </div>
                 </template>
                 <InvestForm :pool="pool" />
-                </BalCard>
-              </template>
-              <template v-if="activeStep==4">
-                <!-- <div class="p-[12px]">
+              </BalCard>
+            </template>
+            <template v-if="activeStep == 4">
+              <!-- <div class="p-[12px]">
                   <div class="header px-[12px]">
                     <div v-if="depositBol" class="title text-white">Stake {{ token }}</div>
                     <div v-else class="title text-white">Unstake {{ token }}</div>
@@ -296,10 +273,10 @@ export default defineComponent({
                     </button>
                   </div>
                 </div> -->
-              </template>
-            </div>
+            </template>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -334,11 +311,7 @@ h3 {
 .break {
   flex-basis: 100%;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(151, 71, 255, 0.4),
-    rgba(59, 68, 189, 0.4)
-  );
+  background: linear-gradient(90deg, rgba(151, 71, 255, 0.4), rgba(59, 68, 189, 0.4));
 }
 .progress-bar {
   background: #41365e;

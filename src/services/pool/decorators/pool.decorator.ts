@@ -6,11 +6,7 @@ import { balancerSubgraphService } from '@/services/balancer/subgraph/balancer-s
 import { TokenPrices } from '@/services/coingecko/api/price.service';
 import { Pool } from '@/services/pool/types';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
-import {
-  GaugeBalAprs,
-  GaugeRewardTokenAprs,
-  stakingRewardsService,
-} from '@/services/staking/staking-rewards.service';
+import { GaugeBalAprs, GaugeRewardTokenAprs, stakingRewardsService } from '@/services/staking/staking-rewards.service';
 import { TokenInfoMap } from '@/types/TokenList';
 
 import PoolService from '../pool.service';
@@ -29,13 +25,7 @@ export class PoolDecorator {
     private readonly poolSubgraph = balancerSubgraphService
   ) {}
 
-  public async decorate(
-    gauges: SubgraphGauge[] | undefined,
-    prices: TokenPrices,
-    currency: FiatCurrency,
-    tokens: TokenInfoMap,
-    includeAprs = true
-  ): Promise<Pool[]> {
+  public async decorate(gauges: SubgraphGauge[] | undefined, prices: TokenPrices, currency: FiatCurrency, tokens: TokenInfoMap, includeAprs = true): Promise<Pool[]> {
     const processedPools = this.pools.map(pool => {
       const poolService = new this.poolServiceClass(pool);
       poolService.removePreMintedBPT();
@@ -72,17 +62,9 @@ export class PoolDecorator {
       poolService.setVolumeSnapshot(poolSnapshot);
       await poolService.setLinearPools();
 
-      const protocolFeePercentage =
-        await this.balancerContracts.vault.protocolFeesCollector.getSwapFeePercentage();
+      const protocolFeePercentage = await this.balancerContracts.vault.protocolFeesCollector.getSwapFeePercentage();
 
-      await poolService.setAPR(
-        poolSnapshot,
-        prices,
-        currency,
-        protocolFeePercentage,
-        { min: '0', max: '0' },
-        '0'
-      );
+      await poolService.setAPR(poolSnapshot, prices, currency, protocolFeePercentage, { min: '0', max: '0' }, '0');
 
       // if (setAprCondition) {
       //   await poolService.setAPR(
@@ -132,9 +114,7 @@ export class PoolDecorator {
     tokens: TokenInfoMap,
     pools: Pool[],
     includeAprs = true
-  ): Promise<
-    [number, GaugeBalAprs, GaugeRewardTokenAprs] | [null, null, null]
-  > {
+  ): Promise<[number, GaugeBalAprs, GaugeRewardTokenAprs] | [null, null, null]> {
     if (!includeAprs || !gauges) {
       return [null, null, null];
     }

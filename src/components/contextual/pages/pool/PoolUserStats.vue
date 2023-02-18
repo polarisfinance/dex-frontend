@@ -8,9 +8,7 @@ import { totalAprLabel, usePool } from '@/composables/usePool';
 import { APR_THRESHOLD } from '@/constants/pools';
 import { Pool } from '@/services/pool/types';
 import { TransactionResponse } from '@ethersproject/providers';
-import MyPoolInvsetmentFiat, {
-  MyPollInvestmentFiatType,
-} from '@/components/pool/MyPoolInvsetmentFiat.vue';
+import MyPoolInvsetmentFiat, { MyPollInvestmentFiatType } from '@/components/pool/MyPoolInvsetmentFiat.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import useWeb3 from '@/services/web3/useWeb3';
 import { BigNumber } from 'ethers';
@@ -60,17 +58,11 @@ export default defineComponent({
      */
     const { tokens, balances, balanceFor, getTokens } = useTokens();
     const { fNum2, toFiat } = useNumbers();
-    const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(
-      toRef(props, 'pool')
-    );
+    const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(toRef(props, 'pool'));
 
-    const unstakedTokens = computed((): string =>
-      balanceFor(props.pool.address)
-    );
+    const unstakedTokens = computed((): string => balanceFor(props.pool.address));
 
-    const totalTokens = computed((): string =>
-      bnum(props.stakedBalance).plus(unstakedTokens.value).toString()
-    );
+    const totalTokens = computed((): string => bnum(props.stakedBalance).plus(unstakedTokens.value).toString());
 
     function symbolFor(address: string) {
       if (!props.pool) return '-';
@@ -104,21 +96,11 @@ export default defineComponent({
 
     const { isWalletReady } = useWeb3();
 
-    const poolCalculator = new PoolCalculator(
-      toRef(props, 'pool'),
-      tokens,
-      balances,
-      'exit',
-      ref(false)
-    );
+    const poolCalculator = new PoolCalculator(toRef(props, 'pool'), tokens, balances, 'exit', ref(false));
     const bptBalance = computed((): string => balanceFor(props.pool.address));
     console.log('bptBalance', props.pool.address);
     const propTokenAmounts = computed((): string[] => {
-      const { receive } = poolCalculator.propAmountsGiven(
-        bnum(totalTokens.value).toString(),
-        0,
-        'send'
-      );
+      const { receive } = poolCalculator.propAmountsGiven(bnum(totalTokens.value).toString(), 0, 'send');
 
       if (isStablePhantomPool.value) {
         // Return linear pool's main token balance using the price rate.
@@ -164,8 +146,7 @@ export default defineComponent({
 
     const poolSharePerc = computed(() => {
       if (props.pool != undefined) {
-        const lpVal =
-          (Number(props.stakedBalance) / Number(props.pool.totalShares)) * 100;
+        const lpVal = (Number(props.stakedBalance) / Number(props.pool.totalShares)) * 100;
         return lpVal < 0.01 ? '< 0.01 %' : lpVal.toFixed(2) + ' %';
       } else {
         return 0;
@@ -203,11 +184,7 @@ export default defineComponent({
 
 <template>
   <div class="mt-[24px]">
-    <div
-      v-for="(address, idx) in tokenAddresses"
-      :key="idx"
-      class="my-[12px] flex"
-    >
+    <div v-for="(address, idx) in tokenAddresses" :key="idx" class="my-[12px] flex">
       <div class="flex flex-1">
         <BalAsset :address="address" :size="33" class="mr-[12px]" />
         <div class="flex flex-col">
@@ -217,11 +194,7 @@ export default defineComponent({
       </div>
       <div class="token-value flex flex-1 flex-col text-right">
         <div>
-          {{
-            isWalletReady
-              ? fNum2(propTokenAmounts[idx], FNumFormats.token)
-              : '-'
-          }}
+          {{ isWalletReady ? fNum2(propTokenAmounts[idx], FNumFormats.token) : '-' }}
         </div>
         <div>
           {{ isWalletReady ? fiatLabelFor(idx, address) : '-' }}
@@ -277,11 +250,7 @@ export default defineComponent({
 }
 .break {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(151, 71, 255, 0.4),
-    rgba(59, 68, 189, 0.4)
-  );
+  background: linear-gradient(90deg, rgba(151, 71, 255, 0.4), rgba(59, 68, 189, 0.4));
 }
 .token-value > div:first-child {
   font-weight: 600;

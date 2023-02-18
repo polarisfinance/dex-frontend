@@ -17,8 +17,7 @@ export default class StablePhantom {
   }
 
   public priceImpact(tokenAmounts: string[], opts: PiOptions): OldBigNumber {
-    if (!opts.queryBPT)
-      throw new Error('Need query BPT to calc StablePhantom Price Impact');
+    if (!opts.queryBPT) throw new Error('Need query BPT to calc StablePhantom Price Impact');
 
     console.log('Query BPT:', opts.queryBPT);
     let bptAmount: OldBigNumber | BigNumberish;
@@ -37,10 +36,7 @@ export default class StablePhantom {
         bptZeroPriceImpact = this.bptForTokensZeroPriceImpact(tokenAmounts);
       } else {
         // Single asset max out case
-        bptAmount = parseUnits(
-          this.calc.bptBalance,
-          this.calc.poolDecimals
-        ).toString();
+        bptAmount = parseUnits(this.calc.bptBalance, this.calc.poolDecimals).toString();
         bptZeroPriceImpact = this.bptForTokensZeroPriceImpact(tokenAmounts);
       }
 
@@ -54,10 +50,7 @@ export default class StablePhantom {
   private bptForTokensZeroPriceImpact(tokenAmounts: string[]): OldBigNumber {
     const amp = bnum(this.calc.pool.value?.onchain?.amp?.toString() || '0');
     const ampAdjusted = BigNumber.from(this.adjustAmp(amp).toString());
-    const denormAmounts = this.calc.denormAmounts(
-      tokenAmounts,
-      this.calc.poolTokenDecimals
-    );
+    const denormAmounts = this.calc.denormAmounts(tokenAmounts, this.calc.poolTokenDecimals);
     // This function should use pool balances (i.e. without rate conversion)
     const bptZeroImpact = _bptForTokensZeroPriceImpact(
       this.calc.poolTokenBalances,
@@ -76,27 +69,16 @@ export default class StablePhantom {
 
   private get scaledBalances(): BigNumber[] {
     return this.calc.poolTokenBalances.map((balance, i) => {
-      const normalizedBalance = formatUnits(
-        balance,
-        this.calc.poolTokenDecimals[i]
-      );
-      const scaledBalance = this.scaleInput(
-        normalizedBalance,
-        this.calc.pool.value.tokens[i].priceRate
-      );
+      const normalizedBalance = formatUnits(balance, this.calc.poolTokenDecimals[i]);
+      const scaledBalance = this.scaleInput(normalizedBalance, this.calc.pool.value.tokens[i].priceRate);
       return scaledBalance;
     });
   }
 
-  private scaleInput(
-    normalizedAmount: string,
-    priceRate: string | null = null
-  ): BigNumber {
+  private scaleInput(normalizedAmount: string, priceRate: string | null = null): BigNumber {
     if (priceRate === null) priceRate = '1';
 
-    const denormAmount = bnum(parseUnits(normalizedAmount, 18).toString())
-      .times(priceRate)
-      .toFixed(0, OldBigNumber.ROUND_UP);
+    const denormAmount = bnum(parseUnits(normalizedAmount, 18).toString()).times(priceRate).toFixed(0, OldBigNumber.ROUND_UP);
 
     return BigNumber.from(denormAmount);
   }

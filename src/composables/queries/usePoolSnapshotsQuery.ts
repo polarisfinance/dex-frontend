@@ -24,11 +24,7 @@ interface QueryResponse {
 /**
  * HELPERS
  */
-export default function usePoolSnapshotsQuery(
-  id: string,
-  days?: number,
-  options: QueryObserverOptions<QueryResponse> = {}
-) {
+export default function usePoolSnapshotsQuery(id: string, days?: number, options: QueryObserverOptions<QueryResponse> = {}) {
   /**
    * @description
    * If pool is already downloaded, we can use it instantly
@@ -61,8 +57,7 @@ export default function usePoolSnapshotsQuery(
 
     const createTime = storedPool?.createTime || pool.value?.createTime || 0;
     const tokensList = storedPool?.tokensList || pool.value?.tokensList || [];
-    const shapshotDaysNum =
-      days || differenceInDays(new Date(), new Date(createTime * 1000));
+    const shapshotDaysNum = days || differenceInDays(new Date(), new Date(createTime * 1000));
 
     /**
      * @description
@@ -71,15 +66,7 @@ export default function usePoolSnapshotsQuery(
      */
     const aggregateBy = shapshotDaysNum <= 90 ? 'hour' : 'day';
 
-    [prices, snapshots] = await Promise.all([
-      coingeckoService.prices.getTokensHistorical(
-        tokensList,
-        shapshotDaysNum,
-        1,
-        aggregateBy
-      ),
-      balancerSubgraphService.poolSnapshots.get(id, shapshotDaysNum),
-    ]);
+    [prices, snapshots] = await Promise.all([coingeckoService.prices.getTokensHistorical(tokensList, shapshotDaysNum, 1, aggregateBy), balancerSubgraphService.poolSnapshots.get(id, shapshotDaysNum)]);
 
     return { prices, snapshots };
   };

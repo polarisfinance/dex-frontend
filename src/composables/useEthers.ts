@@ -1,14 +1,8 @@
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/providers';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
 import SafeAppsSDK from '@gnosis.pm/safe-apps-sdk';
 import { ref } from 'vue';
 
-import {
-  retryPromiseWithDelay,
-  tryPromiseWithTimeout,
-} from '@/lib/utils/promise';
+import { retryPromiseWithDelay, tryPromiseWithTimeout } from '@/lib/utils/promise';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 
 import useBlocknative from './useBlocknative';
@@ -28,9 +22,7 @@ export default function useEthers() {
   const { refetchBalances } = useTokens();
 
   async function getTxConfirmedAt(receipt: TransactionReceipt): Promise<Date> {
-    const block = await rpcProviderService.jsonProvider.getBlock(
-      receipt.blockNumber
-    );
+    const block = await rpcProviderService.jsonProvider.getBlock(receipt.blockNumber);
 
     return new Date(toJsTimestamp(block.timestamp));
   }
@@ -79,10 +71,7 @@ export default function useEthers() {
       try {
         // If we're using a Gnosis safe then the transaction we were tracking is really a "SafeTx"
         // We need to query the backend to get the actual transaction hash for the block explorer link
-        const realTx = await tryPromiseWithTimeout(
-          new SafeAppsSDK().txs.getBySafeTxHash(tx.hash),
-          1000
-        );
+        const realTx = await tryPromiseWithTimeout(new SafeAppsSDK().txs.getBySafeTxHash(tx.hash), 1000);
         if (realTx.txHash !== null) {
           txHash = realTx.txHash;
           updateTransaction(tx.hash, 'tx', {

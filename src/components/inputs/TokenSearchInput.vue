@@ -45,45 +45,25 @@ const { t } = useI18n();
 // sorted by biggest bag balance, limited to biggest 5
 const sortedBalances = computed(() => {
   const addressesWithBalance = Object.entries(balances.value)
-    .filter(
-      ([address, balance]) =>
-        balance !== '0.0' && address !== veBalTokenInfo.value?.address
-    )
+    .filter(([address, balance]) => balance !== '0.0' && address !== veBalTokenInfo.value?.address)
     .map(([address]) => address);
-  const tokensWithBalance = Object.values(
-    pick(tokens.value, addressesWithBalance)
-  );
+  const tokensWithBalance = Object.values(pick(tokens.value, addressesWithBalance));
 
   return take(tokensWithBalance, 6);
 });
 
 const hasNoBalances = computed(() => !sortedBalances.value.length);
 
-const whiteListedTokens = computed(() =>
-  Object.values(tokens.value).filter(token =>
-    TOKENS.Popular.Symbols.includes(token.symbol)
-  )
-);
+const whiteListedTokens = computed(() => Object.values(tokens.value).filter(token => TOKENS.Popular.Symbols.includes(token.symbol)));
 
 const selectTokensLabel = computed(() => {
-  return !account.value || hasNoBalances.value
-    ? t('popularBases')
-    : t('myWallet2');
+  return !account.value || hasNoBalances.value ? t('popularBases') : t('myWallet2');
 });
 
 const selectableTokensAddresses = computed<string[]>(() => {
-  const tokens =
-    !account.value || hasNoBalances.value
-      ? whiteListedTokens.value
-      : sortedBalances.value;
+  const tokens = !account.value || hasNoBalances.value ? whiteListedTokens.value : sortedBalances.value;
 
-  return tokens.reduce(
-    (acc, token) =>
-      includesAddress(props.modelValue, token.address)
-        ? acc
-        : [...acc, token.address],
-    [] as string[]
-  );
+  return tokens.reduce((acc, token) => (includesAddress(props.modelValue, token.address) ? acc : [...acc, token.address]), [] as string[]);
 });
 
 /**
@@ -112,32 +92,15 @@ function onClick() {
         {{ $t('filterByToken') }}
       </BalBtn>
       <div v-if="modelValue.length" class="flex flex-wrap items-center gap-2">
-        <BalChip
-          v-for="token in modelValue"
-          :key="token"
-          color="white"
-          iconSize="sm"
-          :closeable="true"
-          @closed="emit('remove', token)"
-        >
+        <BalChip v-for="token in modelValue" :key="token" color="white" iconSize="sm" :closeable="true" @closed="emit('remove', token)">
           <BalAsset :address="token" :size="20" class="flex-auto" />
           <span class="ml-2">{{ getToken(token)?.symbol }}</span>
         </BalChip>
       </div>
-      <TokenSearchInputSelectTokens
-        v-if="selectableTokensAddresses.length"
-        :label="selectTokensLabel"
-        :addresses="selectableTokensAddresses"
-        @click="address => addToken(address)"
-      />
+      <TokenSearchInputSelectTokens v-if="selectableTokensAddresses.length" :label="selectTokensLabel" :addresses="selectableTokensAddresses" @click="address => addToken(address)" />
     </div>
     <teleport to="#modal">
-      <SelectTokenModal
-        v-if="selectTokenModal"
-        :excludedTokens="compact([...modelValue, veBalTokenInfo?.address])"
-        @close="selectTokenModal = false"
-        @select="addToken"
-      />
+      <SelectTokenModal v-if="selectTokenModal" :excludedTokens="compact([...modelValue, veBalTokenInfo?.address])" @close="selectTokenModal = false" @select="addToken" />
     </teleport>
   </div>
 </template>

@@ -14,7 +14,7 @@ type Props = {
 /**
  * PROPS
  */
- const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   size: '1',
   color: 'green',
 });
@@ -44,17 +44,13 @@ const bufferBarStyles = computed(() => ({
 <template>
   <div class="progress-track">
     <div :class="['progress-bar', barClasses]" :style="barStyles" />
-    <div
-      v-if="props.bufferWidth != null && props.bufferWidth > 0"
-      :class="['progress-bar', bufferBarClasses]"
-      :style="bufferBarStyles"
-    />
+    <div v-if="props.bufferWidth != null && props.bufferWidth > 0" :class="['progress-bar', bufferBarClasses]" :style="bufferBarStyles" />
   </div>
 </template>
 
 <style scoped>
 .progress-track {
-  @apply rounded-full bg-transparent dark:bg-transparent overflow-hidden flex h-[2px];
+  @apply flex h-[2px] overflow-hidden rounded-full bg-transparent dark:bg-transparent;
 }
 
 .progress-bar {

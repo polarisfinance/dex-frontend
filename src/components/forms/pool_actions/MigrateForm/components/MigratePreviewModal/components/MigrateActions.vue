@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { StablePoolEncoder, WeightedPoolEncoder } from '@balancer-labs/sdk';
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber, BigNumberish } from 'ethers';
 import { computed, onBeforeMount, reactive, ref, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import useRelayerApproval, {
-  Relayer,
-} from '@/composables/trade/useRelayerApproval';
+import useRelayerApproval, { Relayer } from '@/composables/trade/useRelayerApproval';
 import useConfig from '@/composables/useConfig';
 import useEthers from '@/composables/useEthers';
 import { isStableLike } from '@/composables/usePool';
@@ -55,13 +50,7 @@ type MigratePoolState = {
  */
 const props = defineProps<Props>();
 
-const {
-  fiatTotalLabel,
-  bptBalanceScaled,
-  fullAmountsScaled,
-  tokenCount,
-  shouldFetchBatchSwap,
-} = toRefs(props.math);
+const { fiatTotalLabel, bptBalanceScaled, fullAmountsScaled, tokenCount, shouldFetchBatchSwap } = toRefs(props.math);
 
 const emit = defineEmits<{
   (e: 'success', value: TransactionReceipt): void;
@@ -101,18 +90,9 @@ const actions = ref<TransactionActionInfo[]>([migrateAction]);
 /**
  * COMPUTED
  */
-const explorerLink = computed(() =>
-  migratePoolState.receipt
-    ? explorerLinks.txLink(migratePoolState.receipt.transactionHash)
-    : ''
-);
+const explorerLink = computed(() => (migratePoolState.receipt ? explorerLinks.txLink(migratePoolState.receipt.transactionHash) : ''));
 
-const transactionInProgress = computed(
-  () =>
-    migratePoolState.init ||
-    migratePoolState.confirming ||
-    migratePoolState.confirmed
-);
+const transactionInProgress = computed(() => migratePoolState.init || migratePoolState.confirming || migratePoolState.confirmed);
 
 /**
  * METHODS
@@ -122,11 +102,7 @@ async function handleTransaction(tx): Promise<void> {
     id: tx.hash,
     type: 'tx',
     action: 'migratePool',
-    summary: t('transactionSummary.migratePool', [
-      fiatTotalLabel.value,
-      props.fromPoolTokenInfo.symbol,
-      props.toPoolTokenInfo.symbol,
-    ]),
+    summary: t('transactionSummary.migratePool', [fiatTotalLabel.value, props.fromPoolTokenInfo.symbol, props.toPoolTokenInfo.symbol]),
     details: {
       fromPool: props.fromPool,
       toPool: props.toPool,
@@ -156,13 +132,9 @@ async function submit() {
 
     let userData = '';
     if (isStableLike(props.fromPool.poolType)) {
-      userData = StablePoolEncoder.exitExactBPTInForTokensOut(
-        bptBalanceScaled.value
-      );
+      userData = StablePoolEncoder.exitExactBPTInForTokensOut(bptBalanceScaled.value);
     } else {
-      userData = WeightedPoolEncoder.exitExactBPTInForTokensOut(
-        bptBalanceScaled.value
-      );
+      userData = WeightedPoolEncoder.exitExactBPTInForTokensOut(bptBalanceScaled.value);
     }
 
     const txInfo = await balancer.relayer.exitPoolAndBatchSwap({
@@ -171,9 +143,7 @@ async function submit() {
       poolId: props.fromPool.id,
       exitTokens: props.fromPool.tokensList.map(t => t.toLowerCase()),
       userData,
-      expectedAmountsOut: fullAmountsScaled.value.map(amount =>
-        amount.toString()
-      ),
+      expectedAmountsOut: fullAmountsScaled.value.map(amount => amount.toString()),
       finalTokensOut: new Array(tokenCount.value).fill(props.toPool.address),
       slippage: slippageScaled.value,
       fetchPools: {
@@ -182,18 +152,13 @@ async function submit() {
       },
     });
 
-    const hasInvalidAmount = (txInfo.outputs?.amountsOut || []).some(
-      (amount: BigNumberish) => BigNumber.from(amount).isZero()
-    );
+    const hasInvalidAmount = (txInfo.outputs?.amountsOut || []).some((amount: BigNumberish) => BigNumber.from(amount).isZero());
 
     if (hasInvalidAmount) {
       throw new Error('exitPoolAndBatchSwap returned invalid amounts.');
     }
 
-    tx = await balancerContractsService.batchRelayer.execute(
-      txInfo,
-      getProvider()
-    );
+    tx = await balancerContractsService.batchRelayer.execute(txInfo, getProvider());
 
     migratePoolState.init = false;
     migratePoolState.confirming = true;
@@ -230,43 +195,21 @@ watch(blockNumber, async () => {
 
 <template>
   <div>
-    <BalActionSteps
-      v-if="!migratePoolState.confirmed"
-      :actions="actions"
-      :disabled="disabled"
-    />
+    <BalActionSteps v-if="!migratePoolState.confirmed" :actions="actions" :disabled="disabled" />
     <template v-else>
-      <div
-        class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
-      >
+      <div class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600">
         <div class="flex items-center">
           <BalIcon name="clock" />
           <span class="ml-2">
             {{ migratePoolState.confirmedAt }}
           </span>
         </div>
-        <BalLink
-          :href="explorerLink"
-          external
-          noStyle
-          class="group flex items-center"
-        >
+        <BalLink :href="explorerLink" external noStyle class="group flex items-center">
           {{ networkConfig.explorerName }}
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="ml-px transition-colors group-hover:text-pink-500"
-          />
+          <BalIcon name="arrow-up-right" size="sm" class="ml-px transition-colors group-hover:text-pink-500" />
         </BalLink>
       </div>
-      <BalBtn
-        tag="router-link"
-        :to="{ name: 'pool', params: { id: toPool.id } }"
-        color="gray"
-        outline
-        block
-        class="mt-2"
-      >
+      <BalBtn tag="router-link" :to="{ name: 'pool', params: { id: toPool.id } }" color="gray" outline block class="mt-2">
         {{ $t('goToMigratedPool') }}
       </BalBtn>
     </template>

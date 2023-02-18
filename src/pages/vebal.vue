@@ -21,10 +21,7 @@ import { isVeBalSupported } from '@/composables/useVeBAL';
       </div>
     </div>
   </div>
-  <div
-    v-if="isVeBalSupported"
-    class="pt-16 xl:container xl:mx-auto xl:px-4 xl:pt-20"
-  >
+  <div v-if="isVeBalSupported" class="pt-16 xl:container xl:mx-auto xl:px-4 xl:pt-20">
     <div class="mb-16 xl:px-0">
       <LMVoting />
     </div>

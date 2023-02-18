@@ -26,10 +26,7 @@ const toggleMobileWallet = () => {
     <div class="sidebar-overlay" @click="showSidebar = false">
       <Transition name="sidebar" @after-leave="setSidebarOpen(false)">
         <div v-if="showSidebar" class="app-sidebar pt-[60px]">
-          <SidebarContent
-            @close="showSidebar = false"
-            @ToggleMobileWallet="toggleMobileWallet"
-          />
+          <SidebarContent @close="showSidebar = false" @ToggleMobileWallet="toggleMobileWallet" />
         </div>
       </Transition>
       <!-- <div class="app-sidebar_empty" @click="showSidebar = false">
@@ -55,7 +52,7 @@ const toggleMobileWallet = () => {
 }
 
 .app-sidebar {
-  @apply h-full w-3/4 max-w-sm cursor-default overflow-y-auto text-text-white shadow-xl bg-frame-dark;
+  @apply h-full w-3/4 max-w-sm cursor-default overflow-y-auto bg-frame-dark text-text-white shadow-xl;
   border-top-left-radius: 40px;
   border-bottom-left-radius: 40px;
 

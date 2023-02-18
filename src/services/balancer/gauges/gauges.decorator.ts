@@ -6,33 +6,21 @@ import { Multicaller } from '@/lib/utils/balancer/contract';
 import { configService } from '@/services/config/config.service';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 
-import {
-  Gauge,
-  OnchainGaugeData,
-  OnchainGaugeDataMap,
-  SubgraphGauge,
-} from './types';
+import { Gauge, OnchainGaugeData, OnchainGaugeDataMap, SubgraphGauge } from './types';
 
 const MAX_REWARD_TOKENS = 8;
 
 export class GaugesDecorator {
   multicaller: Multicaller;
 
-  constructor(
-    private readonly abi = LiquidityGaugeAbi,
-    private readonly provider = rpcProviderService.jsonProvider,
-    private readonly config = configService
-  ) {
+  constructor(private readonly abi = LiquidityGaugeAbi, private readonly provider = rpcProviderService.jsonProvider, private readonly config = configService) {
     this.multicaller = this.resetMulticaller();
   }
 
   /**
    * @summary Combine subgraph gauge schema with onchain data using multicalls.
    */
-  async decorate(
-    subgraphGauges: SubgraphGauge[],
-    userAddress: string
-  ): Promise<Gauge[]> {
+  async decorate(subgraphGauges: SubgraphGauge[], userAddress: string): Promise<Gauge[]> {
     this.multicaller = this.resetMulticaller();
     this.callRewardTokens(subgraphGauges);
     this.callClaimableTokens(subgraphGauges, userAddress);
@@ -41,9 +29,7 @@ export class GaugesDecorator {
 
     this.callClaimableRewards(subgraphGauges, userAddress, gaugesDataMap);
 
-    gaugesDataMap = await this.multicaller.execute<OnchainGaugeDataMap>(
-      gaugesDataMap
-    );
+    gaugesDataMap = await this.multicaller.execute<OnchainGaugeDataMap>(gaugesDataMap);
 
     return subgraphGauges.map(subgraphGauge => ({
       ...subgraphGauge,
@@ -70,12 +56,7 @@ export class GaugesDecorator {
   private callRewardTokens(subgraphGauges: SubgraphGauge[]) {
     subgraphGauges.forEach(gauge => {
       for (let i = 0; i < MAX_REWARD_TOKENS; i++) {
-        this.multicaller.call(
-          `${gauge.id}.rewardTokens[${i}]`,
-          gauge.id,
-          'reward_tokens',
-          [i]
-        );
+        this.multicaller.call(`${gauge.id}.rewardTokens[${i}]`, gauge.id, 'reward_tokens', [i]);
       }
     });
   }
@@ -95,17 +76,9 @@ export class GaugesDecorator {
    * @summary Add multicaller calls that fetch the user's claimable BAL
    * for each gauge in given array of gauges.
    */
-  private callClaimableTokens(
-    subgraphGauges: SubgraphGauge[],
-    userAddress: string
-  ) {
+  private callClaimableTokens(subgraphGauges: SubgraphGauge[], userAddress: string) {
     subgraphGauges.forEach(gauge => {
-      this.multicaller.call(
-        `${gauge.id}.claimableTokens`,
-        gauge.id,
-        'claimable_tokens',
-        [userAddress]
-      );
+      this.multicaller.call(`${gauge.id}.claimableTokens`, gauge.id, 'claimable_tokens', [userAddress]);
     });
   }
 
@@ -113,24 +86,13 @@ export class GaugesDecorator {
    * @summary Add multicaller calls that fetch the claimable amounts for reward tokens,
    * e.g. non BAL rewards on gauge.
    */
-  private callClaimableRewards(
-    subgraphGauges: SubgraphGauge[],
-    userAddress: string,
-    gaugesDataMap: OnchainGaugeDataMap
-  ) {
-    const methodName = isL2.value
-      ? 'claimable_reward_write'
-      : 'claimable_reward';
+  private callClaimableRewards(subgraphGauges: SubgraphGauge[], userAddress: string, gaugesDataMap: OnchainGaugeDataMap) {
+    const methodName = isL2.value ? 'claimable_reward_write' : 'claimable_reward';
     subgraphGauges.forEach(gauge => {
       gaugesDataMap[gauge.id].rewardTokens.forEach(rewardToken => {
         if (rewardToken === AddressZero) return;
 
-        this.multicaller.call(
-          `${gauge.id}.claimableRewards.${rewardToken}`,
-          gauge.id,
-          methodName,
-          [userAddress, rewardToken]
-        );
+        this.multicaller.call(`${gauge.id}.claimableRewards.${rewardToken}`, gauge.id, methodName, [userAddress, rewardToken]);
       });
     });
   }
@@ -138,9 +100,7 @@ export class GaugesDecorator {
   /**
    * @summary converts claimable reward values in map to strings from BigNumbers.
    */
-  private formatClaimableRewards(
-    claimableRewards: Record<string, string>
-  ): Record<string, string> {
+  private formatClaimableRewards(claimableRewards: Record<string, string>): Record<string, string> {
     if (!claimableRewards) return {};
 
     Object.keys(claimableRewards).forEach(rewardToken => {

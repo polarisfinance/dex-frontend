@@ -17,12 +17,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <BalTooltip
-    :disabled="!hasBalance"
-    class="mr-1 cursor-pointer leading-normal last:mr-0"
-    textAlign="left"
-    :delayMs="50"
-  >
+  <BalTooltip :disabled="!hasBalance" class="mr-1 cursor-pointer leading-normal last:mr-0" textAlign="left" :delayMs="50">
     <template #activator>
       <div
         :class="[

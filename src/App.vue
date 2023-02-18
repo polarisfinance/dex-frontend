@@ -140,20 +140,10 @@ export default defineComponent({
   <div id="app" class="relative">
     <component :is="layout" />
     <VueQueryDevTools />
-    <WalletSelectModal
-      :isVisible="isWalletSelectVisible"
-      :onShowThirdParty="() => handleThirdPartyModalToggle(true, 'wallet')"
-      @close="toggleWalletSelectModal"
-    />
+    <WalletSelectModal :isVisible="isWalletSelectVisible" :onShowThirdParty="() => handleThirdPartyModalToggle(true, 'wallet')" @close="toggleWalletSelectModal" />
     <SanctionedWalletModal v-if="isSanctioned" />
-    <ThirdPartyServicesModal
-      :isVisible="isThirdPartyServicesModalVisible"
-      @close="handleThirdPartyModalToggle(false, 'third')"
-    />
-    <AppSidebar
-      v-if="sidebarOpen"
-      @ToggleMobileWallet="showMobileWallet = true"
-    />
+    <ThirdPartyServicesModal :isVisible="isThirdPartyServicesModalVisible" @close="handleThirdPartyModalToggle(false, 'third')" />
+    <AppSidebar v-if="sidebarOpen" @ToggleMobileWallet="showMobileWallet = true" />
     <Notifications />
 
     <!-- <template #gutterLeft>

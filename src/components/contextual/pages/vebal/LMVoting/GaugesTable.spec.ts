@@ -48,10 +48,8 @@ const gauge = {
     ],
   },
   tokenLogoURIs: {
-    '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48':
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
-    '0xdAC17F958D2ee523a2206206994597C13D831ec7':
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+    '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+    '0xdAC17F958D2ee523a2206206994597C13D831ec7': 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
   },
   votes: '8212341531532800',
   votesNextPeriod: '6934407282299320',
@@ -64,8 +62,7 @@ const gauges = [gauge];
 
 const queryExpiredLabel = () => screen.queryByText(/Expired/i);
 const queryVoteBtn = () => screen.queryByRole('button', { name: /Vote/i });
-const queryRemoveVotesBtn = () =>
-  screen.queryByRole('button', { name: /Remove/i });
+const queryRemoveVotesBtn = () => screen.queryByRole('button', { name: /Remove/i });
 
 describe('GaugesTable', () => {
   it('should render right tokens for gauge', async () => {

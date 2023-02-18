@@ -30,19 +30,7 @@ const emit = defineEmits<{
 const { fNum2 } = useNumbers();
 const { isWalletReady } = useWeb3();
 
-const {
-  fiatTotal,
-  hasNoBalances,
-  hasAllTokens,
-  priceImpact,
-  highPriceImpact,
-  maximized,
-  optimized,
-  maximizeAmounts,
-  batchSwapLoading,
-  supportsPropotionalOptimization,
-} = toRefs(props.math);
-
+const { fiatTotal, hasNoBalances, hasAllTokens, priceImpact, highPriceImpact, maximized, optimized, maximizeAmounts, batchSwapLoading, supportsPropotionalOptimization } = toRefs(props.math);
 
 /**
  * COMPUTED
@@ -61,28 +49,24 @@ const optimizeBtnClasses = computed(() => ({
 <template>
   <div class="break mx-[16px]"></div>
   <div class="max-investment flex">
-    <div class="flex flex-col flex-1">
+    <div class="flex flex-1 flex-col">
       <div class="max-amount">Totally you can invest</div>
       <div>You can use all your tokens to maximize your investment</div>
     </div>
-    <div class="flex flex-col data-table-number-col  flex-1">
+    <div class="data-table-number-col flex flex-1 flex-col">
       <div class="max-amount">{{ fNum2(maxFiatValue, FNumFormats.fiat) }}</div>
       <div v-if="isWalletReady && !hasNoBalances" class="text-sm">
         <span v-if="maximized" class="">
           {{ $t('maxed') }}
         </span>
-        <span 
-          v-else
-          class="cursor-pointer small-btn"
-          @click="emit('maximize')"
-        >
+        <span v-else class="small-btn cursor-pointer" @click="emit('maximize')">
           {{ $t('maximize') }}
         </span>
       </div>
     </div>
   </div>
 
-  <div class="grid data-table">
+  <div class="data-table grid">
     <div class="data-table-row total-row">
       <div class="total">
         {{ $t('total') }}
@@ -96,38 +80,19 @@ const optimizeBtnClasses = computed(() => ({
         {{ $t('priceImpact') }}
         <BalTooltip :text="$t('customAmountsTip')">
           <template #activator>
-            <BalIcon
-              v-if="highPriceImpact"
-              name="alert-triangle"
-              size="xs"
-              class="-mb-px ml-1"
-            />
-            <BalIcon
-              v-else
-              name="info"
-              size="xs"
-              class="-mb-px ml-1 text-gray-400"
-            />
+            <BalIcon v-if="highPriceImpact" name="alert-triangle" size="xs" class="-mb-px ml-1" />
+            <BalIcon v-else name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
           </template>
         </BalTooltip>
       </div>
-      <div class="data-table-number-col  flex flex-col">
+      <div class="data-table-number-col flex flex-col">
         <div>
           <div class="flex">
-            <div
-              v-if="
-                isWalletReady && hasAllTokens && supportsPropotionalOptimization
-              "
-              class="text-sm font-semibold"
-            >
+            <div v-if="isWalletReady && hasAllTokens && supportsPropotionalOptimization" class="text-sm font-semibold">
               <span v-if="optimized" class="">
                 {{ $t('optimized') }}
               </span>
-              <div
-                v-else
-                class="cursor-pointer small-btn"
-                @click="emit('optimize')"
-              >
+              <div v-else class="small-btn cursor-pointer" @click="emit('optimize')">
                 {{ $t('optimize') }}
               </div>
             </div>
@@ -145,11 +110,11 @@ const optimizeBtnClasses = computed(() => ({
 <style scoped>
 .data-table {
   /* @apply divide-y rounded-lg border dark:divide-gray-900 dark:border-gray-900; */
-  padding:24px;
+  padding: 24px;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  color: #BDB2DD;
+  color: #bdb2dd;
   grid-template-columns: 50% auto;
 }
 
@@ -160,50 +125,44 @@ const optimizeBtnClasses = computed(() => ({
 }
 
 .data-table-number-col {
-  @apply  flex items-end justify-between p-2;
+  @apply flex items-end justify-between p-2;
 }
 
 .total-row {
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
-.total{
+.total {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
 
 .price-impact-row {
   @apply rounded-b-lg text-sm;
 }
-.max-amount{
+.max-amount {
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.max-investment{
-  padding:24px;
-  background-color: #41365E;
+.max-investment {
+  padding: 24px;
+  background-color: #41365e;
 }
 .break {
   flex-basis: 100%;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(151, 71, 255, 0.4),
-    rgba(59, 68, 189, 0.4)
-  );
+  background: linear-gradient(90deg, rgba(151, 71, 255, 0.4), rgba(59, 68, 189, 0.4));
 }
-.small-btn{
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+.small-btn {
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 20px;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-  color: #FDFDFD;
+  color: #fdfdfd;
   padding: 0px 8px;
 }
 </style>

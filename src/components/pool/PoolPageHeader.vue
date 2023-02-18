@@ -61,13 +61,8 @@ const data = reactive({
  */
 const feesFixed = computed(() => props.pool?.owner == POOLS.ZeroAddress);
 
-const communityManagedFees = computed(
-  () => props.pool?.owner == POOLS.DelegateOwner
-);
-const feesManagedByGauntlet = computed(
-  () =>
-    communityManagedFees.value && POOLS.DynamicFees.Gauntlet.includes(data.id)
-);
+const communityManagedFees = computed(() => props.pool?.owner == POOLS.DelegateOwner);
+const feesManagedByGauntlet = computed(() => communityManagedFees.value && POOLS.DynamicFees.Gauntlet.includes(data.id));
 const swapFeeToolTip = computed(() => {
   if (feesManagedByGauntlet.value) {
     return t('feesManagedByGauntlet');
@@ -91,9 +86,7 @@ const poolFeeLabel = computed(() => {
   if (feesFixed.value) {
     return t('fixedSwapFeeLabel', [feeLabel]);
   } else if (communityManagedFees.value) {
-    return feesManagedByGauntlet.value
-      ? t('dynamicSwapFeeLabel', [feeLabel])
-      : t('communitySwapFeeLabel', [feeLabel]);
+    return feesManagedByGauntlet.value ? t('dynamicSwapFeeLabel', [feeLabel]) : t('communitySwapFeeLabel', [feeLabel]);
   }
 
   // Must be owner-controlled
@@ -102,14 +95,7 @@ const poolFeeLabel = computed(() => {
 
 const hasCustomToken = computed(() => {
   const knownTokens = Object.keys(balancerTokenListTokens.value);
-  return (
-    !!props.pool &&
-    !props.isLiquidityBootstrappingPool &&
-    !props.isStablePhantomPool &&
-    props.pool.tokensList.some(
-      address => !includesAddress(knownTokens, address)
-    )
-  );
+  return !!props.pool && !props.isLiquidityBootstrappingPool && !props.isStablePhantomPool && props.pool.tokensList.some(address => !includesAddress(knownTokens, address));
 });
 
 const poolTypeLabel = computed(() => {
@@ -136,19 +122,12 @@ const poolTypeLabel = computed(() => {
         <h3 v-else class="pool-title">
           {{ poolTypeLabel }}
         </h3>
-        <div
-          v-for="([address, tokenMeta], i) in titleTokens"
-          :key="i"
-          class="mt-2 mr-2 flex h-10 items-center rounded-lg bg-gray-50 px-2 dark:bg-gray-850"
-        >
+        <div v-for="([address, tokenMeta], i) in titleTokens" :key="i" class="mt-2 mr-2 flex h-10 items-center rounded-lg bg-gray-50 px-2 dark:bg-gray-850">
           <BalAsset :address="address" />
           <span class="ml-2">
             {{ tokenMeta.symbol }}
           </span>
-          <span
-            v-if="!isStableLikePool"
-            class="mt-px ml-1 text-xs font-medium text-gray-400"
-          >
+          <span v-if="!isStableLikePool" class="mt-px ml-1 text-xs font-medium text-gray-400">
             {{
               fNum2(tokenMeta.weight, {
                 style: 'percent',
@@ -164,36 +143,18 @@ const poolTypeLabel = computed(() => {
           :poolApr="poolApr"
           class="mt-1 -ml-1"
         /> -->
-        <BalLink
-          :href="explorer.addressLink(pool?.address || '')"
-          external
-          noStyle
-          class="flex items-center"
-        >
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="mt-2 ml-2 text-gray-500 transition-colors hover:text-blue-500"
-          />
+        <BalLink :href="explorer.addressLink(pool?.address || '')" external noStyle class="flex items-center">
+          <BalIcon name="arrow-up-right" size="sm" class="mt-2 ml-2 text-gray-500 transition-colors hover:text-blue-500" />
         </BalLink>
       </div>
       <div class="mt-2 flex items-center">
         <div class="text-secondary mr-1 text-sm" v-html="poolFeeLabel" />
         <BalTooltip>
           <template #activator>
-            <BalLink
-              v-if="feesManagedByGauntlet"
-              :href="EXTERNAL_LINKS.Gauntlet.Home"
-              external
-            >
+            <BalLink v-if="feesManagedByGauntlet" :href="EXTERNAL_LINKS.Gauntlet.Home" external>
               <GauntletIcon />
             </BalLink>
-            <BalIcon
-              v-else
-              name="info"
-              size="xs"
-              class="text-gray-400 dark:text-gray-500"
-            />
+            <BalIcon v-else name="info" size="xs" class="text-gray-400 dark:text-gray-500" />
           </template>
           <span>
             {{ swapFeeToolTip }}
@@ -202,28 +163,10 @@ const poolTypeLabel = computed(() => {
       </div>
     </div>
 
-    <BalAlert
-      v-if="!appLoading && !loadingPool && missingPrices"
-      type="warning"
-      :title="$t('noPriceInfo')"
-      class="mt-2"
-      block
-    />
-    <BalAlert
-      v-if="!appLoading && !loadingPool && hasCustomToken"
-      type="error"
-      :title="$t('highRiskPool')"
-      class="mt-2"
-      block
-    />
+    <BalAlert v-if="!appLoading && !loadingPool && missingPrices" type="warning" :title="$t('noPriceInfo')" class="mt-2" block />
+    <BalAlert v-if="!appLoading && !loadingPool && hasCustomToken" type="error" :title="$t('highRiskPool')" class="mt-2" block />
     <template v-if="!appLoading && !loadingPool && isAffected">
-      <BalAlert
-        v-for="(warning, i) in warnings"
-        :key="`warning-${i}`"
-        type="error"
-        class="mt-2"
-        block
-      >
+      <BalAlert v-for="(warning, i) in warnings" :key="`warning-${i}`" type="error" class="mt-2" block>
         <template #title>
           <div v-html="warning.title" />
         </template>
@@ -232,14 +175,7 @@ const poolTypeLabel = computed(() => {
         </template>
       </BalAlert>
     </template>
-    <BalAlert
-      v-if="!appLoading && noInitLiquidity"
-      type="warning"
-      :title="$t('noInitLiquidity')"
-      :description="$t('noInitLiquidityDetail')"
-      class="mt-2"
-      block
-    />
+    <BalAlert v-if="!appLoading && noInitLiquidity" type="warning" :title="$t('noInitLiquidity')" :description="$t('noInitLiquidityDetail')" class="mt-2" block />
   </div>
 </template>
 <style scoped>

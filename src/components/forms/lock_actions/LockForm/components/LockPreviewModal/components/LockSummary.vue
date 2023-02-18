@@ -39,32 +39,17 @@ const { veBalTokenInfo } = useVeBal();
 /**
  * COMPUTED
  */
-const poolShares = computed(() =>
-  bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares)
-);
+const poolShares = computed(() => bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares));
 
-const fiatTotalLockedAmount = computed(() =>
-  poolShares.value.times(props.veBalLockInfo.lockedAmount).toString()
-);
+const fiatTotalLockedAmount = computed(() => poolShares.value.times(props.veBalLockInfo.lockedAmount).toString());
 
-const fiatTotalLockAmount = computed(() =>
-  poolShares.value.times(props.lockAmount).toString()
-);
+const fiatTotalLockAmount = computed(() => poolShares.value.times(props.lockAmount).toString());
 
-const fiatTotalLpTokens = computed(() =>
-  poolShares.value.times(props.totalLpTokens).toString()
-);
+const fiatTotalLpTokens = computed(() => poolShares.value.times(props.totalLpTokens).toString());
 
-const isExtendLockOnly = computed(
-  () =>
-    props.lockType.length === 1 && props.lockType.includes(LockType.EXTEND_LOCK)
-);
+const isExtendLockOnly = computed(() => props.lockType.length === 1 && props.lockType.includes(LockType.EXTEND_LOCK));
 
-const isIncreaseLockOnly = computed(
-  () =>
-    props.lockType.length === 1 &&
-    props.lockType.includes(LockType.INCREASE_LOCK)
-);
+const isIncreaseLockOnly = computed(() => props.lockType.length === 1 && props.lockType.includes(LockType.INCREASE_LOCK));
 
 // const fiatWeeklyYield = computed(() => '0');
 </script>
@@ -77,19 +62,10 @@ const isIncreaseLockOnly = computed(
     <div class="p-2">
       <div class="summary-item-row">
         <div>
-          {{
-            isExtendLockOnly || isIncreaseLockOnly
-              ? $t('getVeBAL.previewModal.summary.totalAlreadyLocked')
-              : $t('getVeBAL.previewModal.summary.totalToLock')
-          }}
+          {{ isExtendLockOnly || isIncreaseLockOnly ? $t('getVeBAL.previewModal.summary.totalAlreadyLocked') : $t('getVeBAL.previewModal.summary.totalToLock') }}
         </div>
         <div>
-          {{
-            fNum2(
-              isIncreaseLockOnly ? fiatTotalLockedAmount : fiatTotalLpTokens,
-              FNumFormats.fiat
-            )
-          }}
+          {{ fNum2(isIncreaseLockOnly ? fiatTotalLockedAmount : fiatTotalLpTokens, FNumFormats.fiat) }}
         </div>
       </div>
       <div v-if="isIncreaseLockOnly" class="summary-item-row">
@@ -100,11 +76,7 @@ const isIncreaseLockOnly = computed(
       </div>
       <div class="summary-item-row">
         <div>
-          {{
-            isExtendLockOnly
-              ? $t('getVeBAL.previewModal.summary.newLockEndDate')
-              : $t('getVeBAL.previewModal.summary.lockEndDate')
-          }}
+          {{ isExtendLockOnly ? $t('getVeBAL.previewModal.summary.newLockEndDate') : $t('getVeBAL.previewModal.summary.lockEndDate') }}
         </div>
         <div>{{ format(new Date(lockEndDate), PRETTY_DATE_FORMAT) }}</div>
       </div>
@@ -113,11 +85,7 @@ const isIncreaseLockOnly = computed(
         <div class="flex items-center">
           {{ fNum2(expectedVeBalAmount, FNumFormats.token) }}
           {{ veBalTokenInfo.symbol }}
-          <VeBalTooltipExplainer
-            :expectedVeBalAmount="expectedVeBalAmount"
-            :lockEndDate="lockEndDate"
-            :totalLpTokens="totalLpTokens"
-          />
+          <VeBalTooltipExplainer :expectedVeBalAmount="expectedVeBalAmount" :lockEndDate="lockEndDate" :totalLpTokens="totalLpTokens" />
         </div>
       </div>
       <!-- <div class="summary-item-row">

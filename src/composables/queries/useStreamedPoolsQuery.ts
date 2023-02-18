@@ -22,16 +22,9 @@ type FilterOptions = {
   pageSize?: number;
 };
 
-async function fetchBasicPoolMetadata(
-  tokenList: Ref<string[]> = ref([]),
-  filterOptions?: FilterOptions,
-  currentPage = 0
-) {
-  const skip =
-    POOLS.Pagination.PerPage * (currentPage - 1 < 0 ? 0 : currentPage - 1);
-  const tokensListFilterKey = filterOptions?.isExactTokensList
-    ? 'tokensList'
-    : 'tokensList_contains';
+async function fetchBasicPoolMetadata(tokenList: Ref<string[]> = ref([]), filterOptions?: FilterOptions, currentPage = 0) {
+  const skip = POOLS.Pagination.PerPage * (currentPage - 1 < 0 ? 0 : currentPage - 1);
+  const tokensListFilterKey = filterOptions?.isExactTokensList ? 'tokensList' : 'tokensList_contains';
   const queryArgs: any = {
     first: filterOptions?.pageSize || POOLS.Pagination.PerPage,
     skip: skip,
@@ -44,53 +37,25 @@ async function fetchBasicPoolMetadata(
   return pools;
 }
 
-export default function useStreamedPoolsQuery(
-  tokenList: Ref<string[]> = ref([]),
-  filterOptions?: FilterOptions
-) {
-  const {
-    priceQueryLoading,
-    prices,
-    tokens,
-    injectTokens,
-    dynamicDataLoading,
-  } = useTokens();
+export default function useStreamedPoolsQuery(tokenList: Ref<string[]> = ref([]), filterOptions?: FilterOptions) {
+  const { priceQueryLoading, prices, tokens, injectTokens, dynamicDataLoading } = useTokens();
   const { currency } = useUserSettings();
   const gaugesQuery = useGaugesQuery();
 
-  const decorationEnabled = computed(
-    (): boolean => !priceQueryLoading.value && !isQueryLoading(gaugesQuery)
-  );
+  const decorationEnabled = computed((): boolean => !priceQueryLoading.value && !isQueryLoading(gaugesQuery));
 
-  const {
-    dataStates,
-    result,
-    loadMore,
-    currentPage,
-    isLoadingMore,
-    isComplete,
-  } = useQueryStreams('pools', {
+  const { dataStates, result, loadMore, currentPage, isLoadingMore, isComplete } = useQueryStreams('pools', {
     basic: {
       init: true,
       dependencies: { tokenList },
       queryFn: async (_, __, currentPage: Ref<number>) => {
-        return await fetchBasicPoolMetadata(
-          tokenList,
-          filterOptions,
-          currentPage.value
-        );
+        return await fetchBasicPoolMetadata(tokenList, filterOptions, currentPage.value);
       },
     },
     injectTokens: {
       waitFor: ['basic.id'],
       queryFn: async (pools: Ref<Pool[]>) => {
-        const _tokens = flatten(
-          pools.value.map(pool => [
-            ...pool.tokensList,
-            ...lpTokensFor(pool),
-            pool.address,
-          ])
-        );
+        const _tokens = flatten(pools.value.map(pool => [...pool.tokensList, ...lpTokensFor(pool), pool.address]));
         await injectTokens(_tokens);
         await forChange(dynamicDataLoading, false);
         return () => pools.value;
@@ -101,12 +66,7 @@ export default function useStreamedPoolsQuery(
       enabled: decorationEnabled,
       queryFn: async (pools: Ref<Pool[]>) => {
         const poolDecorator = new PoolDecorator(pools.value);
-        return poolDecorator.decorate(
-          gaugesQuery.data.value || [],
-          prices.value,
-          currency.value,
-          tokens.value
-        );
+        return poolDecorator.decorate(gaugesQuery.data.value || [], prices.value, currency.value, tokens.value);
       },
     },
   });

@@ -6,23 +6,12 @@
         <p class="alert-label">
           {{ alert.label }}
         </p>
-        <BalBtn
-          v-if="alert.action && alert.actionLabel"
-          class="cursor-pointer"
-          color="white"
-          size="xs"
-          :label="alert.actionLabel"
-          @click="alert.action"
-        />
+        <BalBtn v-if="alert.action && alert.actionLabel" class="cursor-pointer" color="white" size="xs" :label="alert.actionLabel" @click="alert.action" />
       </div>
     </div>
 
     <div v-if="!alert.persistent" class="flex items-start">
-      <BalIcon
-        name="x"
-        class="fade-in-slow mt-0.5 cursor-pointer"
-        @click.stop="handleClose"
-      />
+      <BalIcon name="x" class="fade-in-slow mt-0.5 cursor-pointer" @click.stop="handleClose" />
     </div>
   </div>
 </template>
@@ -87,7 +76,7 @@ export default defineComponent({
 <style scoped>
 .app-nav-alert {
   @apply flex content-start justify-between py-2 px-4 xs:py-4;
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   min-height: 54px;
 }
 

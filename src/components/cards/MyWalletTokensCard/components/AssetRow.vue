@@ -28,9 +28,7 @@ const { fNum2, toFiat } = useNumbers();
  */
 const token = computed(() => getToken(props.address));
 
-const balanceLabel = computed(() =>
-  fNum2(balanceFor(props.address), FNumFormats.token)
-);
+const balanceLabel = computed(() => fNum2(balanceFor(props.address), FNumFormats.token));
 
 const fiatLabel = computed(() => {
   const tokenBalance = balanceFor(props.address);
@@ -46,10 +44,7 @@ const fiatLabel = computed(() => {
       <span>
         {{ token.symbol }}
       </span>
-      <span
-        v-if="token.name !== token.symbol"
-        :class="['text-sm', selected ? 'text-gray-500' : 'text-gray-400']"
-      >
+      <span v-if="token.name !== token.symbol" :class="['text-sm', selected ? 'text-gray-500' : 'text-gray-400']">
         {{ token.name }}
       </span>
     </div>

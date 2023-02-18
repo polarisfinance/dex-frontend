@@ -1,23 +1,15 @@
 import { Contract } from '@ethersproject/contracts';
 import { ErrorCode } from '@ethersproject/logger';
-import {
-  JsonRpcProvider,
-  TransactionResponse,
-  Web3Provider,
-} from '@ethersproject/providers';
+import { JsonRpcProvider, TransactionResponse, Web3Provider } from '@ethersproject/providers';
 
-import {
-  EthereumTxType,
-  ethereumTxType,
-} from '@/composables/useEthereumTxType';
+import { EthereumTxType, ethereumTxType } from '@/composables/useEthereumTxType';
 import { logFailedTx } from '@/lib/utils/logging';
 import GasPriceService from '@/services/gas-price/gas-price.service';
 import { WalletError } from '@/types';
 
 const ENV = process.env.VUE_APP_ENV || 'development';
 // only disable if set to "false"
-const USE_BLOCKNATIVE_GAS_PLATFORM =
-  process.env.VUE_APP_USE_BLOCKNATIVE_GAS_PLATFORM === 'false' ? false : true;
+const USE_BLOCKNATIVE_GAS_PLATFORM = process.env.VUE_APP_USE_BLOCKNATIVE_GAS_PLATFORM === 'false' ? false : true;
 const GAS_LIMIT_BUFFER = 0.1;
 
 const RPC_INVALID_PARAMS_ERROR_CODE = -32602;
@@ -46,28 +38,15 @@ export async function sendTransaction(
 
   try {
     // Gas estimation
-    const gasLimitNumber = await contractWithSigner.estimateGas[action](
-      ...params,
-      paramsOverrides
-    );
+    const gasLimitNumber = await contractWithSigner.estimateGas[action](...params, paramsOverrides);
 
     const gasLimit = gasLimitNumber.toNumber();
     paramsOverrides.gasLimit = Math.floor(gasLimit * (1 + GAS_LIMIT_BUFFER));
 
-    if (
-      USE_BLOCKNATIVE_GAS_PLATFORM &&
-      paramsOverrides.gasPrice == null &&
-      paramsOverrides.maxFeePerGas == null &&
-      paramsOverrides.maxPriorityFeePerGas == null
-    ) {
+    if (USE_BLOCKNATIVE_GAS_PLATFORM && paramsOverrides.gasPrice == null && paramsOverrides.maxFeePerGas == null && paramsOverrides.maxPriorityFeePerGas == null) {
       const gasPrice = await gasPriceService.getLatest();
       if (gasPrice != null) {
-        if (
-          ethereumTxType.value === EthereumTxType.EIP1559 &&
-          gasPrice.maxFeePerGas != null &&
-          gasPrice.maxPriorityFeePerGas != null &&
-          !forceEthereumLegacyTxType
-        ) {
+        if (ethereumTxType.value === EthereumTxType.EIP1559 && gasPrice.maxFeePerGas != null && gasPrice.maxPriorityFeePerGas != null && !forceEthereumLegacyTxType) {
           paramsOverrides.maxFeePerGas = gasPrice.maxFeePerGas;
           paramsOverrides.maxPriorityFeePerGas = gasPrice.maxPriorityFeePerGas;
         } else {
@@ -79,24 +58,10 @@ export async function sendTransaction(
   } catch (e) {
     const error = e as WalletError;
 
-    if (
-      error.code === RPC_INVALID_PARAMS_ERROR_CODE &&
-      EIP1559_UNSUPPORTED_REGEX.test(error.message)
-    ) {
+    if (error.code === RPC_INVALID_PARAMS_ERROR_CODE && EIP1559_UNSUPPORTED_REGEX.test(error.message)) {
       // Sending tx as EIP1559 has failed, retry with legacy tx type
-      return sendTransaction(
-        web3,
-        contractAddress,
-        abi,
-        action,
-        params,
-        overrides,
-        true
-      );
-    } else if (
-      error.code === ErrorCode.UNPREDICTABLE_GAS_LIMIT &&
-      ENV !== 'development'
-    ) {
+      return sendTransaction(web3, contractAddress, abi, action, params, overrides, true);
+    } else if (error.code === ErrorCode.UNPREDICTABLE_GAS_LIMIT && ENV !== 'development') {
       const sender = await web3.getSigner().getAddress();
       logFailedTx(sender, contract, action, params, overrides);
     }
@@ -104,14 +69,7 @@ export async function sendTransaction(
   }
 }
 
-export async function callStatic(
-  web3,
-  contractAddress: string,
-  abi: any[],
-  action: string,
-  params: any[],
-  overrides = {}
-) {
+export async function callStatic(web3, contractAddress: string, abi: any[], action: string, params: any[], overrides = {}) {
   console.log('Sending transaction');
   console.log('Contract', contractAddress);
   console.log('Action', `"${action}"`);

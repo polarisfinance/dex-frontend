@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { format, fromUnixTime } from 'date-fns';
-import {
-  Dictionary,
-  mapKeys,
-  mapValues,
-  maxBy,
-  minBy,
-  pickBy,
-  toPairs,
-} from 'lodash';
+import { Dictionary, mapKeys, mapValues, maxBy, minBy, pickBy, toPairs } from 'lodash';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useQuery } from 'vue-query';
@@ -38,56 +30,28 @@ function symbolFor(address: string) {
  * @param days The number of days to pull historical data for
  * @param inverse Swaps the pricing calc to be output/input rather than input/output
  */
-async function getPairPriceData(
-  inputAsset: string,
-  outputAsset: string,
-  nativeAsset: string,
-  wrappedNativeAsset: string,
-  days: number,
-  inverse?: boolean
-) {
-  let _inputAsset =
-    inputAsset === nativeAsset ? wrappedNativeAsset : inputAsset;
-  let _outputAsset =
-    outputAsset === nativeAsset ? wrappedNativeAsset : outputAsset;
+async function getPairPriceData(inputAsset: string, outputAsset: string, nativeAsset: string, wrappedNativeAsset: string, days: number, inverse?: boolean) {
+  let _inputAsset = inputAsset === nativeAsset ? wrappedNativeAsset : inputAsset;
+  let _outputAsset = outputAsset === nativeAsset ? wrappedNativeAsset : outputAsset;
 
   if (inverse) {
     [_inputAsset, _outputAsset] = [_outputAsset, _inputAsset];
   }
   const aggregateBy = days === 1 ? 'hour' : 'day';
-  const getInputAssetData = coingeckoService.prices.getTokensHistorical(
-    [_inputAsset],
-    days,
-    1,
-    aggregateBy
-  );
+  const getInputAssetData = coingeckoService.prices.getTokensHistorical([_inputAsset], days, 1, aggregateBy);
 
-  const getOutputAssetData = coingeckoService.prices.getTokensHistorical(
-    [_outputAsset],
-    days,
-    1,
-    aggregateBy
-  );
+  const getOutputAssetData = coingeckoService.prices.getTokensHistorical([_outputAsset], days, 1, aggregateBy);
 
-  const [inputAssetData, outputAssetData] = await Promise.all([
-    getInputAssetData,
-    getOutputAssetData,
-  ]);
+  const [inputAssetData, outputAssetData] = await Promise.all([getInputAssetData, getOutputAssetData]);
 
   const calculatedPricing = mapValues(inputAssetData, (value, timestamp) => {
     if (!outputAssetData[timestamp]) return null;
     return (1 / value[0]) * outputAssetData[timestamp][0];
   });
 
-  const calculatedPricingNoNulls = pickBy(
-    calculatedPricing
-  ) as Dictionary<number>;
+  const calculatedPricingNoNulls = pickBy(calculatedPricing) as Dictionary<number>;
 
-  const formatTimestamps = mapKeys(
-    calculatedPricingNoNulls,
-    (_, timestamp: any) =>
-      format(fromUnixTime(timestamp / 1000), 'yyyy/MM/dd HH:mm')
-  );
+  const formatTimestamps = mapKeys(calculatedPricingNoNulls, (_, timestamp: any) => format(fromUnixTime(timestamp / 1000), 'yyyy/MM/dd HH:mm'));
 
   console.log(calculatedPricingNoNulls);
 
@@ -137,9 +101,7 @@ const { chainId: userNetworkId, appNetworkConfig } = useWeb3();
 const tokenInAddress = computed(() => props.tokenInAddress);
 const tokenOutAddress = computed(() => props.tokenOutAddress);
 
-const chartHeight = ref(
-  upToLargeBreakpoint ? (props.isModal ? 250 : 75) : props.isModal ? 250 : 100
-);
+const chartHeight = ref(upToLargeBreakpoint ? (props.isModal ? 250 : 75) : props.isModal ? 250 : 100);
 const activeTimespan = ref(chartTimespans[0]);
 const appLoading = computed(() => store.state.app.loading);
 
@@ -165,22 +127,8 @@ const {
   data: priceData,
   error: failedToLoadPriceData,
 } = useQuery(
-  QUERY_KEYS.Tokens.PairPriceData(
-    tokenInAddress,
-    tokenOutAddress,
-    activeTimespan,
-    userNetworkId,
-    nativeAsset,
-    wrappedNativeAsset
-  ),
-  () =>
-    getPairPriceData(tokenInAddress.value,
-      tokenOutAddress.value,
-      nativeAsset?.address,
-      wrappedNativeAsset.value?.address,
-      activeTimespan.value.value,
-      true
-    ),
+  QUERY_KEYS.Tokens.PairPriceData(tokenInAddress, tokenOutAddress, activeTimespan, userNetworkId, nativeAsset, wrappedNativeAsset),
+  () => getPairPriceData(tokenInAddress.value, tokenOutAddress.value, nativeAsset?.address, wrappedNativeAsset.value?.address, activeTimespan.value.value, true),
   reactive({
     enabled: initialized,
     retry: false,
@@ -196,17 +144,9 @@ const toggle = () => {
   props.toggleModal();
 };
 
-const equivalentTokenPairs = [
-  [appNetworkConfig.addresses.weth, appNetworkConfig.nativeAsset.address],
-];
+const equivalentTokenPairs = [[appNetworkConfig.addresses.weth, appNetworkConfig.nativeAsset.address]];
 
-const allChartValuesEqual = computed(() =>
-  equivalentTokenPairs.some(
-    pair =>
-      pair.includes(tokenInAddress.value) &&
-      pair.includes(tokenOutAddress.value)
-  )
-);
+const allChartValuesEqual = computed(() => equivalentTokenPairs.some(pair => pair.includes(tokenInAddress.value) && pair.includes(tokenOutAddress.value)));
 
 const chartData = computed(() => {
   if (allChartValuesEqual.value) return [];
@@ -228,10 +168,7 @@ const chartBlankText = computed(() => {
 const isNegativeTrend = computed(() => {
   const _priceData = priceData.value || [];
   if (_priceData.length > 2) {
-    if (
-      _priceData[_priceData.length - 1][1] <
-      _priceData[_priceData.length - 2][1]
-    ) {
+    if (_priceData[_priceData.length - 1][1] < _priceData[_priceData.length - 2][1]) {
       return true;
     }
   }
@@ -266,10 +203,7 @@ const chartGrid = computed(() => {
     />
     <div v-else class="container">
       <div class="relative p-4">
-        <div
-          v-if="!failedToLoadPriceData && !(isLoadingPriceData || appLoading)"
-          class="flex"
-        >
+        <div v-if="!failedToLoadPriceData && !(isLoadingPriceData || appLoading)" class="flex">
           <div class="flex gap-[6px]">
             <BalAsset :address="tokenOutAddress" :size="24" />
             <div class="flex-column">
@@ -278,30 +212,14 @@ const chartGrid = computed(() => {
             </div>
           </div>
         </div>
-        <div
-          v-if="failedToLoadPriceData && tokenOutAddress"
-          class="flex h-full w-full items-center justify-center"
-        >
-          <span class="text-sm text-gray-400">{{
-            $t('insufficientData')
-          }}</span>
+        <div v-if="failedToLoadPriceData && tokenOutAddress" class="flex h-full w-full items-center justify-center">
+          <span class="text-sm text-gray-400">{{ $t('insufficientData') }}</span>
         </div>
-        <div
-          v-if="failedToLoadPriceData && !tokenOutAddress"
-          class="flex h-full w-full items-center justify-center"
-        >
-          <span class="text-center text-sm text-gray-400">{{
-            $t('chooseAPair')
-          }}</span>
+        <div v-if="failedToLoadPriceData && !tokenOutAddress" class="flex h-full w-full items-center justify-center">
+          <span class="text-center text-sm text-gray-400">{{ $t('chooseAPair') }}</span>
         </div>
-        <div
-          v-if="!failedToLoadPriceData && !isLoadingPriceData"
-          class="flex-col"
-        >
-          <BalBlankSlate
-            v-if="chartData.length === 0"
-            :class="['mt-4', isModal ? 'h-96' : 'h-40']"
-          >
+        <div v-if="!failedToLoadPriceData && !isLoadingPriceData" class="flex-col">
+          <BalBlankSlate v-if="chartData.length === 0" :class="['mt-4', isModal ? 'h-96' : 'h-40']">
             <BalIcon name="bar-chart" />
             {{ chartBlankText }}
           </BalBlankSlate>
@@ -345,12 +263,8 @@ const chartGrid = computed(() => {
                     {
                       'text-white': activeTimespan.value === timespan.value,
                       'text-secondary': activeTimespan.value !== timespan.value,
-                      'bg-green-400':
-                        !isNegativeTrend &&
-                        activeTimespan.value === timespan.value,
-                      'bg-red-400':
-                        isNegativeTrend &&
-                        activeTimespan.value === timespan.value,
+                      'bg-green-400': !isNegativeTrend && activeTimespan.value === timespan.value,
+                      'bg-red-400': isNegativeTrend && activeTimespan.value === timespan.value,
                       'hover:bg-red-200': isNegativeTrend,
                       'hover:bg-green-200': !isNegativeTrend,
                     },
@@ -361,12 +275,8 @@ const chartGrid = computed(() => {
                 </button>
               </div>
               <div :class="{ 'mt-4': isModal }">
-                <span class="mr-4 text-sm text-gray-500"
-                  >Low: {{ dataMin.toPrecision(6) }}</span
-                >
-                <span class="text-sm text-gray-500"
-                  >High: {{ dataMax.toPrecision(6) }}</span
-                >
+                <span class="mr-4 text-sm text-gray-500">Low: {{ dataMin.toPrecision(6) }}</span>
+                <span class="text-sm text-gray-500">High: {{ dataMax.toPrecision(6) }}</span>
               </div>
             </div>
             <!-- <div v-else class="-mt-2 lg:mt-2">

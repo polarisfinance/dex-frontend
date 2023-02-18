@@ -41,33 +41,18 @@ const id = route.params.id as string;
  * QUERIES
  */
 
-const poolActivitiesQuery =
-  props.poolActivityType === PoolTransactionsTab.ALL_ACTIVITY
-    ? usePoolActivitiesQuery(id)
-    : usePoolUserActivitiesQuery(id);
+const poolActivitiesQuery = props.poolActivityType === PoolTransactionsTab.ALL_ACTIVITY ? usePoolActivitiesQuery(id) : usePoolUserActivitiesQuery(id);
 
 /**
  * COMPUTED
  */
-const poolActivities = computed(() =>
-  poolActivitiesQuery.data.value
-    ? flatten(
-        poolActivitiesQuery.data.value.pages.map(page => page.poolActivities)
-      )
-    : []
-);
+const poolActivities = computed(() => (poolActivitiesQuery.data.value ? flatten(poolActivitiesQuery.data.value.pages.map(page => page.poolActivities)) : []));
 
 console.log(poolActivities);
 
-const isLoadingPoolActivities = computed(
-  () => poolActivitiesQuery.isLoading.value
-);
-const poolActivitiesHasNextPage = computed(
-  () => poolActivitiesQuery.hasNextPage?.value
-);
-const poolActivitiesIsFetchingNextPage = computed(
-  () => poolActivitiesQuery.isFetchingNextPage?.value
-);
+const isLoadingPoolActivities = computed(() => poolActivitiesQuery.isLoading.value);
+const poolActivitiesHasNextPage = computed(() => poolActivitiesQuery.hasNextPage?.value);
+const poolActivitiesIsFetchingNextPage = computed(() => poolActivitiesQuery.isFetchingNextPage?.value);
 
 /**
  * METHODS
@@ -84,11 +69,7 @@ function loadMorePoolActivities() {
     :isLoading="loading || isLoadingPoolActivities"
     :isLoadingMore="poolActivitiesIsFetchingNextPage"
     :isPaginated="poolActivitiesHasNextPage"
-    :noResultsLabel="
-      poolActivityType === PoolTransactionsTab.ALL_ACTIVITY
-        ? $t('poolTransactions.noResults.allInvestments')
-        : $t('poolTransactions.noResults.myInvestments')
-    "
+    :noResultsLabel="poolActivityType === PoolTransactionsTab.ALL_ACTIVITY ? $t('poolTransactions.noResults.allInvestments') : $t('poolTransactions.noResults.myInvestments')"
     @load-more="loadMorePoolActivities"
   />
 </template>

@@ -25,34 +25,29 @@ const classes = computed(() => ({
 </script>
 
 <template>
-  <AppHero :class="{'mt-[200px]':isDesktop,'mb-10':isMobile}" class="app-hero">
+  <AppHero :class="{ 'mt-[200px]': isDesktop, 'mb-10': isMobile }" class="app-hero">
     <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
-    <h1 class="home-title mx-auto" :class="{'text-[84px] leading-[104px]':isDesktop,'text-[44px] leading-[50px]':isMobile}">Put your assets to work.</h1>
-    <h1 class="home-subtitle max-w-md mx-auto mt-[32px]">Collect fees from pool and rebalances automatically.</h1>
+    <h1 class="home-title mx-auto" :class="{ 'text-[84px] leading-[104px]': isDesktop, 'text-[44px] leading-[50px]': isMobile }">Put your assets to work.</h1>
+    <h1 class="home-subtitle mx-auto mt-[32px] max-w-md">Collect fees from pool and rebalances automatically.</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
       <div class="mt-[60px] flex w-full justify-center">
         <HeroConnectWalletButton class="mr-[16px]" />
-        <a
-          href="#hot-pools"
-          rel="noreferrer"
-          @click="trackGoal(Goals.ClickStartEarning)"
-          class="start-earning-button"
-        >
+        <a href="#hot-pools" rel="noreferrer" @click="trackGoal(Goals.ClickStartEarning)" class="start-earning-button">
           Start earning
-          <ArrowDownIcon2 class="inline ml-[20px]"/>
+          <ArrowDownIcon2 class="ml-[20px] inline" />
         </a>
       </div>
     </template>
     <div class="my-[80px] flex w-full justify-center" v-if="isDesktop">
       <div>
-        <div class="boost flex my-12">
+        <div class="boost my-12 flex">
           <div>
             <div class="boost-value">2.5x</div>
             Up to current APR
           </div>
           <h5 class="boost-info self-center">Boost liquidity mining yields up to 2.5x</h5>
         </div>
-        <div class="boost flex  my-12">
+        <div class="boost my-12 flex">
           <div>
             <div class="boost-value">30%</div>
             Up to current APR
@@ -60,29 +55,19 @@ const classes = computed(() => ({
           <h5 class="boost-info self-center">Boost liquidity mining yields up to 2.5x</h5>
         </div>
       </div>
-      <div class="text-left self-end mb-12">
+      <div class="mb-12 self-end text-left">
         <div class="balancer-info mb-[16px]">
-        Portfolios that <span class="yield">generate yield </span>
-        and rebalance automatically.
+          Portfolios that <span class="yield">generate yield </span>
+          and rebalance automatically.
         </div>
-        <a
-          href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c"
-          target="_blank"
-          rel="noreferrer"
-          @click="trackGoal(Goals.ClickHeroLearnMore)"
-          class="read-button"
-        >
-          Read our medium
-        </a>
+        <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" rel="noreferrer" @click="trackGoal(Goals.ClickHeroLearnMore)" class="read-button"> Read our medium </a>
       </div>
     </div>
   </AppHero>
-  
 </template>
 
 <style scoped>
-.app-hero{
-  
+.app-hero {
 }
 .headline {
   @apply pb-2 text-center font-display text-4xl font-black text-white md:text-5xl;
@@ -95,15 +80,15 @@ const classes = computed(() => ({
   font-weight: 600;
   text-align: center;
   color: #fdfdfd;
-  max-width:600px;
+  max-width: 600px;
 }
 
 .home-subtitle {
   font-weight: 500;
   font-size: 24px;
   line-height: 32px;
-  color: #A99BC6;
-  max-width:300px;
+  color: #a99bc6;
+  max-width: 300px;
 }
 
 .start-earning-button {
@@ -113,63 +98,61 @@ const classes = computed(() => ({
   font-size: 16px;
   line-height: 20px;
   padding: 12px 14px 12px 44px;
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
 
 .start-earning-button:hover {
-  border: 1px solid #50456E;
+  border: 1px solid #50456e;
 }
 
 .start-earning-button:active {
-  border: 1px solid #50456E;
+  border: 1px solid #50456e;
 }
-.boost-value{
-  color: #A99BC6;
+.boost-value {
+  color: #a99bc6;
   font-weight: 600;
   font-size: 84px;
   line-height: 65px;
   letter-spacing: -0.02em;
 }
-.boost{
+.boost {
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  color: #A99BC6;
+  color: #a99bc6;
 }
-.boost-info{
+.boost-info {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
   margin-left: 31px;
   max-width: 40%;
   text-align: left;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.balancer-info{
+.balancer-info {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
 }
-.yield{
-  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
+.yield {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.read-button{
+.read-button {
   padding: 8px 20px;
   gap: 10px;
   border-radius: 24px;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-  color: #FDFDFD;
-  background: linear-gradient(rgba(21, 1, 40, 1),rgba(21, 1, 40, 1)) padding-box,
-  linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
+  color: #fdfdfd;
+  background: linear-gradient(rgba(21, 1, 40, 1), rgba(21, 1, 40, 1)) padding-box, linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
-.read-button:hover{
-  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
+.read-button:hover {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
 }
 </style>

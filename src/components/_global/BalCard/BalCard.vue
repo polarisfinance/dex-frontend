@@ -1,19 +1,11 @@
 <template>
   <div :class="['bal-card', cardClasses]">
-    <div
-      :class="[
-        'card-container',
-        { 'max-h-screen overflow-y-scroll': overflowYScroll },
-      ]"
-    >
+    <div :class="['card-container', { 'max-h-screen overflow-y-scroll': overflowYScroll }]">
       <div v-if="imgSrc" class="feature" :style="featureStyles" />
       <div v-if="!!title || $slots.header" :class="['header', headerClasses]">
         <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -- Not sure if this is fine -->
         <component :is="titleTag" v-if="!!title" v-text="title" />
-        <div
-          v-if="$slots.header"
-          :class="['header-content', headerContentClasses]"
-        >
+        <div v-if="$slots.header" :class="['header-content', headerContentClasses]">
           <slot name="header" />
         </div>
       </div>
@@ -137,7 +129,7 @@ export default defineComponent({
 
 .card-container {
   @apply flex flex-col;
-  background: #41365E;
+  background: #41365e;
 }
 
 .card-container::-webkit-scrollbar {
@@ -146,15 +138,13 @@ export default defineComponent({
 
 .header {
   @apply flex items-center;
-  background-color: #41365E;
+  background-color: #41365e;
   border-top-left-radius: 22px;
   border-top-right-radius: 22px;
-  
 }
 
 .header-content {
   @apply flex flex-1 items-center;
-  
 }
 
 .footer {

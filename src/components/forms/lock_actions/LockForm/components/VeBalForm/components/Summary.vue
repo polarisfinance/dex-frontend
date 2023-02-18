@@ -26,11 +26,7 @@ const { veBalTokenInfo } = useVeBal();
     <div class="row">
       <div>{{ $t('getVeBAL.lockForm.summary.receive.title') }}</div>
       <div>
-        {{
-          expectedVeBalAmount != null
-            ? fNum2(expectedVeBalAmount, FNumFormats.token)
-            : '-'
-        }}
+        {{ expectedVeBalAmount != null ? fNum2(expectedVeBalAmount, FNumFormats.token) : '-' }}
         {{ veBalTokenInfo.symbol }}
       </div>
     </div>

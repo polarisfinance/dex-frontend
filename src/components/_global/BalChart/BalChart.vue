@@ -69,12 +69,7 @@ type Props = {
   areaStyle?: AreaStyle;
 };
 
-const emit = defineEmits([
-  'periodSelected',
-  'setCurrentChartValue',
-  'mouseLeaveEvent',
-  'mouseEnterEvent',
-]);
+const emit = defineEmits(['periodSelected', 'setCurrentChartValue', 'mouseLeaveEvent', 'mouseEnterEvent']);
 
 const props = withDefaults(defineProps<Props>(), {
   isLoading: false,
@@ -108,23 +103,14 @@ const chartConfig = computed(() => ({
     icon: 'roundRect',
     itemHeight: 5,
     formatter: (legendName: string) => {
-      const latestValue = last(
-        props.data.find(d => d.name === legendName)?.values as any
-      ) as [string | number, string | number];
-      return `${legendName}: ${fNum2(
-        latestValue[1],
-        props.axisLabelFormatter.yAxis
-      )}`;
+      const latestValue = last(props.data.find(d => d.name === legendName)?.values as any) as [string | number, string | number];
+      return `${legendName}: ${fNum2(latestValue[1], props.axisLabelFormatter.yAxis)}`;
     },
     selected: props.legendState || {},
     textStyle: {
-      color: darkMode.value
-        ? tailwind.theme.colors.gray['100']
-        : tailwind.theme.colors.gray['800'],
+      color: darkMode.value ? tailwind.theme.colors.gray['100'] : tailwind.theme.colors.gray['800'],
     },
-    inactiveColor: darkMode.value
-      ? tailwind.theme.colors.gray['700']
-      : tailwind.theme.colors.gray['300'],
+    inactiveColor: darkMode.value ? tailwind.theme.colors.gray['700'] : tailwind.theme.colors.gray['300'],
   },
   // controlling the display of the X-Axis
   xAxis: {
@@ -136,9 +122,7 @@ const chartConfig = computed(() => ({
     },
     minInterval: props.xAxisMinInterval,
     axisLabel: {
-      formatter: props.axisLabelFormatter.xAxis
-        ? value => fNum2(value, props.axisLabelFormatter.xAxis)
-        : undefined,
+      formatter: props.axisLabelFormatter.xAxis ? value => fNum2(value, props.axisLabelFormatter.xAxis) : undefined,
       color: tailwind.theme.colors.gray['400'],
     },
     splitArea: {
@@ -165,9 +149,7 @@ const chartConfig = computed(() => ({
     position: 'left',
     axisLabel: {
       show: !props.hideYAxis,
-      formatter: props.axisLabelFormatter.yAxis
-        ? value => fNum2(value, props.axisLabelFormatter.yAxis)
-        : undefined,
+      formatter: props.axisLabelFormatter.yAxis ? value => fNum2(value, props.axisLabelFormatter.yAxis) : undefined,
       color: tailwind.theme.colors.gray['400'],
     },
     nameGap: 25,
@@ -192,12 +174,8 @@ const chartConfig = computed(() => ({
         show: false,
       },
     },
-    backgroundColor: darkMode.value
-      ? tailwind.theme.colors.gray['800']
-      : tailwind.theme.colors.white,
-    borderColor: darkMode.value
-      ? tailwind.theme.colors.gray['900']
-      : tailwind.theme.colors.white,
+    backgroundColor: darkMode.value ? tailwind.theme.colors.gray['800'] : tailwind.theme.colors.white,
+    borderColor: darkMode.value ? tailwind.theme.colors.gray['900'] : tailwind.theme.colors.white,
     formatter: params => {
       return `
             <div class='flex flex-col font-body bg-white dark:bg-gray-850 dark:text-white'>
@@ -265,10 +243,7 @@ const chartConfig = computed(() => ({
         ? [
             {
               name: 'Latest',
-              yAxis:
-                props.data[i]?.values.length > 0
-                  ? (last(props.data[i]?.values) || [])[1]
-                  : 0,
+              yAxis: props.data[i]?.values.length > 0 ? (last(props.data[i]?.values) || [])[1] : 0,
             },
           ]
         : [],
@@ -300,9 +275,7 @@ watch(
 );
 
 function setCurrentValueToLatest(updateCurrentValue: boolean) {
-  const currentDayValue = numeral(
-    (props.data[0].values[props.data[0].values.length - 1] || [])[1]
-  );
+  const currentDayValue = numeral((props.data[0].values[props.data[0].values.length - 1] || [])[1]);
 
   if (updateCurrentValue) {
     currentValue.value = fNum2(
@@ -324,9 +297,7 @@ function setCurrentValueToLatest(updateCurrentValue: boolean) {
   }
 
   const startValue = numeral((props.data[0].values[0] || [])[1]);
-  change.value =
-    ((currentDayValue.value() || 0) - (startValue.value() || 0)) /
-    (startValue.value() || 0);
+  change.value = ((currentDayValue.value() || 0) - (startValue.value() || 0)) / (startValue.value() || 0);
 }
 
 // make sure to update the latest values when we get a fresh set of data
@@ -358,8 +329,7 @@ function handleMouseEnter() {
 const handleAxisMoved = ({ dataIndex, seriesIndex }: AxisMoveEvent) => {
   if (!props.showHeader && !props.needChartValue) return;
   if (props.data[seriesIndex]?.values) {
-    props.onAxisMoved &&
-      props.onAxisMoved(props.data[seriesIndex].values[dataIndex]);
+    props.onAxisMoved && props.onAxisMoved(props.data[seriesIndex].values[dataIndex]);
 
     const currentChartValue = props.data[seriesIndex].values[dataIndex];
 
@@ -380,9 +350,7 @@ const handleAxisMoved = ({ dataIndex, seriesIndex }: AxisMoveEvent) => {
     // if first point in chart, show overall change
     if (dataIndex === 0) {
       const prev = Number(props.data[seriesIndex].values[0][1]);
-      const current = props.data[seriesIndex].values[
-        props.data[seriesIndex].values.length - 1
-      ][1] as number;
+      const current = props.data[seriesIndex].values[props.data[seriesIndex].values.length - 1][1] as number;
       change.value = (current - prev) / prev;
     } else {
       const prev = props.data[seriesIndex].values[dataIndex - 1][1] as number;
@@ -408,14 +376,7 @@ const handleAxisMoved = ({ dataIndex, seriesIndex }: AxisMoveEvent) => {
 
 <template>
   <BalLoadingBlock v-if="isLoading" class="mt-16 h-96" />
-  <div
-    v-else
-    :class="[wrapperClass]"
-    @mouseenter="handleMouseEnter"
-    @touchstart.passive="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
-    @touchend="handleMouseLeave"
-  >
+  <div v-else :class="[wrapperClass]" @mouseenter="handleMouseEnter" @touchstart.passive="handleMouseEnter" @mouseleave="handleMouseLeave" @touchend="handleMouseLeave">
     <div v-if="showHeader" id="lineChartHeader" class="mb-4">
       <h3 class="text-xl tracking-wider text-gray-800 dark:text-gray-400">
         {{ currentValue }}
@@ -431,11 +392,7 @@ const handleAxisMoved = ({ dataIndex, seriesIndex }: AxisMoveEvent) => {
     </div>
     <ECharts
       ref="chartInstance"
-      :class="[
-        height && typeof (height === 'string') ? `h-${height}` : '',
-        'w-full',
-        chartClass,
-      ]"
+      :class="[height && typeof (height === 'string') ? `h-${height}` : '', 'w-full', chartClass]"
       :option="chartConfig"
       autoresize
       :updateOptions="{ replaceMerge: 'series' }"

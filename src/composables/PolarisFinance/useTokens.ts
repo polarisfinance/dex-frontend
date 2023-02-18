@@ -11,9 +11,9 @@ import { Network } from '@balancer-labs/sdk';
 
 export default function useTokens() {
   const w3 = new Web3(config.rpc);
-  
+
   const provider = rpcProviderService.getJsonProvider(Network.AURORA);
-  
+
   const getSpolarBalance = async (account: string) => {
     const spolarContract = new Contract(SPOLAR, spolarABI, provider);
     const balance = await spolarContract.balanceOf(account);
@@ -21,21 +21,12 @@ export default function useTokens() {
   };
 
   const getSpolarPrice = async () => {
-    const nearPriceContract = new w3.eth.Contract(
-      uniswapABI,
-      pools['near_usdc']
-    );
+    const nearPriceContract = new w3.eth.Contract(uniswapABI, pools['near_usdc']);
     const nearReserves = await nearPriceContract.methods.getReserves().call();
     const near_price = 1 / (nearReserves[1] / nearReserves[0] / 10 ** (24 - 6));
-    const spolarPriceContract = new w3.eth.Contract(
-      uniswapABI,
-      pools['spolar_near']
-    );
-    const polarReserves = await spolarPriceContract.methods
-      .getReserves()
-      .call();
-    const polar_price =
-      1 / (polarReserves[0] / polarReserves[1] / 10 ** (18 - 24));
+    const spolarPriceContract = new w3.eth.Contract(uniswapABI, pools['spolar_near']);
+    const polarReserves = await spolarPriceContract.methods.getReserves().call();
+    const polar_price = 1 / (polarReserves[0] / polarReserves[1] / 10 ** (18 - 24));
 
     const spolarPrice = polar_price * near_price;
 
@@ -44,12 +35,8 @@ export default function useTokens() {
 
   const getTokenPriceInUSD = async tokenName => {
     if (tokenName == 'binaris') {
-      const uniswapPriceContractAddress =
-        '0x0444eD96DccB0bA4b47908E144026cbA7355E454';
-      const uniswapPriceContract = new w3.eth.Contract(
-        uniswapABI,
-        uniswapPriceContractAddress
-      );
+      const uniswapPriceContractAddress = '0x0444eD96DccB0bA4b47908E144026cbA7355E454';
+      const uniswapPriceContract = new w3.eth.Contract(uniswapABI, uniswapPriceContractAddress);
       const res = await uniswapPriceContract.methods.getReserves().call();
       const pr = res[0] / res[1];
 

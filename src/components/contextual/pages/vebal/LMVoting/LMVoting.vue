@@ -20,29 +20,18 @@ const activeVotingGauge = ref<VotingGaugeWithVotes | null>(null);
 /**
  * COMPOSABLES
  */
-const {
-  isLoading,
-  votingGauges,
-  unallocatedVotes,
-  votingPeriodEnd,
-  votingPeriodLastHour,
-  refetch: refetchVotingGauges,
-} = useVotingGauges();
+const { isLoading, votingGauges, unallocatedVotes, votingPeriodEnd, votingPeriodLastHour, refetch: refetchVotingGauges } = useVotingGauges();
 const { fNum2 } = useNumbers();
 const veBalLockInfoQuery = useVeBalLockInfoQuery();
 
-const votingGaugeAddresses = computed<string[]>(
-  () => votingGauges.value?.map(gauge => gauge.address) || []
-);
+const votingGaugeAddresses = computed<string[]>(() => votingGauges.value?.map(gauge => gauge.address) || []);
 
 const { data: expiredGauges } = useExpiredGaugesQuery(votingGaugeAddresses);
 
 /**
  * COMPUTED
  */
-const unallocatedVotesFormatted = computed<string>(() =>
-  fNum2(scale(bnum(unallocatedVotes.value), -4).toString(), FNumFormats.percent)
-);
+const unallocatedVotesFormatted = computed<string>(() => fNum2(scale(bnum(unallocatedVotes.value), -4).toString(), FNumFormats.percent));
 
 const unallocatedVoteWeight = computed(() => {
   const totalVotes = 1e4;
@@ -54,17 +43,9 @@ const unallocatedVoteWeight = computed(() => {
   return votesRemaining;
 });
 
-const hasLock = computed(
-  (): boolean =>
-    !!veBalLockInfoQuery.data.value?.hasExistingLock &&
-    !veBalLockInfoQuery.data.value?.isExpired
-);
+const hasLock = computed((): boolean => !!veBalLockInfoQuery.data.value?.hasExistingLock && !veBalLockInfoQuery.data.value?.isExpired);
 
-const hasExpiredLock = computed(
-  (): boolean =>
-    !!veBalLockInfoQuery.data.value?.hasExistingLock &&
-    veBalLockInfoQuery.data.value?.isExpired
-);
+const hasExpiredLock = computed((): boolean => !!veBalLockInfoQuery.data.value?.hasExistingLock && veBalLockInfoQuery.data.value?.isExpired);
 
 /**
  * METHODS
@@ -74,14 +55,8 @@ function setActiveGaugeVote(votingGauge: VotingGaugeWithVotes) {
 }
 
 function orderedTokenURIs(gauge: VotingGaugeWithVotes): string[] {
-  const sortedTokens = orderedPoolTokens(
-    gauge.pool.poolType,
-    gauge.pool.address,
-    gauge.pool.tokens
-  );
-  return sortedTokens.map(
-    token => gauge.tokenLogoURIs[token?.address || ''] || ''
-  );
+  const sortedTokens = orderedPoolTokens(gauge.pool.poolType, gauge.pool.address, gauge.pool.tokens);
+  return sortedTokens.map(token => gauge.tokenLogoURIs[token?.address || ''] || '');
 }
 
 function handleModalClose() {
@@ -95,9 +70,7 @@ function handleVoteSuccess() {
 </script>
 
 <template>
-  <div
-    class="mb-2 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between"
-  >
+  <div class="mb-2 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
     <div class="max-w-3xl px-4 xl:px-0">
       <h3 class="mb-2">
         {{ $t('veBAL.liquidityMining.title') }}
@@ -110,18 +83,9 @@ function handleVoteSuccess() {
       <BalCard shadow="none" class="min-w-max md:w-48">
         <div class="flex items-center">
           <p class="text-secondary mr-1 inline text-sm">My unallocated votes</p>
-          <BalTooltip
-            :text="$t('veBAL.liquidityMining.myUnallocatedVotesTooltip')"
-            iconClass="text-gray-400 dark:text-gray-600"
-            iconSize="sm"
-            width="72"
-            class="mt-1"
-          />
+          <BalTooltip :text="$t('veBAL.liquidityMining.myUnallocatedVotesTooltip')" iconClass="text-gray-400 dark:text-gray-600" iconSize="sm" width="72" class="mt-1" />
         </div>
-        <p
-          class="mr-1 inline text-lg font-semibold"
-          :class="{ 'text-red-500': hasExpiredLock }"
-        >
+        <p class="mr-1 inline text-lg font-semibold" :class="{ 'text-red-500': hasExpiredLock }">
           <span v-if="hasLock">
             {{ unallocatedVotesFormatted }}
           </span>
@@ -139,28 +103,12 @@ function handleVoteSuccess() {
       </BalCard>
       <BalCard shadow="none" class="min-w-max md:w-48">
         <div class="flex items-center">
-          <p
-            :class="{ 'font-medium text-orange-500': votingPeriodLastHour }"
-            class="text-secondary mr-1 inline text-sm"
-          >
-            Voting period ends
-          </p>
-          <BalTooltip
-            :text="$t('veBAL.liquidityMining.votingPeriodTooltip')"
-            iconSize="sm"
-            iconClass="text-gray-400 dark:text-gray-600"
-            width="72"
-            class="mt-1"
-          />
+          <p :class="{ 'font-medium text-orange-500': votingPeriodLastHour }" class="text-secondary mr-1 inline text-sm">Voting period ends</p>
+          <BalTooltip :text="$t('veBAL.liquidityMining.votingPeriodTooltip')" iconSize="sm" iconClass="text-gray-400 dark:text-gray-600" width="72" class="mt-1" />
         </div>
         <p class="text-lg font-semibold tabular-nums">
-          <span
-            v-if="votingPeriodEnd.length"
-            :class="{ 'text-orange-500': votingPeriodLastHour }"
-          >
-            {{
-              $t('veBAL.liquidityMining.votingPeriodCountdown', votingPeriodEnd)
-            }}
+          <span v-if="votingPeriodEnd.length" :class="{ 'text-orange-500': votingPeriodLastHour }">
+            {{ $t('veBAL.liquidityMining.votingPeriodCountdown', votingPeriodEnd) }}
           </span>
         </p>
       </BalCard>
@@ -181,9 +129,7 @@ function handleVoteSuccess() {
       v-if="!!activeVotingGauge"
       :gauge="activeVotingGauge"
       :logoURIs="orderedTokenURIs(activeVotingGauge)"
-      :poolURL="
-        poolURLFor(activeVotingGauge.pool.id, activeVotingGauge.network)
-      "
+      :poolURL="poolURLFor(activeVotingGauge.pool.id, activeVotingGauge.network)"
       :unallocatedVoteWeight="unallocatedVoteWeight"
       :veBalLockInfo="veBalLockInfoQuery.data"
       @success="handleVoteSuccess"

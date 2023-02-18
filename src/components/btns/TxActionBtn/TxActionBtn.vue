@@ -1,15 +1,10 @@
 <script lang="ts" setup>
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import useEthers from '@/composables/useEthers';
-import useTransactions, {
-  TransactionAction,
-} from '@/composables/useTransactions';
+import useTransactions, { TransactionAction } from '@/composables/useTransactions';
 import useWeb3 from '@/services/web3/useWeb3';
 
 /**
@@ -64,9 +59,7 @@ const btnState = ref(BtnStates.Default);
 const isWaitingOnWallet = computed(() => btnState.value === BtnStates.Init);
 const isConfirming = computed(() => btnState.value === BtnStates.Confirming);
 
-const loadingLabel = computed(() =>
-  isWaitingOnWallet.value ? t('confirm') : props.confirmingLabel
-);
+const loadingLabel = computed(() => (isWaitingOnWallet.value ? t('confirm') : props.confirmingLabel));
 
 /**
  * METHODS
@@ -109,10 +102,5 @@ async function initTx() {
 </script>
 
 <template>
-  <BalBtn
-    :loadingLabel="loadingLabel"
-    :loading="isWaitingOnWallet || isConfirming"
-    :disabled="$attrs.disabled || isMismatchedNetwork"
-    @click.stop="initTx"
-  />
+  <BalBtn :loadingLabel="loadingLabel" :loading="isWaitingOnWallet || isConfirming" :disabled="$attrs.disabled || isMismatchedNetwork" @click.stop="initTx" />
 </template>

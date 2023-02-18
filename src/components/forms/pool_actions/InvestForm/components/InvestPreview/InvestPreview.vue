@@ -49,19 +49,13 @@ const investmentConfirmed = ref(false);
 const { t } = useI18n();
 const { getToken } = useTokens();
 const { toFiat } = useNumbers();
-const { fullAmounts, priceImpact, highPriceImpact, rektPriceImpact } = toRefs(
-  props.math
-);
+const { fullAmounts, priceImpact, highPriceImpact, rektPriceImpact } = toRefs(props.math);
 const { resetAmounts } = useInvestState();
 
 /**
  * COMPUTED
  */
-const title = computed((): string =>
-  investmentConfirmed.value
-    ? t('investment.preview.titles.confirmed')
-    : t('investment.preview.titles.default')
-);
+const title = computed((): string => (investmentConfirmed.value ? t('investment.preview.titles.confirmed') : t('investment.preview.titles.default')));
 
 const amountMap = computed((): AmountMap => {
   const amountMap = {};
@@ -87,12 +81,7 @@ const fiatAmountMap = computed((): AmountMap => {
   return fiatAmountMap;
 });
 
-const fiatTotal = computed((): string =>
-  Object.values(fiatAmountMap.value).reduce(
-    (total, amount) => bnum(total).plus(amount).toString(),
-    '0'
-  )
-);
+const fiatTotal = computed((): string => Object.values(fiatAmountMap.value).reduce((total, amount) => bnum(total).plus(amount).toString(), '0'));
 
 /**
  * METHODS
@@ -103,47 +92,17 @@ function onSuccess(): void {
 </script>
 
 <template>
-    <div class="content-container">
-        <BalCard
-        noPad
-        noBorder
-        >
-        <div>
-            <TokenAmounts
-                :amountMap="amountMap"
-                :tokenMap="tokenMap"
-                :fiatAmountMap="fiatAmountMap"
-                :fiatTotal="fiatTotal"
-            />
+  <div class="content-container">
+    <BalCard noPad noBorder>
+      <div>
+        <TokenAmounts :amountMap="amountMap" :tokenMap="tokenMap" :fiatAmountMap="fiatAmountMap" :fiatTotal="fiatTotal" />
 
-            <InvestSummary
-                :pool="pool"
-                :fiatTotal="fiatTotal"
-                :priceImpact="priceImpact"
-                :highPriceImpact="highPriceImpact"
-            />
+        <InvestSummary :pool="pool" :fiatTotal="fiatTotal" :priceImpact="priceImpact" :highPriceImpact="highPriceImpact" />
 
-            <BalAlert
-                v-if="rektPriceImpact"
-                type="error"
-                :title="$t('investment.error.rektPriceImpact.title')"
-                :description="$t('investment.error.rektPriceImpact.description')"
-                class="mt-6 mb-2"
-            />
+        <BalAlert v-if="rektPriceImpact" type="error" :title="$t('investment.error.rektPriceImpact.title')" :description="$t('investment.error.rektPriceImpact.description')" class="mt-6 mb-2" />
 
-            <InvestPreviewActions
-                :pool="pool"
-                :math="math"
-                :tokenAddresses="tokenAddresses"
-                :disabled="rektPriceImpact"
-                @success="onSuccess"
-                class="mt-4"
-            />
-        </div>
-        </BalCard>
-    </div>
-
-
-
-    
+        <InvestPreviewActions :pool="pool" :math="math" :tokenAddresses="tokenAddresses" :disabled="rektPriceImpact" @success="onSuccess" class="mt-4" />
+      </div>
+    </BalCard>
+  </div>
 </template>

@@ -14,10 +14,7 @@ type PoolActivitiesQueryResponse = {
   skip?: number;
 };
 
-export default function usePoolActivitiesQuery(
-  id: string,
-  options: UseInfiniteQueryOptions<PoolActivitiesQueryResponse> = {}
-) {
+export default function usePoolActivitiesQuery(id: string, options: UseInfiniteQueryOptions<PoolActivitiesQueryResponse> = {}) {
   // COMPOSABLES
   const { networkId } = useNetwork();
 
@@ -26,10 +23,7 @@ export default function usePoolActivitiesQuery(
 
   // METHODS
   const queryFn = async ({ pageParam = 0 }) => {
-    const pagination =
-      pageParam === 0
-        ? POOLS.Pagination.PerPoolInitial
-        : POOLS.Pagination.PerPool;
+    const pagination = pageParam === 0 ? POOLS.Pagination.PerPoolInitial : POOLS.Pagination.PerPool;
 
     const poolActivities = await balancerSubgraphService.poolActivities.get({
       first: pagination,
@@ -41,10 +35,7 @@ export default function usePoolActivitiesQuery(
 
     return {
       poolActivities,
-      skip:
-        poolActivities.length >= pagination
-          ? pageParam + pagination
-          : undefined,
+      skip: poolActivities.length >= pagination ? pageParam + pagination : undefined,
     };
   };
 
@@ -53,9 +44,5 @@ export default function usePoolActivitiesQuery(
     ...options,
   });
 
-  return useInfiniteQuery<PoolActivitiesQueryResponse>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  return useInfiniteQuery<PoolActivitiesQueryResponse>(queryKey, queryFn, queryOptions);
 }

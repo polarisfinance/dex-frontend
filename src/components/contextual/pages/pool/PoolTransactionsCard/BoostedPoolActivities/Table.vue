@@ -138,8 +138,7 @@ const swapRows = computed<SwapRow[]>(() => {
       label,
       type,
       value,
-      formattedValue:
-        value > 0 ? fNum2(value, { style: 'currency', abbreviate: true }) : '-',
+      formattedValue: value > 0 ? fNum2(value, { style: 'currency', abbreviate: true }) : '-',
       timestamp,
       formattedDate: t('timeAgo', [formatDistanceToNow(timestamp)]),
       tx,
@@ -154,10 +153,7 @@ const swapRows = computed<SwapRow[]>(() => {
 function getTransactionValue(tokenAmounts: TokenAmount[], type: SwapType) {
   if (type === 'trade') {
     const mainTokenAddress = getUnderlyingTokenAddress(tokenAmounts[1].address);
-    const mainEquivAmount = getMainTokenEquivalentAmount(
-      tokenAmounts[1].address,
-      tokenAmounts[1].amount
-    );
+    const mainEquivAmount = getMainTokenEquivalentAmount(tokenAmounts[1].address, tokenAmounts[1].amount);
     return bnum(priceFor(mainTokenAddress)).times(mainEquivAmount).toNumber();
   }
 
@@ -210,26 +206,17 @@ function getTokenAmounts(swaps: PoolSwap[], type: SwapType) {
 
 function getUnderlyingTokenAddress(address: string) {
   const linearPools = props.pool?.onchain?.linearPools;
-  return linearPools != null && linearPools[address] != null
-    ? linearPools[address].mainToken.address
-    : address;
+  return linearPools != null && linearPools[address] != null ? linearPools[address].mainToken.address : address;
 }
 
 function getMainTokenEquivalentAmount(address: string, amount: string) {
   const linearPools = props.pool?.onchain?.linearPools;
-  return linearPools != null && linearPools[address] != null
-    ? bnum(amount).times(linearPools[address].priceRate)
-    : bnum(amount);
+  return linearPools != null && linearPools[address] != null ? bnum(amount).times(linearPools[address].priceRate) : bnum(amount);
 }
 </script>
 
 <template>
-  <BalCard
-    class="overflow-x-auto"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
+  <BalCard class="overflow-x-auto" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad>
     <BalTable
       :columns="columns"
       :data="swapRows"
@@ -249,24 +236,9 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
         <div class="py-2 px-6">
           <div class="flex items-center">
             <div class="center mr-3 flex">
-              <BalIcon
-                v-if="action.type === 'invest'"
-                name="plus"
-                size="sm"
-                class="text-green-500 dark:text-green-400"
-              />
-              <BalIcon
-                v-else-if="action.type === 'withdraw'"
-                name="minus"
-                size="sm"
-                class="text-red-500"
-              />
-              <BalIcon
-                v-else
-                name="repeat"
-                size="sm"
-                class="text-green-500 dark:text-green-400"
-              />
+              <BalIcon v-if="action.type === 'invest'" name="plus" size="sm" class="text-green-500 dark:text-green-400" />
+              <BalIcon v-else-if="action.type === 'withdraw'" name="minus" size="sm" class="text-red-500" />
+              <BalIcon v-else name="repeat" size="sm" class="text-green-500 dark:text-green-400" />
             </div>
             <div>{{ action.label }}</div>
           </div>
@@ -277,38 +249,20 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
         <div class="-mt-1 flex flex-wrap items-center py-4 px-6">
           <template v-if="action.type === 'trade'">
             <div class="token-item">
-              <BalAsset
-                :address="action.tokenAmounts[0].address"
-                class="mr-2 flex-shrink-0"
-              />
-              <span class="font-numeric">{{
-                fNum2(action.tokenAmounts[0].amount, FNumFormats.token)
-              }}</span>
+              <BalAsset :address="action.tokenAmounts[0].address" class="mr-2 flex-shrink-0" />
+              <span class="font-numeric">{{ fNum2(action.tokenAmounts[0].amount, FNumFormats.token) }}</span>
             </div>
             <BalIcon name="arrow-right" class="mx-1" />
             <div class="token-item">
-              <BalAsset
-                :address="action.tokenAmounts[1].address"
-                class="mr-2 flex-shrink-0"
-              />
-              <span class="font-numeric">{{
-                fNum2(action.tokenAmounts[1].amount, FNumFormats.token)
-              }}</span>
+              <BalAsset :address="action.tokenAmounts[1].address" class="mr-2 flex-shrink-0" />
+              <span class="font-numeric">{{ fNum2(action.tokenAmounts[1].amount, FNumFormats.token) }}</span>
             </div>
           </template>
           <template v-else>
             <template v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
-              <div
-                v-if="tokenAmount.amount !== '0'"
-                class="m-1 flex items-center rounded-lg bg-gray-50 p-1 px-2 dark:bg-gray-700"
-              >
-                <BalAsset
-                  :address="tokenAmount.address"
-                  class="mr-2 flex-shrink-0"
-                />
-                <span class="font-numeric">{{
-                  fNum2(tokenAmount.amount, FNumFormats.token)
-                }}</span>
+              <div v-if="tokenAmount.amount !== '0'" class="m-1 flex items-center rounded-lg bg-gray-50 p-1 px-2 dark:bg-gray-700">
+                <BalAsset :address="tokenAmount.address" class="mr-2 flex-shrink-0" />
+                <span class="font-numeric">{{ fNum2(tokenAmount.amount, FNumFormats.token) }}</span>
               </div>
             </template>
           </template>
@@ -323,20 +277,10 @@ function getMainTokenEquivalentAmount(address: string, amount: string) {
 
       <template #timeCell="action">
         <div class="py-4 px-6">
-          <div
-            class="wrap flex items-center justify-end whitespace-nowrap text-right"
-          >
+          <div class="wrap flex items-center justify-end whitespace-nowrap text-right">
             {{ action.formattedDate }}
-            <BalLink
-              :href="explorerLinks.txLink(action.tx)"
-              external
-              class="ml-2 flex items-center"
-            >
-              <BalIcon
-                name="arrow-up-right"
-                size="sm"
-                class="text-secondary transition-colors hover:text-blue-600 dark:hover:text-blue-400"
-              />
+            <BalLink :href="explorerLinks.txLink(action.tx)" external class="ml-2 flex items-center">
+              <BalIcon name="arrow-up-right" size="sm" class="text-secondary transition-colors hover:text-blue-600 dark:hover:text-blue-400" />
             </BalLink>
           </div>
         </div>

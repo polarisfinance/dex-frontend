@@ -4,53 +4,40 @@ import segniorageImg from './segniorage.svg';
 import { POOLS } from '@/constants/pools';
 import { PoolWithShares } from '@/services/pool/types';
 
-import {
-  orderedPoolTokens,
-  orderedTokenAddresses,
-} from '@/composables/usePool';
+import { orderedPoolTokens, orderedTokenAddresses } from '@/composables/usePool';
 
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useStreamedPoolsQuery from '@/composables/queries/useStreamedPoolsQuery';
 
 const { isDesktop, isMobile } = useBreakpoints();
 
-const { selectedTokens, addSelectedToken, removeSelectedToken } =
-  usePoolFilters();
+const { selectedTokens, addSelectedToken, removeSelectedToken } = usePoolFilters();
 
 console.log(POOLS);
 
-const {
-  dataStates,
-  result: investmentPools,
-  loadMore,
-  isLoadingMore,
-} = useStreamedPoolsQuery(selectedTokens);
+const { dataStates, result: investmentPools, loadMore, isLoadingMore } = useStreamedPoolsQuery(selectedTokens);
 
 function iconAddresses(pool: PoolWithShares) {
-  return POOLS.Metadata[pool.id]?.hasIcon
-    ? [pool.address]
-    : orderedTokenAddresses(pool);
+  return POOLS.Metadata[pool.id]?.hasIcon ? [pool.address] : orderedTokenAddresses(pool);
 }
 </script>
 
 <template>
   <div :class="{ 'pg-bg': isDesktop }"></div>
-  <div :class="{ 'relative': isDesktop }">
+  <div :class="{ relative: isDesktop }">
     <div class="vex-container">
       <div class="title">
         <img src="./bubble.svg" />
         <div class="title-text">
           <div>Extra earnings <br />& voting power</div>
-          <div class="flex gap-[28px] justify-center mt-[16px]">
+          <div class="mt-[16px] flex justify-center gap-[28px]">
             <button class="get-btn">Get VexPolar</button>
             <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" class="learn-btn">Learn More</a>
           </div>
         </div>
       </div>
       <div class="title mt-[160px]">
-      <div class="title-text">
-          Coming soon...
-      </div>
+        <div class="title-text">Coming soon...</div>
       </div>
       <div
         :class="{
@@ -123,13 +110,11 @@ function iconAddresses(pool: PoolWithShares) {
         </div>
       </div>
 
-      <div v-if="isMobile" class="mt-[56px] mx-[24px]">
+      <div v-if="isMobile" class="mx-[24px] mt-[56px]">
         <div class="pools-eligible">Pools eligible for liquidity mining</div>
         <div class="content mt-[32px]">
-          Liquidity incentives are directed by the community of veBAL holders. If
-          you hold veBAL, vote below on any pools across Ethereum and Layer 2’s.
-          Your vote will persist until you change it and editing a pool can only
-          be done once in 10 days.
+          Liquidity incentives are directed by the community of veBAL holders. If you hold veBAL, vote below on any pools across Ethereum and Layer 2’s. Your vote will persist until you change it and
+          editing a pool can only be done once in 10 days.
         </div>
         <div class="pools-subtitle mt-[32px]">My unallocated votes</div>
         <div class="pools-content mt-[24px]">-</div>
@@ -138,7 +123,7 @@ function iconAddresses(pool: PoolWithShares) {
         <div class="pools-content mt-[24px">6d : 6h : 56m : 19s</div>
       </div>
 
-      <div class="table mt-[144px]">
+      <div class="mt-[144px] table">
         <div class="table-title">Pools</div>
         <div class="table-head" v-if="isDesktop">
           <div class="flex gap-[12px]">
@@ -156,30 +141,15 @@ function iconAddresses(pool: PoolWithShares) {
           <div>Next Votes</div>
         </div>
         <div class="border" />
-        <div
-          class="flex justify-between items-center"
-          v-for="(pool, idx) in investmentPools"
-          :key="idx"
-        >
+        <div class="flex items-center justify-between" v-for="(pool, idx) in investmentPools" :key="idx">
           <div class="mt-[24px]">
-            <BalAssetSet
-              :size="36"
-              :addresses="iconAddresses(pool)"
-              :width="100"
-            />
+            <BalAssetSet :size="36" :addresses="iconAddresses(pool)" :width="100" />
           </div>
           <div v-if="POOLS.Metadata[pool.id]" class="text-left">
             {{ POOLS.Metadata[pool.id].name }}
           </div>
           <div v-else>
-            <TokenPills
-              :tokens="
-                orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-              "
-              :isStablePool="false"
-              :selectedTokens="selectedTokens"
-              :showWeight="pool['poolType'] != 'Stable'"
-            />
+            <TokenPills :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)" :isStablePool="false" :selectedTokens="selectedTokens" :showWeight="pool['poolType'] != 'Stable'" />
           </div>
           <div>-</div>
         </div>
@@ -189,13 +159,13 @@ function iconAddresses(pool: PoolWithShares) {
 </template>
 
 <style scoped>
-.pg-bg{
+.pg-bg {
   background-image: url(./vexpolar_bg.svg);
   width: 100%;
   height: 100%;
   position: absolute;
   background-repeat: no-repeat;
-  top:0px;
+  top: 0px;
   padding-top: 100px;
 }
 .pools-content {

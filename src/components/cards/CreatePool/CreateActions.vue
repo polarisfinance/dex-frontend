@@ -56,19 +56,8 @@ const { t } = useI18n();
 const { explorerLinks } = useWeb3();
 const { networkConfig } = useConfig();
 const { isTxConfirmed } = useEthers();
-const { tokenApprovalActions } = useTokenApprovalActions(
-  props.tokenAddresses,
-  ref(props.amounts)
-);
-const {
-  createPool,
-  joinPool,
-  poolId,
-  poolTypeString,
-  hasRestoredFromSavedState,
-  needsSeeding,
-  createPoolTxHash,
-} = usePoolCreation();
+const { tokenApprovalActions } = useTokenApprovalActions(props.tokenAddresses, ref(props.amounts));
+const { createPool, joinPool, poolId, poolTypeString, hasRestoredFromSavedState, needsSeeding, createPoolTxHash } = usePoolCreation();
 
 /**
  * COMPUTED
@@ -92,20 +81,13 @@ const actions = computed((): TransactionActionInfo[] => [
 ]);
 
 const requiredActions = computed(() => {
-  if (
-    (hasRestoredFromSavedState.value && needsSeeding.value) ||
-    createState.isRestoredTxConfirmed
-  ) {
+  if ((hasRestoredFromSavedState.value && needsSeeding.value) || createState.isRestoredTxConfirmed) {
     return actions.value.filter(action => action.label === t('fundPool'));
   }
   return actions.value;
 });
 
-const explorerLink = computed((): string =>
-  createState.receipt
-    ? explorerLinks.txLink(createState.receipt.transactionHash)
-    : ''
-);
+const explorerLink = computed((): string => (createState.receipt ? explorerLinks.txLink(createState.receipt.transactionHash) : ''));
 
 onBeforeMount(async () => {
   if (createPoolTxHash.value) {
@@ -138,37 +120,19 @@ function handleSuccess(details: any): void {
       @success="handleSuccess"
     />
     <template v-if="createState.confirmed">
-      <div
-        class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
-      >
+      <div class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600">
         <div class="flex items-center">
           <BalIcon name="clock" />
           <span class="ml-2">
             {{ createState.confirmedAt }}
           </span>
         </div>
-        <BalLink
-          :href="explorerLink"
-          external
-          noStyle
-          class="group flex items-center"
-        >
+        <BalLink :href="explorerLink" external noStyle class="group flex items-center">
           {{ networkConfig.explorerName }}
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="ml-px transition-colors group-hover:text-pink-500"
-          />
+          <BalIcon name="arrow-up-right" size="sm" class="ml-px transition-colors group-hover:text-pink-500" />
         </BalLink>
       </div>
-      <BalBtn
-        tag="router-link"
-        :to="{ name: 'pool', params: { id: poolId } }"
-        color="gray"
-        outline
-        block
-        class="mt-2"
-      >
+      <BalBtn tag="router-link" :to="{ name: 'pool', params: { id: poolId } }" color="gray" outline block class="mt-2">
         {{ $t('viewPool') }}
       </BalBtn>
     </template>

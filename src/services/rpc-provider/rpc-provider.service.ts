@@ -13,9 +13,7 @@ export default class RpcProviderService {
     private readonly config = configService,
     public readonly network = config.network.shortName,
     public readonly jsonProvider = new StaticJsonRpcBatchProvider(config.rpc),
-    public readonly loggingProvider = new StaticJsonRpcBatchProvider(
-      config.loggingRpc
-    )
+    public readonly loggingProvider = new StaticJsonRpcBatchProvider(config.loggingRpc)
   ) {}
 
   public initBlockListener(newBlockHandler: NewBlockHandler): void {

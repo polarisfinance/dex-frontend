@@ -72,20 +72,13 @@ async function toggleSection(section: string, collapse = true) {
     });
   });
 
-  const activeSectionIndex = props.sections.findIndex(
-    s => s.id === activeSection.value
-  );
-  const handleBarsToTransform = takeRight(
-    handleBarElements.value,
-    handleBarElements.value.length - (activeSectionIndex + 1)
-  );
+  const activeSectionIndex = props.sections.findIndex(s => s.id === activeSection.value);
+  const handleBarsToTransform = takeRight(handleBarElements.value, handleBarElements.value.length - (activeSectionIndex + 1));
 
   // unfortunately this does introduce reflow (animating height of total)
   // but it way better than having to animate the height of 2 sections
   // the one minimising + the one maximising
-  const heightToAnimate = collapseCurrentSection
-    ? minimisedWrapperHeight.value
-    : minimisedWrapperHeight.value + height.value;
+  const heightToAnimate = collapseCurrentSection ? minimisedWrapperHeight.value : minimisedWrapperHeight.value + height.value;
   await nextTick();
   anime({
     targets: wrapperElement.value,
@@ -146,8 +139,7 @@ onMounted(async () => {
   for (const section of props.sections) {
     activeSection.value = section.id;
     await nextTick();
-    totalHeight.value =
-      totalHeight.value + (activeSectionElement.value?.offsetHeight || 0);
+    totalHeight.value = totalHeight.value + (activeSectionElement.value?.offsetHeight || 0);
   }
 
   // need to set this back to false so its like the accordion
@@ -177,17 +169,8 @@ watch(
 <template>
   <div ref="wrapperElement">
     <BalCard hFull noPad shadow="none" class="rounded-xl">
-      <div
-        v-for="(section, i) in sections"
-        :key="section.id"
-        :ref="setHandleBars"
-        class="flex flex-col"
-      >
-        <div
-          v-if="section.handle"
-          ref="handleBarElement"
-          @click="toggleSection(section.id)"
-        >
+      <div v-for="(section, i) in sections" :key="section.id" :ref="setHandleBars" class="flex flex-col">
+        <div v-if="section.handle" ref="handleBarElement" @click="toggleSection(section.id)">
           <slot :name="section.handle" />
         </div>
         <button
@@ -204,11 +187,7 @@ watch(
           <h6>{{ section.title }}</h6>
           <BalIcon class="text-blue-400" name="chevron-down" />
         </button>
-        <div
-          v-if="activeSection === section.id"
-          ref="accordionHeightSetterElement"
-          class="relative"
-        >
+        <div v-if="activeSection === section.id" ref="accordionHeightSetterElement" class="relative">
           <!-- content -->
           <div
             v-if="isContentVisible"

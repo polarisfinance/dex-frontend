@@ -18,30 +18,15 @@
       </BalLink>
     </div> -->
     <div className="min-w-screen px-[20px] ">
-      <div
-        className=" mx-auto flex min-w-min max-w-[1000px] flex-col justify-between text-[18px] font-semibold text-[#676671] sm:flex-row"
-      >
+      <div className=" mx-auto flex min-w-min max-w-[1000px] flex-col justify-between text-[18px] font-semibold text-[#676671] sm:flex-row">
         <div className="flex min-w-max pt-[51px] sm:self-start">
-          <img
-            src="../images/Logo.svg"
-            alt="logo-no-bg"
-            width="35"
-            className=" "
-          />
-          <span className="colored-logo self-center text-[20px] font-medium ml-[7px]">
-            POLARIS&nbsp;
-          </span>
-          <span className="colored-logo self-center text-[20px] font-semibold">
-            D&nbsp;E&nbsp;X
-          </span>
+          <img src="../images/Logo.svg" alt="logo-no-bg" width="35" className=" " />
+          <span className="colored-logo self-center text-[20px] font-medium ml-[7px]"> POLARIS&nbsp; </span>
+          <span className="colored-logo self-center text-[20px] font-semibold"> D&nbsp;E&nbsp;X </span>
         </div>
-        <div
-          className="flex min-w-max flex-grow flex-col-reverse justify-evenly sm:flex-row"
-        >
+        <div className="flex min-w-max flex-grow flex-col-reverse justify-evenly sm:flex-row">
           <div className="flex w-full sm:justify-evenly space-x-[20px]">
-            <div
-              className="flex flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white"
-            >
+            <div className="flex flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white">
               <span>Protocol</span>
               <div className="flex flex-col space-y-[16px] text-[#5F5564]">
                 <a href="https://docs.polarisfinance.io">Docs</a>
@@ -50,23 +35,15 @@
                 <a href="https://old.polarisfinance.io/">Old Website</a>
               </div>
             </div>
-            <div
-              className="flex flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white"
-            >
+            <div className="flex flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white">
               <span>Help</span>
               <div className="flex flex-col space-y-[16px] text-[#5F5564]">
-                <a
-                  href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/"
-                >
-                  KYC
-                </a>
+                <a href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/"> KYC </a>
               </div>
             </div>
           </div>
 
-          <div
-            className="flex min-w-max flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white"
-          >
+          <div className="flex min-w-max flex-col space-y-[30px] pt-[67px] text-[14px] font-semibold leading-[18px] text-white">
             <span>Social media</span>
             <div className="flex space-x-[28px] text-[#5F5564]">
               <a href="https://discord.gg/polaris-finance">
@@ -89,9 +66,7 @@
         </div>
       </div>
       <div className="mx-auto max-w-[1000px] pb-[139px] pt-[60px]">
-        <span className="text-[12px] font-medium leading-[14px] text-[#5F5564]">
-          Copyright © {{ year }} Polaris Finance. All rights reserved.
-        </span>
+        <span className="text-[12px] font-medium leading-[14px] text-[#5F5564]"> Copyright © {{ year }} Polaris Finance. All rights reserved. </span>
       </div>
     </div>
   </footer>
@@ -180,7 +155,7 @@ footer :deep(.logotype) {
 }
 
 .colored-logo {
-  color: #FDFDFD;
+  color: #fdfdfd;
   display: inline-block;
 }
 </style>

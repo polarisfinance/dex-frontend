@@ -17,9 +17,7 @@ export class GnosisSafeConnector extends Connector {
       this.handleChainChanged(safe.chainId);
       this.handleAccountsChanged([safe.safeAddress]);
     } else {
-      console.error(
-        'Tried to connect to Gnosis Safe but it was not detected. Please install make sure you are using the Gnosis interface.'
-      );
+      console.error('Tried to connect to Gnosis Safe but it was not detected. Please install make sure you are using the Gnosis interface.');
     }
     return {
       // TODO type this

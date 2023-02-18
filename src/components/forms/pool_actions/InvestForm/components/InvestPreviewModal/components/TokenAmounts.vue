@@ -34,32 +34,18 @@ const { fNum2 } = useNumbers();
  * COMPUTED
  */
 const sortedAmounts = computed(() =>
-  orderBy(
-    Object.entries(props.fiatAmountMap),
-    ([, fiatAmount]) => Number(fiatAmount),
-    'desc'
-  ).map(([address, fiatAmount]) => ({
+  orderBy(Object.entries(props.fiatAmountMap), ([, fiatAmount]) => Number(fiatAmount), 'desc').map(([address, fiatAmount]) => ({
     amount: props.amountMap[address],
     fiatAmount,
     address,
   }))
 );
 
-const groupedAmounts = computed(() =>
-  groupBy(sortedAmounts.value, amounts =>
-    bnum(amounts.amount).isZero() ? 'zeroAmounts' : 'nonZeroAmounts'
-  )
-);
+const groupedAmounts = computed(() => groupBy(sortedAmounts.value, amounts => (bnum(amounts.amount).isZero() ? 'zeroAmounts' : 'nonZeroAmounts')));
 
-const shouldShowCompactViewForZeroAmounts = computed(
-  () => (groupedAmounts.value.zeroAmounts?.length || 0) > 3
-);
+const shouldShowCompactViewForZeroAmounts = computed(() => (groupedAmounts.value.zeroAmounts?.length || 0) > 3);
 
-const amountsToShow = computed(() =>
-  shouldShowCompactViewForZeroAmounts.value
-    ? groupedAmounts.value.nonZeroAmounts
-    : sortedAmounts.value
-);
+const amountsToShow = computed(() => (shouldShowCompactViewForZeroAmounts.value ? groupedAmounts.value.nonZeroAmounts : sortedAmounts.value));
 /**
  * METHODS
  */
@@ -85,27 +71,20 @@ function amountShare(address: string): string {
             </div>
           </div>
         </div>
-        <div class="text-secondary font-numeric  text-right">
+        <div class="text-secondary font-numeric text-right">
           <div class="value">{{ fNum2(token.fiatAmount, FNumFormats.fiat) }}</div>
           <div class="perc">({{ fNum2(amountShare(token.address), FNumFormats.percent) }})</div>
         </div>
       </div>
     </div>
-    <div
-      v-if="shouldShowCompactViewForZeroAmounts"
-      class="token-amount-table-content -mb-2 items-start"
-    >
+    <div v-if="shouldShowCompactViewForZeroAmounts" class="token-amount-table-content -mb-2 items-start">
       <div class="mr-6 flex flex-wrap">
-        <div
-          v-for="token in groupedAmounts.zeroAmounts"
-          :key="token.address"
-          class="token"
-        >
+        <div v-for="token in groupedAmounts.zeroAmounts" :key="token.address" class="token">
           <BalAsset :address="token.address" class="mr-2" />
           <span>{{ tokenMap[token.address].symbol }}</span>
         </div>
       </div>
-      <div class="text-secondary font-numeric whitespace-nowrap  text-right">
+      <div class="text-secondary font-numeric whitespace-nowrap text-right">
         <div class="value">{{ fNum2(0, FNumFormats.fiat) }}</div>
         <div class="perc">({{ fNum2(0, FNumFormats.percent) }})</div>
       </div>
@@ -115,7 +94,7 @@ function amountShare(address: string): string {
 
 <style scoped>
 .token-amount-table {
-  padding:12px;
+  padding: 12px;
 }
 
 .token-amount-table-content {
@@ -123,18 +102,18 @@ function amountShare(address: string): string {
 }
 
 .token {
-  @apply mr-2 mb-2 flex items-center ;
+  @apply mr-2 mb-2 flex items-center;
 }
-.value{
+.value {
   font-weight: 500;
   font-size: 24px;
   line-height: 32px;
-  color: #F5F5F5;
+  color: #f5f5f5;
 }
-.perc{
+.perc {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
 </style>

@@ -23,9 +23,7 @@ const emit = defineEmits(['navigate']);
  * COMPUTED
  */
 const visibleSteps = computed(() => {
-  return props.steps.filter(
-    step => step.isVisible === undefined || step.isVisible
-  );
+  return props.steps.filter(step => step.isVisible === undefined || step.isVisible);
 });
 
 const stepTextClasses = computed(() => {
@@ -63,33 +61,12 @@ function handleNavigate(state: StepState, stepIndex: number) {
 
 <template>
   <BalStack horizontal spacing="base" class="p-4" justify="center">
-    <div
-      v-for="(step, i) in visibleSteps"
-      :key="`vertical-step-${step.tooltip}`"
-      class="flex items-center"
-    >
-      <button
-        :class="{ 'cursor-default': step.state === StepState.Todo }"
-        class="bg-none"
-        @click="handleNavigate(step.state, i)"
-      >
+    <div v-for="(step, i) in visibleSteps" :key="`vertical-step-${step.tooltip}`" class="flex items-center">
+      <button :class="{ 'cursor-default': step.state === StepState.Todo }" class="bg-none" @click="handleNavigate(step.state, i)">
         <BalStack horizontal align="center" spacing="sm">
-          <div
-            :class="[
-              'relative flex h-7 w-7 items-center justify-center rounded-full text-sm',
-              stepCircleClasses[i],
-              { 'circle-line': i !== visibleSteps.length - 1 },
-            ]"
-          >
-            <div
-              class="absolute top-0 right-0 bottom-0 left-0 mx-auto flex w-4 items-center justify-center"
-            >
-              <span
-                v-if="
-                  ![StepState.Warning, StepState.Error].includes(step.state)
-                "
-                >{{ step.label || i + 1 }}</span
-              >
+          <div :class="['relative flex h-7 w-7 items-center justify-center rounded-full text-sm', stepCircleClasses[i], { 'circle-line': i !== visibleSteps.length - 1 }]">
+            <div class="absolute top-0 right-0 bottom-0 left-0 mx-auto flex w-4 items-center justify-center">
+              <span v-if="![StepState.Warning, StepState.Error].includes(step.state)">{{ step.label || i + 1 }}</span>
               <span v-else class="font-semibold">!</span>
             </div>
           </div>

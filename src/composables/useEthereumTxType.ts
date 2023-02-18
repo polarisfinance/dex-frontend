@@ -8,10 +8,7 @@ export enum EthereumTxType {
   EIP1559 = 'EIP1559',
 }
 
-const lsEthereumTxType = lsGet(
-  LS_KEYS.App.EthereumTxType,
-  EthereumTxType.EIP1559
-);
+const lsEthereumTxType = lsGet(LS_KEYS.App.EthereumTxType, EthereumTxType.EIP1559);
 
 // STATE
 export const ethereumTxType = ref<EthereumTxType>(lsEthereumTxType);

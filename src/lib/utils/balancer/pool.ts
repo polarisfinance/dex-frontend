@@ -14,8 +14,5 @@ export function getBptPrice(pool?: Pool) {
 }
 
 export function getBptBalanceFiatValue(pool: AnyPool, balance: string) {
-  return bnum(pool.totalLiquidity)
-    .div(pool.totalShares)
-    .times(balance)
-    .toString();
+  return bnum(pool.totalLiquidity).div(pool.totalShares).times(balance).toString();
 }

@@ -47,12 +47,7 @@ export class FeeDistributor {
    * the claimTokens method by modifing the ABI to make it a view function.
    */
   public async getClaimableBalances(userAddress: string): Promise<BalanceMap> {
-    const balances = await this.web3.callStatic<BigNumber[]>(
-      this.address,
-      this.staticAbi,
-      'claimTokens',
-      [userAddress, this.claimableTokens]
-    );
+    const balances = await this.web3.callStatic<BigNumber[]>(this.address, this.staticAbi, 'claimTokens', [userAddress, this.claimableTokens]);
     const stringBalances = balances.map(balance => balance.toString());
 
     return zipObject(this.claimableTokens, stringBalances);
@@ -61,30 +56,15 @@ export class FeeDistributor {
   /**
    * @summary Claim all protocol reward token balances.
    */
-  public async claimBalances(
-    userAddress: string
-  ): Promise<TransactionResponse> {
-    return await this.web3.sendTransaction(
-      this.address,
-      this.abi,
-      'claimTokens',
-      [userAddress, this.claimableTokens]
-    );
+  public async claimBalances(userAddress: string): Promise<TransactionResponse> {
+    return await this.web3.sendTransaction(this.address, this.abi, 'claimTokens', [userAddress, this.claimableTokens]);
   }
 
   /**
    * @summary Claim specific protocol reward token balance.
    */
-  public async claimBalance(
-    userAddress: string,
-    tokenAddress: string
-  ): Promise<TransactionResponse> {
-    return await this.web3.sendTransaction(
-      this.address,
-      this.abi,
-      'claimToken',
-      [userAddress, tokenAddress]
-    );
+  public async claimBalance(userAddress: string, tokenAddress: string): Promise<TransactionResponse> {
+    return await this.web3.sendTransaction(this.address, this.abi, 'claimToken', [userAddress, tokenAddress]);
   }
 
   /**
@@ -93,11 +73,7 @@ export class FeeDistributor {
    * @param {number} timestamp unix timestamp of epoch to check, has to be exact
    * epoch timestamp
    */
-  public async getTokensDistributedInWeek(
-    token: string,
-    timestamp: number,
-    instance?: Contract
-  ): Promise<string> {
+  public async getTokensDistributedInWeek(token: string, timestamp: number, instance?: Contract): Promise<string> {
     if (!instance) instance = this.getInstance();
     const amount = await instance.getTokensDistributedInWeek(token, timestamp);
 
@@ -109,10 +85,7 @@ export class FeeDistributor {
    * @param {number} timestamp unix timestamp of epoch to check, has to be exact
    * epoch timestamp
    */
-  public async getTotalSupply(
-    timestamp: number,
-    instance?: Contract
-  ): Promise<string> {
+  public async getTotalSupply(timestamp: number, instance?: Contract): Promise<string> {
     if (!instance) instance = this.getInstance();
     const amount = await instance.getTotalSupplyAtTimestamp(timestamp);
 

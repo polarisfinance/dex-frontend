@@ -2,45 +2,24 @@
   <div>
     <div v-for="transaction in transactions" :key="transaction.id" class="mb-3">
       <div class="row">
-        <BalLink
-          :href="getExplorerLink(transaction.id, transaction.type)"
-          :disabled="
-            disablePending && isPendingTransactionStatus(transaction.status)
-          "
-          external
-          noStyle
-          class="group"
-        >
+        <BalLink :href="getExplorerLink(transaction.id, transaction.type)" :disabled="disablePending && isPendingTransactionStatus(transaction.status)" external noStyle class="group">
           <div class="flex items-center font-semibold">
             {{ $t(`transactionAction.${transaction.action}`) }}
             <BalIcon
-              v-if="
-                !(
-                  disablePending &&
-                  isPendingTransactionStatus(transaction.status)
-                )
-              "
+              v-if="!(disablePending && isPendingTransactionStatus(transaction.status))"
               name="arrow-up-right"
               size="sm"
               class="ml-1 text-gray-400 transition-colors group-hover:text-pink-500 dark:text-gray-600"
             />
           </div>
-          <div
-            class="text-secondary summary text-sm transition-colors group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-          >
+          <div class="text-secondary summary text-sm transition-colors group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white">
             {{ transaction.summary }}
           </div>
         </BalLink>
         <div>
-          <SpinnerIcon
-            v-if="isPendingTransactionStatus(transaction.status)"
-            class="animate-spin text-orange-500"
-          />
+          <SpinnerIcon v-if="isPendingTransactionStatus(transaction.status)" class="animate-spin text-orange-500" />
           <template v-else>
-            <CheckIcon
-              v-if="isSuccessfulTransaction(transaction)"
-              class="text-green-500"
-            />
+            <CheckIcon v-if="isSuccessfulTransaction(transaction)" class="text-green-500" />
             <BalTooltip v-else class="cursor-default">
               <template #activator>
                 <BalIcon name="alert-circle" class="text-red-500" />
@@ -53,21 +32,8 @@
           </template>
         </div>
       </div>
-      <div
-        v-if="
-          transaction.type === 'order' &&
-          isPendingTransactionStatus(transaction.status)
-        "
-        class="mt-1"
-      >
-        <BalBtn
-          size="xs"
-          :label="$t('cancel')"
-          :loading="transaction.status === 'cancelling'"
-          :loadingLabel="$t('cancelling')"
-          color="white"
-          @click.prevent="cancelOrder(transaction.id)"
-        />
+      <div v-if="transaction.type === 'order' && isPendingTransactionStatus(transaction.status)" class="mt-1">
+        <BalBtn size="xs" :label="$t('cancel')" :loading="transaction.status === 'cancelling'" :loadingLabel="$t('cancelling')" color="white" @click.prevent="cancelOrder(transaction.id)" />
       </div>
     </div>
   </div>
@@ -88,9 +54,7 @@ export default defineComponent({
       required: true,
     },
     getExplorerLink: {
-      type: Function as PropType<
-        (id: string, type: Transaction['type']) => void
-      >,
+      type: Function as PropType<(id: string, type: Transaction['type']) => void>,
       required: true,
     },
     cancelOrder: {

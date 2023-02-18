@@ -78,17 +78,11 @@ const inputElement = ref<HTMLElement>();
  */
 const attrs = useAttrs();
 const { errors, isInvalid, validate } = useInputValidation(props, emit);
-const {
-  parentClasses,
-  inputContainerClasses,
-  inputGroupClasses,
-  headerClasses,
-  footerClasses,
-  inputClasses,
-  prependClasses,
-  appendClasses,
-  borderRadiusClasses,
-} = useInputStyles(props, isInvalid, attrs);
+const { parentClasses, inputContainerClasses, inputGroupClasses, headerClasses, footerClasses, inputClasses, prependClasses, appendClasses, borderRadiusClasses } = useInputStyles(
+  props,
+  isInvalid,
+  attrs
+);
 const { onInput, onKeydown, onBlur } = useInputEvents(props, emit, validate);
 
 /**
@@ -122,9 +116,7 @@ function handleBlur(e: HtmlInputEvent) {
 
 <template>
   <div :class="['bal-text-input', parentClasses, borderRadiusClasses]">
-    <div
-      :class="['input-container', inputContainerClasses, borderRadiusClasses]"
-    >
+    <div :class="['input-container', inputContainerClasses, borderRadiusClasses]">
       <div v-if="$slots.header || label" :class="['header', headerClasses]">
         <slot name="header">
           <span class="label text-secondary">
@@ -153,18 +145,10 @@ function handleBlur(e: HtmlInputEvent) {
             <div v-if="$slots.append" :class="['append', appendClasses]">
               <slot name="append" />
             </div>
-            <button
-              v-if="!isEditable"
-              class="hover:text-blue-600 dark:hover:text-blue-400"
-              @click="toggleEditable"
-            >
+            <button v-if="!isEditable" class="hover:text-blue-600 dark:hover:text-blue-400" @click="toggleEditable">
               <BalIcon name="edit" size="xs" />
             </button>
-            <button
-              v-else
-              class="hover:text-blue-500 dark:hover:text-blue-400"
-              @click="toggleEditable"
-            >
+            <button v-else class="hover:text-blue-500 dark:hover:text-blue-400" @click="toggleEditable">
               <BalIcon name="save" size="xs" />
             </button>
           </BalStack>

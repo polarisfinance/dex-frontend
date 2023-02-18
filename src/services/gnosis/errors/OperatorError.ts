@@ -42,9 +42,7 @@ function _mapActionToErrorDetail(action?: ApiActionType) {
     case 'delete':
       return i18n.global.t('apiErrorCodeDetails.UnhandledDeleteError');
     default:
-      console.error(
-        '[OperatorError::_mapActionToErrorDetails] Uncaught error mapping error action type to server error. Please try again later.'
-      );
+      console.error('[OperatorError::_mapActionToErrorDetails] Uncaught error mapping error action type to server error. Please try again later.');
       return i18n.global.t('apiErrorCodeDetails.UnhandledError');
   }
 }
@@ -57,65 +55,39 @@ export default class OperatorError extends Error {
   // Status 400 errors
   // https://github.com/gnosis/gp-v2-services/blob/9014ae55412a356e46343e051aefeb683cc69c41/orderbook/openapi.yml#L563
 
-  public static getErrorMessage(
-    orderPostError: ApiErrorObject,
-    action: ApiActionType
-  ) {
+  public static getErrorMessage(orderPostError: ApiErrorObject, action: ApiActionType) {
     try {
       console.log(orderPostError);
       if (orderPostError.errorType) {
-        const errorMessage = i18n.global
-          .t(`apiErrorCodeDetails.${orderPostError.errorType.toString()}`)
-          .replace('apiErrorCodeDetails.', ''); // if a translation cannot be found, keep only the error code
+        const errorMessage = i18n.global.t(`apiErrorCodeDetails.${orderPostError.errorType.toString()}`).replace('apiErrorCodeDetails.', ''); // if a translation cannot be found, keep only the error code
 
         // shouldn't fall through as this error constructor expects the error code to exist but just in case
         return errorMessage || orderPostError.errorType;
       } else {
-        console.error(
-          'Unknown reason for bad order submission',
-          orderPostError
-        );
+        console.error('Unknown reason for bad order submission', orderPostError);
         return orderPostError.description;
       }
     } catch (error) {
-      console.error(
-        'Error handling a 400 error. Likely a problem deserialising the JSON response'
-      );
+      console.error('Error handling a 400 error. Likely a problem deserialising the JSON response');
       return _mapActionToErrorDetail(action);
     }
   }
-  static getErrorFromStatusCode(
-    response: AxiosResponse,
-    action: ApiActionType
-  ) {
+  static getErrorFromStatusCode(response: AxiosResponse, action: ApiActionType) {
     switch (response.status) {
       case 400:
       case 404:
         return this.getErrorMessage(response.data, action);
 
       case 403:
-        return action === 'create'
-          ? i18n.global.t('apiErrorCodeDetails.error403Accept')
-          : i18n.global.t('apiErrorCodeDetails.error403Cancel');
+        return action === 'create' ? i18n.global.t('apiErrorCodeDetails.error403Accept') : i18n.global.t('apiErrorCodeDetails.error403Cancel');
 
       case 429:
-        return action === 'create'
-          ? i18n.global.t('apiErrorCodeDetails.error429Accept')
-          : i18n.global.t('apiErrorCodeDetails.error429Cancel');
+        return action === 'create' ? i18n.global.t('apiErrorCodeDetails.error429Accept') : i18n.global.t('apiErrorCodeDetails.error429Cancel');
 
       case 500:
       default:
-        console.error(
-          `[OperatorError::getErrorFromStatusCode] Error ${
-            action === 'create' ? 'creating' : 'cancelling'
-          } the order, status code:`,
-          response.status || 'unknown'
-        );
-        return i18n.global.t('apiErrorCodeDetails.Error500', [
-          action === 'create'
-            ? i18n.global.t('creating').toLocaleLowerCase()
-            : i18n.global.t('cancelling').toLocaleLowerCase(),
-        ]);
+        console.error(`[OperatorError::getErrorFromStatusCode] Error ${action === 'create' ? 'creating' : 'cancelling'} the order, status code:`, response.status || 'unknown');
+        return i18n.global.t('apiErrorCodeDetails.Error500', [action === 'create' ? i18n.global.t('creating').toLocaleLowerCase() : i18n.global.t('cancelling').toLocaleLowerCase()]);
     }
   }
   constructor(apiError: ApiErrorObject) {

@@ -76,38 +76,14 @@ const activeTab = ref(tabs.value[0].value);
     </div>
 
     <template v-if="isStablePhantomPool">
-      <BoostedActivities
-        v-if="activeTab === PoolTransactionsTab.ALL_ACTIVITY"
-        :poolActivityType="PoolTransactionsTab.ALL_ACTIVITY"
-        :pool="pool"
-        :loading="loading"
-      />
-      <BoostedActivities
-        v-else-if="activeTab === PoolTransactionsTab.USER_ACTIVITY"
-        :poolActivityType="PoolTransactionsTab.USER_ACTIVITY"
-        :pool="pool"
-        :loading="loading"
-      />
+      <BoostedActivities v-if="activeTab === PoolTransactionsTab.ALL_ACTIVITY" :poolActivityType="PoolTransactionsTab.ALL_ACTIVITY" :pool="pool" :loading="loading" />
+      <BoostedActivities v-else-if="activeTab === PoolTransactionsTab.USER_ACTIVITY" :poolActivityType="PoolTransactionsTab.USER_ACTIVITY" :pool="pool" :loading="loading" />
     </template>
     <template v-else>
       <div class="mb-20">
-        <Activities
-          v-if="activeTab === PoolTransactionsTab.ALL_ACTIVITY"
-          :poolActivityType="PoolTransactionsTab.ALL_ACTIVITY"
-          :pool="pool"
-          :loading="loading"
-        />
-        <Activities
-          v-else-if="activeTab === PoolTransactionsTab.USER_ACTIVITY"
-          :poolActivityType="PoolTransactionsTab.USER_ACTIVITY"
-          :pool="pool"
-          :loading="loading"
-        />
-        <TradeTransactions
-          v-else-if="activeTab === PoolTransactionsTab.TRADES"
-          :pool="pool"
-          :loading="loading"
-        />
+        <Activities v-if="activeTab === PoolTransactionsTab.ALL_ACTIVITY" :poolActivityType="PoolTransactionsTab.ALL_ACTIVITY" :pool="pool" :loading="loading" />
+        <Activities v-else-if="activeTab === PoolTransactionsTab.USER_ACTIVITY" :poolActivityType="PoolTransactionsTab.USER_ACTIVITY" :pool="pool" :loading="loading" />
+        <TradeTransactions v-else-if="activeTab === PoolTransactionsTab.TRADES" :pool="pool" :loading="loading" />
       </div>
     </template>
   </div>

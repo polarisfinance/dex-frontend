@@ -35,22 +35,12 @@ export class LiquidityGauge {
   }
 
   async stake(amount: BigNumber) {
-    const tx = this.web3.sendTransaction(
-      this.address,
-      this.abi,
-      'deposit(uint256)',
-      [amount]
-    );
+    const tx = this.web3.sendTransaction(this.address, this.abi, 'deposit(uint256)', [amount]);
     return tx;
   }
 
   async unstake(amount: BigNumber) {
-    const tx = this.web3.sendTransaction(
-      this.address,
-      this.abi,
-      'withdraw(uint256)',
-      [amount]
-    );
+    const tx = this.web3.sendTransaction(this.address, this.abi, 'withdraw(uint256)', [amount]);
     return tx;
   }
 
@@ -67,11 +57,7 @@ export class LiquidityGauge {
    * @summary Claim all user's reward tokens, e.g. everything that's not BAL
    */
   async claimRewards() {
-    return await this.web3.sendTransaction(
-      this.address,
-      this.abi,
-      'claim_rewards()'
-    );
+    return await this.web3.sendTransaction(this.address, this.abi, 'claim_rewards()');
   }
 
   async workingSupplies(gaugeAddresses: string[]) {
@@ -98,40 +84,24 @@ export class LiquidityGauge {
     return tokens;
   }
 
-  static async getRewardTokensForGauges(
-    gaugeAddresses: string[]
-  ): Promise<Record<string, string[]>> {
+  static async getRewardTokensForGauges(gaugeAddresses: string[]): Promise<Record<string, string[]>> {
     const multicaller = LiquidityGauge.getMulticaller();
     gaugeAddresses.forEach(gaugeAddress => {
       for (let i = 0; i < MAX_REWARD_TOKENS; i++) {
-        multicaller.call(
-          `${getAddress(gaugeAddress)}.[${i}]`,
-          getAddress(gaugeAddress),
-          'reward_tokens',
-          [i]
-        );
+        multicaller.call(`${getAddress(gaugeAddress)}.[${i}]`, getAddress(gaugeAddress), 'reward_tokens', [i]);
       }
     });
     const tokensForGauges = await multicaller.execute();
-    return mapValues(tokensForGauges, rewardTokens =>
-      rewardTokens.filter(token => token !== AddressZero)
-    );
+    return mapValues(tokensForGauges, rewardTokens => rewardTokens.filter(token => token !== AddressZero));
   }
 
-  static async getRewardTokenDataForGauges(
-    gaugeRewardTokenMap: Record<string, string[]>
-  ) {
+  static async getRewardTokenDataForGauges(gaugeRewardTokenMap: Record<string, string[]>) {
     const multicaller = this.getMulticaller();
     for (const gaugeAddress of Object.keys(gaugeRewardTokenMap)) {
       const _gaugeAddress = getAddress(gaugeAddress);
       for (const rewardToken of gaugeRewardTokenMap[gaugeAddress]) {
         const _rewardToken = getAddress(rewardToken);
-        multicaller.call(
-          `${_gaugeAddress}.${_rewardToken}`,
-          _gaugeAddress,
-          'reward_data',
-          [_rewardToken]
-        );
+        multicaller.call(`${_gaugeAddress}.${_rewardToken}`, _gaugeAddress, 'reward_data', [_rewardToken]);
       }
     }
     const rewardData = await multicaller.execute();
@@ -143,10 +113,6 @@ export class LiquidityGauge {
   }
 
   static getMulticaller(provider?: JsonRpcProvider): Multicaller {
-    return new Multicaller(
-      configService.network.key,
-      provider || rpcProviderService.jsonProvider,
-      LiquidityGaugeAbi
-    );
+    return new Multicaller(configService.network.key, provider || rpcProviderService.jsonProvider, LiquidityGaugeAbi);
   }
 }

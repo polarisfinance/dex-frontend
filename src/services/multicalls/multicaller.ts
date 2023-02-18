@@ -41,13 +41,7 @@ export class Multicaller {
   }
 
   private getMulticallerInstance(): Contract {
-    return new Contract(
-      this.address,
-      [
-        'function tryAggregate(bool requireSuccess, tuple(address, bytes)[] memory calls) public view returns (tuple(bool, bytes)[] memory returnData)',
-      ],
-      this.provider
-    );
+    return new Contract(this.address, ['function tryAggregate(bool requireSuccess, tuple(address, bytes)[] memory calls) public view returns (tuple(bool, bytes)[] memory returnData)'], this.provider);
   }
 
   private callInterfaces(): Interface[] {
@@ -57,10 +51,7 @@ export class Multicaller {
   private encodedCalls(): Array<string[]> {
     const interfaces = this.callInterfaces();
 
-    return this.calls.map((call, i) => [
-      call.address.toLowerCase(),
-      interfaces[i].encodeFunctionData(call.function, call.params),
-    ]);
+    return this.calls.map((call, i) => [call.address.toLowerCase(), interfaces[i].encodeFunctionData(call.function, call.params)]);
   }
 
   private async _execute<T>(): Promise<(T | null)[]> {
@@ -77,10 +68,7 @@ export class Multicaller {
 
       return res.map(([success, returnData], i) => {
         if (!success) return null;
-        const decodedResult = interfaces[i].decodeFunctionResult(
-          this.calls[i].function,
-          returnData
-        );
+        const decodedResult = interfaces[i].decodeFunctionResult(this.calls[i].function, returnData);
         // Automatically unwrap any simple return values
         return decodedResult.length > 1 ? decodedResult : decodedResult[0];
       });

@@ -1,8 +1,4 @@
-import {
-  JsonRpcBatchProvider,
-  JsonRpcProvider,
-  WebSocketProvider,
-} from '@ethersproject/providers';
+import { JsonRpcBatchProvider, JsonRpcProvider, WebSocketProvider } from '@ethersproject/providers';
 
 import RpcProviderService from '@/services/rpc-provider/rpc-provider.service';
 

@@ -1149,8 +1149,7 @@ export const sunriseDefinitions: { [contractName: string]: SunriseInfo } = {
     lpAddress: '0x3e50da46cB79d1f9F08445984f207278796CE2d2',
     treasury: 'lunarTreasury',
     lpToken: 'LUNA',
-    retireMsg:
-      'Please withdraw your SPOLAR and migrate them to other active Sunrises.',
+    retireMsg: 'Please withdraw your SPOLAR and migrate them to other active Sunrises.',
     getTokenPreviousEpochTWAP: 'previousEpochlunarPrice',
     getTokenPriceInLastTWAP: 'getlunarUpdatedPrice',
     getBondsPurchasable: 'getBurnablelunarLeft',
@@ -1189,8 +1188,7 @@ export const sunriseDefinitions: { [contractName: string]: SunriseInfo } = {
     lpAddress: '0x85f155FDCf2a951fd95734eCEB99F875b84a2E27',
     treasury: 'tripolarTreasuryOld',
     lpToken: 'xTRI',
-    retireMsg:
-      'Please withdraw your SPOLAR and migrate them to the NEW TRIPOLAR Sunrise.',
+    retireMsg: 'Please withdraw your SPOLAR and migrate them to the NEW TRIPOLAR Sunrise.',
     getTokenPreviousEpochTWAP: 'previousEpochTripolarPrice',
     getTokenPriceInLastTWAP: 'getTripolarUpdatedPrice',
     getBondsPurchasable: 'getBurnableTripolarLeft',
@@ -1234,8 +1232,7 @@ export const sunriseDefinitions: { [contractName: string]: SunriseInfo } = {
     getBondsPurchasable: 'getBurnableEthernalLeft',
     getPrice: 'getEthernalPrice',
     oracle: 'EthernalOracle',
-    retireMsg:
-      'Please withdraw your SPOLAR and migrate them to the NEW ETHERNAL Sunrise.',
+    retireMsg: 'Please withdraw your SPOLAR and migrate them to the NEW ETHERNAL Sunrise.',
   },
   BtcSunrise: {
     name: 'orbital',
@@ -1276,8 +1273,7 @@ export const sunriseDefinitions: { [contractName: string]: SunriseInfo } = {
     getBondsPurchasable: 'getBurnableOrbitalLeft',
     getPrice: 'getOrbitalPrice',
     oracle: 'OrbitalOracle',
-    retireMsg:
-      'Please withdraw your SPOLAR and migrate them to the NEW ORBITAL Sunrise.',
+    retireMsg: 'Please withdraw your SPOLAR and migrate them to the NEW ORBITAL Sunrise.',
   },
   UspSunrise: {
     name: 'usp',
@@ -1318,8 +1314,7 @@ export const sunriseDefinitions: { [contractName: string]: SunriseInfo } = {
     getBondsPurchasable: 'getBurnableUspLeft',
     getPrice: 'getUspPrice',
     oracle: 'UspOracle',
-    retireMsg:
-      'Please withdraw your SPOLAR and migrate them to the NEW USP Sunrise.',
+    retireMsg: 'Please withdraw your SPOLAR and migrate them to the NEW USP Sunrise.',
   },
   BinarisSunrise: {
     name: 'binaris',
@@ -1360,8 +1355,7 @@ export const sunriseDefinitions: { [contractName: string]: SunriseInfo } = {
     getBondsPurchasable: 'getBurnableBinarisLeft',
     getPrice: 'getBinarisPrice',
     oracle: 'BinarisOracle',
-    retireMsg:
-      'Please withdraw your SPOLAR and migrate them to the NEW BINARIS Sunrise.',
+    retireMsg: 'Please withdraw your SPOLAR and migrate them to the NEW BINARIS Sunrise.',
   },
   AurisSunrise: {
     name: 'tripolar',

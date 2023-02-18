@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from 'ethers';
 import { computed, reactive, toRef, toRefs, watch } from 'vue';
@@ -79,19 +76,9 @@ const { lockablePoolId } = useVeBal();
 const { isPoolEligibleForStaking } = useStaking();
 
 const { poolWeightsLabel } = usePool(toRef(props, 'pool'));
-const {
-  fullAmounts,
-  batchSwapAmountMap,
-  bptOut,
-  fiatTotalLabel,
-  batchSwap,
-  shouldFetchBatchSwap,
-} = toRefs(props.math);
+const { fullAmounts, batchSwapAmountMap, bptOut, fiatTotalLabel, batchSwap, shouldFetchBatchSwap } = toRefs(props.math);
 
-const { tokenApprovalActions } = useTokenApprovalActions(
-  props.tokenAddresses,
-  fullAmounts
-);
+const { tokenApprovalActions } = useTokenApprovalActions(props.tokenAddresses, fullAmounts);
 
 /**
  * SERVICES
@@ -112,18 +99,10 @@ const actions = computed((): TransactionActionInfo[] => [
   },
 ]);
 
-const transactionInProgress = computed(
-  (): boolean =>
-    investmentState.init ||
-    investmentState.confirming ||
-    investmentState.confirmed
-);
+const transactionInProgress = computed((): boolean => investmentState.init || investmentState.confirming || investmentState.confirmed);
 
 const isStakablePool = computed((): boolean => {
-  return (
-    POOLS.Stakable.AllowList.includes(route.params.id as string) &&
-    isPoolEligibleForStaking.value
-  );
+  return POOLS.Stakable.AllowList.includes(route.params.id as string) && isPoolEligibleForStaking.value;
 });
 
 /**
@@ -135,10 +114,7 @@ async function handleTransaction(tx): Promise<void> {
     id: tx.hash,
     type: 'tx',
     action: 'invest',
-    summary: t('transactionSummary.investInPool', [
-      fiatTotalLabel.value,
-      poolWeightsLabel(props.pool),
-    ]),
+    summary: t('transactionSummary.investInPool', [fiatTotalLabel.value, poolWeightsLabel(props.pool)]),
     details: {
       total: fiatTotalLabel.value,
       pool: props.pool,
@@ -168,21 +144,9 @@ async function submit(): Promise<TransactionResponse> {
     investmentState.init = true;
 
     if (batchSwap.value) {
-      tx = await boostedJoinBatchSwap(
-        batchSwap.value.swaps,
-        batchSwap.value.assets,
-        props.pool.address,
-        batchSwapAmountMap.value,
-        BigNumber.from(bptOut.value)
-      );
+      tx = await boostedJoinBatchSwap(batchSwap.value.swaps, batchSwap.value.assets, props.pool.address, batchSwapAmountMap.value, BigNumber.from(bptOut.value));
     } else {
-      tx = await poolExchange.join(
-        getProvider(),
-        account.value,
-        fullAmounts.value,
-        props.tokenAddresses,
-        formatUnits(bptOut.value, props.pool?.onchain?.decimals || 18)
-      );
+      tx = await poolExchange.join(getProvider(), account.value, fullAmounts.value, props.tokenAddresses, formatUnits(bptOut.value, props.pool?.onchain?.decimals || 18));
     }
 
     investmentState.init = false;
@@ -210,43 +174,15 @@ watch(blockNumber, async () => {
 
 <template>
   <transition>
-    <BalActionSteps
-      v-if="!investmentState.confirmed"
-      :actions="actions"
-      :disabled="disabled"
-    />
+    <BalActionSteps v-if="!investmentState.confirmed" :actions="actions" :disabled="disabled" />
     <div v-else>
       <ConfirmationIndicator :txReceipt="investmentState.receipt" />
-      <BalBtn
-        v-if="lockablePoolId === pool.id"
-        tag="router-link"
-        :to="{ name: 'get-vebal' }"
-        color="gradient"
-        block
-        class="mt-2 flex"
-      >
+      <BalBtn v-if="lockablePoolId === pool.id" tag="router-link" :to="{ name: 'get-vebal' }" color="gradient" block class="mt-2 flex">
         <StarsIcon class="mr-2 h-5 text-orange-300" />{{ $t('lockToGetVeBAL') }}
       </BalBtn>
-      <BalBtn
-        v-else-if="isStakablePool"
-        color="gradient"
-        block
-        class="mt-2 flex"
-        @click="emit('showStakeModal')"
-      >
-        <StarsIcon class="mr-2 h-5 text-orange-300" />{{
-          $t('stakeToGetExtra')
-        }}
-      </BalBtn>
+      <BalBtn v-else-if="isStakablePool" color="gradient" block class="mt-2 flex" @click="emit('showStakeModal')"> <StarsIcon class="mr-2 h-5 text-orange-300" />{{ $t('stakeToGetExtra') }} </BalBtn>
 
-      <BalBtn
-        tag="router-link"
-        :to="{ name: 'pool', params: { id: route.params.id } }"
-        color="gray"
-        outline
-        block
-        class="mt-2"
-      >
+      <BalBtn tag="router-link" :to="{ name: 'pool', params: { id: route.params.id } }" color="gray" outline block class="mt-2">
         {{ $t('returnToPool') }}
       </BalBtn>
     </div>

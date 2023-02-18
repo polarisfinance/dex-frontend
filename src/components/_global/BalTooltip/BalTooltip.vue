@@ -111,13 +111,7 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <button
-    ref="activator"
-    :class="['leading-none', { 'cursor-default': disabled }]"
-    v-bind="$attrs"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
-  >
+  <button ref="activator" :class="['leading-none', { 'cursor-default': disabled }]" v-bind="$attrs" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <slot name="activator">
       <BalIcon :name="iconName" :size="iconSize" :class="iconClass" />
     </slot>
@@ -153,9 +147,7 @@ onUnmounted(() => {
 /* Dark mode radial gradient shadow */
 .dark .tooltip::before {
   background-blend-mode: soft-light, soft-light, normal;
-  background: radial-gradient(ellipse at left, yellow, transparent),
-    radial-gradient(ellipse at bottom right, blue, transparent),
-    radial-gradient(ellipse at top, red, transparent);
+  background: radial-gradient(ellipse at left, yellow, transparent), radial-gradient(ellipse at bottom right, blue, transparent), radial-gradient(ellipse at top, red, transparent);
   content: '';
 }
 

@@ -55,12 +55,7 @@ function handleRowClick(option: any): void {
       <slot name="activator" />
     </div>
     <div v-if="showDropdown" :class="['bal-dropdown', dropdownClasses]">
-      <div
-        v-for="(option, i) in options"
-        :key="i"
-        class="bal-dropdown-row"
-        @click="handleRowClick(option)"
-      >
+      <div v-for="(option, i) in options" :key="i" class="bal-dropdown-row" @click="handleRowClick(option)">
         <slot name="option" :option="option" />
       </div>
     </div>

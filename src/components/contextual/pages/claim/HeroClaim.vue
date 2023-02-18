@@ -14,85 +14,39 @@
         </div>
       </div>
       <div class="hero-graphic-container">
-        <div
-          class="fade-in-slow grid w-full grid-cols-2 items-center gap-8 sm:grid-cols-4 sm:gap-4 xl:gap-12"
-        >
+        <div class="fade-in-slow grid w-full grid-cols-2 items-center gap-8 sm:grid-cols-4 sm:gap-4 xl:gap-12">
           <div class="tip group">
-            <img
-              width="144"
-              height="144"
-              class="tip-icon"
-              src="@/assets/images/icons/claims-header/add-liquidity.svg"
-            />
+            <img width="144" height="144" class="tip-icon" src="@/assets/images/icons/claims-header/add-liquidity.svg" />
             <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.addLiquidity') }}
-              <BalTooltip
-                iconSize="xs"
-                textAlign="left"
-                class="relative top-px"
-                iconClass="text-white"
-                width="60"
-              >
+              <BalTooltip iconSize="xs" textAlign="left" class="relative top-px" iconClass="text-white" width="60">
                 {{ $t('claimHero.tips.addLiquidity') }}
               </BalTooltip>
             </p>
           </div>
           <div class="tip group">
-            <img
-              width="144"
-              height="144"
-              class="tip-icon"
-              src="@/assets/images/icons/claims-header/stake.svg"
-            />
+            <img width="144" height="144" class="tip-icon" src="@/assets/images/icons/claims-header/stake.svg" />
             <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.stake') }}
-              <BalTooltip
-                iconSize="xs"
-                textAlign="left"
-                class="relative top-px"
-                iconClass="text-white"
-                width="60"
-              >
+              <BalTooltip iconSize="xs" textAlign="left" class="relative top-px" iconClass="text-white" width="60">
                 {{ $t('claimHero.tips.stake') }}
               </BalTooltip>
             </p>
           </div>
           <div class="tip group">
-            <img
-              width="144"
-              height="144"
-              class="tip-icon"
-              src="@/assets/images/icons/claims-header/vebal.svg"
-            />
+            <img width="144" height="144" class="tip-icon" src="@/assets/images/icons/claims-header/vebal.svg" />
             <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.boost') }}
-              <BalTooltip
-                iconSize="xs"
-                textAlign="left"
-                class="relative top-px"
-                iconClass="text-white"
-                width="60"
-              >
+              <BalTooltip iconSize="xs" textAlign="left" class="relative top-px" iconClass="text-white" width="60">
                 {{ $t('claimHero.tips.boost') }}
               </BalTooltip>
             </p>
           </div>
           <div class="tip group">
-            <img
-              width="144"
-              height="144"
-              class="tip-icon"
-              src="@/assets/images/icons/claims-header/claim.svg"
-            />
+            <img width="144" height="144" class="tip-icon" src="@/assets/images/icons/claims-header/claim.svg" />
             <p class="tip-label text-shadow font-semibold">
               {{ $t('claimHero.tipLabel.claim') }}
-              <BalTooltip
-                iconSize="xs"
-                textAlign="left"
-                class="relative top-px"
-                iconClass="text-white"
-                width="60"
-              >
+              <BalTooltip iconSize="xs" textAlign="left" class="relative top-px" iconClass="text-white" width="60">
                 {{ $t('claimHero.tips.claim') }}
               </BalTooltip>
             </p>

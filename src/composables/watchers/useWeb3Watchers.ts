@@ -15,25 +15,12 @@ export default function useWeb3Watchers() {
   // COMPOSABLES
   const { t } = useI18n();
   const { blocknative, supportsBlocknative } = useBlocknative();
-  const {
-    appNetworkConfig,
-    chainId,
-    account,
-    isMismatchedNetwork,
-    isUnsupportedNetwork,
-    blockNumber,
-    connectToAppNetwork,
-    isWalletReady,
-    disconnectWallet,
-  } = useWeb3();
+  const { appNetworkConfig, chainId, account, isMismatchedNetwork, isUnsupportedNetwork, blockNumber, connectToAppNetwork, isWalletReady, disconnectWallet } = useWeb3();
   const { addAlert, removeAlert } = useAlerts();
   const { refetchBalances, refetchAllowances } = useTokens();
   const { handlePendingTransactions, updateTransaction } = useTransactions();
 
-  function handleTransactionReplacement(
-    tx: EthereumTransactionData,
-    replacementReason: ReplacementReason
-  ) {
+  function handleTransactionReplacement(tx: EthereumTransactionData, replacementReason: ReplacementReason) {
     const originalHash = tx.replaceHash;
 
     if (originalHash != null) {
@@ -77,19 +64,9 @@ export default function useWeb3Watchers() {
           refetchAllowances.value();
         });
 
-        emitter.on('txSpeedUp', tx =>
-          handleTransactionReplacement(
-            tx as EthereumTransactionData,
-            'txSpeedUp'
-          )
-        );
+        emitter.on('txSpeedUp', tx => handleTransactionReplacement(tx as EthereumTransactionData, 'txSpeedUp'));
 
-        emitter.on('txCancel', tx =>
-          handleTransactionReplacement(
-            tx as EthereumTransactionData,
-            'txCancel'
-          )
-        );
+        emitter.on('txCancel', tx => handleTransactionReplacement(tx as EthereumTransactionData, 'txCancel'));
       }
     }
   );

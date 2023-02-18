@@ -1,13 +1,9 @@
 <template v-slot="{ hidePopover }">
-  <BalPopover
-    noPad
-    :align="isMobile ? 'center' : undefined"
-    :detached="isMobile ? true : undefined"
-  >
+  <BalPopover noPad :align="isMobile ? 'center' : undefined" :detached="isMobile ? true : undefined">
     <template #activator>
       <button
         @click="toggleModal"
-        class="btn flex flex-row text-base w-full lg:w-auto justify-center"
+        class="btn flex w-full flex-row justify-center text-base lg:w-auto"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"
         :loadingLabel="upToLargeBreakpoint ? '' : $t('connecting')"
@@ -15,20 +11,13 @@
         :size="upToLargeBreakpoint ? 'md' : 'sm'"
         :circle="upToLargeBreakpoint"
       >
-        <Avatar
-          :iconURI="profile?.avatar"
-          :address="account"
-          :size="avatarSize"
-        />
+        <Avatar :iconURI="profile?.avatar" :address="account" :size="avatarSize" />
         <!-- <span
           v-if="profile && profile.ens"
           class="hidden pl-2 leading-[20px] lg:inline-block"
           v-text="profile && profile.ens"
         /> -->
-        <span
-          class="eth-address inline-block pl-2 leading-[20px]"
-          v-text="_shorten(account)"
-        />
+        <span class="eth-address inline-block pl-2 leading-[20px]" v-text="_shorten(account)" />
       </button>
     </template>
     <AppNavSettings v-if="showModal" :close="closeModal" />
@@ -98,7 +87,7 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-  @apply bg-transparent rounded-[16px] py-[12px] px-[43.5px] text-text-white font-semibold;
+  @apply rounded-[16px] bg-transparent py-[12px] px-[43.5px] font-semibold text-text-white;
   border: 1px solid rgba(64, 51, 71, 0.5);
 }
 .btn:hover {

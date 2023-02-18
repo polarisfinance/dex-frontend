@@ -4,12 +4,7 @@ import { set } from 'lodash';
 import { default as erc20Abi } from '@/lib/abi/ERC20.json';
 import { includesAddress, isSameAddress } from '@/lib/utils';
 import { Multicaller } from '@/lib/utils/balancer/contract';
-import {
-  TokenInfo,
-  TokenInfoMap,
-  TokenList,
-  TokenListMap,
-} from '@/types/TokenList';
+import { TokenInfo, TokenInfoMap, TokenList, TokenListMap } from '@/types/TokenList';
 
 import TokenService from '../token.service';
 
@@ -21,19 +16,14 @@ export default class MetadataConcern {
    * TokenLists. If any token metadata can't be found, resort
    * to an onchain multicall.
    */
-  async get(
-    addresses: string[],
-    tokenLists: TokenListMap
-  ): Promise<TokenInfoMap> {
+  async get(addresses: string[], tokenLists: TokenListMap): Promise<TokenInfoMap> {
     addresses = addresses.map(address => getAddress(address));
     const tokenListTokens = this.tokenListsTokensFrom(tokenLists);
     let metaDict = this.getMetaFromLists(addresses, tokenListTokens);
 
     // If token meta can't be found in TokenLists, fetch onchain
     const existingAddresses = Object.keys(metaDict);
-    const unknownAddresses = addresses.filter(
-      address => !includesAddress(existingAddresses, address)
-    );
+    const unknownAddresses = addresses.filter(address => !includesAddress(existingAddresses, address));
     if (unknownAddresses.length > 0) {
       const onchainMeta = await this.getMetaOnchain(unknownAddresses);
       metaDict = { ...metaDict, ...onchainMeta };
@@ -48,16 +38,11 @@ export default class MetadataConcern {
       .flat();
   }
 
-  private getMetaFromLists(
-    addresses: string[],
-    tokens: TokenInfo[]
-  ): TokenInfoMap {
+  private getMetaFromLists(addresses: string[], tokens: TokenInfo[]): TokenInfoMap {
     const metaDict = {};
 
     addresses.forEach(async address => {
-      const tokenMeta = tokens.find(token =>
-        isSameAddress(token.address, address)
-      );
+      const tokenMeta = tokens.find(token => isSameAddress(token.address, address));
       if (tokenMeta)
         metaDict[address] = {
           ...tokenMeta,
@@ -77,11 +62,7 @@ export default class MetadataConcern {
       addresses.forEach(address => {
         set(metaDict, `${address}.address`, address);
         set(metaDict, `${address}.chainId`, parseInt(network));
-        set(
-          metaDict,
-          `${address}.logoURI`,
-          `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
-        );
+        set(metaDict, `${address}.logoURI`, `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`);
         multi.call(`${address}.name`, address, 'name');
         multi.call(`${address}.symbol`, address, 'symbol');
         multi.call(`${address}.decimals`, address, 'decimals');

@@ -13,10 +13,7 @@ export const POOL_MIGRATIONS: PoolMigrationInfo[] = [
     type: PoolMigrationType.AAVE_BOOSTED_POOL,
     fromPoolId: poolsIdsMap?.staBAL ?? '',
     toPoolId: poolsIdsMap?.bbAaveUSD ?? '',
-    riskI18nLabels: [
-      `${riskI18nLabelPrefix}.loseUSDPeg`,
-      `${riskI18nLabelPrefix}.aaveStableExploit`,
-    ],
+    riskI18nLabels: [`${riskI18nLabelPrefix}.loseUSDPeg`, `${riskI18nLabelPrefix}.aaveStableExploit`],
   },
 ];
 

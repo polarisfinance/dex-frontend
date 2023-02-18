@@ -1,9 +1,6 @@
 import { inject } from 'vue';
 
-import {
-  TokenListsProviderResponse,
-  TokenListsProviderSymbol,
-} from '@/providers/token-lists.provider';
+import { TokenListsProviderResponse, TokenListsProviderSymbol } from '@/providers/token-lists.provider';
 
 const defaultProviderResponse = {} as TokenListsProviderResponse;
 

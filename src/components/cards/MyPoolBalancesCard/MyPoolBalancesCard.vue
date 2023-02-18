@@ -36,13 +36,7 @@ const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
 /**
  * SERVICES
  */
-const poolCalculator = new PoolCalculator(
-  toRef(props, 'pool'),
-  tokens,
-  balances,
-  'exit',
-  ref(false)
-);
+const poolCalculator = new PoolCalculator(toRef(props, 'pool'), tokens, balances, 'exit', ref(false));
 
 /**
  * COMPUTED
@@ -50,11 +44,7 @@ const poolCalculator = new PoolCalculator(
 const bptBalance = computed((): string => balanceFor(props.pool.address));
 
 const propTokenAmounts = computed((): string[] => {
-  const { receive } = poolCalculator.propAmountsGiven(
-    bptBalance.value,
-    0,
-    'send'
-  );
+  const { receive } = poolCalculator.propAmountsGiven(bptBalance.value, 0, 'send');
 
   if (isStablePhantomPool.value) {
     // Return linear pool's main token balance using the price rate.
@@ -81,9 +71,7 @@ const tokenAddresses = computed((): string[] => {
 });
 
 const fiatTotal = computed(() => {
-  const fiatValue = tokenAddresses.value
-    .map((address, i) => toFiat(propTokenAmounts.value[i], address))
-    .reduce((total, value) => bnum(total).plus(value).toString());
+  const fiatValue = tokenAddresses.value.map((address, i) => toFiat(propTokenAmounts.value[i], address)).reduce((total, value) => bnum(total).plus(value).toString());
   return fNum2(fiatValue, FNumFormats.fiat);
 });
 </script>

@@ -27,23 +27,18 @@ const props = withDefaults(defineProps<Props>(), {
 const { isStablePhantomPool } = usePool(toRef(props, 'pool'));
 
 const { isMobile, isDesktop } = useBreakpoints();
-
 </script>
 
 <template>
-  <h4
-    class=" mb-[24px]" 
-    v-text="$t('poolTransactions.tabs.investmentsTrades')"
-  />
+  <h4 class="mb-[24px]" v-text="$t('poolTransactions.tabs.investmentsTrades')" />
   <InvestmentTransactions :pool="pool" :loading="loading" />
-
 </template>
 <style scoped>
-h4{
+h4 {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
+  color: #fdfdfd;
   padding: 10px 24px;
 }
 </style>

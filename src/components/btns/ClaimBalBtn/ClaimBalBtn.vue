@@ -35,9 +35,7 @@ const gaugesQuery = useGaugesDecorationQuery(subgraphGauges);
 /**
  * COMPUTED
  */
-const gaugeAddresses = computed((): string[] =>
-  props.gauges.map(gauge => getAddress(gauge.id))
-);
+const gaugeAddresses = computed((): string[] => props.gauges.map(gauge => getAddress(gauge.id)));
 
 /**
  * METHODS

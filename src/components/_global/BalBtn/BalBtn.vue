@@ -1,9 +1,5 @@
 <template>
-  <component
-    :is="tag"
-    :class="['bal-btn confirm-button', btnClasses]"
-    :disabled="disabled || loading"
-  >
+  <component :is="tag" :class="['bal-btn confirm-button', btnClasses]" :disabled="disabled || loading">
     <div v-if="loading" class="flex items-center justify-center">
       <BalLoadingIcon :size="size" :color="iconColor" />
       <span v-if="loadingLabel">
@@ -35,30 +31,17 @@ export default defineComponent({
     tag: {
       type: String,
       default: 'button',
-      validator: (val: string): boolean =>
-        ['button', 'a', 'div', 'router-link'].includes(val),
+      validator: (val: string): boolean => ['button', 'a', 'div', 'router-link'].includes(val),
     },
     size: {
       type: String,
       default: 'md',
-      validator: (val: string): boolean =>
-        ['xs', 'sm', 'md', 'lg'].includes(val),
+      validator: (val: string): boolean => ['xs', 'sm', 'md', 'lg'].includes(val),
     },
     color: {
       type: String,
       default: 'primary',
-      validator: (val: string): boolean =>
-        [
-          'primary',
-          'gradient',
-          'gradient-reverse',
-          'gradient-pink-yellow',
-          'gray',
-          'red',
-          'white',
-          'blue',
-          'transparent',
-        ].includes(val),
+      validator: (val: string): boolean => ['primary', 'gradient', 'gradient-reverse', 'gradient-pink-yellow', 'gray', 'red', 'white', 'blue', 'transparent'].includes(val),
     },
     label: { type: String, default: '' },
     block: { type: Boolean, default: false },
@@ -136,10 +119,8 @@ export default defineComponent({
       if (props.color.includes('gradient')) return bgGradientClasses.value;
       else if (props.outline) return 'bg-transparent';
       else if (props.flat) return bgFlatClasses.value;
-      else if (props.color === 'transparent') 
-        return 'bg-transparent';
-      else if (props.color === 'gray')
-        return 'bg-[#50456E]';
+      else if (props.color === 'transparent') return 'bg-transparent';
+      else if (props.color === 'gray') return 'bg-[#50456E]';
       else if (props.color === 'white') {
         return 'bg-gray-50 hover:bg-white dark:bg-gray-800';
       } else {
@@ -158,28 +139,22 @@ export default defineComponent({
 
     const borderClasses = computed(() => {
       if (props.outline) {
-        if (props.disabled)
-          return `border border-gray-200 dark:border-gray-700`;
+        if (props.disabled) return `border border-gray-200 dark:border-gray-700`;
         return `border border-${props.color}-200 dark:border-${props.color}-700 dark:hover:border-${props.color}-600 dark:focus:border-${props.color}-600 hover:text-gray-600 dark:hover:text-gray-200 dark:focus:text-gray-200`;
       }
       return 'border-none';
     });
 
     const textColorClasses = computed(() => {
-      if (props.outline && props.disabled)
-        return 'text-gray-400 dark:text-gray-700';
+      if (props.outline && props.disabled) return 'text-gray-400 dark:text-gray-700';
       if (props.outline && props.color === 'gradient') return 'text-purple-700';
       if (props.color === 'white') {
-        if (props.outline)
-          return 'text-white hover:text-yellow-500 dark:hover:text-yellow-500';
+        if (props.outline) return 'text-white hover:text-yellow-500 dark:hover:text-yellow-500';
         else return 'text-gray-800 hover:text-blue-600 dark:text-gray-100';
       }
-      if (props.color === 'transparent')
-        return 'text-[#A99BC6]';
-      if (props.outline || props.flat)
-        return `text-${props.color}-500 dark:text-${props.color}-400`;
-      if (props.color === 'dark')
-        return 'text-text-purple-secondary';
+      if (props.color === 'transparent') return 'text-[#A99BC6]';
+      if (props.outline || props.flat) return `text-${props.color}-500 dark:text-${props.color}-400`;
+      if (props.color === 'dark') return 'text-text-purple-secondary';
       return 'text-text-white';
     });
 
@@ -255,11 +230,10 @@ export default defineComponent({
   /* background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
   border-radius: 16px; */
   border-radius: 16px;
- 
 }
 
 .content {
-  @apply  pt-[6px] pb-[4px] inline-block selection:align-bottom font-semibold;
+  @apply inline-block pt-[6px] pb-[4px] font-semibold selection:align-bottom;
 }
 
 .confirm-button {
@@ -275,9 +249,9 @@ export default defineComponent({
   left: 12px;
   top: 226px;
 
-  background: #41365E;
+  background: #41365e;
   border-radius: 12px;
-  color: #A99BC6;
+  color: #a99bc6;
 
   width: 100%;
 }

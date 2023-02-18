@@ -35,9 +35,7 @@ export function isStablePhantom(poolType: PoolType): boolean {
 }
 
 export function isStableLike(poolType: PoolType): boolean {
-  return (
-    isStable(poolType) || isMetaStable(poolType) || isStablePhantom(poolType)
-  );
+  return isStable(poolType) || isMetaStable(poolType) || isStablePhantom(poolType);
 }
 
 export function isUnknownType(poolType: any): boolean {
@@ -58,11 +56,7 @@ export function isManaged(poolType: PoolType): boolean {
 }
 
 export function isWeightedLike(poolType: PoolType): boolean {
-  return (
-    isWeighted(poolType) ||
-    isManaged(poolType) ||
-    isLiquidityBootstrapping(poolType)
-  );
+  return isWeighted(poolType) || isManaged(poolType) || isLiquidityBootstrapping(poolType);
 }
 
 export function isTradingHaltable(poolType: PoolType): boolean {
@@ -70,16 +64,11 @@ export function isTradingHaltable(poolType: PoolType): boolean {
 }
 
 export function isWeth(pool: AnyPool): boolean {
-  return includesAddress(
-    pool.tokensList || [],
-    configService.network.addresses.weth
-  );
+  return includesAddress(pool.tokensList || [], configService.network.addresses.weth);
 }
 
 export function isMigratablePool(pool: AnyPool) {
-  return POOL_MIGRATIONS.some(
-    poolMigrationInfo => poolMigrationInfo.fromPoolId === pool.id
-  );
+  return POOL_MIGRATIONS.some(poolMigrationInfo => poolMigrationInfo.fromPoolId === pool.id);
 }
 
 export function noInitLiquidity(pool: AnyPool): boolean {
@@ -104,39 +93,24 @@ export function lpTokensFor(pool: AnyPool): string[] {
  * @returns Array of checksum addresses
  */
 export function orderedTokenAddresses(pool: AnyPool): string[] {
-  const sortedTokens = orderedPoolTokens(
-    pool.poolType,
-    pool.address,
-    pool.tokens
-  );
+  const sortedTokens = orderedPoolTokens(pool.poolType, pool.address, pool.tokens);
   return sortedTokens.map(token => getAddress(token?.address || ''));
 }
 
 /**
  * @summary Orders pool tokens by weight if weighted pool
  */
-export function orderedPoolTokens(
-  poolType: PoolType,
-  poolAddress: string,
-  tokens: Pick<PoolToken, 'address' | 'weight'>[]
-): Partial<PoolToken>[] {
-  if (isStablePhantom(poolType))
-    return tokens.filter(token => !isSameAddress(token.address, poolAddress));
+export function orderedPoolTokens(poolType: PoolType, poolAddress: string, tokens: Pick<PoolToken, 'address' | 'weight'>[]): Partial<PoolToken>[] {
+  if (isStablePhantom(poolType)) return tokens.filter(token => !isSameAddress(token.address, poolAddress));
   if (isStableLike(poolType)) return tokens;
 
-  return tokens
-    .slice()
-    .sort((a, b) => parseFloat(b.weight) - parseFloat(a.weight));
+  return tokens.slice().sort((a, b) => parseFloat(b.weight) - parseFloat(a.weight));
 }
 
 /**
  * @summary returns full URL for pool id, given network.
  */
-export function poolURLFor(
-  poolId: string,
-  network: Network,
-  poolType?: string | PoolType
-): string {
+export function poolURLFor(poolId: string, network: Network, poolType?: string | PoolType): string {
   if (poolType && poolType.toString() === 'Element') {
     return `https://app.element.fi/pools/${addressFor(poolId)}`;
   }
@@ -187,9 +161,7 @@ export function isVeBalPool(poolId: string): boolean {
  * @summary Remove pre-minted pool token address from tokensList
  */
 export function removePreMintedBPT(pool: Pool): Pool {
-  pool.tokensList = pool.tokensList.filter(
-    address => !isSameAddress(address, pool.address)
-  );
+  pool.tokensList = pool.tokensList.filter(address => !isSameAddress(address, pool.address));
   return pool;
 }
 
@@ -197,16 +169,10 @@ export function removePreMintedBPT(pool: Pool): Pool {
  * @summary Check if pool should be accessible in UI
  */
 export function isBlocked(pool: Pool, account: string): boolean {
-  const requiresAllowlisting =
-    isStableLike(pool.poolType) || isManaged(pool.poolType);
-  const isOwnedByUser =
-    isAddress(account) && isSameAddress(pool.owner, account);
-  const isAllowlisted =
-    POOLS.Stable.AllowList.includes(pool.id) ||
-    POOLS.Investment.AllowList.includes(pool.id);
-  return (
-    !isTestnet.value && requiresAllowlisting && !isAllowlisted && !isOwnedByUser
-  );
+  const requiresAllowlisting = isStableLike(pool.poolType) || isManaged(pool.poolType);
+  const isOwnedByUser = isAddress(account) && isSameAddress(pool.owner, account);
+  const isAllowlisted = POOLS.Stable.AllowList.includes(pool.id) || POOLS.Investment.AllowList.includes(pool.id);
+  return !isTestnet.value && requiresAllowlisting && !isAllowlisted && !isOwnedByUser;
 }
 
 /**
@@ -241,43 +207,18 @@ export function usePool(pool: Ref<AnyPool> | Ref<undefined>) {
   /**
    * COMPUTED
    */
-  const isStablePool = computed(
-    (): boolean => !!pool.value && isStable(pool.value.poolType)
-  );
-  const isMetaStablePool = computed(
-    (): boolean => !!pool.value && isMetaStable(pool.value.poolType)
-  );
-  const isStablePhantomPool = computed(
-    (): boolean => !!pool.value && isStablePhantom(pool.value.poolType)
-  );
-  const isStableLikePool = computed(
-    (): boolean => !!pool.value && isStableLike(pool.value.poolType)
-  );
-  const isWeightedPool = computed(
-    (): boolean => !!pool.value && isWeighted(pool.value.poolType)
-  );
-  const isWeightedLikePool = computed(
-    (): boolean => !!pool.value && isWeightedLike(pool.value.poolType)
-  );
-  const isManagedPool = computed(
-    (): boolean => !!pool.value && isManaged(pool.value.poolType)
-  );
-  const isLiquidityBootstrappingPool = computed(
-    (): boolean => !!pool.value && isLiquidityBootstrapping(pool.value.poolType)
-  );
-  const managedPoolWithTradingHalted = computed(
-    (): boolean =>
-      !!pool.value && isManagedPool.value && !pool.value.onchain?.swapEnabled
-  );
-  const isWethPool = computed(
-    (): boolean => !!pool.value && isWeth(pool.value)
-  );
-  const isWstETHPool = computed(
-    (): boolean => !!pool.value && includesWstEth(pool.value.tokensList)
-  );
-  const noInitLiquidityPool = computed(
-    () => !!pool.value && noInitLiquidity(pool.value)
-  );
+  const isStablePool = computed((): boolean => !!pool.value && isStable(pool.value.poolType));
+  const isMetaStablePool = computed((): boolean => !!pool.value && isMetaStable(pool.value.poolType));
+  const isStablePhantomPool = computed((): boolean => !!pool.value && isStablePhantom(pool.value.poolType));
+  const isStableLikePool = computed((): boolean => !!pool.value && isStableLike(pool.value.poolType));
+  const isWeightedPool = computed((): boolean => !!pool.value && isWeighted(pool.value.poolType));
+  const isWeightedLikePool = computed((): boolean => !!pool.value && isWeightedLike(pool.value.poolType));
+  const isManagedPool = computed((): boolean => !!pool.value && isManaged(pool.value.poolType));
+  const isLiquidityBootstrappingPool = computed((): boolean => !!pool.value && isLiquidityBootstrapping(pool.value.poolType));
+  const managedPoolWithTradingHalted = computed((): boolean => !!pool.value && isManagedPool.value && !pool.value.onchain?.swapEnabled);
+  const isWethPool = computed((): boolean => !!pool.value && isWeth(pool.value));
+  const isWstETHPool = computed((): boolean => !!pool.value && includesWstEth(pool.value.tokensList));
+  const noInitLiquidityPool = computed(() => !!pool.value && noInitLiquidity(pool.value));
 
   const lpTokens = computed(() => {
     if (!pool.value) return [];

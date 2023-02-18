@@ -25,19 +25,9 @@ const { fNum2 } = useNumbers();
  * COMPUTED
  */
 const validTokens = computed(() => tokensList.value.filter(t => t !== ''));
-const knownTokens = computed(() =>
-  validTokens.value.filter(
-    token => priceFor(token) !== 0 && !injectedPrices.value[token]?.usd
-  )
-);
-const unknownTokens = computed(() =>
-  validTokens.value.filter(
-    token => priceFor(token) === 0 || injectedPrices.value[token]?.usd
-  )
-);
-const hasUnknownPrice = computed(() =>
-  validTokens.value.some(token => priceFor(token) === 0)
-);
+const knownTokens = computed(() => validTokens.value.filter(token => priceFor(token) !== 0 && !injectedPrices.value[token]?.usd));
+const unknownTokens = computed(() => validTokens.value.filter(token => priceFor(token) === 0 || injectedPrices.value[token]?.usd));
+const hasUnknownPrice = computed(() => validTokens.value.some(token => priceFor(token) === 0));
 
 const USDT = '0x4988a896b1227218e4a686fde5eabdcabd91571f';
 </script>
@@ -53,7 +43,7 @@ const USDT = '0x4988a896b1227218e4a686fde5eabdcabd91571f';
         <div class="title">Token Prices</div>
       </BalStack>
     </div>
-    <div class="p-2 px-4 flex-wrap justify-center gap-[12px]">
+    <div class="flex-wrap justify-center gap-[12px] p-2 px-4">
       <!-- <BalStack vertical isDynamic spacing="sm">
         <BalStack
           v-for="token in knownTokens"
@@ -129,12 +119,7 @@ const USDT = '0x4988a896b1227218e4a686fde5eabdcabd91571f';
           </BalStack>
         </button>
       </BalStack> -->
-      <Graph
-        v-for="(token, idx) in tokensList"
-        :tokenInAddress="USDT"
-        :tokenOutAddress="token"
-        :key="idx"
-      />
+      <Graph v-for="(token, idx) in tokensList" :tokenInAddress="USDT" :tokenOutAddress="token" :key="idx" />
     </div>
   </div>
 </template>

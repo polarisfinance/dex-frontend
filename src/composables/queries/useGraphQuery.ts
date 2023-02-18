@@ -12,12 +12,7 @@ export const subgraphs = {
   balancer: configService.network.subgraph,
 };
 
-export default function useGraphQuery<T>(
-  subgraphUrl: string,
-  key: QueryKey,
-  query: () => Record<any, any>,
-  options: UseQueryOptions<T> = {}
-) {
+export default function useGraphQuery<T>(subgraphUrl: string, key: QueryKey, query: () => Record<any, any>, options: UseQueryOptions<T> = {}) {
   const queryKey = reactive([
     // for our query key style, initial are the string
     // fragments of the query key
@@ -43,12 +38,7 @@ export default function useGraphQuery<T>(
 
       return data;
     } catch (error) {
-      console.error(
-        `GraphQL request to [${subgraphUrl}] failed. Payload:`,
-        query,
-        'Error:',
-        error
-      );
+      console.error(`GraphQL request to [${subgraphUrl}] failed. Payload:`, query, 'Error:', error);
       throw error;
     }
   };

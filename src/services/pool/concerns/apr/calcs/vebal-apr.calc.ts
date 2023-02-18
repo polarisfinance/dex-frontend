@@ -16,32 +16,17 @@ export class VeBalAprCalc {
   constructor(
     private readonly config = configService,
     private readonly balAddress = getAddress(TOKENS.Addresses.BAL),
-    private readonly bbAUSDAddress = getAddress(
-      TOKENS.Addresses.bbaUSD as string
-    )
+    private readonly bbAUSDAddress = getAddress(TOKENS.Addresses.bbaUSD as string)
   ) {}
 
-  public async calc(
-    totalLiquidity: string,
-    totalSupply: string,
-    prices: TokenPrices
-  ) {
-    const { balAmount, bbAUSDAmount, bbaUSDPrice, veBalCurrentSupply } =
-      await this.getData();
+  public async calc(totalLiquidity: string, totalSupply: string, prices: TokenPrices) {
+    const { balAmount, bbAUSDAmount, bbaUSDPrice, veBalCurrentSupply } = await this.getData();
 
-    const aggregateWeeklyRevenue = this.calcAggregateWeeklyRevenue(
-      balAmount,
-      bbAUSDAmount,
-      bbaUSDPrice,
-      prices
-    );
+    const aggregateWeeklyRevenue = this.calcAggregateWeeklyRevenue(balAmount, bbAUSDAmount, bbaUSDPrice, prices);
 
     const bptPrice = bnum(totalLiquidity).div(totalSupply);
 
-    return aggregateWeeklyRevenue
-      .times(52)
-      .div(bptPrice.times(veBalCurrentSupply))
-      .toString();
+    return aggregateWeeklyRevenue.times(52).div(bptPrice.times(veBalCurrentSupply)).toString();
   }
 
   private async getData(): Promise<{
@@ -90,12 +75,7 @@ export class VeBalAprCalc {
     return result;
   }
 
-  private calcAggregateWeeklyRevenue(
-    balAmount: string,
-    bbAUSDAmount: string,
-    bbaUSDPrice: string,
-    prices: TokenPrices
-  ) {
+  private calcAggregateWeeklyRevenue(balAmount: string, bbAUSDAmount: string, bbaUSDPrice: string, prices: TokenPrices) {
     const balPrice = prices[this.balAddress];
 
     const balValue = bnum(balAmount).times(balPrice.usd);

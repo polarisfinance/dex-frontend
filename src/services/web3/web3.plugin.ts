@@ -1,9 +1,5 @@
 import { getAddress } from '@ethersproject/address';
-import {
-  JsonRpcProvider,
-  JsonRpcSigner,
-  Web3Provider,
-} from '@ethersproject/providers';
+import { JsonRpcProvider, JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import axios from 'axios';
 import { computed, reactive, Ref, ref, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -26,11 +22,7 @@ import { Connector, ConnectorId } from './connectors/connector';
 import { web3Service } from './web3.service';
 
 export type Wallet = 'metamask' | 'walletconnect' | 'gnosis';
-export const SupportedWallets = [
-  'metamask',
-  'walletconnect',
-  'gnosis',
-] as Wallet[];
+export const SupportedWallets = ['metamask', 'walletconnect', 'gnosis'] as Wallet[];
 export const WalletNameMap: Record<Wallet, string> = {
   metamask: 'Metamask',
   walletconnect: 'WalletConnect',
@@ -96,19 +88,13 @@ export default {
       return pluginState.connector?.chainId;
     });
 
-    const provider = computed(
-      () =>
-        pluginState.connector?.provider ??
-        rpcProviderService.getJsonProvider(chainId.value)
-    );
+    const provider = computed(() => pluginState.connector?.provider ?? rpcProviderService.getJsonProvider(chainId.value));
     const signer = computed(() => pluginState.connector?.provider?.getSigner());
     const userProvider = computed(() => {
       return new Web3Provider(pluginState.connector.provider as any);
     });
 
-    async function getWalletConnector(
-      wallet: Wallet
-    ): Promise<Connector | void> {
+    async function getWalletConnector(wallet: Wallet): Promise<Connector | void> {
       if (wallet === 'metamask') {
         const { MetamaskConnector } = await import(
           /* webpackChunkName: "MetamaskConnector" */
@@ -156,9 +142,7 @@ export default {
 
       try {
         if (!wallet || typeof wallet !== 'string') {
-          throw new Error(
-            'Please provide a wallet to facilitate a web3 connection.'
-          );
+          throw new Error('Please provide a wallet to facilitate a web3 connection.');
         }
 
         // the wallet parameter will be provided by the front-end by means of
@@ -166,9 +150,7 @@ export default {
         const connector = await getWalletConnector(wallet);
 
         if (!connector) {
-          throw new Error(
-            `Wallet [${wallet}] is not supported yet. Please contact the dev team to add this connector.`
-          );
+          throw new Error(`Wallet [${wallet}] is not supported yet. Please contact the dev team to add this connector.`);
         }
         const { account } = await connector.connect();
 
@@ -214,9 +196,7 @@ export default {
 
     const disconnectWallet = async () => {
       if (!pluginState.connector) {
-        throw new Error(
-          'Cannot disconnect a wallet. No wallet currently connected.'
-        );
+        throw new Error('Cannot disconnect a wallet. No wallet currently connected.');
       }
       const connector = pluginState.connector as Connector;
       connector.handleDisconnect();
@@ -246,10 +226,7 @@ export default {
   },
 };
 
-export function getConnectorName(
-  connectorId: ConnectorId,
-  provider: any
-): string {
+export function getConnectorName(connectorId: ConnectorId, provider: any): string {
   const { t } = useI18n();
 
   if (!provider) {
@@ -291,10 +268,7 @@ export function getConnectorName(
   return t('unknown');
 }
 
-export function getConnectorLogo(
-  connectorId: ConnectorId,
-  provider: any
-): string {
+export function getConnectorLogo(connectorId: ConnectorId, provider: any): string {
   if (!provider) {
     return defaultLogo;
   }

@@ -55,11 +55,7 @@ const { tokensOut, maxSlider } = useWithdrawalState(toRef(props, 'pool'));
 /**
  * COMPUTED
  */
-const title = computed((): string =>
-  withdrawalConfirmed.value
-    ? t('withdraw.preview.titles.confirmed')
-    : t('withdraw.preview.titles.default')
-);
+const title = computed((): string => (withdrawalConfirmed.value ? t('withdraw.preview.titles.confirmed') : t('withdraw.preview.titles.default')));
 
 const amountMap = computed((): AmountMap => {
   const amountMap = {};
@@ -85,12 +81,7 @@ const fiatAmountMap = computed((): AmountMap => {
   return fiatAmountMap;
 });
 
-const fiatTotal = computed((): string =>
-  Object.values(fiatAmountMap.value).reduce(
-    (total, amount) => bnum(total).plus(amount).toString(),
-    '0'
-  )
-);
+const fiatTotal = computed((): string => Object.values(fiatAmountMap.value).reduce((total, amount) => bnum(total).plus(amount).toString(), '0'));
 
 /**
  * METHODS
@@ -112,12 +103,7 @@ function handleClose(): void {
   <BalModal show :fireworks="withdrawalConfirmed" @close="handleClose">
     <template #header>
       <div class="flex items-center">
-        <BalCircle
-          v-if="withdrawalConfirmed"
-          size="8"
-          color="green"
-          class="mr-2 text-white"
-        >
+        <BalCircle v-if="withdrawalConfirmed" size="8" color="green" class="mr-2 text-white">
           <BalIcon name="check" />
         </BalCircle>
         <h4>
@@ -126,25 +112,10 @@ function handleClose(): void {
       </div>
     </template>
 
-    <TokenAmounts
-      :amountMap="amountMap"
-      :tokenMap="tokenMap"
-      :fiatAmountMap="fiatAmountMap"
-      :fiatTotal="fiatTotal"
-    />
+    <TokenAmounts :amountMap="amountMap" :tokenMap="tokenMap" :fiatAmountMap="fiatAmountMap" :fiatTotal="fiatTotal" />
 
-    <WithdrawSummary
-      :pool="pool"
-      :fiatTotal="fiatTotal"
-      :priceImpact="priceImpact"
-    />
+    <WithdrawSummary :pool="pool" :fiatTotal="fiatTotal" :priceImpact="priceImpact" />
 
-    <WithdrawActions
-      :pool="pool"
-      :math="math"
-      class="mt-4"
-      @error="$emit('close')"
-      @success="withdrawalConfirmed = true"
-    />
+    <WithdrawActions :pool="pool" :math="math" class="mt-4" @error="$emit('close')" @success="withdrawalConfirmed = true" />
   </BalModal>
 </template>

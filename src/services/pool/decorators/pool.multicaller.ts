@@ -1,17 +1,6 @@
-import {
-  InvestmentPool__factory,
-  StablePool__factory,
-  Vault__factory,
-  WeightedPool__factory,
-} from '@balancer-labs/typechain';
+import { InvestmentPool__factory, StablePool__factory, Vault__factory, WeightedPool__factory } from '@balancer-labs/typechain';
 
-import {
-  isStableLike,
-  isStablePhantom,
-  isTradingHaltable,
-  isWeightedLike,
-  removePreMintedBPT,
-} from '@/composables/usePool';
+import { isStableLike, isStablePhantom, isTradingHaltable, isWeightedLike, removePreMintedBPT } from '@/composables/usePool';
 import ERC20_ABI from '@/lib/abi/ERC20.json';
 import IERC4626 from '@/lib/abi/IERC4626.json';
 import LinearPoolABI from '@/lib/abi/LinearPool.json';
@@ -24,25 +13,15 @@ import { Pool, RawLinearPoolData, RawOnchainPoolDataMap } from '../types';
 
 const PoolTypeABIs = Object.values(
   Object.fromEntries(
-    [
-      ...WeightedPool__factory.abi,
-      ...StablePool__factory.abi,
-      ...InvestmentPool__factory.abi,
-      ...StablePhantomPoolABI,
-      ...LinearPoolABI,
-      ...StaticATokenLMABI,
-      ...ERC20_ABI,
-      ...IERC4626,
-    ].map(row => [row.name, row])
+    [...WeightedPool__factory.abi, ...StablePool__factory.abi, ...InvestmentPool__factory.abi, ...StablePhantomPoolABI, ...LinearPoolABI, ...StaticATokenLMABI, ...ERC20_ABI, ...IERC4626].map(row => [
+      row.name,
+      row,
+    ])
   )
 );
 
 export class PoolMulticaller {
-  constructor(
-    public readonly pools: Pool[],
-    private readonly MulticallerClass = Multicaller,
-    private readonly vaultAddress = configService.network.addresses.vault
-  ) {}
+  constructor(public readonly pools: Pool[], private readonly MulticallerClass = Multicaller, private readonly vaultAddress = configService.network.addresses.vault) {}
 
   public async fetch(): Promise<RawOnchainPoolDataMap> {
     let result = <RawOnchainPoolDataMap>{};

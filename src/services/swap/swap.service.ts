@@ -1,10 +1,4 @@
-import {
-  BatchSwapStep,
-  FundManagement,
-  SingleSwap,
-  SwapType,
-  SwapV2,
-} from '@balancer-labs/sdk';
+import { BatchSwapStep, FundManagement, SingleSwap, SwapType, SwapV2 } from '@balancer-labs/sdk';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AddressZero } from '@ethersproject/constants';
@@ -32,17 +26,9 @@ export interface SwapToken {
 }
 
 export default class SwapService {
-  constructor(
-    private readonly config: ConfigService = configService,
-    private readonly web3: Web3Service = web3Service
-  ) {}
+  constructor(private readonly config: ConfigService = configService, private readonly web3: Web3Service = web3Service) {}
 
-  public async batchSwapV2(
-    tokenIn: SwapToken,
-    tokenOut: SwapToken,
-    swaps: SwapV2[],
-    tokenAddresses: string[]
-  ): Promise<TransactionResponse> {
+  public async batchSwapV2(tokenIn: SwapToken, tokenOut: SwapToken, swaps: SwapV2[], tokenAddresses: string[]): Promise<TransactionResponse> {
     if (isStETH(tokenIn.address, tokenOut.address)) {
       return this.lidoBatchSwap(tokenIn, tokenOut, swaps, tokenAddresses);
     }
@@ -53,10 +39,7 @@ export default class SwapService {
       overrides.value = tokenIn.amount;
     }
 
-    const swapKind =
-      tokenOut.type === SwapTokenType.min
-        ? SwapType.SwapExactIn
-        : SwapType.SwapExactOut;
+    const swapKind = tokenOut.type === SwapTokenType.min ? SwapType.SwapExactIn : SwapType.SwapExactOut;
 
     const funds = await this.getFundManagement();
 
@@ -78,40 +61,21 @@ export default class SwapService {
         If the swap is 'given out' (the number of tokens to take from the Pool is known), it returns the amount of tokens
         sent to the Pool, which must be less than or equal to `limit`.
         */
-        const limit =
-          swapKind === SwapType.SwapExactIn
-            ? tokenOut.amount.toString()
-            : tokenIn.amount.toString();
+        const limit = swapKind === SwapType.SwapExactIn ? tokenOut.amount.toString() : tokenIn.amount.toString();
 
         return vaultService.swap(single, funds, limit, overrides);
       }
 
-      const limits: string[] = this.calculateLimits(
-        [tokenIn],
-        [tokenOut],
-        tokenAddresses
-      );
+      const limits: string[] = this.calculateLimits([tokenIn], [tokenOut], tokenAddresses);
 
-      return vaultService.batchSwap(
-        swapKind,
-        swaps,
-        tokenAddresses,
-        funds,
-        limits,
-        overrides
-      );
+      return vaultService.batchSwap(swapKind, swaps, tokenAddresses, funds, limits, overrides);
     } catch (e) {
       console.log('[Swapper] batchSwapV2 Error:', e);
       return Promise.reject(e);
     }
   }
 
-  public async lidoBatchSwap(
-    tokenIn: SwapToken,
-    tokenOut: SwapToken,
-    swaps: SwapV2[],
-    tokenAddresses: string[]
-  ): Promise<TransactionResponse> {
+  public async lidoBatchSwap(tokenIn: SwapToken, tokenOut: SwapToken, swaps: SwapV2[], tokenAddresses: string[]): Promise<TransactionResponse> {
     console.log('[Swapper] lidoBatchSwap');
     const overrides: any = {};
 
@@ -135,10 +99,7 @@ export default class SwapService {
       };
     }
 
-    const swapKind =
-      tokenOut.type === SwapTokenType.min
-        ? SwapType.SwapExactIn
-        : SwapType.SwapExactOut;
+    const swapKind = tokenOut.type === SwapTokenType.min ? SwapType.SwapExactIn : SwapType.SwapExactOut;
 
     const funds = await this.getFundManagement();
 
@@ -153,28 +114,12 @@ export default class SwapService {
           userData: swaps[0].userData,
         };
 
-        return lidoRelayerService.swap(
-          single,
-          funds,
-          tokenOut.amount.toString(),
-          overrides
-        );
+        return lidoRelayerService.swap(single, funds, tokenOut.amount.toString(), overrides);
       }
 
-      const limits = this.calculateLimits(
-        [tokenIn],
-        [tokenOut],
-        tokenAddresses
-      );
+      const limits = this.calculateLimits([tokenIn], [tokenOut], tokenAddresses);
 
-      return lidoRelayerService.batchSwap(
-        swapKind,
-        swaps,
-        tokenAddresses,
-        funds,
-        limits,
-        overrides
-      );
+      return lidoRelayerService.batchSwap(swapKind, swaps, tokenAddresses, funds, limits, overrides);
     } catch (e) {
       console.log('[Swapper] lidoBatchSwap Error:', e);
       return Promise.reject(e);
@@ -184,30 +129,14 @@ export default class SwapService {
   /**
    * Join a Boosted Pool (StablePhantom) using a batch swap
    */
-  public async boostedJoinBatchSwap(
-    tokensIn: SwapToken[],
-    tokenOut: SwapToken,
-    swaps: SwapV2[],
-    tokenAddresses: string[]
-  ) {
+  public async boostedJoinBatchSwap(tokensIn: SwapToken[], tokenOut: SwapToken, swaps: SwapV2[], tokenAddresses: string[]) {
     try {
       const overrides: any = {};
       const funds = await this.getFundManagement();
 
-      const limits: string[] = this.calculateLimits(
-        tokensIn,
-        [tokenOut],
-        tokenAddresses
-      );
+      const limits: string[] = this.calculateLimits(tokensIn, [tokenOut], tokenAddresses);
 
-      return vaultService.batchSwap(
-        SwapType.SwapExactIn,
-        swaps,
-        tokenAddresses,
-        funds,
-        limits,
-        overrides
-      );
+      return vaultService.batchSwap(SwapType.SwapExactIn, swaps, tokenAddresses, funds, limits, overrides);
     } catch (error) {
       console.log('[Swapper] batchSwapGivenInV2 Error:', error);
       throw error;
@@ -217,33 +146,16 @@ export default class SwapService {
   /**
    * Exit a Boosted Pool (StablePhantom) using a batch swap
    */
-  public async boostedExitBatchSwap(
-    tokenIn: SwapToken,
-    tokensOut: SwapToken[],
-    swaps: BatchSwapStep[],
-    tokenAddresses: string[],
-    swapKind: SwapType
-  ): Promise<TransactionResponse> {
+  public async boostedExitBatchSwap(tokenIn: SwapToken, tokensOut: SwapToken[], swaps: BatchSwapStep[], tokenAddresses: string[], swapKind: SwapType): Promise<TransactionResponse> {
     try {
       const overrides: any = {};
       const funds = await this.getFundManagement();
 
-      const limits: string[] = this.calculateLimits(
-        [tokenIn],
-        tokensOut,
-        tokenAddresses
-      );
+      const limits: string[] = this.calculateLimits([tokenIn], tokensOut, tokenAddresses);
 
       console.log('limits', limits);
 
-      return vaultService.batchSwap(
-        swapKind,
-        swaps,
-        tokenAddresses,
-        funds,
-        limits,
-        overrides
-      );
+      return vaultService.batchSwap(swapKind, swaps, tokenAddresses, funds, limits, overrides);
     } catch (error) {
       console.log('[Swapper] batchSwapGivenInV2 Error:', error);
       throw error;
@@ -261,20 +173,12 @@ export default class SwapService {
     return funds;
   }
 
-  public calculateLimits(
-    tokensIn: SwapToken[],
-    tokensOut: SwapToken[],
-    tokenAddresses: string[]
-  ): string[] {
+  public calculateLimits(tokensIn: SwapToken[], tokensOut: SwapToken[], tokenAddresses: string[]): string[] {
     const limits: string[] = [];
 
     tokenAddresses.forEach((token, i) => {
-      const tokenIn = tokensIn.find(
-        swapToken => token.toLowerCase() === swapToken.address.toLowerCase()
-      );
-      const tokenOut = tokensOut.find(
-        swapToken => token.toLowerCase() === swapToken.address.toLowerCase()
-      );
+      const tokenIn = tokensIn.find(swapToken => token.toLowerCase() === swapToken.address.toLowerCase());
+      const tokenOut = tokensOut.find(swapToken => token.toLowerCase() === swapToken.address.toLowerCase());
       if (tokenIn) {
         limits[i] = tokenIn.amount.toString();
       } else if (tokenOut) {

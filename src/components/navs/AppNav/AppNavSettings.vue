@@ -2,69 +2,39 @@
   <div>
     <div class="bal-card p-4">
       <div class="mb-[20px] flex items-center justify-between">
-        <h5
-          class="ml-[8px] text-[16px] font-semibold leading-none tracking-tight"
-          v-text="$t('account')"
-        />
+        <h5 class="ml-[8px] text-[16px] font-semibold leading-none tracking-tight" v-text="$t('account')" />
 
         <div class="flex cursor-pointer items-center gap-2 pr-[8px]">
           <X v-on:click="close" />
         </div>
       </div>
       <div class="box">
-        <div
-          class="w-full mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 leading-none"
-        >
+        <div class="mt-[12px] grid h-[22px] w-full grid-cols-2 grid-rows-1 items-center justify-between gap-5 leading-none">
           Connected with {{ connectorName }}
           <div class="flex flex-row justify-end gap-[8px]">
-            <button class="h-[22px] w-[86px] " @click="disconnectWallet">
-              <div
-                class="text-center text-[14px] leading-[18px]"
-                v-text="$t('disconnect')"
-              />
+            <button class="h-[22px] w-[86px]" @click="disconnectWallet">
+              <div class="text-center text-[14px] leading-[18px]" v-text="$t('disconnect')" />
             </button>
-            <button
-              class="h-[22px] w-[68px]"
-              @click="toggleWalletSelectModal"
-              v-on:click="close"
-            >
-              <div
-                class="text-center text-[14px] leading-[18px]"
-                v-text="$t('change')"
-              />
+            <button class="h-[22px] w-[68px]" @click="toggleWalletSelectModal" v-on:click="close">
+              <div class="text-center text-[14px] leading-[18px]" v-text="$t('change')" />
             </button>
           </div>
         </div>
         <div class="flex flex-row">
           <Avatar :iconURI="profile?.avatar" :address="account" :size="24" />
-          <div
-            class="pl-[10px] font-bold text-black dark:text-white"
-            v-text="_shorten(account)"
-          />
+          <div class="pl-[10px] font-bold text-black dark:text-white" v-text="_shorten(account)" />
         </div>
 
         <div class="address mb-[12px] mt-1 flex justify-start">
-          <button class="button p-0 link" >
-            <div
-              class="link flex flex-row justify-start gap-[8px] align-baseline"
-              @click="copyAddress"
-            >
+          <button class="button link p-0">
+            <div class="link flex flex-row justify-start gap-[8px] align-baseline" @click="copyAddress">
               <IconCheck v-if="copiedAddress" class="mt-0.5" />
               <IconCopy v-else />
-              <div
-                class="text-center"
-                v-text="copiedAddress ? $t('copied') : $t('copyAddress')"
-              />
+              <div class="text-center" v-text="copiedAddress ? $t('copied') : $t('copyAddress')" />
             </div>
           </button>
 
-          <component
-            :is="'a'"
-            :href="explorer.addressLink(account)"
-            target="_blank"
-            rel="noreferrer"
-            class="link ml-[16px] flex flex-row justify-start gap-[8px] align-baseline"
-          >
+          <component :is="'a'" :href="explorer.addressLink(account)" target="_blank" rel="noreferrer" class="link ml-[16px] flex flex-row justify-start gap-[8px] align-baseline">
             <IconExplorer />
             <div class="text-center" v-text="'View on explorer'" />
           </component>
@@ -85,10 +55,7 @@ import useEthereumTxType from '@/composables/useEthereumTxType';
 import { ethereumTxTypeOptions } from '@/constants/options';
 import { GP_SUPPORTED_NETWORKS } from '@/services/gnosis/constants';
 import useWeb3 from '@/services/web3/useWeb3';
-import {
-  getConnectorLogo,
-  getConnectorName,
-} from '@/services/web3/web3.plugin';
+import { getConnectorLogo, getConnectorName } from '@/services/web3/web3.plugin';
 import X from '../../web3/x.vue';
 import IconCheck from '@/components/icons/IconCheck.vue';
 import IconCopy from '@/components/icons/IconCopy.vue';
@@ -109,19 +76,8 @@ export default defineComponent({
   setup() {
     // COMPOSABLES
     const store = useStore();
-    const {
-      explorerLinks,
-      account,
-      profile,
-      disconnectWallet,
-      toggleWalletSelectModal,
-      connector,
-      provider,
-      isEIP1559SupportedNetwork,
-      userNetworkConfig,
-      appNetworkConfig,
-      isUnsupportedNetwork,
-    } = useWeb3();
+    const { explorerLinks, account, profile, disconnectWallet, toggleWalletSelectModal, connector, provider, isEIP1559SupportedNetwork, userNetworkConfig, appNetworkConfig, isUnsupportedNetwork } =
+      useWeb3();
     const { ethereumTxType, setEthereumTxType } = useEthereumTxType();
 
     // DATA
@@ -157,16 +113,10 @@ export default defineComponent({
     const networkName = computed(() => userNetworkConfig.value?.name);
     const appLocale = computed(() => store.state.app.locale);
     const appDarkMode = computed(() => store.state.app.darkMode);
-    const connectorName = computed(() =>
-      getConnectorName(connector.value?.id, provider.value)
-    );
-    const connectorLogo = computed(() =>
-      getConnectorLogo(connector.value?.id, provider.value)
-    );
+    const connectorName = computed(() => getConnectorName(connector.value?.id, provider.value));
+    const connectorLogo = computed(() => getConnectorLogo(connector.value?.id, provider.value));
     const hideDisconnect = computed(() => connector.value?.id == 'gnosis');
-    const isGnosisSupportedNetwork = computed(() =>
-      GP_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId)
-    );
+    const isGnosisSupportedNetwork = computed(() => GP_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId));
 
     // METHODS
     const setDarkMode = val => store.commit('app/setDarkMode', val);
@@ -237,7 +187,7 @@ export default defineComponent({
 
 .bal-card {
   @apply flex flex-col bg-frame-dark-ultra;
-  background:#292043;
+  background: #292043;
   /* box-shadow: inset 0px 0px 2px #fbaaff; */
   border-radius: 22px;
   box-sizing: border-box;
@@ -250,7 +200,7 @@ export default defineComponent({
   /* @apply border dark:border-gray-900; */
   @apply bg-frame-light;
   @apply flex flex-col gap-[10px] rounded-md;
-  background: #41365E !important; 
+  background: #41365e !important;
   border-radius: 16px;
   padding-left: 12px;
   padding-right: 12px;
@@ -260,8 +210,8 @@ export default defineComponent({
 }
 
 button {
-  background-color: #50456E !important;
-  color: #BDB2DD;
+  background-color: #50456e !important;
+  color: #bdb2dd;
   border-radius: 16px;
 }
 
@@ -274,15 +224,15 @@ button {
 }
 
 .link {
-  @apply fill-[#D7B3FF] font-semibold leading-[20px] ;
-  background: none !important;;
-  color: #BDB2DD;
+  @apply fill-[#D7B3FF] font-semibold leading-[20px];
+  background: none !important;
+  color: #bdb2dd;
 }
 
 .link:focus,
 .link:hover {
   @apply fill-[#F5E1FF] font-semibold leading-[20px] text-[#F5E1FF] no-underline;
   background: none;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 </style>

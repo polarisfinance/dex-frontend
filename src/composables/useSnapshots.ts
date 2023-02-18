@@ -23,10 +23,7 @@ export function blockTime(): number {
   }
 }
 
-export function getTimeTravelBlock(
-  currentBlock: number,
-  period: TimeTravelPeriod = '24h'
-): number {
+export function getTimeTravelBlock(currentBlock: number, period: TimeTravelPeriod = '24h'): number {
   const blocksInDay = Math.round(twentyFourHoursInSecs / blockTime());
 
   switch (period) {

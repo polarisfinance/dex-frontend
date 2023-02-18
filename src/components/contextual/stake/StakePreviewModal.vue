@@ -33,12 +33,7 @@ function handleSuccess() {
 <template>
   <teleport to="#modal">
     <BalModal :show="isVisible" :fireworks="showFireworks" @close="handleClose">
-      <StakePreview
-        :pool="pool"
-        :action="action"
-        @close="handleClose"
-        @success="handleSuccess"
-      />
+      <StakePreview :pool="pool" :action="action" @close="handleClose" @success="handleSuccess" />
     </BalModal>
   </teleport>
 </template>

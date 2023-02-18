@@ -32,17 +32,7 @@ const toggleWalletSelectModal = (value?: boolean) => {
 const delayedToggleWalletSelectModal = debounce(toggleWalletSelectModal, 200);
 
 export default function useWeb3() {
-  const {
-    account,
-    chainId,
-    connector,
-    provider,
-    walletState,
-    signer,
-    disconnectWallet,
-    connectWallet,
-    isSanctioned,
-  } = inject(Web3ProviderSymbol) as Web3Plugin;
+  const { account, chainId, connector, provider, walletState, signer, disconnectWallet, connectWallet, isSanctioned } = inject(Web3ProviderSymbol) as Web3Plugin;
   const appNetworkConfig = configService.network;
 
   const { networkId } = useNetwork();
@@ -59,43 +49,25 @@ export default function useWeb3() {
   });
   const isWalletReady = computed(() => walletState.value === 'connected');
   const isWalletConnecting = computed(() => walletState.value === 'connecting');
-  const isWalletDisconnected = computed(
-    () => walletState.value === 'disconnected'
-  );
-  const isMainnet = computed(
-    () => appNetworkConfig.chainId === Network.MAINNET
-  );
+  const isWalletDisconnected = computed(() => walletState.value === 'disconnected');
+  const isMainnet = computed(() => appNetworkConfig.chainId === Network.MAINNET);
   const isKovan = computed(() => appNetworkConfig.chainId === Network.KOVAN);
   const isGoerli = computed(() => appNetworkConfig.chainId === Network.GOERLI);
-  const isPolygon = computed(
-    () => appNetworkConfig.chainId === Network.POLYGON
-  );
-  const isArbitrum = computed(
-    () => appNetworkConfig.chainId === Network.ARBITRUM
-  );
-  const isEIP1559SupportedNetwork = computed(
-    () => appNetworkConfig.supportsEIP1559
-  );
+  const isPolygon = computed(() => appNetworkConfig.chainId === Network.POLYGON);
+  const isArbitrum = computed(() => appNetworkConfig.chainId === Network.ARBITRUM);
+  const isEIP1559SupportedNetwork = computed(() => appNetworkConfig.supportsEIP1559);
 
-  const canLoadProfile = computed(
-    () => account.value !== '' && userNetworkConfig.value !== null
-  );
+  const canLoadProfile = computed(() => account.value !== '' && userNetworkConfig.value !== null);
   const isMismatchedNetwork = computed(() => {
-    return (
-      isWalletReady.value &&
-      userNetworkConfig.value?.key !== appNetworkConfig.key
-    );
+    return isWalletReady.value && userNetworkConfig.value?.key !== appNetworkConfig.key;
   });
   const isUnsupportedNetwork = computed(() => {
     return isWalletReady.value && userNetworkConfig.value === null;
   });
   const explorerLinks = {
-    txLink: (txHash: string) =>
-      `${configService.network.explorer}/tx/${txHash}`,
-    addressLink: (address: string) =>
-      `${configService.network.explorer}/address/${address}`,
-    tokenLink: (address: string) =>
-      `${configService.network.explorer}/token/${address}`,
+    txLink: (txHash: string) => `${configService.network.explorer}/tx/${txHash}`,
+    addressLink: (address: string) => `${configService.network.explorer}/address/${address}`,
+    tokenLink: (address: string) => `${configService.network.explorer}/token/${address}`,
   };
 
   // METHODS

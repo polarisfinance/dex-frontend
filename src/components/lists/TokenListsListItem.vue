@@ -1,11 +1,6 @@
 <template>
   <div class="highlight flex items-center py-3 px-4 text-base leading-5">
-    <img
-      :src="_url(tokenlist.logoURI)"
-      class="mr-3 inline-block rounded-full align-middle"
-      width="34"
-      height="34"
-    />
+    <img :src="_url(tokenlist.logoURI)" class="mr-3 inline-block rounded-full align-middle" width="34" height="34" />
     <div class="flex-auto text-[20px] font-semibold">
       {{ tokenlist.name }}
       <div class="text-gray flex items-center text-sm font-medium">
@@ -18,20 +13,11 @@
         }}
         {{ $t('tokensLowerCase') }}
         <BalLink :href="listUrl" external class="flex items-center">
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="ml-1 text-gray-500 transition-colors hover:text-blue-500"
-          />
+          <BalIcon name="arrow-up-right" size="sm" class="ml-1 text-gray-500 transition-colors hover:text-blue-500" />
         </BalLink>
       </div>
     </div>
-    <BalToggle
-      v-if="notBalancer"
-      name="active"
-      :checked="isActive"
-      @toggle="$emit('toggle')"
-    />
+    <BalToggle v-if="notBalancer" name="active" :checked="isActive" @toggle="$emit('toggle')" />
   </div>
 </template>
 

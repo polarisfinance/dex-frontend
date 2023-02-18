@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import BalIcon from '../BalIcon/BalIcon.vue';
-import {
-  useChipClasses,
-  useCloseIconClasses,
-} from './composables/useChipStyles';
+import { useChipClasses, useCloseIconClasses } from './composables/useChipStyles';
 
 type Props = {
   label?: string;

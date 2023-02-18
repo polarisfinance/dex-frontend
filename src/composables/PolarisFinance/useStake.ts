@@ -2,12 +2,7 @@ import { Contract } from 'ethers';
 import { BigNumber } from 'ethers';
 import { TransactionResponse } from '@ethersproject/providers';
 
-import {
-  BigNumberToString,
-  sunriseNameToAddress,
-  SPOLAR,
-  getDisplayBalance,
-} from './utils';
+import { BigNumberToString, sunriseNameToAddress, SPOLAR, getDisplayBalance } from './utils';
 import { spolarABI, sunriseABI, xpolarRewardPoolABI, ERC20ABI } from './ABI';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
@@ -33,11 +28,7 @@ export default function useStake() {
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
   const xpolarRewardPoolAddress = '0x140e8a21d08CbB530929b012581a7C7e696145eF';
-  const xpolarRewardPool = new Contract(
-    xpolarRewardPoolAddress,
-    xpolarRewardPoolABI,
-    w3
-  );
+  const xpolarRewardPool = new Contract(xpolarRewardPoolAddress, xpolarRewardPoolABI, w3);
 
   const PID = {
     '0x0993fa12d3256e85da64866354ec3532f187e178': 0,
@@ -68,21 +59,11 @@ export default function useStake() {
     '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d': 25,
   };
 
-  const deposit = async (
-    address: string,
-    amount: BigNumber,
-    provider: Web3Provider
-  ) => {
+  const deposit = async (address: string, amount: BigNumber, provider: Web3Provider) => {
     try {
       const pid = PID[address.toLowerCase()];
 
-      const tx = await sendTransaction(
-        provider,
-        xpolarRewardPoolAddress,
-        xpolarRewardPoolABI,
-        'deposit',
-        [pid, amount]
-      );
+      const tx = await sendTransaction(provider, xpolarRewardPoolAddress, xpolarRewardPoolABI, 'deposit', [pid, amount]);
       return tx;
     } catch (error) {
       console.error(error);
@@ -90,20 +71,10 @@ export default function useStake() {
     }
   };
 
-  const withdraw = async (
-    address: string,
-    amount: BigNumber,
-    provider: Web3Provider
-  ) => {
+  const withdraw = async (address: string, amount: BigNumber, provider: Web3Provider) => {
     try {
       const pid = PID[address.toLowerCase()];
-      const tx = await sendTransaction(
-        provider,
-        xpolarRewardPoolAddress,
-        xpolarRewardPoolABI,
-        'withdraw',
-        [pid, amount]
-      );
+      const tx = await sendTransaction(provider, xpolarRewardPoolAddress, xpolarRewardPoolABI, 'withdraw', [pid, amount]);
       return tx;
     } catch (error) {
       console.error(error);
@@ -111,22 +82,12 @@ export default function useStake() {
     }
   };
 
-  const withdrawAll = async (
-    address: string,
-    account: string,
-    provider: Web3Provider
-  ) => {
+  const withdrawAll = async (address: string, account: string, provider: Web3Provider) => {
     try {
       const pid = PID[address.toLowerCase()];
       const balanceFetched = await xpolarRewardPool.userInfo(pid, account);
 
-      const tx = await sendTransaction(
-        provider,
-        xpolarRewardPoolAddress,
-        xpolarRewardPoolABI,
-        'withdraw',
-        [pid, balanceFetched[0]]
-      );
+      const tx = await sendTransaction(provider, xpolarRewardPoolAddress, xpolarRewardPoolABI, 'withdraw', [pid, balanceFetched[0]]);
       return tx;
     } catch (error) {
       console.error(error);
@@ -136,13 +97,7 @@ export default function useStake() {
 
   const claimAll = async (provider: Web3Provider) => {
     try {
-      const tx = await sendTransaction(
-        provider,
-        xpolarRewardPoolAddress,
-        xpolarRewardPoolABI,
-        'harvestAllRewards',
-        []
-      );
+      const tx = await sendTransaction(provider, xpolarRewardPoolAddress, xpolarRewardPoolABI, 'harvestAllRewards', []);
       return tx;
     } catch (error) {
       console.error(error);
@@ -180,10 +135,7 @@ export default function useStake() {
   const approve = async (address: string, provider: Web3Provider) => {
     const amount = MaxUint256.toString();
     try {
-      const tx = await sendTransaction(provider, address, ERC20ABI, 'approve', [
-        xpolarRewardPoolAddress,
-        amount,
-      ]);
+      const tx = await sendTransaction(provider, address, ERC20ABI, 'approve', [xpolarRewardPoolAddress, amount]);
 
       return tx;
     } catch (error) {
@@ -233,10 +185,7 @@ export default function useStake() {
   //   };
   // }
 
-  const getPoolApr = async (
-    depositTokenAddress: string,
-    depositTokenId: string
-  ) => {
+  const getPoolApr = async (depositTokenAddress: string, depositTokenId: string) => {
     // console.log(useTokensBal());
     // const { prices } = useTokensBal();
 

@@ -8,10 +8,7 @@ let provider = null;
 export function getDefaultProvider(): ethers.providers.Web3Provider {
   if (!provider) {
     provider = !config.defaultWssProvider.includes('wss')
-      ? new ethers.providers.JsonRpcBatchProvider(
-          config.defaultWssProvider,
-          config.chainId
-        )
+      ? new ethers.providers.JsonRpcBatchProvider(config.defaultWssProvider, config.chainId)
       : new ethers.providers.Web3Provider(
           new (Web3WsProvider as any)(config.defaultWssProvider, {
             timeout: 30000, // ms

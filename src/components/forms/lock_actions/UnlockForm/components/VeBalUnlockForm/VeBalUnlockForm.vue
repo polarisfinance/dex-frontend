@@ -33,21 +33,14 @@ const showPreviewModal = ref(false);
 /**
  * COMPOSABLES
  */
-const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } =
-  useWeb3();
+const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } = useWeb3();
 
 /**
  * COMPUTED
  */
-const totalLpTokens = computed(() =>
-  props.veBalLockInfo?.isExpired ? props.veBalLockInfo.lockedAmount : '0'
-);
+const totalLpTokens = computed(() => (props.veBalLockInfo?.isExpired ? props.veBalLockInfo.lockedAmount : '0'));
 
-const fiatTotalLpTokens = computed(() =>
-  bnum(props.lockablePool.totalLiquidity)
-    .div(props.lockablePool.totalShares)
-    .times(totalLpTokens.value)
-);
+const fiatTotalLpTokens = computed(() => bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares).times(totalLpTokens.value));
 
 const submissionDisabled = computed(() => {
   if (isMismatchedNetwork.value) {
@@ -73,28 +66,11 @@ const submissionDisabled = computed(() => {
       </div>
     </template>
 
-    <LockedAmount
-      :lockablePool="lockablePool"
-      :lockablePoolTokenInfo="lockablePoolTokenInfo"
-      :totalLpTokens="totalLpTokens"
-      :fiatTotalLpTokens="fiatTotalLpTokens"
-    />
+    <LockedAmount :lockablePool="lockablePool" :lockablePoolTokenInfo="lockablePoolTokenInfo" :totalLpTokens="totalLpTokens" :fiatTotalLpTokens="fiatTotalLpTokens" />
 
     <div class="mt-6">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
-        block
-        @click="startConnectWithInjectedProvider"
-      />
-      <BalBtn
-        v-else
-        color="gradient"
-        block
-        :disabled="submissionDisabled"
-        @click="showPreviewModal = true"
-      >
+      <BalBtn v-if="!isWalletReady" :label="$t('connectWallet')" color="gradient" block @click="startConnectWithInjectedProvider" />
+      <BalBtn v-else color="gradient" block :disabled="submissionDisabled" @click="showPreviewModal = true">
         {{ $t('preview') }}
       </BalBtn>
     </div>

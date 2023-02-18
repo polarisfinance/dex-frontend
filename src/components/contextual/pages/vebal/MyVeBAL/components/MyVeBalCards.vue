@@ -46,15 +46,11 @@ const { isWalletReady } = useWeb3();
 /**
  * COMPUTED
  */
-const poolShares = computed(() =>
-  bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares)
-);
+const poolShares = computed(() => bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares));
 
 const bptBalance = computed(() => balanceFor(props.lockablePool.address));
 
-const fiatTotal = computed(() =>
-  poolShares.value.times(bptBalance.value).toString()
-);
+const fiatTotal = computed(() => poolShares.value.times(bptBalance.value).toString());
 
 const lockedUntil = computed(() => {
   if (props.veBalLockInfo?.hasExistingLock && !props.veBalLockInfo?.isExpired) {
@@ -64,15 +60,9 @@ const lockedUntil = computed(() => {
   return '—';
 });
 
-const totalExpiredLpTokens = computed(() =>
-  props.veBalLockInfo?.isExpired ? props.veBalLockInfo.lockedAmount : '0'
-);
+const totalExpiredLpTokens = computed(() => (props.veBalLockInfo?.isExpired ? props.veBalLockInfo.lockedAmount : '0'));
 
-const fiatTotalExpiredLpTokens = computed(() =>
-  bnum(props.lockablePool.totalLiquidity)
-    .div(props.lockablePool.totalShares)
-    .times(totalExpiredLpTokens.value)
-);
+const fiatTotalExpiredLpTokens = computed(() => bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares).times(totalExpiredLpTokens.value));
 
 const cards = computed(() => {
   const hasExistingLock = props.veBalLockInfo?.hasExistingLock;
@@ -82,12 +72,8 @@ const cards = computed(() => {
     {
       id: 'myLpToken',
       label: t('veBAL.myVeBAL.cards.myLpToken.label'),
-      value: isWalletReady.value
-        ? fNum2(fiatTotal.value, FNumFormats.fiat)
-        : '—',
-      secondaryText: isWalletReady.value
-        ? fNum2(bptBalance.value, FNumFormats.token)
-        : '—',
+      value: isWalletReady.value ? fNum2(fiatTotal.value, FNumFormats.fiat) : '—',
+      secondaryText: isWalletReady.value ? fNum2(bptBalance.value, FNumFormats.token) : '—',
       showPlusIcon: isWalletReady.value ? true : false,
       plusIconTo: {
         name: 'invest',
@@ -98,12 +84,8 @@ const cards = computed(() => {
     {
       id: 'myLockedLpToken',
       label: t('veBAL.myVeBAL.cards.myLockedLpToken.label'),
-      value: isWalletReady.value
-        ? fNum2(props.lockedFiatTotal, FNumFormats.fiat)
-        : '—',
-      secondaryText: isWalletReady.value
-        ? fNum2(props.veBalLockInfo?.lockedAmount ?? '0', FNumFormats.token)
-        : '—',
+      value: isWalletReady.value ? fNum2(props.lockedFiatTotal, FNumFormats.fiat) : '—',
+      secondaryText: isWalletReady.value ? fNum2(props.veBalLockInfo?.lockedAmount ?? '0', FNumFormats.token) : '—',
       showPlusIcon: isWalletReady.value && !isExpired ? true : false,
       plusIconTo: { name: 'get-vebal', query: { returnRoute: 'vebal' } },
       showUnlockIcon: isExpired ? true : false,
@@ -112,12 +94,7 @@ const cards = computed(() => {
       id: 'lockedEndDate',
       label: t('veBAL.myVeBAL.cards.lockedEndDate.label'),
       value: lockedUntil.value,
-      secondaryText:
-        hasExistingLock && !isExpired
-          ? t('veBAL.myVeBAL.cards.lockedEndDate.secondaryText', [
-              differenceInDays(new Date(lockedUntil.value), new Date()),
-            ])
-          : '-',
+      secondaryText: hasExistingLock && !isExpired ? t('veBAL.myVeBAL.cards.lockedEndDate.secondaryText', [differenceInDays(new Date(lockedUntil.value), new Date())]) : '-',
       showPlusIcon: hasExistingLock && !isExpired ? true : false,
       plusIconTo: { name: 'get-vebal', query: { returnRoute: 'vebal' } },
     },
@@ -127,21 +104,14 @@ const cards = computed(() => {
       secondaryText:
         hasExistingLock && !isExpired
           ? t('veBAL.myVeBAL.cards.myVeBAL.secondaryText', [
-              fNum2(
-                bnum(veBalBalance.value)
-                  .div(props.veBalLockInfo.totalSupply)
-                  .toString(),
-                {
-                  style: 'percent',
-                  maximumFractionDigits: 4,
-                }
-              ),
+              fNum2(bnum(veBalBalance.value).div(props.veBalLockInfo.totalSupply).toString(), {
+                style: 'percent',
+                maximumFractionDigits: 4,
+              }),
             ])
           : '-',
       showPlusIcon: false,
-      value: hasExistingLock
-        ? fNum2(veBalBalance.value, FNumFormats.token)
-        : '—',
+      value: hasExistingLock ? fNum2(veBalBalance.value, FNumFormats.token) : '—',
     },
   ];
 });
@@ -154,11 +124,7 @@ const cards = computed(() => {
     </div>
     <div class="value" :class="card.id">
       <div v-if="card.id === 'myLockedLpToken'">
-        <span
-          :class="{ 'text-red-500': bnum(totalExpiredLpTokens).gt(0) }"
-          class="mr-1 truncate font-semibold"
-          >{{ card.value }}</span
-        >
+        <span :class="{ 'text-red-500': bnum(totalExpiredLpTokens).gt(0) }" class="mr-1 truncate font-semibold">{{ card.value }}</span>
         <BalTooltip
           v-if="bnum(totalExpiredLpTokens).gt(0)"
           :text="$t('veBAL.myVeBAL.cards.myExpiredLockTooltip')"
@@ -173,22 +139,10 @@ const cards = computed(() => {
         <span class="truncate font-semibold">{{ card.value }}</span>
       </div>
       <div class="flex items-center">
-        <BalIcon
-          v-if="card.showUnlockIcon"
-          name="minus-circle"
-          class="minus-circle mr-2 cursor-pointer transition-all"
-          @click="showUnlockPreviewModal = true"
-        />
+        <BalIcon v-if="card.showUnlockIcon" name="minus-circle" class="minus-circle mr-2 cursor-pointer transition-all" @click="showUnlockPreviewModal = true" />
         <div>
-          <router-link
-            v-if="card.showPlusIcon"
-            :to="card.plusIconTo"
-            class="flex items-center text-blue-600 dark:text-blue-400"
-          >
-            <BalIcon
-              name="plus-circle"
-              class="plus-circle cursor-pointer transition-all"
-            />
+          <router-link v-if="card.showPlusIcon" :to="card.plusIconTo" class="flex items-center text-blue-600 dark:text-blue-400">
+            <BalIcon name="plus-circle" class="plus-circle cursor-pointer transition-all" />
           </router-link>
         </div>
       </div>

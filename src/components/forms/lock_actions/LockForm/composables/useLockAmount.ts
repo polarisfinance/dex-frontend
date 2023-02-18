@@ -5,9 +5,7 @@ import { VeBalLockInfo } from '@/services/balancer/contracts/contracts/veBAL';
 
 import useLockState from './useLockState';
 
-export default function useLockAmount(
-  veBalLockInfo?: Ref<VeBalLockInfo> | Ref<undefined>
-) {
+export default function useLockAmount(veBalLockInfo?: Ref<VeBalLockInfo> | Ref<undefined>) {
   /**
    * COMPOSABLES
    */
@@ -18,9 +16,7 @@ export default function useLockAmount(
    */
   const isValidLockAmount = computed(() => bnum(lockAmount.value || '0').gt(0));
 
-  const isIncreasedLockAmount = computed(
-    () => veBalLockInfo?.value?.hasExistingLock && isValidLockAmount.value
-  );
+  const isIncreasedLockAmount = computed(() => veBalLockInfo?.value?.hasExistingLock && isValidLockAmount.value);
 
   const totalLpTokens = computed(() => {
     return veBalLockInfo?.value?.hasExistingLock

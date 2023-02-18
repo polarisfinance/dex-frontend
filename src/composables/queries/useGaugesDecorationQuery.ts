@@ -17,10 +17,7 @@ type QueryResponse = Gauge[] | undefined;
 /**
  * @summary Fetches onchain data for gauges list.
  */
-export default function useGaugesDecorationQuery(
-  gauges: Ref<SubgraphGauge[] | undefined>,
-  options: UseQueryOptions<QueryResponse> = {}
-) {
+export default function useGaugesDecorationQuery(gauges: Ref<SubgraphGauge[] | undefined>, options: UseQueryOptions<QueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
@@ -30,16 +27,12 @@ export default function useGaugesDecorationQuery(
   /**
    * COMPUTED
    */
-  const isQueryEnabled = computed(
-    () => gauges?.value && gauges.value?.length > 0 && isWalletReady.value
-  );
+  const isQueryEnabled = computed(() => gauges?.value && gauges.value?.length > 0 && isWalletReady.value);
 
   /**
    * QUERY KEY
    */
-  const queryKey = reactive(
-    QUERY_KEYS.Gauges.All.Onchain(gauges, account, networkId)
-  );
+  const queryKey = reactive(QUERY_KEYS.Gauges.All.Onchain(gauges, account, networkId));
 
   /**
    * QUERY FUNCTION

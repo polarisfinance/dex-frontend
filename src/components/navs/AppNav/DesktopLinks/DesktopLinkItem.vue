@@ -16,9 +16,9 @@ const classes = computed(() => ({
 </script>
 
 <template>
-    <router-link :class="['desktop-link-item', classes]">
-      <slot />
-    </router-link>
+  <router-link :class="['desktop-link-item', classes]">
+    <slot />
+  </router-link>
 </template>
 
 <style scoped>
@@ -26,7 +26,7 @@ const classes = computed(() => ({
   /* @apply h-full flex-col justify-center cursor-pointer hover:text-green-400 dark:hover:text-green-400 flex relative */
   @apply relative flex h-full cursor-pointer flex-col justify-center
     overflow-hidden p-0 text-[16px]
-    font-semibold transition-all duration-500 ease-in-out text-[#FDFDFD];
+    font-semibold text-[#FDFDFD] transition-all duration-500 ease-in-out;
 }
 
 /* .gradient-underline::after {

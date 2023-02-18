@@ -14,25 +14,16 @@ type PoolSwapsQueryResponse = {
   skip?: number;
 };
 
-export default function usePoolSwapsQuery(
-  id: string,
-  subgraphQuery: Record<string, any> = {},
-  options: UseInfiniteQueryOptions<PoolSwapsQueryResponse> = {}
-) {
+export default function usePoolSwapsQuery(id: string, subgraphQuery: Record<string, any> = {}, options: UseInfiniteQueryOptions<PoolSwapsQueryResponse> = {}) {
   // COMPOSABLES
   const { networkId } = useNetwork();
 
   // DATA
-  const queryKey = reactive(
-    QUERY_KEYS.Pools.Swaps(networkId, id, subgraphQuery)
-  );
+  const queryKey = reactive(QUERY_KEYS.Pools.Swaps(networkId, id, subgraphQuery));
 
   // METHODS
   const queryFn = async ({ pageParam = 0 }) => {
-    const pagination =
-      pageParam === 0
-        ? POOLS.Pagination.PerPoolInitial
-        : POOLS.Pagination.PerPool;
+    const pagination = pageParam === 0 ? POOLS.Pagination.PerPoolInitial : POOLS.Pagination.PerPool;
 
     const poolSwaps = await balancerSubgraphService.poolSwaps.get({
       first: pagination,
@@ -56,9 +47,5 @@ export default function usePoolSwapsQuery(
     ...options,
   });
 
-  return useInfiniteQuery<PoolSwapsQueryResponse>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  return useInfiniteQuery<PoolSwapsQueryResponse>(queryKey, queryFn, queryOptions);
 }

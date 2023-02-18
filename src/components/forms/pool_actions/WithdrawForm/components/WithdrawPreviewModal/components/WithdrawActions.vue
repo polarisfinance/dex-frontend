@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { formatUnits } from '@ethersproject/units';
-import {
-  computed,
-  onBeforeMount,
-  reactive,
-  ref,
-  toRef,
-  toRefs,
-  watch,
-} from 'vue';
+import { computed, onBeforeMount, reactive, ref, toRef, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -79,23 +68,11 @@ const { account, getProvider, blockNumber } = useWeb3();
 const { addTransaction } = useTransactions();
 const { txListener, getTxConfirmedAt } = useEthers();
 const { poolWeightsLabel } = usePool(toRef(props, 'pool'));
-const { tokenOutIndex, tokensOut, batchRelayerApproval } = useWithdrawalState(
-  toRef(props, 'pool')
-);
+const { tokenOutIndex, tokensOut, batchRelayerApproval } = useWithdrawalState(toRef(props, 'pool'));
 
-const {
-  bptIn,
-  fiatTotalLabel,
-  amountsOut,
-  exactOut,
-  singleAssetMaxOut,
-  batchSwap,
-  batchSwapAmountsOutMap,
-  batchSwapKind,
-  shouldUseBatchRelayer,
-  batchRelayerSwap,
-  shouldFetchBatchSwap,
-} = toRefs(props.math);
+const { bptIn, fiatTotalLabel, amountsOut, exactOut, singleAssetMaxOut, batchSwap, batchSwapAmountsOutMap, batchSwapKind, shouldUseBatchRelayer, batchRelayerSwap, shouldFetchBatchSwap } = toRefs(
+  props.math
+);
 
 const withdrawalAction: TransactionActionInfo = {
   label: t('withdraw.label'),
@@ -115,12 +92,7 @@ const poolExchange = new PoolExchange(toRef(props, 'pool'));
 /**
  * COMPUTED
  */
-const transactionInProgress = computed(
-  (): boolean =>
-    withdrawalState.init ||
-    withdrawalState.confirming ||
-    withdrawalState.confirmed
-);
+const transactionInProgress = computed((): boolean => withdrawalState.init || withdrawalState.confirming || withdrawalState.confirmed);
 
 /**
  * METHODS
@@ -130,10 +102,7 @@ async function handleTransaction(tx): Promise<void> {
     id: tx.hash,
     type: 'tx',
     action: 'withdraw',
-    summary: t('transactionSummary.withdrawFromPool', [
-      fiatTotalLabel.value,
-      poolWeightsLabel(props.pool),
-    ]),
+    summary: t('transactionSummary.withdrawFromPool', [fiatTotalLabel.value, poolWeightsLabel(props.pool)]),
     details: {
       total: fiatTotalLabel.value,
       pool: props.pool,
@@ -161,19 +130,9 @@ async function submit(): Promise<TransactionResponse> {
     withdrawalState.init = true;
 
     if (shouldUseBatchRelayer.value && batchRelayerSwap.value) {
-      tx = await balancerContractsService.batchRelayer.execute(
-        batchRelayerSwap.value,
-        getProvider()
-      );
+      tx = await balancerContractsService.batchRelayer.execute(batchRelayerSwap.value, getProvider());
     } else if (batchSwap.value) {
-      tx = await boostedExitBatchSwap(
-        batchSwap.value.swaps,
-        batchSwap.value.assets,
-        props.pool.address,
-        bptIn.value,
-        batchSwapAmountsOutMap.value,
-        batchSwapKind.value
-      );
+      tx = await boostedExitBatchSwap(batchSwap.value.swaps, batchSwap.value.assets, props.pool.address, bptIn.value, batchSwapAmountsOutMap.value, batchSwapKind.value);
     } else {
       tx = await poolExchange.exit(
         getProvider(),
@@ -217,12 +176,7 @@ onBeforeMount(() => {
 watch(blockNumber, async () => {
   if (shouldFetchBatchSwap.value && !transactionInProgress.value) {
     await props.math.getSwap();
-    if (
-      batchSwap.value &&
-      (batchSwap.value.assets.length === 0 ||
-        batchSwap.value.swaps.length === 0)
-    )
-      emit('error');
+    if (batchSwap.value && (batchSwap.value.assets.length === 0 || batchSwap.value.swaps.length === 0)) emit('error');
   }
 });
 </script>
@@ -232,14 +186,7 @@ watch(blockNumber, async () => {
     <BalActionSteps v-if="!withdrawalState.confirmed" :actions="actions" />
     <div v-else>
       <ConfirmationIndicator :txReceipt="withdrawalState.receipt" />
-      <BalBtn
-        tag="router-link"
-        :to="{ name: 'pool', params: { id: route.params.id } }"
-        color="gray"
-        outline
-        block
-        class="mt-2"
-      >
+      <BalBtn tag="router-link" :to="{ name: 'pool', params: { id: route.params.id } }" color="gray" outline block class="mt-2">
         {{ $t('returnToPool') }}
       </BalBtn>
     </div>

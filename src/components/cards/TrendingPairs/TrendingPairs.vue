@@ -30,10 +30,7 @@ const getTrendingTradePairs = async () => {
   });
 };
 
-const { data: tradePairSnapshots } = useQuery(
-  QUERY_KEYS.Tokens.TrendingPairs(userNetworkId),
-  () => getTrendingTradePairs()
-);
+const { data: tradePairSnapshots } = useQuery(QUERY_KEYS.Tokens.TrendingPairs(userNetworkId), () => getTrendingTradePairs());
 
 function formatToken({ address, symbol }: { address: string; symbol: string }) {
   const formatted = getAddress(address);
@@ -52,10 +49,7 @@ function formatToken({ address, symbol }: { address: string; symbol: string }) {
 }
 
 const trendingPairs = computed(() => {
-  return (tradePairSnapshots.value || []).map(pairSnapshot => [
-    formatToken(pairSnapshot.pair.token0),
-    formatToken(pairSnapshot.pair.token1),
-  ]);
+  return (tradePairSnapshots.value || []).map(pairSnapshot => [formatToken(pairSnapshot.pair.token0), formatToken(pairSnapshot.pair.token1)]);
 });
 
 const setTradePair = (pair: TrendingPair[]) => {

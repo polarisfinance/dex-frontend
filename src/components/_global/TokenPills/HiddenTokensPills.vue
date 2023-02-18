@@ -26,11 +26,7 @@ withDefaults(defineProps<Props>(), {
     >
       {{ $t('tokenPills.hiddenTokens', [tokens.length]) }}
     </div>
-    <div
-      v-if="hasBalance"
-      class="balance-indicator"
-      :style="{ zIndex: tokens.length }"
-    />
+    <div v-if="hasBalance" class="balance-indicator" :style="{ zIndex: tokens.length }" />
     <div
       v-for="n in 2"
       :key="n"

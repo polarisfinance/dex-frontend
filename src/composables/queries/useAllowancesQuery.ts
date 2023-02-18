@@ -18,11 +18,7 @@ type QueryResponse = ContractAllowancesMap;
 /**
  * Fetches all allowances for given tokens for each provided contract address.
  */
-export default function useAllowancesQuery(
-  tokens: Ref<TokenInfoMap> = ref({}),
-  contractAddresses: Ref<string[]> = ref([]),
-  options: UseQueryOptions<QueryResponse> = {}
-) {
+export default function useAllowancesQuery(tokens: Ref<TokenInfoMap> = ref({}), contractAddresses: Ref<string[]> = ref([]), options: UseQueryOptions<QueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
@@ -38,22 +34,11 @@ export default function useAllowancesQuery(
   /**
    * QUERY INPUTS
    */
-  const queryKey = reactive(
-    QUERY_KEYS.Account.Allowances(
-      networkId,
-      account,
-      contractAddresses,
-      tokenAddresses
-    )
-  );
+  const queryKey = reactive(QUERY_KEYS.Account.Allowances(networkId, account, contractAddresses, tokenAddresses));
 
   const queryFn = async () => {
     console.log('Fetching', tokenAddresses.value.length, 'allowances');
-    const allowances = await tokenService.allowances.get(
-      account.value,
-      contractAddresses.value,
-      tokens.value
-    );
+    const allowances = await tokenService.allowances.get(account.value, contractAddresses.value, tokens.value);
 
     return allowances;
   };

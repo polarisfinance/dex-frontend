@@ -24,43 +24,24 @@ function getBalancerAssetsMultichainURI(tokenAdress: string): string {
 
 const log = debug('balancer:voting-gauge-generator');
 
-async function getAssetURIFromTokenlists(
-  tokenAddress: string,
-  network: Network
-): Promise<string> {
-  log(
-    `getAssetURIFromTokenlists network: ${network} tokenAddress: ${tokenAddress}`
-  );
+async function getAssetURIFromTokenlists(tokenAddress: string, network: Network): Promise<string> {
+  log(`getAssetURIFromTokenlists network: ${network} tokenAddress: ${tokenAddress}`);
   const tokenListURIs = TOKEN_LIST_MAP[network.toString()];
-  const allURIs = [
-    ...Object.values(tokenListURIs.Balancer),
-    ...tokenListURIs.External,
-  ].filter(uri => uri.includes('https'));
+  const allURIs = [...Object.values(tokenListURIs.Balancer), ...tokenListURIs.External].filter(uri => uri.includes('https'));
 
   log('getAssetURIFromTokenlists fetching Tokens');
   const responses = await Promise.all(allURIs.map(uri => fetch(uri)));
-  const tokenLists = await Promise.all(
-    responses.map(response => response.json())
-  );
+  const tokenLists = await Promise.all(responses.map(response => response.json()));
   const allTokens = tokenLists.map(tokenList => tokenList.tokens).flat();
 
   log('getAssetURIFromTokenlists finding token');
-  const token = allTokens.find(token =>
-    isSameAddress(token.address, tokenAddress)
-  );
+  const token = allTokens.find(token => isSameAddress(token.address, tokenAddress));
   return token?.logoURI ? token.logoURI : '';
 }
 
-async function getMainnetTokenAddresss(
-  tokenAddress: string,
-  network: Network
-): Promise<string> {
-  log(
-    `getMainnetTokenAddress network: ${network} tokenAddress: ${tokenAddress}`
-  );
-  const coingeckoEndpoint = `https://api.coingecko.com/api/v3/coins/${getPlatformId(
-    network.toString()
-  )}/contract/${tokenAddress.toLowerCase()}`;
+async function getMainnetTokenAddresss(tokenAddress: string, network: Network): Promise<string> {
+  log(`getMainnetTokenAddress network: ${network} tokenAddress: ${tokenAddress}`);
+  const coingeckoEndpoint = `https://api.coingecko.com/api/v3/coins/${getPlatformId(network.toString())}/contract/${tokenAddress.toLowerCase()}`;
 
   const response = await fetch(coingeckoEndpoint);
 
@@ -72,13 +53,8 @@ async function getMainnetTokenAddresss(
   }
 }
 
-function getTrustWalletAssetsURI(
-  tokenAddress: string,
-  network: Network
-): string {
-  log(
-    `getTrustWalletAssetsURI network: ${network} tokenAddress: ${tokenAddress}`
-  );
+function getTrustWalletAssetsURI(tokenAddress: string, network: Network): string {
+  log(`getTrustWalletAssetsURI network: ${network} tokenAddress: ${tokenAddress}`);
   const networksMap = {
     [Network.MAINNET]: 'ethereum',
     [Network.ARBITRUM]: 'arbitrum',
@@ -90,10 +66,7 @@ function getTrustWalletAssetsURI(
   return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${networksMap[network]}/assets/${tokenAddress}/logo.png`;
 }
 
-async function getTokenLogoURI(
-  tokenAddress: string,
-  network: Network
-): Promise<string> {
+async function getTokenLogoURI(tokenAddress: string, network: Network): Promise<string> {
   log(`getTokenLogoURI network: ${network} tokenAddress: ${tokenAddress}`);
   let logoUri = '';
   let response;
@@ -126,11 +99,7 @@ async function getTokenLogoURI(
   return '';
 }
 
-async function getPoolInfo(
-  poolId: string,
-  network: Network,
-  retries = 5
-): Promise<VotingGauge['pool']> {
+async function getPoolInfo(poolId: string, network: Network, retries = 5): Promise<VotingGauge['pool']> {
   log(`getPoolInfo. poolId: network: ${network} poolId: ${poolId}`);
   const subgraphEndpoint = config[network].subgraph;
   const query = `
@@ -184,17 +153,11 @@ async function getPoolInfo(
   } catch {
     console.error('Pool not found:', poolId, 'chainId:', network);
 
-    return retries > 0
-      ? getPoolInfo(poolId, network, retries - 1)
-      : ({} as VotingGauge['pool']);
+    return retries > 0 ? getPoolInfo(poolId, network, retries - 1) : ({} as VotingGauge['pool']);
   }
 }
 
-async function getLiquidityGaugeAddress(
-  poolId: string,
-  network: Network,
-  retries = 5
-): Promise<string> {
+async function getLiquidityGaugeAddress(poolId: string, network: Network, retries = 5): Promise<string> {
   log(`getLiquidityGaugeAddress. network: ${network} poolId: ${poolId}`);
   const subgraphEndpoint = config[network].subgraphs.gauge;
   const query = `
@@ -225,24 +188,13 @@ async function getLiquidityGaugeAddress(
 
     return liquidityGaugeAddress;
   } catch {
-    console.error(
-      'LiquidityGauge not found for poolId:',
-      poolId,
-      'chainId:',
-      network
-    );
+    console.error('LiquidityGauge not found for poolId:', poolId, 'chainId:', network);
 
-    return retries > 0
-      ? getLiquidityGaugeAddress(poolId, network, retries - 1)
-      : '';
+    return retries > 0 ? getLiquidityGaugeAddress(poolId, network, retries - 1) : '';
   }
 }
 
-async function getStreamerAddress(
-  poolId: string,
-  network: Network,
-  retries = 5
-): Promise<string> {
+async function getStreamerAddress(poolId: string, network: Network, retries = 5): Promise<string> {
   log(`getStreamerAddress. network: ${network} poolId: ${poolId}`);
   const subgraphEndpoint = config[network].subgraphs.gauge;
 
@@ -272,24 +224,13 @@ async function getStreamerAddress(
 
     return data.liquidityGauges[0].streamer;
   } catch {
-    console.error(
-      'Streamer not found for poolId:',
-      poolId,
-      'chainId:',
-      network,
-      'retries:',
-      retries
-    );
+    console.error('Streamer not found for poolId:', poolId, 'chainId:', network, 'retries:', retries);
 
     return retries > 0 ? getStreamerAddress(poolId, network, retries - 1) : '';
   }
 }
 
-async function getRootGaugeAddress(
-  streamer: string,
-  network: Network,
-  retries = 5
-): Promise<string> {
+async function getRootGaugeAddress(streamer: string, network: Network, retries = 5): Promise<string> {
   log(`getRootGaugeAddress. network: ${network} streamer: ${streamer}`);
   const subgraphEndpoint = config[Network.MAINNET].subgraphs.gauge;
 
@@ -322,23 +263,13 @@ async function getRootGaugeAddress(
 
     return rootGaugeAddress;
   } catch {
-    console.error(
-      'RootGauge not found for Streamer:',
-      streamer,
-      'chainId:',
-      network
-    );
+    console.error('RootGauge not found for Streamer:', streamer, 'chainId:', network);
 
-    return retries > 0
-      ? getRootGaugeAddress(streamer, network, retries - 1)
-      : '';
+    return retries > 0 ? getRootGaugeAddress(streamer, network, retries - 1) : '';
   }
 }
 
-async function getGaugeAddress(
-  poolId: string,
-  network: Network
-): Promise<string> {
+async function getGaugeAddress(poolId: string, network: Network): Promise<string> {
   log(`getGaugeAddress. network: ${network} poolId: ${poolId}`);
   if ([Network.MAINNET, Network.KOVAN, Network.GOERLI].includes(network)) {
     const gauge = await getLiquidityGaugeAddress(poolId, network);
@@ -360,10 +291,7 @@ async function getGaugeAddress(
 
       const tokenLogoURIs = {};
       for (let i = 0; i < pool.tokens.length; i++) {
-        tokenLogoURIs[pool.tokens[i].address] = await getTokenLogoURI(
-          pool.tokens[i].address,
-          network
-        );
+        tokenLogoURIs[pool.tokens[i].address] = await getTokenLogoURI(pool.tokens[i].address, network);
       }
 
       return {
@@ -377,10 +305,7 @@ async function getGaugeAddress(
 
   votingGauges = [...(vebalGauge as VotingGauge[]), ...votingGauges];
 
-  const jsonFilePath = path.resolve(
-    __dirname,
-    '../../../public/data/voting-gauges.json'
-  );
+  const jsonFilePath = path.resolve(__dirname, '../../../public/data/voting-gauges.json');
 
   fs.writeFile(jsonFilePath, JSON.stringify(votingGauges, null, 2), err => {
     if (err) {

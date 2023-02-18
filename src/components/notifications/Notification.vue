@@ -1,21 +1,10 @@
 <template>
-  <div
-    class="relative w-64 overflow-hidden rounded p-3 text-sm notif-container"
-  >
+  <div class="notif-container relative w-64 overflow-hidden rounded p-3 text-sm">
     <div class="group justify-between">
-      <BalLink
-        v-if="notification.transactionMetadata"
-        :href="notification.transactionMetadata.explorerLink"
-        external
-        noStyle
-      >
+      <BalLink v-if="notification.transactionMetadata" :href="notification.transactionMetadata.explorerLink" external noStyle>
         <div class="mb-1 flex items-center font-semibold">
           <span class="title">{{ notification.title }}</span>
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="ml-1 text-gray-400 transition-colors group-hover:text-pink-500 dark:text-gray-600"
-          />
+          <BalIcon name="arrow-up-right" size="sm" class="ml-1 text-gray-400 transition-colors group-hover:text-pink-500 dark:text-gray-600" />
         </div>
         <div class="message mb-[20px]">
           {{ notification.message }}
@@ -29,28 +18,15 @@
           {{ notification.message }}
         </div>
       </div>
-      <BalCloseIcon
-        class="absolute top-3 right-2 flex-shrink-0 cursor-pointer text-black dark:text-white"
-        @click="closeNotification()"
-      />
+      <BalCloseIcon class="absolute top-3 right-2 flex-shrink-0 cursor-pointer text-black dark:text-white" @click="closeNotification()" />
     </div>
-    <div
-      :class="progressClasses"
-      :style="{ width: `${(progress * 100).toFixed(0)}%` }"
-    />
+    <div :class="progressClasses" :style="{ width: `${(progress * 100).toFixed(0)}%` }" />
   </div>
 </template>
 
 <script lang="ts">
 import { TransitionPresets, useTransition } from '@vueuse/core';
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  PropType,
-  ref,
-} from 'vue';
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue';
 
 import useNotifications, { Notification } from '@/composables/useNotifications';
 
@@ -126,7 +102,7 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-.notif-container{
+.notif-container {
   background: #292043;
   border-radius: 16px;
 }
@@ -135,7 +111,7 @@ export default defineComponent({
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
 
 .title::first-letter {
@@ -144,7 +120,7 @@ export default defineComponent({
 
 .message {
   @apply overflow-hidden;
-  color: #BDB2DD;
+  color: #bdb2dd;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;

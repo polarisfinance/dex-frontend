@@ -1,11 +1,6 @@
 <template>
   <div ref="animateRef" class="flex items-center px-[16px] text-base opacity-0">
-    <BalAsset
-      :address="token.address"
-      :iconURI="token.logoURI"
-      :size="36"
-      class="mr-[12px]"
-    />
+    <BalAsset :address="token.address" :iconURI="token.logoURI" :size="36" class="mr-[12px]" />
     <div class="flex-auto">
       <div class="token-name">
         {{ token.name }}
@@ -73,11 +68,7 @@ export default {
      * COMPUTED
      */
     const balance = computed(() => Number(balances.value[props.token.address]));
-    const price = computed(() =>
-      prices.value[props.token.address]
-        ? prices.value[props.token.address][currency.value]
-        : 0
-    );
+    const price = computed(() => (prices.value[props.token.address] ? prices.value[props.token.address][currency.value] : 0));
     const value = computed(() => balance.value * price.value);
 
     /**

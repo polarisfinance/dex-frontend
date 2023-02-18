@@ -48,19 +48,13 @@ const investmentConfirmed = ref(false);
 const { t } = useI18n();
 const { getToken } = useTokens();
 const { toFiat } = useNumbers();
-const { fullAmounts, priceImpact, highPriceImpact, rektPriceImpact } = toRefs(
-  props.math
-);
+const { fullAmounts, priceImpact, highPriceImpact, rektPriceImpact } = toRefs(props.math);
 const { resetAmounts } = useInvestState();
 
 /**
  * COMPUTED
  */
-const title = computed((): string =>
-  investmentConfirmed.value
-    ? t('investment.preview.titles.confirmed')
-    : t('investment.preview.titles.default')
-);
+const title = computed((): string => (investmentConfirmed.value ? t('investment.preview.titles.confirmed') : t('investment.preview.titles.default')));
 
 const amountMap = computed((): AmountMap => {
   const amountMap = {};
@@ -86,12 +80,7 @@ const fiatAmountMap = computed((): AmountMap => {
   return fiatAmountMap;
 });
 
-const fiatTotal = computed((): string =>
-  Object.values(fiatAmountMap.value).reduce(
-    (total, amount) => bnum(total).plus(amount).toString(),
-    '0'
-  )
-);
+const fiatTotal = computed((): string => Object.values(fiatAmountMap.value).reduce((total, amount) => bnum(total).plus(amount).toString(), '0'));
 
 /**
  * METHODS
@@ -113,12 +102,7 @@ function handleShowStakeModal() {
   <BalModal show :fireworks="investmentConfirmed" @close="handleClose">
     <template #header>
       <div class="flex items-center">
-        <BalCircle
-          v-if="investmentConfirmed"
-          size="8"
-          color="green"
-          class="mr-2 text-white"
-        >
+        <BalCircle v-if="investmentConfirmed" size="8" color="green" class="mr-2 text-white">
           <BalIcon name="check" />
         </BalCircle>
         <h4>
@@ -127,36 +111,12 @@ function handleShowStakeModal() {
       </div>
     </template>
 
-    <TokenAmounts
-      :amountMap="amountMap"
-      :tokenMap="tokenMap"
-      :fiatAmountMap="fiatAmountMap"
-      :fiatTotal="fiatTotal"
-    />
+    <TokenAmounts :amountMap="amountMap" :tokenMap="tokenMap" :fiatAmountMap="fiatAmountMap" :fiatTotal="fiatTotal" />
 
-    <InvestSummary
-      :pool="pool"
-      :fiatTotal="fiatTotal"
-      :priceImpact="priceImpact"
-      :highPriceImpact="highPriceImpact"
-    />
+    <InvestSummary :pool="pool" :fiatTotal="fiatTotal" :priceImpact="priceImpact" :highPriceImpact="highPriceImpact" />
 
-    <BalAlert
-      v-if="rektPriceImpact"
-      type="error"
-      :title="$t('investment.error.rektPriceImpact.title')"
-      :description="$t('investment.error.rektPriceImpact.description')"
-      class="mt-6 mb-2"
-    />
+    <BalAlert v-if="rektPriceImpact" type="error" :title="$t('investment.error.rektPriceImpact.title')" :description="$t('investment.error.rektPriceImpact.description')" class="mt-6 mb-2" />
 
-    <InvestActions
-      :pool="pool"
-      :math="math"
-      :tokenAddresses="tokenAddresses"
-      :disabled="rektPriceImpact"
-      class="mt-4"
-      @success="investmentConfirmed = true"
-      @show-stake-modal="handleShowStakeModal"
-    />
+    <InvestActions :pool="pool" :math="math" :tokenAddresses="tokenAddresses" :disabled="rektPriceImpact" class="mt-4" @success="investmentConfirmed = true" @show-stake-modal="handleShowStakeModal" />
   </BalModal>
 </template>

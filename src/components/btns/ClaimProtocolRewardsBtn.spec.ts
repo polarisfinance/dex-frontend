@@ -28,10 +28,7 @@ describe.only('ClaimProtocolRewardsBtn', () => {
     // @ts-ignore
     FeeDistributor.mockImplementation(() => {
       return {
-        claimableTokens: [
-          '0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2',
-          '0xba100000625a3754423978a60c9317c58a424e3D',
-        ],
+        claimableTokens: ['0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2', '0xba100000625a3754423978a60c9317c58a424e3D'],
         claimBalance: mockClaimBalance,
         claimBalances: mockClaimBalances,
       };
@@ -80,9 +77,6 @@ describe.only('ClaimProtocolRewardsBtn', () => {
     await fireEvent.click(btn);
 
     // @ts-ignore
-    expect(mockClaimBalance).toBeCalledWith(
-      AddressZero,
-      '0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2'
-    );
+    expect(mockClaimBalance).toBeCalledWith(AddressZero, '0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2');
   });
 });

@@ -49,10 +49,7 @@ const veBalLockInfo = ref(props.veBalLockInfo);
 const totalLpTokens = ref(props.totalLpTokens);
 
 // This value should be static when modal is opened.
-const expectedVeBalAmount = expectedVeBal(
-  totalLpTokens.value,
-  lockEndDate.value
-);
+const expectedVeBalAmount = expectedVeBal(totalLpTokens.value, lockEndDate.value);
 
 /**
  * COMPOSABLES
@@ -66,13 +63,9 @@ const { resetState } = useLockState();
  */
 const title = computed(() => {
   if (lockType.value.length === 1) {
-    return lockConfirmed.value
-      ? t(`getVeBAL.previewModal.titles.${lockType.value[0]}.confirmed`)
-      : t(`getVeBAL.previewModal.titles.${lockType.value[0]}.default`);
+    return lockConfirmed.value ? t(`getVeBAL.previewModal.titles.${lockType.value[0]}.confirmed`) : t(`getVeBAL.previewModal.titles.${lockType.value[0]}.default`);
   }
-  return lockConfirmed.value
-    ? t(`getVeBAL.previewModal.titles.${LockType.CREATE_LOCK}.confirmed`)
-    : t(`getVeBAL.previewModal.titles.${LockType.CREATE_LOCK}.default`);
+  return lockConfirmed.value ? t(`getVeBAL.previewModal.titles.${LockType.CREATE_LOCK}.confirmed`) : t(`getVeBAL.previewModal.titles.${LockType.CREATE_LOCK}.default`);
 });
 
 /**
@@ -93,12 +86,7 @@ function handleSuccess() {
   <BalModal show :fireworks="lockConfirmed" @close="handleClose">
     <template #header>
       <div class="flex items-center">
-        <BalCircle
-          v-if="lockConfirmed"
-          size="8"
-          color="green"
-          class="mr-2 text-white"
-        >
+        <BalCircle v-if="lockConfirmed" size="8" color="green" class="mr-2 text-white">
           <BalIcon name="check" />
         </BalCircle>
         <h4>

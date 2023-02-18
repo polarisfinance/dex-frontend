@@ -1,21 +1,14 @@
 <template>
   <BalPopover noPad :align="isMobile ? 'left' : undefined">
     <template #activator>
-      <BalBtn
-        color="white"
-        :size="upToLargeBreakpoint ? 'md' : 'sm'"
-        class="relative p-1"
-        :circle="upToLargeBreakpoint"
-      >
+      <BalBtn color="white" :size="upToLargeBreakpoint ? 'md' : 'sm'" class="relative p-1" :circle="upToLargeBreakpoint">
         <ActivityIcon v-if="pendingTransactions.length === 0" />
         <ActivityCounter v-else :count="pendingTransactions.length" />
       </BalBtn>
     </template>
     <BalCard class="w-72" noPad noBorder>
       <template #header>
-        <div
-          class="flex w-full items-center justify-between border-b p-3 dark:border-gray-900"
-        >
+        <div class="flex w-full items-center justify-between border-b p-3 dark:border-gray-900">
           <h5>{{ $t('recentActivityTitle') }}</h5>
         </div>
       </template>
@@ -28,12 +21,7 @@
             :isPendingTransactionStatus="isPendingTransactionStatus"
             :cancelOrder="cancelOrder"
           />
-          <div
-            v-if="
-              pendingTransactions.length > 0 && finalizedTransactions.length > 0
-            "
-            class="my-3 h-px bg-gray-100 dark:bg-gray-700"
-          />
+          <div v-if="pendingTransactions.length > 0 && finalizedTransactions.length > 0" class="my-3 h-px bg-gray-100 dark:bg-gray-700" />
           <ActivityRows
             :transactions="finalizedTransactions"
             :getExplorerLink="getExplorerLink"
@@ -87,16 +75,8 @@ export default defineComponent({
     const { isLoadingProfile, profile, account, getSigner } = useWeb3();
     const { t } = useI18n();
 
-    const {
-      transactions,
-      pendingTransactions,
-      finalizedTransactions,
-      getExplorerLink,
-      clearAllTransactions,
-      isSuccessfulTransaction,
-      updateTransaction,
-      isPendingTransactionStatus,
-    } = useTransactions();
+    const { transactions, pendingTransactions, finalizedTransactions, getExplorerLink, clearAllTransactions, isSuccessfulTransaction, updateTransaction, isPendingTransactionStatus } =
+      useTransactions();
 
     const { addNotification } = useNotifications();
 
@@ -105,10 +85,7 @@ export default defineComponent({
      */
     async function cancelOrder(orderId: string) {
       try {
-        const { signature, signingScheme } = await signOrderCancellation(
-          orderId,
-          getSigner()
-        );
+        const { signature, signingScheme } = await signOrderCancellation(orderId, getSigner());
 
         await gnosisProtocolService.sendSignedOrderCancellation({
           cancellation: {

@@ -4,9 +4,7 @@ import { onBeforeMount } from 'vue';
 import useInvestState from '@/components/forms/pool_actions/InvestForm/composables/useInvestState';
 // Components
 import InvestForm from '@/components/forms/pool_actions/InvestForm/InvestForm.vue';
-import TradeSettingsPopover, {
-  TradeSettingsContext,
-} from '@/components/popovers/TradeSettingsPopover.vue';
+import TradeSettingsPopover, { TradeSettingsContext } from '@/components/popovers/TradeSettingsPopover.vue';
 // Composables
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import { usePool } from '@/composables/usePool';
@@ -38,10 +36,7 @@ onBeforeMount(async () => {
 
 <template>
   <div>
-    <BalLoadingBlock
-      v-if="loadingPool || !transfersAllowed || !sorReady"
-      class="h-96"
-    />
+    <BalLoadingBlock v-if="loadingPool || !transfersAllowed || !sorReady" class="h-96" />
     <BalCard v-else shadow="xl" exposeOverflow noBorder>
       <template #header>
         <div class="w-full">

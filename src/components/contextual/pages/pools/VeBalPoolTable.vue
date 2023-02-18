@@ -26,23 +26,14 @@ const lockPools = computed<PoolWithShares[]>(() => {
         ...props.lockPool,
         bpt: '',
         shares: lockedFiatTotal.value,
-        lockedEndDate:
-          props.lock?.hasExistingLock && !props.lock?.isExpired
-            ? props.lock?.lockedEndDate
-            : undefined,
+        lockedEndDate: props.lock?.hasExistingLock && !props.lock?.isExpired ? props.lock?.lockedEndDate : undefined,
       },
     ];
   }
   return [];
 });
 
-const hiddenColumns = [
-  'poolVolume',
-  'poolValue',
-  'migrate',
-  'actions',
-  'myBoost',
-];
+const hiddenColumns = ['poolVolume', 'poolValue', 'migrate', 'actions', 'myBoost'];
 </script>
 
 <template>
@@ -51,12 +42,7 @@ const hiddenColumns = [
       <h5 class="px-4 xl:px-0">
         {{ $t('veBalProtocolLiquidity') }}
       </h5>
-      <PoolsTable
-        :key="lockPools"
-        :data="lockPools"
-        :hiddenColumns="hiddenColumns"
-        showPoolShares
-      />
+      <PoolsTable :key="lockPools" :data="lockPools" :hiddenColumns="hiddenColumns" showPoolShares />
     </BalStack>
   </div>
 </template>

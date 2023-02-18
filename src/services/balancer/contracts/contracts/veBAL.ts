@@ -37,11 +37,7 @@ export default class VeBAL {
   }
 
   public async getLockInfo(account: string): Promise<VeBalLockInfo> {
-    const veBalMulticaller = new Multicaller(
-      this.service.config.key,
-      this.service.provider,
-      veBalAbi
-    );
+    const veBalMulticaller = new Multicaller(this.service.config.key, this.service.provider, veBalAbi);
 
     veBalMulticaller.call('locked', this.address, 'locked', [account]);
     veBalMulticaller.call('epoch', this.address, 'epoch');
@@ -69,48 +65,20 @@ export default class VeBAL {
     };
   }
 
-  public createLock(
-    userProvider: Web3Provider,
-    lockAmount: string,
-    lockEndDate: string
-  ) {
-    return sendTransaction(
-      userProvider,
-      this.address,
-      veBalAbi,
-      'create_lock',
-      [parseUnits(lockAmount, 18), this.parseDate(lockEndDate)]
-    );
+  public createLock(userProvider: Web3Provider, lockAmount: string, lockEndDate: string) {
+    return sendTransaction(userProvider, this.address, veBalAbi, 'create_lock', [parseUnits(lockAmount, 18), this.parseDate(lockEndDate)]);
   }
 
   public increaseLock(userProvider: Web3Provider, lockAmount: string) {
-    return sendTransaction(
-      userProvider,
-      this.address,
-      veBalAbi,
-      'increase_amount',
-      [parseUnits(lockAmount, 18)]
-    );
+    return sendTransaction(userProvider, this.address, veBalAbi, 'increase_amount', [parseUnits(lockAmount, 18)]);
   }
 
   public extendLock(userProvider: Web3Provider, lockEndDate: string) {
-    return sendTransaction(
-      userProvider,
-      this.address,
-      veBalAbi,
-      'increase_unlock_time',
-      [this.parseDate(lockEndDate)]
-    );
+    return sendTransaction(userProvider, this.address, veBalAbi, 'increase_unlock_time', [this.parseDate(lockEndDate)]);
   }
 
   public unlock(userProvider: Web3Provider) {
-    return sendTransaction(
-      userProvider,
-      this.address,
-      veBalAbi,
-      'withdraw',
-      []
-    );
+    return sendTransaction(userProvider, this.address, veBalAbi, 'withdraw', []);
   }
 
   public get address(): string {

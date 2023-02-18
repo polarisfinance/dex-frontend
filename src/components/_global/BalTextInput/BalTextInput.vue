@@ -86,28 +86,14 @@ const textInput = ref<HTMLInputElement>();
  */
 const attrs = useAttrs();
 const { errors, isInvalid, validate } = useInputValidation(props, emit);
-const {
+const { isActive, isHover, onInput, onKeydown, onBlur, onClick, onFocus, onMouseOver, onMouseLeave } = useInputEvents(props, emit, validate);
+const { parentClasses, inputContainerClasses, inputGroupClasses, headerClasses, footerClasses, inputClasses, prependClasses, appendClasses, borderRadiusClasses } = useInputStyles(
+  props,
+  isInvalid,
   isActive,
   isHover,
-  onInput,
-  onKeydown,
-  onBlur,
-  onClick,
-  onFocus,
-  onMouseOver,
-  onMouseLeave,
-} = useInputEvents(props, emit, validate);
-const {
-  parentClasses,
-  inputContainerClasses,
-  inputGroupClasses,
-  headerClasses,
-  footerClasses,
-  inputClasses,
-  prependClasses,
-  appendClasses,
-  borderRadiusClasses,
-} = useInputStyles(props, isInvalid, isActive, isHover, attrs);
+  attrs
+);
 const { isWalletReady } = useWeb3();
 
 /**
@@ -127,11 +113,7 @@ onMounted(() => {
 
 <template>
   <div :class="['bal-text-input', parentClasses, borderRadiusClasses]">
-    <div
-      :class="['input-container', inputContainerClasses, borderRadiusClasses]"
-      @mouseover="onMouseOver"
-      @mouseleave="onMouseLeave"
-    >
+    <div :class="['input-container', inputContainerClasses, borderRadiusClasses]" @mouseover="onMouseOver" @mouseleave="onMouseLeave">
       <div v-if="$slots.header || label" :class="['header', headerClasses]">
         <slot name="header">
           <span class="label text-secondary">
@@ -139,7 +121,7 @@ onMounted(() => {
           </span>
         </slot>
       </div>
-      <div class="input-group flex-wrap" :class="{'mb-[40px]':!isWalletReady}">
+      <div class="input-group flex-wrap" :class="{ 'mb-[40px]': !isWalletReady }">
         <div v-if="$slots.prepend" :class="['prepend', prependClasses]">
           <slot name="prepend" />
         </div>
@@ -180,11 +162,11 @@ onMounted(() => {
 }
 
 ::placeholder {
-  color: #FDFDFD !important;
+  color: #fdfdfd !important;
 }
 
 .input-group {
-  @apply flex pt-[16px];/* pl-[12px] pr-[16px];*/
+  @apply flex pt-[16px]; /* pl-[12px] pr-[16px];*/
 }
 
 .input {

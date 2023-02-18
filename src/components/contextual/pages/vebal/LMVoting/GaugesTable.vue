@@ -9,12 +9,7 @@ import BalChipExpired from '@/components/chips/BalChipExpired.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 import { networkNameFor } from '@/composables/useNetwork';
 import useNumbers from '@/composables/useNumbers';
-import {
-  isStableLike,
-  isUnknownType,
-  orderedPoolTokens,
-  poolURLFor,
-} from '@/composables/usePool';
+import { isStableLike, isUnknownType, orderedPoolTokens, poolURLFor } from '@/composables/usePool';
 import { isSameAddress } from '@/lib/utils';
 import { scale } from '@/lib/utils';
 import { VotingGaugeWithVotes } from '@/services/balancer/gauges/gauge-controller.decorator';
@@ -127,28 +122,16 @@ const columns = ref<ColumnDefinition<VotingGaugeWithVotes>[]>([
  * METHODS
  */
 function orderedTokenURIs(gauge: VotingGaugeWithVotes): string[] {
-  const sortedTokens = orderedPoolTokens(
-    gauge.pool.poolType,
-    gauge.pool.address,
-    gauge.pool.tokens
-  );
-  return sortedTokens.map(
-    token => gauge.tokenLogoURIs[token?.address || ''] || ''
-  );
+  const sortedTokens = orderedPoolTokens(gauge.pool.poolType, gauge.pool.address, gauge.pool.tokens);
+  return sortedTokens.map(token => gauge.tokenLogoURIs[token?.address || ''] || '');
 }
 
 function networkSrc(network: Network) {
-  return require(`@/assets/images/icons/networks/${networkNameFor(
-    network
-  )}.svg`);
+  return require(`@/assets/images/icons/networks/${networkNameFor(network)}.svg`);
 }
 
 function redirectToPool(gauge: VotingGaugeWithVotes) {
-  window.location.href = poolURLFor(
-    gauge.pool.id,
-    gauge.network,
-    gauge.pool.poolType
-  );
+  window.location.href = poolURLFor(gauge.pool.id, gauge.network, gauge.pool.poolType);
 }
 
 function getIsGaugeExpired(gaugeAddress: string): boolean {
@@ -160,20 +143,12 @@ function getHasUserVotes(userVotes: string): boolean {
 }
 
 function getTableRowClass(gauge: VotingGaugeWithVotes): string {
-  return getHasUserVotes(gauge.userVotes) && getIsGaugeExpired(gauge.address)
-    ? 'expired-gauge-row'
-    : '';
+  return getHasUserVotes(gauge.userVotes) && getIsGaugeExpired(gauge.address) ? 'expired-gauge-row' : '';
 }
 </script>
 
 <template>
-  <BalCard
-    shadow="lg"
-    class="mt-4"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
+  <BalCard shadow="lg" class="mt-4" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad>
     <BalTable
       :key="data"
       :columns="columns"
@@ -201,9 +176,7 @@ function getTableRowClass(gauge: VotingGaugeWithVotes): string {
       </template>
       <template #networkColumnCell="{ network }">
         <div v-if="!isLoading" class="py-4 px-6">
-          <div
-            class="flex h-8 w-8 items-center justify-center rounded bg-gray-50 shadow-sm dark:bg-gray-800"
-          >
+          <div class="flex h-8 w-8 items-center justify-center rounded bg-gray-50 shadow-sm dark:bg-gray-800">
             <img :src="networkSrc(network)" :alt="network" class="h-6 w-6" />
           </div>
         </div>
@@ -220,14 +193,7 @@ function getTableRowClass(gauge: VotingGaugeWithVotes): string {
       </template>
       <template #poolCompositionCell="{ pool, address }">
         <div v-if="!isLoading" class="flex items-center py-4 px-6">
-          <TokenPills
-            :tokens="
-              orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-            "
-            :isStablePool="
-              isStableLike(pool.poolType) || isUnknownType(pool.poolType)
-            "
-          />
+          <TokenPills :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)" :isStablePool="isStableLike(pool.poolType) || isUnknownType(pool.poolType)" />
           <BalChipExpired v-if="getIsGaugeExpired(address)" class="ml-2" />
         </div>
       </template>
@@ -238,11 +204,7 @@ function getTableRowClass(gauge: VotingGaugeWithVotes): string {
       </template>
       <template #voteColumnCell="gauge">
         <div v-if="isWalletReady" class="px-4">
-          <GaugesTableVoteBtn
-            :hasUserVotes="getHasUserVotes(gauge.userVotes)"
-            :isGaugeExpired="getIsGaugeExpired(gauge.address)"
-            @click.stop="emit('clickedVote', gauge)"
-          />
+          <GaugesTableVoteBtn :hasUserVotes="getHasUserVotes(gauge.userVotes)" :isGaugeExpired="getIsGaugeExpired(gauge.address)" @click.stop="emit('clickedVote', gauge)" />
         </div>
       </template>
     </BalTable>

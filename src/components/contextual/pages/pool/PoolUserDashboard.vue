@@ -8,9 +8,7 @@ import { totalAprLabel, usePool } from '@/composables/usePool';
 import { APR_THRESHOLD } from '@/constants/pools';
 import { Pool, PoolAPRs } from '@/services/pool/types';
 import { TransactionResponse } from '@ethersproject/providers';
-import MyPoolInvsetmentFiat, {
-  MyPollInvestmentFiatType,
-} from '@/components/pool/MyPoolInvsetmentFiat.vue';
+import MyPoolInvsetmentFiat, { MyPollInvestmentFiatType } from '@/components/pool/MyPoolInvsetmentFiat.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import useWeb3 from '@/services/web3/useWeb3';
 import { BigNumber } from 'ethers';
@@ -114,22 +112,13 @@ export default defineComponent({
     const { fNum2, toFiat } = useNumbers();
     const { t } = useI18n();
     const rewardFiat = computed(() => {
-      return fNum2(
-        Number(props.xpolarPrice) * Number(props.xpolarToClaim),
-        FNumFormats.fiat
-      );
+      return fNum2(Number(props.xpolarPrice) * Number(props.xpolarToClaim), FNumFormats.fiat);
     });
-    const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(
-      toRef(props, 'pool')
-    );
+    const { isStableLikePool, isStablePhantomPool, isMigratablePool } = usePool(toRef(props, 'pool'));
 
-    const unstakedTokens = computed((): string =>
-      balanceFor(props.pool.address)
-    );
+    const unstakedTokens = computed((): string => balanceFor(props.pool.address));
 
-    const totalTokens = computed((): string =>
-      bnum(props.stakedBalance).plus(unstakedTokens.value).toString()
-    );
+    const totalTokens = computed((): string => bnum(props.stakedBalance).plus(unstakedTokens.value).toString());
     const stakedPerc = computed(() => {
       const perc = Number(props.stakedBalance) / Number(totalTokens.value);
       return Math.round(perc * 1000) / 1000;
@@ -193,20 +182,10 @@ export default defineComponent({
 
     const { isWalletReady } = useWeb3();
 
-    const poolCalculator = new PoolCalculator(
-      toRef(props, 'pool'),
-      tokens,
-      balances,
-      'exit',
-      ref(false)
-    );
+    const poolCalculator = new PoolCalculator(toRef(props, 'pool'), tokens, balances, 'exit', ref(false));
 
     const propTokenAmounts = computed((): string[] => {
-      const { receive } = poolCalculator.propAmountsGiven(
-        bnum(totalTokens.value).toString(),
-        0,
-        'send'
-      );
+      const { receive } = poolCalculator.propAmountsGiven(bnum(totalTokens.value).toString(), 0, 'send');
 
       if (isStablePhantomPool.value) {
         // Return linear pool's main token balance using the price rate.
@@ -285,21 +264,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <div
-    class="container mx-auto"
-    id="dashboard"
-    :class="{ ' mb-[20px]': isMobile, 'mb-[95px]': isDesktop }"
-  >
+  <div class="container mx-auto" id="dashboard" :class="{ ' mb-[20px]': isMobile, 'mb-[95px]': isDesktop }">
     <div class="card flex flex-wrap">
       <div class="stats" v-if="isDesktop">
         <h3>My dashboard</h3>
         <div class="break"></div>
-        <PoolUserStats
-          :pool="pool"
-          :xpolarToClaim="xpolarToClaim"
-          :dailyAPR="dailyAPR"
-          :stakedBalance="stakedBalance"
-        />
+        <PoolUserStats :pool="pool" :xpolarToClaim="xpolarToClaim" :dailyAPR="dailyAPR" :stakedBalance="stakedBalance" />
       </div>
       <div class="m-[24px] flex flex-1 flex-col justify-center">
         <div class="mt-5 w-full text-center" v-if="loading">Loading...</div>
@@ -346,46 +316,25 @@ export default defineComponent({
             </div>
             <div class="progress-perc text-right">
               {{ stakedPerc * 100 }}% of your LP tokens staked
-              <button
-                v-if="stakedPerc < 1"
-                class="stake-btn ml-2 inline"
-                @click="toggleStakeModal()"
-              >
-                Stake the rest
-              </button>
+              <button v-if="stakedPerc < 1" class="stake-btn ml-2 inline" @click="toggleStakeModal()">Stake the rest</button>
             </div>
           </div>
-          <div
-            class="my-panel flex flex-1 py-8 pl-[24px]"
-            :class="{ 'flex-col items-center': isMobile }"
-          >
+          <div class="my-panel flex flex-1 py-8 pl-[24px]" :class="{ 'flex-col items-center': isMobile }">
             <div class="pool-invest flex-1 text-center">
               Unstake your LP tokens
-              <button
-                class="withdraw-btn flex w-full items-center"
-                @click="toggleUnstakeModal()"
-              >
+              <button class="withdraw-btn flex w-full items-center" @click="toggleUnstakeModal()">
                 <div class="w-full text-center">Unstake</div>
               </button>
             </div>
             <div class="pool-invest flex-1 text-center">
               Withdraw your position
-              <router-link
-                class="withdraw-btn flex items-center"
-                :to="'/pool/' + pool?.id + '/withdraw'"
-              >
+              <router-link class="withdraw-btn flex items-center" :to="'/pool/' + pool?.id + '/withdraw'">
                 <div class="w-full text-center">Withdraw</div>
               </router-link>
             </div>
-            <div
-              class="pool-invest flex-1 text-center"
-              :class="{ 'mt-8': isMobile }"
-            >
+            <div class="pool-invest flex-1 text-center" :class="{ 'mt-8': isMobile }">
               You can claim in any time
-              <button
-                class="claim-btn block flex w-full items-center"
-                @click="claimXpolar(pool.address)"
-              >
+              <button class="claim-btn block flex w-full items-center" @click="claimXpolar(pool.address)">
                 <div class="w-full text-center">Claim reward</div>
                 <ArrowRightIcon class="ml-3 flex-none" />
               </button>
@@ -395,22 +344,8 @@ export default defineComponent({
       </div>
     </div>
   </div>
-  <StakeModal
-    :depositBol="true"
-    :isVisible="isStakeModalVisible"
-    :token="``"
-    :balance="balanceFor(pool.address)"
-    :address="pool.address"
-    @close="toggleStakeModal"
-  />
-  <StakeModal
-    :depositBol="false"
-    :isVisible="isUnstakeModalVisible"
-    :token="``"
-    :balance="stakedBalance"
-    :address="pool.address"
-    @close="toggleUnstakeModal"
-  />
+  <StakeModal :depositBol="true" :isVisible="isStakeModalVisible" :token="``" :balance="balanceFor(pool.address)" :address="pool.address" @close="toggleStakeModal" />
+  <StakeModal :depositBol="false" :isVisible="isUnstakeModalVisible" :token="``" :balance="stakedBalance" :address="pool.address" @close="toggleUnstakeModal" />
 </template>
 
 <style scoped>
@@ -443,10 +378,7 @@ h3 {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1))
-      padding-box,
-    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
-      border-box;
+  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
 .earn-button:hover {
@@ -512,10 +444,7 @@ h3 {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1))
-      padding-box,
-    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
-      border-box;
+  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1)) padding-box, linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;
 }
 
@@ -535,11 +464,7 @@ h3 {
   grid-column: 1 / span 2;
 }
 .claim-btn:hover {
-  background: linear-gradient(
-    93.62deg,
-    rgba(192, 4, 254, 0.7) 2.98%,
-    rgba(126, 2, 245, 0.7) 97.02%
-  );
+  background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
 }
 .title {
   font-weight: 600;
@@ -596,11 +521,7 @@ h3 {
 }
 .break {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(151, 71, 255, 0.4),
-    rgba(59, 68, 189, 0.4)
-  );
+  background: linear-gradient(90deg, rgba(151, 71, 255, 0.4), rgba(59, 68, 189, 0.4));
 }
 .token-value > div:first-child {
   font-weight: 600;

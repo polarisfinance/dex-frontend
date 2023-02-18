@@ -10,12 +10,7 @@ const { darkMode, toggleDarkMode } = useDarkMode();
 </script>
 
 <template>
-  <BalBtn
-    color="white"
-    :size="isMobile ? 'md' : 'sm'"
-    :circle="isMobile"
-    @click="toggleDarkMode"
-  >
+  <BalBtn color="white" :size="isMobile ? 'md' : 'sm'" :circle="isMobile" @click="toggleDarkMode">
     <MoonIcon v-if="darkMode" />
     <SunIcon v-else />
   </BalBtn>

@@ -70,23 +70,11 @@ watch(iconSRC, newURL => {
     v-bind="rootElementAttrs"
   >
     <div v-if="iconSRC && !error">
-      <img v-if="bgImage"
-        :src="bgImage"
-        class="rounded-full bg-transparent absolute"
-        @error="error = true"
-      />
-      <img
-        :src="iconSRC"
-        class="rounded-full bg-transparent"
-        @error="error = true"
-      />
+      <img v-if="bgImage" :src="bgImage" class="absolute rounded-full bg-transparent" @error="error = true" />
+      <img :src="iconSRC" class="rounded-full bg-transparent" @error="error = true" />
     </div>
     <div v-else-if="!!address">
-      <img v-if="bgImage"
-        :src="bgImage"
-        class="rounded-full bg-transparent absolute"
-        @error="error = true"
-      />
+      <img v-if="bgImage" :src="bgImage" class="absolute rounded-full bg-transparent" @error="error = true" />
       <Avatar :address="address" :size="size" />
     </div>
     <div

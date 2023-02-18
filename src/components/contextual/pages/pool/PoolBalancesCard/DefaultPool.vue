@@ -135,9 +135,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="card w-full" :class="{'max-w':isDesktop}" v-for="(token, index) in tableData" :key="index">
+  <div class="card w-full" :class="{ 'max-w': isDesktop }" v-for="(token, index) in tableData" :key="index">
     <div class="subheadline text-center">Pool Composition</div>
-    <div class="flex mx-1 my-4">
+    <div class="mx-1 my-4 flex">
       <BalAsset :address="token.address" :size="48" />
       <div class="token-name ml-[12px]">
         {{ symbolFor(token.address) }}
@@ -162,45 +162,44 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.card{
-  padding: 12px ;
+.card {
+  padding: 12px;
   gap: 16px;
   background: #292043;
   border-radius: 20px;
 }
-.card.max-w{
+.card.max-w {
   max-width: 355px;
 }
-.subheadline{
-  background: #41365E;
+.subheadline {
+  background: #41365e;
   border-radius: 12px;
   font-weight: 700;
   font-size: 12px;
   line-height: 18px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.token-name{
+.token-name {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
-.composition-data{
+.composition-data {
   border-top: 1px solid rgba(65, 54, 94, 0.4);
   margin-top: 24px;
   text-align: left;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.composition-data .subheadline{
+.composition-data .subheadline {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: #BDB2DD;
-  background:none;
+  color: #bdb2dd;
+  background: none;
   margin-top: 16px;
   margin-bottom: 16px;
 }

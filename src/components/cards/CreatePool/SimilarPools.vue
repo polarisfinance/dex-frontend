@@ -11,15 +11,7 @@ import useWeb3 from '@/services/web3/useWeb3';
  * COMPOSABLES
  */
 const { userNetworkConfig, isWalletReady } = useWeb3();
-const {
-  similarPools,
-  isLoadingSimilarPools,
-  existingPool,
-  setStep,
-  proceed,
-  resetPoolCreationState,
-  goBack,
-} = usePoolCreation();
+const { similarPools, isLoadingSimilarPools, existingPool, setStep, proceed, resetPoolCreationState, goBack } = usePoolCreation();
 const { fNum2 } = useNumbers();
 const { t } = useI18n();
 
@@ -51,16 +43,9 @@ function cancel() {
   <BalCard shadow="xl" noBorder :class="{ 'border-red-400': existingPool }">
     <BalStack vertical>
       <BalStack vertical spacing="xs">
-        <span
-          v-if="isWalletReady"
-          class="text-xs text-gray-600 dark:text-gray-400"
-          >{{ userNetworkConfig?.name }}</span
-        >
+        <span v-if="isWalletReady" class="text-xs text-gray-600 dark:text-gray-400">{{ userNetworkConfig?.name }}</span>
         <BalStack align="center" horizontal spacing="xs">
-          <button
-            class="flex text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-            @click="goBack"
-          >
+          <button class="flex text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" @click="goBack">
             <BalIcon class="flex" name="chevron-left" />
           </button>
           <h5 class="font-semibold dark:text-gray-300">
@@ -82,38 +67,22 @@ function cancel() {
           </BalStack>
           <BalStack horizontal spacing="lg">
             <BalStack vertical spacing="none">
-              <span class="text-secondary font-medium">{{
-                $t('poolValue')
-              }}</span>
-              <span class="font-semibold">{{
-                fNum2(existingPool.totalLiquidity, FNumFormats.fiat)
-              }}</span>
+              <span class="text-secondary font-medium">{{ $t('poolValue') }}</span>
+              <span class="font-semibold">{{ fNum2(existingPool.totalLiquidity, FNumFormats.fiat) }}</span>
             </BalStack>
             <BalStack vertical spacing="none">
-              <span class="text-secondary font-medium">{{
-                $t('volume24hShort')
-              }}</span>
-              <span class="font-semibold">{{
-                fNum2(existingPool?.volumeSnapshot || '0', FNumFormats.fiat)
-              }}</span>
+              <span class="text-secondary font-medium">{{ $t('volume24hShort') }}</span>
+              <span class="font-semibold">{{ fNum2(existingPool?.volumeSnapshot || '0', FNumFormats.fiat) }}</span>
             </BalStack>
             <BalStack vertical spacing="none">
-              <span class="text-secondary font-medium capitalize">{{
-                $t('fees')
-              }}</span>
-              <span class="font-semibold">{{
-                fNum2(existingPool.swapFee, FNumFormats.percent)
-              }}</span>
+              <span class="text-secondary font-medium capitalize">{{ $t('fees') }}</span>
+              <span class="font-semibold">{{ fNum2(existingPool.swapFee, FNumFormats.percent) }}</span>
             </BalStack>
           </BalStack>
         </BalStack>
       </BalCard>
       <BalStack v-else vertical>
-        <BalCard
-          v-for="pool in relevantSimilarPools"
-          :key="pool.id"
-          shadow="none"
-        >
+        <BalCard v-for="pool in relevantSimilarPools" :key="pool.id" shadow="none">
           <BalStack vertical>
             <BalStack spacing="sm" horizontal align="center">
               <div>
@@ -123,50 +92,29 @@ function cancel() {
             </BalStack>
             <BalStack horizontal spacing="xl">
               <BalStack vertical spacing="none">
-                <span class="text-secondary font-medium">{{
-                  $t('poolValue')
-                }}</span>
-                <span class="font-semibold">{{
-                  fNum2(pool.totalLiquidity, FNumFormats.fiat)
-                }}</span>
+                <span class="text-secondary font-medium">{{ $t('poolValue') }}</span>
+                <span class="font-semibold">{{ fNum2(pool.totalLiquidity, FNumFormats.fiat) }}</span>
               </BalStack>
               <BalStack vertical spacing="none">
-                <span class="text-secondary font-medium">{{
-                  $t('volume24hShort')
-                }}</span>
-                <span class="font-semibold">{{
-                  fNum2(pool?.volumeSnapshot || '0', FNumFormats.fiat)
-                }}</span>
+                <span class="text-secondary font-medium">{{ $t('volume24hShort') }}</span>
+                <span class="font-semibold">{{ fNum2(pool?.volumeSnapshot || '0', FNumFormats.fiat) }}</span>
               </BalStack>
               <BalStack vertical spacing="none">
-                <span class="text-secondary font-medium capitalize">{{
-                  $t('fees')
-                }}</span>
-                <span class="font-semibold">{{
-                  fNum2(pool.swapFee, FNumFormats.percent)
-                }}</span>
+                <span class="text-secondary font-medium capitalize">{{ $t('fees') }}</span>
+                <span class="font-semibold">{{ fNum2(pool.swapFee, FNumFormats.percent) }}</span>
               </BalStack>
             </BalStack>
           </BalStack>
         </BalCard>
       </BalStack>
-      <BalAlert
-        v-if="!existingPool"
-        block
-        type="warning"
-        title="Are you sure you want to continue?"
-      >
-        You can continue to create your pool anyway, but you’ll have to pay pool
-        creation gas costs and liquidity will be fractured which is likely to
-        result in your new pool being less profitable.
+      <BalAlert v-if="!existingPool" block type="warning" title="Are you sure you want to continue?">
+        You can continue to create your pool anyway, but you’ll have to pay pool creation gas costs and liquidity will be fractured which is likely to result in your new pool being less profitable.
       </BalAlert>
       <BalStack horizontal expandChildren>
         <BalBtn block outline color="black" @click="cancel">
           {{ $t('cancel') }}
         </BalBtn>
-        <BalBtn v-if="!existingPool" block color="gradient" @click="proceed">
-          Continue anyway
-        </BalBtn>
+        <BalBtn v-if="!existingPool" block color="gradient" @click="proceed"> Continue anyway </BalBtn>
       </BalStack>
     </BalStack>
   </BalCard>

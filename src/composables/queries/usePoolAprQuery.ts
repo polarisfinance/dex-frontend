@@ -18,10 +18,7 @@ import useUserSettings from '../useUserSettings';
 import useGaugesQuery from './useGaugesQuery';
 import usePoolQuery from './usePoolQuery';
 
-export default function usePoolAprQuery(
-  id: string,
-  options: QueryObserverOptions<PoolAPRs> = {}
-) {
+export default function usePoolAprQuery(id: string, options: QueryObserverOptions<PoolAPRs> = {}) {
   /**
    * @description
    * If pool is already downloaded, we can use it instantly
@@ -92,25 +89,17 @@ export default function usePoolAprQuery(
       gauges: subgraphGauges.value || [],
     };
 
-    const [protocolFeePercentage, gaugeBALAprs, gaugeRewardTokenAprs] =
-      await Promise.all([
-        balancerContractsService.vault.protocolFeesCollector.getSwapFeePercentage(),
-        stakingRewardsService.getGaugeBALAprs(payload),
-        stakingRewardsService.getRewardTokenAprs({
-          ...payload,
-          tokens: tokens.value,
-        }),
-      ]);
+    const [protocolFeePercentage, gaugeBALAprs, gaugeRewardTokenAprs] = await Promise.all([
+      balancerContractsService.vault.protocolFeesCollector.getSwapFeePercentage(),
+      stakingRewardsService.getGaugeBALAprs(payload),
+      stakingRewardsService.getRewardTokenAprs({
+        ...payload,
+        tokens: tokens.value,
+      }),
+    ]);
 
     const _snaphshot = await getSnapshot(_pool.id);
-    const apr = await new AprConcern(_pool).calc(
-      _snaphshot[0],
-      prices.value,
-      currency.value,
-      protocolFeePercentage,
-      gaugeBALAprs[_pool.id],
-      gaugeRewardTokenAprs[_pool.id]
-    );
+    const apr = await new AprConcern(_pool).calc(_snaphshot[0], prices.value, currency.value, protocolFeePercentage, gaugeBALAprs[_pool.id], gaugeRewardTokenAprs[_pool.id]);
 
     return apr;
   };

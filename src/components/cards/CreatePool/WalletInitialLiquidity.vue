@@ -11,17 +11,14 @@ import useTokens from '@/composables/useTokens';
  * COMPOSABLES
  */
 const { tokens } = useTokens();
-const { seedTokens, maxInitialLiquidity, tokenColors, getOptimisedLiquidity } =
-  usePoolCreation();
+const { seedTokens, maxInitialLiquidity, tokenColors, getOptimisedLiquidity } = usePoolCreation();
 const { fNum2 } = useNumbers();
 const { upToLargeBreakpoint } = useBreakpoints();
 
 /**
  * COMPUTED
  */
-const allocatedTokenWeights = computed(() =>
-  seedTokens.value.filter(t => t.tokenAddress !== '')
-);
+const allocatedTokenWeights = computed(() => seedTokens.value.filter(t => t.tokenAddress !== ''));
 const unallocatedTokenWeight = computed(() =>
   sumBy(
     seedTokens.value.filter(t => t.tokenAddress === ''),
@@ -39,10 +36,7 @@ const optimisedLiquidity = computed(() => getOptimisedLiquidity());
 
 <template>
   <BalCard noPad shadow="none">
-    <div
-      v-if="!upToLargeBreakpoint"
-      class="border-b p-2 px-3 dark:border-gray-600"
-    >
+    <div v-if="!upToLargeBreakpoint" class="border-b p-2 px-3 dark:border-gray-600">
       <h6 class="dark:text-gray-300">
         {{ $t('createAPool.maxInitialLiquidity') }}
       </h6>
@@ -50,58 +44,31 @@ const optimisedLiquidity = computed(() => getOptimisedLiquidity());
     <div class="p-2 px-4">
       <div class="grid w-full grid-cols-12 gap-y-1.5">
         <div class="col-span-6">
-          <span class="text-secondary text-sm font-semibold text-gray-700">{{
-            $t('token')
-          }}</span>
+          <span class="text-secondary text-sm font-semibold text-gray-700">{{ $t('token') }}</span>
         </div>
         <div class="col-span-6 text-right">
-          <span class="text-secondary text-sm font-semibold text-gray-700">{{
-            $t('usdValue')
-          }}</span>
+          <span class="text-secondary text-sm font-semibold text-gray-700">{{ $t('usdValue') }}</span>
         </div>
-        <template
-          v-for="(token, i) in allocatedTokenWeights"
-          :key="token.tokenAddress"
-        >
+        <template v-for="(token, i) in allocatedTokenWeights" :key="token.tokenAddress">
           <div class="col-span-6 text-left font-medium">
             <div class="flex flex-row items-center">
-              <div
-                class="mr-2 h-1.5 w-1.5 rounded-full"
-                :style="{ backgroundColor: tokenColors[i] }"
-              />
-              <span class="text-sm">{{
-                tokens[token.tokenAddress]?.symbol
-              }}</span>
+              <div class="mr-2 h-1.5 w-1.5 rounded-full" :style="{ backgroundColor: tokenColors[i] }" />
+              <span class="text-sm">{{ tokens[token.tokenAddress]?.symbol }}</span>
             </div>
             <div v-if="token.tokenAddress === 'unallocated'" />
           </div>
           <div class="col-span-6 text-right text-sm">
-            {{
-              fNum2(
-                optimisedLiquidity[token.tokenAddress].liquidityRequired,
-                FNumFormats.fiat
-              )
-            }}
+            {{ fNum2(optimisedLiquidity[token.tokenAddress].liquidityRequired, FNumFormats.fiat) }}
           </div>
         </template>
-        <div
-          v-if="unallocatedTokenWeight > 0"
-          class="col-span-6 text-left text-sm font-medium"
-        >
+        <div v-if="unallocatedTokenWeight > 0" class="col-span-6 text-left text-sm font-medium">
           {{ $t('unallocated') }}
         </div>
-        <div v-if="unallocatedTokenWeight > 0" class="col-span-6 text-right">
-          -
-        </div>
+        <div v-if="unallocatedTokenWeight > 0" class="col-span-6 text-right">-</div>
         <div class="col-span-6">
           <span class="text-sm font-semibold">{{ $t('total') }}</span>
         </div>
-        <div
-          :class="[
-            'col-span-6 flex items-center justify-end text-sm font-semibold',
-            totalsClass,
-          ]"
-        >
+        <div :class="['col-span-6 flex items-center justify-end text-sm font-semibold', totalsClass]">
           {{ fNum2(maxInitialLiquidity, FNumFormats.fiat) }}
         </div>
       </div>

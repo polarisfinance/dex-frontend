@@ -37,10 +37,7 @@ export default defineComponent({
     diffDays = diffDays > 60 ? 60 : diffDays;
     const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
     const diffDaysReverse = 60 - diffDays;
-    const vestedAll = (
-      ((startDay > today ? 0 : diffTime) / 1000) *
-      0.0385802469
-    ).toFixed(0);
+    const vestedAll = (((startDay > today ? 0 : diffTime) / 1000) * 0.0385802469).toFixed(0);
 
     const { account, getProvider } = useWeb3();
 
@@ -113,9 +110,7 @@ export default defineComponent({
       <div class="text-center">
         <div class="title">Airdrop for Polaris holders</div>
         <div v-if="!isWalletReady && !isWalletConnecting">
-          <div class="subtitle">
-            Connect your wallet and claim your airdrop!
-          </div>
+          <div class="subtitle">Connect your wallet and claim your airdrop!</div>
           <HeroConnectWalletButton class="my-10" />
         </div>
         <div v-else>
@@ -150,15 +145,8 @@ export default defineComponent({
             <h2 :style="{ marginBottom: 0 }">60 Days vesting</h2>
           </div>
           <div class="w-fit flex items-end" :class="{ 'flex-wrap': isMobile }">
-            <div class="basic-label w-[300px]">
-              Full information about airdrop can <br />be found on our medium
-            </div>
-            <a
-              href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c"
-              target="_blank"
-              class="read-btn flex-none"
-              >Read our medium</a
-            >
+            <div class="basic-label w-[300px]">Full information about airdrop can <br />be found on our medium</div>
+            <a href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c" target="_blank" class="read-btn flex-none">Read our medium</a>
           </div>
         </div>
         <div class="progress-bar mt-[100px] h-[2px] rounded-[24px]">
@@ -166,10 +154,7 @@ export default defineComponent({
             class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
             :style="{ width: `${(progress * 100).toFixed(0)}%` }"
           />
-          <div
-            class="progress-tracker"
-            :style="{ left: `${(progress * 100).toFixed(0)}%` }"
-          >
+          <div class="progress-tracker" :style="{ left: `${(progress * 100).toFixed(0)}%` }">
             <span>Day {{ diffDays }}</span>
           </div>
         </div>
@@ -177,19 +162,10 @@ export default defineComponent({
           <div class="w-full text-left">Day 1</div>
           <div class="w-full text-right">Day 60</div>
         </div>
-        <div class="w-full text-center">
-          {{ vestedAll }} xPolars / 200 000 xPolars
-        </div>
+        <div class="w-full text-center">{{ vestedAll }} xPolars / 200 000 xPolars</div>
       </div>
       <div id="claim_airdrop" class="graphic mt-[180px] mb-[120px]">
-        <svg
-          width="920"
-          height="257"
-          viewBox="0 0 920 257"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="m-auto w-full"
-        >
+        <svg width="920" height="257" viewBox="0 0 920 257" fill="none" xmlns="http://www.w3.org/2000/svg" class="m-auto w-full">
           <g opacity="0.3" filter="url(#filter0_iiii_542_3490)">
             <path
               d="M33.0957 256.613H5.35371C0 256.613 -1.33843 254.545 1.33843 250.408L43.5191 173.341C47.4819 166.101 47.4462 157.332 43.4247 150.124L2.43351 76.6554C-0.24335 72.5185 0.851727 70.45 5.71874 70.45H33.8257C38.4494 70.45 41.6129 72.5185 43.3164 76.6554L72.5766 138.788C72.7639 139.186 73.1641 139.44 73.6039 139.44C74.0535 139.44 74.4608 139.175 74.6425 138.763L102.086 76.6554C103.789 72.5185 106.831 70.45 111.211 70.45H138.953C144.064 70.45 145.28 72.5185 142.603 76.6554L102.912 149.737C98.9883 156.963 99.0362 165.694 103.039 172.876L146.254 250.408C148.687 254.545 147.592 256.613 142.968 256.613H114.131C109.994 256.613 107.074 254.545 105.371 250.408L74.6588 186.455C74.4661 186.053 74.0605 185.798 73.6154 185.798C73.1684 185.798 72.7613 186.056 72.5697 186.459L42.2213 250.408C40.5179 254.545 37.476 256.613 33.0957 256.613Z"
@@ -225,145 +201,47 @@ export default defineComponent({
             fill="url(#paint0_linear_542_3490)"
           />
           <defs>
-            <filter
-              id="filter0_iiii_542_3490"
-              x="-11.2"
-              y="-8.91429"
-              width="931.2"
-              height="274.213"
-              filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
-            >
+            <filter id="filter0_iiii_542_3490" x="-11.2" y="-8.91429" width="931.2" height="274.213" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
               <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="BackgroundImageFix"
-                result="shape"
-              />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
               <feOffset dy="11.6571" />
               <feGaussianBlur stdDeviation="4.34286" />
-              <feComposite
-                in2="hardAlpha"
-                operator="arithmetic"
-                k2="-1"
-                k3="1"
-              />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0.494118 0 0 0 0 0.00784314 0 0 0 0 0.960784 0 0 0 1 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="shape"
-                result="effect1_innerShadow_542_3490"
-              />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+              <feColorMatrix type="matrix" values="0 0 0 0 0.494118 0 0 0 0 0.00784314 0 0 0 0 0.960784 0 0 0 1 0" />
+              <feBlend mode="normal" in2="shape" result="effect1_innerShadow_542_3490" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
               <feOffset dy="1.14286" />
               <feGaussianBlur stdDeviation="2.85714" />
-              <feComposite
-                in2="hardAlpha"
-                operator="arithmetic"
-                k2="-1"
-                k3="1"
-              />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 1 0 0 0 0 0.976471 0 0 0 0 0.976471 0 0 0 0.88 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="effect1_innerShadow_542_3490"
-                result="effect2_innerShadow_542_3490"
-              />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.976471 0 0 0 0 0.976471 0 0 0 0.88 0" />
+              <feBlend mode="normal" in2="effect1_innerShadow_542_3490" result="effect2_innerShadow_542_3490" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
               <feOffset dy="1.14286" />
               <feGaussianBlur stdDeviation="0.457143" />
-              <feComposite
-                in2="hardAlpha"
-                operator="arithmetic"
-                k2="-1"
-                k3="1"
-              />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="effect2_innerShadow_542_3490"
-                result="effect3_innerShadow_542_3490"
-              />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+              <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0" />
+              <feBlend mode="normal" in2="effect2_innerShadow_542_3490" result="effect3_innerShadow_542_3490" />
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
               <feOffset dx="-11.2" dy="-8.91429" />
               <feGaussianBlur stdDeviation="11.6571" />
-              <feComposite
-                in2="hardAlpha"
-                operator="arithmetic"
-                k2="-1"
-                k3="1"
-              />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0.752941 0 0 0 0 0.0156863 0 0 0 0 0.996078 0 0 0 0.6 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="effect3_innerShadow_542_3490"
-                result="effect4_innerShadow_542_3490"
-              />
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+              <feColorMatrix type="matrix" values="0 0 0 0 0.752941 0 0 0 0 0.0156863 0 0 0 0 0.996078 0 0 0 0.6 0" />
+              <feBlend mode="normal" in2="effect3_innerShadow_542_3490" result="effect4_innerShadow_542_3490" />
             </filter>
-            <linearGradient
-              id="paint0_linear_542_3490"
-              x1="322"
-              y1="221.005"
-              x2="564.394"
-              y2="279"
-              gradientUnits="userSpaceOnUse"
-            >
+            <linearGradient id="paint0_linear_542_3490" x1="322" y1="221.005" x2="564.394" y2="279" gradientUnits="userSpaceOnUse">
               <stop stop-color="#C004FE" />
               <stop offset="1" stop-color="#7E02F5" />
             </linearGradient>
           </defs>
         </svg>
       </div>
-      <div
-        class="claim-container mx-5"
-        :class="{ 'flex flex-wrap': isDesktop }"
-      >
+      <div class="claim-container mx-5" :class="{ 'flex flex-wrap': isDesktop }">
         <div class="stats grid flex-none" :class="{ 'stats-mobile': isMobile }">
           <div class="flex items-center justify-center" v-if="false">
             <div class="flex py-5">
               <div class="mr-4 mt-3">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  data-v-1e6caed2=""
-                >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-1e6caed2="">
                   <path
                     d="M18.6668 6.66659V2.66659C18.6668 2.31296 18.5264 1.97383 18.2763 1.72378C18.0263 1.47373 17.6871 1.33325 17.3335 1.33325H4.00016C3.29292 1.33325 2.61464 1.6142 2.11454 2.1143C1.61445 2.6144 1.3335 3.29267 1.3335 3.99992M1.3335 3.99992C1.3335 4.70716 1.61445 5.38544 2.11454 5.88554C2.61464 6.38563 3.29292 6.66659 4.00016 6.66659H20.0002C20.3538 6.66659 20.6929 6.80706 20.943 7.05711C21.193 7.30716 21.3335 7.6463 21.3335 7.99992V11.9999M1.3335 3.99992V19.9999C1.3335 20.7072 1.61445 21.3854 2.11454 21.8855C2.61464 22.3856 3.29292 22.6666 4.00016 22.6666H20.0002C20.3538 22.6666 20.6929 22.5261 20.943 22.2761C21.193 22.026 21.3335 21.6869 21.3335 21.3333V17.3333"
                     stroke="#BDB2DD"
@@ -391,14 +269,7 @@ export default defineComponent({
           <div class="flex items-center justify-center">
             <div class="flex py-5">
               <div class="mr-4 mt-3">
-                <svg
-                  width="26"
-                  height="26"
-                  viewBox="0 0 26 26"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  data-v-1e6caed2=""
-                >
+                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-1e6caed2="">
                   <path
                     d="M18.3332 9.00024C22.0151 9.00024 24.9998 7.20938 24.9998 5.00024C24.9998 2.79111 22.0151 1.00024 18.3332 1.00024C14.6513 1.00024 11.6665 2.79111 11.6665 5.00024C11.6665 7.20938 14.6513 9.00024 18.3332 9.00024Z"
                     stroke="#BDB2DD"
@@ -439,14 +310,7 @@ export default defineComponent({
                     stroke-linejoin="round"
                     data-v-1e6caed2=""
                   ></path>
-                  <path
-                    d="M3.6665 17.0003V18.3337M3.6665 7.66699V9.00033"
-                    stroke="#BDB2DD"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    data-v-1e6caed2=""
-                  ></path>
+                  <path d="M3.6665 17.0003V18.3337M3.6665 7.66699V9.00033" stroke="#BDB2DD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-1e6caed2=""></path>
                 </svg>
               </div>
               <div>
@@ -470,10 +334,7 @@ export default defineComponent({
                 class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
                 :style="{ width: `${(progress * 100).toFixed(0)}%` }"
               />
-              <div
-                class="progress-tracker"
-                :style="{ left: `${(progress * 100).toFixed(0)}%` }"
-              >
+              <div class="progress-tracker" :style="{ left: `${(progress * 100).toFixed(0)}%` }">
                 <span>{{ vested }} xPolars</span>
               </div>
             </div>
@@ -485,16 +346,7 @@ export default defineComponent({
           <div class="text-center">
             <button class="claim-btn" @click="claim" :disabled="claimDisable">
               Claim xPolars
-              <svg
-                style="display: inline; margin-left: 28px"
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                class="ml-3"
-                data-v-1e6caed2=""
-              >
+              <svg style="display: inline; margin-left: 28px" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-3" data-v-1e6caed2="">
                 <path
                   d="M9.5 4.99993C9.5 5.13939 9.44668 5.26771 9.34975 5.37375L6.13166 9.07841C6.02989 9.18445 5.92811 9.22907 5.81664 9.22907C5.57431 9.22907 5.39014 9.02825 5.39014 8.74927C5.39014 8.62095 5.43376 8.48703 5.51133 8.39773L6.59208 7.12567L8.23021 5.41277L7.0525 5.50207H0.926507C0.674494 5.50207 0.5 5.29005 0.5 4.99993C0.5 4.70981 0.674494 4.50333 0.926507 4.50333H7.0525L8.22536 4.58703L6.59208 2.87418L5.51133 1.60766C5.4289 1.51281 5.39014 1.38448 5.39014 1.25058C5.39014 0.97719 5.57431 0.770752 5.81664 0.770752C5.92811 0.770752 6.03473 0.820966 6.14136 0.938134L9.34975 4.62611C9.44668 4.73769 9.5 4.86601 9.5 4.99993Z"
                   fill="#FDFDFD"
@@ -531,19 +383,11 @@ export default defineComponent({
 }
 
 .claim-button:hover {
-  background: linear-gradient(
-    92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
-  );
+  background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);
 }
 
 .claim-button:active {
-  background: linear-gradient(
-    92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
-  );
+  background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);
 }
 .summary {
   max-width: 700px;
@@ -621,9 +465,7 @@ h2 {
   height: fit-content;
   border-radius: 16px;
   color: #fdfdfd;
-  background: linear-gradient(#241234, #241234) padding-box,
-    linear-gradient(90deg, rgba(67, 206, 162, 1), rgba(24, 90, 157, 1))
-      border-box;
+  background: linear-gradient(#241234, #241234) padding-box, linear-gradient(90deg, rgba(67, 206, 162, 1), rgba(24, 90, 157, 1)) border-box;
   border: 1px solid transparent;
   font-weight: 600;
   font-size: 14px;
@@ -689,19 +531,11 @@ h2 {
 }
 
 .claim-btn:hover {
-  background: linear-gradient(
-    92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
-  );
+  background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);
 }
 
 .claim-btn:active {
-  background: linear-gradient(
-    92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
-  );
+  background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);
 }
 .claim-btn:disabled,
 claim-btn[disabled] {

@@ -22,12 +22,7 @@ const { isWalletReady, isWalletConnecting } = useWeb3();
 const { totalInvestedAmount, isLoadingUserPools } = usePools();
 const { lockFiatValue, isLoadingLock } = useLock();
 const {
-  userData: {
-    totalStakedFiatValue,
-    isLoadingUserStakingData,
-    isLoadingStakedPools,
-    isUserStakeDataIdle,
-  },
+  userData: { totalStakedFiatValue, isLoadingUserStakingData, isLoadingStakedPools, isUserStakeDataIdle },
 } = useStaking();
 
 /**
@@ -39,11 +34,7 @@ const classes = computed(() => ({
 }));
 
 const isStakingLoading = computed(() => {
-  return (
-    isLoadingStakedPools.value ||
-    isLoadingUserStakingData.value ||
-    isUserStakeDataIdle.value
-  );
+  return isLoadingStakedPools.value || isLoadingUserStakingData.value || isUserStakeDataIdle.value;
 });
 
 const totalInvestedLabel = computed((): string => {
@@ -54,49 +45,30 @@ const totalInvestedLabel = computed((): string => {
   return fNum2(value, FNumFormats.fiat);
 });
 
-const totalVeBalLabel = computed((): string =>
-  fNum2(lockFiatValue.value, FNumFormats.fiat)
-);
+const totalVeBalLabel = computed((): string => fNum2(lockFiatValue.value, FNumFormats.fiat));
 
-const isLoadingLockAndStaking = computed(
-  (): boolean => (!isL2.value && isLoadingLock.value) || isStakingLoading.value
-);
+const isLoadingLockAndStaking = computed((): boolean => (!isL2.value && isLoadingLock.value) || isStakingLoading.value);
 
-const isLoadingTotalValue = computed(
-  (): boolean => isLoadingUserPools.value || isLoadingLockAndStaking.value
-);
+const isLoadingTotalValue = computed((): boolean => isLoadingUserPools.value || isLoadingLockAndStaking.value);
 </script>
 
 <template>
   <AppHero :class="classes">
-    <h1
-      class="mb-2 font-body text-base font-medium text-white opacity-90"
-      v-text="$t('myBalancerInvestments')"
-    />
+    <h1 class="mb-2 font-body text-base font-medium text-white opacity-90" v-text="$t('myBalancerInvestments')" />
 
     <template v-if="isWalletReady || isWalletConnecting">
-      <BalLoadingBlock
-        v-if="isLoadingTotalValue"
-        class="mx-auto h-10 w-40"
-        white
-      />
+      <BalLoadingBlock v-if="isLoadingTotalValue" class="mx-auto h-10 w-40" white />
       <div v-else class="mb-1 text-3xl font-semibold text-white">
         {{ totalInvestedLabel }}
       </div>
       <div v-if="!isL2" class="relative mt-2 inline-block">
-        <BalLoadingBlock
-          v-if="isLoadingTotalValue"
-          class="mx-auto h-8 w-40"
-          white
-        />
+        <BalLoadingBlock v-if="isLoadingTotalValue" class="mx-auto h-8 w-40" white />
         <div
           v-else
           class="vebal-banner group flex h-8 cursor-pointer items-center rounded-tr rounded-bl border border-yellow-500 px-3 text-sm font-medium text-yellow-500 transition-colors hover:text-white focus:text-white"
           @click="router.push({ name: 'vebal' })"
         >
-          <span v-if="lockFiatValue === '0'"
-            >{{ lockFiatValue }} {{ $t('veBAL.hero.tokens.veBAL') }}</span
-          >
+          <span v-if="lockFiatValue === '0'">{{ lockFiatValue }} {{ $t('veBAL.hero.tokens.veBAL') }}</span>
           <span v-else>{{ $t('inclXInVeBal', [totalVeBalLabel]) }}</span>
         </div>
       </div>

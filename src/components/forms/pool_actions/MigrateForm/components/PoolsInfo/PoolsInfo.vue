@@ -3,9 +3,7 @@ import { onBeforeMount, ref, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
-import TradeSettingsPopover, {
-  TradeSettingsContext,
-} from '@/components/popovers/TradeSettingsPopover.vue';
+import TradeSettingsPopover, { TradeSettingsContext } from '@/components/popovers/TradeSettingsPopover.vue';
 import { MIN_FIAT_VALUE_POOL_MIGRATION } from '@/constants/pools';
 import { bnum } from '@/lib/utils';
 import { configService } from '@/services/config/config.service';
@@ -87,13 +85,7 @@ onBeforeMount(() => {
       <ArrowDownIcon class="dark:text-secondary h-5 w-5" />
     </div>
     <PoolInfoBreakdown :pool="toPool" :poolTokenInfo="toPoolTokenInfo" />
-    <BalBtn
-      color="gradient"
-      class="mt-6"
-      block
-      :disabled="!hasBpt"
-      @click="showPreviewModal = true"
-    >
+    <BalBtn color="gradient" class="mt-6" block :disabled="!hasBpt" @click="showPreviewModal = true">
       {{ $t('previewMigrate') }}
     </BalBtn>
   </BalCard>

@@ -1,21 +1,11 @@
 <template>
   <div :class="['flex flex-col px-4 py-2', hasZeroBalance ? 'hidden' : '']">
-    <BalRadio
-      v-for="(type, i) in formTypes"
-      :key="i"
-      v-model="selected"
-      :value="type.value"
-      name="formType"
-      class="py-2"
-      :disabled="loading"
-    >
+    <BalRadio v-for="(type, i) in formTypes" :key="i" v-model="selected" :value="type.value" name="formType" class="py-2" :disabled="loading">
       <template #label>
         <span>
           {{ type.label }}
         </span>
-        <span v-if="!missingPrices" class="text-secondary text-xs">
-          ({{ type.max }} {{ $t('max').toLowerCase() }})
-        </span>
+        <span v-if="!missingPrices" class="text-secondary text-xs"> ({{ type.max }} {{ $t('max').toLowerCase() }}) </span>
         <BalTooltip v-if="type.tooltip">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px ml-2 text-gray-400" />

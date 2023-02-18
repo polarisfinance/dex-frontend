@@ -41,9 +41,7 @@ const fiatTotal = computed(() => {
       if (isSameAddress(address, wrappedNativeAsset.value.address)) {
         const wrappedBalance = balanceFor(address);
         const nativeBalance = balanceFor(nativeAsset.address);
-        tokenBalance = bnum(nativeBalance).gt(wrappedBalance)
-          ? nativeBalance
-          : wrappedBalance;
+        tokenBalance = bnum(nativeBalance).gt(wrappedBalance) ? nativeBalance : wrappedBalance;
       } else {
         tokenBalance = balanceFor(address);
       }
@@ -57,9 +55,7 @@ const fiatTotal = computed(() => {
 </script>
 
 <template>
-  <div
-    class="w-full border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-900 dark:bg-gray-800"
-  >
+  <div class="w-full border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-900 dark:bg-gray-800">
     <div class="text-secondary text-sm">
       {{ $t('basedOnTokensInWallet') }}
     </div>
@@ -72,30 +68,10 @@ const fiatTotal = computed(() => {
       </h5>
     </div>
 
-    <BalBtn
-      v-if="!isWalletReady"
-      :label="$t('connectWallet')"
-      color="gradient"
-      block
-      @click="startConnectWithInjectedProvider"
-    />
+    <BalBtn v-if="!isWalletReady" :label="$t('connectWallet')" color="gradient" block @click="startConnectWithInjectedProvider" />
     <div v-else class="grid grid-cols-2 gap-2">
-      <BalBtn
-        tag="router-link"
-        :to="{ name: 'invest' }"
-        :label="$t('invest')"
-        color="gradient"
-        block
-      />
-      <BalBtn
-        :tag="hasBpt ? 'router-link' : 'div'"
-        :to="{ name: 'withdraw' }"
-        :label="$t('withdraw.label')"
-        :disabled="!hasBpt"
-        color="blue"
-        outline
-        block
-      />
+      <BalBtn tag="router-link" :to="{ name: 'invest' }" :label="$t('invest')" color="gradient" block />
+      <BalBtn :tag="hasBpt ? 'router-link' : 'div'" :to="{ name: 'withdraw' }" :label="$t('withdraw.label')" :disabled="!hasBpt" color="blue" outline block />
     </div>
   </div>
 </template>

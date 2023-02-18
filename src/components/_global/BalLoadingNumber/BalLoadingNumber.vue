@@ -36,11 +36,7 @@ const { currency } = useUserSettings();
  */
 const currencySymbol = computed(() => FiatSymbol[currency.value]);
 
-const blockClasses = computed(() => [
-  `w-${props.numberWidth}`,
-  `h-${props.numberHeight}`,
-  'mr-px',
-]);
+const blockClasses = computed(() => [`w-${props.numberWidth}`, `h-${props.numberHeight}`, 'mr-px']);
 </script>
 
 <template>

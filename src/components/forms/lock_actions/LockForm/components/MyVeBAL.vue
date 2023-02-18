@@ -73,18 +73,10 @@ const percentVeBAL = computed(() => {
       </div>
       <div class="w-1/2 p-3 text-center">
         <div>
-          {{
-            props.veBalLockInfo?.hasExistingLock
-              ? format(props.veBalLockInfo.lockedEndDate, PRETTY_DATE_FORMAT)
-              : '-'
-          }}
+          {{ props.veBalLockInfo?.hasExistingLock ? format(props.veBalLockInfo.lockedEndDate, PRETTY_DATE_FORMAT) : '-' }}
         </div>
         <div class="text-gray-400">
-          {{
-            props.veBalLockInfo?.isExpired
-              ? $t('getVeBAL.myVeBAL.expiredOn')
-              : $t('getVeBAL.myVeBAL.lockedEndDate')
-          }}
+          {{ props.veBalLockInfo?.isExpired ? $t('getVeBAL.myVeBAL.expiredOn') : $t('getVeBAL.myVeBAL.lockedEndDate') }}
         </div>
       </div>
     </div>

@@ -7,9 +7,7 @@ export default function registerDirectives(app: App) {
         const callback = binding.value;
         const path = event.path || (event.composedPath && event.composedPath());
 
-        const isClickOutside = path
-          ? path.indexOf(el) < 0
-          : !el.contains(event.target);
+        const isClickOutside = path ? path.indexOf(el) < 0 : !el.contains(event.target);
 
         if (typeof callback === 'function' && isClickOutside) {
           callback(event);

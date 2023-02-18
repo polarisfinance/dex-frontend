@@ -46,11 +46,7 @@ function getHorizontalStickyClass(index: number) {
     <td
       v-for="(column, columnIndex) in columns"
       :key="column.id"
-      :class="[
-        column.align === 'right' ? 'text-left' : 'text-right',
-        getHorizontalStickyClass(columnIndex),
-        isColumnStuck ? 'isSticky' : '',
-      ]"
+      :class="[column.align === 'right' ? 'text-left' : 'text-right', getHorizontalStickyClass(columnIndex), isColumnStuck ? 'isSticky' : '']"
     >
       <router-link
         v-if="link"
@@ -61,40 +57,14 @@ function getHorizontalStickyClass(index: number) {
         }"
       >
         <slot v-if="column.Cell" v-bind="data" :name="column.Cell" />
-        <div
-          v-else
-          :class="
-            compact([
-              'bg-[#231928] px-6 py-4',
-              column.align === 'right' ? 'text-right' : 'text-left',
-              column.cellClassName,
-            ])
-          "
-        >
-          {{
-            typeof column.accessor === 'string'
-              ? data[column.accessor]
-              : column.accessor(data)
-          }}
+        <div v-else :class="compact(['bg-[#231928] px-6 py-4', column.align === 'right' ? 'text-right' : 'text-left', column.cellClassName])">
+          {{ typeof column.accessor === 'string' ? data[column.accessor] : column.accessor(data) }}
         </div>
       </router-link>
       <template v-else>
         <slot v-if="column.Cell" v-bind="data" :name="column.Cell" />
-        <div
-          v-else
-          :class="
-            compact([
-              'bg-[#231928] px-6 py-4',
-              column.align === 'right' ? 'text-right' : 'text-left',
-              column.cellClassName,
-            ])
-          "
-        >
-          {{
-            typeof column.accessor === 'string'
-              ? data[column.accessor]
-              : column.accessor(data)
-          }}
+        <div v-else :class="compact(['bg-[#231928] px-6 py-4', column.align === 'right' ? 'text-right' : 'text-left', column.cellClassName])">
+          {{ typeof column.accessor === 'string' ? data[column.accessor] : column.accessor(data) }}
         </div>
       </template>
     </td>

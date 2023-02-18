@@ -27,21 +27,9 @@ export default function useMigrateMath(fromPool: Ref<Pool>, toPool: Ref<Pool>) {
   /**
    * SERVICES
    */
-  const fromPoolCalculator = new PoolCalculator(
-    fromPool,
-    tokens,
-    balances,
-    'exit',
-    ref(false)
-  );
+  const fromPoolCalculator = new PoolCalculator(fromPool, tokens, balances, 'exit', ref(false));
 
-  const toPoolCalculator = new PoolCalculator(
-    toPool,
-    tokens,
-    balances,
-    'join',
-    ref(false)
-  );
+  const toPoolCalculator = new PoolCalculator(toPool, tokens, balances, 'join', ref(false));
 
   /**
    * STATE
@@ -62,44 +50,26 @@ export default function useMigrateMath(fromPool: Ref<Pool>, toPool: Ref<Pool>) {
 
   const batchSwapLoaded = computed(() => batchSwap.value != null);
 
-  const bptBalanceScaled = computed(() =>
-    parseUnits(bptBalance.value, poolDecimals.value).toString()
-  );
+  const bptBalanceScaled = computed(() => parseUnits(bptBalance.value, poolDecimals.value).toString());
 
-  const shouldFetchBatchSwap = computed(
-    () => toPoolTypes.isStablePhantomPool.value
-  );
+  const shouldFetchBatchSwap = computed(() => toPoolTypes.isStablePhantomPool.value);
 
-  const poolTokens = computed(() =>
-    fromPool.value.tokensList.map(address => getToken(address))
-  );
+  const poolTokens = computed(() => fromPool.value.tokensList.map(address => getToken(address)));
 
   const fullAmounts = computed(() => {
-    const { receive } = fromPoolCalculator.propAmountsGiven(
-      bptBalance.value,
-      0,
-      'send'
-    );
+    const { receive } = fromPoolCalculator.propAmountsGiven(bptBalance.value, 0, 'send');
     return receive;
   });
 
-  const fullAmountsScaled = computed(() =>
-    fullAmounts.value.map((amount, i) =>
-      parseUnits(amount, poolTokens.value[i].decimals)
-    )
-  );
+  const fullAmountsScaled = computed(() => fullAmounts.value.map((amount, i) => parseUnits(amount, poolTokens.value[i].decimals)));
 
   const fullBPTOut = computed((): string => {
     let _bptOut: string;
 
     if (toPoolTypes.isStablePhantomPool.value) {
-      _bptOut = batchSwap.value
-        ? bnum(batchSwap.value.amountTokenOut).abs().toString()
-        : '0';
+      _bptOut = batchSwap.value ? bnum(batchSwap.value.amountTokenOut).abs().toString() : '0';
     } else {
-      _bptOut = toPoolCalculator
-        .exactTokensInForBPTOut(fullAmounts.value)
-        .toString();
+      _bptOut = toPoolCalculator.exactTokensInForBPTOut(fullAmounts.value).toString();
     }
 
     console.log('query BPT', _bptOut.toString());
@@ -131,27 +101,16 @@ export default function useMigrateMath(fromPool: Ref<Pool>, toPool: Ref<Pool>) {
   });
 
   const batchSwapAmountMap = computed((): Record<string, BigNumber> => {
-    const allTokensWithAmounts = fullAmountsScaled.value.map((amount, i) => [
-      fromPool.value.tokensList[i].toLowerCase(),
-      amount,
-    ]);
-    const onlyTokensWithAmounts = allTokensWithAmounts.filter(([, amount]) =>
-      (amount as BigNumber).gt(0)
-    );
+    const allTokensWithAmounts = fullAmountsScaled.value.map((amount, i) => [fromPool.value.tokensList[i].toLowerCase(), amount]);
+    const onlyTokensWithAmounts = allTokensWithAmounts.filter(([, amount]) => (amount as BigNumber).gt(0));
     return Object.fromEntries(onlyTokensWithAmounts);
   });
 
-  const fiatAmounts = computed((): string[] =>
-    fromPool.value.tokensList.map((address, i) =>
-      toFiat(fullAmounts.value[i], address)
-    )
-  );
+  const fiatAmounts = computed((): string[] => fromPool.value.tokensList.map((address, i) => toFiat(fullAmounts.value[i], address)));
 
   const fiatTotal = computed(() => bnSum(fiatAmounts.value).toString());
 
-  const fiatTotalLabel = computed(() =>
-    fNum2(fiatTotal.value, FNumFormats.fiat)
-  );
+  const fiatTotalLabel = computed(() => fNum2(fiatTotal.value, FNumFormats.fiat));
 
   /**
    * METHODS

@@ -14,14 +14,7 @@ import useBreakpoints from '@/composables/useBreakpoints';
 import useDarkMode from '@/composables/useDarkMode';
 import useFathom from '@/composables/useFathom';
 import useNumbers from '@/composables/useNumbers';
-import {
-  absMaxApr,
-  isMigratablePool,
-  isStableLike,
-  orderedPoolTokens,
-  orderedTokenAddresses,
-  totalAprLabel,
-} from '@/composables/usePool';
+import { absMaxApr, isMigratablePool, isStableLike, orderedPoolTokens, orderedTokenAddresses, totalAprLabel } from '@/composables/usePool';
 import { bnum } from '@/lib/utils';
 import { PoolWithShares } from '@/services/pool/types';
 import { POOLS } from '@/constants/pools';
@@ -41,9 +34,7 @@ const { trackGoal, Goals } = useFathom();
 const { darkMode } = useDarkMode();
 const { upToLargeBreakpoint, upToMediumBreakpoint } = useBreakpoints();
 
-const wideCompositionWidth = computed(() =>
-  upToMediumBreakpoint.value ? 450 : undefined
-);
+const wideCompositionWidth = computed(() => (upToMediumBreakpoint.value ? 450 : undefined));
 
 /**
  * DATA
@@ -113,8 +104,7 @@ const columns = computed<ColumnDefinition<PoolWithShares>[]>(() => [
   },
   {
     name: t('myBoost'),
-    accessor: pool =>
-      pool?.boost ? `${bnum(pool?.boost).toFixed(3)}x` : 'N/A',
+    accessor: pool => (pool?.boost ? `${bnum(pool?.boost).toFixed(3)}x` : 'N/A'),
     align: 'right',
     id: 'myBoost',
     hidden: !props.showBoost,
@@ -201,15 +191,8 @@ const pools = computed(() => [
       <div class="text-right">TVL & APR</div>
     </div>
     <div class="mt-[12px]" />
-    <div
-      class="flex w-full items-center"
-      v-for="(pool, idx) in pools"
-      :key="idx"
-    >
-      <router-link
-        class="flex w-full items-center justify-between"
-        :to="'/singlestake/' + pool.name.toLowerCase()"
-      >
+    <div class="flex w-full items-center" v-for="(pool, idx) in pools" :key="idx">
+      <router-link class="flex w-full items-center justify-between" :to="'/singlestake/' + pool.name.toLowerCase()">
         <div class="flex-column mt-[20px]">
           <BalAsset :address="pool.id" :size="36" width="100" />
           <div class="text-left">
@@ -230,40 +213,27 @@ const pools = computed(() => [
     <div class="table-title mt-[48px] flex w-full">
       <div class="grid-table">
         <div class="pool-header">
-          <div class="heading h-4 ">
-            <div> <img  
-                  width="24"
-                  height="14"
-                  class="pool-icon inline-block mr-2"
-                  :src="singleStakeImg"
-                /> Single Stake</div>
+          <div class="heading h-4">
+            <div><img width="24" height="14" class="pool-icon mr-2 inline-block" :src="singleStakeImg" /> Single Stake</div>
           </div>
           <div class="h-4 text-right">APR</div>
           <div class="h-4 text-right">Liquidity</div>
           <div class="h-4 text-right">Volume (24h)</div>
         </div>
         <div class="border"></div>
-        <template
-          class="flex w-full items-center"
-          v-for="(pool, idx) in pools"
-          :key="idx"
-        >
-          <router-link
-            :to="'/singlestake/' + pool.name.toLowerCase()"
-            class="my-[18px] flex w-full items-center pool-row"
-          >
+        <template class="flex w-full items-center" v-for="(pool, idx) in pools" :key="idx">
+          <router-link :to="'/singlestake/' + pool.name.toLowerCase()" class="pool-row my-[18px] flex w-full items-center">
             <div class="flex w-full items-center">
               <BalAsset :address="pool.id" :size="36" width="100" />
-              <div class="ml-[24px] text-left pool-name">
+              <div class="pool-name ml-[24px] text-left">
                 {{ pool.name }}
               </div>
             </div>
-            <div class="flex items-center justify-end apr" >-</div>
-            <div class="flex items-center justify-end liq">-</div>
-            <div  class="flex items-center justify-end vol">-</div>
+            <div class="apr flex items-center justify-end">-</div>
+            <div class="liq flex items-center justify-end">-</div>
+            <div class="vol flex items-center justify-end">-</div>
           </router-link>
         </template>
-
       </div>
     </div>
   </div>
@@ -388,7 +358,7 @@ const pools = computed(() => [
 
 <style scoped>
 .pool-table {
-  padding-top:0px;
+  padding-top: 0px;
 
   font-weight: 600;
   font-size: 20px;
@@ -400,9 +370,8 @@ const pools = computed(() => [
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: rgba(189, 178, 221, 1)
+  color: rgba(189, 178, 221, 1);
 }
-
 
 .border {
   border: 0.5px solid rgba(151, 71, 255, 0.4);
@@ -434,40 +403,47 @@ const pools = computed(() => [
   color: rgba(253, 253, 253, 1);
 }
 
-.grid-table .border{
+.grid-table .border {
   grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
   margin-bottom: 24px;
 }
-.pool-row, .pool-header{
+.pool-row,
+.pool-header {
   display: contents;
 }
-.pool-row > div, .pool-header > div{
+.pool-row > div,
+.pool-header > div {
   height: 100%;
-  padding:12px 0px;
+  padding: 12px 0px;
 }
-.pool-header > div{
-  color: #BDB2DD;
+.pool-header > div {
+  color: #bdb2dd;
   padding-bottom: 24px;
 }
-.pool-header > div:first-child, .pool-row > div:first-child{
+.pool-header > div:first-child,
+.pool-row > div:first-child {
   padding-left: 24px;
 }
-.pool-header > div:last-child, .pool-row > div:last-child{
+.pool-header > div:last-child,
+.pool-row > div:last-child {
   padding-right: 24px;
 }
 .pool-row:hover > div {
   background-color: #292043;
 }
 .pool-row:hover > div:first-child {
-  border-bottom-left-radius:48px;
-  border-top-left-radius:48px;
+  border-bottom-left-radius: 48px;
+  border-top-left-radius: 48px;
 }
 .pool-row:hover > div:last-child {
-  border-bottom-right-radius:48px;
-  border-top-right-radius:48px;
+  border-bottom-right-radius: 48px;
+  border-top-right-radius: 48px;
 }
-.apr, .liq, .vol,.pool-name {
+.apr,
+.liq,
+.vol,
+.pool-name {
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;

@@ -1,8 +1,6 @@
 <template>
   <div v-if="routes.length > 0" shadow="none" class="title p-[9px]">
-    <div
-      class="flex cursor-pointer items-center text-[14px] font-semibold text-[#CAC7CC]"
-    >
+    <div class="flex cursor-pointer items-center text-[14px] font-semibold text-[#CAC7CC]">
       <div class="mr-2">
         {{ $t('tradeRoute') }}
       </div>
@@ -10,11 +8,7 @@
       <BalIcon v-else name="chevron-down" size="sm" /> -->
     </div>
     <div class="mt-2">
-      <div
-        v-if="routes.length === 0"
-        class="text-secondary mt-5 text-sm"
-        v-text="$t('noData')"
-      />
+      <div v-if="routes.length === 0" class="text-secondary mt-5 text-sm" v-text="$t('noData')" />
       <div v-else>
         <div>
           <div class="flex justify-between text-xs">
@@ -43,10 +37,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="flex justify-between"
-          :style="{ margin: `8px ${12 + routes.length}px` }"
-        >
+        <div class="flex justify-between" :style="{ margin: `8px ${12 + routes.length}px` }">
           <!-- <BalIcon
             name="triangle"
             size="xxs"
@@ -74,11 +65,7 @@
             class="border-design absolute"
           />
           <div class="relative z-10">
-            <div
-              v-for="route in routes"
-              :key="route.hops[0]?.pool?.address"
-              class="mt-9 flex justify-between first:mt-0"
-            >
+            <div v-for="route in routes" :key="route.hops[0]?.pool?.address" class="mt-9 flex justify-between first:mt-0">
               <div class="ml-4 flex w-4 items-center">
                 <!-- <BalIcon
                   name="triangle"
@@ -88,23 +75,9 @@
                 /> -->
               </div>
               <div class="flex">
-                <div
-                  v-for="hop in route.hops"
-                  :key="hop?.pool?.address"
-                  class="route ml-4 flex first:ml-0"
-                >
-                  <a
-                    class="flex"
-                    :href="getPoolLink(hop.pool.id)"
-                    target="_blank"
-                  >
-                    <BalAsset
-                      v-for="token in hop.pool.tokens"
-                      :key="token.address"
-                      class="ml-1.5 h-24 w-24 first:ml-0"
-                      :address="token.address"
-                      :size="24"
-                    />
+                <div v-for="hop in route.hops" :key="hop?.pool?.address" class="route ml-4 flex first:ml-0">
+                  <a class="flex" :href="getPoolLink(hop.pool.id)" target="_blank">
+                    <BalAsset v-for="token in hop.pool.tokens" :key="token.address" class="ml-1.5 h-24 w-24 first:ml-0" :address="token.address" :size="24" />
                   </a>
                 </div>
               </div>
@@ -236,30 +209,13 @@ export default defineComponent({
       return getV2Routes(addressIn, addressOut, pools, swaps, addresses);
     });
 
-    function getV2Routes(
-      addressIn: string,
-      addressOut: string,
-      pools: SubgraphPoolBase[],
-      swaps: SwapV2[],
-      addresses: string[]
-    ) {
+    function getV2Routes(addressIn: string, addressOut: string, pools: SubgraphPoolBase[], swaps: SwapV2[], addresses: string[]) {
       const { addresses: constants } = appNetworkConfig;
 
-      addressIn =
-        addressIn === NATIVE_ASSET_ADDRESS
-          ? constants.weth
-          : getAddress(addressIn);
-      addressOut =
-        addressOut === NATIVE_ASSET_ADDRESS
-          ? constants.weth
-          : getAddress(addressOut);
+      addressIn = addressIn === NATIVE_ASSET_ADDRESS ? constants.weth : getAddress(addressIn);
+      addressOut = addressOut === NATIVE_ASSET_ADDRESS ? constants.weth : getAddress(addressOut);
 
-      if (
-        !pools.length ||
-        !swaps.length ||
-        !addresses.length ||
-        addresses.length === 1
-      ) {
+      if (!pools.length || !swaps.length || !addresses.length || addresses.length === 1) {
         return [];
       }
 
@@ -280,17 +236,10 @@ export default defineComponent({
           return {};
         }
 
-        const tokenIn =
-          addresses[swap.assetInIndex] === AddressZero
-            ? constants.weth
-            : getAddress(addresses[swap.assetInIndex]);
-        const tokenOut =
-          addresses[swap.assetOutIndex] === AddressZero
-            ? constants.weth
-            : getAddress(addresses[swap.assetOutIndex]);
+        const tokenIn = addresses[swap.assetInIndex] === AddressZero ? constants.weth : getAddress(addresses[swap.assetInIndex]);
+        const tokenOut = addresses[swap.assetOutIndex] === AddressZero ? constants.weth : getAddress(addresses[swap.assetOutIndex]);
 
-        const isDirectSwap =
-          tokenIn === addressIn && tokenOut === addressOut ? true : false;
+        const isDirectSwap = tokenIn === addressIn && tokenOut === addressOut ? true : false;
 
         const pool = {
           id: rawPool.id,
@@ -298,21 +247,14 @@ export default defineComponent({
             .map(token => {
               return {
                 address: getAddress(token.address),
-                share:
-                  parseFloat(token.weight || '') || 1 / rawPool.tokens.length,
+                share: parseFloat(token.weight || '') || 1 / rawPool.tokens.length,
               };
             })
             .sort((a, b) => {
-              if (
-                isSameAddress(a.address, tokenIn) ||
-                isSameAddress(b.address, tokenOut)
-              ) {
+              if (isSameAddress(a.address, tokenIn) || isSameAddress(b.address, tokenOut)) {
                 return -1;
               }
-              if (
-                isSameAddress(a.address, tokenOut) ||
-                isSameAddress(b.address, tokenIn)
-              ) {
+              if (isSameAddress(a.address, tokenOut) || isSameAddress(b.address, tokenIn)) {
                 return 1;
               }
               return a.share - b.share;
@@ -428,15 +370,13 @@ export default defineComponent({
 }
 
 .dotted-border {
-  background: linear-gradient(#292043, #292043) padding-box,
-    linear-gradient(94.84deg, #9747FF 6.12%, #3B44BD 100%) border-box;
+  background: linear-gradient(#292043, #292043) padding-box, linear-gradient(94.84deg, #9747ff 6.12%, #3b44bd 100%) border-box;
   border-bottom: 0.5px dotted #160d22;
   opacity: 0.7;
 }
 
 .border-design {
-  background: linear-gradient(#292043, #292043) padding-box,
-    linear-gradient(94.84deg, #9747FF 6.12%, #3B44BD 100%) border-box;
+  background: linear-gradient(#292043, #292043) padding-box, linear-gradient(94.84deg, #9747ff 6.12%, #3b44bd 100%) border-box;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   border-bottom: 1px solid transparent;
@@ -457,7 +397,7 @@ export default defineComponent({
   padding: 4px 6px;
   gap: 6px;
 
-  background: #41365E;
+  background: #41365e;
   box-shadow: inset 0px 0px 1px rgba(0, 0, 0, 0.25);
   border-radius: 99px;
 }

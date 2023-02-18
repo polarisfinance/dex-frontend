@@ -14,9 +14,7 @@ import { isVeBalSupported } from '../useVeBAL';
  */
 type QueryResponse = VeBalLockInfo;
 
-export default function useVeBalQuery(
-  options: UseQueryOptions<QueryResponse> = {}
-) {
+export default function useVeBalQuery(options: UseQueryOptions<QueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
@@ -28,17 +26,12 @@ export default function useVeBalQuery(
    */
   const enabled = computed(() => isWalletReady.value && isVeBalSupported.value);
 
-  const queryFn = () =>
-    balancerContractsService.veBAL.getLockInfo(account.value);
+  const queryFn = () => balancerContractsService.veBAL.getLockInfo(account.value);
 
   const queryOptions = reactive({
     enabled,
     ...options,
   });
 
-  return useQuery<QueryResponse>(
-    reactive(['tokens', 'veBAL', { networkId, account }]),
-    queryFn,
-    queryOptions
-  );
+  return useQuery<QueryResponse>(reactive(['tokens', 'veBAL', { networkId, account }]), queryFn, queryOptions);
 }

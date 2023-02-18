@@ -7,9 +7,7 @@ import { PoolType } from '@/services/pool/types';
 import useGaugesDecorationQuery from './queries/useGaugesDecorationQuery';
 import useGaugesQuery from './queries/useGaugesQuery';
 import useGraphQuery, { subgraphs } from './queries/useGraphQuery';
-import useProtocolRewardsQuery, {
-  ProtocolRewardsQueryResponse,
-} from './queries/useProtocolRewardsQuery';
+import useProtocolRewardsQuery, { ProtocolRewardsQueryResponse } from './queries/useProtocolRewardsQuery';
 import { isQueryLoading } from './queries/useQueryHelpers';
 import { isKovan, isL2 } from './useNetwork';
 
@@ -30,9 +28,7 @@ type GaugePoolQueryResponse = {
  */
 export function useClaimsData() {
   const protocolRewardsQuery = useProtocolRewardsQuery();
-  const protocolRewards = computed(
-    (): ProtocolRewardsQueryResponse => protocolRewardsQuery.data.value || {}
-  );
+  const protocolRewards = computed((): ProtocolRewardsQueryResponse => protocolRewardsQuery.data.value || {});
 
   // Fetch subgraph liquidity gauges
   const subgraphGaugesQuery = useGaugesQuery();
@@ -45,9 +41,7 @@ export function useClaimsData() {
   });
 
   // Fetch pools associated with gauges
-  const gaugePoolQueryEnabled = computed(
-    (): boolean => gaugePoolIds?.value && gaugePoolIds.value?.length > 0
-  );
+  const gaugePoolQueryEnabled = computed((): boolean => gaugePoolIds?.value && gaugePoolIds.value?.length > 0);
   const gaugePoolQuery = useGraphQuery<GaugePoolQueryResponse>(
     subgraphs.balancer,
     ['claim', 'gauge', 'pools'],
@@ -72,15 +66,9 @@ export function useClaimsData() {
   /**
    * COMPUTED
    */
-  const gaugePools = computed(
-    (): GaugePool[] => gaugePoolQuery.data.value?.pools || []
-  );
+  const gaugePools = computed((): GaugePool[] => gaugePoolQuery.data.value?.pools || []);
 
-  const isLoading = computed(
-    (): boolean =>
-      isQueryLoading(gaugePoolQuery) ||
-      (!isL2.value && !isKovan.value && isQueryLoading(protocolRewardsQuery))
-  );
+  const isLoading = computed((): boolean => isQueryLoading(gaugePoolQuery) || (!isL2.value && !isKovan.value && isQueryLoading(protocolRewardsQuery)));
 
   return {
     gauges,

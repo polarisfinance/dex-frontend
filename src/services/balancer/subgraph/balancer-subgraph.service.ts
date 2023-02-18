@@ -16,10 +16,7 @@ export default class BalancerSubgraphService {
   poolSnapshots: PoolSnapshots;
   tradePairSnapshots: TradePairSnapshots;
 
-  constructor(
-    readonly client = balancerSubgraphClient,
-    readonly rpcProviderService = _rpcProviderService
-  ) {
+  constructor(readonly client = balancerSubgraphClient, readonly rpcProviderService = _rpcProviderService) {
     // Init entities
     this.pools = new Pools(this);
     this.poolShares = new PoolShares(this);

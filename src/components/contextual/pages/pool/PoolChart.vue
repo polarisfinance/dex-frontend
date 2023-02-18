@@ -12,12 +12,7 @@ import useDarkMode from '@/composables/useDarkMode';
 import useNumbers from '@/composables/useNumbers';
 import useTailwind from '@/composables/useTailwind';
 import { HistoricalPrices } from '@/services/coingecko/api/price.service';
-import {
-  Pool,
-  PoolSnapshot,
-  PoolSnapshots,
-  PoolType,
-} from '@/services/pool/types';
+import { Pool, PoolSnapshot, PoolSnapshots, PoolType } from '@/services/pool/types';
 
 /**
  * TYPES
@@ -120,9 +115,7 @@ const periodOptions = computed(() => [
 
 const currentPeriod = ref<PoolChartPeriod>(periodOptions.value[0]);
 
-const timestamps = computed(() =>
-  snapshotValues.value.map(snapshot => format(snapshot.timestamp, 'yyyy/MM/dd'))
-);
+const timestamps = computed(() => snapshotValues.value.map(snapshot => format(snapshot.timestamp, 'yyyy/MM/dd')));
 
 function getTVLData(periodSnapshots: PoolSnapshot[]) {
   const tvlValues: (readonly (string | number)[])[] = [];
@@ -132,9 +125,7 @@ function getTVLData(periodSnapshots: PoolSnapshot[]) {
     periodSnapshots.forEach((snapshot, idx) => {
       const timestamp = timestamps.value[idx];
       if (idx === 0) {
-        tvlValues.push(
-          Object.freeze([timestamp, Number(props.totalLiquidity || 0)])
-        );
+        tvlValues.push(Object.freeze([timestamp, Number(props.totalLiquidity || 0)]));
         return;
       }
       tvlValues.push(Object.freeze([timestamp, Number(snapshot.liquidity)]));
@@ -144,9 +135,7 @@ function getTVLData(periodSnapshots: PoolSnapshot[]) {
       const timestamp = timestamps.value[idx];
       // get today's TVL value from pool.totalLiquidity due to differences in prices during the day
       if (idx === 0) {
-        tvlValues.push(
-          Object.freeze([timestamp, Number(props.totalLiquidity || 0)])
-        );
+        tvlValues.push(Object.freeze([timestamp, Number(props.totalLiquidity || 0)]));
         return;
       }
 
@@ -166,41 +155,32 @@ function getTVLData(periodSnapshots: PoolSnapshot[]) {
        * It is removed here to calculate properly snapshot pool value.
        */
       if (snapshot.amounts.length > prices.length) {
-        const maxValue = Math.max(
-          ...snapshot.amounts.map(amount => Number(amount))
-        );
+        const maxValue = Math.max(...snapshot.amounts.map(amount => Number(amount)));
 
-        amounts = amounts.filter(
-          amount => Number(amount).toFixed() !== maxValue?.toString()
-        );
+        amounts = amounts.filter(amount => Number(amount).toFixed() !== maxValue?.toString());
       }
 
-      const snapshotPoolValue = amounts.reduce(
-        (sum: number, amount: string, index: number) => {
-          sum += Number(amount) * prices[index];
-          return sum;
-        },
-        0
-      );
+      const snapshotPoolValue = amounts.reduce((sum: number, amount: string, index: number) => {
+        sum += Number(amount) * prices[index];
+        return sum;
+      }, 0);
 
       tvlValues.push(Object.freeze([timestamp, snapshotPoolValue]));
     });
   }
   return {
     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-        {
-          offset: 0,
-          color: '#3DDEED',
-        },
-        {
-          offset: 1,
-          color: 'rgba(61, 222, 237, 0)',
-        },
-      ]),
+      {
+        offset: 0,
+        color: '#3DDEED',
+      },
+      {
+        offset: 1,
+        color: 'rgba(61, 222, 237, 0)',
+      },
+    ]),
     hoverBorderColor: tailwind.theme.colors.pink['500'],
-    hoverColor: darkMode.value
-      ? tailwind.theme.colors.gray['900']
-      : tailwind.theme.colors.white,
+    hoverColor: darkMode.value ? tailwind.theme.colors.gray['900'] : tailwind.theme.colors.white,
     areaStyle: {
       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
         {
@@ -226,11 +206,7 @@ function getTVLData(periodSnapshots: PoolSnapshot[]) {
   };
 }
 
-function getFeesData(
-  periodSnapshots: PoolSnapshot[],
-  isAllTimeSelected: boolean,
-  pariodLastSnapshotIdx: number
-) {
+function getFeesData(periodSnapshots: PoolSnapshot[], isAllTimeSelected: boolean, pariodLastSnapshotIdx: number) {
   const feesValues = periodSnapshots.map((snapshot, idx) => {
     const value = parseFloat(snapshot.swapFees);
     let prevValue: number;
@@ -248,11 +224,7 @@ function getFeesData(
     return Object.freeze([timestamps.value[idx], value - prevValue]);
   });
 
-  const defaultHeaderStateValue =
-    Number(periodSnapshots[0].swapFees) -
-    (isAllTimeSelected
-      ? 0
-      : Number(periodSnapshots[pariodLastSnapshotIdx].swapFees));
+  const defaultHeaderStateValue = Number(periodSnapshots[0].swapFees) - (isAllTimeSelected ? 0 : Number(periodSnapshots[pariodLastSnapshotIdx].swapFees));
 
   return {
     color: [tailwind.theme.colors.yellow['400']],
@@ -270,11 +242,7 @@ function getFeesData(
   };
 }
 
-function getVolumeData(
-  periodSnapshots: PoolSnapshot[],
-  isAllTimeSelected: boolean,
-  pariodLastSnapshotIdx: number
-): PoolChartData {
+function getVolumeData(periodSnapshots: PoolSnapshot[], isAllTimeSelected: boolean, pariodLastSnapshotIdx: number): PoolChartData {
   const volumeData = periodSnapshots.map((snapshot, idx) => {
     const value = parseFloat(snapshot.swapVolume);
     let prevValue: number;
@@ -290,23 +258,19 @@ function getVolumeData(
     return Object.freeze([timestamps.value[idx], value - prevValue]);
   });
 
-  const defaultHeaderStateValue =
-    Number(periodSnapshots[0].swapVolume) -
-    (isAllTimeSelected
-      ? 0
-      : Number(periodSnapshots[pariodLastSnapshotIdx].swapVolume));
+  const defaultHeaderStateValue = Number(periodSnapshots[0].swapVolume) - (isAllTimeSelected ? 0 : Number(periodSnapshots[pariodLastSnapshotIdx].swapVolume));
 
   return {
     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-        {
-          offset: 0,
-          color: '#3DDEED',
-        },
-        {
-          offset: 1,
-          color: 'rgba(61, 222, 237, 0)',
-        },
-      ]),
+      {
+        offset: 0,
+        color: '#3DDEED',
+      },
+      {
+        offset: 1,
+        color: 'rgba(61, 222, 237, 0)',
+      },
+    ]),
     chartType: 'bar',
     hoverColor: tailwind.theme.colors.pink['500'],
     data: [
@@ -322,12 +286,8 @@ function getVolumeData(
 }
 
 const chartData = computed((): PoolChartData => {
-  const periodSnapshots =
-    currentPeriod.value.days === snapshotValues.value.length
-      ? snapshotValues.value
-      : snapshotValues.value.slice(0, currentPeriod.value.days - 1);
-  const isAllTimeSelected =
-    periodSnapshots.length === snapshotValues.value.length;
+  const periodSnapshots = currentPeriod.value.days === snapshotValues.value.length ? snapshotValues.value : snapshotValues.value.slice(0, currentPeriod.value.days - 1);
+  const isAllTimeSelected = periodSnapshots.length === snapshotValues.value.length;
   const pariodLastSnapshotIdx = periodSnapshots.length - 1;
 
   if (activeTab.value === PoolChartTab.TVL) {
@@ -335,24 +295,14 @@ const chartData = computed((): PoolChartData => {
   }
 
   if (activeTab.value === PoolChartTab.FEES) {
-    return getFeesData(
-      periodSnapshots,
-      isAllTimeSelected,
-      pariodLastSnapshotIdx
-    );
+    return getFeesData(periodSnapshots, isAllTimeSelected, pariodLastSnapshotIdx);
   }
 
-  return getVolumeData(
-    periodSnapshots,
-    isAllTimeSelected,
-    pariodLastSnapshotIdx
-  );
+  return getVolumeData(periodSnapshots, isAllTimeSelected, pariodLastSnapshotIdx);
 });
 
 const defaultChartData = computed(() => {
-  const currentPeriodOption = periodOptions.value.find(
-    option => option.days === currentPeriod.value.days
-  );
+  const currentPeriodOption = periodOptions.value.find(option => option.days === currentPeriod.value.days);
   let title = `${currentPeriodOption?.text} ${activeTab.value}`;
 
   if (activeTab.value === PoolChartTab.TVL) {
@@ -369,17 +319,11 @@ function setCurrentPeriod(period: PoolChartPeriod) {
   currentPeriod.value = period;
 }
 
-function setCurrentChartValue(payload: {
-  chartDate: string;
-  chartValue: number;
-}) {
+function setCurrentChartValue(payload: { chartDate: string; chartValue: number }) {
   currentChartValue.value = fNum2(payload.chartValue, {
     style: 'currency',
   });
-  currentChartDate.value = format(
-    new Date(payload.chartDate),
-    PRETTY_DATE_FORMAT
-  );
+  currentChartDate.value = format(new Date(payload.chartDate), PRETTY_DATE_FORMAT);
 }
 </script>
 
@@ -387,37 +331,25 @@ function setCurrentChartValue(payload: {
   <BalLoadingBlock v-if="loading || appLoading" class="h-96" />
 
   <div v-else-if="snapshotValues.length >= MIN_CHART_VALUES" class="chart">
-    <div class="mb-6 flex justify-between " :class="{'flex-col':isMobile}">
+    <div class="mb-6 flex justify-between" :class="{ 'flex-col': isMobile }">
       <div class="mb-4 flex">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="mr-6 -mb-px" />
         <div class="flex items-center">
-          <PoolChartPeriodSelect
-            :options="periodOptions"
-            :activeOption="currentPeriod"
-            @change-option="setCurrentPeriod"
-          />
+          <PoolChartPeriodSelect :options="periodOptions" :activeOption="currentPeriod" @change-option="setCurrentPeriod" />
         </div>
       </div>
-      <div
-        class="flex flex-col items-start text-2xl font-semibold tabular-nums xs:items-end"
-      >
+      <div class="flex flex-col items-start text-2xl font-semibold tabular-nums xs:items-end">
         <p class="tracking-tighter">
           {{ isFocusedOnChart ? currentChartValue : defaultChartData.value }}
         </p>
-        <div
-          class="subtracking"
-          :class="{ 'text-pink-500': isFocusedOnChart }"
-        >
+        <div class="subtracking" :class="{ 'text-pink-500': isFocusedOnChart }">
           <p>
             {{ isFocusedOnChart ? currentChartDate : defaultChartData.title }}
           </p>
         </div>
       </div>
     </div>
-    <BalBlankSlate
-      v-if="chartData.data[0].values.length <= MIN_CHART_VALUES"
-      class="h-96"
-    >
+    <BalBlankSlate v-if="chartData.data[0].values.length <= MIN_CHART_VALUES" class="h-96">
       <BalIcon name="bar-chart" />
       {{ $t('noPriceInfo') }}
     </BalBlankSlate>
@@ -456,19 +388,18 @@ function setCurrentChartValue(payload: {
 <style scoped>
 .chart {
 }
-.tracking-tighter{
+.tracking-tighter {
   font-weight: 600;
   font-size: 40px;
   line-height: 52px;
   text-align: right;
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
-.subtracking{
+.subtracking {
   font-weight: 500;
   font-size: 18px;
   line-height: 24px;
   text-align: right;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
 </style>

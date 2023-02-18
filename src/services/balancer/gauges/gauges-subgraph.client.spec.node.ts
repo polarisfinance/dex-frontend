@@ -6,9 +6,7 @@ import { gaugesSubgraphClient } from './gauges-subgraph.client';
 
 describe('GaugesSubgraphClient', () => {
   beforeEach(() => {
-    nock('https://api.thegraph.com')
-      .post('/subgraphs/name/balancer-labs/balancer-gauges-kovan')
-      .reply(200, gaugesResponse);
+    nock('https://api.thegraph.com').post('/subgraphs/name/balancer-labs/balancer-gauges-kovan').reply(200, gaugesResponse);
   });
 
   describe('#get', () => {

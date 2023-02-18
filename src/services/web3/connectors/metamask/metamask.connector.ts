@@ -64,9 +64,7 @@ export class MetamaskConnector extends Connector {
         this.handleAccountsChanged(accounts);
       }
     } else {
-      console.error(
-        'Tried to connect to MetaMask but it was not detected. Please install MetaMask.'
-      );
+      console.error('Tried to connect to MetaMask but it was not detected. Please install MetaMask.');
     }
     return {
       // TODO type this

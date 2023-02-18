@@ -83,9 +83,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "bytes4", "name": "selector", "type": "bytes4" }
-    ],
+    "inputs": [{ "internalType": "bytes4", "name": "selector", "type": "bytes4" }],
     "name": "getActionId",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
@@ -94,9 +92,7 @@
   {
     "inputs": [],
     "name": "getAuthorizer",
-    "outputs": [
-      { "internalType": "contract IAuthorizer", "name": "", "type": "address" }
-    ],
+    "outputs": [{ "internalType": "contract IAuthorizer", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -110,9 +106,7 @@
   {
     "inputs": [],
     "name": "getBalancerToken",
-    "outputs": [
-      { "internalType": "contract IERC20", "name": "", "type": "address" }
-    ],
+    "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -154,9 +148,7 @@
   {
     "inputs": [],
     "name": "getVault",
-    "outputs": [
-      { "internalType": "contract IVault", "name": "", "type": "address" }
-    ],
+    "outputs": [{ "internalType": "contract IVault", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },

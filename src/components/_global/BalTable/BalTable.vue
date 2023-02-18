@@ -92,12 +92,8 @@ const props = withDefaults(defineProps<Props>(), {
 const stickyHeaderRef = ref();
 const isColumnStuck = ref(false);
 const tableData = ref(props.data);
-const currentSortDirection = ref<InitialState['sortDirection']>(
-  props.initialState?.sortDirection || null
-);
-const currentSortColumn = ref<InitialState['sortColumn']>(
-  props.initialState?.sortColumn || null
-);
+const currentSortDirection = ref<InitialState['sortDirection']>(props.initialState?.sortDirection || null);
+const currentSortColumn = ref<InitialState['sortColumn']>(props.initialState?.sortColumn || null);
 const headerRef = ref<HTMLElement>();
 const bodyRef = ref<HTMLElement>();
 
@@ -137,10 +133,7 @@ const handleSort = (columnId: string | null, updateDirection = true) => {
     }
   }
 
-  const sortedData = sortBy(
-    (props.data as any).value || props.data,
-    column.sortKey
-  );
+  const sortedData = sortBy((props.data as any).value || props.data, column.sortKey);
   if (currentSortDirection.value === 'asc') {
     tableData.value = sortedData;
     return;
@@ -168,12 +161,8 @@ onMounted(() => {
   if (bodyRef.value) {
     bodyRef.value.onscroll = () => {
       if (bodyRef.value) {
-        const offsetRatio =
-          bodyRef.value.offsetWidth / stickyHeaderRef.value.offsetWidth / 10;
-        isColumnStuck.value = !!(
-          stickyHeaderRef.value.offsetLeft >
-          stickyHeaderRef.value.offsetWidth * offsetRatio
-        );
+        const offsetRatio = bodyRef.value.offsetWidth / stickyHeaderRef.value.offsetWidth / 10;
+        isColumnStuck.value = !!(stickyHeaderRef.value.offsetLeft > stickyHeaderRef.value.offsetWidth * offsetRatio);
       }
     };
     bodyRef.value.addEventListener('scroll', () => {
@@ -191,25 +180,17 @@ onMounted(() => {
  */
 const unpinnedData = computed(() => {
   if (!props.pin) return tableData.value;
-  return (tableData.value || []).filter(
-    data => !props.pin?.pinnedData.includes(data[props.pin.pinOn])
-  );
+  return (tableData.value || []).filter(data => !props.pin?.pinnedData.includes(data[props.pin.pinOn]));
 });
 
 const pinnedData = computed(() => {
   if (!props.pin) return [];
-  return (tableData.value || []).filter(data =>
-    props.pin?.pinnedData.includes(data[props.pin.pinOn])
-  );
+  return (tableData.value || []).filter(data => props.pin?.pinnedData.includes(data[props.pin.pinOn]));
 });
 
-const filteredColumns = computed(() =>
-  props.columns.filter(column => !column.hidden)
-);
+const filteredColumns = computed(() => props.columns.filter(column => !column.hidden));
 
-const shouldRenderTotals = computed(() =>
-  props.columns.some(column => column.totalsCell !== undefined)
-);
+const shouldRenderTotals = computed(() => props.columns.some(column => column.totalsCell !== undefined));
 
 watch(
   () => props.data,
@@ -224,22 +205,13 @@ watch(
 </script>
 
 <template>
-  <div
-    :class="[
-      'max-w-full overflow-hidden whitespace-nowrap ',
-      { 'rounded-lg': !square },
-    ]"
-  >
+  <div :class="['max-w-full overflow-hidden whitespace-nowrap ', { 'rounded-lg': !square }]">
     <div v-if="title" class="mb-[24px]">{{ title }}</div>
     <div ref="headerRef" class="overflow-hidden">
       <table class="w-full table-fixed whitespace-normal bg-[#231928]">
         <!-- header width handled by colgroup  -->
         <colgroup>
-          <col
-            v-for="column in filteredColumns"
-            :key="column.id"
-            :style="{ width: `${column?.width}px` }"
-          />
+          <col v-for="column in filteredColumns" :key="column.id" :style="{ width: `${column?.width}px` }" />
         </colgroup>
         <!-- header is rendered as a row - seperated by columns -->
         <thead class="z-10">
@@ -258,71 +230,34 @@ watch(
             @click="handleSort(column.id)"
           >
             <div :class="['flex bg-[#231928]', getAlignProperty(column.align)]">
-              <slot
-                v-if="column.Header"
-                v-bind="column"
-                :name="column.Header"
-              />
+              <slot v-if="column.Header" v-bind="column" :name="column.Header" />
               <div v-else>
                 <h5 class="text-base">
                   {{ column.name }}
                 </h5>
               </div>
-              <BalIcon
-                v-if="
-                  currentSortColumn === column.id &&
-                  currentSortDirection === 'asc'
-                "
-                name="arrow-up"
-                size="sm"
-                class="ml-1 flex items-center"
-              />
-              <BalIcon
-                v-if="
-                  currentSortColumn === column.id &&
-                  currentSortDirection === 'desc'
-                "
-                name="arrow-down"
-                size="sm"
-                class="ml-1 flex items-center"
-              />
+              <BalIcon v-if="currentSortColumn === column.id && currentSortDirection === 'asc'" name="arrow-up" size="sm" class="ml-1 flex items-center" />
+              <BalIcon v-if="currentSortColumn === column.id && currentSortDirection === 'desc'" name="arrow-down" size="sm" class="ml-1 flex items-center" />
             </div>
           </th>
         </thead>
       </table>
     </div>
     <div ref="bodyRef" class="overflow-auto">
-      <BalLoadingBlock
-        v-if="isLoading"
-        :class="[skeletonClass, 'min-w-full']"
-        square
-        :style="{ width: `${placeholderBlockWidth}px` }"
-      />
-      <div
-        v-else-if="!isLoading && !tableData.length"
-        class="row-bg text-secondary flex h-40 max-w-full items-center justify-center bg-white dark:bg-gray-850"
-      >
+      <BalLoadingBlock v-if="isLoading" :class="[skeletonClass, 'min-w-full']" square :style="{ width: `${placeholderBlockWidth}px` }" />
+      <div v-else-if="!isLoading && !tableData.length" class="row-bg text-secondary flex h-40 max-w-full items-center justify-center bg-white dark:bg-gray-850">
         {{ noResultsLabel || $t('noResults') }}
       </div>
       <table v-else class="w-full table-fixed whitespace-normal">
         <colgroup>
-          <col
-            v-for="column in filteredColumns"
-            :key="column.id"
-            :style="{ width: `${column?.width}px` }"
-          />
+          <col v-for="column in filteredColumns" :key="column.id" :style="{ width: `${column?.width}px` }" />
         </colgroup>
         <!-- begin measurement row -->
         <tr>
           <td
             v-for="(column, columnIndex) in filteredColumns"
             :key="column.id"
-            :class="[
-              column.align === 'right' ? 'text-left' : 'text-right',
-              getHorizontalStickyClass(columnIndex),
-              isColumnStuck ? 'isSticky' : '',
-              'm-0 h-0 bg-white p-0 dark:bg-gray-850',
-            ]"
+            :class="[column.align === 'right' ? 'text-left' : 'text-right', getHorizontalStickyClass(columnIndex), isColumnStuck ? 'isSticky' : '', 'm-0 h-0 bg-white p-0 dark:bg-gray-850']"
           />
         </tr>
         <!-- end measurement row -->
@@ -364,13 +299,7 @@ watch(
           </template>
         </BalTableRow>
         <!-- end end data rows -->
-        <TotalsRow
-          v-if="!isLoading && tableData.length && shouldRenderTotals"
-          :columns="filteredColumns"
-          :onRowClick="onRowClick"
-          :sticky="sticky"
-          :isColumnStuck="isColumnStuck"
-        >
+        <TotalsRow v-if="!isLoading && tableData.length && shouldRenderTotals" :columns="filteredColumns" :onRowClick="onRowClick" :sticky="sticky" :isColumnStuck="isColumnStuck">
           <template v-for="(_, name) in $slots" #[name]="slotData">
             <slot :name="name" v-bind="slotData" />
           </template>
@@ -378,11 +307,7 @@ watch(
       </table>
     </div>
   </div>
-  <div
-    v-if="isPaginated && !isLoading"
-    class="bal-table-pagination-btn text-secondary"
-    @click="!isLoadingMore && $emit('loadMore')"
-  >
+  <div v-if="isPaginated && !isLoading" class="bal-table-pagination-btn text-secondary" @click="!isLoadingMore && $emit('loadMore')">
     <template v-if="isLoadingMore">
       {{ $t('loading') }}
     </template>

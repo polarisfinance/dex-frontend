@@ -55,9 +55,7 @@ const { t } = useI18n();
  * COMPUTED
  */
 const title = computed(() => {
-  return unlockConfirmed.value
-    ? t(`unlockVeBAL.previewModal.titles.unlock.confirmed`)
-    : t(`unlockVeBAL.previewModal.titles.unlock.default`);
+  return unlockConfirmed.value ? t(`unlockVeBAL.previewModal.titles.unlock.confirmed`) : t(`unlockVeBAL.previewModal.titles.unlock.default`);
 });
 
 /**
@@ -77,12 +75,7 @@ function handleSuccess() {
   <BalModal show :fireworks="unlockConfirmed" @close="handleClose">
     <template #header>
       <div class="flex items-center">
-        <BalCircle
-          v-if="unlockConfirmed"
-          size="8"
-          color="green"
-          class="mr-2 text-white"
-        >
+        <BalCircle v-if="unlockConfirmed" size="8" color="green" class="mr-2 text-white">
           <BalIcon name="check" />
         </BalCircle>
         <h4>
@@ -93,10 +86,7 @@ function handleSuccess() {
 
     <UnlockAmount :lockablePool="lockablePool" :totalLpTokens="totalLpTokens" />
 
-    <UnlockSummary
-      :fiatTotalLpTokens="fiatTotalLpTokens"
-      :veBalLockInfo="veBalLockInfo"
-    />
+    <UnlockSummary :fiatTotalLpTokens="fiatTotalLpTokens" :veBalLockInfo="veBalLockInfo" />
 
     <UnlockActions
       :lockablePool="lockablePool"

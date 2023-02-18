@@ -38,19 +38,14 @@ const { currency } = useUserSettings();
         </div>
         <div class="summary-table-number">
           {{ fNum2(fiatTotal, FNumFormats.fiat) }}
-          <BalTooltip
-            :text="$t('tooltips.invest.total', [currency.toUpperCase()])"
-            iconSize="sm"
-            class="ml-2"
-          />
+          <BalTooltip :text="$t('tooltips.invest.total', [currency.toUpperCase()])" iconSize="sm" class="ml-2" />
         </div>
       </div>
       <div
         :class="[
           'summary-table-row',
           {
-            'bg-red-50 text-red-500 dark:bg-red-500 dark:text-white':
-              highPriceImpact,
+            'bg-red-50 text-red-500 dark:bg-red-500 dark:text-white': highPriceImpact,
           },
         ]"
       >
@@ -65,11 +60,7 @@ const { currency } = useUserSettings();
               :text="$t('tooltips.invest.priceImpact')"
               iconSize="sm"
               :iconName="highPriceImpact ? 'alert-triangle' : 'info'"
-              :iconClass="
-                highPriceImpact
-                  ? 'text-red-500 dark:text-white'
-                  : 'text-gray-300'
-              "
+              :iconClass="highPriceImpact ? 'text-red-500 dark:text-white' : 'text-gray-300'"
               width="72"
               class="ml-2"
             />

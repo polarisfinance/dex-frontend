@@ -29,11 +29,7 @@ const { lockAmount } = useLockState();
 /**
  * COMPUTED
  */
-const lockAmountFiatValue = computed(() =>
-  bnum(props.lockablePool.totalLiquidity)
-    .div(props.lockablePool.totalShares)
-    .times(lockAmount.value)
-);
+const lockAmountFiatValue = computed(() => bnum(props.lockablePool.totalLiquidity).div(props.lockablePool.totalShares).times(lockAmount.value));
 </script>
 
 <template>
@@ -43,12 +39,6 @@ const lockAmountFiatValue = computed(() =>
         {{ $t('getVeBAL.lockForm.lockAmount.title') }}
       </p>
     </div>
-    <TokenInput
-      v-model:amount="lockAmount"
-      :address="lockablePoolTokenInfo.address"
-      :tokenValue="lockAmountFiatValue"
-      fixedToken
-      name="lockAmount"
-    />
+    <TokenInput v-model:amount="lockAmount" :address="lockablePoolTokenInfo.address" :tokenValue="lockAmountFiatValue" fixedToken name="lockAmount" />
   </div>
 </template>

@@ -1,13 +1,5 @@
 import { parseUnits } from '@ethersproject/units';
-import {
-  computed,
-  ComputedRef,
-  InjectionKey,
-  provide,
-  reactive,
-  Ref,
-  toRefs,
-} from 'vue';
+import { computed, ComputedRef, InjectionKey, provide, reactive, Ref, toRefs } from 'vue';
 
 import { FiatCurrency } from '@/constants/currency';
 import LS_KEYS from '@/constants/local-storage.keys';
@@ -33,8 +25,7 @@ export interface UserSettingsProviderResponse {
 /**
  * SETUP
  */
-export const UserSettingsProviderSymbol: InjectionKey<UserSettingsProviderResponse> =
-  Symbol(symbolKeys.Providers.App);
+export const UserSettingsProviderSymbol: InjectionKey<UserSettingsProviderResponse> = Symbol(symbolKeys.Providers.App);
 
 const lsCurrency = lsGet(LS_KEYS.UserSettings.Currency, FiatCurrency.usd);
 const lsSlippage = lsGet(LS_KEYS.App.TradeSlippage, '0.01');
@@ -50,9 +41,7 @@ const state: UserSettingsState = reactive({
 /**
  * COMPUTED
  */
-const slippageScaled = computed((): string =>
-  parseUnits(state.slippage, 18).toString()
-);
+const slippageScaled = computed((): string => parseUnits(state.slippage, 18).toString());
 
 /**
  * METHODS

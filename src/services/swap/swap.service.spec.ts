@@ -1,9 +1,4 @@
-import {
-  FundManagement,
-  SingleSwap,
-  SwapType,
-  SwapV2,
-} from '@balancer-labs/sdk';
+import { FundManagement, SingleSwap, SwapType, SwapV2 } from '@balancer-labs/sdk';
 import { BigNumber } from '@ethersproject/bignumber';
 import { AddressZero } from '@ethersproject/constants';
 
@@ -20,19 +15,14 @@ jest.mock('@/services/web3/web3.service');
 describe('swap.service', () => {
   const tokens: Record<string, SwapToken> = {};
   let service;
-  const PoolIdETHUSDC =
-    '0x3a19030ed746bd1c3f2b0f996ff9479af04c5f0a000200000000000000000004';
-  const PoolIdETHstETH =
-    '0xdad9030ed746bd1c3f2b0f996ff9479af04c5f0a000200000000000000000004';
-  const PoolIdUSDCDAI =
-    '6B15A01B5D46A5321B627BD7DEEF1AF57BC629070000000000000000000000D4';
+  const PoolIdETHUSDC = '0x3a19030ed746bd1c3f2b0f996ff9479af04c5f0a000200000000000000000004';
+  const PoolIdETHstETH = '0xdad9030ed746bd1c3f2b0f996ff9479af04c5f0a000200000000000000000004';
+  const PoolIdUSDCDAI = '6B15A01B5D46A5321B627BD7DEEF1AF57BC629070000000000000000000000D4';
 
   beforeEach(() => {
     jest.spyOn(console, 'log').mockImplementation();
     jest.clearAllMocks();
-    require('@/services/contracts/vault.service').vaultService.batchSwap = jest
-      .fn()
-      .mockImplementation();
+    require('@/services/contracts/vault.service').vaultService.batchSwap = jest.fn().mockImplementation();
     tokens.USDC = {
       address: '0xc2569dd7d0fd715b054fbf16e75b001e5c0c1115',
       amount: BigNumber.from('1000000'),
@@ -101,14 +91,8 @@ describe('swap.service', () => {
       it('Should call vault.swap when swapping a single token for another', async () => {
         tokens.USDC.type = SwapTokenType.fixed;
         tokens.DAI.type = SwapTokenType.min;
-        await service.batchSwapV2(
-          tokens.USDC,
-          tokens.DAI,
-          swaps,
-          tokenAddresses
-        );
-        const vaultSwapArgs = require('@/services/contracts/vault.service')
-          .vaultService.swap.mock.calls[0];
+        await service.batchSwapV2(tokens.USDC, tokens.DAI, swaps, tokenAddresses);
+        const vaultSwapArgs = require('@/services/contracts/vault.service').vaultService.swap.mock.calls[0];
         const singleSwapArg: SingleSwap = vaultSwapArgs[0];
         expect(singleSwapArg.poolId).toEqual(PoolIdUSDCDAI);
         expect(singleSwapArg.kind).toEqual(SwapType.SwapExactIn);
@@ -130,14 +114,8 @@ describe('swap.service', () => {
         tokens.ETHv2.type = SwapTokenType.fixed;
         tokens.DAI.type = SwapTokenType.min;
         tokenAddresses = [tokens.ETHv2.address, tokens.DAI.address];
-        await service.batchSwapV2(
-          tokens.ETHv2,
-          tokens.DAI,
-          swaps,
-          tokenAddresses
-        );
-        const vaultSwapArgs = require('@/services/contracts/vault.service')
-          .vaultService.swap.mock.calls[0];
+        await service.batchSwapV2(tokens.ETHv2, tokens.DAI, swaps, tokenAddresses);
+        const vaultSwapArgs = require('@/services/contracts/vault.service').vaultService.swap.mock.calls[0];
         const singleSwapArg: SingleSwap = vaultSwapArgs[0];
         expect(singleSwapArg.poolId).toEqual(PoolIdUSDCDAI);
         expect(singleSwapArg.kind).toEqual(SwapType.SwapExactIn);
@@ -174,9 +152,7 @@ describe('swap.service', () => {
           tokens.ETHv2.address,
           tokens.wstETH.address, // tokenAddresses currently contain wstETH even though tokenIn is stETH
         ]);
-        const lidoRelayerSwapArgs =
-          require('@/services/contracts/lido-relayer.service')
-            .lidoRelayerService.swap.mock.calls[0];
+        const lidoRelayerSwapArgs = require('@/services/contracts/lido-relayer.service').lidoRelayerService.swap.mock.calls[0];
         const singleSwapArg: SingleSwap = lidoRelayerSwapArgs[0];
         expect(singleSwapArg.poolId).toEqual(PoolIdETHstETH);
         expect(singleSwapArg.kind).toEqual(SwapType.SwapExactIn);
@@ -198,11 +174,7 @@ describe('swap.service', () => {
 
     describe('multi swap', () => {
       beforeEach(() => {
-        tokenAddresses = [
-          tokens.ETHv2.address,
-          tokens.USDC.address,
-          tokens.DAI.address,
-        ];
+        tokenAddresses = [tokens.ETHv2.address, tokens.USDC.address, tokens.DAI.address];
         swaps = [
           {
             poolId: PoolIdETHUSDC,
@@ -224,14 +196,8 @@ describe('swap.service', () => {
       it('Should call vault.batchSwap when swapping multiple tokens through multiple pools', async () => {
         tokens.ETHv2.type = SwapTokenType.fixed;
         tokens.DAI.type = SwapTokenType.min;
-        await service.batchSwapV2(
-          tokens.ETHv2,
-          tokens.DAI,
-          swaps,
-          tokenAddresses
-        );
-        const vaultBatchSwapArgs = require('@/services/contracts/vault.service')
-          .vaultService.batchSwap.mock.calls[0];
+        await service.batchSwapV2(tokens.ETHv2, tokens.DAI, swaps, tokenAddresses);
+        const vaultBatchSwapArgs = require('@/services/contracts/vault.service').vaultService.batchSwap.mock.calls[0];
         expect(vaultBatchSwapArgs[0]).toEqual(SwapType.SwapExactIn);
         expect(vaultBatchSwapArgs[1]).toEqual(swaps);
         expect(vaultBatchSwapArgs[2]).toEqual(tokenAddresses);
@@ -251,28 +217,17 @@ describe('swap.service', () => {
       });
 
       it('Should return a rejected promise if vault throws an error', async () => {
-        const tokenAddresses = [
-          tokens.ETH.address,
-          tokens.USDC.address,
-          tokens.DAI.address,
-        ];
-        require('@/services/contracts/vault.service').vaultService.batchSwap =
-          jest.fn().mockImplementation(() => {
-            throw new Error('Failed to swap');
-          });
-        await expect(
-          service.batchSwapV2(tokens.ETH, tokens.DAI, swaps, tokenAddresses)
-        ).rejects.toThrow('Failed to swap');
+        const tokenAddresses = [tokens.ETH.address, tokens.USDC.address, tokens.DAI.address];
+        require('@/services/contracts/vault.service').vaultService.batchSwap = jest.fn().mockImplementation(() => {
+          throw new Error('Failed to swap');
+        });
+        await expect(service.batchSwapV2(tokens.ETH, tokens.DAI, swaps, tokenAddresses)).rejects.toThrow('Failed to swap');
       });
     });
 
     describe('multi swap lido', () => {
       beforeEach(() => {
-        tokenAddresses = [
-          tokens.USDC.address,
-          tokens.ETHv2.address,
-          tokens.wstETH.address,
-        ];
+        tokenAddresses = [tokens.USDC.address, tokens.ETHv2.address, tokens.wstETH.address];
         swaps = [
           {
             poolId: PoolIdETHUSDC,
@@ -294,15 +249,8 @@ describe('swap.service', () => {
       it('Should call lido-relayer.batchSwap when swapping stETH', async () => {
         tokens.USDC.type = SwapTokenType.fixed;
         tokens.stETH.type = SwapTokenType.min;
-        await service.batchSwapV2(
-          tokens.USDC,
-          tokens.stETH,
-          swaps,
-          tokenAddresses
-        );
-        const lidoBatchSwapArgs =
-          require('@/services/contracts/lido-relayer.service')
-            .lidoRelayerService.batchSwap.mock.calls[0];
+        await service.batchSwapV2(tokens.USDC, tokens.stETH, swaps, tokenAddresses);
+        const lidoBatchSwapArgs = require('@/services/contracts/lido-relayer.service').lidoRelayerService.batchSwap.mock.calls[0];
         expect(lidoBatchSwapArgs[0]).toEqual(SwapType.SwapExactIn);
         expect(lidoBatchSwapArgs[1]).toEqual(swaps);
         expect(lidoBatchSwapArgs[2]).toEqual(tokenAddresses);
@@ -322,20 +270,9 @@ describe('swap.service', () => {
       it('Should pass overrides.value when swapping ETH for stETH', async () => {
         tokens.ETHv2.type = SwapTokenType.fixed;
         tokens.stETH.type = SwapTokenType.min;
-        tokenAddresses = [
-          tokens.ETHv2.address,
-          tokens.USDC.address,
-          tokens.wstETH.address,
-        ];
-        await service.batchSwapV2(
-          tokens.ETHv2,
-          tokens.stETH,
-          swaps,
-          tokenAddresses
-        );
-        const lidoBatchSwapArgs =
-          require('@/services/contracts/lido-relayer.service')
-            .lidoRelayerService.batchSwap.mock.calls[0];
+        tokenAddresses = [tokens.ETHv2.address, tokens.USDC.address, tokens.wstETH.address];
+        await service.batchSwapV2(tokens.ETHv2, tokens.stETH, swaps, tokenAddresses);
+        const lidoBatchSwapArgs = require('@/services/contracts/lido-relayer.service').lidoRelayerService.batchSwap.mock.calls[0];
         expect(lidoBatchSwapArgs[0]).toEqual(SwapType.SwapExactIn);
         expect(lidoBatchSwapArgs[1]).toEqual(swaps);
         expect(lidoBatchSwapArgs[2]).toEqual(tokenAddresses);
@@ -355,13 +292,10 @@ describe('swap.service', () => {
       });
 
       it('Should return a rejected promise if lido-relayer throws an error', async () => {
-        require('@/services/contracts/lido-relayer.service').lidoRelayerService.batchSwap =
-          jest.fn().mockImplementation(() => {
-            throw new Error('Failed to swap');
-          });
-        await expect(
-          service.batchSwapV2(tokens.USDC, tokens.stETH, swaps, tokenAddresses)
-        ).rejects.toThrow('Failed to swap');
+        require('@/services/contracts/lido-relayer.service').lidoRelayerService.batchSwap = jest.fn().mockImplementation(() => {
+          throw new Error('Failed to swap');
+        });
+        await expect(service.batchSwapV2(tokens.USDC, tokens.stETH, swaps, tokenAddresses)).rejects.toThrow('Failed to swap');
       });
     });
   });
@@ -371,14 +305,10 @@ describe('swap.service', () => {
     const userAddress = '0xddd0c9C1b6C8537BeD0487C3fd64CF6140bd4ddd';
     let tokenAddresses;
 
-    const PoolIdBBAUSDC =
-      '0x0bbd32b14a6503ee20f87df38cf2d5d3b59ea2f50000000000000000000004d6';
-    const PoolIdBBAUSD =
-      '0x8fd162f338b770f7e879030830cde9173367f3010000000000000000000004d8';
-    const PoolIdBBAUSDT =
-      '0xe667d48618e71c2a02e4a1b66ed9def1426938b60000000000000000000004d7';
-    const PoolIdBBADAI =
-      '0xfcccb77a946b6a3bd59d149f083b5bfbb8004d6d0000000000000000000004d5';
+    const PoolIdBBAUSDC = '0x0bbd32b14a6503ee20f87df38cf2d5d3b59ea2f50000000000000000000004d6';
+    const PoolIdBBAUSD = '0x8fd162f338b770f7e879030830cde9173367f3010000000000000000000004d8';
+    const PoolIdBBAUSDT = '0xe667d48618e71c2a02e4a1b66ed9def1426938b60000000000000000000004d7';
+    const PoolIdBBADAI = '0xfcccb77a946b6a3bd59d149f083b5bfbb8004d6d0000000000000000000004d5';
 
     beforeEach(() => {
       tokens.bbaUSD = {
@@ -422,15 +352,7 @@ describe('swap.service', () => {
 
     describe('boostedJoinBatchSwap', () => {
       beforeEach(() => {
-        tokenAddresses = [
-          tokens.USDC.address,
-          tokens.bbaUSDC.address,
-          tokens.bbaUSD.address,
-          tokens.USDT.address,
-          tokens.bbaUSDT.address,
-          tokens.DAI.address,
-          tokens.bbaDAI.address,
-        ];
+        tokenAddresses = [tokens.USDC.address, tokens.bbaUSDC.address, tokens.bbaUSD.address, tokens.USDT.address, tokens.bbaUSDT.address, tokens.DAI.address, tokens.bbaDAI.address];
         swaps = [
           {
             poolId: PoolIdBBAUSDC,
@@ -480,14 +402,8 @@ describe('swap.service', () => {
       it('Should call vault.batchSwap when joining a boosted pool', async () => {
         tokens.USDC.type = SwapTokenType.fixed;
         tokens.DAI.type = SwapTokenType.min;
-        await service.boostedJoinBatchSwap(
-          [tokens.USDC, tokens.USDT, tokens.DAI],
-          tokens.bbaUSD,
-          swaps,
-          tokenAddresses
-        );
-        const vaultBatchSwapArgs = require('@/services/contracts/vault.service')
-          .vaultService.batchSwap.mock.calls[0];
+        await service.boostedJoinBatchSwap([tokens.USDC, tokens.USDT, tokens.DAI], tokens.bbaUSD, swaps, tokenAddresses);
+        const vaultBatchSwapArgs = require('@/services/contracts/vault.service').vaultService.batchSwap.mock.calls[0];
         expect(vaultBatchSwapArgs[0]).toEqual(SwapType.SwapExactIn);
         expect(vaultBatchSwapArgs[1]).toEqual(swaps);
         expect(vaultBatchSwapArgs[2]).toEqual(tokenAddresses);
@@ -511,15 +427,7 @@ describe('swap.service', () => {
 
     describe('boostedExitBatchSwap', () => {
       beforeEach(() => {
-        tokenAddresses = [
-          tokens.bbaUSD.address,
-          tokens.bbaUSDC.address,
-          tokens.USDC.address,
-          tokens.bbaUSDT.address,
-          tokens.USDT.address,
-          tokens.bbaDAI.address,
-          tokens.DAI.address,
-        ];
+        tokenAddresses = [tokens.bbaUSD.address, tokens.bbaUSDC.address, tokens.USDC.address, tokens.bbaUSDT.address, tokens.USDT.address, tokens.bbaDAI.address, tokens.DAI.address];
         swaps = [
           {
             poolId: PoolIdBBAUSD,
@@ -569,15 +477,8 @@ describe('swap.service', () => {
       it('Should call vault.batchSwap when swapping multiple tokens through multiple pools', async () => {
         tokens.USDC.type = SwapTokenType.fixed;
         tokens.DAI.type = SwapTokenType.min;
-        await service.boostedExitBatchSwap(
-          tokens.bbaUSD,
-          [tokens.USDC, tokens.USDT, tokens.DAI],
-          swaps,
-          tokenAddresses,
-          SwapType.SwapExactIn
-        );
-        const vaultBatchSwapArgs = require('@/services/contracts/vault.service')
-          .vaultService.batchSwap.mock.calls[0];
+        await service.boostedExitBatchSwap(tokens.bbaUSD, [tokens.USDC, tokens.USDT, tokens.DAI], swaps, tokenAddresses, SwapType.SwapExactIn);
+        const vaultBatchSwapArgs = require('@/services/contracts/vault.service').vaultService.batchSwap.mock.calls[0];
         expect(vaultBatchSwapArgs[0]).toEqual(SwapType.SwapExactIn);
         expect(vaultBatchSwapArgs[1]).toEqual(swaps);
         expect(vaultBatchSwapArgs[2]).toEqual(tokenAddresses);

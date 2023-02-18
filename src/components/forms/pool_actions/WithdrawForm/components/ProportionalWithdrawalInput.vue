@@ -35,16 +35,7 @@ const props = defineProps<Props>();
 /**
  * COMPOSABLES
  */
-const {
-  propBptIn,
-  bptBalance,
-  hasBpt,
-  fiatTotalLabel,
-  fiatAmounts,
-  proportionalAmounts,
-  shouldFetchBatchSwap,
-  loadingAmountsOut,
-} = toRefs(props.math);
+const { propBptIn, bptBalance, hasBpt, fiatTotalLabel, fiatAmounts, proportionalAmounts, shouldFetchBatchSwap, loadingAmountsOut } = toRefs(props.math);
 
 const { slider } = useWithdrawalState(toRef(props, 'pool'));
 
@@ -68,20 +59,14 @@ const percentageLabel = computed(() => {
   try {
     if (!hasBpt.value) return '100';
 
-    return bnum(propBptIn.value)
-      .div(bptBalance.value)
-      .times(100)
-      .integerValue(BigNumber.ROUND_CEIL)
-      .toString();
+    return bnum(propBptIn.value).div(bptBalance.value).times(100).integerValue(BigNumber.ROUND_CEIL).toString();
   } catch (error) {
     console.error(error);
     return '0';
   }
 });
 
-const seedTokens = computed((): number[] =>
-  Object.values(props.pool?.onchain?.tokens || []).map(token => token.weight)
-);
+const seedTokens = computed((): number[] => Object.values(props.pool?.onchain?.tokens || []).map(token => token.weight));
 
 /**
  * METHODS
@@ -122,10 +107,7 @@ onBeforeMount(() => {
         <div class="flex">
           <WithdrawalTokenSelect :pool="pool" />
           <div class="font-numeric flex-grow text-right text-xl">
-            <BalLoadingBlock
-              v-if="loadingAmountsOut"
-              class="float-right h-8 w-20"
-            />
+            <BalLoadingBlock v-if="loadingAmountsOut" class="float-right h-8 w-20" />
             <span v-else>{{ missingPrices ? '-' : fiatTotalLabel }}</span>
           </div>
         </div>
@@ -149,11 +131,7 @@ onBeforeMount(() => {
     </div>
 
     <div class="token-amounts">
-      <div
-        v-for="(token, address, i) in tokens"
-        :key="address"
-        class="p-4 last:mb-0"
-      >
+      <div v-for="(token, address, i) in tokens" :key="address" class="p-4 last:mb-0">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset :address="address" class="mr-2" />
@@ -171,9 +149,7 @@ onBeforeMount(() => {
               </span>
             </div>
           </div>
-          <div
-            class="font-numeric flex flex-grow flex-col items-end pl-2 text-right"
-          >
+          <div class="font-numeric flex flex-grow flex-col items-end pl-2 text-right">
             <BalLoadingBlock v-if="loadingAmountsOut" class="h-12 w-20" />
             <template v-else>
               <span class="break-words text-xl">

@@ -13,22 +13,14 @@ export default function useTreasury(treasuryName) {
 
   const treasuryAddress = treasuryNameToAddress[treasuryName];
 
-  const treasuryContract = new Contract(
-    treasuryAddress,
-    treasuryName != 'polar' ? treasuryABI(treasuryName) : polarTreasuryABI,
-    w3
-  );
+  const treasuryContract = new Contract(treasuryAddress, treasuryName != 'polar' ? treasuryABI(treasuryName) : polarTreasuryABI, w3);
 
   const getLastEpochTWAP = async () => {
     let getTwap;
     if (treasuryName == 'polar') {
       getTwap = 'previousEpochpolarPrice';
     } else {
-      getTwap =
-        'previousEpoch' +
-        treasuryName.charAt(0).toUpperCase() +
-        treasuryName.slice(1) +
-        'Price';
+      getTwap = 'previousEpoch' + treasuryName.charAt(0).toUpperCase() + treasuryName.slice(1) + 'Price';
     }
     const twap = await treasuryContract[getTwap]();
     return BigNumberToString(twap, 14, 4);
@@ -44,11 +36,7 @@ export default function useTreasury(treasuryName) {
     if (treasuryName == 'polar') {
       getTwap = 'getpolarUpdatedPrice';
     } else {
-      getTwap =
-        'get' +
-        treasuryName.charAt(0).toUpperCase() +
-        treasuryName.slice(1) +
-        'UpdatedPrice';
+      getTwap = 'get' + treasuryName.charAt(0).toUpperCase() + treasuryName.slice(1) + 'UpdatedPrice';
     }
     const twap = await treasuryContract[getTwap]();
     return BigNumberToString(twap, 14, 4);
@@ -59,11 +47,7 @@ export default function useTreasury(treasuryName) {
     if (treasuryName == 'polar') {
       getTwap = 'getpolarUpdatedPrice';
     } else {
-      getTwap =
-        'get' +
-        treasuryName.charAt(0).toUpperCase() +
-        treasuryName.slice(1) +
-        'UpdatedPrice';
+      getTwap = 'get' + treasuryName.charAt(0).toUpperCase() + treasuryName.slice(1) + 'UpdatedPrice';
     }
     return await treasuryContract[getTwap]();
   };
@@ -73,11 +57,7 @@ export default function useTreasury(treasuryName) {
     if (treasuryName == 'polar') {
       getCurrentPriceString = 'getpolarPrice';
     } else {
-      getCurrentPriceString =
-        'get' +
-        treasuryName.charAt(0).toUpperCase() +
-        treasuryName.slice(1) +
-        'Price';
+      getCurrentPriceString = 'get' + treasuryName.charAt(0).toUpperCase() + treasuryName.slice(1) + 'Price';
     }
     return await treasuryContract[getCurrentPriceString]();
   };

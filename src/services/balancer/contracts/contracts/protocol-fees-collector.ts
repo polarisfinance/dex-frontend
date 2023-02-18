@@ -31,11 +31,7 @@ export default class ProtocolFeesCollector {
    */
   public async getInstance(): Promise<Contract> {
     this.address = await this.getAddress();
-    return new Contract(
-      this.address,
-      ProtocolFeesCollectorAbi,
-      this.vault.service.provider
-    );
+    return new Contract(this.address, ProtocolFeesCollectorAbi, this.vault.service.provider);
   }
 
   /**

@@ -48,8 +48,7 @@ const {
   getPoolSymbol,
 } = usePoolCreation();
 
-const { getToken, priceFor, nativeAsset, wrappedNativeAsset, balanceFor } =
-  useTokens();
+const { getToken, priceFor, nativeAsset, wrappedNativeAsset, balanceFor } = useTokens();
 const { fNum2 } = useNumbers();
 const { t } = useI18n();
 const { userNetworkConfig, account } = useWeb3();
@@ -67,21 +66,14 @@ onBeforeMount(() => {
 /**
  * COMPUTED
  */
-const title = computed((): string =>
-  poolCreated.value
-    ? t('poolCreated')
-    : t('previewPool', [poolTypeString.value])
-);
+const title = computed((): string => (poolCreated.value ? t('poolCreated') : t('previewPool', [poolTypeString.value])));
 
 // translations are breaking when directly using this label
 const initialWeightLabel = computed(() => t('initialWeight'));
 
 const tokenAddresses = computed((): string[] => {
   return seedTokens.value.map(token => {
-    if (
-      token.tokenAddress == wrappedNativeAsset.value.address &&
-      useNativeAsset.value
-    ) {
+    if (token.tokenAddress == wrappedNativeAsset.value.address && useNativeAsset.value) {
       return nativeAsset.address;
     }
     return token.tokenAddress;
@@ -99,9 +91,7 @@ const hasMissingPoolNameOrSymbol = computed(() => {
 const initialWeights = computed(() => {
   const _initialWeights: Record<string, BigNumber> = {};
   for (const seedToken of seedTokens.value) {
-    _initialWeights[seedToken.tokenAddress] = bnum(seedToken.amount)
-      .times(priceFor(seedToken.tokenAddress))
-      .div(poolLiquidity.value);
+    _initialWeights[seedToken.tokenAddress] = bnum(seedToken.amount).times(priceFor(seedToken.tokenAddress)).div(poolLiquidity.value);
   }
   return _initialWeights;
 });
@@ -109,21 +99,14 @@ const initialWeights = computed(() => {
 // an invalid initial weight is one where the the weight
 // is less than 1% of the pools value
 const hasInvalidInitialWeight = computed(() => {
-  return Object.values(initialWeights.value).some(initialWeight =>
-    initialWeight.lt(0.01)
-  );
+  return Object.values(initialWeights.value).some(initialWeight => initialWeight.lt(0.01));
 });
 
 const showNativeAssetWarning = computed(() => {
   const nativeAssetBalance = balanceFor(nativeAsset.address);
-  const wrappedNativeAssetBalance = balanceFor(
-    wrappedNativeAsset.value.address
-  );
+  const wrappedNativeAssetBalance = balanceFor(wrappedNativeAsset.value.address);
 
-  const seedAmount =
-    seedTokens.value.find(token =>
-      isSameAddress(token.tokenAddress, wrappedNativeAsset.value.address)
-    )?.amount || '0';
+  const seedAmount = seedTokens.value.find(token => isSameAddress(token.tokenAddress, wrappedNativeAsset.value.address))?.amount || '0';
   // when the UI is set to use the native asset and the user does
   // not have the required native asset amount to cover the fund
   if (useNativeAsset.value && bnum(nativeAssetBalance).lt(seedAmount)) {
@@ -179,12 +162,7 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
       </BalStack> -->
       <BalStack vertical>
         <div class="flex items-center">
-          <BalCircle
-            v-if="poolCreated"
-            size="8"
-            color="green"
-            class="mr-2 text-white"
-          >
+          <BalCircle v-if="poolCreated" size="8" color="green" class="mr-2 text-white">
             <BalIcon name="check" />
           </BalCircle>
           <BalStack horizontal align="center" spacing="xs">
@@ -214,39 +192,22 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
                 <BalStack horizontal align="center">
                   <BalAsset :address="token.tokenAddress" :size="36" />
                   <BalStack vertical spacing="none">
-                    <span class="font-semibold weight">
+                    <span class="weight font-semibold">
                       {{ fNum2(token.weight / 100, FNumFormats.percent) }}
                       {{ getToken(token.tokenAddress)?.symbol }}
                     </span>
-                    <span
-                      :class="[
-                        'text-sm initial-weight',
-                        getInitialWeightHighlightClass(token.tokenAddress),
-                      ]"
-                    >
+                    <span :class="['initial-weight text-sm', getInitialWeightHighlightClass(token.tokenAddress)]">
                       {{ initialWeightLabel }}:
-                      {{
-                        fNum2(
-                          initialWeights[token.tokenAddress].toString(),
-                          FNumFormats.percent
-                        )
-                      }}
+                      {{ fNum2(initialWeights[token.tokenAddress].toString(), FNumFormats.percent) }}
                     </span>
                   </BalStack>
                 </BalStack>
                 <BalStack vertical spacing="none" align="end">
-                  <span class="font-semibold weight">
+                  <span class="weight font-semibold">
                     {{ fNum2(token.amount, FNumFormats.token) }}
                   </span>
                   <span class="initial-weight">
-                    {{
-                      fNum2(
-                        bnum(token.amount)
-                          .times(priceFor(token.tokenAddress))
-                          .toString(),
-                        FNumFormats.fiat
-                      )
-                    }}
+                    {{ fNum2(bnum(token.amount).times(priceFor(token.tokenAddress)).toString(), FNumFormats.fiat) }}
                   </span>
                 </BalStack>
               </BalStack>
@@ -266,24 +227,14 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
               {{ $t('summary') }}
             </h6>
           </div>
-          <BalStack vertical spacing="xs" class="p-3 summary-text">
+          <BalStack vertical spacing="xs" class="summary-text p-3">
             <BalStack horizontal justify="between">
               <span class="text-sm">{{ $t('poolName') }}:</span>
-              <BalInlineInput
-                v-model="poolName"
-                size="xs"
-                inputAlignRight
-                @save="saveState"
-              />
+              <BalInlineInput v-model="poolName" size="xs" inputAlignRight @save="saveState" />
             </BalStack>
             <BalStack horizontal justify="between">
               <span class="text-sm">{{ $t('poolSymbol') }}:</span>
-              <BalInlineInput
-                v-model="poolSymbol"
-                size="xs"
-                inputAlignRight
-                @save="saveState"
-              />
+              <BalInlineInput v-model="poolSymbol" size="xs" inputAlignRight @save="saveState" />
             </BalStack>
             <BalStack horizontal justify="between">
               <span class="text-sm">{{ $t('poolType') }}:</span>
@@ -292,9 +243,7 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
             <BalStack horizontal justify="between" class="mt-1">
               <span class="text-sm">{{ $t('swapFee') }}:</span>
               <BalStack horizontal spacing="sm">
-                <span class="text-sm">{{
-                  fNum2(initialFee, FNumFormats.percent)
-                }}</span>
+                <span class="text-sm">{{ fNum2(initialFee, FNumFormats.percent) }}</span>
                 <button class="hover:text-blue-500" @click="navigateToPoolFee">
                   <BalIcon name="edit" size="xs" />
                 </button>
@@ -311,30 +260,18 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
             </BalStack>
           </BalStack>
         </div>
-        <AnimatePresence
-          :isVisible="hasMissingPoolNameOrSymbol"
-          unmountInstantly
-        >
+        <AnimatePresence :isVisible="hasMissingPoolNameOrSymbol" unmountInstantly>
           <BalAlert :title="$t('missingPoolNameOrSymbol')" type="error">
             {{ $t('missingPoolNameOrSymbolInfo') }}
           </BalAlert>
         </AnimatePresence>
-        <AnimatePresence
-          :isVisible="hasInvalidInitialWeight && createPoolTxHash !== ''"
-          unmountInstantly
-        >
-          <BalAlert
-            :title="$t('createAPool.invalidInitialWeightsTitle')"
-            type="warning"
-          >
+        <AnimatePresence :isVisible="hasInvalidInitialWeight && createPoolTxHash !== ''" unmountInstantly>
+          <BalAlert :title="$t('createAPool.invalidInitialWeightsTitle')" type="warning">
             {{ $t('createAPool.invalidInitialWeightsInfo') }}
           </BalAlert>
         </AnimatePresence>
         <AnimatePresence :isVisible="showNativeAssetWarning" unmountInstantly>
-          <BalAlert
-            :title="$t('createAPool.invalidInitialWeightsTitle')"
-            type="warning"
-          >
+          <BalAlert :title="$t('createAPool.invalidInitialWeightsTitle')" type="warning">
             {{ $t('createAPool.nativeAssetWarning') }}
           </BalAlert>
         </AnimatePresence>
@@ -350,12 +287,7 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
         >
           {{ t('createAPool.arbReason') }}
         </BalAlert> -->
-        <CreateActions
-          :createDisabled="hasMissingPoolNameOrSymbol"
-          :tokenAddresses="tokenAddresses"
-          :amounts="tokenAmounts"
-          @success="handleSuccess"
-        />
+        <CreateActions :createDisabled="hasMissingPoolNameOrSymbol" :tokenAddresses="tokenAddresses" :amounts="tokenAmounts" @success="handleSuccess" />
       </BalStack>
     </div>
   </BalStack>

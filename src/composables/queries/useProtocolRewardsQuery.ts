@@ -21,19 +21,13 @@ export type ProtocolRewardsQueryResponse = {
 /**
  * SERVICES
  */
-const feeDistributorV1 = new FeeDistributor(
-  configService.network.addresses.feeDistributorDeprecated
-);
-const feeDistributorV2 = new FeeDistributor(
-  configService.network.addresses.feeDistributor
-);
+const feeDistributorV1 = new FeeDistributor(configService.network.addresses.feeDistributorDeprecated);
+const feeDistributorV2 = new FeeDistributor(configService.network.addresses.feeDistributor);
 
 /**
  * @summary Fetches claimable protocol reward balances.
  */
-export default function useProtocolRewardsQuery(
-  options: UseQueryOptions<ProtocolRewardsQueryResponse> = {}
-) {
+export default function useProtocolRewardsQuery(options: UseQueryOptions<ProtocolRewardsQueryResponse> = {}) {
   /**
    * COMPOSABLES
    */
@@ -42,13 +36,7 @@ export default function useProtocolRewardsQuery(
   /**
    * COMPUTED
    */
-  const enabled = computed(
-    () =>
-      isWalletReady.value &&
-      account.value != null &&
-      !isL2.value &&
-      !isKovan.value
-  );
+  const enabled = computed(() => isWalletReady.value && account.value != null && !isL2.value && !isKovan.value);
 
   /**
    * QUERY KEY
@@ -60,10 +48,7 @@ export default function useProtocolRewardsQuery(
    */
   const queryFn = async () => {
     try {
-      const [v1, v2] = await Promise.all([
-        feeDistributorV1.getClaimableBalances(account.value),
-        feeDistributorV2.getClaimableBalances(account.value),
-      ]);
+      const [v1, v2] = await Promise.all([feeDistributorV1.getClaimableBalances(account.value), feeDistributorV2.getClaimableBalances(account.value)]);
       return { v1, v2 };
     } catch (error) {
       console.error('Failed to fetch claimable protocol balances', error);
@@ -79,9 +64,5 @@ export default function useProtocolRewardsQuery(
     ...options,
   });
 
-  return useQuery<ProtocolRewardsQueryResponse>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  return useQuery<ProtocolRewardsQueryResponse>(queryKey, queryFn, queryOptions);
 }

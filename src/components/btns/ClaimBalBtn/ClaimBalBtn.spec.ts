@@ -67,11 +67,7 @@ describe.only('ClaimBalBtn', () => {
 
         await fireEvent.click(btn);
 
-        expect(balancerMinter.mintMany).toBeCalledWith([
-          mockGaugeAddress,
-          mockGaugeAddress,
-          mockGaugeAddress,
-        ]);
+        expect(balancerMinter.mintMany).toBeCalledWith([mockGaugeAddress, mockGaugeAddress, mockGaugeAddress]);
       });
     });
   });

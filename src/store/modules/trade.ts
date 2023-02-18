@@ -14,14 +14,8 @@ const state: TradeState = {
 
 const actions = {
   init({ commit }) {
-    commit(
-      'setInputAsset',
-      lsGet('trade.inputAsset', initialTokens[networkId.value].input)
-    );
-    commit(
-      'setOutputAsset',
-      lsGet('trade.outputAsset', initialTokens[networkId.value].output)
-    );
+    commit('setInputAsset', lsGet('trade.inputAsset', initialTokens[networkId.value].input));
+    commit('setOutputAsset', lsGet('trade.outputAsset', initialTokens[networkId.value].output));
   },
 };
 

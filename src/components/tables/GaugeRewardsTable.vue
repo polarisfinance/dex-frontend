@@ -56,8 +56,7 @@ const columns = ref<ColumnDefinition<Reward>[]>([
     id: 'amount',
     align: 'right',
     width: 150,
-    accessor: ({ amount, token }) =>
-      `${fNum2(amount, FNumFormats.token)} ${token.symbol}`,
+    accessor: ({ amount, token }) => `${fNum2(amount, FNumFormats.token)} ${token.symbol}`,
   },
   {
     name: t('value'),
@@ -83,10 +82,7 @@ const columns = ref<ColumnDefinition<Reward>[]>([
 const rewardsData = computed((): Reward[] => {
   return props.gauge.rewardTokens.map(tokenAddress => {
     const token = getToken(tokenAddress);
-    const amount = formatUnits(
-      props.gauge.claimableRewards[tokenAddress],
-      token.decimals
-    );
+    const amount = formatUnits(props.gauge.claimableRewards[tokenAddress], token.decimals);
 
     return {
       token,
@@ -97,26 +93,13 @@ const rewardsData = computed((): Reward[] => {
 });
 
 const totalRewardValue = computed((): string => {
-  return rewardsData.value
-    .reduce((acc, reward) => acc.plus(reward.value), bnum('0'))
-    .toString();
+  return rewardsData.value.reduce((acc, reward) => acc.plus(reward.value), bnum('0')).toString();
 });
 </script>
 
 <template>
-  <BalCard
-    shadow="lg"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
-    <BalTable
-      :columns="columns"
-      :data="rewardsData"
-      :isLoading="isLoading"
-      skeletonClass="h-64"
-      :square="upToLargeBreakpoint"
-    >
+  <BalCard shadow="lg" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad>
+    <BalTable :columns="columns" :data="rewardsData" :isLoading="isLoading" skeletonClass="h-64" :square="upToLargeBreakpoint">
       <template #tokenColumnCell="{ token }">
         <div class="flex items-center py-4 px-6">
           <BalAsset :iconURI="token?.logoURI" />

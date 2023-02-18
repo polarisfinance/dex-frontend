@@ -20,7 +20,8 @@ export interface MyPollInvestmentFiatType {
 
 export default defineComponent({
   props: {
-    pool: {                             //undefined for singlestake
+    pool: {
+      //undefined for singlestake
       type: Object as PropType<Pool>,
       required: true,
     },
@@ -71,7 +72,7 @@ export default defineComponent({
 
     const fiatValue = computed(() => {
       let fiatVal = 0;
-      if(props.pool!=undefined){
+      if (props.pool != undefined) {
         props.pool.tokens.forEach(token => {
           fiatVal += Number(toFiat(token.balance, token.address));
         });
@@ -79,7 +80,7 @@ export default defineComponent({
         const totalValue = lpVal * props.tokens;
 
         return fNum2(totalValue, FNumFormats.fiat);
-      }else{
+      } else {
         return '-';
       }
     });

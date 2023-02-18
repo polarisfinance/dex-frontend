@@ -1,23 +1,9 @@
 <template>
   <div :class="`app-nav-toggle bg-gray-50 dark:bg-gray-${darkModeBg}`">
-    <router-link
-      :to="{ name: 'home' }"
-      :class="[
-        'toggle-link rounded-l-lg px-6',
-        { [activeClasses]: !isTradePage },
-      ]"
-      @click="trackGoal(Goals.ClickNavInvest)"
-    >
+    <router-link :to="{ name: 'home' }" :class="['toggle-link rounded-l-lg px-6', { [activeClasses]: !isTradePage }]" @click="trackGoal(Goals.ClickNavInvest)">
       {{ $t('invest') }}
     </router-link>
-    <router-link
-      :to="{ name: 'trade' }"
-      :class="[
-        'toggle-link rounded-r-lg px-6',
-        { [activeClasses]: isTradePage },
-      ]"
-      @click="trackGoal(Goals.ClickNavTrade)"
-    >
+    <router-link :to="{ name: 'trade' }" :class="['toggle-link rounded-r-lg px-6', { [activeClasses]: isTradePage }]" @click="trackGoal(Goals.ClickNavTrade)">
       {{ $t('trade') }}
     </router-link>
   </div>

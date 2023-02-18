@@ -10,9 +10,7 @@ export type PageViewOptions = {
   referrer?: string;
 };
 
-type FathomCommand =
-  | { type: 'trackPageview'; opts: PageViewOptions | undefined }
-  | { type: 'trackGoal'; code: string; cents: number };
+type FathomCommand = { type: 'trackPageview'; opts: PageViewOptions | undefined } | { type: 'trackGoal'; code: string; cents: number };
 
 declare global {
   interface Window {

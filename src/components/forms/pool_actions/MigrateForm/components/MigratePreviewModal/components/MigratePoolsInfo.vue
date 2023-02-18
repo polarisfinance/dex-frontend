@@ -16,9 +16,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <div
-    class="relative mt-4 divide-y rounded-lg border dark:divide-gray-700 dark:border-gray-700"
-  >
+  <div class="relative mt-4 divide-y rounded-lg border dark:divide-gray-700 dark:border-gray-700">
     <div class="flex items-center p-3">
       <BalAsset :address="fromPoolTokenInfo.address" class="mr-2" :size="36" />
       <div>{{ fromPoolTokenInfo.symbol }}</div>

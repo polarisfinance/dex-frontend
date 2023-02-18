@@ -1,11 +1,5 @@
 <template>
-  <img
-    :src="pictureHover"
-    @mouseover="hover = true"
-    @mouseleave="hover = false"
-
-    class="mr-2"
-  />
+  <img :src="pictureHover" @mouseover="hover = true" @mouseleave="hover = false" class="mr-2" />
 </template>
 
 <script>

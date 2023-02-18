@@ -30,18 +30,11 @@ const POOL_ISSUES = {
       '0xc31a37105b94ab4efca1954a14f059af11fcd9bb000000000000000000000455',
       '0xc17636e36398602dd37bb5d1b3a9008c7629005f0002000000000000000004c4',
     ],
-    poolOwnerVulnWarningEcosystemMigrate: [
-      '0xaf5e0b5425de1f5a630a8cb5aa9d97b8141c908d000200000000000000000366',
-      '0xb4670d1389c758e4380c4211bcbc85342688b9c50002000000000000000003d8',
-    ],
+    poolOwnerVulnWarningEcosystemMigrate: ['0xaf5e0b5425de1f5a630a8cb5aa9d97b8141c908d000200000000000000000366', '0xb4670d1389c758e4380c4211bcbc85342688b9c50002000000000000000003d8'],
   },
   [Network.ARBITRUM]: {
-    poolOwnerVulnWarningGovernance: [
-      '0x5a5884fc31948d59df2aeccca143de900d49e1a300000000000000000000006f',
-    ],
-    poolOwnerVulnWarningEcosystemMigrate: [
-      '0x0510ccf9eb3ab03c1508d3b9769e8ee2cfd6fdcf00000000000000000000005d',
-    ],
+    poolOwnerVulnWarningGovernance: ['0x5a5884fc31948d59df2aeccca143de900d49e1a300000000000000000000006f'],
+    poolOwnerVulnWarningEcosystemMigrate: ['0x0510ccf9eb3ab03c1508d3b9769e8ee2cfd6fdcf00000000000000000000005d'],
   },
 };
 

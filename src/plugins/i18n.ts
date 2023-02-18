@@ -7,11 +7,7 @@ delete messages.default;
 
 export function getBrowserLocale() {
   if (typeof navigator !== 'undefined') {
-    return (
-      navigator['userLanguage'] ||
-      navigator['language'] ||
-      (navigator.languages?.[0] ? navigator.languages[0] : undefined)
-    );
+    return navigator['userLanguage'] || navigator['language'] || (navigator.languages?.[0] ? navigator.languages[0] : undefined);
   }
   return undefined;
 }

@@ -2,62 +2,32 @@
   <div>
     <div class="p-4">
       <div class="box bg">
-        <div
-          class="txt w-full font-[500px] mt-[12px] grid h-[22px] grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm font-medium leading-none text-purple-secondary"
-        >
+        <div class="txt font-[500px] mt-[12px] grid h-[22px] w-full grid-cols-2 grid-rows-1 items-center justify-between gap-5 text-sm font-medium leading-none text-purple-secondary">
           Connected with {{ connectorName }}
           <div class="flex flex-row justify-end gap-[8px]">
-            <button
-              class="h-[22px] w-[86px] disconnect"
-              @click="disconnectWallet"
-            >
-              <div
-                class="text-center text-[14px] leading-[18px]"
-                v-text="$t('disconnect')"
-              />
+            <button class="disconnect h-[22px] w-[86px]" @click="disconnectWallet">
+              <div class="text-center text-[14px] leading-[18px]" v-text="$t('disconnect')" />
             </button>
-            <button
-              class="h-[22px] w-[68px] change"
-              @click="toggleWalletSelectModal"
-              v-on:click="close"
-            >
-              <div
-                class="text-center text-[14px] leading-[18px]"
-                v-text="$t('change')"
-              />
+            <button class="change h-[22px] w-[68px]" @click="toggleWalletSelectModal" v-on:click="close">
+              <div class="text-center text-[14px] leading-[18px]" v-text="$t('change')" />
             </button>
           </div>
         </div>
         <div class="flex flex-row">
           <Avatar :iconURI="profile?.avatar" :address="account" :size="24" />
-          <div
-            class="pl-[10px] font-bold text-black dark:text-white address"
-            v-text="_shorten(account)"
-          />
+          <div class="address pl-[10px] font-bold text-black dark:text-white" v-text="_shorten(account)" />
         </div>
 
         <div class="address mb-[12px] flex justify-start">
           <button class="button p-0">
-            <div
-              class="link flex flex-row justify-start gap-[8px] align-baseline copy-address"
-              @click="copyAddress"
-            >
+            <div class="link copy-address flex flex-row justify-start gap-[8px] align-baseline" @click="copyAddress">
               <IconCheck v-if="copiedAddress" class="mt-0.5" />
               <IconCopy v-else />
-              <div
-                class="text-center"
-                v-text="copiedAddress ? $t('copied') : $t('copyAddress')"
-              />
+              <div class="text-center" v-text="copiedAddress ? $t('copied') : $t('copyAddress')" />
             </div>
           </button>
 
-          <component
-            :is="'a'"
-            :href="explorer.addressLink(account)"
-            target="_blank"
-            rel="noreferrer"
-            class="link ml-[16px] flex flex-row justify-start gap-[8px] align-baseline view"
-          >
+          <component :is="'a'" :href="explorer.addressLink(account)" target="_blank" rel="noreferrer" class="link view ml-[16px] flex flex-row justify-start gap-[8px] align-baseline">
             <IconExplorer />
             <div class="text-center" v-text="'View on explorer'" />
           </component>
@@ -76,10 +46,7 @@ import useEthereumTxType from '@/composables/useEthereumTxType';
 import { ethereumTxTypeOptions } from '@/constants/options';
 import { GP_SUPPORTED_NETWORKS } from '@/services/gnosis/constants';
 import useWeb3 from '@/services/web3/useWeb3';
-import {
-  getConnectorLogo,
-  getConnectorName,
-} from '@/services/web3/web3.plugin';
+import { getConnectorLogo, getConnectorName } from '@/services/web3/web3.plugin';
 // import X from '../../web3/x.vue';
 import IconCheck from '@/components/icons/IconCheck.vue';
 import IconCopy from '@/components/icons/IconCopy.vue';
@@ -97,19 +64,8 @@ export default defineComponent({
   setup() {
     // COMPOSABLES
     const store = useStore();
-    const {
-      explorerLinks,
-      account,
-      profile,
-      disconnectWallet,
-      toggleWalletSelectModal,
-      connector,
-      provider,
-      isEIP1559SupportedNetwork,
-      userNetworkConfig,
-      appNetworkConfig,
-      isUnsupportedNetwork,
-    } = useWeb3();
+    const { explorerLinks, account, profile, disconnectWallet, toggleWalletSelectModal, connector, provider, isEIP1559SupportedNetwork, userNetworkConfig, appNetworkConfig, isUnsupportedNetwork } =
+      useWeb3();
     const { ethereumTxType, setEthereumTxType } = useEthereumTxType();
 
     // DATA
@@ -145,16 +101,10 @@ export default defineComponent({
     const networkName = computed(() => userNetworkConfig.value?.name);
     const appLocale = computed(() => store.state.app.locale);
     const appDarkMode = computed(() => store.state.app.darkMode);
-    const connectorName = computed(() =>
-      getConnectorName(connector.value?.id, provider.value)
-    );
-    const connectorLogo = computed(() =>
-      getConnectorLogo(connector.value?.id, provider.value)
-    );
+    const connectorName = computed(() => getConnectorName(connector.value?.id, provider.value));
+    const connectorLogo = computed(() => getConnectorLogo(connector.value?.id, provider.value));
     const hideDisconnect = computed(() => connector.value?.id == 'gnosis');
-    const isGnosisSupportedNetwork = computed(() =>
-      GP_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId)
-    );
+    const isGnosisSupportedNetwork = computed(() => GP_SUPPORTED_NETWORKS.includes(appNetworkConfig.chainId));
 
     // METHODS
     const setDarkMode = val => store.commit('app/setDarkMode', val);

@@ -5,14 +5,9 @@
       <div class="sunrise-subtitle-text title">Single Stake</div>
     </div>
   </div>
-  <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">
-    Earn XPOLAR by depositing{{ sunrise.name.toUpperCase() }}
-  </div>
+  <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">Earn XPOLAR by depositing{{ sunrise.name.toUpperCase() }}</div>
 
-  <div
-    :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="justify-center text-center"
-  >
+  <div :class="{ sunrise: isDesktop, sunriseMobile: isMobile }" class="justify-center text-center">
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" :src="logo[sunrise.name]" />
       <div class="num-tokens">{{ balance }}</div>
@@ -26,9 +21,7 @@
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button> -->
-        <button class="claim-btn" @click="toggleSpolarModal(true)">
-          Deposit
-        </button>
+        <button class="claim-btn" @click="toggleSpolarModal(true)">Deposit</button>
         <SpolarModal
           :isVisible="isSpolarModalVisible"
           :deposit="depositToken"
@@ -37,17 +30,11 @@
             fetchData();
           "
         />
-        <SpolarWithdrawModal
-          :isVisible="isSpolarWithdrawModalVisible"
-          :deposit="depositToken"
-          @close="toggleSpolarWithdrawModal"
-        />
+        <SpolarWithdrawModal :isVisible="isSpolarWithdrawModalVisible" :deposit="depositToken" @close="toggleSpolarWithdrawModal" />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button class="withdraw-btn" @click="toggleSpolarWithdrawModal(false)">
-          Withdraw
-        </button>
+        <button class="withdraw-btn" @click="toggleSpolarWithdrawModal(false)">Withdraw</button>
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -68,19 +55,11 @@
       <div class="details">${{ earnedAmountInDollars }}</div>
       <div class="details"><span class="uppercase">SPOLAR</span> Earned</div>
       <div class="mt-[24px] flex justify-center gap-[12px]">
-        <button
-          class="claim-btn"
-          @click="claim"
-          :disabled="!(parseFloat(earned) > 0)"
-        >
-          Claim Rewards
-        </button>
+        <button class="claim-btn" @click="claim" :disabled="!(parseFloat(earned) > 0)">Claim Rewards</button>
       </div>
     </div>
     <div class="w-full">
-      <button class="claim-btn" text-center @click="withdraw(depositAmount)">
-        Claim and withdraw
-      </button>
+      <button class="claim-btn" text-center @click="withdraw(depositAmount)">Claim and withdraw</button>
     </div>
   </div>
 </template>
@@ -341,19 +320,11 @@ export default defineComponent({
 }
 
 .claim-btn:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.7) 0%, rgba(123, 48, 127, 0.567) 100%);
 }
 
 .claim-btn:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.5) 0%, rgba(123, 48, 127, 0.405) 100%);
 }
 
 .withdraw-btn {
@@ -373,12 +344,7 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 
-  background: linear-gradient(
-    90.64deg,
-    #fbaaff -20.45%,
-    #f89c35 36.77%,
-    #7b307f 100.27%
-  );
+  background: linear-gradient(90.64deg, #fbaaff -20.45%, #f89c35 36.77%, #7b307f 100.27%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

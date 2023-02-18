@@ -15,10 +15,7 @@ type UserPoolActivitiesQueryResponse = {
   skip?: number;
 };
 
-export default function usePoolUserActivitiesQuery(
-  id: string,
-  options: UseInfiniteQueryOptions<UserPoolActivitiesQueryResponse> = {}
-) {
+export default function usePoolUserActivitiesQuery(id: string, options: UseInfiniteQueryOptions<UserPoolActivitiesQueryResponse> = {}) {
   // COMPOSABLES
   const { account, isWalletReady } = useWeb3();
   const { networkId } = useNetwork();
@@ -27,16 +24,11 @@ export default function usePoolUserActivitiesQuery(
   const enabled = computed(() => isWalletReady.value && account.value != null);
 
   // DATA
-  const queryKey = reactive(
-    QUERY_KEYS.Pools.UserActivities(networkId, id, account)
-  );
+  const queryKey = reactive(QUERY_KEYS.Pools.UserActivities(networkId, id, account));
 
   // METHODS
   const queryFn = async ({ pageParam = 0 }) => {
-    const pagination =
-      pageParam === 0
-        ? POOLS.Pagination.PerPoolInitial
-        : POOLS.Pagination.PerPool;
+    const pagination = pageParam === 0 ? POOLS.Pagination.PerPoolInitial : POOLS.Pagination.PerPool;
 
     const poolActivities = await balancerSubgraphService.poolActivities.get({
       first: pagination,
@@ -49,23 +41,15 @@ export default function usePoolUserActivitiesQuery(
 
     return {
       poolActivities,
-      skip:
-        poolActivities.length >= pagination
-          ? pageParam + pagination
-          : undefined,
+      skip: poolActivities.length >= pagination ? pageParam + pagination : undefined,
     };
   };
 
   const queryOptions = reactive({
     enabled,
-    getNextPageParam: (lastPage: UserPoolActivitiesQueryResponse) =>
-      lastPage.skip,
+    getNextPageParam: (lastPage: UserPoolActivitiesQueryResponse) => lastPage.skip,
     ...options,
   });
 
-  return useInfiniteQuery<UserPoolActivitiesQueryResponse>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  return useInfiniteQuery<UserPoolActivitiesQueryResponse>(queryKey, queryFn, queryOptions);
 }

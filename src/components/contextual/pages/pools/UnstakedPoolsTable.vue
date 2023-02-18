@@ -22,13 +22,7 @@ const networkName = configService.network.shortName;
 
 /** COMPOSABLES */
 const {
-  userData: {
-    userGaugeShares,
-    userLiquidityGauges,
-    stakedPools,
-    isLoadingUserStakingData,
-    poolBoosts,
-  },
+  userData: { userGaugeShares, userLiquidityGauges, stakedPools, isLoadingUserStakingData, poolBoosts },
   setPoolAddress,
 } = useStaking();
 const { isWalletReady, isWalletConnecting } = useWeb3();
@@ -46,9 +40,7 @@ const stakedBalanceMap = computed(() => {
 });
 
 const noPoolsLabel = computed(() => {
-  return isWalletReady.value || isWalletConnecting.value
-    ? t('noUnstakedInvestments', [networkName])
-    : t('connectYourWallet');
+  return isWalletReady.value || isWalletConnecting.value ? t('noUnstakedInvestments', [networkName]) : t('connectYourWallet');
 });
 
 // first retrieve all the pools the user has liquidity for
@@ -67,9 +59,7 @@ const partiallyStakedPools = computed(() => {
       // pulled from the gauge subgraph
       const stakedBalance = stakedBalanceMap.value[pool.id];
       const unstakedBalance = pool.bpt;
-      const stakedPct = bnum(stakedBalance).div(
-        bnum(stakedBalance).plus(unstakedBalance)
-      );
+      const stakedPct = bnum(stakedBalance).div(bnum(stakedBalance).plus(unstakedBalance));
       return {
         ...pool,
         stakedPct: stakedPct.toString(),
@@ -81,9 +71,7 @@ const partiallyStakedPools = computed(() => {
 
 // Pools where there is no staked BPT at all
 const unstakedPools = computed(() => {
-  const availableGaugePoolIds = (userLiquidityGauges.value || []).map(
-    gauge => gauge.poolId
-  );
+  const availableGaugePoolIds = (userLiquidityGauges.value || []).map(gauge => gauge.poolId);
   return (userPools.value?.pools || [])
     .filter(pool => {
       return availableGaugePoolIds?.includes(pool.id);
@@ -98,9 +86,7 @@ const unstakedPools = computed(() => {
 const poolsToRender = computed(() => {
   const stakablePools = [...partiallyStakedPools.value, ...unstakedPools.value];
   const stakableUserPoolIds = stakablePools.map(pool => pool.id);
-  const nonMigratableUserPools = (userPools.value?.pools || [])
-    .filter(pool => !isMigratablePool(pool))
-    .filter(pool => !stakableUserPoolIds.includes(pool.id));
+  const nonMigratableUserPools = (userPools.value?.pools || []).filter(pool => !isMigratablePool(pool)).filter(pool => !stakableUserPoolIds.includes(pool.id));
   // now mash them together
   return uniqBy([...nonMigratableUserPools, ...stakablePools], pool => pool.id);
 });
@@ -114,10 +100,7 @@ function handleStake(pool: Pool) {
   stakePool.value = pool;
 }
 
-function calculateFiatValueOfShares(
-  pool: PoolWithShares | Pool,
-  stakedBalance: string
-) {
+function calculateFiatValueOfShares(pool: PoolWithShares | Pool, stakedBalance: string) {
   return bnum(pool.totalLiquidity)
     .div(pool.totalShares)
     .times((stakedBalance || '0').toString())
@@ -145,11 +128,6 @@ function handleModalClose() {
         @trigger-stake="handleStake"
       />
     </BalStack>
-    <StakePreviewModal
-      :pool="stakePool"
-      :isVisible="showStakeModal"
-      action="stake"
-      @close="handleModalClose"
-    />
+    <StakePreviewModal :pool="stakePool" :isVisible="showStakeModal" action="stake" @close="handleModalClose" />
   </div>
 </template>

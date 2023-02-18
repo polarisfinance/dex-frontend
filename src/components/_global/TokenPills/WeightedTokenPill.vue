@@ -25,11 +25,7 @@ withDefaults(defineProps<Props>(), {
       {{ symbol }}
       <div v-if="!lastToken" class="mx-[3px]">-</div>
     </div>
-    <div
-      :class="{ isMobile: weightMobile, isDesktop: weight }"
-      class="weight text-center"
-      v-if="showWeight"
-    >
+    <div :class="{ isMobile: weightMobile, isDesktop: weight }" class="weight text-center" v-if="showWeight">
       {{ weight }}
     </div>
   </div>

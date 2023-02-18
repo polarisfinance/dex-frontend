@@ -10,9 +10,7 @@ export default class IpfsService {
   }
 
   async get<T>(hash: string, protocol = 'ipfs'): Promise<T> {
-    const { data } = await axios.get(
-      `https://${this.gateway}/${protocol}/${hash}`
-    );
+    const { data } = await axios.get(`https://${this.gateway}/${protocol}/${hash}`);
     return data;
   }
 }

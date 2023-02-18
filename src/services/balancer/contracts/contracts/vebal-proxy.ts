@@ -29,9 +29,7 @@ export class VeBALProxy {
   async getAdjustedBalances(addresses: string) {
     const multicaller = this.getMulticaller();
     for (const address of addresses) {
-      multicaller.call(address, this.address, 'adjustedBalanceOf', [
-        getAddress(address),
-      ]);
+      multicaller.call(address, this.address, 'adjustedBalanceOf', [getAddress(address)]);
     }
 
     const response = await multicaller.execute();

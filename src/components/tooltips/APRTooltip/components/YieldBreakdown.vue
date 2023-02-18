@@ -34,13 +34,9 @@ const { t } = useI18n();
 /**
  * COMPUTED
  */
-const yieldAPRTokens = computed(() =>
-  getTokens(Object.keys(props.yieldAPR.breakdown))
-);
+const yieldAPRTokens = computed(() => getTokens(Object.keys(props.yieldAPR.breakdown)));
 
-const hasMultiRewardTokens = computed(
-  () => Object.keys(yieldAPRTokens.value).length > 1
-);
+const hasMultiRewardTokens = computed(() => Object.keys(yieldAPRTokens.value).length > 1);
 
 const yieldAPRLabel = computed(() => {
   if (includesWstEth(props.poolTokens)) return t('yieldAprRewards.apr.steth');
@@ -49,9 +45,7 @@ const yieldAPRLabel = computed(() => {
   return '';
 });
 
-const yieldBreakdownItems = computed((): [string, string][] =>
-  Object.entries(props.yieldAPR.breakdown)
-);
+const yieldBreakdownItems = computed((): [string, string][] => Object.entries(props.yieldAPR.breakdown));
 </script>
 
 <template>
@@ -64,9 +58,7 @@ const yieldBreakdownItems = computed((): [string, string][] =>
     </div>
     <template v-if="hasMultiRewardTokens" #item="{ item: [address, amount] }">
       {{ fNum2(amount, FNumFormats.percent) }}
-      <span class="text-secondary ml-1 text-xs">
-        {{ yieldAPRTokens[getAddress(address)].symbol }} {{ $t('apr') }}
-      </span>
+      <span class="text-secondary ml-1 text-xs"> {{ yieldAPRTokens[getAddress(address)].symbol }} {{ $t('apr') }} </span>
     </template>
   </BalBreakdown>
 </template>

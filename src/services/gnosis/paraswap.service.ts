@@ -1,11 +1,5 @@
 import { OrderKind } from '@gnosis.pm/gp-v2-contracts';
-import {
-  APIError,
-  NetworkID,
-  OptimalRatesWithPartnerFees,
-  ParaSwap,
-  SwapSide,
-} from 'paraswap';
+import { APIError, NetworkID, OptimalRatesWithPartnerFees, ParaSwap, SwapSide } from 'paraswap';
 import { RateOptions } from 'paraswap/build/types';
 
 import { networkId } from '@/composables/useNetwork';
@@ -25,8 +19,7 @@ export default class ParaSwapService {
 
   public async getPriceQuote(params: PriceQuoteParams) {
     try {
-      const { amount, sellToken, buyToken, kind, fromDecimals, toDecimals } =
-        params;
+      const { amount, sellToken, buyToken, kind, fromDecimals, toDecimals } = params;
 
       const swapSide = kind === OrderKind.BUY ? SwapSide.BUY : SwapSide.SELL;
 
@@ -36,15 +29,7 @@ export default class ParaSwapService {
         excludeDEXS: 'ParaSwapPool4',
       };
 
-      const rateResult = await this.paraSwap.getRate(
-        toErc20Address(sellToken),
-        toErc20Address(buyToken),
-        amount,
-        swapSide,
-        options,
-        fromDecimals,
-        toDecimals
-      );
+      const rateResult = await this.paraSwap.getRate(toErc20Address(sellToken), toErc20Address(buyToken), amount, swapSide, options, fromDecimals, toDecimals);
 
       if (this.isGetRateSuccess(rateResult)) {
         // Success getting the price
@@ -63,9 +48,7 @@ export default class ParaSwapService {
     return null;
   }
 
-  private toPriceInformation(
-    priceRaw: ParaSwapPriceQuote | null
-  ): PriceInformation | null {
+  private toPriceInformation(priceRaw: ParaSwapPriceQuote | null): PriceInformation | null {
     if (!priceRaw || !priceRaw.details) {
       return null;
     }
@@ -84,18 +67,12 @@ export default class ParaSwapService {
     }
   }
 
-  private isGetRateSuccess(
-    rateResult: OptimalRatesWithPartnerFees | APIError
-  ): rateResult is OptimalRatesWithPartnerFees {
+  private isGetRateSuccess(rateResult: OptimalRatesWithPartnerFees | APIError): rateResult is OptimalRatesWithPartnerFees {
     return !!(rateResult as OptimalRatesWithPartnerFees).destAmount;
   }
 
   private getPriceQuoteFromError(error: APIError): ParaSwapPriceQuote | null {
-    if (
-      error.message === 'ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT' &&
-      error.data &&
-      error.data.priceRoute
-    ) {
+    if (error.message === 'ESTIMATED_LOSS_GREATER_THAN_MAX_IMPACT' && error.data && error.data.priceRoute) {
       // If the price impact is too big, it still give you the estimation
       return error.data.priceRoute;
     } else {

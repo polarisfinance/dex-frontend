@@ -48,11 +48,7 @@ const wstETH = computed(() => getToken(networkConfig.addresses.wstETH));
     </router-link>
     <BalTooltip>
       <template #activator>
-        <BalIcon
-          name="info"
-          size="xs"
-          class="ml-2 text-gray-400 dark:text-gray-500"
-        />
+        <BalIcon name="info" size="xs" class="ml-2 text-gray-400 dark:text-gray-500" />
       </template>
       <div v-html="$t('wrapStEthTooltip')" />
     </BalTooltip>

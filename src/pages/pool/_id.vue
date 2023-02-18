@@ -12,11 +12,7 @@
     <div class="flex flex-none">
       <div class="px-3">
         <div class="flex">
-          <div
-            v-for="(token, idx) in tableData"
-            :key="idx"
-            class="token-name flex"
-          >
+          <div v-for="(token, idx) in tableData" :key="idx" class="token-name flex">
             <div>
               {{ symbolFor(token.address) }}
             </div>
@@ -28,21 +24,14 @@
           {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
         </div>
         <div>
-          <router-link
-            class="detail-link underline"
-            :to="'/pool/' + pool?.id + '/about'"
-          >
+          <router-link class="detail-link underline" :to="'/pool/' + pool?.id + '/about'">
             Pool details
             <img :src="arrow" class="ml-[12px] inline" />
           </router-link>
         </div>
       </div>
       <div>
-        <BalAssetSet
-          :size="36"
-          :addresses="iconAddresses(tableData)"
-          :width="60"
-        />
+        <BalAssetSet :size="36" :addresses="iconAddresses(tableData)" :width="60" />
       </div>
     </div>
   </div>
@@ -71,17 +60,10 @@
       </div>
     </div>
   </div>
-  <div
-    class="container mx-auto flex justify-center gap-8"
-    :class="{ 'mt-[60px] flex-wrap': isMobile, 'mt-[120px]': isDesktop }"
-  >
+  <div class="container mx-auto flex justify-center gap-8" :class="{ 'mt-[60px] flex-wrap': isMobile, 'mt-[120px]': isDesktop }">
     <PoolBalancesCard :pool="pool" :loading="loadingPool" />
   </div>
-  <div
-    class="container mx-auto flex justify-center gap-8"
-    v-if="account"
-    :class="{ ' mt-[60px]': isMobile, 'mt-[120px]': isDesktop }"
-  >
+  <div class="container mx-auto flex justify-center gap-8" v-if="account" :class="{ ' mt-[60px]': isMobile, 'mt-[120px]': isDesktop }">
     <PoolUserDashboard
       v-if="Number(stakedBalance) + Number(unstakedTokens) > 0"
       :pool="pool"
@@ -95,11 +77,7 @@
   </div>
   <div class="container mx-auto" ref="intersectionSentinel" />
   <div class="container mx-auto">
-    <PoolTransactionsCard
-      v-if="isSentinelIntersected"
-      :pool="pool"
-      :loading="loadingPool"
-    />
+    <PoolTransactionsCard v-if="isSentinelIntersected" :pool="pool" :loading="loadingPool" />
   </div>
 
   <!-- <div :class="{ 'px-8': isMobile }">
@@ -312,16 +290,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeUnmount,
-  onMounted,
-  reactive,
-  ref,
-  toRefs,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -356,22 +325,10 @@ import { BigNumber } from 'ethers';
 import arrow from './table-arrow.svg';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import { totalAprLabel } from '@/composables/usePool';
-import MyPoolInvsetmentFiat, {
-  MyPollInvestmentFiatType,
-} from '@/components/pool/MyPoolInvsetmentFiat.vue';
-import {
-  BigNumberToString,
-  sunriseNameToAddress,
-  SPOLAR,
-  getDisplayBalance,
-} from '@/composables/PolarisFinance/utils';
+import MyPoolInvsetmentFiat, { MyPollInvestmentFiatType } from '@/components/pool/MyPoolInvsetmentFiat.vue';
+import { BigNumberToString, sunriseNameToAddress, SPOLAR, getDisplayBalance } from '@/composables/PolarisFinance/utils';
 
-import {
-  spolarABI,
-  sunriseABI,
-  xpolarRewardPoolABI,
-  ERC20ABI,
-} from '@/composables/PolarisFinance/ABI';
+import { spolarABI, sunriseABI, xpolarRewardPoolABI, ERC20ABI } from '@/composables/PolarisFinance/ABI';
 import { Contract } from 'ethers';
 
 import { sendTransaction } from '@/lib/utils/balancer/web3';
@@ -482,10 +439,8 @@ export default defineComponent({
 
     const isPPool = computed(() => {
       for (let token of tableData.value) {
-        if ('0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6' == token.address)
-          return 'NEAR';
-        if ('0xfbe0ec68483c0b0a9d4bcea3ccf33922225b8465' == token.address)
-          return 'STNEAR';
+        if ('0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6' == token.address) return 'NEAR';
+        if ('0xfbe0ec68483c0b0a9d4bcea3ccf33922225b8465' == token.address) return 'STNEAR';
       }
 
       return undefined;
@@ -504,19 +459,10 @@ export default defineComponent({
     //#region pool query
     const poolQuery = usePoolQuery(route.params.id as string);
     const pool = computed(() => poolQuery.data.value);
-    const poolQueryLoading = computed(
-      () =>
-        poolQuery.isLoading.value ||
-        poolQuery.isIdle.value ||
-        Boolean(poolQuery.error.value)
-    );
+    const poolQueryLoading = computed(() => poolQuery.isLoading.value || poolQuery.isIdle.value || Boolean(poolQuery.error.value));
     const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
 
-    const {
-      isStableLikePool,
-      isLiquidityBootstrappingPool,
-      isStablePhantomPool,
-    } = usePool(poolQuery.data);
+    const { isStableLikePool, isLiquidityBootstrappingPool, isStablePhantomPool } = usePool(poolQuery.data);
     //#endregion
 
     //#region pool snapshot query
@@ -526,15 +472,10 @@ export default defineComponent({
       // in order to prevent multiple coingecko requests
       { refetchOnWindowFocus: false }
     );
-    const isLoadingSnapshots = computed(
-      () =>
-        poolSnapshotsQuery.isLoading.value || poolSnapshotsQuery.isIdle.value
-    );
+    const isLoadingSnapshots = computed(() => poolSnapshotsQuery.isLoading.value || poolSnapshotsQuery.isIdle.value);
 
     const snapshots = computed(() => poolSnapshotsQuery.data.value?.snapshots);
-    const historicalPrices = computed(
-      () => poolSnapshotsQuery.data.value?.prices
-    );
+    const historicalPrices = computed(() => poolSnapshotsQuery.data.value?.prices);
     //#endregion
 
     //#region APR query
@@ -554,11 +495,7 @@ export default defineComponent({
     let observer: IntersectionObserver | undefined;
 
     function addIntersectionObserver(): void {
-      if (
-        !('IntersectionObserver' in window) ||
-        !('IntersectionObserverEntry' in window) ||
-        !intersectionSentinel.value
-      ) {
+      if (!('IntersectionObserver' in window) || !('IntersectionObserverEntry' in window) || !intersectionSentinel.value) {
         isSentinelIntersected.value = true;
         return;
       }
@@ -596,21 +533,13 @@ export default defineComponent({
     });
     //#endregion
 
-    const noInitLiquidity = computed(
-      () =>
-        !loadingPool.value &&
-        pool.value &&
-        Number(pool.value?.onchain?.totalSupply || '0') === 0
-    );
+    const noInitLiquidity = computed(() => !loadingPool.value && pool.value && Number(pool.value?.onchain?.totalSupply || '0') === 0);
 
     const missingPrices = computed(() => {
       if (pool.value) {
         const tokensWithPrice = Object.keys(prices.value);
 
-        const tokens =
-          isStablePhantomPool.value && pool.value.mainTokens
-            ? pool.value.mainTokens
-            : pool.value.tokensList;
+        const tokens = isStablePhantomPool.value && pool.value.mainTokens ? pool.value.mainTokens : pool.value.tokensList;
 
         return !tokens.every(token => includesAddress(tokensWithPrice, token));
       }
@@ -620,14 +549,10 @@ export default defineComponent({
     const titleTokens = computed(() => {
       if (!pool.value || !pool.value.onchain?.tokens) return [];
 
-      return Object.entries(pool.value.onchain.tokens).sort(
-        ([, a]: any[], [, b]: any[]) => b.weight - a.weight
-      );
+      return Object.entries(pool.value.onchain.tokens).sort(([, a]: any[], [, b]: any[]) => b.weight - a.weight);
     });
 
-    const isStakablePool = computed((): boolean =>
-      POOLS.Stakable.AllowList.includes(route.params.id as string)
-    );
+    const isStakablePool = computed((): boolean => POOLS.Stakable.AllowList.includes(route.params.id as string));
 
     /**
      * WATCHERS
@@ -760,9 +685,7 @@ export default defineComponent({
       apr: '0',
       address: '',
       data: [] as Pool[],
-      xpolarPoolQuery: usePoolQuery(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      ),
+      xpolarPoolQuery: usePoolQuery('0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'),
     };
   },
   methods: {
@@ -772,11 +695,7 @@ export default defineComponent({
       if (this.pool) {
         poolAddress = this.pool.address;
       }
-      const tx = await withdraw(
-        poolAddress,
-        BigNumber.from(0),
-        this.getProvider()
-      );
+      const tx = await withdraw(poolAddress, BigNumber.from(0), this.getProvider());
       this.txHandler(tx);
     },
     async approve() {
@@ -809,19 +728,12 @@ export default defineComponent({
       }
       if (!this.pool) {
         await new Promise((resolve, reject) => {
-          const loop = () =>
-            this.pool !== undefined
-              ? resolve(this.pool)
-              : setTimeout(loop, 100);
+          const loop = () => (this.pool !== undefined ? resolve(this.pool) : setTimeout(loop, 100));
           loop();
         });
       }
 
-      const aprProviderClass = new AprProviderService(
-        [this.pool],
-        this.prices,
-        this.xpolarPoolQuery
-      );
+      const aprProviderClass = new AprProviderService([this.pool], this.prices, this.xpolarPoolQuery);
       aprProviderClass.init();
       aprProviderClass.aprsReceived = (aprs: any) => {
         this.apr = aprs[0];
@@ -835,30 +747,17 @@ export default defineComponent({
 
       const xpolarPool = this.xpolarPoolQuery?.data;
 
-      const xpolarBalance =
-        xpolarPool?.onchain?.tokens[
-          '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
-        ]?.balance;
-      const nearBalance =
-        xpolarPool?.onchain?.tokens[
-          '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
-        ]?.balance;
-      const nearPrice =
-        this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
+      const xpolarBalance = xpolarPool?.onchain?.tokens['0xeaf7665969f1daa3726ceada7c40ab27b3245993']?.balance;
+      const nearBalance = xpolarPool?.onchain?.tokens['0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6']?.balance;
+      const nearPrice = this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
 
-      this.xpolarPrice =
-        (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
-        Number(nearPrice);
+      this.xpolarPrice = (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) * Number(nearPrice);
 
       this.stakedBalance = await balance(poolAddress, this.account);
 
       // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
 
-      this.xpolarToClaim = BigNumberToString(
-        await pendingShare(poolAddress, this.account),
-        14,
-        4
-      );
+      this.xpolarToClaim = BigNumberToString(await pendingShare(poolAddress, this.account), 14, 4);
       // this.xpolarToClaim = await pendingShare(poolAddress, this.account);
 
       const approval = await isApproved(poolAddress, this.account);
@@ -1028,24 +927,15 @@ h1 {
 }
 
 .connect-btn-pool:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.7) 0%, rgba(123, 48, 127, 0.567) 100%);
 }
 
 .connect-btn-pool:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.5) 0%, rgba(123, 48, 127, 0.405) 100%);
 }
 
 .AC-container {
-  background: linear-gradient(#160d22, #160d22) padding-box,
-    linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box;
+  background: linear-gradient(#160d22, #160d22) padding-box, linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box;
   border: 1px solid transparent;
   border-radius: 22px;
 
@@ -1099,12 +989,7 @@ h1 {
   font-size: 16px;
   line-height: 20px;
 
-  background: linear-gradient(
-    90.64deg,
-    #fbaaff -20.45%,
-    #f89c35 36.77%,
-    #7b307f 100.27%
-  );
+  background: linear-gradient(90.64deg, #fbaaff -20.45%, #f89c35 36.77%, #7b307f 100.27%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1148,8 +1033,7 @@ h1 {
   /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25); */
   border-radius: 22px;
 
-  background: linear-gradient(#180a1e, #180a1e) padding-box,
-    linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box !important;
+  background: linear-gradient(#180a1e, #180a1e) padding-box, linear-gradient(to bottom left, #fbaaff, #ea8d3a, #734a79) border-box !important;
 }
 
 .detail-link {

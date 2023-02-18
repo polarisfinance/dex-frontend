@@ -36,14 +36,7 @@ export function toUnixTimestamp(jsTimestamp: number): number {
 }
 
 export function toUtcTime(date: Date) {
-  return Date.UTC(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds()
-  );
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 }
 
 export function getPreviousThursday(date: Date = new Date()): Date {

@@ -19,10 +19,7 @@ export type Notification = {
   addedTime?: number;
 };
 
-export type NewNotification = Pick<
-  Notification,
-  'type' | 'message' | 'title' | 'autoCloseAfterMs' | 'transactionMetadata'
->;
+export type NewNotification = Pick<Notification, 'type' | 'message' | 'title' | 'autoCloseAfterMs' | 'transactionMetadata'>;
 
 type NotificationsMap = Record<string, Notification>;
 
@@ -40,8 +37,7 @@ function addNotification(newNotification: NewNotification) {
     id: notificationId,
     type: newNotification.type ?? 'info',
     addedTime: Date.now(),
-    autoCloseAfterMs:
-      newNotification.autoCloseAfterMs ?? DEFAULT_NOTIFICATION_TIMEOUT,
+    autoCloseAfterMs: newNotification.autoCloseAfterMs ?? DEFAULT_NOTIFICATION_TIMEOUT,
   };
 
   setNotifications(notificationsMap);
@@ -51,11 +47,7 @@ function addNotification(newNotification: NewNotification) {
 
 function attemptToRemoveExistingNotification(newNotification: NewNotification) {
   if (newNotification.transactionMetadata?.id) {
-    const previousNotificationFound = notifications.value.find(
-      previousNotification =>
-        previousNotification.transactionMetadata?.id ===
-        newNotification.transactionMetadata?.id
-    );
+    const previousNotificationFound = notifications.value.find(previousNotification => previousNotification.transactionMetadata?.id === newNotification.transactionMetadata?.id);
     if (previousNotificationFound != null) {
       removeNotification(previousNotificationFound.id);
     }
@@ -99,9 +91,7 @@ function setNotifications(notifications: NotificationsMap) {
   notificationsState.value = notifications;
 }
 
-const notifications = computed(() =>
-  orderBy(Object.values(getNotifications()), 'addedTime', 'desc')
-);
+const notifications = computed(() => orderBy(Object.values(getNotifications()), 'addedTime', 'desc'));
 
 export default function useNotifications() {
   return {

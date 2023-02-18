@@ -14,11 +14,7 @@ export function toErc20Address(tokenAddress: string) {
   return tokenAddress;
 }
 
-export function getCanonicalMarket<T>({
-  sellToken,
-  buyToken,
-  kind,
-}: CanonicalMarketParams<T>): Market<T> {
+export function getCanonicalMarket<T>({ sellToken, buyToken, kind }: CanonicalMarketParams<T>): Market<T> {
   if (kind === OrderKind.SELL) {
     return {
       baseToken: sellToken,

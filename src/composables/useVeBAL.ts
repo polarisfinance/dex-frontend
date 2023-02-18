@@ -17,9 +17,7 @@ const showRedirectModal = ref(false);
 /**
  * COMPUTED
  */
-export const isVeBalSupported = computed(
-  () => isMainnet.value || isKovan.value || isGoerli.value
-);
+export const isVeBalSupported = computed(() => isMainnet.value || isKovan.value || isGoerli.value);
 
 /**
  * METHODS
@@ -49,11 +47,7 @@ export function expectedVeBal(bpt: string, lockDateStr: string): string {
  */
 export function getPreviousEpoch(weeksToGoBack = 0): Date {
   const now = new Date();
-  const todayAtMidnightUTC = Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate()
-  );
+  const todayAtMidnightUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
 
   let daysSinceThursday = now.getDay() - 4;
   if (daysSinceThursday < 0) daysSinceThursday += 7;
@@ -75,13 +69,9 @@ export default function useVeBal() {
   /**
    * COMPUTED
    */
-  const veBalTokenInfo = computed(() =>
-    getToken(networkConfig.addresses.veBAL)
-  );
+  const veBalTokenInfo = computed(() => getToken(networkConfig.addresses.veBAL));
 
-  const veBalBalance = computed(() =>
-    balanceFor(networkConfig.addresses.veBAL)
-  );
+  const veBalBalance = computed(() => balanceFor(networkConfig.addresses.veBAL));
 
   const lockablePoolId = computed(() => POOLS.IdsMap?.['B-80BAL-20WETH']);
 

@@ -1,10 +1,7 @@
 <template>
   <BalPopover @show="open = true" @hide="open = false">
     <template #activator>
-      <button
-        class="icon-spin-anim settings-button"
-        @click="onActivatorClick"
-      >
+      <button class="icon-spin-anim settings-button" @click="onActivatorClick">
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
         <!-- <IconSettings class="mt-1 mr-[12px]" /> -->
         <img :src="Picture" height="24" class="mr-[12px] mt-[12px]" />
@@ -13,10 +10,7 @@
 
     <div class="px-[4px]">
       <div class="flex items-baseline">
-        <span
-          class="mb-[12px] font-semibold leading-[20px]"
-          v-text="$t('slippageTolerance')"
-        />
+        <span class="mb-[12px] font-semibold leading-[20px]" v-text="$t('slippageTolerance')" />
         <!-- <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
@@ -28,10 +22,7 @@
     </div>
     <div v-if="isEIP1559SupportedNetwork" class="mt-[16px] px-[4px] pb-[3px]">
       <div class="flex items-baseline">
-        <span
-          class="mb-[12px] font-semibold leading-[20px]"
-          v-text="$t('transactionType')"
-        />
+        <span class="mb-[12px] font-semibold leading-[20px]" v-text="$t('transactionType')" />
         <!-- <BalTooltip class="ml-2 p-2">
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px text-gray-400" />
@@ -40,17 +31,10 @@
         </BalTooltip> -->
       </div>
       <div class="flex">
-        <BalBtnGroup
-          v-model="ethereumTxType"
-          :options="ethereumTxTypeOptions"
-          @update:model-value="setEthereumTxType"
-        />
+        <BalBtnGroup v-model="ethereumTxType" :options="ethereumTxTypeOptions" @update:model-value="setEthereumTxType" />
       </div>
     </div>
-    <div
-      v-if="isGassless && context === TradeSettingsContext.trade"
-      class="mt-6"
-    >
+    <div v-if="isGassless && context === TradeSettingsContext.trade" class="mt-6">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('transactionDeadline')" />
         <BalTooltip>
@@ -61,18 +45,8 @@
         </BalTooltip>
       </div>
       <div class="mt-1 flex">
-        <div
-          class="flex items-center rounded-lg border px-1 shadow-inner dark:border-gray-700"
-        >
-          <input
-            v-model="appTransactionDeadline"
-            class="w-8 bg-transparent text-right"
-            placeholder="20"
-            type="number"
-            step="1"
-            min="0"
-            @update:modelValue="setTransactionDeadline"
-          />
+        <div class="flex items-center rounded-lg border px-1 shadow-inner dark:border-gray-700">
+          <input v-model="appTransactionDeadline" class="w-8 bg-transparent text-right" placeholder="20" type="number" step="1" min="0" @update:modelValue="setTransactionDeadline" />
         </div>
         <div class="px-2">minutes</div>
       </div>
@@ -140,13 +114,10 @@ export default defineComponent({
     const { ethereumTxType, setEthereumTxType } = useEthereumTxType();
 
     // COMPUTED
-    const appTransactionDeadline = computed<number>(
-      () => store.state.app.transactionDeadline
-    );
+    const appTransactionDeadline = computed<number>(() => store.state.app.transactionDeadline);
 
     // METHODS
-    const setTransactionDeadline = transactionDeadline =>
-      store.commit('app/setTransactionDeadline', transactionDeadline);
+    const setTransactionDeadline = transactionDeadline => store.commit('app/setTransactionDeadline', transactionDeadline);
 
     function onActivatorClick(): void {
       if (context.value === TradeSettingsContext.trade) {
@@ -188,7 +159,7 @@ export default defineComponent({
   min-height: 24px;
   min-width: 24px;
 }
-.settings-button:hover{
+.settings-button:hover {
   opacity: 0.5;
 }
 .trade-settings-option:hover {

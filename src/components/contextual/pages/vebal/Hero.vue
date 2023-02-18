@@ -12,11 +12,7 @@ const router = useRouter();
 /**
  * COMPUTED
  */
-const benefits = computed(() => [
-  t('veBAL.hero.benefits.boost'),
-  t('veBAL.hero.benefits.vote'),
-  t('veBAL.hero.benefits.earn'),
-]);
+const benefits = computed(() => [t('veBAL.hero.benefits.boost'), t('veBAL.hero.benefits.vote'), t('veBAL.hero.benefits.earn')]);
 
 /**
  * METHODS
@@ -34,59 +30,31 @@ function navigateToGetVeBAL() {
 <template>
   <div class="hero-container">
     <div class="hero-content">
-      <div
-        class="hero-text max-w-md py-8 px-4 lg:py-4 lg:px-8 xl:pt-0 2xl:px-0"
-      >
+      <div class="hero-text 2xl:px-0 max-w-md py-8 px-4 lg:py-4 lg:px-8 xl:pt-0">
         <p class="eyebrow font-medium">veBAL</p>
         <h1 class="title mb-5 text-white">
           {{ $t('veBAL.hero.title') }}
         </h1>
         <ul>
-          <li
-            v-for="(benefit, i) in benefits"
-            :key="i"
-            class="mb-2 flex items-center text-white"
-          >
-            – {{ benefit }}
-          </li>
+          <li v-for="(benefit, i) in benefits" :key="i" class="mb-2 flex items-center text-white">– {{ benefit }}</li>
         </ul>
         <div class="mt-6 flex">
           <BalBtn class="hero-btn btn-gold mr-3" @click="navigateToGetVeBAL">
             {{ $t('veBAL.hero.buttons.getVeBAL') }}
           </BalBtn>
-          <BalBtn
-            tag="a"
-            href="https://docs.balancer.fi/ecosystem/vebal-and-gauges"
-            target="_blank"
-            rel="noreferrer"
-            color="white"
-            class="hero-btn"
-            outline
-          >
+          <BalBtn tag="a" href="https://docs.balancer.fi/ecosystem/vebal-and-gauges" target="_blank" rel="noreferrer" color="white" class="hero-btn" outline>
             {{ $t('veBAL.hero.buttons.learnMore') }}
-            <BalIcon
-              name="arrow-up-right"
-              size="sm"
-              class="ml-px transition-colors group-hover:text-pink-500"
-            />
+            <BalIcon name="arrow-up-right" size="sm" class="ml-px transition-colors group-hover:text-pink-500" />
           </BalBtn>
         </div>
       </div>
       <div class="coins">
         <div class="coin group">
           <div class="coin-wrapper w-full">
-            <BalImage
-              class="graphic"
-              width="330"
-              height="377"
-              :src="require('@/assets/images/coins/coins-1.png')"
-              alt="BAL and WETH tokens"
-            />
+            <BalImage class="graphic" width="330" height="377" :src="require('@/assets/images/coins/coins-1.png')" alt="BAL and WETH tokens" />
           </div>
           <div class="caption font-semibold">
-            <p
-              class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal"
-            >
+            <p class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal">
               {{ $t('veBAL.hero.tokens.balWETH') }}
             </p>
             <BalTooltip iconSize="xs" textAlign="left" class="mt-1 font-medium">
@@ -96,18 +64,10 @@ function navigateToGetVeBAL() {
         </div>
         <div class="coin group">
           <div class="coin-wrapper">
-            <BalImage
-              class="graphic"
-              width="330"
-              height="377"
-              :src="require('@/assets/images/coins/coins-2.png')"
-              alt="B-80BAL-20WETH LP token"
-            />
+            <BalImage class="graphic" width="330" height="377" :src="require('@/assets/images/coins/coins-2.png')" alt="B-80BAL-20WETH LP token" />
           </div>
           <div class="caption font-semibold">
-            <p
-              class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal"
-            >
+            <p class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal">
               {{ $t('veBAL.hero.tokens.lpToken') }}
             </p>
             <BalTooltip iconSize="xs" textAlign="left" class="mt-1">
@@ -117,18 +77,10 @@ function navigateToGetVeBAL() {
         </div>
         <div class="coin group">
           <div class="coin-wrapper">
-            <BalImage
-              class="graphic"
-              width="330"
-              height="377"
-              :src="require('@/assets/images/coins/coins-3.png')"
-              alt="veBAL token"
-            />
+            <BalImage class="graphic" width="330" height="377" :src="require('@/assets/images/coins/coins-3.png')" alt="veBAL token" />
           </div>
           <div class="caption font-semibold">
-            <p
-              class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal"
-            >
+            <p class="mr-1 inline text-sm tracking-tighter lg:text-base lg:tracking-normal">
               {{ $t('veBAL.hero.tokens.veBAL') }}
             </p>
             <BalTooltip iconSize="xs" textAlign="left" class="mt-1">
@@ -167,8 +119,7 @@ function navigateToGetVeBAL() {
 
 .hero-container::after {
   content: ' ';
-  background: linear-gradient(45deg, rgb(0 0 0 / 100%), rgb(0 0 0 / 50%)),
-    url('/images/backgrounds/vebal-hero-noise.svg');
+  background: linear-gradient(45deg, rgb(0 0 0 / 100%), rgb(0 0 0 / 50%)), url('/images/backgrounds/vebal-hero-noise.svg');
 
   @apply absolute left-0 top-0 z-0 block h-full w-full bg-cover bg-no-repeat opacity-20;
 

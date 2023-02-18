@@ -56,8 +56,7 @@ const tokenAddresses = computed((): string[] => {
 const tokensForTotal = computed((): string[] => {
   if (pageContext.value === 'invest' && props.useNativeAsset) {
     return tokenAddresses.value.map(address => {
-      if (isSameAddress(address, wrappedNativeAsset.value.address))
-        return nativeAsset.address;
+      if (isSameAddress(address, wrappedNativeAsset.value.address)) return nativeAsset.address;
       return address;
     });
   } else if (pageContext.value === 'withdraw' && isWethPool.value) {
@@ -71,16 +70,8 @@ const fiatTotal = computed(() => {
   const fiatValue = tokensForTotal.value
     .map(address => {
       if (pageContext.value === 'invest') {
-        if (
-          isSameAddress(address, nativeAsset.address) &&
-          !props.useNativeAsset
-        )
-          return '0';
-        if (
-          isSameAddress(address, wrappedNativeAsset.value.address) &&
-          props.useNativeAsset
-        )
-          return '0';
+        if (isSameAddress(address, nativeAsset.address) && !props.useNativeAsset) return '0';
+        if (isSameAddress(address, wrappedNativeAsset.value.address) && props.useNativeAsset) return '0';
       }
 
       const tokenBalance = balanceFor(address);
@@ -96,13 +87,9 @@ const fiatTotal = computed(() => {
  */
 function isSelectedNativeAsset(address: string): boolean {
   if (pageContext.value === 'withdraw') return true;
-  if (props.useNativeAsset && isSameAddress(address, nativeAsset.address))
-    return true;
+  if (props.useNativeAsset && isSameAddress(address, nativeAsset.address)) return true;
 
-  return (
-    !props.useNativeAsset &&
-    isSameAddress(address, wrappedNativeAsset.value.address)
-  );
+  return !props.useNativeAsset && isSameAddress(address, wrappedNativeAsset.value.address);
 }
 </script>
 
@@ -120,37 +107,20 @@ function isSelectedNativeAsset(address: string): boolean {
       <div v-for="address in tokenAddresses" :key="address" class="py-2">
         <div v-if="isSameAddress(address, wrappedNativeAsset.address)">
           <div class="flex items-start justify-between">
-            <BalBreakdown
-              :items="[nativeAsset, wrappedNativeAsset]"
-              class="w-full"
-              size="lg"
-            >
+            <BalBreakdown :items="[nativeAsset, wrappedNativeAsset]" class="w-full" size="lg">
               <div class="flex justify-between">
                 <span>
                   {{ nativeAsset.name }}
                   <span class="lowercase">{{ $t('tokens') }}</span>
                 </span>
-                <BalTooltip
-                  v-if="pageContext === 'invest'"
-                  :text="
-                    $t(
-                      'poolTransfer.myWalletTokensCard.tooltips.nativeAssetSelection',
-                      [nativeAsset.symbol, wrappedNativeAsset.symbol]
-                    )
-                  "
-                />
+                <BalTooltip v-if="pageContext === 'invest'" :text="$t('poolTransfer.myWalletTokensCard.tooltips.nativeAssetSelection', [nativeAsset.symbol, wrappedNativeAsset.symbol])" />
               </div>
               <template #item="{ item: asset }">
                 <AssetRow
                   :address="asset.address"
                   :selected="isSelectedNativeAsset(asset.address)"
                   :class="[{ 'cursor-pointer': pageContext === 'invest' }]"
-                  @click="
-                    emit(
-                      'update:useNativeAsset',
-                      isSameAddress(asset.address, nativeAsset.address)
-                    )
-                  "
+                  @click="emit('update:useNativeAsset', isSameAddress(asset.address, nativeAsset.address))"
                 />
               </template>
             </BalBreakdown>

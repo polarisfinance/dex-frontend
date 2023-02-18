@@ -8,10 +8,7 @@ class ClaimWorkerPoolService {
   workerIndex: number;
 
   constructor(numberOfWorkers = 4) {
-    this.workers = times(
-      numberOfWorkers,
-      () => new PromiseWorker(new ClaimWorker())
-    );
+    this.workers = times(numberOfWorkers, () => new PromiseWorker(new ClaimWorker()));
 
     this.workerIndex = 0;
   }

@@ -37,9 +37,7 @@ const { connector, provider } = useWeb3();
 /**
  * COMPUTED
  */
-const walletLogo = computed((): string =>
-  getConnectorLogo(connector?.value?.id, provider)
-);
+const walletLogo = computed((): string => getConnectorLogo(connector?.value?.id, provider));
 
 /**
  * METHODS
@@ -63,23 +61,14 @@ function stateClasses(state: StepState): string {
 <template>
   <div class="flex items-center">
     <div v-for="(step, i) in steps" :key="i" class="flex items-center">
-      <div
-        v-if="i !== 0"
-        :class="['h-px bg-gray-100 dark:bg-gray-700', `w-${spacerWidth}`]"
-      />
+      <div v-if="i !== 0" :class="['h-px bg-gray-100 dark:bg-gray-700', `w-${spacerWidth}`]" />
       <BalTooltip :text="step.tooltip" width="44" textAlign="center">
         <template #activator>
           <div :class="['step', stateClasses(step.state)]">
             <BalIcon v-if="step.state === stepState.Success" name="check" />
-            <img
-              v-else-if="step.state === stepState.WalletOpen"
-              :src="walletLogo"
-              class="h-4 w-4"
-            />
+            <img v-else-if="step.state === stepState.WalletOpen" :src="walletLogo" class="h-4 w-4" />
             <template v-else-if="step.state === stepState.Pending">
-              <span
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform"
-              >
+              <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform">
                 {{ i + 1 }}
               </span>
               <SpinnerIcon class="h-8 w-8 animate-spin" />

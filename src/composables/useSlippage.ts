@@ -21,10 +21,7 @@ export default function useSlippage() {
   }
 
   function minusSlippageScaled(amount: string): string {
-    const delta = bnum(amount)
-      .times(slippageBasisPoints.value)
-      .div(10000)
-      .dp(0, BigNumber.ROUND_UP);
+    const delta = bnum(amount).times(slippageBasisPoints.value).div(10000).dp(0, BigNumber.ROUND_UP);
 
     return bnum(amount).minus(delta).toString();
   }
@@ -37,10 +34,7 @@ export default function useSlippage() {
   }
 
   function addSlippageScaled(amount: string): string {
-    const delta = bnum(amount)
-      .times(slippageBasisPoints.value)
-      .div(10000)
-      .dp(0, BigNumber.ROUND_DOWN);
+    const delta = bnum(amount).times(slippageBasisPoints.value).div(10000).dp(0, BigNumber.ROUND_DOWN);
 
     return bnum(amount).plus(delta).toString();
   }

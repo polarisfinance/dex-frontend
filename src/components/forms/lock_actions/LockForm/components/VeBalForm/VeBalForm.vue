@@ -39,18 +39,11 @@ const props = defineProps<Props>();
 const showPreviewModal = ref(false);
 
 const { lockEndDate, lockAmount } = useLockState();
-const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } =
-  useWeb3();
+const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } = useWeb3();
 
-const { isValidLockAmount, isIncreasedLockAmount, totalLpTokens } =
-  useLockAmount(toRef(props, 'veBalLockInfo'));
+const { isValidLockAmount, isIncreasedLockAmount, totalLpTokens } = useLockAmount(toRef(props, 'veBalLockInfo'));
 
-const {
-  minLockEndDateTimestamp,
-  maxLockEndDateTimestamp,
-  isValidLockEndDate,
-  isExtendedLockEndDate,
-} = useLockEndDate(props.veBalLockInfo);
+const { minLockEndDateTimestamp, maxLockEndDateTimestamp, isValidLockEndDate, isExtendedLockEndDate } = useLockEndDate(props.veBalLockInfo);
 
 /**
  * COMPOSABLES
@@ -60,9 +53,7 @@ const { balanceFor } = useTokens();
 /**
  * COMPUTED
  */
-const lockablePoolBptBalance = computed(() =>
-  balanceFor(props.lockablePool.address)
-);
+const lockablePoolBptBalance = computed(() => balanceFor(props.lockablePool.address));
 
 const submissionDisabled = computed(() => {
   if (isMismatchedNetwork.value) {
@@ -73,11 +64,7 @@ const submissionDisabled = computed(() => {
     return !isIncreasedLockAmount.value && !isExtendedLockEndDate.value;
   }
 
-  return (
-    !bnum(lockablePoolBptBalance.value).gt(0) ||
-    !isValidLockAmount.value ||
-    !isValidLockEndDate.value
-  );
+  return !bnum(lockablePoolBptBalance.value).gt(0) || !isValidLockAmount.value || !isValidLockEndDate.value;
 });
 
 const expectedVeBalAmount = computed(() => {
@@ -131,34 +118,15 @@ function handleShowPreviewModal() {
       </div>
     </template>
 
-    <LockAmount
-      :lockablePool="lockablePool"
-      :lockablePoolTokenInfo="lockablePoolTokenInfo"
-    />
+    <LockAmount :lockablePool="lockablePool" :lockablePoolTokenInfo="lockablePoolTokenInfo" />
 
-    <LockEndDate
-      :minLockEndDateTimestamp="minLockEndDateTimestamp"
-      :maxLockEndDateTimestamp="maxLockEndDateTimestamp"
-      :veBalLockInfo="veBalLockInfo"
-    />
+    <LockEndDate :minLockEndDateTimestamp="minLockEndDateTimestamp" :maxLockEndDateTimestamp="maxLockEndDateTimestamp" :veBalLockInfo="veBalLockInfo" />
 
     <Summary :expectedVeBalAmount="expectedVeBalAmount" />
 
     <div class="mt-6">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
-        block
-        @click="startConnectWithInjectedProvider"
-      />
-      <BalBtn
-        v-else
-        color="gradient"
-        block
-        :disabled="submissionDisabled"
-        @click="handleShowPreviewModal"
-      >
+      <BalBtn v-if="!isWalletReady" :label="$t('connectWallet')" color="gradient" block @click="startConnectWithInjectedProvider" />
+      <BalBtn v-else color="gradient" block :disabled="submissionDisabled" @click="handleShowPreviewModal">
         {{ $t('preview') }}
       </BalBtn>
     </div>

@@ -1,13 +1,6 @@
 <template>
   <div class="bal-toggle group" @click="onClick">
-    <input
-      type="checkbox"
-      :name="name"
-      :checked="modelValue"
-      v-bind="$attrs"
-      :disabled="disabled"
-      class="bal-toggle-checkbox"
-    />
+    <input type="checkbox" :name="name" :checked="modelValue" v-bind="$attrs" :disabled="disabled" class="bal-toggle-checkbox" />
     <label :for="name" class="bal-toggle-track" />
   </div>
   <label v-if="label" class="ml-2 text-xs dark:text-white">

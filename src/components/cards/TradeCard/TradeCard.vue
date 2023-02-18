@@ -1,17 +1,9 @@
 <template>
-  <BalCard
-    noPad
-    noBorder
-    class="card-container relative"
-    :shadow="tradeCardShadow"
-  >
-    <template #header >
-      <div class="header mb-[12px] flex w-full items-center justify-between" >
-        <h4 class="title ml-[18px] mt-[10px]" >{{ title }}</h4>
-        <TradeSettingsPopover
-          :context="TradeSettingsContext.trade"
-          :isGasless="trading.tradeGasless.value"
-        />
+  <BalCard noPad noBorder class="card-container relative" :shadow="tradeCardShadow">
+    <template #header>
+      <div class="header mb-[12px] flex w-full items-center justify-between">
+        <h4 class="title ml-[18px] mt-[10px]">{{ title }}</h4>
+        <TradeSettingsPopover :context="TradeSettingsContext.trade" :isGasless="trading.tradeGasless.value" />
       </div>
     </template>
     <div class="dark-back">
@@ -21,85 +13,24 @@
         v-model:tokenOutAmount="tokenOutAmount"
         v-model:tokenOutAddress="tokenOutAddress"
         v-model:exactIn="exactIn"
-        :tradeLoading="
-          trading.isBalancerTrade.value ? trading.isLoading.value : false
-        "
+        :tradeLoading="trading.isBalancerTrade.value ? trading.isLoading.value : false"
         :effectivePriceMessage="trading.effectivePriceMessage"
         class="mb-[12px]"
         @amount-change="trading.handleAmountChange"
       />
-      <BalAlert
-        v-if="error"
-        class="mb-[12px]"
-        type="error"
-        size="sm"
-        :title="error.header"
-        :description="error.body"
-        :actionLabel="error.label"
-        block
-        @action-click="handleErrorButtonClick"
-      />
-      <BalAlert
-        v-else-if="warning"
-        class="mb-[12px]"
-        type="warning"
-        size="sm"
-        :title="warning.header"
-        :description="warning.body"
-        block
-      />
-      <div class="px-[12px] pb-[12px] ">
-      <BalBtn
-        v-if="trading.isLoading.value"
-        loading
-        disabled
-        :loadingLabel="
-          trading.isGnosisTrade.value ? $t('loadingBestPrice') : $t('loading')
-        "
-        class="font-semibold"
-        block
-      />
-      <button
-        v-else-if="tokenInAmount == 0 && tokenOutAmount == 0 && account"
-        :disabled="true"
-        class="amount-button font-semibold"
-      >
-        Enter an amount
-      </button>
-      <button
-        v-else-if="account"
-        :disabled="false"
-        @click="handlePreviewButton"
-        class="swap-button text-[16px] font-semibold"
-      >
-        Swap
-      </button>
-      <button
-        v-else
-        class="connect-wallet font-semibold"
-        @click="startConnectWithInjectedProvider"
-      >
-        Connect Wallet
-      </button>
+      <BalAlert v-if="error" class="mb-[12px]" type="error" size="sm" :title="error.header" :description="error.body" :actionLabel="error.label" block @action-click="handleErrorButtonClick" />
+      <BalAlert v-else-if="warning" class="mb-[12px]" type="warning" size="sm" :title="warning.header" :description="warning.body" block />
+      <div class="px-[12px] pb-[12px]">
+        <BalBtn v-if="trading.isLoading.value" loading disabled :loadingLabel="trading.isGnosisTrade.value ? $t('loadingBestPrice') : $t('loading')" class="font-semibold" block />
+        <button v-else-if="tokenInAmount == 0 && tokenOutAmount == 0 && account" :disabled="true" class="amount-button font-semibold">Enter an amount</button>
+        <button v-else-if="account" :disabled="false" @click="handlePreviewButton" class="swap-button text-[16px] font-semibold">Swap</button>
+        <button v-else class="connect-wallet font-semibold" @click="startConnectWithInjectedProvider">Connect Wallet</button>
       </div>
 
-      <div
-        v-if="
-          tokenInAddress &&
-          tokenOutAddress &&
-          tokenInAmount > 0 &&
-          tokenOutAmount > 0
-        "
-        class="stats"
-      >
-        
+      <div v-if="tokenInAddress && tokenOutAddress && tokenInAmount > 0 && tokenOutAmount > 0" class="stats">
         <div class="p-[16px]">
-          <TradePreviewModalGP
-            :trading="trading"
-            @trade="trade"
-            @close="handlePreviewModalClose"
-          />
-          <div  />
+          <TradePreviewModalGP :trading="trading" @trade="trade" @close="handlePreviewModalClose" />
+          <div />
           <div class=""><div class="mx-[8px] my-[22px] border"></div></div>
           <TradeRoute
             :addressIn="trading.tokenIn.value.address"
@@ -115,12 +46,7 @@
     </div>
   </BalCard>
   <teleport to="#modal">
-    <ConfirmSwapModal
-      v-if="modalTradePreviewIsOpen"
-      :trading="trading"
-      @trade="trade"
-      @close="handlePreviewModalClose"
-    />
+    <ConfirmSwapModal v-if="modalTradePreviewIsOpen" :trading="trading" @trade="trade" @close="handlePreviewModalClose" />
   </teleport>
 </template>
 
@@ -133,14 +59,10 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 import TradePreviewModalGP from '@/components/modals/TradePreviewModalGP.vue';
-import TradeSettingsPopover, {
-  TradeSettingsContext,
-} from '@/components/popovers/TradeSettingsPopover.vue';
+import TradeSettingsPopover, { TradeSettingsContext } from '@/components/popovers/TradeSettingsPopover.vue';
 import { useTradeState } from '@/composables/trade/useTradeState';
 import useTrading from '@/composables/trade/useTrading';
-import useValidation, {
-  TradeValidation,
-} from '@/composables/trade/useValidation';
+import useValidation, { TradeValidation } from '@/composables/trade/useValidation';
 import useBreakpoints from '@/composables/useBreakpoints';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import useTokens from '@/composables/useTokens';
@@ -175,15 +97,7 @@ export default defineComponent({
     const { appNetworkConfig } = useWeb3();
     const { nativeAsset } = useTokens();
     const { account, startConnectWithInjectedProvider } = useWeb3();
-    const {
-      tokenInAddress,
-      tokenOutAddress,
-      tokenInAmount,
-      tokenOutAmount,
-      setTokenInAddress,
-      setTokenOutAddress,
-      setInitialized,
-    } = useTradeState();
+    const { tokenInAddress, tokenOutAddress, tokenInAmount, tokenOutAmount, setTokenInAddress, setTokenOutAddress, setInitialized } = useTradeState();
     // DATA
     const exactIn = ref(true);
     const modalTradePreviewIsOpen = ref(false);
@@ -201,33 +115,16 @@ export default defineComponent({
           return 'xl';
       }
     });
-    const trading = useTrading(
-      exactIn,
-      tokenInAddress,
-      tokenInAmount,
-      tokenOutAddress,
-      tokenOutAmount
-    );
+    const trading = useTrading(exactIn, tokenInAddress, tokenInAmount, tokenOutAddress, tokenOutAmount);
     console.log(trading);
 
     // COMPUTED
-    const { errorMessage } = useValidation(
-      tokenInAddress,
-      tokenInAmount,
-      tokenOutAddress,
-      tokenOutAmount
-    );
-    const isHighPriceImpact = computed(
-      () =>
-        trading.sor.validationErrors.value.highPriceImpact &&
-        !dismissedErrors.value.highPriceImpact
-    );
+    const { errorMessage } = useValidation(tokenInAddress, tokenInAmount, tokenOutAddress, tokenOutAmount);
+    const isHighPriceImpact = computed(() => trading.sor.validationErrors.value.highPriceImpact && !dismissedErrors.value.highPriceImpact);
     const tradeDisabled = computed(() => {
       const hasValidationError = errorMessage.value !== TradeValidation.VALID;
-      const hasGnosisErrors =
-        trading.isGnosisTrade.value && trading.gnosis.hasValidationError.value;
-      const hasBalancerErrors =
-        trading.isBalancerTrade.value && isHighPriceImpact.value;
+      const hasGnosisErrors = trading.isGnosisTrade.value && trading.gnosis.hasValidationError.value;
+      const hasBalancerErrors = trading.isBalancerTrade.value && isHighPriceImpact.value;
       return hasValidationError || hasGnosisErrors || hasBalancerErrors;
     });
     const title = computed(() => {
@@ -243,31 +140,16 @@ export default defineComponent({
       console.log(tokenInAddress.value);
       if (
         (tokenInAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
-          tokenOutAddress.value ==
-            '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
-          tokenInAddress.value ==
-            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
-          tokenOutAddress.value ==
-            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30') &&
+          tokenOutAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
+          tokenInAddress.value == '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
+          tokenOutAddress.value == '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30') &&
         !(
-          (tokenInAddress.value ==
-            '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
-            tokenInAddress.value ==
-              '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') &&
-          (tokenOutAddress.value ==
-            '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' ||
-            tokenOutAddress.value ==
-              '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6')
+          (tokenInAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' || tokenInAddress.value == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') &&
+          (tokenOutAddress.value == '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d' || tokenOutAddress.value == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6')
         ) &&
         !(
-          (tokenInAddress.value ==
-            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
-            tokenInAddress.value ==
-              '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') &&
-          (tokenOutAddress.value ==
-            '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' ||
-            tokenOutAddress.value ==
-              '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465')
+          (tokenInAddress.value == '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' || tokenInAddress.value == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') &&
+          (tokenOutAddress.value == '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30' || tokenOutAddress.value == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465')
         )
       ) {
         return {
@@ -292,26 +174,16 @@ export default defineComponent({
             };
           } else if (validationError === ApiErrorCodes.PriceExceedsBalance) {
             return {
-              header: t('gnosisErrors.lowBalance.header', [
-                trading.tokenIn.value.symbol,
-              ]),
+              header: t('gnosisErrors.lowBalance.header', [trading.tokenIn.value.symbol]),
               body: t('gnosisErrors.lowBalance.body', [
                 trading.tokenIn.value.symbol,
-                fNum2(
-                  formatUnits(
-                    trading.getQuote().maximumInAmount,
-                    trading.tokenIn.value.decimals
-                  ),
-                  FNumFormats.token
-                ),
+                fNum2(formatUnits(trading.getQuote().maximumInAmount, trading.tokenIn.value.decimals), FNumFormats.token),
                 fNum2(trading.slippageBufferRate.value, FNumFormats.percent),
               ]),
             };
           } else if (validationError === ApiErrorCodes.NoLiquidity) {
             return {
-              header: t('gnosisErrors.noLiquidity.header', [
-                trading.tokenIn.value.symbol,
-              ]),
+              header: t('gnosisErrors.noLiquidity.header', [trading.tokenIn.value.symbol]),
               body: t('gnosisErrors.noLiquidity.body'),
             };
           } else {
@@ -472,31 +344,26 @@ export default defineComponent({
   content: '✍️';
 }
 
-
 .connect-wallet {
   padding: 10px 0px;
   gap: 12px;
   left: 12px;
   top: 226px;
-  line-height:24px;
-  background: #41365E;
+  line-height: 24px;
+  background: #41365e;
   border-radius: 12px;
-  color: #A99BC6;
+  color: #a99bc6;
   font-size: 20px;
   width: 100%;
 }
 
 .connect-wallet:hover {
   background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
-  color:#ffffff;
+  color: #ffffff;
 }
 
 .connect-wallet:active {
-  background: linear-gradient(
-    94.14deg,
-    rgba(47, 22, 53, 0.5) 23.11%,
-    rgba(52, 25, 58, 0.405) 81.52%
-  );
+  background: linear-gradient(94.14deg, rgba(47, 22, 53, 0.5) 23.11%, rgba(52, 25, 58, 0.405) 81.52%);
   border-radius: 12px;
 }
 
@@ -505,29 +372,23 @@ export default defineComponent({
   gap: 12px;
   left: 10px;
 
-  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
+  /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
   border-radius: 12px;
   width: 100%;
 }
 
 .swap-button:hover {
   background: linear-gradient(93.62deg, rgba(192, 4, 254, 0.7) 2.98%, rgba(126, 2, 245, 0.7) 97.02%);
-    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */
   border-radius: 12px;
 }
 
 .swap-button:active {
-  background: radial-gradient(
-      49.66% 488.58% at 50% 30%,
-      rgba(123, 48, 127, 0.5) 0%,
-      rgba(123, 48, 127, 0.405) 100%
-    )
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.5) 0%, rgba(123, 48, 127, 0.405) 100%)
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   border-radius: 12px;
 }
-
-
 
 .price {
   font-weight: 500;
@@ -542,10 +403,10 @@ export default defineComponent({
 .stats {
   margin-top: 1em !important;
 }
-.border{
+.border {
   border: 0.5px solid rgba(59, 68, 189, 0.4);
 }
-.dark-back{
+.dark-back {
   background: #292043;
 }
 </style>

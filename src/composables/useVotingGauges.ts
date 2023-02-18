@@ -1,12 +1,7 @@
 import { Duration, Interval, intervalToDuration, nextThursday } from 'date-fns';
 import { computed, onUnmounted, ref } from 'vue';
 
-import {
-  GOERLI_VOTING_GAUGES,
-  KOVAN_VOTING_GAUGES,
-  MAINNET_VOTING_GAUGES,
-  VotingGauge,
-} from '@/constants/voting-gauges';
+import { GOERLI_VOTING_GAUGES, KOVAN_VOTING_GAUGES, MAINNET_VOTING_GAUGES, VotingGauge } from '@/constants/voting-gauges';
 
 import useGaugeVotesQuery from './queries/useGaugeVotesQuery';
 import { isGoerli, isKovan } from './useNetwork';
@@ -26,24 +21,16 @@ export default function useVotingGauges() {
   // Fetch onchain votes data for given votingGauges
   const gaugeVotesQuery = useGaugeVotesQuery(_votingGauges.value);
 
-  const isLoading = computed(
-    (): boolean =>
-      gaugeVotesQuery.isLoading.value ||
-      gaugeVotesQuery.isIdle.value ||
-      !!gaugeVotesQuery.error.value
-  );
+  const isLoading = computed((): boolean => gaugeVotesQuery.isLoading.value || gaugeVotesQuery.isIdle.value || !!gaugeVotesQuery.error.value);
 
   const votingGauges = computed(() => gaugeVotesQuery.data.value || []);
 
   const unallocatedVotes = computed(() => {
     const totalVotes = 1e4;
     if (isLoading.value || !votingGauges.value) return totalVotes;
-    const votesRemaining = votingGauges.value.reduce(
-      (remainingVotes, gauge) => {
-        return remainingVotes - parseFloat(gauge.userVotes);
-      },
-      totalVotes
-    );
+    const votesRemaining = votingGauges.value.reduce((remainingVotes, gauge) => {
+      return remainingVotes - parseFloat(gauge.userVotes);
+    }, totalVotes);
     return votesRemaining;
   });
 
@@ -61,12 +48,7 @@ export default function useVotingGauges() {
     const periodEnd = getVotePeriodEndTime();
     const interval: Interval = { start: now.value, end: periodEnd };
     const timeUntilEnd: Duration = intervalToDuration(interval);
-    const formattedTime = [
-      (timeUntilEnd.days || 0) % 7,
-      timeUntilEnd.hours || 0,
-      timeUntilEnd.minutes || 0,
-      timeUntilEnd.seconds || 0,
-    ];
+    const formattedTime = [(timeUntilEnd.days || 0) % 7, timeUntilEnd.hours || 0, timeUntilEnd.minutes || 0, timeUntilEnd.seconds || 0];
     return formattedTime;
   });
 
@@ -79,14 +61,7 @@ export default function useVotingGauges() {
 
   function getVotePeriodEndTime(): number {
     const n = nextThursday(new Date());
-    const epochEndTime = Date.UTC(
-      n.getFullYear(),
-      n.getMonth(),
-      n.getDate(),
-      0,
-      0,
-      0
-    );
+    const epochEndTime = Date.UTC(n.getFullYear(), n.getMonth(), n.getDate(), 0, 0, 0);
     return epochEndTime;
   }
 

@@ -1,7 +1,4 @@
-import {
-  BalancerHelpers__factory,
-  Vault__factory,
-} from '@balancer-labs/typechain';
+import { BalancerHelpers__factory, Vault__factory } from '@balancer-labs/typechain';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { JsonRpcProvider, Web3Provider } from '@ethersproject/providers';
 import { Ref } from 'vue';
@@ -18,88 +15,29 @@ export default class ExchangeService {
   vaultAddress: string;
   helpersAddress: string;
 
-  constructor(
-    pool: Ref<Pool>,
-    public readonly config: ConfigService = configService
-  ) {
+  constructor(pool: Ref<Pool>, public readonly config: ConfigService = configService) {
     this.pool = pool;
     this.vaultAddress = this.config.network.addresses.vault;
     this.helpersAddress = this.config.network.addresses.balancerHelpers;
   }
 
-  public async queryJoin(
-    provider: Web3Provider | JsonRpcProvider,
-    account: string,
-    amountsIn: string[],
-    tokensIn: string[],
-    bptOut = '0'
-  ) {
-    const txParams = this.joinParams.serialize(
-      account,
-      amountsIn,
-      tokensIn,
-      bptOut
-    );
+  public async queryJoin(provider: Web3Provider | JsonRpcProvider, account: string, amountsIn: string[], tokensIn: string[], bptOut = '0') {
+    const txParams = this.joinParams.serialize(account, amountsIn, tokensIn, bptOut);
 
-    return await callStatic(
-      provider,
-      this.helpersAddress,
-      BalancerHelpers__factory.abi,
-      'queryJoin',
-      txParams
-    );
+    return await callStatic(provider, this.helpersAddress, BalancerHelpers__factory.abi, 'queryJoin', txParams);
   }
 
-  public async join(
-    provider: Web3Provider | JsonRpcProvider,
-    account: string,
-    amountsIn: string[],
-    tokensIn: string[],
-    bptOut = '0'
-  ): Promise<TransactionResponse> {
-    const txParams = this.joinParams.serialize(
-      account,
-      amountsIn,
-      tokensIn,
-      bptOut
-    );
+  public async join(provider: Web3Provider | JsonRpcProvider, account: string, amountsIn: string[], tokensIn: string[], bptOut = '0'): Promise<TransactionResponse> {
+    const txParams = this.joinParams.serialize(account, amountsIn, tokensIn, bptOut);
     const value = this.joinParams.value(amountsIn, tokensIn);
 
-    return await sendTransaction(
-      provider,
-      this.vaultAddress,
-      Vault__factory.abi,
-      'joinPool',
-      txParams,
-      { value }
-    );
+    return await sendTransaction(provider, this.vaultAddress, Vault__factory.abi, 'joinPool', txParams, { value });
   }
 
-  public async queryExit(
-    provider: Web3Provider | JsonRpcProvider,
-    account: string,
-    amountsOut: string[],
-    tokensOut: string[],
-    bptIn: string,
-    exitTokenIndex: number | null,
-    exactOut: boolean
-  ) {
-    const txParams = this.exitParams.serialize(
-      account,
-      amountsOut,
-      tokensOut,
-      bptIn,
-      exitTokenIndex,
-      exactOut
-    );
+  public async queryExit(provider: Web3Provider | JsonRpcProvider, account: string, amountsOut: string[], tokensOut: string[], bptIn: string, exitTokenIndex: number | null, exactOut: boolean) {
+    const txParams = this.exitParams.serialize(account, amountsOut, tokensOut, bptIn, exitTokenIndex, exactOut);
 
-    return await callStatic(
-      provider,
-      this.helpersAddress,
-      BalancerHelpers__factory.abi,
-      'queryExit',
-      txParams
-    );
+    return await callStatic(provider, this.helpersAddress, BalancerHelpers__factory.abi, 'queryExit', txParams);
   }
 
   public async exit(
@@ -111,22 +49,9 @@ export default class ExchangeService {
     exitTokenIndex: number | null,
     exactOut: boolean
   ): Promise<TransactionResponse> {
-    const txParams = this.exitParams.serialize(
-      account,
-      amountsOut,
-      tokensOut,
-      bptIn,
-      exitTokenIndex,
-      exactOut
-    );
+    const txParams = this.exitParams.serialize(account, amountsOut, tokensOut, bptIn, exitTokenIndex, exactOut);
 
-    return await sendTransaction(
-      provider,
-      this.vaultAddress,
-      Vault__factory.abi,
-      'exitPool',
-      txParams
-    );
+    return await sendTransaction(provider, this.vaultAddress, Vault__factory.abi, 'exitPool', txParams);
   }
 
   private get joinParams() {

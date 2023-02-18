@@ -58,13 +58,9 @@ const isInRate = ref<boolean>(true);
 /**
  * COMPUTED
  */
-const missingToken = computed(
-  () => !_tokenInAddress.value || !_tokenOutAddress.value
-);
+const missingToken = computed(() => !_tokenInAddress.value || !_tokenOutAddress.value);
 
-const missingAmount = computed(
-  () => !_tokenInAmount.value || !_tokenOutAmount.value
-);
+const missingAmount = computed(() => !_tokenInAmount.value || !_tokenOutAmount.value);
 
 const tokenIn = computed(() => getToken(_tokenInAddress.value));
 const tokenOut = computed(() => getToken(_tokenOutAddress.value));
@@ -72,10 +68,7 @@ const tokenOut = computed(() => getToken(_tokenOutAddress.value));
 const rateLabel = computed(() => {
   if (missingToken.value || missingAmount.value) return '';
 
-  if (props.effectivePriceMessage)
-    return isInRate.value
-      ? props.effectivePriceMessage.value.tokenIn
-      : props.effectivePriceMessage.value.tokenOut;
+  if (props.effectivePriceMessage) return isInRate.value ? props.effectivePriceMessage.value.tokenIn : props.effectivePriceMessage.value.tokenOut;
 
   let rate, inSymbol, outSymbol;
 
@@ -145,7 +138,7 @@ watchEffect(() => {
 
 <template>
   <div>
-    <div class="px-[12px]" style="background-color: #41365E;">
+    <div class="px-[12px]" style="background-color: #41365e">
       <TokenInput
         :amount="_tokenInAmount"
         :address="_tokenInAddress"
@@ -189,8 +182,7 @@ watchEffect(() => {
 .toggle {
   transform: translateY(-60%);
 }
-.dark-back{
+.dark-back {
   background: #292043;
 }
-
 </style>

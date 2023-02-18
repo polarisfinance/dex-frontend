@@ -8,10 +8,7 @@
  * "approve n tokens, then invest in a pool.""
  */
 import { ChainId } from '@aave/protocol-js';
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { computed, ref, watch } from 'vue';
 
 import AnimatePresence from '@/components/animate/AnimatePresence.vue';
@@ -20,11 +17,7 @@ import { dateTimeLabelFor } from '@/composables/useTime';
 import useTransactionErrors from '@/composables/useTransactionErrors';
 import { configService } from '@/services/config/config.service';
 import { Step, StepState } from '@/types';
-import {
-  TransactionAction,
-  TransactionActionInfo,
-  TransactionActionState,
-} from '@/types/transactions';
+import { TransactionAction, TransactionActionInfo, TransactionActionState } from '@/types/transactions';
 
 /**
  * TYPES
@@ -103,9 +96,7 @@ const actions = computed((): TransactionAction[] => {
     const actionState = actionStates.value[idx];
     return {
       label: actionInfo.label,
-      loadingLabel: actionState.init
-        ? actionInfo.loadingLabel
-        : actionInfo.confirmingLabel,
+      loadingLabel: actionState.init ? actionInfo.loadingLabel : actionInfo.confirmingLabel,
       pending: actionState.init || actionState.confirming,
       promise: submit.bind(null, actionInfo.action, actionState),
       step: {
@@ -116,18 +107,11 @@ const actions = computed((): TransactionAction[] => {
   });
 });
 
-const currentAction = computed(
-  (): TransactionAction => actions.value[currentActionIndex.value]
-);
+const currentAction = computed((): TransactionAction => actions.value[currentActionIndex.value]);
 
-const currentActionState = computed(
-  (): TransactionActionState => actionStates.value[currentActionIndex.value]
-);
+const currentActionState = computed((): TransactionActionState => actionStates.value[currentActionIndex.value]);
 
-const lastActionState = computed(
-  (): TransactionActionState =>
-    actionStates.value[actionStates.value.length - 1]
-);
+const lastActionState = computed((): TransactionActionState => actionStates.value[actionStates.value.length - 1]);
 
 const steps = computed((): Step[] => actions.value.map(action => action.step));
 
@@ -139,10 +123,7 @@ const spacerWidth = computed((): number => {
  * METHODS
  */
 
-function getStepState(
-  actionState: TransactionActionState,
-  index: number
-): StepState {
+function getStepState(actionState: TransactionActionState, index: number): StepState {
   if (currentActionIndex.value < index) return StepState.Todo;
   else if (actionState.confirming) return StepState.Pending;
   else if (actionState.init) return StepState.WalletOpen;
@@ -150,10 +131,7 @@ function getStepState(
   return StepState.Active;
 }
 
-async function submit(
-  action: () => Promise<TransactionResponse>,
-  state: TransactionActionState
-): Promise<void> {
+async function submit(action: () => Promise<TransactionResponse>, state: TransactionActionState): Promise<void> {
   try {
     state.init = true;
     state.error = null;
@@ -172,10 +150,7 @@ async function submit(
   }
 }
 
-async function handleTransaction(
-  tx: TransactionResponse,
-  state: TransactionActionState
-): Promise<void> {
+async function handleTransaction(tx: TransactionResponse, state: TransactionActionState): Promise<void> {
   await txListener(tx, {
     onTxConfirmed: async (receipt: TransactionReceipt) => {
       state.receipt = receipt;
@@ -208,31 +183,15 @@ async function handleTransaction(
 <template>
   <div class="px-[12px] pb-[12px]">
     <AnimatePresence isVisible>
-      <BalAlert
-        v-if="currentActionState?.error && !isLoading"
-        type="error"
-        :title="currentActionState?.error?.title"
-        :description="currentActionState?.error?.description"
-        block
-        class="mb-4"
-      />
+      <BalAlert v-if="currentActionState?.error && !isLoading" type="error" :title="currentActionState?.error?.title" :description="currentActionState?.error?.description" block class="mb-4" />
       <BalStack vertical>
-        <BalHorizSteps
-          v-if="actions.length > 1 && !lastActionState?.confirmed"
-          :steps="steps"
-          :spacerWidth="spacerWidth"
-          class="flex justify-center"
-        />
+        <BalHorizSteps v-if="actions.length > 1 && !lastActionState?.confirmed" :steps="steps" :spacerWidth="spacerWidth" class="flex justify-center" />
         <BalBtn
           v-if="!lastActionState?.confirmed"
           :disabled="props.disabled"
           color="gradient"
           :loading="currentAction?.pending || isLoading"
-          :loadingLabel="
-            isLoading
-              ? loadingLabel || $t('loading')
-              : currentAction?.loadingLabel
-          "
+          :loadingLabel="isLoading ? loadingLabel || $t('loading') : currentAction?.loadingLabel"
           block
           @click="currentAction.promise()"
         >

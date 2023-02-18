@@ -5,14 +5,9 @@
       <div class="sunrise-subtitle-text title">Single Stake</div>
     </div>
   </div>
-  <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">
-    Earn XPOLAR by depositing {{ sunrise.name.toUpperCase() }}
-  </div>
+  <div :class="{ info: isDesktop, infoMobile: isMobile }" class="title">Earn XPOLAR by depositing {{ sunrise.name.toUpperCase() }}</div>
 
-  <div
-    :class="{ sunrise: isDesktop, sunriseMobile: isMobile }"
-    class="justify-center text-center"
-  >
+  <div :class="{ sunrise: isDesktop, sunriseMobile: isMobile }" class="justify-center text-center">
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <img class="logo" :src="logo[sunrise.name]" />
       <div class="num-tokens">{{ balance }}</div>
@@ -27,28 +22,12 @@
           Deposit
         </button> -->
         <button class="claim-btn" @click="toggleStakeModal()">Deposit</button>
-        <StakeModal
-          :depositBol="true"
-          :isVisible="isStakeModalVisible"
-          :token="sunrise.name.toUpperCase()"
-          :balance="balanceFor(tokenAddress)"
-          :address="tokenAddress"
-          @close="toggleStakeModal()"
-        />
+        <StakeModal :depositBol="true" :isVisible="isStakeModalVisible" :token="sunrise.name.toUpperCase()" :balance="balanceFor(tokenAddress)" :address="tokenAddress" @close="toggleStakeModal()" />
         <!-- <button class="withdraw-btn" @click="withdraw(depositAmount)">
           Withdraw
         </button> -->
-        <button class="withdraw-btn" @click="toggleUnstakeModal()">
-          Withdraw
-        </button>
-        <StakeModal
-          :depositBol="false"
-          :isVisible="isUnstakeModalVisible"
-          :token="sunrise.name.toUpperCase()"
-          :balance="balance"
-          :address="tokenAddress"
-          @close="toggleUnstakeModal()"
-        />
+        <button class="withdraw-btn" @click="toggleUnstakeModal()">Withdraw</button>
+        <StakeModal :depositBol="false" :isVisible="isUnstakeModalVisible" :token="sunrise.name.toUpperCase()" :balance="balance" :address="tokenAddress" @close="toggleUnstakeModal()" />
       </div>
     </div>
     <div :class="{ data: isDesktop, dataMobile: isMobile }">
@@ -69,19 +48,11 @@
       <!-- <div class="details">${{ earnedAmountInDollars }}</div> -->
       <div class="details"><span class="uppercase">xpolar</span> Earned</div>
       <div class="mt-[24px] flex justify-center gap-[12px]">
-        <button
-          class="claim-btn"
-          @click="claim()"
-          :disabled="!(parseFloat(earned) > 0)"
-        >
-          Claim Rewards
-        </button>
+        <button class="claim-btn" @click="claim()" :disabled="!(parseFloat(earned) > 0)">Claim Rewards</button>
       </div>
     </div>
     <div class="w-full">
-      <button class="claim-btn" text-center @click="withdrawEverything()">
-        Claim and withdraw
-      </button>
+      <button class="claim-btn" text-center @click="withdrawEverything()">Claim and withdraw</button>
     </div>
   </div>
 </template>
@@ -114,12 +85,7 @@ import useTransactions from '@/composables/useTransactions';
 import useEthers from '@/composables/useEthers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { BigNumber } from 'ethers';
-import {
-  BigNumberToString,
-  sunriseNameToAddress,
-  SPOLAR,
-  getDisplayBalance,
-} from '../composables/PolarisFinance/utils';
+import { BigNumberToString, sunriseNameToAddress, SPOLAR, getDisplayBalance } from '../composables/PolarisFinance/utils';
 interface PoolPageData {
   id: string;
 }
@@ -154,11 +120,7 @@ export default defineComponent({
       for (let sunrise of Object.values(sunriseDefinitions)) {
         if (sunrise.name == data.id) return sunrise;
       }
-      if (
-        ['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(
-          data.id.toUpperCase()
-        )
-      ) {
+      if (['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(data.id.toUpperCase())) {
         return { name: data.id };
       }
       return undefined;
@@ -168,14 +130,9 @@ export default defineComponent({
       for (let sunrise of Object.values(sunriseDefinitions)) {
         if (sunrise.name == data.id) return sunrise.tokenAddress;
       }
-      if (
-        ['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(
-          data.id.toUpperCase()
-        )
-      ) {
+      if (['OBOND', 'EBOND', 'USPBOND', 'BBOND', 'PBOND'].includes(data.id.toUpperCase())) {
         for (let sunrise of Object.values(sunriseDefinitions)) {
-          if (sunrise.bond == data.id.toUpperCase())
-            return sunrise.bondTokenAddress;
+          if (sunrise.bond == data.id.toUpperCase()) return sunrise.bondTokenAddress;
         }
       }
       return undefined;
@@ -254,11 +211,7 @@ export default defineComponent({
     async fetchData() {
       const { balance, pendingShare, walletBalance, isApproved } = useStake();
       this.balance = await balance(this.tokenAddress, this.account);
-      this.earned = BigNumberToString(
-        await pendingShare(this.tokenAddress, this.account),
-        14,
-        4
-      );
+      this.earned = BigNumberToString(await pendingShare(this.tokenAddress, this.account), 14, 4);
       this.approved = await isApproved(this.tokenAddress, this.account);
     },
     async approve() {
@@ -274,11 +227,7 @@ export default defineComponent({
     },
     async claim() {
       const { withdraw } = useStake();
-      const tx = await withdraw(
-        this.tokenAddress,
-        BigNumber.from(0),
-        this.getProvider()
-      );
+      const tx = await withdraw(this.tokenAddress, BigNumber.from(0), this.getProvider());
       this.txHandler(tx);
       this.txListener(tx, {
         onTxConfirmed: () => {
@@ -289,11 +238,7 @@ export default defineComponent({
     },
     async withdrawEverything() {
       const { withdrawAll } = useStake();
-      const tx = await withdrawAll(
-        this.tokenAddress,
-        this.account,
-        this.getProvider()
-      );
+      const tx = await withdrawAll(this.tokenAddress, this.account, this.getProvider());
       this.txHandler(tx);
       this.txListener(tx, {
         onTxConfirmed: () => {
@@ -479,19 +424,11 @@ export default defineComponent({
 }
 
 .claim-btn:hover {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.7) 0%,
-    rgba(123, 48, 127, 0.567) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.7) 0%, rgba(123, 48, 127, 0.567) 100%);
 }
 
 .claim-btn:active {
-  background: radial-gradient(
-    49.66% 488.58% at 50% 30%,
-    rgba(123, 48, 127, 0.5) 0%,
-    rgba(123, 48, 127, 0.405) 100%
-  );
+  background: radial-gradient(49.66% 488.58% at 50% 30%, rgba(123, 48, 127, 0.5) 0%, rgba(123, 48, 127, 0.405) 100%);
 }
 
 .withdraw-btn {
@@ -511,12 +448,7 @@ export default defineComponent({
   font-size: 16px;
   line-height: 20px;
 
-  background: linear-gradient(
-    90.64deg,
-    #fbaaff -20.45%,
-    #f89c35 36.77%,
-    #7b307f 100.27%
-  );
+  background: linear-gradient(90.64deg, #fbaaff -20.45%, #f89c35 36.77%, #7b307f 100.27%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

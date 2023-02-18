@@ -43,18 +43,15 @@ const lockDates = computed(() => [
   },
   {
     label: t('getVeBAL.lockForm.lockPeriods.1m'),
-    action: () =>
-      updateLockEndDate(addWeeks(props.minLockEndDateTimestamp, 4).getTime()),
+    action: () => updateLockEndDate(addWeeks(props.minLockEndDateTimestamp, 4).getTime()),
   },
   {
     label: t('getVeBAL.lockForm.lockPeriods.3m'),
-    action: () =>
-      updateLockEndDate(addWeeks(props.minLockEndDateTimestamp, 12).getTime()),
+    action: () => updateLockEndDate(addWeeks(props.minLockEndDateTimestamp, 12).getTime()),
   },
   {
     label: t('getVeBAL.lockForm.lockPeriods.6m'),
-    action: () =>
-      updateLockEndDate(addWeeks(props.minLockEndDateTimestamp, 24).getTime()),
+    action: () => updateLockEndDate(addWeeks(props.minLockEndDateTimestamp, 24).getTime()),
   },
   {
     label: t('getVeBAL.lockForm.lockPeriods.1y'),
@@ -68,18 +65,14 @@ const lockDates = computed(() => [
  * CALLBACKS
  */
 onBeforeMount(() => {
-  lockEndDate.value = props.veBalLockInfo?.hasExistingLock
-    ? formatDateInput(props.veBalLockInfo.lockedEndDate)
-    : formatDateInput(props.maxLockEndDateTimestamp);
+  lockEndDate.value = props.veBalLockInfo?.hasExistingLock ? formatDateInput(props.veBalLockInfo.lockedEndDate) : formatDateInput(props.maxLockEndDateTimestamp);
 });
 
 /**
  * METHODS
  */
 function updateLockEndDate(timestamp: number) {
-  lockEndDate.value = formatDateInput(
-    Math.min(timestamp, props.maxLockEndDateTimestamp)
-  );
+  lockEndDate.value = formatDateInput(Math.min(timestamp, props.maxLockEndDateTimestamp));
 }
 
 function formatDateInput(date: Date | number) {
@@ -94,23 +87,9 @@ function formatDateInput(date: Date | number) {
         {{ $t('getVeBAL.lockForm.lockEndDate.title') }}
       </p>
     </div>
-    <BalTextInput
-      v-model="lockEndDate"
-      name="lockEndDate"
-      type="date"
-      :min="formatDateInput(minLockEndDateTimestamp)"
-      :max="formatDateInput(maxLockEndDateTimestamp)"
-      step="7"
-    />
+    <BalTextInput v-model="lockEndDate" name="lockEndDate" type="date" :min="formatDateInput(minLockEndDateTimestamp)" :max="formatDateInput(maxLockEndDateTimestamp)" step="7" />
     <div class="text-secondary mt-2 flex px-1 text-sm">
-      <div
-        v-for="(lockDate, index) in lockDates"
-        :key="index"
-        class="mr-3 cursor-pointer hover:text-pink-500 focus:text-pink-500"
-        @click="lockDate.action"
-      >
-        ~{{ lockDate.label }}
-      </div>
+      <div v-for="(lockDate, index) in lockDates" :key="index" class="mr-3 cursor-pointer hover:text-pink-500 focus:text-pink-500" @click="lockDate.action">~{{ lockDate.label }}</div>
     </div>
   </div>
 </template>

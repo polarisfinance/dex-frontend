@@ -26,13 +26,9 @@ const { fNum2 } = useNumbers();
  * COMPUTED
  */
 
-const votesThisPeriod = computed<string>(() =>
-  formatVotesAsPercent(props.gauge.votes)
-);
+const votesThisPeriod = computed<string>(() => formatVotesAsPercent(props.gauge.votes));
 
-const votesNextPeriod = computed<string>(() =>
-  formatVotesAsPercent(props.gauge.votesNextPeriod)
-);
+const votesNextPeriod = computed<string>(() => formatVotesAsPercent(props.gauge.votesNextPeriod));
 
 const voteDifference = computed<number>(() => {
   return Number(props.gauge.votesNextPeriod) - Number(props.gauge.votes);
@@ -75,18 +71,10 @@ function formatVotesAsPercent(votes: string): string {
       </div>
       <div class="text-xs font-normal">
         <div class="mb-2">
-          {{
-            $t('veBAL.liquidityMining.votesTooltip.thisPeriod', [
-              votesThisPeriod,
-            ])
-          }}
+          {{ $t('veBAL.liquidityMining.votesTooltip.thisPeriod', [votesThisPeriod]) }}
         </div>
         <div class="mb-2">
-          {{
-            $t('veBAL.liquidityMining.votesTooltip.nextPeriod', [
-              votesNextPeriod,
-            ])
-          }}
+          {{ $t('veBAL.liquidityMining.votesTooltip.nextPeriod', [votesNextPeriod]) }}
           <span :class="voteTextClass">{{ voteDifferenceText }}</span>
         </div>
       </div>

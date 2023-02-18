@@ -37,11 +37,7 @@ export function lsSet(key: string, value: any, version?: string) {
   return localStorage.setItem(lsGetKey(key), JSON.stringify(data));
 }
 
-export function lsGet<T = any>(
-  key: string,
-  defaultValue: any = null,
-  version?: string
-): T {
+export function lsGet<T = any>(key: string, defaultValue: any = null, version?: string): T {
   const rawValue = localStorage.getItem(lsGetKey(key));
 
   if (rawValue != null) {
@@ -79,10 +75,7 @@ export function bnum(val: string | number | BigNumber): BigNumber {
 
 export const bnumZero = bnum(0);
 
-export function scale(
-  input: BigNumber | string,
-  decimalPlaces: number
-): BigNumber {
+export function scale(input: BigNumber | string, decimalPlaces: number): BigNumber {
   const unscaled = typeof input === 'string' ? new BigNumber(input) : input;
   const scalePow = new BigNumber(decimalPlaces.toString());
   const scaleMul = new BigNumber(10).pow(scalePow);
@@ -98,13 +91,7 @@ export function shortenLabel(str, segLength = 4) {
 /**
  * Wait for a reactive variable to change to an expected value.
  */
-export async function forChange(
-  reactiveVar: Ref<any>,
-  expected: any,
-  checkCount = 0,
-  checkDelay = 500,
-  checkLimit = 20
-): Promise<void> {
+export async function forChange(reactiveVar: Ref<any>, expected: any, checkCount = 0, checkDelay = 500, checkLimit = 20): Promise<void> {
   if (reactiveVar.value === expected || checkCount >= checkLimit) return;
   await sleep(checkDelay);
   await forChange(reactiveVar, expected, checkCount++);
@@ -121,16 +108,11 @@ export function bnSum(amounts: string[]): BigNumber {
  *  creates a sentence readable list for an array for string
  *  e.g. 'UBT, DSB and BAL' for [UBT, DSB, BAL]
  */
-export function formatWordListAsSentence(
-  words: string[],
-  t: (key: Path | number) => string
-) {
+export function formatWordListAsSentence(words: string[], t: (key: Path | number) => string) {
   if (!words.length) return '';
   if (words.length >= 2) {
     const commaSeperatedWords = initial(words);
-    return `${commaSeperatedWords.join(', ')} ${t('and')} ${
-      words[words.length - 1]
-    }`;
+    return `${commaSeperatedWords.join(', ')} ${t('and')} ${words[words.length - 1]}`;
   }
   // only one word, so just return that
   return words[0];
@@ -151,10 +133,7 @@ export function includesAddress(addresses: string[], address: string): boolean {
   return addresses.includes(getAddress(address));
 }
 
-export function findByAddress<T>(
-  items: Record<string, T>,
-  address: string
-): T | undefined {
+export function findByAddress<T>(items: Record<string, T>, address: string): T | undefined {
   const foundAddress = Object.keys(items).find(itemAddress => {
     if (isSameAddress(itemAddress, address)) {
       return true;

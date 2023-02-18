@@ -14,18 +14,14 @@ export class BalancerMinter {
    * @summary Claim BAL rewards for gauge
    */
   async mint(gaugeAddress: string) {
-    return await this.web3.sendTransaction(this.address, this.abi, 'mint', [
-      gaugeAddress,
-    ]);
+    return await this.web3.sendTransaction(this.address, this.abi, 'mint', [gaugeAddress]);
   }
 
   /**
    * @summary Claim BAL rewards for multiple gauges in one transaction
    */
   async mintMany(gaugeAddresses: string[]) {
-    return await this.web3.sendTransaction(this.address, this.abi, 'mintMany', [
-      gaugeAddresses,
-    ]);
+    return await this.web3.sendTransaction(this.address, this.abi, 'mintMany', [gaugeAddresses]);
   }
 }
 

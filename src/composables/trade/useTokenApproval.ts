@@ -13,11 +13,7 @@ import useEthers from '../useEthers';
 import useTokens from '../useTokens';
 import useTransactions from '../useTransactions';
 
-export default function useTokenApproval(
-  tokenInAddress: Ref<string>,
-  amount: Ref<string>,
-  tokens: Ref<TokenInfoMap>
-) {
+export default function useTokenApproval(tokenInAddress: Ref<string>, amount: Ref<string>, tokens: Ref<TokenInfoMap>) {
   /**
    * STATE
    */
@@ -38,9 +34,7 @@ export default function useTokenApproval(
    * COMPUTED
    */
   const allowanceState = computed(() => {
-    if (
-      isSameAddress(tokenInAddress.value, networkConfig.nativeAsset.address)
-    ) {
+    if (isSameAddress(tokenInAddress.value, networkConfig.nativeAsset.address)) {
       return {
         isUnlockedV2: true,
         approvedSpenders: {},
@@ -53,10 +47,7 @@ export default function useTokenApproval(
         approvedSpenders: {},
       };
 
-    const v2ApprovalRequired = approvalRequired(
-      tokenInAddress.value,
-      amount.value
-    );
+    const v2ApprovalRequired = approvalRequired(tokenInAddress.value, amount.value);
 
     return {
       isUnlockedV2: !v2ApprovalRequired,
@@ -71,9 +62,7 @@ export default function useTokenApproval(
   async function approveSpender(spender: string): Promise<void> {
     approving.value = true;
     try {
-      const [tx] = await approveTokens(getProvider(), spender, [
-        tokenInAddress.value,
-      ]);
+      const [tx] = await approveTokens(getProvider(), spender, [tokenInAddress.value]);
       txHandler(tx, spender);
     } catch (e) {
       console.log(e);
@@ -91,9 +80,7 @@ export default function useTokenApproval(
       id: tx.hash,
       type: 'tx',
       action: 'approve',
-      summary: t('transactionSummary.approveForTrading', [
-        tokens.value[tokenInAddress.value]?.symbol,
-      ]),
+      summary: t('transactionSummary.approveForTrading', [tokens.value[tokenInAddress.value]?.symbol]),
       details: {
         contractAddress: tokenInAddress.value,
         spender,
@@ -115,9 +102,7 @@ export default function useTokenApproval(
    * WATCHERS
    */
   watch(tokenInAddress, async () => {
-    if (
-      isSameAddress(tokenInAddress.value, networkConfig.nativeAsset.address)
-    ) {
+    if (isSameAddress(tokenInAddress.value, networkConfig.nativeAsset.address)) {
       approved.value = true;
     } else {
       approved.value = false;

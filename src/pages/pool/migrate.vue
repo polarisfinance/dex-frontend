@@ -14,18 +14,11 @@ const route = useRoute();
  */
 const fromPoolId = route.params.from as string;
 const toPoolId = route.params.to as string;
-const poolMigrationInfo = POOL_MIGRATIONS.find(
-  poolMigrationInfo =>
-    poolMigrationInfo.fromPoolId === fromPoolId &&
-    poolMigrationInfo.toPoolId === toPoolId
-);
+const poolMigrationInfo = POOL_MIGRATIONS.find(poolMigrationInfo => poolMigrationInfo.fromPoolId === fromPoolId && poolMigrationInfo.toPoolId === toPoolId);
 </script>
 
 <template>
-  <MigrateForm
-    v-if="poolMigrationInfo"
-    :poolMigrationInfo="poolMigrationInfo"
-  />
+  <MigrateForm v-if="poolMigrationInfo" :poolMigrationInfo="poolMigrationInfo" />
   <div v-else class="text-center">
     <div class="text-lg font-semibold">
       {{ $t('migratePool.errorLoadingMigration.title') }}

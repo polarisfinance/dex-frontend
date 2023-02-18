@@ -37,11 +37,7 @@ const disabled = computed(() => {
     flat
     block
   >
-    {{
-      showRemoveVotes
-        ? $t('veBAL.liquidityMining.table.remove')
-        : $t('veBAL.liquidityMining.table.vote')
-    }}
+    {{ showRemoveVotes ? $t('veBAL.liquidityMining.table.remove') : $t('veBAL.liquidityMining.table.vote') }}
   </BalBtn>
 </template>
 

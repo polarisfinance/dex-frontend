@@ -6,12 +6,7 @@ import { Contract } from 'ethers';
 import { bondABI, tokenABI } from './ABI';
 import useTreasury from './useTreasury';
 
-import {
-  BigNumberToString,
-  bondNameToAddress,
-  tokenNameToAddress,
-  treasuryNameToAddress,
-} from './utils';
+import { BigNumberToString, bondNameToAddress, tokenNameToAddress, treasuryNameToAddress } from './utils';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import { Network } from '@balancer-labs/sdk';
 import { Web3Provider } from '@ethersproject/providers';
@@ -44,13 +39,7 @@ export default function useBonds(account: string, tokenName: string) {
     const spender = treasuryNameToAddress[tokenName];
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        tokenNameToAddress[tokenName],
-        tokenABI,
-        'approve',
-        [spender, amount]
-      );
+      const tx = await sendTransaction(provider, tokenNameToAddress[tokenName], tokenABI, 'approve', [spender, amount]);
 
       return tx;
     } catch (error) {
@@ -64,13 +53,7 @@ export default function useBonds(account: string, tokenName: string) {
     const spender = treasuryNameToAddress[tokenName];
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        tokenNameToAddress[tokenName],
-        tokenABI,
-        'approve',
-        [spender, amount]
-      );
+      const tx = await sendTransaction(provider, tokenNameToAddress[tokenName], tokenABI, 'approve', [spender, amount]);
 
       return tx;
     } catch (error) {
@@ -92,16 +75,9 @@ export default function useBonds(account: string, tokenName: string) {
   const purchase = async (amount: BigNumber, provider: Web3Provider) => {
     const { getCurrentPrice } = useTreasury(tokenName);
     const targetPrice = await getCurrentPrice();
-    const localABI =
-      tokenName != 'polar' ? treasuryABI(tokenName) : polarTreasuryABI;
+    const localABI = tokenName != 'polar' ? treasuryABI(tokenName) : polarTreasuryABI;
     try {
-      const tx = await sendTransaction(
-        provider,
-        treasuryNameToAddress[tokenName],
-        localABI,
-        'buyBonds',
-        [amount, targetPrice]
-      );
+      const tx = await sendTransaction(provider, treasuryNameToAddress[tokenName], localABI, 'buyBonds', [amount, targetPrice]);
       return tx;
     } catch (error) {
       console.error(error);
@@ -115,13 +91,7 @@ export default function useBonds(account: string, tokenName: string) {
     const targetPrice = await getCurrentTWAPBigNumber();
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        treasuryNameToAddress[tokenName],
-        bondABI,
-        'redeemBonds',
-        [amount, BigNumber.from(targetPrice)]
-      );
+      const tx = await sendTransaction(provider, treasuryNameToAddress[tokenName], bondABI, 'redeemBonds', [amount, BigNumber.from(targetPrice)]);
       return tx;
     } catch (error) {
       console.error(error);

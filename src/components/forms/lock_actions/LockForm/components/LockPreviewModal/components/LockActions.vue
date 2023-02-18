@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { parseUnits } from '@ethersproject/units';
 import { format } from 'date-fns';
 import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
@@ -69,16 +66,11 @@ const { networkConfig } = useConfig();
 const { getProvider, explorerLinks } = useWeb3();
 const { addTransaction } = useTransactions();
 const { txListener, getTxConfirmedAt } = useEthers();
-const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
-  [props.lockablePoolTokenInfo.address],
-  ref([props.lockAmount])
-);
+const { getTokenApprovalActionsForSpender } = useTokenApprovalActions([props.lockablePoolTokenInfo.address], ref([props.lockAmount]));
 const { fNum2 } = useNumbers();
 
 const lockActions = props.lockType.map((lockType, actionIndex) => ({
-  label: t(`getVeBAL.previewModal.actions.${lockType}.label`, [
-    format(new Date(props.lockEndDate), PRETTY_DATE_FORMAT),
-  ]),
+  label: t(`getVeBAL.previewModal.actions.${lockType}.label`, [format(new Date(props.lockEndDate), PRETTY_DATE_FORMAT)]),
   loadingLabel: t(`getVeBAL.previewModal.actions.${lockType}.loadingLabel`),
   confirmingLabel: t(`getVeBAL.previewModal.actions.${lockType}.confirming`),
   action: () => submit(lockType, actionIndex),
@@ -90,30 +82,20 @@ const actions = ref<TransactionActionInfo[]>([...lockActions]);
 /**
  * COMPUTED
  */
-const lockActionStatesConfirmed = computed(() =>
-  lockActionStates.every(lockActionState => lockActionState.confirmed)
-);
+const lockActionStatesConfirmed = computed(() => lockActionStates.every(lockActionState => lockActionState.confirmed));
 
 /**
  * METHODS
  */
-async function handleTransaction(
-  tx: TransactionResponse,
-  lockType: LockType,
-  actionIndex: number
-): Promise<void> {
+async function handleTransaction(tx: TransactionResponse, lockType: LockType, actionIndex: number): Promise<void> {
   addTransaction({
     id: tx.hash,
     type: 'tx',
     action: lockType,
     summary:
       lockType === LockType.EXTEND_LOCK
-        ? t('transactionSummary.extendLock', [
-            format(new Date(props.lockEndDate), PRETTY_DATE_FORMAT),
-          ])
-        : `${fNum2(props.lockAmount, FNumFormats.token)} ${
-            props.lockablePoolTokenInfo.symbol
-          }`,
+        ? t('transactionSummary.extendLock', [format(new Date(props.lockEndDate), PRETTY_DATE_FORMAT)])
+        : `${fNum2(props.lockAmount, FNumFormats.token)} ${props.lockablePoolTokenInfo.symbol}`,
     details: {
       lockAmount: props.lockAmount,
       lockEndDate: props.lockEndDate,
@@ -141,21 +123,11 @@ async function submit(lockType: LockType, actionIndex: number) {
     lockActionStates[actionIndex].init = true;
 
     if (lockType === LockType.CREATE_LOCK) {
-      tx = await balancerContractsService.veBAL.createLock(
-        getProvider(),
-        props.lockAmount,
-        props.lockEndDate
-      );
+      tx = await balancerContractsService.veBAL.createLock(getProvider(), props.lockAmount, props.lockEndDate);
     } else if (lockType === LockType.EXTEND_LOCK) {
-      tx = await balancerContractsService.veBAL.extendLock(
-        getProvider(),
-        props.lockEndDate
-      );
+      tx = await balancerContractsService.veBAL.extendLock(getProvider(), props.lockEndDate);
     } else if (lockType === LockType.INCREASE_LOCK) {
-      tx = await balancerContractsService.veBAL.increaseLock(
-        getProvider(),
-        props.lockAmount
-      );
+      tx = await balancerContractsService.veBAL.increaseLock(getProvider(), props.lockAmount);
     } else {
       throw new Error('Unsupported lockType provided');
     }
@@ -186,15 +158,9 @@ watch(lockActionStatesConfirmed, () => {
  * LIFECYCLE
  */
 onBeforeMount(async () => {
-  const approvalAmount = parseUnits(
-    props.lockAmount,
-    props.lockablePoolTokenInfo.decimals
-  ).toString();
+  const approvalAmount = parseUnits(props.lockAmount, props.lockablePoolTokenInfo.decimals).toString();
 
-  const approvalActions = await getTokenApprovalActionsForSpender(
-    configService.network.addresses.veBAL,
-    approvalAmount
-  );
+  const approvalActions = await getTokenApprovalActionsForSpender(configService.network.addresses.veBAL, approvalAmount);
 
   actions.value.unshift(...approvalActions);
 });
@@ -204,40 +170,19 @@ onBeforeMount(async () => {
   <div>
     <BalActionSteps v-if="!lockActionStatesConfirmed" :actions="actions" />
     <template v-else>
-      <div
-        v-for="(lockActionState, i) in lockActionStates"
-        :key="i"
-        class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
-      >
+      <div v-for="(lockActionState, i) in lockActionStates" :key="i" class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600">
         <div class="flex items-center">
           <BalIcon name="clock" />
           <span class="ml-2">
             {{ lockActionState.confirmedAt }}
           </span>
         </div>
-        <BalLink
-          v-if="lockActionState.receipt"
-          :href="explorerLinks.txLink(lockActionState.receipt.transactionHash)"
-          external
-          noStyle
-          class="group flex items-center"
-        >
+        <BalLink v-if="lockActionState.receipt" :href="explorerLinks.txLink(lockActionState.receipt.transactionHash)" external noStyle class="group flex items-center">
           {{ networkConfig.explorerName }}
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="ml-px transition-colors group-hover:text-pink-500"
-          />
+          <BalIcon name="arrow-up-right" size="sm" class="ml-px transition-colors group-hover:text-pink-500" />
         </BalLink>
       </div>
-      <BalBtn
-        tag="router-link"
-        :to="{ name: 'vebal' }"
-        color="gray"
-        outline
-        block
-        class="mt-2"
-      >
+      <BalBtn tag="router-link" :to="{ name: 'vebal' }" color="gray" outline block class="mt-2">
         {{ $t('getVeBAL.previewModal.returnToVeBalPage') }}
       </BalBtn>
     </template>

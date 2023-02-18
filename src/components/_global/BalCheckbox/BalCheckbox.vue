@@ -2,20 +2,10 @@
   <div :class="['bal-checkbox', wrapperClasses]">
     <div class="flex">
       <div>
-        <input
-          type="checkbox"
-          :name="name"
-          :checked="modelValue"
-          :class="['bal-checkbox-input', inputClasses]"
-          @change="onChange"
-        />
+        <input type="checkbox" :name="name" :checked="modelValue" :class="['bal-checkbox-input', inputClasses]" @change="onChange" />
       </div>
       <div class="relative ml-2 flex-col">
-        <label
-          v-if="$slots.label || label"
-          :for="name"
-          :class="['bal-checkbox-label', labelClasses]"
-        >
+        <label v-if="$slots.label || label" :for="name" :class="['bal-checkbox-label', labelClasses]">
           <slot name="label">
             {{ label }}
           </slot>

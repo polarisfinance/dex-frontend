@@ -5,14 +5,7 @@ import useAlerts, { AlertPriority, AlertType } from '@/composables/useAlerts';
 import useTokens from '@/composables/useTokens';
 
 export default function useGlobalQueryWatchers() {
-  const {
-    priceQueryError,
-    refetchPrices,
-    balancesQueryError,
-    refetchBalances,
-    allowancesQueryError,
-    refetchAllowances,
-  } = useTokens();
+  const { priceQueryError, refetchPrices, balancesQueryError, refetchBalances, allowancesQueryError, refetchAllowances } = useTokens();
   const { addAlert, removeAlert } = useAlerts();
   const { t } = useI18n();
 

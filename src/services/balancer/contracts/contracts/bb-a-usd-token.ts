@@ -6,11 +6,7 @@ import StablePhantomAbi from '@/lib/abi/StablePhantomPool.json';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 
 export class BBAUSDToken {
-  constructor(
-    private readonly abi = StablePhantomAbi,
-    public readonly address = TOKENS.Addresses.bbaUSD,
-    private readonly provider = rpcProviderService.jsonProvider
-  ) {}
+  constructor(private readonly abi = StablePhantomAbi, public readonly address = TOKENS.Addresses.bbaUSD, private readonly provider = rpcProviderService.jsonProvider) {}
 
   /**
    * @summary Instantiates a contract instance for the bb-a-USD token.

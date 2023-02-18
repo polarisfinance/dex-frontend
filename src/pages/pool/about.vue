@@ -17,12 +17,7 @@ export default defineComponent({
     const id = ref<string>(route.params.id as string);
     const poolQuery = usePoolQuery(route.params.id as string);
     const pool = computed(() => poolQuery.data.value);
-    const poolQueryLoading = computed(
-      () =>
-        poolQuery.isLoading.value ||
-        poolQuery.isIdle.value ||
-        Boolean(poolQuery.error.value)
-    );
+    const poolQueryLoading = computed(() => poolQuery.isLoading.value || poolQuery.isIdle.value || Boolean(poolQuery.error.value));
     const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
 
     const creationDate = computed(() => {
@@ -137,22 +132,14 @@ export default defineComponent({
         <div class="val flex justify-between">
           <div>Pool Details</div>
           <div class="flex">
-            <div
-              v-for="(token, idx) in tableData"
-              :key="idx"
-              class="token-name flex"
-            >
+            <div v-for="(token, idx) in tableData" :key="idx" class="token-name flex">
               <div>
                 {{ symbolFor(token.address) }}
               </div>
               <div v-if="idx < tableData.length - 1">-</div>
             </div>
             <div class="pl-[12px]">
-              <BalAssetSet
-                :size="18"
-                :addresses="iconAddresses(tableData)"
-                :width="32"
-              />
+              <BalAssetSet :size="18" :addresses="iconAddresses(tableData)" :width="32" />
             </div>
           </div>
         </div>
@@ -181,24 +168,14 @@ export default defineComponent({
       </div>
       <div class="row">
         <div>Pool owner address</div>
-        <a
-          :href="poolOwnerLink"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex"
-        >
+        <a :href="poolOwnerLink" target="_blank" rel="noopener noreferrer" class="flex">
           <div class="py-[12px] pl-[24px] underline">{{ poolOwner }}</div>
           <img :src="arrow" class="ml-[12px] inline" v-if="!loadingPool" />
         </a>
       </div>
       <div class="row">
         <div>Contract address</div>
-        <a
-          :href="poolAddressLink"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex"
-        >
+        <a :href="poolAddressLink" target="_blank" rel="noopener noreferrer" class="flex">
           <div class="py-[12px] pl-[24px] underline">{{ poolAddress }}</div>
           <img :src="arrow" class="ml-[12px] inline" v-if="!loadingPool" />
         </a>

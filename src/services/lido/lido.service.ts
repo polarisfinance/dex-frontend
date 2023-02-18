@@ -36,17 +36,10 @@ export default class LidoService {
     }
   }
 
-  async calcStEthAPRFor(
-    pool: Pool,
-    protocolFeePercentage: number
-  ): Promise<string> {
+  async calcStEthAPRFor(pool: Pool, protocolFeePercentage: number): Promise<string> {
     const stethAPR = await this.getStEthAPR();
-    const wethBalance =
-      pool.tokens.find(t => isSameAddress(t.address, this.wethAddress))
-        ?.balance || '0';
-    const wstethBalance =
-      pool.tokens.find(t => isSameAddress(t.address, this.wstEthAddress))
-        ?.balance || '0';
+    const wethBalance = pool.tokens.find(t => isSameAddress(t.address, this.wethAddress))?.balance || '0';
+    const wstethBalance = pool.tokens.find(t => isSameAddress(t.address, this.wstEthAddress))?.balance || '0';
     const totalBalance = bnum(wethBalance).plus(wstethBalance);
     const wstethRatio = bnum(wstethBalance).div(totalBalance);
 

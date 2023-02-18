@@ -7,10 +7,7 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { Web3Provider } from '@ethersproject/providers';
 import { sendTransaction } from '@/lib/utils/balancer/web3';
 
-export default function useStakingIncentives(
-  account: string,
-  lpAddress: string
-) {
+export default function useStakingIncentives(account: string, lpAddress: string) {
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
   const contract = new Contract(xpolarPool, xpolarABI, w3);
 
@@ -26,13 +23,7 @@ export default function useStakingIncentives(
     const spender = lpAddress;
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        xpolarPool,
-        xpolarABI,
-        'approve',
-        [spender, amount]
-      );
+      const tx = await sendTransaction(provider, xpolarPool, xpolarABI, 'approve', [spender, amount]);
 
       return tx;
     } catch (error) {
@@ -50,13 +41,7 @@ export default function useStakingIncentives(
     const amount = getTokenBalance();
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        xpolarPool,
-        xpolarABI,
-        'stake',
-        [amount]
-      );
+      const tx = await sendTransaction(provider, xpolarPool, xpolarABI, 'stake', [amount]);
       return tx;
     } catch (error) {
       console.error(error);

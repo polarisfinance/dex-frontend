@@ -22,37 +22,23 @@ import { TokenPrices } from '../coingecko/api/price.service';
 import { PoolMulticaller } from '../pool/decorators/pool.multicaller';
 import PoolService from '../pool/pool.service';
 import { Pool } from '../pool/types';
-import {
-  calculateGaugeApr,
-  calculateRewardTokenAprs,
-  getAprRange,
-} from './utils';
+import { calculateGaugeApr, calculateRewardTokenAprs, getAprRange } from './utils';
 
 export type GaugeBalApr = { min: string; max: string };
 export type GaugeBalAprs = Record<string, GaugeBalApr>;
 export type GaugeRewardTokenAprs = Record<string, string>;
 
 export class StakingRewardsService {
-  private gaugeController = new GaugeController(
-    configService.network.addresses.gaugeController
-  );
-  private veBALHelpers = new VEBalHelpers(
-    configService.network.addresses.veBALHelpers
-  );
-  private tokenAdmin = new BalancerTokenAdmin(
-    configService.network.addresses.tokenAdmin
-  );
+  private gaugeController = new GaugeController(configService.network.addresses.gaugeController);
+  private veBALHelpers = new VEBalHelpers(configService.network.addresses.veBALHelpers);
+  private tokenAdmin = new BalancerTokenAdmin(configService.network.addresses.tokenAdmin);
 
   async getWorkingSupplyForGauges(gaugeAddresses: string[]) {
     // start with a fresh multicaller
     const multicaller = LiquidityGauge.getMulticaller();
 
     for (const gaugeAddress of gaugeAddresses) {
-      multicaller.call(
-        getAddress(gaugeAddress),
-        getAddress(gaugeAddress),
-        'working_supply'
-      );
+      multicaller.call(getAddress(gaugeAddress), getAddress(gaugeAddress), 'working_supply');
     }
     const result = await multicaller.execute();
     const supplies = mapValues(result, weight => formatUnits(weight, 18));
@@ -64,26 +50,17 @@ export class StakingRewardsService {
     const multicaller = LiquidityGauge.getMulticaller();
 
     for (const gaugeAddress of gaugeAddresses) {
-      multicaller.call(
-        getAddress(gaugeAddress),
-        getAddress(gaugeAddress),
-        'totalSupply'
-      );
+      multicaller.call(getAddress(gaugeAddress), getAddress(gaugeAddress), 'totalSupply');
     }
     const result = await multicaller.execute();
-    const supplies = mapValues(result, totalSupply =>
-      formatUnits(totalSupply, 18)
-    );
+    const supplies = mapValues(result, totalSupply => formatUnits(totalSupply, 18));
     return supplies;
   }
 
   private async getRelativeWeightsForGauges(gaugeAddresses: string[]) {
     const timestamp = getUnixTime(new Date());
     if (configService.network.chainId === Network.KOVAN) {
-      return await this.gaugeController.getRelativeWeights(
-        gaugeAddresses,
-        timestamp
-      );
+      return await this.gaugeController.getRelativeWeights(gaugeAddresses, timestamp);
     }
     // the ve bal helpers contract for gauge weights calls
     // the checkpoint function which is necesary for returning
@@ -91,27 +68,16 @@ export class StakingRewardsService {
     return await this.veBALHelpers.getRelativeWeights(gaugeAddresses);
   }
 
-  async getGaugeBALAprs({
-    prices,
-    gauges,
-    pools,
-  }: {
-    prices: TokenPrices;
-    gauges: SubgraphGauge[];
-    pools: Pool[];
-  }): Promise<GaugeBalAprs> {
+  async getGaugeBALAprs({ prices, gauges, pools }: { prices: TokenPrices; gauges: SubgraphGauge[]; pools: Pool[] }): Promise<GaugeBalAprs> {
     if (isL2.value) return {};
     const gaugeAddresses = gauges.map(gauge => gauge.id);
     const balAddress = TOKENS.Addresses.BAL;
-    const [inflationRate, relativeWeights, workingSupplies, totalSupplies] =
-      await Promise.all([
-        new BalancerTokenAdmin(
-          configService.network.addresses.tokenAdmin
-        ).getInflationRate(),
-        this.getRelativeWeightsForGauges(gaugeAddresses),
-        this.getWorkingSupplyForGauges(gaugeAddresses),
-        this.getTotalSupplyForGauges(gaugeAddresses),
-      ]);
+    const [inflationRate, relativeWeights, workingSupplies, totalSupplies] = await Promise.all([
+      new BalancerTokenAdmin(configService.network.addresses.tokenAdmin).getInflationRate(),
+      this.getRelativeWeightsForGauges(gaugeAddresses),
+      this.getWorkingSupplyForGauges(gaugeAddresses),
+      this.getTotalSupplyForGauges(gaugeAddresses),
+    ]);
 
     const aprs = gauges.map(gauge => {
       const poolId = gauge.poolId;
@@ -145,28 +111,15 @@ export class StakingRewardsService {
     return Object.fromEntries(aprs);
   }
 
-  async getRewardTokenAprs({
-    prices,
-    gauges,
-    pools,
-    tokens,
-  }: {
-    prices: TokenPrices;
-    gauges: SubgraphGauge[];
-    pools: Pool[];
-    tokens: TokenInfoMap;
-  }): Promise<GaugeRewardTokenAprs> {
+  async getRewardTokenAprs({ prices, gauges, pools, tokens }: { prices: TokenPrices; gauges: SubgraphGauge[]; pools: Pool[]; tokens: TokenInfoMap }): Promise<GaugeRewardTokenAprs> {
     const poolMulticaller = new PoolMulticaller(pools);
     const gaugeAddresses = gauges.map(gauge => gauge.id);
-    const rewardTokensForGauges = await LiquidityGauge.getRewardTokensForGauges(
-      gaugeAddresses
-    );
-    const [rewardTokensMeta, totalSupplies, rawOnchainDataMap] =
-      await Promise.all([
-        LiquidityGauge.getRewardTokenDataForGauges(rewardTokensForGauges),
-        this.getTotalSupplyForGauges(gaugeAddresses),
-        poolMulticaller.fetch(),
-      ]);
+    const rewardTokensForGauges = await LiquidityGauge.getRewardTokensForGauges(gaugeAddresses);
+    const [rewardTokensMeta, totalSupplies, rawOnchainDataMap] = await Promise.all([
+      LiquidityGauge.getRewardTokenDataForGauges(rewardTokensForGauges),
+      this.getTotalSupplyForGauges(gaugeAddresses),
+      poolMulticaller.fetch(),
+    ]);
     const aprs = gauges.map(gauge => {
       const poolId = gauge.poolId;
       const pool = pools.find(pool => pool.id === poolId);
@@ -195,28 +148,16 @@ export class StakingRewardsService {
     return Object.fromEntries(aprs);
   }
 
-  async getUserBoosts({
-    userAddress,
-    gaugeShares,
-  }: {
-    userAddress: string;
-    gaugeShares: UserGaugeShare[];
-  }) {
-    const veBalProxy = new VeBALProxy(
-      configService.network.addresses.veDelegationProxy
-    );
-    const veBALInfo = await balancerContractsService.veBAL.getLockInfo(
-      userAddress
-    );
+  async getUserBoosts({ userAddress, gaugeShares }: { userAddress: string; gaugeShares: UserGaugeShare[] }) {
+    const veBalProxy = new VeBALProxy(configService.network.addresses.veDelegationProxy);
+    const veBALInfo = await balancerContractsService.veBAL.getLockInfo(userAddress);
     // need to use veBAL balance from the proxy as the balance from the proxy takes
     // into account the amount of delegated veBAL as well
     const veBALBalance = await veBalProxy.getAdjustedBalance(userAddress);
     const veBALTotalSupply = veBALInfo.totalSupply;
 
     const gaugeAddresses = gaugeShares.map(gaugeShare => gaugeShare.gauge.id);
-    const workingSupplies = await this.getWorkingSupplyForGauges(
-      gaugeAddresses
-    );
+    const workingSupplies = await this.getWorkingSupplyForGauges(gaugeAddresses);
 
     const boosts = gaugeShares.map(gaugeShare => {
       const gaugeAddress = getAddress(gaugeShare.gauge.id);
@@ -224,28 +165,16 @@ export class StakingRewardsService {
       const gaugeBalance = bnum(gaugeShare.balance);
       const adjustedGaugeBalance = bnum(0.4)
         .times(gaugeBalance)
-        .plus(
-          bnum(0.6).times(
-            bnum(veBALBalance)
-              .div(veBALTotalSupply)
-              .times(gaugeShare.gauge.totalSupply)
-          )
-        );
+        .plus(bnum(0.6).times(bnum(veBALBalance).div(veBALTotalSupply).times(gaugeShare.gauge.totalSupply)));
 
       // choose the minimum of either gauge balance or the adjusted gauge balance
-      const workingBalance = gaugeBalance.lt(adjustedGaugeBalance)
-        ? gaugeBalance
-        : adjustedGaugeBalance;
+      const workingBalance = gaugeBalance.lt(adjustedGaugeBalance) ? gaugeBalance : adjustedGaugeBalance;
 
       const zeroBoostWorkingBalance = bnum(0.4).times(gaugeBalance);
-      const zeroBoostWorkingSupply = gaugeWorkingSupply
-        .minus(workingBalance)
-        .plus(zeroBoostWorkingBalance);
+      const zeroBoostWorkingSupply = gaugeWorkingSupply.minus(workingBalance).plus(zeroBoostWorkingBalance);
 
       const boostedFraction = workingBalance.div(gaugeWorkingSupply);
-      const unboostedFraction = zeroBoostWorkingBalance.div(
-        zeroBoostWorkingSupply
-      );
+      const unboostedFraction = zeroBoostWorkingBalance.div(zeroBoostWorkingSupply);
 
       const boost = boostedFraction.div(unboostedFraction);
 

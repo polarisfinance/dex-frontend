@@ -70,13 +70,7 @@ describe('useSor', () => {
 });
 
 describe('setSwapCost', () => {
-  const sorManager = new SorManager(
-    rpcProviderService.jsonProvider,
-    BigNumber.from(1),
-    1,
-    1,
-    '1'
-  );
+  const sorManager = new SorManager(rpcProviderService.jsonProvider, BigNumber.from(1), 1, 1, '1');
 
   const mockedSorManager = jest.mocked(sorManager);
 
@@ -92,15 +86,9 @@ describe('setSwapCost', () => {
 
     const tokenAddress = '0x0';
     const tokenDecimals = 5;
-    const expectedTokenPriceInEth = new OldBigNumber(
-      mockEthPrice / mockTokenPrice
-    ).toString();
+    const expectedTokenPriceInEth = new OldBigNumber(mockEthPrice / mockTokenPrice).toString();
 
     await sor.setSwapCost(tokenAddress, tokenDecimals, mockedSorManager as any);
-    expect(mockedSorManager.setCostOutputToken).toBeCalledWith(
-      tokenAddress,
-      tokenDecimals,
-      expectedTokenPriceInEth
-    );
+    expect(mockedSorManager.setCostOutputToken).toBeCalledWith(tokenAddress, tokenDecimals, expectedTokenPriceInEth);
   });
 });

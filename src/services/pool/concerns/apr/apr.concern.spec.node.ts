@@ -30,20 +30,11 @@ describe('AprConcern', () => {
     // Set input params that should result in 1% swap fee APR
     PoolMock.totalLiquidity = bnum(100_000_000).toString();
     PoolMock.totalSwapFee = bnum(10_000_000).toString();
-    calcParams.poolSnapshot.totalSwapFee = bnum(PoolMock.totalSwapFee)
-      .minus(5480)
-      .toString();
+    calcParams.poolSnapshot.totalSwapFee = bnum(PoolMock.totalSwapFee).minus(5480).toString();
 
     const aprConcern = new AprConcern(PoolMock);
 
-    const aprs = await aprConcern.calc(
-      calcParams.poolSnapshot,
-      calcParams.prices,
-      calcParams.currency,
-      calcParams.protocolFeePercentage,
-      calcParams.stakingBalApr,
-      calcParams.stakingRewardApr
-    );
+    const aprs = await aprConcern.calc(calcParams.poolSnapshot, calcParams.prices, calcParams.currency, calcParams.protocolFeePercentage, calcParams.stakingBalApr, calcParams.stakingRewardApr);
 
     expect(bnum(aprs.swap).toFixed(2)).toEqual('0.01');
   });
@@ -53,14 +44,7 @@ describe('AprConcern', () => {
 
     const aprConcern = new AprConcern(PoolMock);
 
-    const aprs = await aprConcern.calc(
-      calcParams.poolSnapshot,
-      calcParams.prices,
-      calcParams.currency,
-      calcParams.protocolFeePercentage,
-      calcParams.stakingBalApr,
-      calcParams.stakingRewardApr
-    );
+    const aprs = await aprConcern.calc(calcParams.poolSnapshot, calcParams.prices, calcParams.currency, calcParams.protocolFeePercentage, calcParams.stakingBalApr, calcParams.stakingRewardApr);
 
     expect(bnum(aprs.total.staked.calc('2.5')).toFixed(3)).toEqual('0.035');
     expect(bnum(aprs.total.staked.calc('1.5')).toFixed(3)).toEqual('0.025');

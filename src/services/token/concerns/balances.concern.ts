@@ -23,10 +23,8 @@ export default class BalancesConcern {
   constructor(private readonly service: TokenService) {
     this.network = this.service.configService.network.key;
     this.provider = this.service.rpcProviderService.jsonProvider;
-    this.nativeAssetAddress =
-      this.service.configService.network.nativeAsset.address;
-    this.nativeAssetDecimals =
-      this.service.configService.network.nativeAsset.decimals;
+    this.nativeAssetAddress = this.service.configService.network.nativeAsset.address;
+    this.nativeAssetDecimals = this.service.configService.network.nativeAsset.decimals;
   }
 
   async get(account: string, tokens: TokenInfoMap): Promise<BalanceMap> {
@@ -39,32 +37,20 @@ export default class BalancesConcern {
     });
 
     const paginatedBalances = await Promise.all<BalanceMap>(multicalls);
-    const validPages = paginatedBalances.filter(
-      page => !(page instanceof Error)
-    );
+    const validPages = paginatedBalances.filter(page => !(page instanceof Error));
 
-    return validPages.reduce((result, current) =>
-      Object.assign(result, current)
-    );
+    return validPages.reduce((result, current) => Object.assign(result, current));
   }
 
-  private async fetchBalances(
-    account: string,
-    addresses: string[],
-    tokens: TokenInfoMap
-  ): Promise<BalanceMap> {
+  private async fetchBalances(account: string, addresses: string[], tokens: TokenInfoMap): Promise<BalanceMap> {
     try {
       const balanceMap = {};
 
       // If native asset included in addresses, filter out for
       // multicall, but fetch indpendently and inject.
       if (includesAddress(addresses, this.nativeAssetAddress)) {
-        addresses = addresses.filter(
-          address => !isSameAddress(address, this.nativeAssetAddress)
-        );
-        balanceMap[this.nativeAssetAddress] = await this.fetchNativeBalance(
-          account
-        );
+        addresses = addresses.filter(address => !isSameAddress(address, this.nativeAssetAddress));
+        balanceMap[this.nativeAssetAddress] = await this.fetchNativeBalance(account);
       }
 
       const balances: BigNumber[] = (
@@ -91,16 +77,7 @@ export default class BalancesConcern {
     return formatUnits(balance.toString(), this.nativeAssetDecimals);
   }
 
-  private associateBalances(
-    balances: BigNumber[],
-    addresses: string[],
-    tokens: TokenInfoMap
-  ): BalanceMap {
-    return Object.fromEntries(
-      addresses.map((address, i) => [
-        getAddress(address),
-        formatUnits(balances[i], tokens[address].decimals),
-      ])
-    );
+  private associateBalances(balances: BigNumber[], addresses: string[], tokens: TokenInfoMap): BalanceMap {
+    return Object.fromEntries(addresses.map((address, i) => [getAddress(address), formatUnits(balances[i], tokens[address].decimals)]));
   }
 }

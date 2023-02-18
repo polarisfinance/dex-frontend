@@ -25,15 +25,7 @@ export type OrderMetaData = {
   status: 'pending' | 'fulfilled' | 'expired' | 'cancelled';
 };
 
-export type FeeQuoteParams = Pick<
-  OrderMetaData,
-  | 'sellToken'
-  | 'buyToken'
-  | 'kind'
-  | 'validTo'
-  | 'appData'
-  | 'partiallyFillable'
-> & {
+export type FeeQuoteParams = Pick<OrderMetaData, 'sellToken' | 'buyToken' | 'kind' | 'validTo' | 'appData' | 'partiallyFillable'> & {
   from: string;
   receiver: string;
   sellTokenBalance: OrderBalance;
@@ -42,10 +34,7 @@ export type FeeQuoteParams = Pick<
   buyAmountAfterFee?: string;
 };
 
-export type PriceQuoteParams = Pick<
-  OrderMetaData,
-  'sellToken' | 'buyToken' | 'kind'
-> & {
+export type PriceQuoteParams = Pick<OrderMetaData, 'sellToken' | 'buyToken' | 'kind'> & {
   amount: string;
   fromDecimals: number;
   toDecimals: number;

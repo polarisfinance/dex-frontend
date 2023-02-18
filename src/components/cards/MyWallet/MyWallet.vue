@@ -10,17 +10,10 @@ import useTokens from '@/composables/useTokens';
 import { configService } from '@/services/config/config.service';
 import useWeb3 from '@/services/web3/useWeb3';
 
-const { appNetworkConfig, isWalletReady, startConnectWithInjectedProvider } =
-  useWeb3();
+const { appNetworkConfig, isWalletReady, startConnectWithInjectedProvider } = useWeb3();
 const { upToLargeBreakpoint } = useBreakpoints();
 const { setTokenInAddress } = useTradeState();
-const {
-  hasBalance,
-  nativeAsset,
-  balanceFor,
-  balances,
-  dynamicDataLoading: isLoadingBalances,
-} = useTokens();
+const { hasBalance, nativeAsset, balanceFor, balances, dynamicDataLoading: isLoadingBalances } = useTokens();
 const nativeCurrency = configService.network.nativeAsset.symbol;
 const networkName = configService.network.name;
 const { t } = useI18n();
@@ -45,10 +38,7 @@ const noTokensMessage = computed(() => {
 const tokensWithBalance = computed(() => {
   return take(
     Object.keys(balances.value).filter(
-      tokenAddress =>
-        Number(balances.value[tokenAddress]) > 0 &&
-        tokenAddress !== appNetworkConfig.nativeAsset.address &&
-        tokenAddress !== appNetworkConfig.addresses.veBAL
+      tokenAddress => Number(balances.value[tokenAddress]) > 0 && tokenAddress !== appNetworkConfig.nativeAsset.address && tokenAddress !== appNetworkConfig.addresses.veBAL
     ),
     21
   );
@@ -62,10 +52,7 @@ const tokensWithBalance = computed(() => {
         <h6 v-if="!upToLargeBreakpoint" class="title">
           {{ $t('myWallet2') }}
         </h6>
-        <div
-          v-if="!isLoadingBalances"
-          class="ml-1 font-semibold lg:ml-0 lg:font-normal"
-        >
+        <div v-if="!isLoadingBalances" class="ml-1 font-semibold lg:ml-0 lg:font-normal">
           <div v-if="!hasBalance(nativeAsset.address)" class="mr-0.5">
             {{ nativeCurrency }}
           </div>

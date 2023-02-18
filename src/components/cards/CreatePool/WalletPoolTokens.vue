@@ -24,27 +24,16 @@ const exitAnimateProps = {
 /**
  * COMPOSABLES
  */
-const {
-  tokens: _tokens,
-  nativeAsset,
-  wrappedNativeAsset,
-  balanceFor,
-  priceFor,
-} = useTokens();
+const { tokens: _tokens, nativeAsset, wrappedNativeAsset, balanceFor, priceFor } = useTokens();
 const { tokensList } = usePoolCreation();
 const { fNum2 } = useNumbers();
 /**
  * COMPUTED
  */
-const nativeTokens = computed(() =>
-  [nativeAsset, wrappedNativeAsset.value].map(t => t?.address)
-);
+const nativeTokens = computed(() => [nativeAsset, wrappedNativeAsset.value].map(t => t?.address));
 const validTokens = computed(() => tokensList.value.filter(t => t !== ''));
 const totalFiat = computed(() => {
-  return sumBy(
-    [...nativeTokens.value, ...validTokens.value],
-    t => priceFor(t) * Number(balanceFor(t))
-  );
+  return sumBy([...nativeTokens.value, ...validTokens.value], t => priceFor(t) * Number(balanceFor(t)));
 });
 </script>
 
@@ -57,60 +46,31 @@ const totalFiat = computed(() => {
       <div>
         <h6 class="branch relative">Native tokens</h6>
         <BalStack vertical spacing="xs">
-          <BalStack
-            v-for="token in nativeTokens"
-            :key="`wallet-pool-token-${token}`"
-            class="twig relative ml-6"
-            horizontal
-            justify="between"
-          >
+          <BalStack v-for="token in nativeTokens" :key="`wallet-pool-token-${token}`" class="twig relative ml-6" horizontal justify="between">
             <BalStack vertical spacing="none">
               <h6>{{ _tokens[token]?.symbol || 'N/A' }}</h6>
-              <span class="text-sm text-gray-600">{{
-                _tokens[token]?.name || 'Unknown token'
-              }}</span>
+              <span class="text-sm text-gray-600">{{ _tokens[token]?.name || 'Unknown token' }}</span>
             </BalStack>
             <BalStack vertical spacing="none" align="end">
               <h6>
                 {{ fNum2(balanceFor(token), FNumFormats.token) }}
               </h6>
-              <span class="text-sm text-gray-600">{{
-                fNum2(
-                  priceFor(token) * Number(balanceFor(token)),
-                  FNumFormats.fiat
-                )
-              }}</span>
+              <span class="text-sm text-gray-600">{{ fNum2(priceFor(token) * Number(balanceFor(token)), FNumFormats.fiat) }}</span>
             </BalStack>
           </BalStack>
         </BalStack>
-        <div
-          v-for="token in validTokens"
-          :key="`wallet-pool-token-${token}`"
-          class="mb-2"
-        >
-          <AnimatePresence
-            :initial="initialAnimateProps"
-            :animate="entryAnimateProps"
-            :exit="exitAnimateProps"
-            :isVisible="true"
-          >
+        <div v-for="token in validTokens" :key="`wallet-pool-token-${token}`" class="mb-2">
+          <AnimatePresence :initial="initialAnimateProps" :animate="entryAnimateProps" :exit="exitAnimateProps" :isVisible="true">
             <BalStack horizontal justify="between">
               <BalStack vertical spacing="none">
                 <h6>{{ _tokens[token]?.symbol || 'N/A' }}</h6>
-                <span class="text-sm text-gray-600">{{
-                  _tokens[token]?.name || 'Unknown token'
-                }}</span>
+                <span class="text-sm text-gray-600">{{ _tokens[token]?.name || 'Unknown token' }}</span>
               </BalStack>
               <BalStack vertical spacing="none" align="end">
                 <h6>
                   {{ fNum2(balanceFor(token), FNumFormats.token) }}
                 </h6>
-                <span class="text-sm text-gray-600">{{
-                  fNum2(
-                    priceFor(token) * Number(balanceFor(token)),
-                    FNumFormats.fiat
-                  )
-                }}</span>
+                <span class="text-sm text-gray-600">{{ fNum2(priceFor(token) * Number(balanceFor(token)), FNumFormats.fiat) }}</span>
               </BalStack>
             </BalStack>
           </AnimatePresence>

@@ -5,13 +5,9 @@ import { computed, onBeforeMount, watch } from 'vue';
 
 import HeroClaim from '@/components/contextual/pages/claim/HeroClaim.vue';
 import LegacyClaims from '@/components/contextual/pages/claim/LegacyClaims.vue';
-import BalClaimsTable, {
-  RewardRow,
-} from '@/components/tables/BalClaimsTable.vue';
+import BalClaimsTable, { RewardRow } from '@/components/tables/BalClaimsTable.vue';
 import GaugeRewardsTable from '@/components/tables/GaugeRewardsTable.vue';
-import ProtocolRewardsTable, {
-  ProtocolRewardRow,
-} from '@/components/tables/ProtocolRewardsTable.vue';
+import ProtocolRewardsTable, { ProtocolRewardRow } from '@/components/tables/ProtocolRewardsTable.vue';
 import useApp from '@/composables/useApp';
 import { GaugePool, useClaimsData } from '@/composables/useClaimsData';
 import { isL2, isMainnet } from '@/composables/useNetwork';
@@ -43,12 +39,7 @@ const { balToken } = useTokenHelpers();
 const { toFiat, fNum2 } = useNumbers();
 const { isWalletReady } = useWeb3();
 const { appLoading } = useApp();
-const {
-  gauges,
-  gaugePools,
-  protocolRewards,
-  isLoading: isClaimsLoading,
-} = useClaimsData();
+const { gauges, gaugePools, protocolRewards, isLoading: isClaimsLoading } = useClaimsData();
 
 /**
  * STATE
@@ -77,10 +68,7 @@ const networks = [
 /**
  * COMPUTED
  */
-const loading = computed(
-  (): boolean =>
-    (isClaimsLoading.value || appLoading.value) && isWalletReady.value
-);
+const loading = computed((): boolean => (isClaimsLoading.value || appLoading.value) && isWalletReady.value);
 
 const networkBtns = computed(() => {
   return networks.filter(network => network.key !== configService.network.key);
@@ -126,10 +114,7 @@ const gaugeTables = computed((): GaugeTable[] => {
   // Only return gauges if we have a corresponding pool and rewards > 0
   return gaugesWithRewards.value.reduce<GaugeTable[]>((arr, gauge) => {
     const pool = gaugePools.value.find(pool => pool.id === gauge.poolId);
-    const totalRewardValue = Object.values(gauge.claimableRewards).reduce(
-      (acc, reward) => acc.plus(reward),
-      bnum(0)
-    );
+    const totalRewardValue = Object.values(gauge.claimableRewards).reduce((acc, reward) => acc.plus(reward), bnum(0));
 
     if (pool && totalRewardValue.gt(0))
       arr.push({
@@ -229,9 +214,7 @@ onBeforeMount(async () => {
   <HeroClaim />
   <div>
     <div class="py-12 xl:container xl:mx-auto xl:px-4">
-      <h2 class="px-4 font-body text-2xl font-semibold xl:px-0">
-        {{ configService.network.chainName }} {{ $t('liquidityIncentives') }}
-      </h2>
+      <h2 class="px-4 font-body text-2xl font-semibold xl:px-0">{{ configService.network.chainName }} {{ $t('liquidityIncentives') }}</h2>
 
       <template v-if="!isL2">
         <div class="mb-16">
@@ -239,9 +222,7 @@ onBeforeMount(async () => {
             <BalLoadingBlock v-if="appLoading" class="mt-6 mb-2 h-8 w-64" />
             <div v-else class="mt-6 mb-2 flex items-center">
               <BalAsset :address="balToken?.address" />
-              <h3 class="ml-2 text-xl">
-                Balancer (BAL) {{ $t('earnings').toLowerCase() }}
-              </h3>
+              <h3 class="ml-2 text-xl">Balancer (BAL) {{ $t('earnings').toLowerCase() }}</h3>
             </div>
           </div>
           <BalClaimsTable :rewardsData="balRewardsData" :isLoading="loading" />
@@ -250,16 +231,8 @@ onBeforeMount(async () => {
           <h3 class="mt-8 mb-3 px-4 text-xl xl:px-0">
             {{ $t('protocolEarnings') }}
           </h3>
-          <ProtocolRewardsTable
-            :rewardsData="protocolRewardsData"
-            :isLoading="loading"
-          />
-          <ProtocolRewardsTable
-            v-if="!loading"
-            :rewardsData="protocolRewardsDataDeprecated"
-            :isLoading="loading"
-            deprecated
-          />
+          <ProtocolRewardsTable :rewardsData="protocolRewardsData" :isLoading="loading" />
+          <ProtocolRewardsTable v-if="!loading" :rewardsData="protocolRewardsDataDeprecated" :isLoading="loading" deprecated />
         </div>
       </template>
 
@@ -267,9 +240,7 @@ onBeforeMount(async () => {
         {{ $t('otherTokenEarnings') }}
       </h3>
       <BalLoadingBlock v-if="loading" class="mt-6 mb-2 h-56" />
-      <template
-        v-if="!isClaimsLoading && !appLoading && gaugeTables.length > 0"
-      >
+      <template v-if="!isClaimsLoading && !appLoading && gaugeTables.length > 0">
         <div v-for="{ gauge, pool } in gaugeTables" :key="gauge.id">
           <div class="mb-16">
             <div class="mt-4 flex px-4 xl:px-0">
@@ -277,21 +248,12 @@ onBeforeMount(async () => {
                 {{ gaugeTitle(pool) }}
               </h4>
             </div>
-            <GaugeRewardsTable
-              :gauge="gauge"
-              :isLoading="isClaimsLoading || appLoading"
-            />
+            <GaugeRewardsTable :gauge="gauge" :isLoading="isClaimsLoading || appLoading" />
           </div>
         </div>
       </template>
 
-      <BalBlankSlate
-        v-else-if="
-          (!isClaimsLoading && !appLoading && gaugeTables.length === 0) ||
-          !isWalletReady
-        "
-        class="mt-4 mb-16 px-4 xl:px-0"
-      >
+      <BalBlankSlate v-else-if="(!isClaimsLoading && !appLoading && gaugeTables.length === 0) || !isWalletReady" class="mt-4 mb-16 px-4 xl:px-0">
         {{ $t('noClaimableIncentives') }}
       </BalBlankSlate>
       <div class="mb-16 px-4 xl:px-0">
@@ -299,18 +261,8 @@ onBeforeMount(async () => {
           {{ $t('pages.claim.titles.incentivesOnOtherNetworks') }}
         </h2>
         <BalFlexGrid class="mt-4" flexWrap>
-          <BalBtn
-            v-for="network in networkBtns"
-            :key="network.id"
-            tag="a"
-            :href="`https://${network.subdomain}.balancer.fi/#/claim`"
-            color="white"
-          >
-            <img
-              :src="require(`@/assets/images/icons/networks/${network.id}.svg`)"
-              :alt="network.id"
-              class="mr-2 h-6 w-6 rounded-full shadow-sm"
-            />
+          <BalBtn v-for="network in networkBtns" :key="network.id" tag="a" :href="`https://${network.subdomain}.balancer.fi/#/claim`" color="white">
+            <img :src="require(`@/assets/images/icons/networks/${network.id}.svg`)" :alt="network.id" class="mr-2 h-6 w-6 rounded-full shadow-sm" />
             {{ $t('pages.claim.btns.claimOn') }} {{ network.name }}
           </BalBtn>
         </BalFlexGrid>

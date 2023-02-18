@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  TransactionReceipt,
-  TransactionResponse,
-} from '@ethersproject/abstract-provider';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -81,9 +78,7 @@ async function handleTransaction(tx: TransactionResponse): Promise<void> {
     id: tx.hash,
     type: 'tx',
     action: 'unlock',
-    summary: `${fNum2(props.totalLpTokens, FNumFormats.token)} ${
-      props.lockablePoolTokenInfo.symbol
-    }`,
+    summary: `${fNum2(props.totalLpTokens, FNumFormats.token)} ${props.lockablePoolTokenInfo.symbol}`,
     details: {
       totalLpTokens: props.totalLpTokens,
     },
@@ -128,36 +123,18 @@ async function submit() {
 
 <template>
   <div>
-    <BalActionSteps
-      v-if="!unlockActionState.confirmed"
-      :actions="actions"
-      :disabled="disabled"
-    />
+    <BalActionSteps v-if="!unlockActionState.confirmed" :actions="actions" :disabled="disabled" />
     <template v-else>
-      <div
-        class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600"
-      >
+      <div class="mt-4 flex items-center justify-between text-sm text-gray-400 dark:text-gray-600">
         <div class="flex items-center">
           <BalIcon name="clock" />
           <span class="ml-2">
             {{ unlockActionState.confirmedAt }}
           </span>
         </div>
-        <BalLink
-          v-if="unlockActionState.receipt"
-          :href="
-            explorerLinks.txLink(unlockActionState.receipt.transactionHash)
-          "
-          external
-          noStyle
-          class="group flex items-center"
-        >
+        <BalLink v-if="unlockActionState.receipt" :href="explorerLinks.txLink(unlockActionState.receipt.transactionHash)" external noStyle class="group flex items-center">
           {{ networkConfig.explorerName }}
-          <BalIcon
-            name="arrow-up-right"
-            size="sm"
-            class="ml-px transition-colors group-hover:text-pink-500"
-          />
+          <BalIcon name="arrow-up-right" size="sm" class="ml-px transition-colors group-hover:text-pink-500" />
         </BalLink>
       </div>
       <BalBtn color="gray" outline block class="mt-2" @click="emit('close')">

@@ -13,10 +13,7 @@
               {{ title }}
             </slot>
           </h5>
-          <p
-            v-if="$slots.default || description"
-            :class="['bal-alert-description', descriptionColor, textSizeClass]"
-          >
+          <p v-if="$slots.default || description" :class="['bal-alert-description', descriptionColor, textSizeClass]">
             <slot>
               {{ description }}
             </slot>
@@ -148,8 +145,7 @@ export default defineComponent({
     }));
 
     const descriptionColor = computed(() => {
-      if (props.type === 'info')
-        return 'text-black dark:text-white text-opacity-70';
+      if (props.type === 'info') return 'text-black dark:text-white text-opacity-70';
       return 'text-black dark:text-white text-opacity-70';
     });
 

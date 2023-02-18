@@ -26,13 +26,7 @@ const cardWrapper = ref<HTMLElement>();
  * COMPOSBALES
  */
 const { userNetworkConfig } = useWeb3();
-const {
-  balanceFor,
-  priceFor,
-  nativeAsset,
-  wrappedNativeAsset,
-  dynamicDataLoading,
-} = useTokens();
+const { balanceFor, priceFor, nativeAsset, wrappedNativeAsset, dynamicDataLoading } = useTokens();
 const { fNum2 } = useNumbers();
 const {
   seedTokens,
@@ -62,27 +56,21 @@ const tokenAddresses = ref([] as string[]);
  * COMPUTED
  */
 const areAmountsMaxed = computed(() => {
-  const isMaxed = seedTokens.value.every(t =>
-    bnum(t.amount).eq(balanceFor(t.tokenAddress))
-  );
+  const isMaxed = seedTokens.value.every(t => bnum(t.amount).eq(balanceFor(t.tokenAddress)));
   return isMaxed;
 });
 
 const isExceedingWalletBalance = computed(() => {
   // need to perform rounding here as JS cuts off those
   // really long numbers which makes it impossible to compare
-  const isExceeding = tokenAddresses.value.some((t, i) =>
-    bnum(seedTokens.value[i].amount).gt(balanceFor(t))
-  );
+  const isExceeding = tokenAddresses.value.some((t, i) => bnum(seedTokens.value[i].amount).gt(balanceFor(t)));
   return isExceeding;
 });
 
 const arbitrageDelta = computed(() => {
   let totalPctDelta = bnum(0);
   for (const token of seedTokens.value) {
-    const initialPct = bnum(token.amount)
-      .times(priceFor(token.tokenAddress))
-      .div(poolLiquidity.value);
+    const initialPct = bnum(token.amount).times(priceFor(token.tokenAddress)).div(poolLiquidity.value);
     const expectedPct = token.weight / 100;
     const delta = initialPct.minus(expectedPct).abs();
     totalPctDelta = totalPctDelta.plus(delta);
@@ -175,26 +163,17 @@ function handleAddressChange(newAddress: string): void {
 }
 
 function tokenOptions(index: number): string[] {
-  if (
-    isSameAddress(tokenAddresses.value[index], wrappedNativeAsset.value.address)
-  )
-    return [wrappedNativeAsset.value.address, nativeAsset.address];
-  if (isSameAddress(tokenAddresses.value[index], nativeAsset.address))
-    return [nativeAsset.address, wrappedNativeAsset.value.address];
+  if (isSameAddress(tokenAddresses.value[index], wrappedNativeAsset.value.address)) return [wrappedNativeAsset.value.address, nativeAsset.address];
+  if (isSameAddress(tokenAddresses.value[index], nativeAsset.address)) return [nativeAsset.address, wrappedNativeAsset.value.address];
   return [];
 }
 
 // If useNativeAsset is set, or ETH has a higher balance than WETH, then use it for the input.
 function setNativeAssetIfRequired(): void {
   const nativeAssetBalance = balanceFor(nativeAsset.address);
-  const wrappedNativeAssetBalance = balanceFor(
-    wrappedNativeAsset.value.address
-  );
+  const wrappedNativeAssetBalance = balanceFor(wrappedNativeAsset.value.address);
 
-  if (
-    useNativeAsset.value ||
-    bnum(nativeAssetBalance).gt(wrappedNativeAssetBalance)
-  ) {
+  if (useNativeAsset.value || bnum(nativeAssetBalance).gt(wrappedNativeAssetBalance)) {
     // the native asset flag may not be set
     useNativeAsset.value = true;
     tokenAddresses.value = tokenAddresses.value.map(address => {
@@ -245,23 +224,13 @@ function saveAndProceed() {
             </h5>
           </BalStack> -->
           <AnimatePresence :isVisible="isOptimised" unmountInstantly>
-            <BalStack
-              horizontal
-              align="center"
-              spacing="sm"
-              class="mt-2 rounded-lg"
-            >
+            <BalStack horizontal align="center" spacing="sm" class="mt-2 rounded-lg">
               <!-- <BalIcon name="zap" size="sm" class="text-secondary mt-1" /> -->
               <img :src="CreateIcon" />
-              <span class="font-medium create-text">
+              <span class="create-text font-medium">
                 {{ t('optimizedPrefilled') }}
               </span>
-              <button
-                class="text-sm font-medium click-text"
-                @click="handleClearAll"
-              >
-                Clear all
-              </button>
+              <button class="click-text text-sm font-medium" @click="handleClearAll">Clear all</button>
             </BalStack>
           </AnimatePresence>
         </BalStack>
@@ -282,9 +251,7 @@ function saveAndProceed() {
         </BalStack>
         <BalStack horizontal spacing="sm" align="center" class="my-[14px]">
           <div>
-            <span class="pl-2 text-sm optimize-text">{{
-              t('autoOptimiseLiquidityToggle.label')
-            }}</span>
+            <span class="optimize-text pl-2 text-sm">{{ t('autoOptimiseLiquidityToggle.label') }}</span>
             <BalTooltip width="64">
               <template #activator>
                 <!-- <BalIcon
@@ -299,11 +266,7 @@ function saveAndProceed() {
             </BalTooltip>
           </div>
           <div>
-            <BalToggle
-              name="autoOptimise"
-              :checked="autoOptimiseBalances"
-              @toggle="toggleAutoOptimise"
-            />
+            <BalToggle name="autoOptimise" :checked="autoOptimiseBalances" @toggle="toggleAutoOptimise" />
           </div>
         </BalStack>
         <div class="rounded-lg p-3">
@@ -311,16 +274,11 @@ function saveAndProceed() {
             <BalStack vertical spacing="none">
               <h6 class="total-text">{{ t('total') }}</h6>
               <BalStack horizontal spacing="xs" class="font-medium">
-                <span class="text-sm available-text">
+                <span class="available-text text-sm">
                   {{ t('available') }}:
                   {{ fNum2(totalLiquidity.toString(), FNumFormats.fiat) }}
                 </span>
-                <button
-                  :disabled="areAmountsMaxed"
-                  :class="['font-semibold3 text-sm']"
-                  class="max-text"
-                  @click="handleMax"
-                >
+                <button :disabled="areAmountsMaxed" :class="['font-semibold3 text-sm']" class="max-text" @click="handleMax">
                   {{ areAmountsMaxed ? t('maxed') : t('max') }}
                 </button>
               </BalStack>
@@ -329,46 +287,20 @@ function saveAndProceed() {
               <h6 class="total-text">
                 {{ fNum2(currentLiquidity.toString(), FNumFormats.fiat) }}
               </h6>
-              <AnimatePresence
-                :isVisible="!isOptimised"
-                unmountInstantly
-                @on-presence="onAlertMountChange"
-                @on-exit="onAlertMountChange"
-              >
-                <button
-                  class="bg-gradient-to-tr from-blue-500 to-pink-500 bg-clip-text text-sm font-medium text-transparent hover:from-blue-800 hover:to-pink-800"
-                  @click="optimiseLiquidity(true)"
-                >
+              <AnimatePresence :isVisible="!isOptimised" unmountInstantly @on-presence="onAlertMountChange" @on-exit="onAlertMountChange">
+                <button class="bg-gradient-to-tr from-blue-500 to-pink-500 bg-clip-text text-sm font-medium text-transparent hover:from-blue-800 hover:to-pink-800" @click="optimiseLiquidity(true)">
                   {{ t('optimize') }}
                 </button>
               </AnimatePresence>
             </BalStack>
           </BalStack>
         </div>
-        <AnimatePresence
-          :isVisible="arbitrageDelta.delta > 0.05"
-          unmountInstantly
-          @on-presence="onAlertMountChange"
-          @on-exit="onAlertMountChange"
-        >
-          <BalAlert
-            type="warning"
-            :title="
-              t('createAPool.arbTitle', [
-                fNum2(arbitrageDelta.value.toString(), FNumFormats.fiat),
-                fNum2(arbitrageDelta.delta.toString(), FNumFormats.percent),
-              ])
-            "
-          >
+        <AnimatePresence :isVisible="arbitrageDelta.delta > 0.05" unmountInstantly @on-presence="onAlertMountChange" @on-exit="onAlertMountChange">
+          <BalAlert type="warning" :title="t('createAPool.arbTitle', [fNum2(arbitrageDelta.value.toString(), FNumFormats.fiat), fNum2(arbitrageDelta.delta.toString(), FNumFormats.percent)])">
             {{ t('createAPool.arbReason') }}
           </BalAlert>
         </AnimatePresence>
-        <BalBtn
-          :disabled="isExceedingWalletBalance || hasZeroAmount"
-          block
-          color="gradient"
-          @click="saveAndProceed"
-        >
+        <BalBtn :disabled="isExceedingWalletBalance || hasZeroAmount" block color="gradient" @click="saveAndProceed">
           {{ t('preview') }}
         </BalBtn>
       </BalStack>

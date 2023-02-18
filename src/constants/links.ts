@@ -2,8 +2,7 @@ export const EXTERNAL_LINKS = {
   Balancer: {
     Home: 'https://balancer.fi',
     Analytics: 'https://dune.xyz/balancerlabs',
-    BalForGas:
-      'https://docs.balancer.finance/core-concepts/bal-balancer-governance-token/bal-for-gas',
+    BalForGas: 'https://docs.balancer.finance/core-concepts/bal-balancer-governance-token/bal-for-gas',
     BugBounty: 'https://immunefi.com/bounty/balancer/',
     Docs: 'https://docs.balancer.fi',
     Forum: 'https://forum.balancer.finance/',
@@ -36,8 +35,7 @@ export const EXTERNAL_LINKS = {
   },
   Copper: {
     Home: 'https://copperlaunch.com/',
-    Auctions: (poolAddress: string, networkPrefix = '') =>
-      `https://${networkPrefix}copperlaunch.com/auctions/${poolAddress}`,
+    Auctions: (poolAddress: string, networkPrefix = '') => `https://${networkPrefix}copperlaunch.com/auctions/${poolAddress}`,
   },
   Tracer: {
     Home: 'https://tracer.finance/',

@@ -14,14 +14,9 @@ export default class BatchRelayer {
   constructor(service, public readonly abi = BatchRelayerAbi) {
     this.service = service;
 
-    if (!this.service.config.addresses.batchRelayer)
-      throw new Error('BatchRelayer address not set');
+    if (!this.service.config.addresses.batchRelayer) throw new Error('BatchRelayer address not set');
 
-    this.instance = new Contract(
-      this.service.config.addresses.batchRelayer,
-      this.abi,
-      this.service.provider
-    );
+    this.instance = new Contract(this.service.config.addresses.batchRelayer, this.abi, this.service.provider);
   }
 
   public get address(): string {
@@ -47,34 +42,15 @@ export default class BatchRelayer {
 
     const tokensIn = tokensOut.map(() => tokenIn);
 
-    const method = exactOut
-      ? 'swapUnwrapAaveStaticExactOut'
-      : 'swapUnwrapAaveStaticExactIn';
+    const method = exactOut ? 'swapUnwrapAaveStaticExactOut' : 'swapUnwrapAaveStaticExactIn';
 
-    return await this.service.sdk.relayer[method](
-      tokensIn,
-      tokensOut,
-      amountsIn,
-      rates,
-      funds,
-      slippage,
-      {
-        fetchPools,
-        fetchOnChain: false,
-      }
-    );
+    return await this.service.sdk.relayer[method](tokensIn, tokensOut, amountsIn, rates, funds, slippage, {
+      fetchPools,
+      fetchOnChain: false,
+    });
   }
 
-  public async execute(
-    txInfo: TransactionData,
-    userProvider: Web3Provider
-  ): Promise<TransactionResponse> {
-    return await sendTransaction(
-      userProvider,
-      this.address,
-      this.abi,
-      txInfo.function,
-      [txInfo.params]
-    );
+  public async execute(txInfo: TransactionData, userProvider: Web3Provider): Promise<TransactionResponse> {
+    return await sendTransaction(userProvider, this.address, this.abi, txInfo.function, [txInfo.params]);
   }
 }

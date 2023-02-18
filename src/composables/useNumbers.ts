@@ -48,27 +48,15 @@ enum PresetFormats {
 
 export type Preset = keyof typeof PresetFormats;
 
-export function fNum(
-  number: number | string,
-  preset: Preset | null = 'default',
-  options: Options = {}
-): string {
+export function fNum(number: number | string, preset: Preset | null = 'default', options: Options = {}): string {
   if (options.format) return numeral(number).format(options.format);
 
   let adjustedPreset;
-  if (
-    number >= 10_000 &&
-    !options.forcePreset &&
-    !preset?.match(/_(lg|m|variable)$/)
-  ) {
+  if (number >= 10_000 && !options.forcePreset && !preset?.match(/_(lg|m|variable)$/)) {
     adjustedPreset = `${preset}_lg`;
   }
 
-  if (
-    (preset === 'token' || preset === 'token_fixed') &&
-    number > 0 &&
-    number < 0.0001
-  ) {
+  if ((preset === 'token' || preset === 'token_fixed') && number > 0 && number < 0.0001) {
     return '< 0.0001';
   }
 
@@ -78,16 +66,10 @@ export function fNum(
     number = 0;
   }
 
-  return numeral(number).format(
-    PresetFormats[adjustedPreset || preset || 'default']
-  );
+  return numeral(number).format(PresetFormats[adjustedPreset || preset || 'default']);
 }
 
-export function numF(
-  number: number | string,
-  options: FNumOptions | undefined = {},
-  currency: FiatCurrency = FiatCurrency.usd
-): string {
+export function numF(number: number | string, options: FNumOptions | undefined = {}, currency: FiatCurrency = FiatCurrency.usd): string {
   if (typeof number === 'string') {
     if (number === 'NaN') number = 0;
     number = Number(number || 0);
@@ -112,11 +94,7 @@ export function numF(
       });
     postfixSymbol = item ? item.symbol : '';
     const fractionDigits = 2;
-    number = item
-      ? new BigNumber(
-          (number / item.value).toFixed(fractionDigits).replace(rx, '$1')
-        ).toNumber()
-      : number;
+    number = item ? new BigNumber((number / item.value).toFixed(fractionDigits).replace(rx, '$1')).toNumber() : number;
   }
 
   if (number >= 1e4 && !options.fixedFormat && !options.dontAdjustLarge) {
@@ -129,12 +107,10 @@ export function numF(
       number < 0 &&
       formatterOptions.maximumFractionDigits &&
       formatterOptions.maximumFractionDigits >= 2 &&
-      (formatterOptions.minimumFractionDigits || 0) <
-        formatterOptions.maximumFractionDigits - 2
+      (formatterOptions.minimumFractionDigits || 0) < formatterOptions.maximumFractionDigits - 2
     ) {
       // For consistency with numeral which rounds based on digits before percentages are multiplied by 100
-      formatterOptions.maximumFractionDigits =
-        formatterOptions.maximumFractionDigits - 2;
+      formatterOptions.maximumFractionDigits = formatterOptions.maximumFractionDigits - 2;
     }
     formatterOptions.useGrouping = false;
 
@@ -176,10 +152,7 @@ export default function useNumbers() {
     return tokenAmount.times(price).toString();
   }
 
-  function fNum2(
-    number: number | string,
-    options: FNumOptions | undefined = {}
-  ): string {
+  function fNum2(number: number | string, options: FNumOptions | undefined = {}): string {
     const _currency = currency?.value || FiatCurrency.usd;
     return numF(number, options, _currency);
   }

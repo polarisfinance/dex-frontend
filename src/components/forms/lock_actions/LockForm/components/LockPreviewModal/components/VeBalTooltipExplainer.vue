@@ -59,29 +59,17 @@ const conversationTableRows = computed(() => [
       </div>
       <div class="p-3">
         <div class="text-secondary mb-3">
-          {{
-            $t(
-              'getVeBAL.previewModal.summary.totalVotingEscrowTooltip.explainer'
-            )
-          }}
+          {{ $t('getVeBAL.previewModal.summary.totalVotingEscrowTooltip.explainer') }}
         </div>
         <div class="mb-1 flex items-center whitespace-nowrap">
           <table class="w-full table-fixed">
             <thead>
               <tr>
                 <th class="table-header-cell">
-                  {{
-                    $t(
-                      'getVeBAL.previewModal.summary.totalVotingEscrowTooltip.table.lockPeriod'
-                    )
-                  }}
+                  {{ $t('getVeBAL.previewModal.summary.totalVotingEscrowTooltip.table.lockPeriod') }}
                 </th>
                 <th class="table-header-cell">
-                  {{
-                    $t(
-                      'getVeBAL.previewModal.summary.totalVotingEscrowTooltip.table.totalVeBAL'
-                    )
-                  }}
+                  {{ $t('getVeBAL.previewModal.summary.totalVotingEscrowTooltip.table.totalVeBAL') }}
                 </th>
               </tr>
             </thead>

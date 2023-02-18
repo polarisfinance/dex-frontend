@@ -1,10 +1,5 @@
 <template>
-  <form
-    :action="action"
-    :method="method"
-    v-bind="$attrs"
-    @submit.prevent="$emit('onSubmit')"
-  >
+  <form :action="action" :method="method" v-bind="$attrs" @submit.prevent="$emit('onSubmit')">
     <slot />
   </form>
 </template>
@@ -29,10 +24,7 @@ function useFormValidations() {
 
   function findValidatable(children): void {
     children.forEach(child => {
-      if (
-        child.component &&
-        typeof child.component.proxy.validate === 'function'
-      ) {
+      if (child.component && typeof child.component.proxy.validate === 'function') {
         validatable.value.push(child.component.proxy);
       }
       if (Array.isArray(child.children)) {

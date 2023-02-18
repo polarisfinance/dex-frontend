@@ -75,19 +75,8 @@ const columns = ref<ColumnDefinition<any>[]>([
 </script>
 
 <template>
-  <BalCard
-    shadow="lg"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
-    <BalTable
-      :columns="columns"
-      :data="tokens"
-      :isLoading="isLoading"
-      skeletonClass="h-64"
-      :square="upToLargeBreakpoint"
-    >
+  <BalCard shadow="lg" :square="upToLargeBreakpoint" :noBorder="upToLargeBreakpoint" noPad>
+    <BalTable :columns="columns" :data="tokens" :isLoading="isLoading" skeletonClass="h-64" :square="upToLargeBreakpoint">
       <template #tokenColumnCell="{ name, logoURI }">
         <div class="flex items-center py-4 px-6">
           <BalAsset :iconURI="logoURI" />

@@ -79,38 +79,26 @@ export type UserStakingDataResponse = {
   isUserPoolsIdle: Ref<boolean>;
   refetchStakedShares: Ref<() => void>;
   getStakedShares: () => Promise<string>;
-  refetchUserStakingData: Ref<
-    (options?: RefetchOptions) => Promise<QueryObserverResult>
-  >;
+  refetchUserStakingData: Ref<(options?: RefetchOptions) => Promise<QueryObserverResult>>;
   stakedSharesMap: Ref<Record<string, string>>;
   poolBoosts: Ref<Record<string, string>>;
   isLoadingBoosts: Ref<boolean>;
   getBoostFor: (poolAddress: string) => string;
 };
 
-export default function useUserStakingData(
-  poolAddress: Ref<string>
-): UserStakingDataResponse {
+export default function useUserStakingData(poolAddress: Ref<string>): UserStakingDataResponse {
   /** COMPOSABLES */
   const { account, getProvider, isWalletReady } = useWeb3();
 
   /**
    * QUERIES
    */
-  const {
-    data: userPoolsResponse,
-    isLoading: isLoadingUserPools,
-    isIdle: isUserPoolsIdle,
-  } = useUserPoolsQuery();
+  const { data: userPoolsResponse, isLoading: isLoadingUserPools, isIdle: isUserPoolsIdle } = useUserPoolsQuery();
 
   /** QUERY ARGS */
   const userPools = computed(() => userPoolsResponse.value?.pools || []);
-  const isStakedSharesQueryEnabled = computed(
-    () => !!poolAddress.value && poolAddress.value != '' && isWalletReady.value
-  );
-  const stakeableUserPoolIds = computed(() =>
-    intersection(userPoolIds.value, POOLS.Stakable.AllowList)
-  );
+  const isStakedSharesQueryEnabled = computed(() => !!poolAddress.value && poolAddress.value != '' && isWalletReady.value);
+  const stakeableUserPoolIds = computed(() => intersection(userPoolIds.value, POOLS.Stakable.AllowList));
   const userPoolIds = computed(() => {
     return userPools.value.map(pool => pool.id);
   });
@@ -175,9 +163,7 @@ export default function useUserStakingData(
    * computed properties so they retain reactivity
    * when returned by this composable
    */
-  const stakedSharesForProvidedPool = computed(
-    () => stakedSharesResponse.value || '0'
-  );
+  const stakedSharesForProvidedPool = computed(() => stakedSharesResponse.value || '0');
 
   const userGaugeShares = computed(() => {
     if (!stakingData.value?.gaugeShares) return [];
@@ -190,12 +176,7 @@ export default function useUserStakingData(
   });
 
   const stakedSharesMap = computed(() => {
-    return Object.fromEntries(
-      userGaugeShares.value.map(gaugeShare => [
-        gaugeShare.gauge.poolId,
-        gaugeShare.balance,
-      ])
-    );
+    return Object.fromEntries(userGaugeShares.value.map(gaugeShare => [gaugeShare.gauge.poolId, gaugeShare.balance]));
   });
 
   /** QUERY */
@@ -205,25 +186,20 @@ export default function useUserStakingData(
       return share.gauge.poolId;
     });
   });
-  const isStakedPoolsQueryEnabled = computed(
-    () => stakedPoolIds.value.length > 0
+  const isStakedPoolsQueryEnabled = computed(() => stakedPoolIds.value.length > 0);
+
+  const { data: stakedPoolsResponse, isLoading: isLoadingStakedPools } = usePoolsQuery(
+    ref([]),
+    reactive({
+      enabled: isStakedPoolsQueryEnabled,
+    }),
+    {
+      poolIds: stakedPoolIds,
+      pageSize: 999,
+    }
   );
 
-  const { data: stakedPoolsResponse, isLoading: isLoadingStakedPools } =
-    usePoolsQuery(
-      ref([]),
-      reactive({
-        enabled: isStakedPoolsQueryEnabled,
-      }),
-      {
-        poolIds: stakedPoolIds,
-        pageSize: 999,
-      }
-    );
-
-  const isBoostQueryEnabled = computed(
-    () => isWalletReady.value && userGaugeShares.value.length > 0 && !isL2.value
-  );
+  const isBoostQueryEnabled = computed(() => isWalletReady.value && userGaugeShares.value.length > 0 && !isL2.value);
 
   const { data: poolBoosts, isLoading: isLoadingBoosts } = useQuery(
     ['gauges', 'boosts', { account, userGaugeShares }],
@@ -250,23 +226,14 @@ export default function useUserStakingData(
     });
   });
 
-  const totalStakedFiatValue = computed((): string =>
-    stakedPools.value
-      .reduce((acc, { shares }) => acc.plus(shares), bnum(0))
-      .toString()
-  );
+  const totalStakedFiatValue = computed((): string => stakedPools.value.reduce((acc, { shares }) => acc.plus(shares), bnum(0)).toString());
 
   /** METHODS */
   async function getStakedShares() {
     if (!poolAddress.value) {
-      throw new Error(
-        `Attempted to get staked shares, however useStaking was initialised without a pool address.`
-      );
+      throw new Error(`Attempted to get staked shares, however useStaking was initialised without a pool address.`);
     }
-    const gaugeAddress = await getGaugeAddress(
-      getAddress(poolAddress.value),
-      getProvider()
-    );
+    const gaugeAddress = await getGaugeAddress(getAddress(poolAddress.value), getProvider());
 
     if (gaugeAddress === AddressZero) return '0';
 

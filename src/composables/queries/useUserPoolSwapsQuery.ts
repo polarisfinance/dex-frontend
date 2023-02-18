@@ -15,10 +15,7 @@ type PoolSwapsQueryResponse = {
   skip?: number;
 };
 
-export default function useUserPoolSwapsQuery(
-  id: string,
-  options: UseInfiniteQueryOptions<PoolSwapsQueryResponse> = {}
-) {
+export default function useUserPoolSwapsQuery(id: string, options: UseInfiniteQueryOptions<PoolSwapsQueryResponse> = {}) {
   // COMPOSABLES
   const { account, isWalletReady } = useWeb3();
   const { networkId } = useNetwork();
@@ -42,10 +39,7 @@ export default function useUserPoolSwapsQuery(
 
     return {
       poolSwaps,
-      skip:
-        poolSwaps.length >= POOLS.Pagination.PerPage
-          ? pageParam + POOLS.Pagination.PerPage
-          : undefined,
+      skip: poolSwaps.length >= POOLS.Pagination.PerPage ? pageParam + POOLS.Pagination.PerPage : undefined,
     };
   };
 
@@ -55,9 +49,5 @@ export default function useUserPoolSwapsQuery(
     ...options,
   });
 
-  return useInfiniteQuery<PoolSwapsQueryResponse>(
-    queryKey,
-    queryFn,
-    queryOptions
-  );
+  return useInfiniteQuery<PoolSwapsQueryResponse>(queryKey, queryFn, queryOptions);
 }

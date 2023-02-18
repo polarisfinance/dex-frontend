@@ -80,10 +80,7 @@ watch(popoverOpened, () => {
 </script>
 
 <template>
-  <div
-    v-click-outside="handleClickOutside"
-    :class="[popoverActivatorWrapperClasses]"
-  >
+  <div v-click-outside="handleClickOutside" :class="[popoverActivatorWrapperClasses]">
     <div
       ref="activatorWrapper"
       class="bal-popover-activator group"

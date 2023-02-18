@@ -16,10 +16,7 @@ import SimilarPoolsCompact from '@/components/cards/CreatePool/SimilarPoolsCompa
 import TokenPrices from '@/components/cards/CreatePool/TokenPrices.vue';
 import Col3Layout from '@/components/layouts/Col3Layout.vue';
 import UnknownTokenPriceModal from '@/components/modals/UnknownTokenPrice/UnknownTokenPriceModal.vue';
-import usePoolCreation, {
-  POOL_CREATION_STATE_KEY,
-  POOL_CREATION_STATE_VERSION,
-} from '@/composables/pools/usePoolCreation';
+import usePoolCreation, { POOL_CREATION_STATE_KEY, POOL_CREATION_STATE_VERSION } from '@/composables/pools/usePoolCreation';
 import useAlerts from '@/composables/useAlerts';
 import useApp from '@/composables/useApp';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -59,14 +56,7 @@ const {
 const { removeAlert } = useAlerts();
 const { t } = useI18n();
 const { upToLargeBreakpoint, isMobile, isDesktop } = useBreakpoints();
-const {
-  dynamicDataLoading,
-  priceFor,
-  getToken,
-  injectTokens,
-  injectedPrices,
-  loading: isLoadingTokens,
-} = useTokens();
+const { dynamicDataLoading, priceFor, getToken, injectTokens, injectedPrices, loading: isLoadingTokens } = useTokens();
 const route = useRoute();
 const { isWalletReady } = useWeb3();
 
@@ -80,16 +70,8 @@ onBeforeMount(async () => {
       opacity: 0,
     });
   }
-  let previouslySavedState = lsGet(
-    POOL_CREATION_STATE_KEY,
-    null,
-    POOL_CREATION_STATE_VERSION
-  );
-  if (
-    activeStep.value === 0 &&
-    previouslySavedState !== null &&
-    !poolCreateTx.value
-  ) {
+  let previouslySavedState = lsGet(POOL_CREATION_STATE_KEY, null, POOL_CREATION_STATE_VERSION);
+  if (activeStep.value === 0 && previouslySavedState !== null && !poolCreateTx.value) {
     isRestoring.value = true;
 
     // need to make sure to inject any tokens that were chosen
@@ -122,9 +104,7 @@ const unknownTokens = computed(() => {
   });
 });
 
-const hasUnknownToken = computed(() =>
-  validTokens.value.some(t => priceFor(t) === 0)
-);
+const hasUnknownToken = computed(() => validTokens.value.some(t => priceFor(t) === 0));
 
 const steps = computed(() => [
   {
@@ -178,9 +158,7 @@ const exitAnimateProps = computed(() => ({
   right: 0,
 }));
 
-const isLoading = computed(
-  () => appLoading.value || dynamicDataLoading.value || isRestoring.value
-);
+const isLoading = computed(() => appLoading.value || dynamicDataLoading.value || isRestoring.value);
 
 /**
  * FUNCTIONS
@@ -292,68 +270,35 @@ watch(
 <template>
   <div v-if="!upToLargeBreakpoint" class="col-span-3">
     <BalStack v-if="!appLoading" vertical>
-      <BalHorizontalSteps
-        title="Create a weighted pool steps"
-        :steps="steps"
-        @navigate="handleNavigate"
-      />
-      <AnimatePresence
-        :isVisible="
-          doSimilarPoolsExist && activeStep === 0 && validTokens.length
-        "
-      >
+      <BalHorizontalSteps title="Create a weighted pool steps" :steps="steps" @navigate="handleNavigate" />
+      <AnimatePresence :isVisible="doSimilarPoolsExist && activeStep === 0 && validTokens.length">
         <SimilarPoolsCompact />
       </AnimatePresence>
     </BalStack>
   </div>
   <div
     :class="{
-      'container grid grid-cols-2 grid-flow-row auto-rows-auto gap-x-4':
-        isDesktop,
+      'container grid grid-flow-row auto-rows-auto grid-cols-2 gap-x-4': isDesktop,
       mobileContainer: isMobile,
     }"
-    class="bg mx-auto max-w-[914px] bg-[#2E2433] rounded-[20px] p-[24px]"
+    class="bg mx-auto max-w-[914px] rounded-[20px] bg-[#2E2433] p-[24px]"
   >
-    <div
-      class="col-span-2 text-[20px] font-semibold leading-[26px] text-center"
-    >
+    <div class="col-span-2 text-center text-[20px] font-semibold leading-[26px]">
       <div class="flex">
-        <img
-          class="justify-start"
-          src="./left-arrow.svg"
-          @click="activeStep = activeStep - 1"
-          v-if="activeStep > 0"
-        />
-        <div class="justify-center w-full">
-          <span v-if="!appLoading && activeStep === 0"
-            >Choose tokens & weights</span
-          >
+        <img class="justify-start" src="./left-arrow.svg" @click="activeStep = activeStep - 1" v-if="activeStep > 0" />
+        <div class="w-full justify-center">
+          <span v-if="!appLoading && activeStep === 0">Choose tokens & weights</span>
           <span v-if="!appLoading && activeStep === 1">Set pool fees</span>
-          <span v-if="!appLoading && activeStep === 2"
-            >Set initial liquidity</span
-          >
-          <span v-if="!appLoading && activeStep === 3"
-            >Confirm pool creation</span
-          >
+          <span v-if="!appLoading && activeStep === 2">Set initial liquidity</span>
+          <span v-if="!appLoading && activeStep === 3">Confirm pool creation</span>
         </div>
       </div>
     </div>
-    <div
-      class="col-span-2 text-center text-[12px] font-[500] leading-[15px] text-pink-third"
-    >
-      Aurora Mainnet
-    </div>
-    <div class="col-span-2 my-[24px] create-pool-border"></div>
-    <div class="relative overflowed">
-      <AnimatePresence
-        :isVisible="hasRestoredFromSavedState && !appLoading"
-        unmountInstantly
-      >
-        <BalAlert
-          type="warning"
-          class="mb-4"
-          :title="$t('createAPool.recoveredState')"
-        >
+    <div class="col-span-2 text-center text-[12px] font-[500] leading-[15px] text-pink-third">Aurora Mainnet</div>
+    <div class="create-pool-border col-span-2 my-[24px]"></div>
+    <div class="overflowed relative">
+      <AnimatePresence :isVisible="hasRestoredFromSavedState && !appLoading" unmountInstantly>
+        <BalAlert type="warning" class="mb-4" :title="$t('createAPool.recoveredState')">
           {{ $t('createAPool.recoveredStateInfo') }}
           <button class="font-semibold text-blue-500" @click="handleReset">
             {{ $t('clickHere') }}
@@ -371,10 +316,7 @@ watch(
         :animate="entryAnimateProps"
         :exit="exitAnimateProps"
       > -->
-      <ChooseWeights
-        v-if="!appLoading && activeStep === 0 && !hasRestoredFromSavedState"
-        @update:height="setWrapperHeight"
-      />
+      <ChooseWeights v-if="!appLoading && activeStep === 0 && !hasRestoredFromSavedState" @update:height="setWrapperHeight" />
       <!-- </AnimatePresence> -->
       <!-- <AnimatePresence
         :isVisible="!appLoading && activeStep === 1"
@@ -383,10 +325,7 @@ watch(
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
       > -->
-      <PoolFees
-        v-if="!appLoading && activeStep === 1"
-        @update:height="setWrapperHeight"
-      />
+      <PoolFees v-if="!appLoading && activeStep === 1" @update:height="setWrapperHeight" />
       <!-- </AnimatePresence> -->
       <!-- <AnimatePresence
         :isVisible="!appLoading && activeStep === 2 && similarPools.length > 0"
@@ -395,9 +334,7 @@ watch(
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
       > -->
-      <SimilarPools
-        v-if="!appLoading && activeStep === 2 && similarPools.length > 0"
-      />
+      <SimilarPools v-if="!appLoading && activeStep === 2 && similarPools.length > 0" />
       <!-- </AnimatePresence> -->
       <!-- <AnimatePresence
         :isVisible="!isLoading && activeStep === 3"
@@ -406,10 +343,7 @@ watch(
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
       > -->
-      <InitialLiquidity
-        v-if="!isLoading && activeStep === 3"
-        @update:height="setWrapperHeight"
-      />
+      <InitialLiquidity v-if="!isLoading && activeStep === 3" @update:height="setWrapperHeight" />
       <!-- </AnimatePresence> -->
       <!-- <AnimatePresence
         :isVisible="!appLoading && activeStep === 4 && !dynamicDataLoading"
@@ -418,9 +352,7 @@ watch(
         :exit="exitAnimateProps"
         @update-dimensions="setWrapperHeight"
       > -->
-      <PreviewPool
-        v-if="!appLoading && activeStep === 4 && !dynamicDataLoading"
-      />
+      <PreviewPool v-if="!appLoading && activeStep === 4 && !dynamicDataLoading" />
       <!-- </AnimatePresence> -->
     </div>
 
@@ -435,11 +367,7 @@ watch(
       </BalStack>
     </div>
   </div>
-  <UnknownTokenPriceModal
-    :isVisible="isUnknownTokenModalVisible"
-    :unknownTokens="unknownTokens"
-    @close="handleUnknownModalClose"
-  />
+  <UnknownTokenPriceModal :isVisible="isUnknownTokenModalVisible" :unknownTokens="unknownTokens" @close="handleUnknownModalClose" />
 </template>
 
 <style scoped>

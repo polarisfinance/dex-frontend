@@ -12,15 +12,7 @@
         </slot>
       </div>
     </div>
-    <VueSlider
-      v-model="range"
-      v-bind="$attrs"
-      :dotStyle="dotStyle"
-      :railStyle="railSyle"
-      :processStyle="proccessStyle"
-      @change="onChange"
-      @drag-end="onDragEnd"
-    />
+    <VueSlider v-model="range" v-bind="$attrs" :dotStyle="dotStyle" :railStyle="railSyle" :processStyle="proccessStyle" @change="onChange" @drag-end="onDragEnd" />
   </div>
 </template>
 

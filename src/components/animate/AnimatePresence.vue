@@ -1,11 +1,5 @@
 <template>
-  <transition
-    class="relative"
-    appear
-    :css="false"
-    @enter="enter"
-    @leave="leave"
-  >
+  <transition class="relative" appear :css="false" @enter="enter" @leave="leave">
     <div v-if="isVisible" id="animateContainer" ref="animateContainer">
       <slot />
     </div>
@@ -14,14 +8,7 @@
 
 <script lang="ts">
 import anime, { AnimeParams } from 'animejs';
-import {
-  defineComponent,
-  nextTick,
-  onMounted,
-  PropType,
-  ref,
-  watch,
-} from 'vue';
+import { defineComponent, nextTick, onMounted, PropType, ref, watch } from 'vue';
 export default defineComponent({
   props: {
     initial: {

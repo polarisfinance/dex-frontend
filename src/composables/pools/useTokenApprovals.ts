@@ -30,16 +30,12 @@ export type ApprovalOptions = {
   state: ApprovalState;
 };
 
-export default function useTokenApprovals(
-  tokenAddresses: string[],
-  amounts: Ref<string[]>
-) {
+export default function useTokenApprovals(tokenAddresses: string[], amounts: Ref<string[]>) {
   /**
    * COMPOSABLES
    */
   const { getProvider, appNetworkConfig, account } = useWeb3();
-  const { getToken, refetchAllowances, approvalsRequired, getTokens } =
-    useTokens();
+  const { getToken, refetchAllowances, approvalsRequired, getTokens } = useTokens();
   const { txListener } = useEthers();
   const { addTransaction } = useTransactions();
   const { t } = useI18n();
@@ -48,16 +44,7 @@ export default function useTokenApprovals(
    * STATE
    */
   const vaultApprovalStateMap = ref<ApprovalStateMap>(
-    Object.fromEntries(
-      approvalsRequired(
-        tokenAddresses,
-        amounts.value,
-        appNetworkConfig.addresses.vault
-      ).map(address => [
-        address,
-        { init: false, confirming: false, approved: false },
-      ])
-    )
+    Object.fromEntries(approvalsRequired(tokenAddresses, amounts.value, appNetworkConfig.addresses.vault).map(address => [address, { init: false, confirming: false, approved: false }]))
   );
 
   // Depreciate with new investment flow
@@ -66,20 +53,11 @@ export default function useTokenApprovals(
   /**
    * COMPUTED
    */
-  const requiredApprovals = computed(() =>
-    approvalsRequired(
-      tokenAddresses,
-      amounts.value,
-      appNetworkConfig.addresses.vault
-    )
-  );
+  const requiredApprovals = computed(() => approvalsRequired(tokenAddresses, amounts.value, appNetworkConfig.addresses.vault));
   /**
    * METHODS
    */
-  async function approveToken(
-    address: string,
-    options: Partial<ApprovalOptions> = {}
-  ): Promise<TransactionResponse> {
+  async function approveToken(address: string, options: Partial<ApprovalOptions> = {}): Promise<TransactionResponse> {
     const defaultOptions: ApprovalOptions = {
       spender: appNetworkConfig.addresses.vault,
       amount: MaxUint256.toString(),
@@ -90,13 +68,7 @@ export default function useTokenApprovals(
     try {
       state.init = true;
 
-      const tx = await sendTransaction(
-        getProvider(),
-        address,
-        ERC20ABI,
-        'approve',
-        [spender, amount]
-      );
+      const tx = await sendTransaction(getProvider(), address, ERC20ABI, 'approve', [spender, amount]);
 
       state.init = false;
       state.confirming = true;
@@ -105,12 +77,7 @@ export default function useTokenApprovals(
         id: tx.hash,
         type: 'tx',
         action: 'approve',
-        summary: t(
-          spender === appNetworkConfig.addresses.veBAL
-            ? 'transactionSummary.approveForLocking'
-            : 'transactionSummary.approveForInvesting',
-          [getToken(address)?.symbol]
-        ),
+        summary: t(spender === appNetworkConfig.addresses.veBAL ? 'transactionSummary.approveForLocking' : 'transactionSummary.approveForInvesting', [getToken(address)?.symbol]),
         details: {
           contractAddress: address,
           spender: spender,
@@ -137,28 +104,17 @@ export default function useTokenApprovals(
     }
   }
 
-  async function getApprovalStateMapFor(
-    spender: string
-  ): Promise<ApprovalStateMap> {
+  async function getApprovalStateMapFor(spender: string): Promise<ApprovalStateMap> {
     const customTokenMap = getTokens(tokenAddresses);
 
-    const allowances = await tokenService.allowances.get(
-      account.value,
-      [spender],
-      customTokenMap
-    );
+    const allowances = await tokenService.allowances.get(account.value, [spender], customTokenMap);
 
     const requiredApprovals = tokenAddresses
       .filter((tokenAddress, i) => {
-        const allowance = bnum(
-          allowances[getAddress(spender)][getAddress(tokenAddress)]
-        );
+        const allowance = bnum(allowances[getAddress(spender)][getAddress(tokenAddress)]);
         return allowance.lt(amounts.value[i]);
       })
-      .map(tokenAddress => [
-        tokenAddress,
-        { init: false, confirming: false, approved: false },
-      ]);
+      .map(tokenAddress => [tokenAddress, { init: false, confirming: false, approved: false }]);
 
     const approvalMap = Object.fromEntries(requiredApprovals);
     return approvalMap;

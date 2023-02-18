@@ -34,36 +34,21 @@ const { fNum2 } = useNumbers();
  * COMPUTED
  */
 const apr = computed(() => props.pool?.apr || props.poolApr);
-const validAPR = computed(
-  () => Number(apr.value?.total?.unstaked || '0') * 100 <= APR_THRESHOLD
-);
+const validAPR = computed(() => Number(apr.value?.total?.unstaked || '0') * 100 <= APR_THRESHOLD);
 
 const hasYieldAPR = computed(() => bnum(apr.value?.yield.total || '0').gt(0));
 
 const hasVebalAPR = computed((): boolean => isVeBalPool(props.pool.id));
 
-const totalLabel = computed((): string =>
-  apr.value ? totalAprLabel(apr.value, props.pool.boost) : '0'
-);
+const totalLabel = computed((): string => (apr.value ? totalAprLabel(apr.value, props.pool.boost) : '0'));
 </script>
 
 <template v-slot:aprCell="pool">
   <BalTooltip v-if="validAPR" width="auto" noPad>
     <template #activator>
       <div class="ml-1">
-        <StarsIcon
-          v-if="hasYieldAPR || hasStakingRewards(apr) || hasVebalAPR"
-          :gradFrom="hasVebalAPR ? 'purple' : 'yellow'"
-          class="-mr-1 h-4"
-          v-bind="$attrs"
-        />
-        <BalIcon
-          v-else
-          name="info"
-          size="sm"
-          class="text-gray-400 dark:text-gray-500"
-          v-bind="$attrs"
-        />
+        <StarsIcon v-if="hasYieldAPR || hasStakingRewards(apr) || hasVebalAPR" :gradFrom="hasVebalAPR ? 'purple' : 'yellow'" class="-mr-1 h-4" v-bind="$attrs" />
+        <BalIcon v-else name="info" size="sm" class="text-gray-400 dark:text-gray-500" v-bind="$attrs" />
       </div>
     </template>
     <div class="divide-y text-sm dark:divide-gray-900">
@@ -86,12 +71,7 @@ const totalLabel = computed((): string =>
         <VeBalBreakdown v-if="hasVebalAPR" :apr="apr?.veBal || '0'" />
 
         <!-- YIELD APR BREAKDOWN -->
-        <YieldBreakdown
-          v-if="hasYieldAPR"
-          :yieldAPR="apr?.yield"
-          :poolTokens="pool.tokensList"
-          :poolType="pool.poolType"
-        />
+        <YieldBreakdown v-if="hasYieldAPR" :yieldAPR="apr?.yield" :poolTokens="pool.tokensList" :poolType="pool.poolType" />
 
         <!-- STAKING APR BREAKDOWN -->
         <StakingBreakdown :pool="pool" :poolApr="apr" />

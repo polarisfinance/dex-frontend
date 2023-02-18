@@ -54,14 +54,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="z-30 h-full w-full top-0 sticky" id="menuConatiner">
+  <div class="sticky top-0 z-30 h-full w-full" id="menuConatiner">
     <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
-    <nav id="app-nav" ref="appNav" class="h-20 pr-1 pl-4 lg:px-6 ">
+    <nav id="app-nav" ref="appNav" class="h-20 pr-1 pl-4 lg:px-6">
       <div ref="nvb" class="flex h-full w-full items-center justify-between px-10">
-        <router-link
-          :to="{ name: 'home' }"
-          @click="trackGoal(Goals.ClickNavLogo)"
-        >
+        <router-link :to="{ name: 'home' }" @click="trackGoal(Goals.ClickNavLogo)">
           <AppIcon v-if="['xs', 'sm'].includes(bp)" />
           <AppLogo v-else />
         </router-link>
@@ -91,11 +88,7 @@ onUnmounted(() => {
 }
 
 .navbar-bg {
-  background: linear-gradient(
-    90.08deg,
-    rgba(19, 7, 25, 0.7) -0.61%,
-    rgba(19, 7, 25, 0.7) 100%
-  );
+  background: linear-gradient(90.08deg, rgba(19, 7, 25, 0.7) -0.61%, rgba(19, 7, 25, 0.7) 100%);
   backdrop-filter: blur(10px);
 }
 </style>

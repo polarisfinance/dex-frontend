@@ -27,13 +27,9 @@ describe('Blocknative Provider', () => {
   const blocknativeProvider = new BlocknativeProvider();
 
   beforeEach(() => {
-    nock('https://api.blocknative.com')
-      .options('/gasprices/blockprices')
-      .reply(200);
+    nock('https://api.blocknative.com').options('/gasprices/blockprices').reply(200);
 
-    nock('https://api.blocknative.com')
-      .get('/gasprices/blockprices')
-      .reply(200, defaultResponse);
+    nock('https://api.blocknative.com').get('/gasprices/blockprices').reply(200, defaultResponse);
   });
 
   it('Should not return gas values with rounding errors', async () => {

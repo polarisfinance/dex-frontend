@@ -1,14 +1,8 @@
 <template>
   <BalModal show :title="$t('previewTradeTransactions')" @close="onClose">
     <div>
-      <div
-        class="-mx-4 flex items-center border-t border-b p-4 dark:border-gray-800"
-      >
-        <BalAssetSet
-          :addresses="[addressIn, addressOut]"
-          :size="32"
-          :width="55"
-        />
+      <div class="-mx-4 flex items-center border-t border-b p-4 dark:border-gray-800">
+        <BalAssetSet :addresses="[addressIn, addressOut]" :size="32" :width="55" />
         <div class="flex flex-col">
           <div class="font-semibold">
             {{ fNum2(amountIn, FNumFormats.token) }}
@@ -21,42 +15,25 @@
         </div>
       </div>
       <div>
-        <div class="mt-6 mb-3 text-sm">
-          Requires {{ totalRequiredTransactions }}
-          {{ requiresApproval ? 'transactions' : 'transaction' }}:
-        </div>
+        <div class="mt-6 mb-3 text-sm">Requires {{ totalRequiredTransactions }} {{ requiresApproval ? 'transactions' : 'transaction' }}:</div>
         <div>
           <div v-if="requiresLidoRelayerApproval" class="card-container mb-3">
             <div class="card-step text-green-500">
-              <BalIcon
-                v-if="isLidoRelayerApproved"
-                name="check"
-                class="text-green-500"
-              />
+              <BalIcon v-if="isLidoRelayerApproved" name="check" class="text-green-500" />
               <span v-else class="text-secondary">1</span>
             </div>
             <div class="ml-3">
-              <span v-if="isLidoRelayerApproved">{{
-                $t('approvedLidoRelayer')
-              }}</span>
+              <span v-if="isLidoRelayerApproved">{{ $t('approvedLidoRelayer') }}</span>
               <span v-else>{{ $t('approveLidoRelayer') }}</span>
             </div>
           </div>
           <div v-if="requiresTokenApproval" class="card-container">
             <div class="card-step text-green-500">
-              <BalIcon
-                v-if="isTokenApproved"
-                name="check"
-                class="text-green-500"
-              />
-              <span v-else class="text-secondary">{{
-                requiresLidoRelayerApproval ? 2 : 1
-              }}</span>
+              <BalIcon v-if="isTokenApproved" name="check" class="text-green-500" />
+              <span v-else class="text-secondary">{{ requiresLidoRelayerApproval ? 2 : 1 }}</span>
             </div>
             <div class="ml-3">
-              <span v-if="isTokenApproved"
-                >{{ $t('approved') }} {{ symbolIn }}</span
-              >
+              <span v-if="isTokenApproved">{{ $t('approved') }} {{ symbolIn }}</span>
               <span v-else>{{ $t('approve') }} {{ symbolIn }}</span>
             </div>
           </div>
@@ -65,8 +42,7 @@
               {{ totalRequiredTransactions }}
             </div>
             <div class="ml-3">
-              {{ $t('trade') }} {{ fNum2(valueIn, FNumFormats.fiat) }}
-              {{ symbolIn }} ->
+              {{ $t('trade') }} {{ fNum2(valueIn, FNumFormats.fiat) }} {{ symbolIn }} ->
               {{ symbolOut }}
             </div>
           </div>
@@ -92,16 +68,7 @@
         block
         @click.prevent="approveToken"
       />
-      <BalBtn
-        v-else
-        class="mt-5"
-        :label="$t('confirmTrade')"
-        :loading="trading"
-        :loadingLabel="$t('confirming')"
-        color="gradient"
-        block
-        @click.prevent="trade"
-      />
+      <BalBtn v-else class="mt-5" :label="$t('confirmTrade')" :loading="trading" :loadingLabel="$t('confirming')" color="gradient" block @click.prevent="trade" />
     </div>
   </BalModal>
 </template>
@@ -109,9 +76,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
 
-import useRelayerApproval, {
-  Relayer,
-} from '@/composables/trade/useRelayerApproval';
+import useRelayerApproval, { Relayer } from '@/composables/trade/useRelayerApproval';
 import useTokenApproval from '@/composables/trade/useTokenApproval';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import useTokens from '@/composables/useTokens';
@@ -154,17 +119,11 @@ export default defineComponent({
 
     const { tokens, getToken, approvalRequired } = useTokens();
 
-    const wrapType = computed(() =>
-      getWrapAction(addressIn.value, addressOut.value)
-    );
+    const wrapType = computed(() => getWrapAction(addressIn.value, addressOut.value));
     const isWrap = computed(() => wrapType.value === WrapType.Wrap);
     const isUnwrap = computed(() => wrapType.value === WrapType.Unwrap);
 
-    const isStETHTrade = computed(
-      () =>
-        isStETH(addressIn.value, addressOut.value) &&
-        wrapType.value === WrapType.NonWrap
-    );
+    const isStETHTrade = computed(() => isStETH(addressIn.value, addressOut.value) && wrapType.value === WrapType.NonWrap);
 
     const tokenApproval = useTokenApproval(addressIn, amountIn, tokens);
 
@@ -190,22 +149,12 @@ export default defineComponent({
 
     const isEthTrade = computed(() => addressIn.value === NATIVE_ASSET_ADDRESS);
 
-    const requiresTokenApproval = computed(() =>
-      isUnwrap.value || isEthTrade.value ? false : true
-    );
+    const requiresTokenApproval = computed(() => (isUnwrap.value || isEthTrade.value ? false : true));
 
-    const isLidoRelayerApproved = computed(
-      () => lidoRelayerApproval.isUnlocked.value
-    );
-    const requiresLidoRelayerApproval = computed(
-      () =>
-        isStETHTrade.value &&
-        (!isLidoRelayerApproved.value || lidoRelayerApproval.approved.value)
-    );
+    const isLidoRelayerApproved = computed(() => lidoRelayerApproval.isUnlocked.value);
+    const requiresLidoRelayerApproval = computed(() => isStETHTrade.value && (!isLidoRelayerApproved.value || lidoRelayerApproval.approved.value));
 
-    const requiresApproval = computed(
-      () => requiresTokenApproval.value || requiresLidoRelayerApproval.value
-    );
+    const requiresApproval = computed(() => requiresTokenApproval.value || requiresLidoRelayerApproval.value);
 
     const isTokenApproved = computed(() => {
       if (tokenApproval.approved.value) {
@@ -216,11 +165,7 @@ export default defineComponent({
       if (isWrap.value && !isEthTrade.value) {
         // If we're wrapping a token other than native ETH
         // we need to approve the underlying on the wrapper
-        return !approvalRequired(
-          addressIn.value,
-          amountIn.value,
-          addressOut.value
-        );
+        return !approvalRequired(addressIn.value, amountIn.value, addressOut.value);
       }
       return isUnlockedV2;
     });
@@ -241,10 +186,7 @@ export default defineComponent({
 
     const approvingToken = computed(() => tokenApproval.approving.value);
 
-    const approvingLidoRelayer = computed(
-      () =>
-        lidoRelayerApproval.init.value || lidoRelayerApproval.approving.value
-    );
+    const approvingLidoRelayer = computed(() => lidoRelayerApproval.init.value || lidoRelayerApproval.approving.value);
 
     const totalRequiredTransactions = computed(() => {
       let txCount = 1; // trade

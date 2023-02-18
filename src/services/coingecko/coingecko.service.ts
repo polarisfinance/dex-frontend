@@ -34,11 +34,7 @@ export class CoingeckoService {
   supportedFiat: string;
   prices: PriceService;
 
-  constructor(
-    public readonly client = coingeckoClient,
-    public readonly cacheClient = coingeckoCacheClient,
-    priceServiceClass = PriceService
-  ) {
+  constructor(public readonly client = coingeckoClient, public readonly cacheClient = coingeckoCacheClient, priceServiceClass = PriceService) {
     this.supportedFiat = SUPPORTED_FIAT.join(',');
     this.prices = new priceServiceClass(this);
   }
