@@ -263,10 +263,17 @@ export default defineComponent({
 
       this.filteredTokensList = tokenList;
     },
+    menuHeight(){
+      if ( document.querySelector("#menuConatiner")!=undefined && this.stickyPanel)
+        return document.querySelector("#menuConatiner")!.getBoundingClientRect().height-1;
+      return 0;
+    },
     onScroll(){
       if ( document.querySelector("#segniorage")!=undefined && (
+        // (document.querySelector("#segniorage")!.getBoundingClientRect().top<250 && isMobile.value) ||
+        // (document.querySelector("#segniorage")!.getBoundingClientRect().top<125 && isDesktop.value) 
         (document.querySelector("#segniorage")!.getBoundingClientRect().top<250 && isMobile.value) ||
-        (document.querySelector("#segniorage")!.getBoundingClientRect().top<125 && isDesktop.value) 
+        (document.querySelector("#segniorage")!.getBoundingClientRect().top < 38 + document.querySelector("#menuConatiner")!.getBoundingClientRect().height && isDesktop.value) 
         )
       ) {
         this.stickyPanel = true;
@@ -316,6 +323,7 @@ export default defineComponent({
     <div class="mt-[81px] pt-10 md:pt-12 xl:container xl:mx-auto ">
       <BalStack vertical>
         <div
+          :style="{ top: menuHeight()+ 'px' }"
           class="container px-4 xl:px-0 mb-4 pool-panel"
           :class="{
             'is-sticky': stickyPanel,
@@ -620,7 +628,7 @@ export default defineComponent({
 }
 .is-sticky {
   position: fixed;
-  top: 79px;
+  /* top: 79px; */
   z-index: 21;
   background: linear-gradient(
     90.08deg,
@@ -642,7 +650,7 @@ export default defineComponent({
   padding-top: 20px;
 }
 .is-sticky.filter-panel-mobile{
-  top: 69px;
+  /* top: 69px; */
   padding-top: 0px;
 }
 </style>

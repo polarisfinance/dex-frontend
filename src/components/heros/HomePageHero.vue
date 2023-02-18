@@ -28,7 +28,7 @@ const classes = computed(() => ({
   <AppHero :class="{'mt-[200px]':isDesktop,'mb-10':isMobile}" class="app-hero">
     <!-- <h1 class="headline" v-text="$t('ammPlatform')" /> -->
     <h1 class="home-title mx-auto" :class="{'text-[84px] leading-[104px]':isDesktop,'text-[44px] leading-[50px]':isMobile}">Put your assets to work.</h1>
-    <h1 class="home-subtitle max-w-md mx-auto mt-[32px]">Collect fees from pool and rebalance automatically.</h1>
+    <h1 class="home-subtitle max-w-md mx-auto mt-[32px]">Collect fees from pool and rebalances automatically.</h1>
     <template v-if="!isWalletReady && !isWalletConnecting">
       <div class="mt-[60px] flex w-full justify-center">
         <HeroConnectWalletButton class="mr-[16px]" />
@@ -50,14 +50,14 @@ const classes = computed(() => ({
             <div class="boost-value">2.5x</div>
             Up to current APR
           </div>
-          <h5 class="boost-info self-center">Boost liquidity mining yield up to 2.5x</h5>
+          <h5 class="boost-info self-center">Boost liquidity mining yields up to 2.5x</h5>
         </div>
         <div class="boost flex  my-12">
           <div>
             <div class="boost-value">30%</div>
             Up to current APR
           </div>
-          <h5 class="boost-info self-center">Boost liquidity mining yield up to 2.5x</h5>
+          <h5 class="boost-info self-center">Boost liquidity mining yields up to 2.5x</h5>
         </div>
       </div>
       <div class="text-left self-end mb-12">
