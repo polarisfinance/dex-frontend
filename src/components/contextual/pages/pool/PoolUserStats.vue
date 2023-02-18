@@ -162,6 +162,15 @@ export default defineComponent({
       return weight ? (weight * 100).toString() : '0';
     }
 
+    const poolSharePerc = computed(() => {
+      if (props.pool != undefined) {
+        const lpVal =
+          (Number(props.stakedBalance) / Number(props.pool.totalShares)) * 100;
+        return lpVal < 0.01 ? '< 0.01 %' : lpVal.toFixed(2) + ' %';
+      } else {
+        return 0;
+      }
+    });
     /**
      * METHODS
      */
@@ -182,6 +191,7 @@ export default defineComponent({
       dailyEarnings,
       tokenAddresses,
       tokenWeightFor,
+      poolSharePerc,
     };
   },
   created() {},
@@ -222,7 +232,7 @@ export default defineComponent({
   <div class="break"></div>
   <div class="mt-[24px] grid grid-cols-2">
     <div class="">Pool Share</div>
-    <div class="text-right">{{ totalTokens }}</div>
+    <div class="text-right">{{ poolSharePerc }}</div>
     <div class="">Staked LP Tokens</div>
     <div class="text-right">{{ stakedBalance }}</div>
     <div class="">Unstaked LP Tokens</div>
