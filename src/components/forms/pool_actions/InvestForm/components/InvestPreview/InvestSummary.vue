@@ -78,7 +78,7 @@ const { currency } = useUserSettings();
 <style scoped>
 .summary-table {
   @apply mt-4 ;
-  padding:0px 18px;
+  padding:0px 12px;
 }
 
 

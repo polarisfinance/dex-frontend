@@ -54,23 +54,25 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
-  <nav id="app-nav" ref="appNav" class="top-0 h-20 pr-1 pl-4 lg:px-6 sticky">
-    <div ref="nvb" class="flex h-full w-full items-center justify-between px-10">
-      <router-link
-        :to="{ name: 'home' }"
-        @click="trackGoal(Goals.ClickNavLogo)"
-      >
-        <AppIcon v-if="['xs', 'sm'].includes(bp)" />
-        <AppLogo v-else />
-      </router-link>
+  <div class="z-30 h-full w-full top-0 sticky" id="menuConatiner">
+    <AppNavAlert v-if="currentAlert" :alert="currentAlert" />
+    <nav id="app-nav" ref="appNav" class="h-20 pr-1 pl-4 lg:px-6 ">
+      <div ref="nvb" class="flex h-full w-full items-center justify-between px-10">
+        <router-link
+          :to="{ name: 'home' }"
+          @click="trackGoal(Goals.ClickNavLogo)"
+        >
+          <AppIcon v-if="['xs', 'sm'].includes(bp)" />
+          <AppLogo v-else />
+        </router-link>
 
-      <!-- <img src="./AuroraLogo.svg" v-if="isMobile" /> -->
-      <DesktopLinks v-if="isDesktop" class="flex font-medium" />
+        <!-- <img src="./AuroraLogo.svg" v-if="isMobile" /> -->
+        <DesktopLinks v-if="isDesktop" class="flex font-medium" />
 
-      <AppNavActions class="actions" />
-    </div>
-  </nav>
+        <AppNavActions class="actions" />
+      </div>
+    </nav>
+  </div>
 </template>
 
 <style scoped>

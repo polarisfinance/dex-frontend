@@ -202,11 +202,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="mt-[24px]">
+  <div class="mt-[12px]">
     <div
       v-for="(address, idx) in tokenAddresses"
       :key="idx"
-      class="my-[12px] flex"
+      class="py-[12px] flex"
     >
       <div class="flex flex-1">
         <BalAsset :address="address" :size="33" class="mr-[12px]" />
@@ -229,8 +229,8 @@ export default defineComponent({
       </div>
     </div>
   </div>
-  <div class="break"></div>
-  <div class="mt-[24px] grid grid-cols-2">
+  <div class="break my-[12px]"></div>
+  <div class="mt-[24px] grid grid-cols-2 gap-[8px]">
     <div class="">Pool Share</div>
     <div class="text-right">{{ poolSharePerc }}</div>
     <div class="">Staked LP Tokens</div>

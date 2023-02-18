@@ -119,7 +119,7 @@ function amountShare(address: string): string {
 }
 
 .token-amount-table-content {
-  @apply flex justify-between p-3;
+  @apply flex justify-between py-2;
 }
 
 .token {

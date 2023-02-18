@@ -260,12 +260,12 @@ watchEffect(() => {
         class="flex flex-col"
       >
         <div
-          class="flex items-center justify-between text-sm leading-[18px] text-[#F5E1FF]"
+          class="flex items-center justify-between text-sm leading-[18px] text-[#BDB2DD]"
         >
           <div v-if="!isWalletReady || disableBalance" />
           <div
             v-else
-            class="ml-[12px] mt-[8px] mb-[12px] flex cursor-pointer items-center"
+            class="ml-[2px] mt-[8px] mb-[12px] flex cursor-pointer items-center"
             @click="setMax"
           >
             <template v-if="hasBalance && !noMax && !disableMax">
@@ -291,7 +291,7 @@ watchEffect(() => {
           </div>
           <div>
             <template v-if="hasAmount && hasToken">
-              <div class="pr-[12px]">
+              <div class="mr-[6px]">
                 {{ fNum2(tokenValue, FNumFormats.fiat) }}
               </div>
 
@@ -341,14 +341,13 @@ watchEffect(() => {
    margin-right:8px;
   padding: 1px 7px;
   gap: 10px;
-
   background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
-
   border-radius: 20px;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
+  color: #FDFDFD;
 }
 
 .btn-max:hover {
