@@ -60,7 +60,7 @@
       <div class="pool-data">
         <PoolStatCards
           :pool="pool"
-          :stakedBalance="stakedBalance"
+          :stakedBalance="Number(unstakedTokens) + Number(stakedBalance)"
           :poolApr="poolApr"
           :loading="loadingPool"
           :loadingApr="loadingPool"
@@ -83,7 +83,7 @@
     :class="{ ' mt-[60px]': isMobile, 'mt-[120px]': isDesktop }"
   >
     <PoolUserDashboard
-      v-if="Number(stakedBalance) > 0"
+      v-if="Number(stakedBalance) + Number(unstakedTokens) > 0"
       :pool="pool"
       :stakedBalance="stakedBalance"
       :poolApr="poolApr"
@@ -388,6 +388,7 @@ import BigNumberJs from 'bignumber.js';
 import prices from '@/providers/tokens.provider';
 import { AprProviderService } from '@/services/pool/apr.provider';
 import { Pool } from '@/services/pool/types';
+import { bnum, isSameAddress } from '@/lib/utils';
 
 interface PoolPageData {
   id: string;
@@ -683,7 +684,13 @@ export default defineComponent({
       addIntersectionObserver();
     });
 
-    console.log(pool.value);
+    const unstakedTokens = computed((): string => {
+      if (pool.value) {
+        return balanceFor(pool.value?.address);
+      }
+      return '0';
+    });
+
     return {
       // data
       ...toRefs(data),
@@ -741,6 +748,7 @@ export default defineComponent({
       fNum2,
       FNumFormats,
       totalAprLabel,
+      unstakedTokens,
     };
   },
   data() {
