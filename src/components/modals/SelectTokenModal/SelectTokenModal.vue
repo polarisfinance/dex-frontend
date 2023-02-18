@@ -346,6 +346,7 @@ export default defineComponent({
 <style scoped>
 .modal {
   border-radius: 22px;
+  background: #292043;
 }
 
 .common-bases-title {

@@ -2,7 +2,7 @@
   <div :class="['bal-card', cardClasses]">
     <div
       :class="[
-        'card-container',
+        'card-container', containerClasses,
         { 'max-h-screen overflow-y-scroll': overflowYScroll },
       ]"
     >
@@ -41,7 +41,7 @@ export default defineComponent({
     noContentPad: { type: Boolean, default: false },
     noBorder: { type: Boolean, default: false },
     lighterBg: { type: Boolean, default: false },
-    darkBgColor: { type: String, default: '850' },
+    darkBgColor: { type: Boolean, default: false },
     imgSrc: { type: String, default: '' },
     hFull: { type: Boolean, default: false },
     growContent: { type: Boolean, default: false },
@@ -83,6 +83,13 @@ export default defineComponent({
         'h-full': props.hFull,
       };
     });
+    const containerClasses = computed(() => {
+      return {
+        'default-back': !props.darkBgColor && !props.lighterBg,
+        'dark-back': props.darkBgColor && !props.lighterBg,
+        'light-back': !props.darkBgColor && props.lighterBg,
+      };
+    });
 
     const headerClasses = computed(() => {
       return {
@@ -121,6 +128,7 @@ export default defineComponent({
       headerContentClasses,
       footerClasses,
       featureStyles,
+      containerClasses,
     };
   },
 });
@@ -137,7 +145,16 @@ export default defineComponent({
 
 .card-container {
   @apply flex flex-col;
+}
+
+.default-back{
   background: #41365E;
+}
+.dark-back{
+  background: #150128;
+}
+.light-back{
+  background: #50456E;
 }
 
 .card-container::-webkit-scrollbar {

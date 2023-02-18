@@ -1,5 +1,5 @@
 <template>
-  <div v-if="routes.length > 0" shadow="none" class="title p-[9px]">
+  <div v-if="routes.length > 0" shadow="none" class="title">
     <div
       class="flex cursor-pointer items-center text-[14px] font-semibold text-[#CAC7CC]"
     >

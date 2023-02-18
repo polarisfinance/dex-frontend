@@ -164,6 +164,10 @@ export default defineComponent({
       if(step<=steps.length)
         this.activeStep = step;
     },
+    clickActiveStep(step){
+      if(step!=steps.length)
+        this.setActiveStep(step);
+    },
     handleLPPreview(){
       this.setActiveStep(this.activeStep+1);     //THIS WILL BE OK. TESTING BELOW
        
@@ -247,7 +251,7 @@ export default defineComponent({
           <div class=" mt-[40px] w-full items-center self-center">
             <div class="steps flex justify-between ">
               <template v-for="step in steps">
-                <button @click="setActiveStep(step.step)" class="self-start">
+                <button @click="clickActiveStep(step.step)" class="self-start">
                   <TickIcon v-if="step.step<activeStep || activeStep==steps.length" class="" :class="{'block mx-auto':isMobile,'mr-1 inline':isDesktop}"/>
                   <QuestionIcon v-else class="" :class="{'block mx-auto':isMobile,'mr-1 inline':isDesktop}"/>
                   
@@ -282,7 +286,7 @@ export default defineComponent({
           <div class=" flex-1 justify-center">
               <div class="header flex">
                   <div class="flex-1">
-                    <button class="back" @click="goBack">
+                    <button class="back actions" @click="goBack">
                       <template v-if="activeStep<5"><ArrowLeftIcon class="ml-3 mr-[12px] inline" />Go back</template>
                     </button>
                     
@@ -291,7 +295,7 @@ export default defineComponent({
                       Invest in pool
                   </div>
                   <div class="flex-1 text-right">
-                    <router-link
+                    <router-link class="actions"
                       :to="{ name: 'pool', params: { id: id} }"
                       >
                       Exit <CloseIcon class="inline ml-[12px]"/>
@@ -446,6 +450,9 @@ h3 {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
+  color: #FDFDFD;
+}
+.actions:hover{
   color: #FDFDFD;
 }
 </style>

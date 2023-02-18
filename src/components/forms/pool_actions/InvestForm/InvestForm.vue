@@ -271,7 +271,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         :description="$t('investment.warning.lowLiquidity.description')"
         class="mb-4"
       />
-      <div class="tokens mx-[24px] mt-[12px]">
+      <div class="tokens mx-[12px] ">
       <TokenInput
         v-for="(n, i) in tokenAddresses.length"
         :key="i"
@@ -282,7 +282,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         :weight="tokenWeight(tokenAddresses[i])"
         :hintAmount="propAmountFor(i)"
         :hint="hint(i)"
-        class="mb-4"
+        class="mb-1"
         fixedToken
         :options="tokenOptions(i)"
         @update:amount="handleAmountChange($event, i)"
@@ -313,7 +313,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         <WrapStEthLink :pool="pool" class="mt-4" />
 
         <div class=" mx-[16px]">
-          <button class="btn inactive w-full mb-[12px]"
+          <button class="btn active w-full mb-[12px]"
             v-if="!isWalletReady"
             @click="startConnectWithInjectedProvider"
             >{{ $t('connectWallet') }}

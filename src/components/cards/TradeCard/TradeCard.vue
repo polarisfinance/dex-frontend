@@ -93,7 +93,7 @@
         class="stats"
       >
         
-        <div class="p-[16px]">
+        <div class="p-[12px]">
           <TradePreviewModalGP
             :trading="trading"
             @trade="trade"

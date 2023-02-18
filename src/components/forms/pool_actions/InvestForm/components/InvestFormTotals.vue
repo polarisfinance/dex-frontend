@@ -145,7 +145,7 @@ const optimizeBtnClasses = computed(() => ({
 <style scoped>
 .data-table {
   /* @apply divide-y rounded-lg border dark:divide-gray-900 dark:border-gray-900; */
-  padding:24px;
+  padding:18px;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
@@ -185,7 +185,7 @@ const optimizeBtnClasses = computed(() => ({
   color: #FDFDFD;
 }
 .max-investment{
-  padding:24px;
+  padding:16px;
   background-color: #41365E;
 }
 .break {
