@@ -62,9 +62,10 @@ export default function useInputEvents(props, emit, validate) {
 
   function overflowProtected(value: string): string | undefined {
     const [numberStr, decimalStr] = value.toString().split('.');
+    const decimalLimit = props.decimalLimit > 18 ? 18 : props.decimalLimit;
 
-    if (decimalStr && decimalStr.length > props.decimalLimit) {
-      const maxLength = numberStr.length + props.decimalLimit + 1;
+    if (decimalStr && decimalStr.length > decimalLimit) {
+      const maxLength = numberStr.length + decimalLimit + 1;
       return value.toString().slice(0, maxLength);
     } else return;
   }

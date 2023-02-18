@@ -99,7 +99,7 @@ export default class BalancesConcern {
     return Object.fromEntries(
       addresses.map((address, i) => [
         getAddress(address),
-        formatUnits(balances[i], tokens[address].decimals),
+        Number(formatUnits(balances[i].sub(BigNumber.from(1)), tokens[address].decimals)).toFixed(18),
       ])
     );
   }
