@@ -81,6 +81,11 @@ function isActive(page: string): boolean {
             <div>Rainbow Bridge</div>
             <img src="./arrow.svg" /></div
         ></a>
+        <a href="https://meson.fi/"
+          ><div class="flex w-full justify-between">
+            <div>Meson</div>
+            <img src="./arrow.svg" /></div
+        ></a>
       </div>
     </div>
 
