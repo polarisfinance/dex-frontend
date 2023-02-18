@@ -139,7 +139,7 @@ onMounted(() => {
           </span>
         </slot>
       </div>
-      <div class="input-group flex-wrap" :class="{'mb-[40px]':!isWalletReady}">
+      <div class="input-group flex-wrap mr-[6px]" :class="{'mb-[22px]':!isWalletReady}">
         <div v-if="$slots.prepend" :class="['prepend', prependClasses]">
           <slot name="prepend" />
         </div>
