@@ -99,7 +99,13 @@ export default class BalancesConcern {
     return Object.fromEntries(
       addresses.map((address, i) => [
         getAddress(address),
-        Number(formatUnits(balances[i].sub(BigNumber.from(1)), tokens[address].decimals)).toFixed(18),
+        formatUnits(balances[i], tokens[address].decimals).split('.')[1]
+          .length > 18
+          ? formatUnits(balances[i], tokens[address].decimals).substring(
+              0,
+              formatUnits(balances[i], tokens[address].decimals).length - 18
+            )
+          : formatUnits(balances[i], tokens[address].decimals),
       ])
     );
   }
