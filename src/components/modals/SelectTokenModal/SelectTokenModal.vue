@@ -86,18 +86,18 @@
         <!--  -->
         <div class="px-[16px] pb-[12px] pt-[24px]">
           <div class="common-bases-title mb-[12px]">Common bases</div>
-          <div class="flex gap-[8px]" v-if="tokens[0]">
-            <a @click="onSelectToken(tokens[0].address)" class="flex-none">
-              <div class="common-asset flex items-center">
-                <BalAsset
-                  :address="tokens[0].address"
-                  :iconURI="tokens[0].logoURI"
-                  :size="24"
-                  class="mr-[4px]"
-                />
-                <div class="token-name">{{ tokens[0].symbol }}</div>
-              </div>
-            </a>
+          <div class="flex gap-[8px]" >
+            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-none">
+                <div class="common-asset flex items-center">
+                  <BalAsset
+                    :address="tokens[2].address"
+                    :iconURI="tokens[2].logoURI"
+                    :size="24"
+                    class="mr-[4px]"
+                  />
+                  <div class="token-name">{{ tokens[2].symbol }}</div>
+                </div>
+              </a>
             <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]" class="flex-none">
               <div class="common-asset flex items-center">
                 <BalAsset
@@ -109,17 +109,41 @@
                 <div class="token-name">{{ tokens[1].symbol }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-none">
+            <a @click="onSelectToken(tokens[4].address)" class="flex-none">
               <div class="common-asset flex items-center">
                 <BalAsset
-                  :address="tokens[2].address"
-                  :iconURI="tokens[2].logoURI"
+                  :address="tokens[4].address"
+                  :iconURI="tokens[4].logoURI"
                   :size="24"
                   class="mr-[4px]"
                 />
-                <div class="token-name">{{ tokens[2].symbol }}</div>
+                <div class="token-name">{{ tokens[4].symbol }}</div>
               </div>
             </a>
+            <template v-if="isDesktop">
+              <a @click="onSelectToken(tokens[3].address)" v-if="tokens[3]"  class="flex-none">
+                <div class="common-asset flex items-center">
+                  <BalAsset
+                    :address="tokens[3].address"
+                    :iconURI="tokens[3].logoURI"
+                    :size="24"
+                    class="mr-[4px]"
+                  />
+                  <div class="token-name">{{ tokens[3].symbol }}</div>
+                </div>
+              </a>
+              <a @click="onSelectToken(tokens[0].address)" v-if="tokens[0]"  class="flex-none">
+                <div class="common-asset flex items-center">
+                  <BalAsset
+                    :address="tokens[0].address"
+                    :iconURI="tokens[0].logoURI"
+                    :size="24"
+                    class="mr-[4px]"
+                  />
+                  <div class="token-name">{{ tokens[0].symbol }}</div>
+                </div>
+              </a>
+            </template>
           </div>
         </div>
         <div class="m-[12px] border" />
@@ -177,7 +201,7 @@ import useTokenLists from '@/composables/useTokenLists';
 import useTokens from '@/composables/useTokens';
 import useUrls from '@/composables/useUrls';
 import { TokenInfoMap } from '@/types/TokenList';
-
+import useBreakpoints from '@/composables/useBreakpoints';
 import Search from './Search.vue';
 
 import x from './x.vue';
@@ -216,7 +240,7 @@ export default defineComponent({
       query: '',
       results: {},
     });
-
+    const { isMobile, isDesktop } = useBreakpoints();
     /**
      * COMPOSABLES
      */
@@ -245,6 +269,7 @@ export default defineComponent({
       if (state.selectTokenList) return t('manageLists');
       return t('tokenSearch');
     });
+
 
     const tokenLists = computed(() => {
       const query = state.query.toLowerCase();
@@ -338,6 +363,7 @@ export default defineComponent({
       toggleSelectTokenList,
       isActiveList,
       resolve,
+      isDesktop,
     };
   },
 });
