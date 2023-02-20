@@ -185,30 +185,34 @@ export class PriceService {
       const requests: Promise<HistoricalPriceResponse>[] = [];
 
       addresses.forEach(address => {
-        let bnb = false;
-        if (address == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') {
-          address = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
-        }
-        if (address == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') {
-          address = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
-        }
-        if (address == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762') {
-          address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
-          bnb = true;
-        }
-        if (address == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
-          address = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
-        }
-        const endpoint = `/coins/${
-          bnb ? 'binance-smart-chain' : this.platformId
-        }/contract/${address.toLowerCase()}/market_chart/range?vs_currency=${
-          this.fiatParam
-        }&from=${start}&to=${end}`;
-        const request = retryPromiseWithDelay(
-          this.client.get<HistoricalPriceResponse>(endpoint),
-          2, // retryCount
-          2000 // delayTime
-        );
+        // let bnb = false;
+        // if (address == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') {
+        //   address = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
+        // }
+        // if (address == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') {
+        //   address = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
+        // }
+        // if (address == '0xb14674C7264eC7d948B904Aab2c0E0F906F6e762') {
+        //   address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
+        //   bnb = true;
+        // }
+        // if (address == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+        //   address = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
+        // }
+        // const endpoint = `/coins/${
+        //   bnb ? 'binance-smart-chain' : this.platformId
+        // }/contract/${address.toLowerCase()}/market_chart/range?vs_currency=${
+        //   this.fiatParam
+        // }&from=${start}&to=${end}`;
+
+        const endpoint = `/getHistoricalToken/?chain=${this.platformId}&contract_address=${address.toLowerCase()}&vs_currency=${this.fiatParam}&aggregate_by=${aggregateBy}&days=${days}`;
+        const request = retryPromiseWithDelay(this.cacheClient.get<HistoricalPriceResponse>(endpoint),2,2000);
+
+        // const request = retryPromiseWithDelay(
+        //   this.client.get<HistoricalPriceResponse>(endpoint),
+        //   2, // retryCount
+        //   2000 // delayTime
+        // );
         requests.push(request);
       });
 
