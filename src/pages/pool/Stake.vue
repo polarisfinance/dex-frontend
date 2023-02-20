@@ -39,8 +39,9 @@ export default defineComponent({
     
     const address = props.address;
     const { account } = useWeb3();
-
+    const { txListener } = useEthers();
     return {
+      txListener,
       getProvider,
       addTransaction,
       emit,
@@ -71,7 +72,7 @@ export default defineComponent({
     },
     async confirm(amount: string) {
 
-      const { txListener } = useEthers();
+      
       const formatedAmount = parseFixed(amount, 18);
       console.log(formatedAmount);
       const {withdraw, deposit } = useStake();
@@ -90,7 +91,7 @@ export default defineComponent({
           });
         };
         txHandler(tx);
-        txListener(tx, {
+        this.txListener(tx, {
           onTxConfirmed: () => {
             this.confirming=false;
             this.emit('close');
@@ -111,7 +112,7 @@ export default defineComponent({
           });
         };
         txHandler(tx);
-        txListener(tx, {
+        this.txListener(tx, {
           onTxConfirmed: () => {
             this.confirming=false;
             this.emit('close');
