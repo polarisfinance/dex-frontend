@@ -273,7 +273,6 @@ export default defineComponent({
       dailyEarnings,
       toggleStakeModal,
       isStakeModalVisible,
-      toggleUnstakeModal,
       isUnstakeModalVisible,
     };
   },
@@ -359,7 +358,7 @@ export default defineComponent({
             class="my-panel flex flex-1 py-8 pl-[24px]"
             :class="{ 'flex-col items-center': isMobile }"
           >
-            <div class="pool-invest flex-1 text-center">
+            <!-- <div class="pool-invest flex-1 text-center">
               Unstake your LP tokens
               <button
                 class="withdraw-btn flex w-full items-center"
@@ -367,14 +366,14 @@ export default defineComponent({
               >
                 <div class="w-full text-center">Unstake</div>
               </button>
-            </div>
+            </div> -->
             <div class="pool-invest flex-1 text-center">
-              Withdraw your position
+              Unstake & Withdraw your position
               <router-link
                 class="withdraw-btn flex items-center"
                 :to="'/pool/' + pool?.id + '/withdraw'"
               >
-                <div class="w-full text-center">Withdraw</div>
+                <div class="w-full text-center">Unstake & Withdraw</div>
               </router-link>
             </div>
             <div
@@ -403,14 +402,14 @@ export default defineComponent({
     :address="pool.address"
     @close="toggleStakeModal"
   />
-  <StakeModal
+  <!-- <StakeModal
     :depositBol="false"
     :isVisible="isUnstakeModalVisible"
     :token="``"
     :balance="stakedBalance"
     :address="pool.address"
     @close="toggleUnstakeModal"
-  />
+  /> -->
 </template>
 
 <style scoped>
