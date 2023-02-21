@@ -3,16 +3,16 @@ import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service
 import BigNumberJs from 'bignumber.js';
 import useStake from '@/composables/PolarisFinance/useStake';
 import {
-    spolarABI,
-    sunriseABI,
-    xpolarRewardPoolABI,
-    ERC20ABI,
+  spolarABI,
+  sunriseABI,
+  xpolarRewardPoolABI,
+  ERC20ABI,
 } from '@/composables/PolarisFinance/ABI';
 import {
-    BigNumberToString,
-    sunriseNameToAddress,
-    SPOLAR,
-    getDisplayBalance,
+  BigNumberToString,
+  sunriseNameToAddress,
+  SPOLAR,
+  getDisplayBalance,
 } from '@/composables/PolarisFinance/utils';
 import { Contract } from 'ethers';
 import {
@@ -28,27 +28,33 @@ import { accountToAddress, Network } from '@balancer-labs/sdk';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import useWeb3 from '@/services/web3/useWeb3';
 
-export interface ClaimType{
-  pool:PoolWithShares;
-  address:String;
-  approved:Boolean;
-  stakedBalance:Number;
-  xpolarToClaim:String;
+export interface ClaimType {
+  pool: PoolWithShares;
+  address: String;
+  approved: Boolean;
+  stakedBalance: Number;
+  xpolarToClaim: String;
 }
 
-
 export class ClaimProviderService {
-  private prices = []
-  private account
-  private xpolarPoolQuery
-  private pools:PoolWithShares[]=[]
-  private singlePools:any;
-  private xpolarRewardPoolAddress='0x140e8a21d08CbB530929b012581a7C7e696145eF'
-  private claims: Array < ClaimType > = [];
+  private prices = [];
+  private account;
+  private xpolarPoolQuery;
+  private pools: PoolWithShares[] = [];
+  private singlePools: any;
+  private xpolarRewardPoolAddress =
+    '0x140e8a21d08CbB530929b012581a7C7e696145eF';
+  private claims: Array<ClaimType> = [];
   // public claimsReceived?: (claims:any) => void
-  public claimReceived?: (claim:ClaimType) => void
+  public claimReceived?: (claim: ClaimType) => void;
 
-  constructor(pools:any,singlePools:any,prices:any, xpolarPoolQuery,account) {
+  constructor(
+    pools: any,
+    singlePools: any,
+    prices: any,
+    xpolarPoolQuery,
+    account
+  ) {
     this.xpolarPoolQuery = xpolarPoolQuery;
     this.pools = pools;
     this.singlePools = singlePools;
@@ -56,57 +62,54 @@ export class ClaimProviderService {
     this.account = account;
   }
 
-  public init(){
-    
-  }
-  async fetchAll(){
+  public init() {}
+  async fetchAll() {
     const promises: any[] = [];
-    if(!this.pools)
-      return;
+    if (!this.pools) return;
 
     // let allClaims: ClaimType[] = [];
     for (var i = 0; i < this.pools.length; i++) {
-
       // promises.push(this.fetch(this.pools[i]));
       new Promise((resolve, reject) => {
         resolve(this.fetch(this.pools[i]));
-      }).then((val:any) => {
-        if(val!=undefined){
-          const obj:ClaimType = val;
-          if(val.approved && this.claimReceived && val.stakedBalance>0){
+      }).then((val: any) => {
+        if (val != undefined) {
+          const obj: ClaimType = val;
+          if (this.claimReceived && val.stakedBalance > 0) {
             this.claimReceived(obj);
           }
-            // allClaims.push( obj );
-          // if (!this.claimsReceived) 
-          //   return; 
+          // allClaims.push( obj );
+          // if (!this.claimsReceived)
+          //   return;
           // this.claimsReceived(allClaims);
         }
       });
-
     }
-    for(var i=0;i<this.singlePools.length;i++){
+    for (var i = 0; i < this.singlePools.length; i++) {
       new Promise((resolve, reject) => {
         resolve(this.fetchSingle(this.singlePools[i].id));
-      }).then((val:any) => {
-        if(val!=undefined){
-          const obj:ClaimType = val;
-          if(val.approved && this.claimReceived && val.stakedBalance>0){
+      }).then((val: any) => {
+        if (val != undefined) {
+          const obj: ClaimType = val;
+          if (this.claimReceived && val.stakedBalance > 0) {
             this.claimReceived(obj);
           }
         }
       });
-
     }
-
   }
 
-  private async fetch(pool:PoolWithShares) {
+  private async fetch(pool: PoolWithShares) {
     const { balance, isApproved, pendingShare } = useStake();
     const approval = await isApproved(pool.address, this.account);
-    if(!approval)
-      return { pool: pool, approved: approval, stakedBalance: 0, xpolarToClaim: "" };
+    // if (!approval)
+    //   return {
+    //     pool: pool,
+    //     approved: approval,
+    //     stakedBalance: 0,
+    //     xpolarToClaim: '',
+    //   };
 
-    
     const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
     const xpolarRewardPoolAddress =
@@ -149,24 +152,23 @@ export class ClaimProviderService {
     if (this.xpolarPoolQuery?.data === undefined) {
       await new Promise((resolve, reject) => {
         const loop = () =>
-        this.xpolarPoolQuery?.data !== undefined
+          this.xpolarPoolQuery?.data !== undefined
             ? resolve(this.xpolarPoolQuery?.data)
             : setTimeout(loop, 100);
         loop();
       });
     }
     const xpolarPool = this.xpolarPoolQuery?.data;
-    
+
     const xpolarBalance =
-    xpolarPool.value?.onchain?.tokens[
+      xpolarPool.value?.onchain?.tokens[
         '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
       ]?.balance;
     const nearBalance =
-    xpolarPool.value?.onchain?.tokens[
+      xpolarPool.value?.onchain?.tokens[
         '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
       ]?.balance;
 
-      
     const nearPrice =
       this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
 
@@ -181,7 +183,7 @@ export class ClaimProviderService {
       14,
       4
     );
-    
+
     const TVL = new BigNumberJs(pool.totalLiquidity || '')
       .div(pool.totalShares || '')
       .times(stakedInPool)
@@ -202,7 +204,6 @@ export class ClaimProviderService {
     const yearlyAPR = Math.ceil(
       (totalRewardPricePerYear / Number(TVL)) * 100
     ).toString();
-    
 
     // const apr = await this.getPoolApr(poolAddress, poolId);
     // this.apr = apr.yearlyAPR;
@@ -213,14 +214,23 @@ export class ClaimProviderService {
     const stakedBal = await balance(pool.address, this.account);
 
     // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
-    const xpolToClaim = BigNumberToString(await pendingShare(pool.address, this.account),14,4);
-    
-    return { address: pool.address, pool: pool, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
+    const xpolToClaim = BigNumberToString(
+      await pendingShare(pool.address, this.account),
+      14,
+      4
+    );
+
+    return {
+      address: pool.address,
+      pool: pool,
+      approved: approval,
+      stakedBalance: Number(stakedBal),
+      xpolarToClaim: xpolToClaim,
+    };
   }
-  private async  fetchSingle(id:string) {
+  private async fetchSingle(id: string) {
     const { balance, isApproved, pendingShare } = useStake();
 
-    console.log('Fetching claim info for SingleStake: '+id);
     const approval = await isApproved(id, this.account);
     const stakedBal = await balance(id, this.account);
     const xpolToClaim = BigNumberToString(
@@ -229,11 +239,12 @@ export class ClaimProviderService {
       4
     );
 
-    return { address: id,pool:undefined, approved: approval, stakedBalance: Number(stakedBal), xpolarToClaim: xpolToClaim };
-
-    
+    return {
+      address: id,
+      pool: undefined,
+      approved: approval,
+      stakedBalance: Number(stakedBal),
+      xpolarToClaim: xpolToClaim,
+    };
   }
-
 }
-
-

@@ -174,7 +174,7 @@ export default function useStake() {
   const isApproved = async (address: string, account: string) => {
     const token = new Contract(address, ERC20ABI, w3);
     const allowace = await token.allowance(account, xpolarRewardPoolAddress);
-    return allowace != 0 ? true : false;
+    return allowace.gt(BigNumber.from(0));
   };
 
   const approve = async (address: string, provider: Web3Provider) => {
