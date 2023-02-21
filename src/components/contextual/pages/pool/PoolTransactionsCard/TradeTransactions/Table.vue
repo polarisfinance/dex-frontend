@@ -229,17 +229,22 @@ const swapRows = computed<SwapRow[]>(() =>
 
     <div class="grid-table min-w-[480px]">
       <div class="header">
-        <div class="h-4 ml-[24px]">Action</div>
+        <div class="ml-[24px] h-4">Action</div>
         <div class="h-4">Value</div>
         <div class="h-4">Tokens</div>
         <div class="h-4">Time</div>
       </div>
       <div class="border"></div>
 
-      <div v-for="(action, index) in swapRows" :key="index" class="flex w-full items-center table-row">
-        <router-link
-          :to="explorerLinks.txLink(action.tx)"
-          class="my-[18px] flex w-full items-center pool-row" target= '_blank'
+      <div
+        v-for="(action, index) in swapRows"
+        :key="index"
+        class="flex table-row w-full items-center"
+      >
+        <a
+          :href="explorerLinks.txLink(action.tx)"
+          class="pool-row my-[18px] flex w-full items-center"
+          target="_blank"
         >
           <div class="flex w-full items-center">
             <BalAsset
@@ -250,29 +255,34 @@ const swapRows = computed<SwapRow[]>(() =>
             />
             {{ action.ensName || shortenLabel(action.userAddress) }}
           </div>
-        </router-link>
-        
+        </a>
+
         <div class="flex items-center justify-start">
-          <a :href="explorerLinks.txLink(action.tx)" target="_blank"  >
-            <div class="text-right value-text ">{{ action.formattedValue }}</div>
+          <a :href="explorerLinks.txLink(action.tx)" target="_blank">
+            <div class="value-text text-right">{{ action.formattedValue }}</div>
           </a>
         </div>
 
         <div class="flex items-center justify-start">
-          <a :href="explorerLinks.txLink(action.tx)" target="_blank" class="flex " :class="{'justify-left': isDesktop , 'justify-end': isMobile,}">
+          <a
+            :href="explorerLinks.txLink(action.tx)"
+            target="_blank"
+            class="flex"
+            :class="{ 'justify-left': isDesktop, 'justify-end': isMobile }"
+          >
             <div class="flex">
-              <div class="token-item" >
+              <div class="token-item">
                 <BalAsset
                   :address="action.tokenIn"
                   class="mr-[8px]"
                   :size="16"
                 />
-                <span class="font-numeric  mx-[7px]">{{
+                <span class="font-numeric mx-[7px]">{{
                   fNum2(action.tokenAmountIn, FNumFormats.token)
                 }}</span>
               </div>
               <img src="./swap.svg" class="mx-[12px]" />
-              <div class="token-item" >
+              <div class="token-item">
                 <BalAsset
                   :address="action.tokenOut"
                   class="mr-[8px]"
@@ -286,12 +296,16 @@ const swapRows = computed<SwapRow[]>(() =>
           </a>
         </div>
         <div class="flex items-center justify-start">
-          <a :href="explorerLinks.txLink(action.tx)" target="_blank"  class="value-text text-right" v-if="isDesktop">
+          <a
+            :href="explorerLinks.txLink(action.tx)"
+            target="_blank"
+            class="value-text text-right"
+            v-if="isDesktop"
+          >
             {{ action.formattedDate }}
           </a>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -304,20 +318,22 @@ const swapRows = computed<SwapRow[]>(() =>
   font-weight: 600;
   font-size: 16px;
   line-height: 18px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.table-row, .header{
+.table-row,
+.header {
   display: contents;
 }
-.table-row > div, .header > div{
+.table-row > div,
+.header > div {
   height: 100%;
-  padding:12px 0px;
+  padding: 12px 0px;
 }
-.header > div{
-  color: #BDB2DD;
+.header > div {
+  color: #bdb2dd;
   padding-bottom: 24px;
 }
-.border{
+.border {
   grid-column: 1 / span 4;
   border: 0.5px solid rgba(151, 71, 255, 0.4);
   margin-bottom: 24px;
@@ -331,16 +347,15 @@ const swapRows = computed<SwapRow[]>(() =>
   color: #be95c0;
   background: #231928;
 }
-.token-item{
+.token-item {
   background: #292043;
   border-radius: 24px;
-  padding:8px;
+  padding: 8px;
 }
-.font-numeric{
+.font-numeric {
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
-
+  color: #fdfdfd;
 }
 </style>
