@@ -55,33 +55,48 @@ function isActive(page: string): boolean {
         Bridges <img :src="ArrowDown" />
       </div>
       <div class="dropdown-content w-full">
-        <a href="https://synapseprotocol.com/"
+        <a
+          href="https://synapseprotocol.com/"
+          target="_blank"
+          rel="noopener noreferrer"
           ><div class="flex w-full justify-between">
             <div>Synapse</div>
             <img src="./arrow.svg" />
           </div>
         </a>
-        <a href="https://multichain.xyz/"
+        <a
+          href="https://multichain.xyz/"
+          target="_blank"
+          rel="noopener noreferrer"
           ><div class="flex w-full justify-between">
             <div>Multichain</div>
             <img src="./arrow.svg" /></div
         ></a>
-        <a href="https://allbridge.io/classic/"
+        <a
+          href="https://allbridge.io/classic/"
+          target="_blank"
+          rel="noopener noreferrer"
           ><div class="flex w-full justify-between">
             <div>Allbridge</div>
             <img src="./arrow.svg" /></div
         ></a>
-        <a href="https://cbridge.celer.network/"
+        <a
+          href="https://cbridge.celer.network/"
+          target="_blank"
+          rel="noopener noreferrer"
           ><div class="flex w-full justify-between">
             <div>CBridge</div>
             <img src="./arrow.svg" /></div
         ></a>
-        <a href="https://rainbowbridge.app/"
+        <a
+          href="https://rainbowbridge.app/"
+          target="_blank"
+          rel="noopener noreferrer"
           ><div class="flex w-full justify-between">
             <div>Rainbow Bridge</div>
             <img src="./arrow.svg" /></div
         ></a>
-        <a href="https://meson.fi/"
+        <a href="https://meson.fi/" target="_blank" rel="noopener noreferrer"
           ><div class="flex w-full justify-between">
             <div>Meson</div>
             <img src="./arrow.svg" /></div

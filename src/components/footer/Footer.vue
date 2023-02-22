@@ -28,7 +28,9 @@
             width="35"
             className=" "
           />
-          <span className="colored-logo self-center text-[20px] font-medium ml-[7px]">
+          <span
+            className="colored-logo self-center text-[20px] font-medium ml-[7px]"
+          >
             POLARIS&nbsp;
           </span>
           <span className="colored-logo self-center text-[20px] font-semibold">
@@ -44,10 +46,25 @@
             >
               <span>Protocol</span>
               <div className="flex flex-col space-y-[16px] text-[#5F5564]">
-                <a href="https://docs.polarisfinance.io">Docs</a>
+                <a
+                  href="https://docs.polarisfinance.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Docs</a
+                >
 
-                <a href="https://vote.polarisfinance.io/#/">Vote</a>
-                <a href="https://old.polarisfinance.io/">Old Website</a>
+                <a
+                  href="https://vote.polarisfinance.io/#/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Vote</a
+                >
+                <a
+                  href="https://old.polarisfinance.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Old Website</a
+                >
               </div>
             </div>
             <div
@@ -57,6 +74,8 @@
               <div className="flex flex-col space-y-[16px] text-[#5F5564]">
                 <a
                   href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   KYC
                 </a>
@@ -69,19 +88,39 @@
           >
             <span>Social media</span>
             <div className="flex space-x-[28px] text-[#5F5564]">
-              <a href="https://discord.gg/polaris-finance">
+              <a
+                href="https://discord.gg/polaris-finance"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <IconDiscord />
               </a>
-              <a href="https://t.me/polarisfinance">
+              <a
+                href="https://t.me/polarisfinance"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <IconTelegram />
               </a>
-              <a href="https://twitter.com/PolarisFinance_">
+              <a
+                href="https://twitter.com/PolarisFinance_"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <IconTwitter />
               </a>
-              <a href="https://medium.com/@PolarisFinance">
+              <a
+                href="https://medium.com/@PolarisFinance"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <IconMedium />
               </a>
-              <a href="https://github.com/polarisfinance">
+              <a
+                href="https://github.com/polarisfinance"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <IconGithub />
               </a>
             </div>
@@ -180,7 +219,7 @@ footer :deep(.logotype) {
 }
 
 .colored-logo {
-  color: #FDFDFD;
+  color: #fdfdfd;
   display: inline-block;
 }
 </style>

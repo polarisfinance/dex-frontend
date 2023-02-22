@@ -32,11 +32,21 @@
         <span> Help Center </span>
         <HelpCenter />
       </a> -->
-      <a class="menu-item menu-link" href="https://discord.gg/polaris-finance">
+      <a
+        class="menu-item menu-link"
+        href="https://discord.gg/polaris-finance"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <span> Discord </span>
         <Discord />
       </a>
-      <a class="menu-item menu-link" href="https://docs.polarisfinance.io/">
+      <a
+        class="menu-item menu-link"
+        href="https://docs.polarisfinance.io/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <span> Docs </span>
         <Docs />
       </a>
@@ -44,7 +54,12 @@
         <span> Legal & Privacy </span>
         <LegalAndPrivacy />
       </a> -->
-      <a class="menu-item menu-link" href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/">
+      <a
+        class="menu-item menu-link"
+        href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <span> KYC </span>
         <Kyc />
       </a>
