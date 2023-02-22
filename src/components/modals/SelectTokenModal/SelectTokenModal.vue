@@ -86,7 +86,7 @@
         <!--  -->
         <div class="px-[16px] pb-[12px] pt-[24px]">
           <div class="common-bases-title mb-[12px]">Common bases</div>
-          <div class="flex gap-[8px]" >
+          <div class="flex gap-[8px] overflow-hidden" >
             <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-none">
                 <div class="common-asset flex items-center">
                   <BalAsset
