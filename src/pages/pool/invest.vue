@@ -1,10 +1,12 @@
 <script lang="ts">
-import {ref, defineComponent,computed,toRef,toRefs,reactive} from 'vue';
+import { ref, defineComponent, computed, toRef, toRefs, reactive } from 'vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import { isStableLike, isStablePhantom, usePool } from '@/composables/usePool';
 import useInvestState from '@/components/forms/pool_actions/InvestForm/composables/useInvestState';
 import { forChange } from '@/lib/utils';
-import TradeSettingsPopover, {TradeSettingsContext,} from '@/components/popovers/TradeSettingsPopover.vue';
+import TradeSettingsPopover, {
+  TradeSettingsContext,
+} from '@/components/popovers/TradeSettingsPopover.vue';
 import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import { useRoute, useRouter } from 'vue-router';
@@ -24,40 +26,38 @@ import useTokens from '@/composables/useTokens';
 import InvestHero from '@/components/heros/InvestHero.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-
 const steps = [
   {
-  "step":1,
-  "headline":"Connect your wallet to start earning",
-  "button":"Connect wallet",
+    step: 1,
+    headline: 'Connect your wallet to start earning',
+    button: 'Connect wallet',
   },
   {
-  "step":2,
-  "headline":"Choose your token amounts to invest",
-  "button":"Create LP",
+    step: 2,
+    headline: 'Choose your token amounts to invest',
+    button: 'Create LP',
   },
   {
-  "step":3,
-  "headline":"Preview your investment",
-  "button":"Preview & confirmation",
+    step: 3,
+    headline: 'Preview your investment',
+    button: 'Preview & confirmation',
   },
   {
-  "step":4,
-  "headline":"Approve staking of your invested LP tokens",
-  "button":"Approve staking",
+    step: 4,
+    headline: 'Approve staking of your invested LP tokens',
+    button: 'Approve staking',
   },
   {
-  "step":5,
-  "headline":"Stake your liquidity pool tokens",
-  "button":"Stake LP",
+    step: 5,
+    headline: 'Stake your liquidity pool tokens',
+    button: 'Stake LP',
   },
   {
-  "step":6,
-  "headline":"Everything is set and done!",
-  "button":"Done",
+    step: 6,
+    headline: 'Everything is set and done!',
+    button: 'Done',
   },
 ];
-
 
 export default defineComponent({
   components: {
@@ -71,36 +71,54 @@ export default defineComponent({
     TickIcon,
     InvestHero,
   },
-  props: {
-  },
+  props: {},
   watch: {
     isWalletReady(newValue, oldValue) {
-      if (newValue==true) 
-        this.activeStep=2;
-    }
+      if (newValue == true) this.activeStep = 2;
+    },
+    async account() {
+      const { isApproved } = useStake();
+      this.poolApproved = await isApproved(this.pool?.address!, this.account);
+      if (this.activeStep == 4) {
+        this.activeStep = 5;
+      }
+    },
+    async pool() {
+      const { isApproved } = useStake();
+      this.poolApproved = await isApproved(this.pool?.address!, this.account);
+      if (this.activeStep == 4) {
+        this.activeStep = 5;
+      }
+    },
   },
   setup(props, { emit }) {
     const { isMobile, isDesktop } = useBreakpoints();
-    const {transfersAllowed } = usePoolTransfers();
+    const { transfersAllowed } = usePoolTransfers();
     const route = useRoute();
     const id = ref<string>(route.params.id as string);
 
     const poolQuery = usePoolQuery(route.params.id as string);
     const pool = computed(() => poolQuery.data.value);
     const { isStablePhantomPool } = usePool(pool);
-    const {tokenAddresses,amounts, sor,sorReady} = useInvestState();
-    
-    const { account,isWalletReady, getProvider,startConnectWithInjectedProvider, isMismatchedNetwork } =useWeb3();
+    const { tokenAddresses, amounts, sor, sorReady } = useInvestState();
+
+    const {
+      account,
+      isWalletReady,
+      getProvider,
+      startConnectWithInjectedProvider,
+      isMismatchedNetwork,
+    } = useWeb3();
     const { addTransaction } = useTransactions();
     const { balanceFor } = useTokens();
 
     const investmentTokens = computed((): string[] => {
-        if (isStablePhantom(pool.value!.poolType)) {
-            return pool.value!.mainTokens || [];
-        }
-        return pool.value!.tokensList;
+      if (isStablePhantom(pool.value!.poolType)) {
+        return pool.value!.mainTokens || [];
+      }
+      return pool.value!.tokensList;
     });
-    
+
     const poolQueryLoading = computed(
       () =>
         poolQuery.isLoading.value ||
@@ -109,7 +127,6 @@ export default defineComponent({
     );
     const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
 
-    
     return {
       id,
       account,
@@ -131,48 +148,43 @@ export default defineComponent({
     };
   },
   async mounted() {
-    
-    if (this.pool!=undefined && this.isStablePhantomPool) {
-        // Initialise SOR for batch swap queries
-        this.sorReady = await this.sor.fetchPools();
+    if (this.pool != undefined && this.isStablePhantomPool) {
+      // Initialise SOR for batch swap queries
+      this.sorReady = await this.sor.fetchPools();
     } else {
-        this.sorReady = true;
+      this.sorReady = true;
     }
-    const {balance, isApproved} = useStake();
+    const { balance, isApproved } = useStake();
     const approval = await isApproved(this.pool?.address!, this.account);
     this.poolApproved = approval;
     this.stakedBalance = await balance(this.pool?.address!, this.account);
-    
-
   },
-  beforeMount(){
-    if(this.isWalletReady && this.activeStep==1){
-        this.activeStep=2;
+  beforeMount() {
+    if (this.isWalletReady && this.activeStep == 1) {
+      this.activeStep = 2;
     }
   },
-  updated() {
-  },
+  updated() {},
   data() {
     return {
-        activeStep:1,
-        tokenAddresses:[]  as string[],
-        poolApproved: false,
-        stakedBalance: '0',
-        
+      activeStep: 1,
+      tokenAddresses: [] as string[],
+      poolApproved: false,
+      stakedBalance: '0',
     };
   },
   methods: {
-    setActiveStep(step){
-      if(step<=steps.length)
-        this.activeStep = step;
+    setActiveStep(step) {
+      if (this.poolApproved == true && step == 4) {
+        this.activeStep = step + 1;
+      } else if (step <= steps.length) this.activeStep = step;
     },
-    clickActiveStep(step){
-      if(step!=steps.length)
-        this.setActiveStep(step);
+    clickActiveStep(step) {
+      if (step != steps.length) this.setActiveStep(step);
     },
-    handleLPPreview(){
-      this.setActiveStep(this.activeStep+1);     //THIS WILL BE OK. TESTING BELOW
-       
+    handleLPPreview() {
+      this.setActiveStep(this.activeStep + 1); //THIS WILL BE OK. TESTING BELOW
+
       // this.handleStakeConfirmed();
       // this.activeStep = 3;
       // if(this.poolApproved){
@@ -182,32 +194,30 @@ export default defineComponent({
       //   this.activeStep = this.activeStep+1;
       // }
     },
-    handleInvestConfirm(){
+    handleInvestConfirm() {
       // const poolApproved = false;      //TESTING
-      if(this.poolApproved){
-        this.setActiveStep(this.activeStep+2);
-      }else{
-        this.setActiveStep(this.activeStep+1);
+      if (this.poolApproved) {
+        this.setActiveStep(this.activeStep + 2);
+      } else {
+        this.setActiveStep(this.activeStep + 1);
         this.approvePool();
       }
     },
-    handleStakeConfirmed(){
-      this.setActiveStep(this.activeStep+1);
+    handleStakeConfirmed() {
+      this.setActiveStep(this.activeStep + 1);
       //this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
     },
-    progressPerc(){
-      if(this.activeStep==steps.length){
-          return 1;
+    progressPerc() {
+      if (this.activeStep == steps.length) {
+        return 1;
       }
-      return (1/(steps.length-1) *(this.activeStep-1))+0.05;
+      return (1 / (steps.length - 1)) * (this.activeStep - 1) + 0.05;
     },
-    goBack(){
-      if(this.isWalletReady && this.activeStep==2)
-        return;
-      if(!this.isWalletReady && this.activeStep==1)
-        return;
+    goBack() {
+      if (this.isWalletReady && this.activeStep == 2) return;
+      if (!this.isWalletReady && this.activeStep == 1) return;
 
-      this.setActiveStep(this.activeStep-1);
+      this.setActiveStep(this.activeStep - 1);
     },
     async approvePool() {
       const { approve } = useStake();
@@ -216,7 +226,7 @@ export default defineComponent({
         poolAddress = this.pool.address;
       }
       const tx = await approve(poolAddress, this.getProvider());
-      
+
       (tx: TransactionResponse): void => {
         this.addTransaction({
           id: tx.hash,
@@ -229,131 +239,188 @@ export default defineComponent({
       const { txListener } = useEthers();
       txListener(tx, {
         onTxConfirmed: () => {
-          this.setActiveStep(this.activeStep+1);
+          this.setActiveStep(this.activeStep + 1);
+          this.poolApproved = true;
         },
-        onTxFailed: () => {
-        },
+        onTxFailed: () => {},
       });
     },
-    
   },
 
   emits: [],
 });
 </script>
 <template>
-    <div class="pb-16">
-      <div class="fireworks" v-if="activeStep==steps.length">
-        <div class="before" />
-        <div class="after" />
-      </div>
+  <div class="pb-16">
+    <div class="fireworks" v-if="activeStep == steps.length">
+      <div class="before" />
+      <div class="after" />
+    </div>
     <div>
-        <InvestHero :step="activeStep" :headline="steps[activeStep-1].headline"/>
-        <div class="container mx-auto">
-          <div class=" mt-[40px] w-full items-center self-center">
-            <div class="steps flex justify-between ">
-              <template v-for="step in steps">
-                <button @click="clickActiveStep(step.step)" class="self-start">
-                  <TickIcon v-if="step.step<activeStep || activeStep==steps.length" class="" :class="{'block mx-auto':isMobile,'mr-1 inline':isDesktop}"/>
-                  <QuestionIcon v-else class="" :class="{'block mx-auto':isMobile,'mr-1 inline':isDesktop}"/>
-                  
-                  {{step.button}}</button>
-              </template>
-            </div>
-            <div class="progress-bar mt-[32px] h-[2px] rounded-[24px] w-full">
-                <div
-                  class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
-                  :style="{ width: `${(progressPerc() * 100).toFixed(0)}%` }"
-              />
+      <InvestHero
+        :step="activeStep"
+        :headline="steps[activeStep - 1].headline"
+      />
+      <div class="container mx-auto">
+        <div class="mt-[40px] w-full items-center self-center">
+          <div class="steps flex justify-between">
+            <template v-for="step in steps">
+              <button @click="clickActiveStep(step.step)" class="self-start">
+                <TickIcon
+                  v-if="step.step < activeStep || activeStep == steps.length"
+                  class=""
+                  :class="{
+                    'mx-auto block': isMobile,
+                    'mr-1 inline': isDesktop,
+                  }"
+                />
+                <QuestionIcon
+                  v-else
+                  class=""
+                  :class="{
+                    'mx-auto block': isMobile,
+                    'mr-1 inline': isDesktop,
+                  }"
+                />
+
+                {{ step.button }}
+              </button>
+            </template>
+          </div>
+          <div class="progress-bar mt-[32px] h-[2px] w-full rounded-[24px]">
+            <div
+              class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
+              :style="{ width: `${(progressPerc() * 100).toFixed(0)}%` }"
+            />
           </div>
         </div>
       </div>
     </div>
     <div class="container mx-auto">
-        <div class="card flex flex-wrap mt-[60px]">
-          <div class="flex flex-col" v-if="isDesktop">
-            <div class="stats-header flex-none">
-              <div>
-                <h3>My pool balance</h3>
-              </div>
-            </div>
-            <div class="stats flex-1">
-                <BalLoadingBlock
-                    v-if="loadingPool || !transfersAllowed || !sorReady"
-                    class="h-96"
-                    />
-                <PoolUserStats v-else :pool="pool" :xpolarToClaim="`0`" :dailyAPR="`1`" :stakedBalance="`0`" /> 
+      <div class="card mt-[60px] flex flex-wrap">
+        <div class="flex flex-col" v-if="isDesktop">
+          <div class="stats-header flex-none">
+            <div>
+              <h3>My pool balance</h3>
             </div>
           </div>
-          <div class=" flex-1 justify-center">
-              <div class="header flex">
-                  <div class="flex-1">
-                    <button class="back actions" @click="goBack">
-                      <template v-if="activeStep<5"><ArrowLeftIcon class="ml-3 mr-[12px] inline" />Go back</template>
-                    </button>
-                    
-                  </div>
-                  <div class="flex-1 title text-center">
-                      Invest in pool
-                  </div>
-                  <div class="flex-1 text-right">
-                    <router-link class="actions"
-                      :to="{ name: 'pool', params: { id: id} }"
-                      >
-                      Exit <CloseIcon class="inline ml-[12px]"/>
-                    </router-link>
-                  </div>
-              </div>
-              <div class="m-[24px] nested-card mt-[16px] max-w-[480px] mx-auto">
-                  <div class="nested-card mt-[16px]">
-                      <template v-if="activeStep<=3">
-                          <BalLoadingBlock
-                          v-if="loadingPool || !transfersAllowed || !sorReady"
-                          class="h-96"
-                          />
-                          <BalCard  exposeOverflow noBorder noPad  v-else>
-                          <template #header>
-                              <div class="w-full">
-                              <div class="flex items-center justify-between">
-                                  <!-- <h4 class="title ml-[18px] mt-[10px]" >{{ $t('investInPool') }}</h4> -->
-                                  <TradeSettingsPopover :context="TradeSettingsContext.invest" />
-                              </div>
-                              </div>
-                          </template>
-                          <InvestForm :pool="pool" :step="activeStep" @preview="handleLPPreview" @confirmInvestment="handleInvestConfirm" ref="investForm"/>
-                          </BalCard>
-                      </template>
-                      <template v-if="activeStep==4">
-                        <div class="text-center finished">
-                          <h1 >Pool staking approval</h1>
-                          <h3>Please, approve staking for this pool in your wallet!</h3>
-                          <button class="exit inline-block mt-[20px]" @click="approvePool">Approve staking</button>
-                        </div>
-                      </template>
-                      <template v-if="activeStep==5">
-                        <StakeView :balance="balanceFor(pool?.address!)" :token="``" :address="pool?.address" @stakeConfirmed="handleStakeConfirmed"/>
-                      </template>
-                      <template v-if="activeStep==6">
-                        <div class="text-center finished">
-                          <svg class="mt-[70px] mb-5 mx-auto" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M62.5 32C62.5 36.0053 61.7111 39.9714 60.1783 43.6718C58.6456 47.3723 56.3989 50.7346 53.5668 53.5668C50.7346 56.3989 47.3723 58.6456 43.6718 60.1783C39.9714 61.7111 36.0053 62.5 32 62.5C27.9947 62.5 24.0286 61.7111 20.3282 60.1783C16.6277 58.6456 13.2654 56.3989 10.4332 53.5668C7.60106 50.7346 5.35444 47.3723 3.82167 43.6718C2.28891 39.9714 1.5 36.0053 1.5 32C1.5 27.9947 2.28891 24.0286 3.82168 20.3282C5.35444 16.6277 7.60106 13.2654 10.4332 10.4332C13.2654 7.60105 16.6277 5.35444 20.3282 3.82167C24.0286 2.2889 27.9947 1.5 32 1.5C36.0053 1.5 39.9714 2.28891 43.6718 3.82168C47.3723 5.35444 50.7346 7.60106 53.5668 10.4332C56.3989 13.2654 58.6456 16.6277 60.1783 20.3282C61.7111 24.0286 62.5 27.9947 62.5 32L62.5 32Z" stroke="#BDB2DD" stroke-width="3" stroke-linecap="round"/>
-                          <path d="M32.5 20C32.1867 20 31.8984 20.1422 31.6602 20.4007L23.3384 28.9822C23.1002 29.2536 23 29.525 23 29.8223C23 30.4685 23.4511 30.9596 24.0778 30.9596C24.366 30.9596 24.6669 30.8433 24.8674 30.6365L27.7249 27.7544L31.5726 23.3861L31.372 26.5267V42.8626C31.372 43.5347 31.8483 44 32.5 44C33.1517 44 33.6155 43.5347 33.6155 42.8626V26.5267L33.4275 23.399L37.2751 27.7544L40.12 30.6365C40.3331 30.8563 40.6214 30.9596 40.9222 30.9596C41.5363 30.9596 42 30.4685 42 29.8223C42 29.525 41.8872 29.2407 41.624 28.9564L33.3397 20.4007C33.089 20.1422 32.8008 20 32.5 20Z" fill="#BDB2DD"/>
-                          </svg>
-
-                          <h1 >Good job!</h1>
-                          <h3>Now, you are earning!</h3>
-                          <router-link class="exit inline-block mt-[20px]"
-                            :to="{ name: 'pool', params: { id: id } }"
-                            >
-                            Return to pool
-                          </router-link>
-                        </div>
-                      </template>
-                      
-                  </div>
-              </div>
+          <div class="stats flex-1">
+            <BalLoadingBlock
+              v-if="loadingPool || !transfersAllowed || !sorReady"
+              class="h-96"
+            />
+            <PoolUserStats
+              v-else
+              :pool="pool"
+              :xpolarToClaim="`0`"
+              :dailyAPR="`1`"
+              :stakedBalance="`0`"
+            />
           </div>
         </div>
+        <div class="flex-1 justify-center">
+          <div class="header flex">
+            <div class="flex-1">
+              <button class="back actions" @click="goBack">
+                <template v-if="activeStep < 5"
+                  ><ArrowLeftIcon class="ml-3 mr-[12px] inline" />Go
+                  back</template
+                >
+              </button>
+            </div>
+            <div class="title flex-1 text-center">Invest in pool</div>
+            <div class="flex-1 text-right">
+              <router-link
+                class="actions"
+                :to="{ name: 'pool', params: { id: id } }"
+              >
+                Exit <CloseIcon class="ml-[12px] inline" />
+              </router-link>
+            </div>
+          </div>
+          <div class="nested-card m-[24px] mx-auto mt-[16px] max-w-[480px]">
+            <div class="nested-card mt-[16px]">
+              <template v-if="activeStep <= 3">
+                <BalLoadingBlock
+                  v-if="loadingPool || !transfersAllowed || !sorReady"
+                  class="h-96"
+                />
+                <BalCard exposeOverflow noBorder noPad v-else>
+                  <template #header>
+                    <div class="w-full">
+                      <div class="flex items-center justify-between">
+                        <!-- <h4 class="title ml-[18px] mt-[10px]" >{{ $t('investInPool') }}</h4> -->
+                        <TradeSettingsPopover
+                          :context="TradeSettingsContext.invest"
+                        />
+                      </div>
+                    </div>
+                  </template>
+                  <InvestForm
+                    :pool="pool"
+                    :step="activeStep"
+                    @preview="handleLPPreview"
+                    @confirmInvestment="handleInvestConfirm"
+                    ref="investForm"
+                  />
+                </BalCard>
+              </template>
+              <template v-if="activeStep == 4">
+                <div class="finished text-center">
+                  <h1>Pool staking approval</h1>
+                  <h3>Please, approve staking for this pool in your wallet!</h3>
+                  <button
+                    class="exit mt-[20px] inline-block"
+                    @click="approvePool"
+                  >
+                    Approve staking
+                  </button>
+                </div>
+              </template>
+              <template v-if="activeStep == 5">
+                <StakeView
+                  :balance="balanceFor(pool?.address!)"
+                  :token="``"
+                  :address="pool?.address"
+                  @stakeConfirmed="handleStakeConfirmed"
+                />
+              </template>
+              <template v-if="activeStep == 6">
+                <div class="finished text-center">
+                  <svg
+                    class="mx-auto mt-[70px] mb-5"
+                    width="64"
+                    height="64"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M62.5 32C62.5 36.0053 61.7111 39.9714 60.1783 43.6718C58.6456 47.3723 56.3989 50.7346 53.5668 53.5668C50.7346 56.3989 47.3723 58.6456 43.6718 60.1783C39.9714 61.7111 36.0053 62.5 32 62.5C27.9947 62.5 24.0286 61.7111 20.3282 60.1783C16.6277 58.6456 13.2654 56.3989 10.4332 53.5668C7.60106 50.7346 5.35444 47.3723 3.82167 43.6718C2.28891 39.9714 1.5 36.0053 1.5 32C1.5 27.9947 2.28891 24.0286 3.82168 20.3282C5.35444 16.6277 7.60106 13.2654 10.4332 10.4332C13.2654 7.60105 16.6277 5.35444 20.3282 3.82167C24.0286 2.2889 27.9947 1.5 32 1.5C36.0053 1.5 39.9714 2.28891 43.6718 3.82168C47.3723 5.35444 50.7346 7.60106 53.5668 10.4332C56.3989 13.2654 58.6456 16.6277 60.1783 20.3282C61.7111 24.0286 62.5 27.9947 62.5 32L62.5 32Z"
+                      stroke="#BDB2DD"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M32.5 20C32.1867 20 31.8984 20.1422 31.6602 20.4007L23.3384 28.9822C23.1002 29.2536 23 29.525 23 29.8223C23 30.4685 23.4511 30.9596 24.0778 30.9596C24.366 30.9596 24.6669 30.8433 24.8674 30.6365L27.7249 27.7544L31.5726 23.3861L31.372 26.5267V42.8626C31.372 43.5347 31.8483 44 32.5 44C33.1517 44 33.6155 43.5347 33.6155 42.8626V26.5267L33.4275 23.399L37.2751 27.7544L40.12 30.6365C40.3331 30.8563 40.6214 30.9596 40.9222 30.9596C41.5363 30.9596 42 30.4685 42 29.8223C42 29.525 41.8872 29.2407 41.624 28.9564L33.3397 20.4007C33.089 20.1422 32.8008 20 32.5 20Z"
+                      fill="#BDB2DD"
+                    />
+                  </svg>
+
+                  <h1>Good job!</h1>
+                  <h3>Now, you are earning!</h3>
+                  <router-link
+                    class="exit mt-[20px] inline-block"
+                    :to="{ name: 'pool', params: { id: id } }"
+                  >
+                    Return to pool
+                  </router-link>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -365,32 +432,33 @@ export default defineComponent({
   @apply flex items-center justify-between;
 }
 
-.back, .header{
+.back,
+.header {
   font-weight: 700;
   font-size: 12px;
   line-height: 18px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
-.header{
-    background: #292043;
-    padding:10px 24px;
-    border-bottom-right-radius: 21px;
+.header {
+  background: #292043;
+  padding: 10px 24px;
+  border-bottom-right-radius: 21px;
 }
 .header .title {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
-    color: #FDFDFD;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #fdfdfd;
 }
 .card {
-  background-color: #1D0D33;
+  background-color: #1d0d33;
   border-radius: 21px;
   min-height: 0px;
   overflow: hidden;
 }
 .stats {
   min-width: 300px;
-  background-color: #34264E;
+  background-color: #34264e;
   padding: 24px;
   font-weight: 500;
   font-size: 16px;
@@ -418,42 +486,42 @@ h3 {
   position: relative;
   margin-bottom: 10px;
 }
-.stats-header{
+.stats-header {
   background: #292043;
-  
 }
-.stats-header div{
-  background: #34264F;
+.stats-header div {
+  background: #34264f;
   border-top-right-radius: 32px;
 }
-.stats-header h3{
-  background: #41365E;
+.stats-header h3 {
+  background: #41365e;
   border-radius: 32px;
   padding: 12px 24px;
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #BDB2DD;
-
+  color: #bdb2dd;
 }
-.exit{
+.exit {
   padding: 6px 50px;
   gap: 10px;
   border-radius: 24px;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1),rgba(41, 32, 67, 1)) padding-box,
-  linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
+  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1))
+      padding-box,
+    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
+      border-box;
   border: 1px solid transparent;
 }
-.finished h1{
+.finished h1 {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.actions:hover{
-  color: #FDFDFD;
+.actions:hover {
+  color: #fdfdfd;
 }
 </style>
