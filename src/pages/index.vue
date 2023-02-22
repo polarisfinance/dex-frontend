@@ -332,23 +332,12 @@ export default defineComponent({
             'filter-panel-mobile': isMobile,
           }"
         >
-          <div
-            class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center mb-0"
-            v-if="isDesktop"
-          >
+          <div class="flex w-full flex-col items-end justify-between md:flex-row lg:items-center mb-0" v-if="isDesktop">
             <div class="search flex items-center" @click="inputFocused = true">
               <img src="./search.svg" class="mr-[12px]" />
-              <input
-                type="text"
-                placeholder="Filter by token"
-                class="input w-full"
-                v-on:input="filterToken"
-                v-model="searchTerm"
-              />
+              <input type="text" placeholder="Filter by token" class="input w-full" v-on:input="filterToken" v-model="searchTerm" />
             </div>
-            <div
-              class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]"
-            >
+            <div class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]">
               <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
               <a href="#segniorage">
                 <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
@@ -364,10 +353,7 @@ export default defineComponent({
               </a>
             </div>
 
-            <button
-              class="create-pool-btn flex items-center"
-              @click="navigateToCreatePool"
-            >
+            <button class="create-pool-btn flex items-center" @click="navigateToCreatePool">
               <img src="./plus.svg" class="mr-[8px]" />
               <div>Create a pool</div>
             </button>
@@ -527,14 +513,17 @@ export default defineComponent({
 
 .input {
   background-color: transparent;
-}
-
-.input::placeholder {
+  color: #FDFDFD;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
+}
 
-  color: #b9babb;
+.input::placeholder {
+  color: #A99BC6;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
 }
 
 .favourites-text {
@@ -555,7 +544,7 @@ export default defineComponent({
   font-size: 14px;
   line-height: 18px;
 
-  color: #fdfdfd;
+  color: #FDFDFD!important;
   background: linear-gradient(#1e0d2c, #1e0d2c) padding-box,
     linear-gradient(90deg,rgba(192, 4, 254, 1), rgba(126, 2, 245, 1)) border-box;
   border: 1px solid transparent;

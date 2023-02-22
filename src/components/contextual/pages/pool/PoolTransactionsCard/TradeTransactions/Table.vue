@@ -274,7 +274,7 @@ const swapRows = computed<SwapRow[]>(() =>
               <div class="token-item">
                 <BalAsset
                   :address="action.tokenIn"
-                  class="mr-[8px]"
+                  class="mr-[8px] pt-[3px]"
                   :size="16"
                 />
                 <span class="font-numeric mx-[7px]">{{
@@ -285,7 +285,7 @@ const swapRows = computed<SwapRow[]>(() =>
               <div class="token-item">
                 <BalAsset
                   :address="action.tokenOut"
-                  class="mr-[8px]"
+                  class="mr-[8px] pt-[3px]"
                   :size="16"
                 />
                 <span class="font-numeric mx-[7px]">{{
@@ -350,10 +350,9 @@ const swapRows = computed<SwapRow[]>(() =>
 .token-item {
   background: #292043;
   border-radius: 24px;
-  padding: 8px;
+  padding: 5px 8px;
 }
 .font-numeric {
-  font-weight: 700;
   font-size: 16px;
   line-height: 20px;
   color: #fdfdfd;
