@@ -337,7 +337,7 @@ export default defineComponent({
               <img src="./search.svg" class="mr-[12px]" />
               <input type="text" placeholder="Filter by token" class="input w-full" v-on:input="filterToken" v-model="searchTerm" />
             </div>
-            <div class="pool-types flex items-center gap-[8px] pl-[12px] pr-[16px]">
+            <div class="pool-types flex flex-1 items-center gap-[8px] pl-[12px] pr-[16px]">
               <!--<div class="favourites-text mr-[12px]">Favourites</div>-->
               <a href="#segniorage">
                 <div class="pool-type-btn cursor-pointer mx-[12px]" :class="{'selected-pool': selectedPool =='segniorage'}">Seigniorage Pools</div>
