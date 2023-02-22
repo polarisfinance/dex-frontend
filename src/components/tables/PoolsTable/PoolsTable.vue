@@ -650,7 +650,7 @@ export default defineComponent({
     <div class="table-title mt-[48px] flex w-full">
       <div class="grid-table">
         <div class="pool-header">
-          <div class="heading h-4 ">
+          <div class="heading">
             <div> <img v-if="img" 
                   width="24"
                   height="14"
@@ -658,9 +658,9 @@ export default defineComponent({
                   :src="img"
                 /> {{ title }}</div>
           </div>
-          <div class="h-4 text-right mr-[65px]">APR</div>
-          <div class="h-4 text-right">Liquidity</div>
-          <div class="h-4 text-right">Volume (24h)</div>
+          <div class="text-right mr-[65px]">APR</div>
+          <div class="text-right">Liquidity</div>
+          <div class="text-right">Volume (24h)</div>
         </div>
         <!-- div>To Claim</div -->
 
@@ -737,8 +737,8 @@ export default defineComponent({
               </template>
             </div>
             <div class="flex items-center self-center liq">
-              <BalLoadingBlock v-if="!pool?.totalLiquidity" class="h-4 w-12" />
-              <span v-else class="h-4 w-full text-right">
+              <BalLoadingBlock v-if="!pool?.totalLiquidity" class="w-12" />
+              <span v-else class="w-full text-right">
                 {{
                   fNum2(pool?.totalLiquidity, {
                     style: 'currency',
@@ -748,8 +748,8 @@ export default defineComponent({
               </span>
             </div>
             <div  class="flex items-center self-center vol">
-              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="h-4 w-12" />
-              <span v-else class="h-4 w-full text-right">
+              <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12" />
+              <span v-else class="w-full text-right">
                 {{ '$' + Math.round(pool?.volumeSnapshot, 2) }}
               </span>
             </div>

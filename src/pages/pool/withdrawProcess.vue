@@ -306,9 +306,8 @@ export default defineComponent({
 }
 .header{
     background: #292043;
-    padding:12px 24px;
-    
-    border-bottom-right-radius: 32px;
+    padding:10px 24px;
+    border-bottom-right-radius: 21px;
 }
 .header .title {
     font-weight: 600;
@@ -318,7 +317,7 @@ export default defineComponent({
 }
 .card {
   background-color: #1D0D33;
-  border-radius: 32px;
+  border-radius: 21px;
   min-height: 0px;
   overflow: hidden;
 }
