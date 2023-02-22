@@ -10,7 +10,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 import ProportionalWithdrawalInput from './components/ProportionalWithdrawalInput.vue';
 import WithdrawalTokenSelect from './components/WithdrawalTokenSelect.vue';
-import WithdrawPreviewModal from './components/WithdrawPreviewModal/WithdrawPreviewModal.vue';
+import WithdrawPreview from './components/WithdrawPreview/WithdrawPreview.vue';
 import WithdrawTotals from './components/WithdrawTotals.vue';
 import useWithdrawalState from './composables/useWithdrawalState';
 // Composables
@@ -21,13 +21,14 @@ import useWithdrawMath from './composables/useWithdrawMath';
  */
 type Props = {
   pool: Pool;
+  step:Number;
 };
 
 /**
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-
+const emits = defineEmits(['preview','confirmWithdraw']);
 const showPreview = ref(false);
 
 /**
@@ -84,6 +85,13 @@ const singleAssetRules = computed(() => [
 ]);
 
 /**
+ * METHODS
+ */
+ function onConfirmWithdraw(): void {
+  emits('confirmWithdraw');
+}
+
+/**
  * WATCHERS
  */
 watch(isProportional, newVal => {
@@ -106,8 +114,17 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div>
+
+  <WithdrawPreview v-if="step==4"
+      :pool="pool"
+      :math="withdrawMath"
+      @close="showPreview = false"
+      @confirmWithdraw="onConfirmWithdraw"
+  />
+
+  <div class="container" v-if="step==3">
     <ProportionalWithdrawalInput
+      class="pl-[12px] pr-[16px] py-[16px]"
       v-if="isProportional"
       :pool="pool"
       :tokenAddresses="tokensOut"
@@ -115,6 +132,7 @@ onBeforeMount(() => {
     />
     <TokenInput
       v-else
+      class="pl-[12px] pr-[16px] pb-[16px]"
       v-model:amount="tokenOutAmount"
       v-model:isValid="validInput"
       :name="tokenOut"
@@ -132,62 +150,68 @@ onBeforeMount(() => {
       </template>
     </TokenInput>
 
-    <WithdrawTotals :math="withdrawMath" class="mt-4" />
+    
+    <div class="light-back px-[16px] py-[16px]">
 
-    <div
-      v-if="highPriceImpact"
-      class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
-    >
-      <BalCheckbox
-        v-model="highPriceImpactAccepted"
-        :rules="[isRequired($t('priceImpactCheckbox'))]"
-        name="highPriceImpactAccepted"
-        size="sm"
-        :label="$t('priceImpactAccept', [$t('withdrawing')])"
-      />
-    </div>
+      <WithdrawTotals :math="withdrawMath" class="mt-4" />
+      <div
+        v-if="highPriceImpact"
+        class="mt-4 rounded-lg border p-2 pb-2 dark:border-gray-700"
+      >
+        <BalCheckbox
+          v-model="highPriceImpactAccepted"
+          :rules="[isRequired($t('priceImpactCheckbox'))]"
+          name="highPriceImpactAccepted"
+          size="sm"
+          :label="$t('priceImpactAccept', [$t('withdrawing')])"
+        />
+      </div>
 
-    <BalAlert
-      v-if="error !== null"
-      type="error"
-      :title="parseError(error).title"
-      :description="parseError(error).description"
-      class="mt-4"
-      block
-      actionLabel="Dismiss"
-      @action-click="setError(null)"
-    />
-
-    <div class="mt-4">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
+      <BalAlert
+        v-if="error !== null"
+        type="error"
+        :title="parseError(error).title"
+        :description="parseError(error).description"
+        class="mt-4"
         block
-        @click="startConnectWithInjectedProvider"
+        actionLabel="Dismiss"
+        @action-click="setError(null)"
       />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
-        color="gradient"
-        :disabled="
-          !hasAmounts ||
-          !hasValidInputs ||
-          isMismatchedNetwork ||
-          loadingAmountsOut
-        "
-        block
-        @click="showPreview = true"
-      />
-    </div>
 
-    <teleport to="#modal">
-      <WithdrawPreviewModal
-        v-if="showPreview"
-        :pool="pool"
-        :math="withdrawMath"
-        @close="showPreview = false"
-      />
-    </teleport>
+      <div class="mt-4">
+        <BalBtn
+          v-if="!isWalletReady"
+          :label="$t('connectWallet')"
+          color="gradient"
+          block
+          @click="startConnectWithInjectedProvider"
+        />
+        <BalBtn
+          v-else
+          :label="$t('preview')"
+          color="gradient"
+          :disabled="
+            !hasAmounts ||
+            !hasValidInputs ||
+            isMismatchedNetwork ||
+            loadingAmountsOut
+          "
+          block
+          @click="emits('preview')"
+        />
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.container{
+  background:#41365E;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+  border-radius: 22px;
+  overflow:hidden;
+}
+.light-back{
+  background: #50456E;
+}
+</style>

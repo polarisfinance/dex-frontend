@@ -28,35 +28,34 @@ export default defineComponent({
     balance: { type: String, default: '0' },
     token: String,
     address: { type: String, default: '' },
+    unstake: { type: Boolean, default: false},
     
   },
   setup(props, { emit }) {
+    
     const { getProvider } = useWeb3();
     const { addTransaction } = useTransactions();
-    const { txListener } = useEthers();
     
-    const txHandler = (tx: TransactionResponse): void => {
-      addTransaction({
-        id: tx.hash,
-        type: 'tx',
-        action: 'stake',
-        summary: 'deposit lp to xpolarRewardPool',
-      });
-    };
+    
     const address = props.address;
-
-
+    const { account } = useWeb3();
+    const { txListener } = useEthers();
     return {
-      txHandler,
       txListener,
       getProvider,
+      addTransaction,
       emit,
+      account,
     };
   },
-
+  async beforeMount(){
+    const { balance } = useStake();
+    this.stakedBalance = await balance(this.poolAddress, this.account);
+  },
   data() {
     return {
       inputValue: '0.0',
+      stakedBalance: '0',
       poolAddress:this.address,
       confirming:false,
     };
@@ -65,48 +64,110 @@ export default defineComponent({
     
   },
   methods: {
+    maxUnstake(){
+      this.inputValue = this.stakedBalance;
+    },
     maxBalance() {
       this.inputValue = this.balance;
     },
-    async deposit(amount: string) {
+    async confirm(amount: string) {
+
+      
       const formatedAmount = parseFixed(amount, 18);
       console.log(formatedAmount);
-      const { deposit } = useStake();
+      const {withdraw, deposit } = useStake();
       console.log(this.poolAddress);
 
       this.confirming=true;
-      const tx = await deposit(this.poolAddress, formatedAmount, this.getProvider());
-      this.txHandler(tx);
-      this.txListener(tx, {
-        onTxConfirmed: () => {
-          this.confirming=false;
-          this.emit('close');
-          this.emit('stakeConfirmed');
-        },
-        onTxFailed: () => {
-          this.confirming=false;
-        },
-      });
+
+      if(this.unstake){
+        const tx = await withdraw(this.poolAddress, formatedAmount, this.getProvider());
+        const txHandler = (tx: TransactionResponse): void => {
+          this.addTransaction({
+            id: tx.hash,
+            type: 'tx',
+            action: 'stake',
+            summary: 'unstake lp from xpolarRewardPool',
+          });
+        };
+        txHandler(tx);
+        this.txListener(tx, {
+          onTxConfirmed: () => {
+            this.confirming=false;
+            this.emit('close');
+            this.emit('unstakeConfirmed');
+          },
+          onTxFailed: () => {
+            this.confirming=false;
+          },
+        });
+      }else{
+        const tx = await deposit(this.poolAddress, formatedAmount, this.getProvider());
+        const txHandler = (tx: TransactionResponse): void => {
+          this.addTransaction({
+            id: tx.hash,
+            type: 'tx',
+            action: 'stake',
+            summary: 'deposit lp to xpolarRewardPool',
+          });
+        };
+        txHandler(tx);
+        this.txListener(tx, {
+          onTxConfirmed: () => {
+            this.confirming=false;
+            this.emit('close');
+            this.emit('stakeConfirmed');
+          },
+          onTxFailed: () => {
+            this.confirming=false;
+          },
+        });
+      }
       
     },
   },
 
-  emits: ['close', 'stakeConfirmed'],
+  emits: ['close', 'stakeConfirmed','unstakeConfirmed'],
 });
 </script>
 
 <template>
   <div class="stake-card flex flex-col mt-8">
-    <div class="flex available px-[22px] py-[22px]">
+    <div class="flex available px-[22px] py-[22px]" v-if="unstake==true">
+      <div class="flex-1 flex flex-col">
+        <div class="main">LP Tokens to unstake</div>
+        <div>Amount of staked LP tokens in pool</div>
+      </div>
+      
+      <div class="flex-1 text-right main">{{ stakedBalance }}</div>
+    </div>
+    <div class="flex available px-[22px] py-[22px]" v-else>
       <div class="flex-1 flex flex-col">
         <div class="main">LP Tokens to stake</div>
         <div>Amount of available LP tokens on your wallet</div>
       </div>
       <div class="flex-1 text-right main">{{ balance }}</div>
     </div>
+    
     <div class="flex total px-[12px] pb-[12px] pt-[22px] flex-col">
-      <div class="flex px-[10px]">
-        <div class="flex-1">Total to stake</div>
+      <div class="flex px-[10px]" v-if="unstake==true">
+        <div class="flex-1">Total to unstake</div>
+        <div class="flex-1 text-right">
+          <input
+            ref="textInput"
+            class="bg-transparent total text-right inline"
+            v-model="inputValue"
+          />
+          <button
+            class="max inline"
+            @click="maxUnstake"
+          >
+            MAX
+          </button>
+        </div>
+      </div>
+      <div class="flex px-[10px]" v-else>
+        <div class="flex-1" >Total to stake</div>
         <div class="flex-1 text-right">
           <input
             ref="textInput"
@@ -125,7 +186,7 @@ export default defineComponent({
       <button class="confirm-btn mt-8  w-full" disabled  v-if="confirming==true" >
         Confirming...
       </button>
-      <button class="confirm-btn mt-8  w-full" @click="deposit(inputValue)" v-else>
+      <button class="confirm-btn mt-8  w-full" @click="confirm(inputValue)" v-else>
         Confirm
       </button>
     </div>

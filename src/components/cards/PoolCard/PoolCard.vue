@@ -129,10 +129,13 @@ export default defineComponent({
             />
           </div>
         </router-link>
-        <div class="footer flex">
-            <div class="apr" :class="{'flex':isMobile}">
-                <div class="title" v-if="isDesktop">APR</div>
-                <div class="value">
+        <div class="footer">
+            <div class="flex texts" v-if="isDesktop">
+              <div class="title">APR</div>
+              <div class="flex-1 text-right">Earn swap fees and boost your APR</div>
+            </div>
+            <div class="flex" >
+                <div class="apr value">
                   <template v-if="noApr">
                       <div class="h-4 w-12">
                       {{ '0' + '%' }}
@@ -152,18 +155,17 @@ export default defineComponent({
                   </template>
                 </div>
                 <div class="title" v-if="isMobile">APR</div>
-            </div>
-            <div class="flex-1 text-right">
-                <div v-if="isDesktop">Earn swap fees and boost your APR</div>
-                <router-link
+                <div class="flex-1 text-right">
+                  <router-link
                     :to="'/pool/' + pool.id"
                     class="mt-[12px] block items-center"
-                >
-                <button class="earn-button">
-                    Earn
-                    <ArrowRightIcon class="inline mx-1"/>
-                </button>
-                </router-link>
+                  >
+                  <button class="earn-button">
+                      Earn
+                      <ArrowRightIcon class="inline mx-1"/>
+                  </button>
+                  </router-link>
+                </div>
             </div>
 
         </div>  
@@ -184,12 +186,17 @@ export default defineComponent({
   .footer{
     padding:17px 14px 0px 14px;
   }
-  .apr .title{
-    font-weight: 500;
+.texts{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #A99BC6;
+}
+  .title{
     font-size: 16px;
-    line-height: 24px;
+    color: #FDFDFD;;
   }
-  .apr .value{
+  .apr{
     font-weight: 700;
     font-size: 44px;
     line-height: 44px;

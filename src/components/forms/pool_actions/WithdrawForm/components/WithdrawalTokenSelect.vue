@@ -83,7 +83,7 @@ function handleSelected(newToken: string): void {
           <BalAssetSet
             v-if="isProportional"
             :addresses="tokenAddresses"
-            :width="50"
+            :width="55"
           />
           <BalAsset
             v-else
@@ -91,15 +91,22 @@ function handleSelected(newToken: string): void {
             class="mr-2 shadow"
           />
         </div>
-        <span class="text-base font-medium">
+        <span class="token-name pl-[8px]">
           <span v-if="isProportional">All tokens</span>
           <span v-else>{{ selectedToken.symbol }}</span>
         </span>
-        <BalIcon
-          name="chevron-down"
-          size="sm"
-          class="ml-2 text-blue-500 transition-colors group-hover:text-pink-500 dark:text-blue-400 dark:group-hover:text-yellow-500"
-        />
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_155_801)">
+          <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_155_801">
+          <rect width="24" height="24" fill="white"/>
+          </clipPath>
+          </defs>
+          </svg>
+        </span>
       </div>
     </template>
     <template #option="{ option }">
@@ -132,7 +139,6 @@ function handleSelected(newToken: string): void {
 <style scoped>
 .token-select-input {
   @apply flex h-10 items-center whitespace-nowrap rounded-lg px-2 shadow;
-  @apply text-sm;
 
   font-variation-settings: 'wght' 700;
 }
@@ -142,6 +148,16 @@ function handleSelected(newToken: string): void {
 }
 
 .selected {
-  @apply bg-gray-50 text-black dark:bg-gray-700 dark:text-white;
+  background: #50456E;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 44px;
+  padding:6px 8px;
+}
+.token-name{
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #FDFDFD;
+
 }
 </style>

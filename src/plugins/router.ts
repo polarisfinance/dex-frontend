@@ -22,7 +22,7 @@ const MigratePoolPage = () =>
   import(/* webpackChunkName: "MigratePoolPage" */ '@/pages/pool/migrate.vue');
 const PoolWithdrawPage = () =>
   import(
-    /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/withdraw.vue'
+    /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/withdrawProcess.vue'
   );
 const PrivacyPolicyPage = () =>
   import(
@@ -137,7 +137,7 @@ const routes: RouteRecordRaw[] = [
     path: '/pool/:id/withdraw',
     name: 'withdraw',
     component: PoolWithdrawPage,
-    meta: { layout: 'PoolTransferLayout' },
+    // meta: { layout: 'SingleCardLayout' },
   },
   {
     path: '/pool/migrate/:from/:to',

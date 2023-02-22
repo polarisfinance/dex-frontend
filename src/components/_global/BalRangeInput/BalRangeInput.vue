@@ -65,22 +65,21 @@ export default defineComponent({
 
     const dotStyle = computed(() => {
       return {
-        backgroundColor: colors.blue['500'],
-        borderColor: colors.blue['500'],
+        backgroundColor: '#0CE6B5',
+        borderColor: '#0CE6B5',
         borderWidth: 0,
-        backgroundImage: `linear-gradient(to top right, ${colors.blue['500']}, ${colors.pink['500']})`,
       };
     });
 
     const railSyle = computed(() => {
       return {
-        background: darkMode.value ? colors.gray['900'] : colors.gray['100'],
+        background: darkMode.value ? '#50456E' : colors.gray['100'],
       };
     });
 
     const proccessStyle = computed(() => {
       return {
-        backgroundImage: `linear-gradient(to top right, ${colors.blue['500']}, ${colors.pink['500']})`,
+        background: `#0CE6B5`,
       };
     });
 

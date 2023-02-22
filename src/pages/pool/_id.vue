@@ -9,7 +9,7 @@
         {{ (parseFloat(pool?.swapFee) * 100 || '-') + '%' }}
       </div>
     </div>
-    <div class="flex flex-none">
+    <div class="flex flex-none pt-[10px]">
       <div class="px-3">
         <div class="flex">
           <div
@@ -41,7 +41,7 @@
         <BalAssetSet
           :size="36"
           :addresses="iconAddresses(tableData)"
-          :width="60"
+          :width="70"
         />
       </div>
     </div>

@@ -340,7 +340,7 @@ const getRows = computed<ActivityRow[]>(() => {
 .token-card {
   background: #292043;
   border-radius: 24px;
-  padding: 8px;
+  padding: 5px 8px;
 }
 .font-numeric {
   font-weight: 700;

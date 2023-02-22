@@ -121,7 +121,7 @@ onBeforeMount(() => {
       <div class="proportional-input-container">
         <div class="flex">
           <WithdrawalTokenSelect :pool="pool" />
-          <div class="font-numeric flex-grow text-right text-xl">
+          <div class="token-amount flex-grow text-right text-xl">
             <BalLoadingBlock
               v-if="loadingAmountsOut"
               class="float-right h-8 w-20"
@@ -129,7 +129,7 @@ onBeforeMount(() => {
             <span v-else>{{ missingPrices ? '-' : fiatTotalLabel }}</span>
           </div>
         </div>
-        <div class="text-secondary mt-2 flex text-sm">
+        <div class="text-secondary mx-1 mb-2 mt-4 flex text-sm">
           <span>
             {{ $t('proportionalWithdrawal') }}
           </span>
@@ -152,13 +152,13 @@ onBeforeMount(() => {
       <div
         v-for="(token, address, i) in tokens"
         :key="address"
-        class="p-4 last:mb-0"
+        class="pl-[8px] py-3"
       >
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <BalAsset :address="address" class="mr-2" />
             <div class="flex flex-col leading-none">
-              <span class="text-lg font-medium">
+              <span class="token-name">
                 {{ token.symbol }}
                 <span v-if="!isStableLikePool">
                   {{
@@ -176,10 +176,10 @@ onBeforeMount(() => {
           >
             <BalLoadingBlock v-if="loadingAmountsOut" class="h-12 w-20" />
             <template v-else>
-              <span class="break-words text-xl">
+              <span class="token-amount">
                 {{ fNum2(proportionalAmounts[i], FNumFormats.token) }}
               </span>
-              <span class="text-sm text-gray-400">
+              <span class="text-secondary">
                 {{ fNum2(fiatAmounts[i], FNumFormats.fiat) }}
               </span>
             </template>
@@ -192,17 +192,26 @@ onBeforeMount(() => {
 
 <style scoped>
 .proportional-input {
-  @apply mb-4 w-full rounded-lg shadow-lg dark:bg-gray-800;
 }
 
 .proportional-input-container {
-  @apply rounded-lg p-3 pb-1 shadow-inner;
-  @apply border border-gray-100 dark:border-gray-800;
 }
-
-.token-amounts {
-  @apply rounded-lg;
-  @apply bg-gray-50 dark:bg-gray-800;
-  @apply divide-y border dark:divide-gray-900 dark:border-gray-900;
+.token-name {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  color: #FDFDFD;
+}
+.token-amount {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  color: #F5F5F5;
+}
+.text-secondary{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #BDB2DD;
 }
 </style>

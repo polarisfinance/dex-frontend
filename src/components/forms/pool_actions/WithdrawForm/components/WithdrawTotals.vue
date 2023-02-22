@@ -35,7 +35,7 @@ const priceImpactClasses = computed(() => ({
 <template>
   <div class="data-table">
     <div :class="['data-table-row', priceImpactClasses]">
-      <div class="p-2">
+      <div class="">
         {{ $t('priceImpact') }}
       </div>
       <div class="data-table-number-col">
@@ -49,13 +49,13 @@ const priceImpactClasses = computed(() => ({
                 v-if="highPriceImpact"
                 name="alert-triangle"
                 size="xs"
-                class="-mb-px ml-1"
+                class="-mb-px pl-2"
               />
               <BalIcon
                 v-else
                 name="info"
                 size="xs"
-                class="-mb-px ml-1 text-gray-400"
+                class="-mb-px pl-2 text-gray-400"
               />
             </template>
           </BalTooltip>
@@ -67,18 +67,14 @@ const priceImpactClasses = computed(() => ({
 
 <style scoped>
 .data-table {
-  @apply divide-y rounded-lg dark:divide-gray-700;
 }
 
 .data-table-row {
   @apply flex;
-  @apply rounded-lg;
-  @apply divide-x border dark:divide-gray-900 dark:border-gray-900;
-  @apply dark:bg-gray-800;
 }
 
 .data-table-number-col {
-  @apply flex flex-grow items-center justify-between p-2;
+  @apply flex flex-grow items-center justify-between ;
 }
 
 .total-row {
