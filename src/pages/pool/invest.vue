@@ -345,7 +345,7 @@ export default defineComponent({
                   v-if="loadingPool || !transfersAllowed || !sorReady"
                   class="h-96"
                 />
-                <BalCard exposeOverflow noBorder noPad v-else>
+                <BalCard exposeOverflow noBorder noPad  v-else>
                   <template #header>
                     <div class="w-full">
                       <div class="flex items-center justify-between">
@@ -365,58 +365,64 @@ export default defineComponent({
                   />
                 </BalCard>
               </template>
-              <template v-if="activeStep == 4">
-                <div class="finished text-center">
-                  <h1>Pool staking approval</h1>
-                  <h3>Please, approve staking for this pool in your wallet!</h3>
-                  <button
-                    class="exit mt-[20px] inline-block"
-                    @click="approvePool"
-                  >
-                    Approve staking
-                  </button>
-                </div>
-              </template>
-              <template v-if="activeStep == 5">
-                <StakeView
-                  :balance="balanceFor(pool?.address!)"
-                  :token="``"
-                  :address="pool?.address"
-                  @stakeConfirmed="handleStakeConfirmed"
-                />
-              </template>
-              <template v-if="activeStep == 6">
-                <div class="finished text-center">
-                  <svg
-                    class="mx-auto mt-[70px] mb-5"
-                    width="64"
-                    height="64"
-                    viewBox="0 0 64 64"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M62.5 32C62.5 36.0053 61.7111 39.9714 60.1783 43.6718C58.6456 47.3723 56.3989 50.7346 53.5668 53.5668C50.7346 56.3989 47.3723 58.6456 43.6718 60.1783C39.9714 61.7111 36.0053 62.5 32 62.5C27.9947 62.5 24.0286 61.7111 20.3282 60.1783C16.6277 58.6456 13.2654 56.3989 10.4332 53.5668C7.60106 50.7346 5.35444 47.3723 3.82167 43.6718C2.28891 39.9714 1.5 36.0053 1.5 32C1.5 27.9947 2.28891 24.0286 3.82168 20.3282C5.35444 16.6277 7.60106 13.2654 10.4332 10.4332C13.2654 7.60105 16.6277 5.35444 20.3282 3.82167C24.0286 2.2889 27.9947 1.5 32 1.5C36.0053 1.5 39.9714 2.28891 43.6718 3.82168C47.3723 5.35444 50.7346 7.60106 53.5668 10.4332C56.3989 13.2654 58.6456 16.6277 60.1783 20.3282C61.7111 24.0286 62.5 27.9947 62.5 32L62.5 32Z"
-                      stroke="#BDB2DD"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M32.5 20C32.1867 20 31.8984 20.1422 31.6602 20.4007L23.3384 28.9822C23.1002 29.2536 23 29.525 23 29.8223C23 30.4685 23.4511 30.9596 24.0778 30.9596C24.366 30.9596 24.6669 30.8433 24.8674 30.6365L27.7249 27.7544L31.5726 23.3861L31.372 26.5267V42.8626C31.372 43.5347 31.8483 44 32.5 44C33.1517 44 33.6155 43.5347 33.6155 42.8626V26.5267L33.4275 23.399L37.2751 27.7544L40.12 30.6365C40.3331 30.8563 40.6214 30.9596 40.9222 30.9596C41.5363 30.9596 42 30.4685 42 29.8223C42 29.525 41.8872 29.2407 41.624 28.9564L33.3397 20.4007C33.089 20.1422 32.8008 20 32.5 20Z"
-                      fill="#BDB2DD"
-                    />
-                  </svg>
+              <transition name="fade">
+                <template v-if="activeStep == 4">
+                  <div class="finished text-center">
+                    <h1>Pool staking approval</h1>
+                    <h3>Please, approve staking for this pool in your wallet!</h3>
+                    <button
+                      class="exit mt-[20px] inline-block"
+                      @click="approvePool"
+                    >
+                      Approve staking
+                    </button>
+                  </div>
+                </template>
+              </transition>
+              <transition name="fade">
+                <template v-if="activeStep == 5">
+                  <StakeView
+                    :balance="balanceFor(pool?.address!)"
+                    :token="``"
+                    :address="pool?.address"
+                    @stakeConfirmed="handleStakeConfirmed"
+                  />
+                </template>
+              </transition>
+              <transition name="fade">
+                <template v-if="activeStep == 6">
+                  <div class="finished text-center">
+                    <svg
+                      class="mx-auto mt-[70px] mb-5"
+                      width="64"
+                      height="64"
+                      viewBox="0 0 64 64"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M62.5 32C62.5 36.0053 61.7111 39.9714 60.1783 43.6718C58.6456 47.3723 56.3989 50.7346 53.5668 53.5668C50.7346 56.3989 47.3723 58.6456 43.6718 60.1783C39.9714 61.7111 36.0053 62.5 32 62.5C27.9947 62.5 24.0286 61.7111 20.3282 60.1783C16.6277 58.6456 13.2654 56.3989 10.4332 53.5668C7.60106 50.7346 5.35444 47.3723 3.82167 43.6718C2.28891 39.9714 1.5 36.0053 1.5 32C1.5 27.9947 2.28891 24.0286 3.82168 20.3282C5.35444 16.6277 7.60106 13.2654 10.4332 10.4332C13.2654 7.60105 16.6277 5.35444 20.3282 3.82167C24.0286 2.2889 27.9947 1.5 32 1.5C36.0053 1.5 39.9714 2.28891 43.6718 3.82168C47.3723 5.35444 50.7346 7.60106 53.5668 10.4332C56.3989 13.2654 58.6456 16.6277 60.1783 20.3282C61.7111 24.0286 62.5 27.9947 62.5 32L62.5 32Z"
+                        stroke="#BDB2DD"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M32.5 20C32.1867 20 31.8984 20.1422 31.6602 20.4007L23.3384 28.9822C23.1002 29.2536 23 29.525 23 29.8223C23 30.4685 23.4511 30.9596 24.0778 30.9596C24.366 30.9596 24.6669 30.8433 24.8674 30.6365L27.7249 27.7544L31.5726 23.3861L31.372 26.5267V42.8626C31.372 43.5347 31.8483 44 32.5 44C33.1517 44 33.6155 43.5347 33.6155 42.8626V26.5267L33.4275 23.399L37.2751 27.7544L40.12 30.6365C40.3331 30.8563 40.6214 30.9596 40.9222 30.9596C41.5363 30.9596 42 30.4685 42 29.8223C42 29.525 41.8872 29.2407 41.624 28.9564L33.3397 20.4007C33.089 20.1422 32.8008 20 32.5 20Z"
+                        fill="#BDB2DD"
+                      />
+                    </svg>
 
-                  <h1>Good job!</h1>
-                  <h3>Now, you are earning!</h3>
-                  <router-link
-                    class="exit mt-[20px] inline-block"
-                    :to="{ name: 'pool', params: { id: id } }"
-                  >
-                    Return to pool
-                  </router-link>
-                </div>
-              </template>
+                    <h1>Good job!</h1>
+                    <h3>Now, you are earning!</h3>
+                    <router-link
+                      class="exit mt-[20px] inline-block"
+                      :to="{ name: 'pool', params: { id: id } }"
+                    >
+                      Return to pool
+                    </router-link>
+                  </div>
+                </template>
+              </transition>
             </div>
           </div>
         </div>
@@ -523,5 +529,15 @@ h3 {
 }
 .actions:hover {
   color: #fdfdfd;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0; height: 0px;
+}
+.fade-leave{
+  height: 0px;
 }
 </style>
