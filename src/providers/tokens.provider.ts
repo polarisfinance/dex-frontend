@@ -42,6 +42,7 @@ import { Pool, SubgraphPoolBase } from '@balancer-labs/sdk';
 export interface TokensProviderState {
   loading: boolean;
   injectedTokens: TokenInfoMap;
+  excludedTokens: string[];
   allowanceContracts: string[];
   injectedPrices: TokenPrices;
 }
@@ -68,7 +69,7 @@ export interface TokensProviderResponse {
   refetchPrices: Ref<() => void>;
   refetchBalances: Ref<() => void>;
   refetchAllowances: Ref<() => void>;
-  injectTokens: (addresses: string[]) => Promise<void>;
+  injectTokens: (addresses: string[], exclude?: boolean) => Promise<void>;
   searchTokens: (
     query: string,
     excluded: string[],
@@ -127,6 +128,7 @@ export default {
       injectedTokens: {
         [networkConfig.nativeAsset.address]: nativeAsset,
       },
+      excludedTokens: [],
       allowanceContracts: compact([
         networkConfig.addresses.vault,
         networkConfig.addresses.wstETH,
@@ -272,7 +274,10 @@ export default {
      * Fetches static token metadata for given addresses and injects
      * tokens into state tokens map.
      */
-    async function injectTokens(addresses: string[]): Promise<void> {
+    async function injectTokens(
+      addresses: string[],
+      exclude: boolean = false
+    ): Promise<void> {
       addresses = addresses.map(address => getAddress(address));
 
       // Remove any duplicates
@@ -292,6 +297,9 @@ export default {
       );
 
       state.injectedTokens = { ...state.injectedTokens, ...newTokens };
+      if (exclude) {
+        state.excludedTokens = [...state.excludedTokens, ...injectable];
+      }
     }
 
     /**
@@ -336,6 +344,7 @@ export default {
       tokens: TokenInfoMap,
       excluded: string[]
     ): TokenInfoMap {
+      excluded = [...state.excludedTokens, ...excluded];
       return Object.keys(tokens)
         .filter(address => !includesAddress(excluded, address))
         .reduce((result, address) => {

@@ -91,7 +91,7 @@ export default function useStreamedPoolsQuery(
             pool.address,
           ])
         );
-        await injectTokens(_tokens);
+        await injectTokens(_tokens, true);
         await forChange(dynamicDataLoading, false);
         return () => pools.value;
       },

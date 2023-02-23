@@ -80,11 +80,14 @@ export default function usePoolQuery(
     );
 
     // Inject pool tokens into token registry
-    await injectTokens([
-      ...decoratedPool.tokensList,
-      ...lpTokensFor(decoratedPool),
-      decoratedPool.address,
-    ]);
+    await injectTokens(
+      [
+        ...decoratedPool.tokensList,
+        ...lpTokensFor(decoratedPool),
+        decoratedPool.address,
+      ],
+      true
+    );
     return decoratedPool;
   };
 
