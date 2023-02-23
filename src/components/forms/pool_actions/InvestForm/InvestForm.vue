@@ -240,20 +240,21 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 </script>
 
 <template>
-  <Transition>
-  <div v-if="props.step==3" class="preview">
-    <StakingProvider :poolAddress="pool.address" >
-        <InvestPreview  class="preview"
-          :pool="pool"
-          :math="investMath"
-          :tokenAddresses="tokenAddresses"
-          @confirmInvestment="onConfirmInvestment"
-        />
-    </StakingProvider>
-  </div>
+  <div class="grid">
+  <transition name="fade" >
+    <div v-if="props.step==3" class="preview">
+      <StakingProvider :poolAddress="pool.address" >
+          <InvestPreview  class="preview"
+            :pool="pool"
+            :math="investMath"
+            :tokenAddresses="tokenAddresses"
+            @confirmInvestment="onConfirmInvestment"
+          />
+      </StakingProvider>
+    </div>
   </Transition>
-  <Transition>
-    <div v-if="props.step<=2">
+  <transition name="fade">
+    <div v-if="props.step<=2" class="invest">
       <BalAlert
         v-if="forceProportionalInputs"
         type="warning"
@@ -354,6 +355,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
       </StakingProvider> -->
     </div>
   </Transition>
+</div>
 </template>
 <style scoped>
 .tokens{
@@ -376,7 +378,21 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 .btn.inactive{
   background:#41365E;
 }
+
+.invest, .preview{
+  grid-area: 1 / 1 / 2 / 2;
+}
 .preview{
   width: 100%!important;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0; height: 0px;
+}
+.fade-leave{
+  height: 0px;
 }
 </style>
