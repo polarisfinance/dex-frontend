@@ -10,6 +10,12 @@ import { bnum } from '@/lib/utils';
 
 import TradePairToggle from './TradePairToggle.vue';
 
+import { sunriseDefinitions } from '@/pages/config';
+
+const sunrises = computed(() =>
+  Object.values(sunriseDefinitions).map(a => a.bondTokenAddress)
+);
+
 /**
  * TYPES
  */
@@ -150,7 +156,7 @@ watchEffect(() => {
         :amount="_tokenInAmount"
         :address="_tokenInAddress"
         name="tokenIn"
-        :excludedTokens="[veBalTokenInfo?.address]"
+        :excludedTokens="sunrises.concat([veBalTokenInfo?.address])"
         :ignoreWalletBalance="tradeLoading"
         @update:amount="handleInAmountChange"
         @update:address="handleInputTokenChange"
@@ -177,7 +183,7 @@ watchEffect(() => {
         noRules
         noMax
         disableNativeAssetBuffer
-        :excludedTokens="[veBalTokenInfo?.address]"
+        :excludedTokens="sunrises.concat([veBalTokenInfo?.address])"
         @update:amount="handleOutAmountChange"
         @update:address="handleOutputTokenChange"
       />
