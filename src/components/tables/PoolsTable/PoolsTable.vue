@@ -324,9 +324,7 @@ import { AprProviderService } from '@/services/pool/apr.provider';
 export default defineComponent({
   data() {
     return {
-      xpolarPoolQuery: usePoolQuery(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      ),
+      xpolarPoolQuery: undefined,
       aprs: {},
       pid: {
         '0x0993fa12d3256e85da64866354ec3532f187e178': 0,

@@ -394,38 +394,46 @@ export default {
       return spotPrice;
     };
 
+    // const getSpolarPrice = async () => {
+    //   const pool = (await balancer.poolsProvider.find(
+    //     '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+    //   )) as Pool;
+
+    //   const spotPrice =
+    //     balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+    //       '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+    //       '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
+    //       pool as SubgraphPoolBase
+    //     );
+
+    //   const nearPrice = await getNearPrice();
+
+    //   return (Number(nearPrice) * Number(spotPrice)).toFixed(2).toString();
+    // };
+
     const getSpolarPrice = async () => {
-      const pool = (await balancer.poolsProvider.find(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      )) as Pool;
-
-      const spotPrice =
-        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
-          '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
-          '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729',
-          pool as SubgraphPoolBase
-        );
-
-      const nearPrice = await getNearPrice();
-
-      return (Number(nearPrice) * Number(spotPrice)).toFixed(2).toString();
+      return '3.59';
     };
 
+    // const getXpolarPrice = async () => {
+    //   const pool = (await balancer.poolsProvider.find(
+    //     '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+    //   )) as Pool;
+
+    //   const spotPrice =
+    //     balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
+    //       '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+    //       '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993',
+    //       pool as SubgraphPoolBase
+    //     );
+
+    //   const nearPrice = await getNearPrice();
+
+    //   return (Number(nearPrice) * Number(spotPrice)).toFixed(2).toString();
+    // };
+
     const getXpolarPrice = async () => {
-      const pool = (await balancer.poolsProvider.find(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      )) as Pool;
-
-      const spotPrice =
-        balancer.pools.weighted.spotPriceCalculator.calcPoolSpotPrice(
-          '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
-          '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993',
-          pool as SubgraphPoolBase
-        );
-
-      const nearPrice = await getNearPrice();
-
-      return (Number(nearPrice) * Number(spotPrice)).toFixed(2).toString();
+      return '0.12';
     };
 
     let spolarPrice, xpolarPrice;

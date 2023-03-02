@@ -600,6 +600,77 @@ const POOLS_AURORA: Pools = {
   },
 };
 
+const POOLS_AURORATEST: Pools = {
+  IdsMap: {},
+  Pagination: {
+    PerPage: 1000,
+    PerPool: 10,
+    PerPoolInitial: 5,
+  },
+  DelegateOwner: '0xba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1b',
+  ZeroAddress: '0x0000000000000000000000000000000000000000',
+  DynamicFees: {
+    Gauntlet: [],
+  },
+  BlockList: [''],
+  ExcludedPoolTypes: ['Element', 'AaveLinear', 'Linear', 'ERC4626Linear'],
+  Stable: {
+    AllowList: [
+      '0xceecce984f498ee00832670e9ca6d372f6ce155a000200000000000000000014', // AURORA usdc usdt
+    ],
+  },
+  Investment: {
+    AllowList: [
+      '0x4fd63966879300cafafbb35d157dc5229278ed23000100000000000000000169', // kovan
+      '0x37a6fc079cad790e556baedda879358e076ef1b3000100000000000000000348', // WSB Kovan
+      '0xccf5575570fac94cec733a58ff91bb3d073085c70002000000000000000000af', // iROBOT mainnet
+      '0xe7b1d394f3b40abeaa0b64a545dbcf89da1ecb3f00010000000000000000009a', // Techemy mainnet
+      '0x3b40d7d5ae25df2561944dd68b252016c4c7b2800001000000000000000000c2', // WSB-DEFI mainnet
+    ],
+  },
+  Factories: {
+    '0xa5bf2ddf098bb0ef6d120c98217dd6b141c74ee0': 'oracleWeightedPool',
+    '0x8e9aa87e45e92bad84d5f8dd1bff34fb92637de9': 'weightedPool',
+    '0xc66ba2b6595d3613ccab350c886ace23866ede24': 'stablePool',
+    '0x67d27634e44793fe63c467035e31ea8635117cd4': 'stablePool', // Metastable
+    '0x751dfdace1ad995ff13c927f6f761c6604532c79': 'stablePool', // Kovan
+    '0x590e544e7ca956bb878f8c873e82e65550d67d2f': 'stablePool', // Kovan Metastable
+    // '0xb08e16cfc07c684daa2f93c70323badb2a6cbfd2': 'managedPool', // Kovan Managed (clash with mainnet StablePhantom address)
+    '0x7dfdef5f355096603419239ce743bfaf1120312b': 'weightedPool', // Arbitrum Weighted
+    '0xcf0a32bbef8f064969f21f7e02328fb577382018': 'weightedPool', // Arbitrum WeightedOracle
+    '0x2433477a10fc5d31b9513c638f19ee85caed53fd': 'stablePool', // Arbitrum Stable
+    '0xebfd5681977e38af65a7487dc70b8221d089ccad': 'stablePool', // Arbitrum MetaStable
+    '0x751a0bc0e3f75b38e01cf25bfce7ff36de1c87de': 'liquidityBootstrappingPool', // Mainnet LBP
+    '0x0f3e0c4218b7b0108a3643cfe9d3ec0d4f57c54e': 'liquidityBootstrappingPool', // Mainnet LBP (zero protocol fee)
+    '0x142b9666a0a3a30477b052962dda81547e7029ab': 'liquidityBootstrappingPool', // Arbitrum LBP (old)
+    '0x1802953277fd955f9a254b80aa0582f193cf1d77': 'liquidityBootstrappingPool', // Arbitrum LBP (new)
+    '0x48767f9f868a4a7b86a90736632f6e44c2df7fa9': 'managedPool', // Mainnet Managed
+    '0x0f7bb7ce7b6ed9366f9b6b910adefe72dc538193': 'managedPool', // Polygon Managed
+    '0xacd615b3705b9c880e4e7293f1030b34e57b4c1c': 'managedPool', // arbitrum managed
+    '0xb08e16cfc07c684daa2f93c70323badb2a6cbfd2': 'boostedPool', // mainnet stablephantom
+    '0xdae7e32adc5d490a43ccba1f0c736033f2b4efca': 'boostedPool', // arbitrum stablephantom
+    '0xc128a9954e6c874ea3d62ce62b468ba073093f25': 'boostedPool', // polygon stablephantom
+    '0x6c7f4d97269ece163fd08d5c2584a21e4a33934c': 'boostedPool', // kovan stablephantom
+  },
+  Stakable: {
+    AllowList: [],
+  },
+  Metadata: {
+    '0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb20000000000000000000000fe': {
+      name: 'Balancer Boosted Aave USD',
+      hasIcon: true,
+    },
+    '0x8fd162f338b770f7e879030830cde9173367f3010000000000000000000004d8': {
+      name: 'Balancer Boosted Aave USD',
+      hasIcon: true,
+    },
+    '0xd387dfd3a786e7caa06e6cf0c675352c7ffff30400000000000000000000063e': {
+      name: 'Balancer Stable USD',
+      hasIcon: true,
+    },
+  },
+};
+
 const POOLS_MAP = {
   [Network.KOVAN]: POOLS_KOVAN,
   [Network.GOERLI]: POOLS_GOERLI,
@@ -607,7 +678,7 @@ const POOLS_MAP = {
   [Network.POLYGON]: POOLS_POLYGON,
   [Network.ARBITRUM]: POOLS_ARBITRUM,
   [Network.AURORA]: POOLS_AURORA,
-  [Network.AURORATEST]: POOLS_AURORA,
+  [Network.AURORATEST]: POOLS_AURORATEST,
 };
 
 export const POOLS: Pools = POOLS_MAP[networkId.value]

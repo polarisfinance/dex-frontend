@@ -32,7 +32,7 @@
             class="detail-link underline"
             :to="'/pool/' + pool?.id + '/about'"
           >
-            Pool details 
+            Pool details
             <img :src="arrow" class="ml-[12px] inline" />
           </router-link>
         </div>
@@ -71,10 +71,17 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto flex justify-center gap-8" :class="{'flex-wrap mt-[60px]':isMobile,'mt-[120px]':isDesktop}">
+  <div
+    class="container mx-auto flex justify-center gap-8"
+    :class="{ 'mt-[60px] flex-wrap': isMobile, 'mt-[120px]': isDesktop }"
+  >
     <PoolBalancesCard :pool="pool" :loading="loadingPool" />
   </div>
-  <div class="container mx-auto flex justify-center gap-8" v-if="account" :class="{' mt-[60px]':isMobile,'mt-[120px]':isDesktop}">
+  <div
+    class="container mx-auto flex justify-center gap-8"
+    v-if="account"
+    :class="{ ' mt-[60px]': isMobile, 'mt-[120px]': isDesktop }"
+  >
     <PoolUserDashboard
       v-if="Number(stakedBalance) > 0"
       :pool="pool"
@@ -626,7 +633,7 @@ export default defineComponent({
      */
     watch(poolQuery.error, () => {
       if (poolQuery.error.value) {
-        console.log(poolQuery.error.value);
+        console.error(poolQuery.error.value);
         addAlert({
           id: 'pool-fetch-error',
           label: t('alerts.pool-fetch-error'),
@@ -745,9 +752,7 @@ export default defineComponent({
       apr: '0',
       address: '',
       data: [] as Pool[],
-      xpolarPoolQuery: usePoolQuery(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      ),
+      xpolarPoolQuery: undefined,
     };
   },
   methods: {
@@ -818,23 +823,24 @@ export default defineComponent({
         return;
       }
 
-      const xpolarPool = this.xpolarPoolQuery?.data;
-    
-      const xpolarBalance =
-      xpolarPool?.onchain?.tokens[
-          '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
-        ]?.balance;
-      const nearBalance =
-      xpolarPool?.onchain?.tokens[
-          '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
-        ]?.balance;
-      const nearPrice =
-      this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
+      // const xpolarPool = this.xpolarPoolQuery?.data;
 
-      this.xpolarPrice =(Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *Number(nearPrice);
-      
+      // const xpolarBalance =
+      //   xpolarPool?.onchain?.tokens[
+      //     '0xeaf7665969f1daa3726ceada7c40ab27b3245993'
+      //   ]?.balance;
+      // const nearBalance =
+      //   xpolarPool?.onchain?.tokens[
+      //     '0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6'
+      //   ]?.balance;
+      // const nearPrice =
+      //   this.prices['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d']['usd'];
+
+      // this.xpolarPrice =
+      //   (Number(nearBalance) / Number(xpolarBalance) / (0.2 / 0.4)) *
+      //   Number(nearPrice);
+
       this.stakedBalance = await balance(poolAddress, this.account);
-
 
       // this.apr = (await getPoolApr(poolAddress, poolId, this.prices)).yearlyAPR;
 

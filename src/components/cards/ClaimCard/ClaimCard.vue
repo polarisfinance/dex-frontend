@@ -74,9 +74,7 @@ export default defineComponent({
       noClaims: true,
       totalClaims: 0,
       totalPoolFiatValue: 0,
-      xpolarPoolQuery: usePoolQuery(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      ),
+      xpolarPoolQuery: undefined,
       poolTotalFiatValues: [],
     };
   },
