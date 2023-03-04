@@ -2,6 +2,9 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import coins1 from '@/assets/images/coins/coins-1.png';
+import coins2 from '@/assets/images/coins/coins-2.png';
+import coins3 from '@/assets/images/coins/coins-3.png';
 
 /**
  * COMPOSABLES
@@ -79,7 +82,7 @@ function navigateToGetVeBAL() {
               class="graphic"
               width="330"
               height="377"
-              :src="require('@/assets/images/coins/coins-1.png')"
+              :src="coins1"
               alt="BAL and WETH tokens"
             />
           </div>
@@ -100,7 +103,7 @@ function navigateToGetVeBAL() {
               class="graphic"
               width="330"
               height="377"
-              :src="require('@/assets/images/coins/coins-2.png')"
+              :src="coins2"
               alt="B-80BAL-20WETH LP token"
             />
           </div>
@@ -121,7 +124,7 @@ function navigateToGetVeBAL() {
               class="graphic"
               width="330"
               height="377"
-              :src="require('@/assets/images/coins/coins-3.png')"
+              :src="coins3"
               alt="veBAL token"
             />
           </div>

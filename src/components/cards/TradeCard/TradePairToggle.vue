@@ -12,6 +12,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import swap from './Swap.svg';
+import hoveredSwap from './HoveredSwap.svg';
 
 export default defineComponent({
   emits: ['toggle'],
@@ -26,8 +28,8 @@ export default defineComponent({
   },
   data() {
     return {
-      picture: require('./Swap.svg'),
-      hoveredPicture: require('./HoveredSwap.svg'),
+      picture: swap,
+      hoveredPicture: hoveredSwap,
       hover: false,
     };
   },

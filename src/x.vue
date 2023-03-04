@@ -9,12 +9,14 @@
 </template>
 
 <script>
+import x from './x.svg';
+import xHover from './xHover.svg';
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./x.svg'),
-      hoveredPicture: require('./xHover.svg'),
+      picture: xHover,
+      hoveredPicture: xHover,
       hover: false,
     };
   },

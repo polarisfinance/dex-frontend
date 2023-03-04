@@ -9,12 +9,13 @@
 </template>
 
 <script>
+import arrowDown from './arrowdown.svg';
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./arrowdown.svg'),
-      hoveredPicture: require('./arrowdown.svg'),
+      picture: arrowDown,
+      hoveredPicture: arrowDown,
       hover: false,
     };
   },

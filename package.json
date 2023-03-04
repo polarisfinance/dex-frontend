@@ -152,6 +152,9 @@
   "license": "MIT",
   "repository": "balancer-labs/frontend-v2",
   "dependencies": {
-    "@openzeppelin/merkle-tree": "^1.0.2"
+    "@balancer-labs/sor": "^4.1.1-beta.3",
+    "@openzeppelin/merkle-tree": "^1.0.2",
+    "moment": "^2.29.4",
+    "web3": "^1.8.2"
   }
 }

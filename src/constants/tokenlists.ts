@@ -42,10 +42,7 @@ export const TOKEN_LIST_MAP: TokenListMapByNetwork = {
       Vetted:
         'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/kovan.vetted.tokenlist.json',
     },
-    External: [
-      'ipns://tokens.uniswap.org',
-      'https://umaproject.org/uma.tokenlist.json',
-    ],
+    External: ['ipns://tokens.uniswap.org'],
   },
   '137': {
     Balancer: {
@@ -65,7 +62,7 @@ export const TOKEN_LIST_MAP: TokenListMapByNetwork = {
       Vetted:
         'https://raw.githubusercontent.com/balancer-labs/assets/refactor-for-multichain/generated/arbitrum.vetted.tokenlist.json',
     },
-    External: ['https://tracer.finance/tokens'],
+    External: [],
   },
   '1313161554': {
     Balancer: {

@@ -1,10 +1,7 @@
 <template>
   <BalPopover @show="open = true" @hide="open = false">
     <template #activator>
-      <button
-        class="icon-spin-anim settings-button"
-        @click="onActivatorClick"
-      >
+      <button class="icon-spin-anim settings-button" @click="onActivatorClick">
         <!-- <BalIcon name="settings" size="sm" class="icon" /> -->
         <!-- <IconSettings class="mt-1 mr-[12px]" /> -->
         <img :src="Picture" height="24" class="mr-[12px] mt-[12px]" />
@@ -91,6 +88,8 @@ import useNumbers from '@/composables/useNumbers';
 import { ethereumTxTypeOptions } from '@/constants/options';
 import useWeb3 from '@/services/web3/useWeb3';
 import IconSettings from '@/components/icons/SettingsIcon.vue';
+import settings from '@/components/icons/SettingsIcon.svg';
+import x from '@/components/icons/x.svg';
 
 export enum TradeSettingsContext {
   trade,
@@ -114,8 +113,8 @@ export default defineComponent({
   },
   data() {
     return {
-      settings: require('@/components/icons/SettingsIcon.svg'),
-      x: require('@/components/icons/x.svg'),
+      settings: settings,
+      x: x,
       open: false,
     };
   },
@@ -188,7 +187,7 @@ export default defineComponent({
   min-height: 24px;
   min-width: 24px;
 }
-.settings-button:hover{
+.settings-button:hover {
   opacity: 0.5;
 }
 .trade-settings-option:hover {

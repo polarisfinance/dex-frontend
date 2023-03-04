@@ -10,12 +10,13 @@
 </template>
 
 <script>
+import check from './check.svg';
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      picture: require('./check.svg'),
-      hoveredPicture: require('./check.svg'),
+      picture: check,
+      hoveredPicture: check,
       hover: false,
     };
   },
