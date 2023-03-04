@@ -73,7 +73,6 @@ export class PriceService {
     addressesPerRequest = 100
   ): Promise<TokenPrices> {
     try {
-
       if (addresses.length / addressesPerRequest > 10)
         throw new Error('To many requests for rate limit.');
 
@@ -93,7 +92,7 @@ export class PriceService {
         );
         for (let i = 0; i < addressString.length; i++) {
           if (
-            addressString[i] == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
+            addressString[i] == '0xf4A8b365cD410308d581574e35D412D82726a251'
           ) {
             addressString[i] = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
             replaceNear = true;
@@ -112,8 +111,7 @@ export class PriceService {
           }
           if (
             addressString[i] == '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
-          )
-          {
+          ) {
             addressString[i] = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
             replaceEth = true;
           }
@@ -143,7 +141,7 @@ export class PriceService {
         results[this.nativeAssetAddress] = await this.getNativeAssetPrice();
       }
       if (replaceNear) {
-        results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] =
+        results['0xf4A8b365cD410308d581574e35D412D82726a251'] =
           results['0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d'];
       }
       if (replaceStnear) {
@@ -171,7 +169,6 @@ export class PriceService {
     addressesPerRequest = 1,
     aggregateBy: 'hour' | 'day' = 'day'
   ): Promise<HistoricalPrices> {
-
     try {
       if (addresses.length / addressesPerRequest > 10)
         throw new Error('To many requests for rate limit.');
@@ -186,7 +183,7 @@ export class PriceService {
 
       addresses.forEach(address => {
         let bnb = false;
-        if (address == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6') {
+        if (address == '0xf4A8b365cD410308d581574e35D412D82726a251') {
           address = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
         }
         if (address == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465') {
@@ -219,7 +216,7 @@ export class PriceService {
         start,
         aggregateBy
       );
-      
+
       return results;
     } catch (error) {
       console.error('Unable to fetch token prices', addresses, error);
