@@ -7,10 +7,12 @@ import { configService } from '@/services/config/config.service';
 /**
  * STATE
  */
-const DEFAULT_NETWORK_ID =
-  process.env.VUE_APP_NETWORK != null
-    ? (Number(process.env.VUE_APP_NETWORK) as Network)
-    : Network.MAINNET;
+// const DEFAULT_NETWORK_ID =
+//   process.env.VUE_APP_NETWORK != null
+//     ? (Number(process.env.VUE_APP_NETWORK) as Network)
+//     : Network.MAINNET;
+
+const DEFAULT_NETWORK_ID = Network.AURORATEST;
 
 export const networkId = ref<Network>(DEFAULT_NETWORK_ID);
 

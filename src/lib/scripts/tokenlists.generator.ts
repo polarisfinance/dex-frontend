@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 async function generate() {
-  const tokenListService = new TokenListService(process.env.VUE_APP_NETWORK);
+  const tokenListService = new TokenListService('1313161555');
   const tokenlists = await tokenListService.getAll();
   fs.writeFileSync(`./public/data/tokenlists.json`, JSON.stringify(tokenlists));
 }
