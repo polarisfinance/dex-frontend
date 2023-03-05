@@ -44,9 +44,10 @@ export default function usePoolQuery(
   /**
    * COMPUTED
    */
-  const enabled = computed(
-    () => !appLoading.value && !dynamicDataLoading.value && isEnabled.value
-  );
+  console.log('isEnabled.value', isEnabled.value);
+  // console.log('appLoading.value', appLoading.value);
+  console.log('dynamicDataLoading.value', dynamicDataLoading.value);
+  const enabled = computed(() => !dynamicDataLoading.value && isEnabled.value);
 
   /**
    * QUERY INPUTS

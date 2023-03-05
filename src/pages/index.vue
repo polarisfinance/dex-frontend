@@ -36,7 +36,6 @@ const {
   loadMore,
   isLoadingMore,
 } = useStreamedPoolsQuery(selectedTokens);
-const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 
 const isInvestmentPoolsTableLoading = computed(
   () => dataStates.value['basic'] === 'loading' || priceQueryLoading.value
@@ -197,19 +196,6 @@ import useBreakPoints from '@/composables/useBreakpoints';
 var segnioragepools, classicpools, singlepools, communitypools;
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakPoints();
 export default defineComponent({
-  created() {
-    const { tokens, getToken } = useTokens();
-    console.log(Object.entries(tokens.value));
-    this.tokens = Object.entries(tokens.value);
-
-    const Tokens = Object.entries(tokens.value);
-    for (const token of Tokens) {
-      this.tokenNames[getToken(token[0]).symbol] = token[0];
-    }
-
-    window.addEventListener('scroll', this.onScroll);
-  },
-
   data() {
     return {
       filteredTokensList: [] as string[],
@@ -224,8 +210,19 @@ export default defineComponent({
       communitypoolsTop: 0,
     };
   },
+  created() {
+    const { tokens, getToken } = useTokens();
+    console.log(Object.entries(tokens.value));
+
+    const Tokens = Object.entries(tokens.value);
+    for (const token of Tokens) {
+      this.tokenNames[getToken(token[0]).symbol] = token[0];
+    }
+
+    window.addEventListener('scroll', this.onScroll);
+  },
+
   mounted() {
-    let vm = this;
     // this.$nextTick(function () {
     //   singlepools = this.$refs['singlepools'];
     //   segnioragepools = this.$refs['segnioragepools'];
@@ -233,7 +230,6 @@ export default defineComponent({
     //   communitypools = this.$refs['communitypools'];
     //   console.log(this.$refs['segnioragepools']);
     // });
-
     // singlepools = this.$refs.singlepools;
     // segnioragepools = this.$refs.segnioragepools;
     // classicpools = this.$refs.classicpools;
@@ -244,7 +240,6 @@ export default defineComponent({
     filterToken(e) {
       const filteredToken = e.target.value;
       this.filteredTokensList.length = 0;
-      const tokens = this.tokens;
       const tokenList = [] as string[];
 
       for (const token of Object.entries(this.tokenNames)) {
@@ -263,46 +258,41 @@ export default defineComponent({
       this.filteredTokensList = tokenList;
     },
     onScroll() {
-      if (
-        (document.querySelector('#segniorage')!.getBoundingClientRect().top <
-          250 &&
-          isMobile.value) ||
-        (document.querySelector('#segniorage')!.getBoundingClientRect().top <
-          125 &&
-          isDesktop.value)
-      ) {
-        this.stickyPanel = true;
-      } else {
-        this.stickyPanel = false;
+      const seigniorageTop = document
+        .querySelector('#segniorage')
+        ?.getBoundingClientRect().top;
+      const singlestakingTop = document
+        .querySelector('#singlestaking')
+        ?.getBoundingClientRect().top;
+      const comunityPools = document
+        .querySelector('#communitypools')
+        ?.getBoundingClientRect().top;
+      const classicpoolsTop = document
+        .querySelector('#classicpools')
+        ?.getBoundingClientRect().top;
+
+      if (seigniorageTop != undefined) {
+        if (
+          (seigniorageTop < 250 && isMobile.value) ||
+          (seigniorageTop < 125 && isDesktop.value)
+        ) {
+          this.stickyPanel = true;
+        } else {
+          this.stickyPanel = false;
+        }
       }
 
-      if (
-        document.querySelector('#singlestaking') != undefined &&
-        document.querySelector('#singlestaking')!.getBoundingClientRect().top <
-          100
-      ) {
+      if (singlestakingTop != undefined && singlestakingTop < 100) {
         this.selectedPool = 'single';
-      } else if (
-        document.querySelector('#communitypools') != undefined &&
-        document.querySelector('#communitypools')!.getBoundingClientRect().top <
-          100
-      ) {
+      } else if (comunityPools != undefined && comunityPools < 100) {
         this.selectedPool = 'community';
-      } else if (
-        document.querySelector('#classicpools') != undefined &&
-        document.querySelector('#classicpools')!.getBoundingClientRect().top <
-          100
-      ) {
+      } else if (classicpoolsTop && classicpoolsTop < 100) {
         this.selectedPool = 'classic';
-      } else if (
-        document.querySelector('#segniorage') != undefined &&
-        document.querySelector('#segniorage')!.getBoundingClientRect().top < 100
-      ) {
+      } else if (seigniorageTop && seigniorageTop < 100) {
         this.selectedPool = 'segniorage';
       }
     },
   },
-  watch: {},
 });
 </script>
 
