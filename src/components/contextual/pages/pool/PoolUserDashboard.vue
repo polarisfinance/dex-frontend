@@ -325,7 +325,7 @@ export default defineComponent({
             <div class="flex flex-1 items-center justify-center">
               <div class="flex py-5">
                 <div class="mr-4 mt-3">
-                  <CoinsIcon />
+                  <DollarCoinsStackedIcon />
                 </div>
                 <div>
                   <div class="title claim-amount">

@@ -86,16 +86,7 @@ function toggleModal(): void {
         }}
       </span>
       <span v-if="!fixed" class="mr-[7px]">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_155_801)">
-        <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <defs>
-        <clipPath id="clip0_155_801">
-        <rect width="24" height="24" fill="white"/>
-        </clipPath>
-        </defs>
-        </svg>
+        <ChevronDownIcon/>
       </span>
 <!-- 
       <BalIcon
@@ -161,16 +152,7 @@ function toggleModal(): void {
     >
       {{ $t('selectToken') }}
       <span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_155_801)">
-        <path d="M7.5 9.75L12 14.25L16.5 9.75" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <defs>
-        <clipPath id="clip0_155_801">
-        <rect width="24" height="24" fill="white"/>
-        </clipPath>
-        </defs>
-        </svg>
+        <ChevronDownIcon/>
       </span>
 
     </div>
