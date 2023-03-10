@@ -109,7 +109,7 @@
                 <div class="token-name">{{ tokens[1].symbol }}</div>
               </div>
             </a>
-            <a @click="onSelectToken(tokens[4].address)" class="flex-none">
+            <a @click="onSelectToken(tokens[4].address)" v-if="tokens[4]" class="flex-none">
               <div class="common-asset flex items-center">
                 <BalAsset
                   :address="tokens[4].address"
@@ -277,6 +277,7 @@ export default defineComponent({
       const results = tokenListArray.filter(([, tokenList]) =>
         tokenList.name.toLowerCase().includes(query)
       );
+      
       return Object.fromEntries(results);
     });
 
