@@ -12,11 +12,16 @@ module.exports = {
     // https://github.com/tailwindlabs/tailwindcss/discussions/10079
     { pattern: /^mr/ },
     { pattern: /^w/ },
+    {
+      pattern: /.polaris./,
+      variants: ['dark'],
+    },
   ],
   darkMode: 'class',
   theme: {
     fontFamily: {
       body: [
+        'Rajdhani',
         'Inter-Variable',
         '-apple-system',
         'BlinkMacSystemFont',
@@ -64,13 +69,32 @@ module.exports = {
       },
       borderRadius: {
         '2xl': '1.25rem',
+        'default':'22px',
+        'main':'33px',
+        'big':'44px'
       },
       colors: {
+        'polaris-card':{
+          dark: '#292043',
+          default: '#292043',
+          medium: '#41365E',
+          light: '#292043',
+        },
+        'polaris-button':{
+          'main-from':'#c004fe',
+          'main-to':'#7e02f5',
+          inactive:'#FFFFFF',
+
+        },
+        'polaris-pill':{
+          DEFAULT: '#50456E',
+        },
         gray: {
           50: '#F8FAFC',
           100: '#EAF0F6',
           200: '#E2E8F0',
           300: '#CBD5E1',
+
           400: '#94A3B8',
           500: '#64748B',
           600: '#475569',
@@ -163,6 +187,7 @@ module.exports = {
           800: '#92400e',
           900: '#78350f',
         },
+        
       },
     },
   },

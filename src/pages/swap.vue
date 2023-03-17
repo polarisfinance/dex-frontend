@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue';
 import MyWallet from '@/components/cards/MyWallet/MyWallet.vue';
 import PairPriceGraph from '@/components/cards/PairPriceGraph/PairPriceGraph.vue';
-import SwapCard from '@/components/cards/SwapCard/SwapCard.vue';
+import TradeCard from '@/components/cards/SwapCard/TradeCard.vue';
 import Col3Layout from '@/components/layouts/Col3Layout.vue';
 import usePoolFilters from '@/composables/pools/usePoolFilters';
 import useBreakpoints from '@/composables/useBreakpoints';
@@ -39,11 +39,11 @@ onMounted(() => {
 <template>
   <div>
     <Col3Layout offsetGutters mobileHideGutters class="mt-8">
-      <template #gutterLeft>
+      <!-- <template #gutterLeft>
         <MyWallet />
-      </template>
+      </template> -->
 
-      <SwapCard />
+      <TradeCard />
       <div class="p-4 sm:p-0 lg:p-0 mt-8">
         <BalAccordion
           v-if="upToLargeBreakpoint"
@@ -62,10 +62,10 @@ onMounted(() => {
         </BalAccordion>
       </div>
 
-      <template #gutterRight>
+      <!-- <template #gutterRight>
         <PairPriceGraph />
         <BridgeLink v-if="isL2" class="mt-4" />
-      </template>
+      </template> -->
     </Col3Layout>
   </div>
 </template>
