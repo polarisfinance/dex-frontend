@@ -899,7 +899,7 @@
   "swapFeeAPR": "Swap fees APR",
   "swapFeeManager": "Swap fee manager",
   "swapper": "Swapper",
-  "swapRoute": "Swap route",
+  "swapRoute": "Trade route",
   "swapException": "Failed to submit ({0}) swap transaction.",
   "switchNetwork": "Switch network",
   "symbol": "Symbol",

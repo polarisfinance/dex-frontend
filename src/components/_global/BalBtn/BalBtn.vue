@@ -46,6 +46,7 @@ type Props = {
   block?: boolean;
   circle?: boolean;
   outline?: boolean;
+  noBackground?: boolean;
   flat?: boolean;
   rounded?: boolean;
   loading?: boolean;
@@ -61,6 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
   block: false,
   circle: false,
   outline: false,
+  noBackground:false,
   flat: false,
   rounded: false,
   loading: false,
@@ -132,6 +134,7 @@ const bgFlatClasses = computed(() => {
 
 const bgColorClasses = computed(() => {
   if (props.color.includes('gradient')) return bgGradientClasses.value;
+  else if(props.noBackground) return 'ng-none';
   else if (props.outline) return 'bg-transparent';
   else if (props.flat) return bgFlatClasses.value;
   else if (props.color === 'white') {

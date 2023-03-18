@@ -71,7 +71,7 @@ export default defineComponent({
 
     const cardClasses = computed(() => {
       return {
-        'rounded-main': !props.square,
+        'rounded-default': !props.square,
         'overflow-hidden': !props.exposeOverflow,
         [`bg-white dark:bg-polaris-card-${props.darkBgColor}`]: true,
         [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,

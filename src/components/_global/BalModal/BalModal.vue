@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import BalCard from '../BalCard/BalCard.vue';
+import useBreakpoints from '@/composables/useBreakpoints';
 
+const { upToSmallBreakpoint } = useBreakpoints();
 /**
  * TYPES
  */
@@ -67,7 +69,10 @@ defineExpose({ hide });
     </transition>
     <div class="content-container">
       <Transition name="modal" @after-leave="$emit('close')">
-        <div v-if="showContent" class="content">
+        <div v-if="showContent" :class="{
+            contentMobile: upToSmallBreakpoint,
+            content: !upToSmallBreakpoint,
+          }">
           <BalCard
             :title="title"
             shadow="lg"
@@ -103,8 +108,9 @@ defineExpose({ hide });
 .content {
   @apply relative w-full h-3/4 sm:h-auto max-h-screen;
 
-  max-width: 450px;
+  max-width: 484px;
   transform-style: preserve-3d;
+  overflow: none;
 }
 
 .modal-bg {
@@ -112,14 +118,15 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full rounded-b-none sm:rounded-b-lg dark:border-0;
+  @apply mx-auto h-full rounded-b-none sm:rounded-b-lg dark:border-0 dark:bg-polaris-card-dark;
+  overflow: none;
 }
 
 .dark .bal-modal .content::before {
-  background-blend-mode: soft-light, soft-light, normal;
+  /* background-blend-mode: soft-light, soft-light, normal;
   background: radial-gradient(circle at left, yellow, transparent),
     radial-gradient(circle at bottom right, blue, transparent),
-    radial-gradient(circle at top, red, transparent);
+    radial-gradient(circle at top, red, transparent); */
   content: '';
   display: block;
   width: 100%;

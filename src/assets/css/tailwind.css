@@ -49,18 +49,22 @@
 
   .font-normal {
     font-variation-settings: 'wght' 400;
+    font-weight: 400;
   }
 
   .font-medium {
     font-variation-settings: 'wght' 500;
+    font-weight: 500;
   }
 
   .font-semibold {
     font-variation-settings: 'wght' 600;
+    font-weight: 600;
   }
 
   .font-bold {
     font-variation-settings: 'wght' 700;
+    font-weight: 700;
   }
 
   .font-extrabold {

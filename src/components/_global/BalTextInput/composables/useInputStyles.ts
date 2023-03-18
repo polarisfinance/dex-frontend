@@ -14,7 +14,7 @@ export default function useInputStyles(
       case 'lg':
         return 'p-3';
       default:
-        return 'p-2';
+        return '';
     }
   };
 
@@ -38,7 +38,7 @@ export default function useInputStyles(
       case 'sm':
         return 'text-base';
       case 'lg':
-        return 'text-2xl';
+        return 'text-lg';
       default:
         return 'text-xl';
     }

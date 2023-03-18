@@ -141,6 +141,7 @@ onMounted(() => {
           v-bind="inputAttrs"
           :disabled="disabled"
           :class="['input', inputClasses]"
+          class="text-polaris-white font-medium"
           @blur="onBlur"
           @input="onInput"
           @keydown="onKeydown"
@@ -154,9 +155,9 @@ onMounted(() => {
       <div v-if="$slots.footer" :class="['footer', footerClasses]">
         <slot name="footer" />
       </div>
-      <div v-if="isInvalid && !!errors[0]" :class="['error']">
+      <!-- <div v-if="isInvalid && !!errors[0]" :class="['error']">
         {{ errors[0] }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -166,6 +167,9 @@ onMounted(() => {
   @apply transition-colors;
 }
 
+::placeholder {
+  @apply text-polaris-white;
+}
 .input-group {
   @apply flex;
 }

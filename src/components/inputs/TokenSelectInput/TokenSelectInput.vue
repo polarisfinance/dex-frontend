@@ -78,7 +78,7 @@ function toggleModal(): void {
       <div class="w-8">
         <BalAsset :address="token?.address" class="shadow" />
       </div>
-      <span class="text-base font-medium">
+      <span class="text-lg font-semibold">
         {{ token?.symbol }}
       </span>
       <span v-if="Number(weight) > 0" class="ml-2 text-secondary">
@@ -89,12 +89,15 @@ function toggleModal(): void {
           })
         }}
       </span>
-      <BalIcon
+      <span v-if="!fixed" class="mr-[7px]">
+        <ChevronDownIcon/>
+      </span>
+      <!-- <BalIcon
         v-if="!fixed"
         name="chevron-down"
         size="sm"
         class="ml-2 text-blue-600 group-hover:text-purple-500 dark:text-blue-400 dark:group-hover:text-yellow-500 transition-colors"
-      />
+      /> -->
     </div>
     <BalDropdown
       v-else-if="hasToken && fixed && options.length > 0"

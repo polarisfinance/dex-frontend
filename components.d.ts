@@ -54,6 +54,7 @@ declare module '@vue/runtime-core' {
     BalTooltip: typeof import('./src/components/_global/BalTooltip/BalTooltip.vue')['default']
     BalVerticalSteps: typeof import('./src/components/_global/BalVerticalSteps/BalVerticalSteps.vue')['default']
     CheckIcon: typeof import('./src/components/_global/icons/CheckIcon.vue')['default']
+    ChevronDownIcon: typeof import('./src/components/_global/icons/polaris/ChevronDownIcon.vue')['default']
     CompositionIcon: typeof import('./src/components/_global/icons/CompositionIcon.vue')['default']
     DiscordIcon: typeof import('./src/components/_global/icons/brands/DiscordIcon.vue')['default']
     EmailIcon: typeof import('./src/components/_global/icons/EmailIcon.vue')['default']

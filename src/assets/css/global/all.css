@@ -30,7 +30,7 @@ input {
   @apply text-gray-900;
 }
 .dark #app{
-  color: #bdb2dd;
+  @apply text-polaris-3;
   background: #150128;
 }
 a {

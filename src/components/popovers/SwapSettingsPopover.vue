@@ -46,10 +46,11 @@ function onActivatorClick(): void {
   <BalPopover>
     <template #activator>
       <BalBtn
-        circle
         color="white"
         size="sm"
         class="mb-2 text-secondary icon-spin-anim"
+        noBackground
+        flat
         @click="onActivatorClick"
       >
         <BalIcon name="settings" size="sm" />
