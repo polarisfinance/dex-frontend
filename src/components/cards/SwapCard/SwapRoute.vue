@@ -226,7 +226,7 @@ function formatShare(share: number): string {
 <template>
   <BalCard v-if="routes.length > 0" shadow="none" noBorder>
     <div
-      class="flex items-center cursor-pointer text-sm font-semibold text-polaris-white"
+      class="flex items-center cursor-pointer text-sm font-semibold dark:text-polaris-white"
     >
       <div class="mr-2">
         {{ $t('swapRoute') }}
@@ -244,7 +244,7 @@ function formatShare(share: number): string {
         <div>
           <div class="flex text-sm font-semibold justify-between">
             <div>
-              <div class="text-polaris-white">
+              <div class="dark:text-polaris-white">
                 {{ input.amount }}
               </div>
               <div>
@@ -252,7 +252,7 @@ function formatShare(share: number): string {
               </div>
             </div>
             <div class="flex text-sm font-semibold  flex-col items-end">
-              <div class="text-polaris-white">
+              <div class="dark:text-polaris-white">
                 {{ output.amount }}
               </div>
               <div>

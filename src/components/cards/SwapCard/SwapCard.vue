@@ -2,7 +2,7 @@
   <BalCard class="relative card-container" :shadow="swapCardShadow" noBorder noPad :exposeOverflow="false">
     <template #header>
       <div class="flex justify-between items-center w-full dark:bg-polaris-card-medium pb-[30px]">
-        <h4 class="text-polaris-white pl-[18px] pt-[14px] font-[600] text-base">{{ title }}</h4>
+        <h4 class="dark:text-polaris-white pl-[18px] pt-[14px] font-[600] text-base">{{ title }}</h4>
         <SwapSettingsPopover
           :context="SwapSettingsContext.swap"
           :isGasless="swapping.swapGasless.value"
