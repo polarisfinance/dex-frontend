@@ -72,6 +72,11 @@ const ALLOWED_RATE_PROVIDERS_MAP = {
       '0x0000000000000000000000000000000000000000': true,
     },
   },
+  [Network.AURORATEST]: {
+    '*': {
+      '0x0000000000000000000000000000000000000000': true,
+    },
+  },
 };
 
 export const ALLOWED_RATE_PROVIDERS =

@@ -73,4 +73,16 @@ export const TOKEN_LIST_MAP: TokenListMapByNetwork = {
       'https://unpkg.com/@1hive/default-token-list@latest/build/honeyswap-default.tokenlist.json',
     ],
   },
+  '1313161555': {
+    Balancer: {
+      Default:
+        'https://raw.githubusercontent.com/polarisfinance/dex-assets/testnet/generated/aurora.listed.tokenlist.json',
+      Vetted:
+        'https://raw.githubusercontent.com/polarisfinance/dex-assets/testnet/generated/aurora.vetted.tokenlist.json',
+    },
+    External: [
+      'https://aurora.dev/tokens.json',
+      'https://raw.githubusercontent.com/trisolaris-labs/tokens/master/lists/1313161554/list.json',
+    ],
+  },
 };

@@ -34,6 +34,7 @@ export const networkLabelMap = {
   [Network.GOERLI]: 'Goerli',
   [Network.OPTIMISM]: 'Optimism',
   [Network.GNOSIS]: 'Gnosis chain',
+  [Network.AURORATEST]: 'Aurora testnet',
 };
 
 /**
@@ -47,6 +48,9 @@ export const isPolygon = computed(() => networkId.value === Network.POLYGON);
 export const isArbitrum = computed(() => networkId.value === Network.ARBITRUM);
 export const isGnosis = computed(() => networkId.value === Network.GNOSIS);
 export const isGoerli = computed(() => networkId.value === Network.GOERLI);
+export const isAuroraTest = computed(
+  () => networkId.value === Network.AURORATEST
+);
 
 export const isL2 = computed(
   () => isPolygon.value || isArbitrum.value || isGnosis.value
@@ -69,6 +73,8 @@ export function networkFor(key: string | number): Network {
       return Network.ARBITRUM;
     case '100':
       return Network.GNOSIS;
+    case '1313161555':
+      return Network.AURORATEST;
     default:
       throw new Error('Network not supported');
   }

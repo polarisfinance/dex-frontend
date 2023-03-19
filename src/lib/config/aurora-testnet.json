@@ -1,0 +1,95 @@
+{
+  "key": "1313161555",
+  "chainId": 1313161555,
+  "chainName": "aurora-testnet",
+  "name": "Aurora Testnet",
+  "shortName": "aurora-testnet",
+  "slug": "aurora-testnet",
+  "network": "aurora-testnet",
+  "unknown": false,
+  "rpc": "https://testnet.aurora.dev",
+  "ws": "wss://testnet.aurora.dev",
+  "explorer": "https://explorer.testnet.aurora.dev",
+  "explorerName": "Aurora Explorer",
+  "subgraph": "https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-dex-testnet",
+  "balancerApi": "",
+  "poolsUrlV2": "",
+  "subgraphs": {
+    "main": [
+      "https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-dex-testnet"
+    ],
+    "aave": "",
+    "gauge": "https://api.thegraph.com/subgraphs/name/polarisfinance/gauges-aurora-testnet",
+    "blocks": "https://api.thegraph.com/subgraphs/name/polarisfinance/auroratestnet-blocks"
+  },
+  "supportsEIP1559": true,
+  "supportsElementPools": true,
+  "blockTime": 12,
+  "nativeAsset": {
+    "name": "Ether",
+    "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+    "symbol": "ETH",
+    "decimals": 18,
+    "deeplinkId": "ether",
+    "logoURI": "tokens/eth.png",
+    "minTransactionBuffer": "0.05"
+  },
+  "addresses": {
+    "bFactory": "",
+    "bActions": "",
+    "dsProxyRegistry": "",
+    "merkleRedeem": "",
+    "merkleOrchard": "",
+    "merkleOrchardV2": "",
+    "multicall": "0x7afd06811120462e86dbd41554445928C7AFBCAD",
+    "authorizer": "0x8563a92E4E5960A489E614a7F369F57586B48AB0",
+    "vault": "0x914A10f5596ab67ff21a278986E7767213Bd967E",
+    "weightedPoolFactory": "0x6C13F3df404855a3a3E9aAB5bdf22a1c13962bfC",
+    "stablePoolFactory": "",
+    "tokenFactory": "",
+    "weth": "0x8886e7a8883e9a40b30bd4e16e0e25c2c3f29cd8",
+    "rETH": "",
+    "stMATIC": "",
+    "stETH": "",
+    "wstETH": "",
+    "lidoRelayer": "",
+    "MockFlashLoanReceiver": "",
+    "balancerHelpers": "0x57642e05Be5951Ef344d10867Cb2172BeE43b21f",
+    "batchRelayer": "0x9Ff7C3a8cb7cf8E3bdeF2701d38F1a1abB4a2618",
+    "batchRelayerV4": "0x9a4B2171350b4f8Cf684405271A7F209e28F1f4E",
+    "veBAL": "0x38a7f3381e581C02745E7D71F428E9e3297632E7",
+    "gaugeController": "0x867819cB7d611a7aB8015C7F1560216986e69D02",
+    "gaugeFactory": "0x8c7f61A0347b683b487fFdE975EC88F788275Bae",
+    "balancerMinter": "0x4f7C0716A397aeCD5D0247dB28fE6C8e3d3b4372",
+    "tokenAdmin": "0x60fBF9b6e5274Fa754d1A4571ee895C3F08C5468",
+    "veDelegationProxy": "0x36510254A83Db4044882dD039835bdE5e581962F",
+    "veBALHelpers": "0x2C7a14179eaEc4b2882Ee57f70B34c8fCBa61cE7",
+    "feeDistributor": "",
+    "feeDistributorDeprecated": "",
+    "faucet": ""
+  },
+  "keys": {
+    "infura": "",
+    "alchemy": "",
+    "graph": "",
+    "balancerApi": ""
+  },
+  "strategies": {
+    "0": {
+      "type": "0",
+      "name": "stablePool"
+    },
+    "1": {
+      "type": "1",
+      "name": "weightedPool"
+    },
+    "2": {
+      "type": "2",
+      "name": "weightedPool"
+    }
+  },
+  "gauges": {
+    "type": 2,
+    "weight": 100
+  }
+}

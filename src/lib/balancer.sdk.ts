@@ -15,6 +15,8 @@ const network = ((): Network => {
       return Network.ARBITRUM;
     case '100':
       return Network.GNOSIS;
+    case '1313161555':
+      return Network.AURORATEST;
     default:
       return Network.MAINNET;
   }

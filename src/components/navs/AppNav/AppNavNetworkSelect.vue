@@ -52,6 +52,12 @@ const networks = ref([
     networkSlug: 'gnosis-chain',
     key: '100',
   },
+  {
+    id: 'aurora-testnet',
+    name: 'Aurora Testnet',
+    networkSlug: 'aurora-testnet',
+    key: '1313161555',
+  },
 ]);
 
 const networksDev = ref([

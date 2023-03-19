@@ -820,6 +820,70 @@ const POOLS_GNOSIS: Pools = {
   DisabledJoins: [],
 };
 
+const POOLS_AURORATEST: Pools = {
+  IdsMap: {},
+  Pagination: {
+    PerPage: 10,
+    PerPool: 10,
+    PerPoolInitial: 5,
+  },
+  DelegateOwner: '0xba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1b',
+  ZeroAddress: '0x0000000000000000000000000000000000000000',
+  DynamicFees: {
+    Gauntlet: [],
+  },
+  BlockList: [''],
+  ExcludedPoolTypes: [
+    'Element',
+    'AaveLinear',
+    'EulerLinear',
+    'GearboxLinear',
+    'Linear',
+    'ERC4626Linear',
+    'FX',
+    'Gyro2',
+    'Gyro3',
+    'GyroE',
+    'HighAmpComposableStable',
+  ],
+  Stable: {
+    AllowList: [],
+  },
+  Investment: {
+    AllowList: [],
+  },
+  Factories: {
+    '0x6C13F3df404855a3a3E9aAB5bdf22a1c13962bfC': 'weightedPool', // WeightedPool V3
+  },
+  Stakable: {
+    AllowList: [
+      '0x66f33ae36dd80327744207a48122f874634b3ada000100000000000000000013',
+      '0xf48f01dcb2cbb3ee1f6aab0e742c2d3941039d56000200000000000000000012',
+      '0xb973ca96a3f0d61045f53255e319aedb6ed49240000200000000000000000011',
+      '0xfedb19ec000d38d92af4b21436870f115db22725000000000000000000000010',
+    ],
+  },
+  Metadata: {
+    '0xfedb19ec000d38d92af4b21436870f115db22725000000000000000000000010': {
+      name: 'Balancer Boosted Agave USD',
+      hasIcon: false,
+    },
+    '0xb973ca96a3f0d61045f53255e319aedb6ed49240000200000000000000000011': {
+      name: 'Balancer Boosted Agave GNO/USD',
+      hasIcon: false,
+    },
+    '0xf48f01dcb2cbb3ee1f6aab0e742c2d3941039d56000200000000000000000012': {
+      name: 'Balancer Boosted Agave GNO/WETH',
+      hasIcon: false,
+    },
+    '0x66f33ae36dd80327744207a48122f874634b3ada000100000000000000000013': {
+      name: 'Balancer Boosted Agave WETH/WBTC/USD',
+      hasIcon: false,
+    },
+  },
+  DisabledJoins: [],
+};
+
 const POOLS_GENERIC: Pools = {
   IdsMap: {},
   Pagination: {
@@ -919,6 +983,7 @@ export const POOLS_MAP = {
   [Network.POLYGON]: POOLS_POLYGON,
   [Network.ARBITRUM]: POOLS_ARBITRUM,
   [Network.GNOSIS]: POOLS_GNOSIS,
+  [Network.AURORATEST]: POOLS_AURORATEST,
 };
 
 export const POOLS: Pools = POOLS_MAP[networkId.value]

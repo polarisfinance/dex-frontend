@@ -76,6 +76,9 @@ export default function useWeb3() {
     () => appNetworkConfig.chainId === Network.ARBITRUM
   );
   const isGnosis = computed(() => appNetworkConfig.chainId === Network.GNOSIS);
+  const isAuroraTest = computed(
+    () => appNetworkConfig.chainId === Network.AURORATEST
+  );
   const isEIP1559SupportedNetwork = computed(
     () => appNetworkConfig.supportsEIP1559
   );
@@ -160,6 +163,7 @@ export default function useWeb3() {
     isPolygon,
     isArbitrum,
     isGnosis,
+    isAuroraTest,
     isEIP1559SupportedNetwork,
     isWalletConnecting,
     isBlocked,

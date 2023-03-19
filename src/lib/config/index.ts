@@ -7,6 +7,7 @@ import homestead from './homestead.json';
 import optimism from './optimism.json';
 import polygon from './polygon.json';
 import gnosisChain from './gnosis-chain.json';
+import auroraTestnet from './aurora-testnet.json';
 import test from './test.json';
 
 export interface Config {
@@ -99,6 +100,7 @@ const config: Record<Network | number, Config> = {
   [Network.ARBITRUM]: arbitrum,
   [Network.OPTIMISM]: optimism,
   [Network.GNOSIS]: gnosisChain,
+  [Network.AURORATEST]: auroraTestnet,
   12345: test,
   // @ts-ignore
   17: docker,
