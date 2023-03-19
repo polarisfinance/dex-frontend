@@ -1,13 +1,13 @@
 <template>
-  <div class="flex">
+  <div class="flex w-full">
     <BalBtn
       v-for="option in options"
       :key="option.value"
-      outline
       size="sm"
-      class="mr-2 capitalize w-18"
+      switcher
+      class="capitalize w-18 flex-1"
       v-bind="attrs_"
-      :color="modelValue === option.value ? 'blue' : 'gray'"
+      :color="modelValue === option.value ? 'gray' : 'transparent'"
       @click="onSelect(option)"
     >
       {{ 'best' === option.label ? $t(option.label) : option.label }}

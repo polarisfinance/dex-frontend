@@ -3,6 +3,14 @@ export enum SwapSettingsContext {
   swap,
   invest,
 }
+export default {
+  data() {
+    return {
+      settings,
+      x
+    };
+  },
+};
 </script>
 
 <script setup lang="ts">
@@ -12,6 +20,11 @@ import useEthereumTxType from '@/composables/useEthereumTxType';
 import useFathom from '@/composables/useFathom';
 import { ethereumTxTypeOptions } from '@/constants/options';
 import useWeb3 from '@/services/web3/useWeb3';
+import settings from '@/components/_global/icons/polaris/SettingsIcon.svg';
+import  x from '@/components/_global/icons/polaris/x.svg';
+
+
+
 
 type Props = {
   context: SwapSettingsContext;
@@ -40,26 +53,33 @@ function onActivatorClick(): void {
     trackGoal(Goals.ClickJoinPoolSettings);
   }
 }
+
+
+let open=false;
+function Picture() {
+  if (open == false) {
+    return settings;
+  } else {
+    return x;
+  }
+}
+
 </script>
 
 <template>
-  <BalPopover>
+  <BalPopover class="dark:bg-polaris-back-main">
     <template #activator>
-      <BalBtn
-        color="white"
-        size="sm"
-        class="mb-2 text-secondary icon-spin-anim"
-        noBackground
-        flat
+      <button
+        class="icon-spin-anim settings-button dark:bg-polaris-card-medium"
         @click="onActivatorClick"
       >
-        <BalIcon name="settings" size="sm" />
-      </BalBtn>
+        <img :src="Picture()" height="24" class="mr-[12px] mt-[12px]" />
+      </button>
     </template>
 
     <div>
       <div class="flex items-baseline">
-        <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
+        <span class="mb-2 font-medium dark:text-polaris-white font-semibold" v-text="$t('slippageTolerance')" />
         <BalTooltip>
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
@@ -71,7 +91,7 @@ function onActivatorClick(): void {
     </div>
     <div v-if="isEIP1559SupportedNetwork" class="mt-6">
       <div class="flex items-baseline">
-        <span class="mb-2 font-medium" v-text="$t('transactionType')" />
+        <span class="mb-2 font-medium dark:text-polaris-white font-semibold" v-text="$t('transactionType')" />
         <BalTooltip>
           <template #activator>
             <BalIcon name="info" size="xs" class="-mb-px ml-1 text-gray-400" />
@@ -79,8 +99,8 @@ function onActivatorClick(): void {
           <div v-text="$t('ethereumTxTypeTooltip')" />
         </BalTooltip>
       </div>
-      <div class="flex mt-1">
-        <BalBtnGroup
+      <div class="flex mt-1 dark:bg-polaris-card-dark rounded-small">
+        <BalBtnGroup class="w-full"
           v-model="ethereumTxType"
           :options="ethereumTxTypeOptions"
           @update:model-value="setEthereumTxType"

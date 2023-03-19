@@ -81,15 +81,6 @@ module.exports = {
         xl: ['24px', '32px'],
       },
       colors: {
-        'polaris-button':{
-          'main-from':'#c004fe',
-          'main-to':'#7e02f5',
-          inactive:'#FFFFFF',
-
-        },
-        'polaris-pill':{
-          DEFAULT: '#50456E',
-        },
         'polaris':{
           2:'#A99BC6',
           3:'#BDB2DD',
@@ -99,6 +90,11 @@ module.exports = {
           'card-default':'#292043',
           'card-medium':'#41365E',
           'card-light':'#292043',
+          'back-main':'#150128',
+          'pill':'#50456E',
+          'button-main-from':'#c004fe',
+          'button-main-to':'#7e02f5',
+          'button-inactive':'#FFFFFF',
         },
         gray: {
           50: '#F8FAFC',

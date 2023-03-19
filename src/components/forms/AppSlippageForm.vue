@@ -42,9 +42,9 @@ const isFixedSlippage = computed(() => {
 });
 
 const customInputClasses = computed(() => ({
-  'border border-blue-500 text-blue-500':
+  ' dark:bg-[#50456E] rounded-small dark:text-polaris-white font-semibold':
     !isFixedSlippage.value && state.isCustomInput,
-  'border dark:border-gray-900': isFixedSlippage.value && !state.isCustomInput,
+  ' dark:bg-polaris-card-light dark:text-polaris-2 font-semibold rounded-small': isFixedSlippage.value && !state.isCustomInput,
 }));
 
 /**
@@ -85,15 +85,17 @@ watch(() => state.customSlippage, onCustomInput, { immediate: true });
 
 <template>
   <div class="flex">
-    <BalBtnGroup
-      v-model="state.fixedSlippage"
-      :options="options"
-      @update:model-value="onFixedInput"
-    />
+    <div class="flex dark:bg-polaris-card-dark rounded-small">
+      <BalBtnGroup
+        v-model="state.fixedSlippage"
+        :options="options"
+        @update:model-value="onFixedInput"
+      />
+    </div>
     <div :class="['custom-input', customInputClasses]">
       <input
         v-model="state.customSlippage"
-        class="w-12 text-right bg-transparent"
+        class="w-12 text-right bg-transparent border-0"
         placeholder="0.1"
         type="number"
         step="any"
@@ -106,6 +108,7 @@ watch(() => state.customSlippage, onCustomInput, { immediate: true });
 
 <style scoped>
 .custom-input {
-  @apply flex items-center px-1 rounded-lg shadow-inner;
+  @apply flex items-center px-1 rounded-small ml-5;
+
 }
 </style>
