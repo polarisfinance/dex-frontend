@@ -821,7 +821,9 @@ const POOLS_GNOSIS: Pools = {
 };
 
 const POOLS_AURORATEST: Pools = {
-  IdsMap: {},
+  IdsMap: {
+    veBAL: '0x96d49c1563694f3995af2f70bd3283f9160c327e000100000000000000000001',
+  },
   Pagination: {
     PerPage: 10,
     PerPool: 10,
