@@ -29,7 +29,7 @@ function isActive(page: string): boolean {
       :active="isActive('home')"
       @click="trackGoal(Goals.ClickNavPools)"
     >
-      {{ $t('pool') }}
+      {{ $t('earn') }}
     </DesktopLinkItem>
     <DesktopLinkItem
       :to="{ name: 'swap', params: { networkSlug } }"

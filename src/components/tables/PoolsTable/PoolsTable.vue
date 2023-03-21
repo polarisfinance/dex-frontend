@@ -37,7 +37,7 @@ import TokenPills from './TokenPills/TokenPills.vue';
 import PoolWarningTooltip from '@/components/pool/PoolWarningTooltip.vue';
 import TokensWhite from '@/assets/images/icons/tokens_white.svg';
 import TokensBlack from '@/assets/images/icons/tokens_black.svg';
-
+import TokenWeightsPills from './TokenPills/TokenWeightsPills.vue';
 /**
  * TYPES
  */
@@ -112,7 +112,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'uri',
     Header: 'iconColumnHeader',
     Cell: 'iconColumnCell',
-    width: 125,
+    width: 70,
     noGrow: true,
   },
   {
@@ -281,10 +281,10 @@ function iconAddresses(pool: Pool) {
 
 <template>
   <BalCard
-    shadow="lg"
     :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
+    noBorder
     noPad
+    darkBgColor="back-main"
   >
     <BalTable
       :columns="visibleColumns"
@@ -297,6 +297,7 @@ function iconAddresses(pool: Pool) {
       :square="upToLargeBreakpoint"
       :onRowClick="handleRowClick"
       :isPaginated="isPaginated"
+      
       isOnlyDescSort
       :initialState="{
         sortColumn: sortColumn,
@@ -327,6 +328,7 @@ function iconAddresses(pool: Pool) {
               :isStablePool="isStableLike(pool.poolType)"
               :selectedTokens="selectedTokens"
               :pickedTokens="selectedTokens"
+              :showWeight="false"
             />
           </div>
           <BalChip
@@ -335,6 +337,13 @@ function iconAddresses(pool: Pool) {
             color="amber"
           />
           <BalChipNew v-else-if="pool?.isNew" class="mt-1" />
+          <TokenWeightsPills class="ml-[12px]"
+              :tokens="orderedPoolTokens(pool, pool.tokens)"
+              :isStablePool="isStableLike(pool.poolType)"
+              :selectedTokens="selectedTokens"
+              :pickedTokens="selectedTokens"
+              :boosted="pool.boosted"
+          />
           <PoolWarningTooltip :pool="pool" />
         </div>
       </template>

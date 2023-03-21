@@ -8,6 +8,7 @@ import { retryPromiseWithDelay } from '@/lib/utils/promise';
 import { configService as _configService } from '@/services/config/config.service';
 
 import { CoingeckoClient } from '../coingecko.client';
+import { CoingeckoCacheClient } from '../coingecko.cache.client';
 import {
   CoingeckoService,
   getNativeAssetId,
@@ -30,6 +31,7 @@ export type HistoricalPrices = { [timestamp: string]: number[] };
 
 export class PriceService {
   client: CoingeckoClient;
+  cacheClient: CoingeckoCacheClient;
   fiatParam: string;
   appNetwork: string;
   platformId: string;
@@ -42,6 +44,7 @@ export class PriceService {
     private readonly configService = _configService
   ) {
     this.client = service.client;
+    this.cacheClient = service.cacheClient;
     this.fiatParam = service.supportedFiat;
     this.appNetwork = this.configService.network.key;
     this.platformId = getPlatformId(this.appNetwork);
@@ -52,7 +55,8 @@ export class PriceService {
 
   async getNativeAssetPrice(): Promise<Price> {
     try {
-      const response = await this.client.get<PriceResponse>(
+      // const response = await this.client.get<PriceResponse>(
+      const response = await this.cacheClient.get<PriceResponse>(
         `/simple/price?ids=${this.nativeAssetId}&vs_currencies=${this.fiatParam}`
       );
       return response[this.nativeAssetId];
@@ -87,7 +91,8 @@ export class PriceService {
         );
         const endpoint = `/simple/token_price/${this.platformId}?contract_addresses=${addressString}&vs_currencies=${this.fiatParam}`;
         const request = retryPromiseWithDelay(
-          this.client.get<PriceResponse>(endpoint),
+          // this.client.get<PriceResponse>(endpoint),
+          this.cacheClient.get<PriceResponse>(endpoint),
           3,
           2000
         );
@@ -136,7 +141,8 @@ export class PriceService {
           this.fiatParam
         }&from=${start}&to=${end}`;
         const request = retryPromiseWithDelay(
-          this.client.get<HistoricalPriceResponse>(endpoint),
+          // this.client.get<HistoricalPriceResponse>(endpoint),
+          this.cacheClient.get<HistoricalPriceResponse>(endpoint),
           2, // retryCount
           2000 // delayTime
         );

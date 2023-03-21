@@ -17,6 +17,7 @@ type Props = {
   pickedTokens?: string[];
   isOnMigrationCard?: boolean;
   isHovered?: boolean;
+  showWeight:boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   pickedTokens: () => [],
   isOnMigrationCard: false,
   isHovered: false,
+  showWeight: true,
 });
 
 const { fNum } = useNumbers();
@@ -61,10 +63,13 @@ function symbolFor(token: PoolToken): string {
 }
 
 function weightFor(token: PoolToken): string {
-  return fNum(token.weight || '0', {
-    style: 'percent',
-    maximumFractionDigits: 0,
-  });
+  if(props.showWeight===true){
+    return fNum(token.weight || '0', {
+      style: 'percent',
+      maximumFractionDigits: 0,
+    });
+  }
+  return '';
 }
 
 const MAX_PILLS = 8;

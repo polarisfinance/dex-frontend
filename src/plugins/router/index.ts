@@ -16,7 +16,7 @@ const GetVeBalPage = () =>
   import(/* webpackChunkName: "GetVeBalPage" */ '@/pages/get-vebal.vue');
 const HomePage = () =>
   import(
-    /* webpackChunkName: "HomePage" */ /* webpackPrefetch: true */ '@/pages/index.vue'
+    /* webpackChunkName: "HomePage" */ /* webpackPrefetch: true */ '@/pages/earn.vue'
   );
 const PoolPage = () =>
   import(

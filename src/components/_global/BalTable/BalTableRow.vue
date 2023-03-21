@@ -42,7 +42,7 @@ function getHorizontalStickyClass(index: number) {
 <template>
   <tr
     :class="[
-      'bg-white z-10 row-bg group',
+      'z-10 row-bg group',
       {
         'cursor-pointer': handleRowClick,
         'border-b dark:border-gray-700': pinned,
