@@ -362,6 +362,7 @@ watch(_address, async (newAddress, oldAddress) => {
 .polaris-max-button{
   background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
   padding: 0px 8px;
+  line-height: 18px;
 }
 .polaris-max-button:hover{
   background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);

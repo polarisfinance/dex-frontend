@@ -136,6 +136,7 @@
           </div>
         </Transition>
       </div>
+      <PolLine/>
       <SwapRoute
         v-if="alwaysShowRoutes"
         :addressIn="swapping.tokenIn.value.address"
