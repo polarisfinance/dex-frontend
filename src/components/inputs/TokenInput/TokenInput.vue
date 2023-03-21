@@ -290,22 +290,24 @@ watch(_address, async (newAddress, oldAddress) => {
             <template v-if="hasBalance && !noMax && !disableMax">
               <span
                 v-if="!isMaxed"
-                class="text-blue-600 hover:text-purple-600 focus:text-purple-600 dark:text-blue-400 dark:hover:text-yellow-500 dark:focus:text-yellow-500 transition-colors"
+                class="polaris-max-button mr-[8px] text-polaris-white rounded-medium transition-colors"
               >
                 {{ $t('max') }}
               </span>
               <span
                 v-else
-                class="text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                class="polaris-max-button mr-[8px] text-polaris-white rounded-medium transition-colors"
               >
                 {{ $t('maxed') }}
               </span>
             </template>
-            {{ balanceLabel ? balanceLabel : $t('balance') }}:
+            <span class="dark:text-polaris-3">
+              {{ balanceLabel ? balanceLabel : $t('balance') }}:
 
-            <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />
-            <span v-else class="mx-1">
-              {{ fNum(tokenBalance, FNumFormats.token) }}
+              <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />
+              <span v-else class="mx-1">
+                {{ fNum(tokenBalance, FNumFormats.token) }}
+              </span>
             </span>
 
           </button>
@@ -356,3 +358,12 @@ watch(_address, async (newAddress, oldAddress) => {
     </template>
   </BalTextInput>
 </template>
+<style scoped>
+.polaris-max-button{
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  padding: 0px 8px;
+}
+.polaris-max-button:hover{
+  background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);
+}
+</style>

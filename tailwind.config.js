@@ -70,6 +70,7 @@ module.exports = {
       borderRadius: {
         '2xl': '1.25rem',
         'small':'16px',
+        'medium':'20px',
         'default':'22px',
         'main':'33px',
         'big':'44px'

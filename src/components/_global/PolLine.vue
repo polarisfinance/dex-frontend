@@ -11,13 +11,12 @@ const classes = computed(() => ({
 </script>
 
 <template>
-  <div class="pol-line">
-  </div>
+  <div class="pol-line"></div>
 </template>
 
 <style scoped>
 .pol-line{
-  height: 1px;
-  background-color: rgba(151,71,255,.4);
+  height: 0px;
+  border: 0.5px solid rgba(151,71,255,.4);
 }
 </style>
