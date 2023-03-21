@@ -75,6 +75,7 @@ module.exports = {
         'big':'44px'
       },
       fontSize: {
+        xsm: ['12px', '15px'],
         sm: ['14px', '20px'],
         base: ['16px', '20px'],
         lg: ['20px', '28px'],

@@ -61,12 +61,14 @@ declare module '@vue/runtime-core' {
     GithubIcon: typeof import('./src/components/_global/icons/brands/GithubIcon.vue')['default']
     HoveredSwapIcon: typeof import('./src/components/_global/icons/polaris/HoveredSwapIcon.vue')['default']
     LightBulbIcon: typeof import('./src/components/_global/icons/LightBulbIcon.vue')['default']
+    Line: typeof import('./src/components/_global/shapes/BalCircle/Line.vue')['default']
     MediumIcon: typeof import('./src/components/_global/icons/brands/MediumIcon.vue')['default']
     MinusSquareIcon: typeof import('./src/components/_global/icons/MinusSquareIcon.vue')['default']
     MoonIcon: typeof import('./src/components/_global/icons/MoonIcon.vue')['default']
     NetworkIcon: typeof import('./src/components/_global/icons/NetworkIcon.vue')['default']
     PinHeader: typeof import('./src/components/_global/BalTable/PinHeader.vue')['default']
     PlusSquareIcon: typeof import('./src/components/_global/icons/PlusSquareIcon.vue')['default']
+    PolLine: typeof import('./src/components/_global/PolLine.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SpinnerIcon: typeof import('./src/components/_global/icons/SpinnerIcon.vue')['default']
@@ -77,6 +79,7 @@ declare module '@vue/runtime-core' {
     TotalsRow: typeof import('./src/components/_global/BalTable/TotalsRow.vue')['default']
     TwitterIcon: typeof import('./src/components/_global/icons/brands/TwitterIcon.vue')['default']
     WalletIcon: typeof import('./src/components/_global/icons/WalletIcon.vue')['default']
+    X: typeof import('./src/components/_global/icons/polaris/x.vue')['default']
     YoutubeIcon: typeof import('./src/components/_global/icons/brands/YoutubeIcon.vue')['default']
   }
 }

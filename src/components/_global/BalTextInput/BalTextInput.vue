@@ -32,6 +32,7 @@ type Props = {
   noShadow?: boolean;
   noBorder?: boolean;
   autoFocus?: boolean;
+  placeholderColor?: string;
   format?: (input: string | number) => string | number;
 };
 
@@ -52,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   noShadow: false,
   noBorder: false,
   autoFocus: false,
+  placeholderColor: undefined,
 });
 
 const emit = defineEmits<{
@@ -167,9 +169,6 @@ onMounted(() => {
   @apply transition-colors;
 }
 
-::placeholder {
-  @apply text-polaris-white;
-}
 .input-group {
   @apply flex;
 }

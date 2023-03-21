@@ -31,6 +31,13 @@ export default function useInputStyles(
     }
   };
 
+  const placeholderColor = (): string => {
+    if (props.placeholderColor!=undefined) {
+      return 'placeholder:text-'+props.placeholderColor;
+    }
+    return 'placeholder:text-polaris-white';
+  };
+
   const inputTextSize = (): string => {
     switch (props.size) {
       case 'xs':
@@ -93,6 +100,7 @@ export default function useInputStyles(
   const inputClasses = computed(() => ({
     [inputHeightClass()]: true,
     [inputTextSize()]: true,
+    [placeholderColor()]:true,
     'text-right': props.inputAlignRight,
     'font-numeric': props.type === 'number',
     'text-red-500': isInvalid.value,
