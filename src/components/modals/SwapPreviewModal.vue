@@ -23,6 +23,7 @@ import { getWrapAction, WrapType } from '@/lib/utils/balancer/wrapper';
 import useWeb3 from '@/services/web3/useWeb3';
 import { TransactionActionInfo } from '@/types/transactions';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
+import PolLine from '@/components/_global/PolLine.vue';
 
 const PRICE_UPDATE_THRESHOLD = 0.02;
 
@@ -515,17 +516,17 @@ watch(blockNumber, () => {
 </script>
 
 <template>
-  <BalModal show @close="onClose">
+  <BalModal show @close="onClose" noBorder noPad >
     <div>
-      <BalStack horizontal align="center" spacing="xs" class="mb-4">
-        <button class="flex text-blue-500 hover:text-blue-700" @click="onClose">
-          <BalIcon class="flex" name="chevron-left" />
+      <BalStack horizontal align="center" spacing="xs" class="pb-4 py-[14px] pl-[18px] dark:bg-polaris-card-medium">
+        <button class="flex text-polaris-2 hover:text-polaris-white pr-[12px]" @click="onClose">
+          <BalIcon class="flex" name="x" />
         </button>
-        <h4>
+        <h4 class="dark:text-polaris-white text-base font-semibold order-first w-full ">
           {{ labels.modalTitle }}
         </h4>
       </BalStack>
-      <BalCard noPad class="overflow-auto relative mb-6">
+      <BalCard noPad square noBorder shadow="none" class="overflow-auto relative mb-6 dark:bg-polaris-card-medium">
         <template #header>
           <div class="w-full">
             <div>
@@ -549,18 +550,6 @@ watch(blockNumber, () => {
                 block
               />
             </div>
-            <div
-              class="p-3 w-full text-sm bg-gray-50 dark:bg-gray-800 rounded-t-lg border-b dark:border-gray-800"
-            >
-              <span>
-                {{ $t('effectivePrice') }}
-                {{
-                  swapping.exactIn.value
-                    ? swapping.effectivePriceMessage.value.tokenIn
-                    : swapping.effectivePriceMessage.value.tokenOut
-                }}
-              </span>
-            </div>
           </div>
         </template>
         <div>
@@ -577,21 +566,23 @@ watch(blockNumber, () => {
             square
           />
           <div
-            class="relative p-3 border-b border-gray-100 dark:border-gray-900"
+            class="relative p-3 border-gray-100 "
           >
-            <div class="flex items-center">
+            <div class="flex items-center font-medium text-xl dark:text-polaris-white">
               <div class="mr-3">
                 <BalAsset
                   :address="swapping.tokenIn.value.address"
                   :size="36"
                 />
               </div>
-              <div>
-                <div class="font-medium">
+              <div >
+                {{ swapping.tokenIn.value.symbol }}
+              </div>
+              <div class="text-right w-full">
+                <div>
                   {{
                     fNum(swapping.tokenInAmountInput.value, FNumFormats.token)
                   }}
-                  {{ swapping.tokenIn.value.symbol }}
                 </div>
                 <div class="text-sm text-secondary">
                   {{ tokenInFiatValue }}
@@ -602,8 +593,8 @@ watch(blockNumber, () => {
           <div class="arrow-down">
             <ArrowDownIcon />
           </div>
-          <div class="p-3">
-            <div class="flex items-center">
+          <div class="p-3 dark:bg-polaris-card-dark">
+            <div class="flex items-center font-medium text-xl dark:text-polaris-white">
               <div class="mr-3">
                 <BalAsset
                   :address="swapping.tokenOut.value.address"
@@ -611,40 +602,55 @@ watch(blockNumber, () => {
                 />
               </div>
               <div>
-                <div class="font-medium">
+                {{ swapping.tokenOut.value.symbol }}
+              </div>
+              <div class="text-right w-full">
+                <div>
                   {{
                     fNum(swapping.tokenOutAmountInput.value, FNumFormats.token)
                   }}
-                  {{ swapping.tokenOut.value.symbol }}
                 </div>
                 <div class="text-sm text-secondary">
                   {{ tokenOutFiatValue }}
-                  <span
-                    v-if="
-                      swapping.isBalancerSwap.value ||
-                      swapping.isWrapUnwrapSwap.value
-                    "
-                  >
-                    / {{ $t('priceImpact') }}:
-                    {{
-                      fNum(swapping.sor.priceImpact.value, FNumFormats.percent)
-                    }}
-                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </BalCard>
-      <BalCard noPad shadow="none" class="mb-3">
+      <PolLine class="px-[12px]"/>
+      <div
+        class="flex w-full text-sm "
+      >
+        <span>
+          {{ $t('effectivePrice') }}
+          {{
+            swapping.exactIn.value
+              ? swapping.effectivePriceMessage.value.tokenIn
+              : swapping.effectivePriceMessage.value.tokenOut
+          }}
+        </span>
+      </div>
+      <div class="flex w-full text-sm "
+        v-if="
+          swapping.isBalancerSwap.value ||
+          swapping.isWrapUnwrapSwap.value
+        "
+      >
+        {{ $t('priceImpact') }}:
+        {{
+          fNum(swapping.sor.priceImpact.value, FNumFormats.percent)
+        }}
+      </div>
+      <BalCard noBorder square noPad shadow="none" class="mb-3">
         <template #header>
           <div
-            class="flex justify-between items-center p-3 w-full border-b dark:border-gray-900"
+            class="flex justify-between items-center p-3 w-full"
           >
             <div class="font-semibold">
               {{ labels.swapSummary.title }}
             </div>
-            <div class="flex text-xs uppercase divide-x dark:divide-gray-500">
+            <div class="flex text-xs uppercase divide-x ">
               <div
                 :class="[
                   'pr-2 cursor-pointer font-medium',
@@ -692,7 +698,7 @@ watch(blockNumber, () => {
         </div>
         <template #footer>
           <div
-            class="p-3 w-full text-sm bg-white dark:bg-gray-800 rounded-b-lg"
+            class="p-3 w-full text-sm "
           >
             <div class="font-medium summary-item-row">
               <div class="w-64">
@@ -740,6 +746,7 @@ watch(blockNumber, () => {
       </BalBtn>
       <BalActionSteps
         v-else
+        class="px-[12px] pb-[12px]"
         :actions="actions"
         :isLoading="actionStepsLoading"
         :loadingLabel="actionStepsLoadingLabel"
@@ -770,7 +777,7 @@ watch(blockNumber, () => {
         block
       />
     </div>
-    <SwapRoute
+    <!-- <SwapRoute
       v-if="showSwapRoute"
       :addressIn="swapping.tokenIn.value.address"
       :amountIn="swapping.tokenInAmountInput.value"
@@ -779,16 +786,16 @@ watch(blockNumber, () => {
       :pools="pools"
       :sorReturn="swapping.sor.sorReturn.value"
       class="mt-3"
-    />
+    /> -->
   </BalModal>
 </template>
 
 <style scoped>
 .arrow-down {
-  @apply absolute right-0 rounded-full border border-gray-100 flex items-center h-8 w-8 justify-center bg-white mr-3
+  @apply absolute right-[50%] rounded-full border border-gray-100 flex items-center h-8 w-8 justify-center bg-white mr-3
     dark:border-gray-800 dark:bg-gray-800;
 
-  transform: translateY(-50%);
+  transform: translateX(100%) translateY(-50%);
 }
 
 .summary-item-row {

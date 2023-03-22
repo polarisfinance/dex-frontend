@@ -118,7 +118,7 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full rounded-b-none sm:rounded-b-lg dark:border-0 dark:bg-polaris-card-dark;
+  @apply mx-auto h-full  dark:border-0 dark:bg-polaris-card-dark;
   overflow: none;
 }
 

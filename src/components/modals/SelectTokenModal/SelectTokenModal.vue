@@ -10,7 +10,6 @@ import { useTokens } from '@/providers/tokens.provider';
 import useUrls from '@/composables/useUrls';
 import { TokenInfoMap, TokenList } from '@/types/TokenList';
 import { useMagicKeys } from '@vueuse/core';
-import x from '@/components/_global/icons/polaris/x.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 import PolLine from '@/components/_global/PolLine.vue';
 
@@ -221,7 +220,9 @@ watchEffect(() => {
               class="ml-1 text-blue-500 dark:text-polaris-white group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
             />
           </div>
-          <x class="ml-5" @click="$emit('close')" />
+          <button class="flex text-polaris-2 hover:text-polaris-white ml-5" @click="$emit('close')">
+            <BalIcon class="flex" name="x" />
+          </button>
         </div>
       </div>
     </template>

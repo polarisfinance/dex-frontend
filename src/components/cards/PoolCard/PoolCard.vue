@@ -3,15 +3,20 @@ import { computed, defineComponent, ref, toRefs, PropType,watch,ComputedRef } fr
 import { useRouter } from 'vue-router';
 import { PoolWithShares } from '@/services/pool/types';
 import { PoolToken } from '@/services/pool/types';
-
+import TokenWeightsPills from '@/components/tables/PoolsTable/TokenPills/TokenWeightsPills.vue';
+import TokenPills from '@/components/tables/PoolsTable/TokenPills/TokenPills.vue';
 import { POOLS } from '@/constants/pools';
 import {
   absMaxApr,
+  fiatValueOf,
+  isLiquidityBootstrapping,
   isMigratablePool,
   isStableLike,
   orderedPoolTokens,
   orderedTokenAddresses,
   totalAprLabel,
+  isLBP,
+  poolMetadata,
 } from '@/composables/usePool';
 
 // import {AprProviderService} from '@/services/pool/apr.provider';
@@ -28,16 +33,22 @@ export default defineComponent({
         ),
     }},
   components: {
+    TokenPills,
+    TokenWeightsPills,
   },
   props: {
     pool: {
       type: Object as PropType<PoolWithShares>,
       default: null,
     },
-    prices:{
-      type: Object as PropType<ComputedRef<TokenPrices>>,
-      default: null,
+    isLoading:{
+      type:Boolean,
+      default:true,
     },
+    selectedTokens:{
+      type:Array,
+      default:[],
+    }, 
     noApr:{
         type:Boolean,
         default:false,
@@ -45,24 +56,24 @@ export default defineComponent({
   },
   emits: ['click'],
   methods:{
-    async fetchApr() {
-      if (!this.pool) {
-        await new Promise((resolve, reject) => {
-          const loop = () =>
-          this.pool !== undefined
-              ? resolve(this.pool)
-              : setTimeout(loop, 100);
-          loop();
-        });
-      }
+    // async fetchApr() {
+    //   if (!this.pool) {
+    //     await new Promise((resolve, reject) => {
+    //       const loop = () =>
+    //       this.pool !== undefined
+    //           ? resolve(this.pool)
+    //           : setTimeout(loop, 100);
+    //       loop();
+    //     });
+    //   }
 
-      // const aprProviderClass = new AprProviderService([this.pool],this.prices,this.xpolarPoolQuery);
-      // aprProviderClass.init();
-      // aprProviderClass.aprsReceived = (aprs:any)=>{
-      //   this.aprs = aprs;
-      // }
-      // aprProviderClass.fetchAll();
-    },
+    //   // const aprProviderClass = new AprProviderService([this.pool],this.prices,this.xpolarPoolQuery);
+    //   // aprProviderClass.init();
+    //   // aprProviderClass.aprsReceived = (aprs:any)=>{
+    //   //   this.aprs = aprs;
+    //   // }
+    //   // aprProviderClass.fetchAll();
+    // },
   },
   setup(props) {
     /**
@@ -77,6 +88,12 @@ export default defineComponent({
             ? [pool.address]
             : orderedTokenAddresses(pool);
     }
+    function aprLabelFor(pool: Pool): string {
+      const poolAPRs = pool?.apr;
+      if (!poolAPRs) return '0';
+
+      return totalAprLabel(poolAPRs, pool.boost);
+    }
 
     return {
       // computed
@@ -84,12 +101,16 @@ export default defineComponent({
       isDesktop,
       // methods
       iconAddresses,
-      orderedPoolTokens
+      orderedPoolTokens,
+      aprLabelFor,
+      poolMetadata,
+      isStableLike,
+      props,
     };
   },
   created(){
-    if(!this.noApr)
-      this.fetchApr();
+    // if(!this.noApr)
+    //   this.fetchApr();
   }
 });
 
@@ -108,17 +129,25 @@ export default defineComponent({
             :maxOffset="35"
           />
           <div class="w-full">
-            <TokenPills class="token-pill"
-              :tokens="orderedPoolTokens(pool.poolType, pool.address, pool.tokens)"
-              :isStablePool="false"
-              :selectedTokens="[]"
-              :showWeight="false"
-            />
-            <TokenWeightPill class="mt-[8px] inline-block w-min"
-              :tokens="
-                orderedPoolTokens(pool.poolType, pool.address, pool.tokens)
-              "
-            />
+            <div v-if="poolMetadata(pool.id)" class="text-left">
+              {{ poolMetadata(pool.id)?.name }}
+            </div>
+            <div v-else>
+              <TokenPills
+                :tokens="orderedPoolTokens(pool, pool.tokens)"
+                :isStablePool="isStableLike(pool.poolType)"
+                :selectedTokens="selectedTokens"
+                :pickedTokens="selectedTokens"
+                :showWeight="false"
+              />
+            </div>
+            <TokenWeightsPills class="ml-[12px]"
+              :tokens="orderedPoolTokens(pool, pool.tokens)"
+              :isStablePool="isStableLike(pool.poolType)"
+              :selectedTokens="selectedTokens"
+              :pickedTokens="selectedTokens"
+              :boosted="pool.boosted"
+          />
           </div>
         </router-link>
         <div class="footer">
@@ -133,16 +162,9 @@ export default defineComponent({
                       {{ '0' + '%' }}
                       </div>
                   </template>
-                  <BalLoadingBlock
-                      v-else-if="
-                      !aprs ||
-                      !aprs[pool.address] ||
-                      !aprs[pool.address]['yearlyAPR']
-                      "
-                  />
                   <template v-else>
                       <div>
-                      {{ aprs[pool.address]['yearlyAPR'] + '%' }}
+                      {{  aprLabelFor(pool) }}
                       </div>
                   </template>
                 </div>

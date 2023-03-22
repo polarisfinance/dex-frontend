@@ -54,17 +54,17 @@ function onColumnSort(columnId: string) {
   <div>
     <HomePageHero />
 
-    <!-- <div class="container mx-auto" id="hot-pools">
-      <h3 class="mx-7 my-7 font-semibold">Super Hot Pools</h3>
+    <div class="container mx-auto" id="hot-pools">
+      <h3 class="mx-7 my-7 dark:text-polaris-white font-semibold">Super Hot Pools</h3>
       <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
         <template v-for="(pool, idx)      in      (isDesktop) ? pools.slice(0, 6) :pools.slice(0, 3)  " :key="idx">
           <PoolCard
           :pool="pool"
-          :prices="prices"
+          :selectedTokens="selectedTokens"
           ></PoolCard>
         </template>
       </div>
-    </div> -->
+    </div>
 
     <div class="xl:container xl:px-4 pt-10 md:pt-8 xl:mx-auto">
       <BalStack vertical>
