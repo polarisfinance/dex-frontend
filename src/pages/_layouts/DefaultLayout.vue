@@ -4,7 +4,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 </script>
 
 <template>
-  <div>
+  <div class="app-background">
     <div class="app-body">
       <AppNav />
       <div class="pb-16">
@@ -28,5 +28,11 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
   @apply mb-8;
 
   min-height: calc(100vh - 2rem);
+}
+.app-background {
+  background-repeat: no-repeat;
+  top: 0px;
+  transition: all 0.3s ease-in-out;
+  background-image: url('/images/backgrounds/polaris/index.svg');
 }
 </style>

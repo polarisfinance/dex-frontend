@@ -78,19 +78,20 @@ const MAX_PILLS = 8;
 <template>
   <div class="flex flex-wrap -mt-1">
     <template v-if="isStablePool">
-      <StableTokenPill
-        v-for="token in visibleTokens"
+      <StableTokenPill class="text-lg"
+        v-for="(token,idx) in visibleTokens"
         :key="token.address"
         :hasBalance="hasBalance(token.address)"
         :symbol="symbolFor(token)"
         :token="token"
         :isSelected="includesAddress(selectedTokens, token.address)"
         :isPicked="includesAddress(pickedTokens, token.address)"
+        :separator="idx==0 ? false:true"
       />
     </template>
     <template v-else>
       <WeightedTokenPill
-        v-for="token in visibleTokens"
+        v-for="(token,idx) in visibleTokens"
         :key="token.address"
         :hasBalance="hasBalance(token.address)"
         :symbol="symbolFor(token)"
@@ -100,6 +101,7 @@ const MAX_PILLS = 8;
         :isPicked="includesAddress(pickedTokens, token.address)"
         :isOnMigrationCard="isOnMigrationCard"
         :isHovered="isHovered"
+        :separator="idx==0 ? false:true"
       />
       <HiddenTokensPills
         v-if="hiddenTokens.length > 0"
