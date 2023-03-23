@@ -78,7 +78,7 @@ const MAX_PILLS = 8;
 <template>
   <div class="flex flex-wrap -mt-1">
     <template v-if="isStablePool">
-      <StableTokenPill class="text-lg"
+      <StableTokenPill
         v-for="(token,idx) in visibleTokens"
         :key="token.address"
         :hasBalance="hasBalance(token.address)"

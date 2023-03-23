@@ -125,15 +125,16 @@ export default defineComponent({
           <BalAssetSet
             :size="44"
             :addresses="iconAddresses(pool)"
-            :width="100"
+            :width="130"
             :maxOffset="35"
           />
           <div class="w-full">
-            <div v-if="poolMetadata(pool.id)" class="text-left">
+            <div v-if="poolMetadata(pool.id)" class="text-left text-xl">
               {{ poolMetadata(pool.id)?.name }}
             </div>
             <div v-else>
               <TokenPills
+                class="text-xl"
                 :tokens="orderedPoolTokens(pool, pool.tokens)"
                 :isStablePool="isStableLike(pool.poolType)"
                 :selectedTokens="selectedTokens"
@@ -141,7 +142,7 @@ export default defineComponent({
                 :showWeight="false"
               />
             </div>
-            <TokenWeightsPills class="ml-[12px]"
+            <TokenWeightsPills class="ml-[12px] "
               :tokens="orderedPoolTokens(pool, pool.tokens)"
               :isStablePool="isStableLike(pool.poolType)"
               :selectedTokens="selectedTokens"
