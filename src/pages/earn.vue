@@ -87,25 +87,23 @@ function onColumnSort(columnId: string) {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full"
+            class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full dark:bg-polaris-card-light rounded-big"
           >
             <TokenSearchInput
               v-model="selectedTokens"
-              class="w-full md:w-2/3"
+              class="w-full md:w-2/3 "
               @add="addSelectedToken"
               @remove="removeSelectedToken"
             />
-            <BalBtn
+            <button
               v-if="!upToMediumBreakpoint"
-              color="blue"
-              size="sm"
-              outline
+              class="polaris-small-button text-white font-semibold"
               :class="{ 'mt-4': upToMediumBreakpoint }"
               :block="upToMediumBreakpoint"
               @click="navigateToCreatePool"
-            >
-              {{ $t('createAPool.title') }}
-            </BalBtn>
+          >
+            {{ $t('createAPool.title') }}
+          </button>
           </div>
         </div>
         <PoolsTable
