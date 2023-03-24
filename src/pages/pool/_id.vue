@@ -207,9 +207,9 @@ watch(
 <template>
   <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
     <div
-      class="grid grid-cols-1 lg:grid-cols-3 gap-x-0 lg:gap-x-4 xl:gap-x-8 gap-y-8"
+      class=""
     >
-      <div class="col-span-2 px-4 lg:px-0">
+      <div class="px-4 lg:px-0">
         <BalLoadingBlock
           v-if="loadingPool || !pool"
           class="header-loading-block"
@@ -227,10 +227,9 @@ watch(
           :isComposableStableLikePool="isComposableStableLikePool"
         />
       </div>
-      <div class="hidden lg:block" />
-      <div class="order-2 lg:order-1 col-span-2">
-        <div class="grid grid-cols-1 gap-y-8">
-          <div class="px-4 lg:px-0">
+      <div class="order-2 lg:order-1">
+        <div class="">
+          <div class="px-4 lg:px-0 dark:bg-polaris-card-dark rounded-main overflow-hidden">
             <PoolChart
               :historicalPrices="historicalPrices"
               :snapshots="snapshots"
@@ -240,19 +239,18 @@ watch(
               :poolType="pool?.poolType"
               :poolPremintedBptIndex="poolPremintedBptIndex"
             />
-          </div>
-          <div class="px-4 lg:px-0 mb-4">
             <PoolStatCards
+              class="dark:bg-polaris-card-medium"
               :pool="pool"
               :poolApr="poolApr"
               :loading="loadingPool"
               :loadingApr="loadingApr"
             />
-            <ApyVisionPoolLink
+            <!-- <ApyVisionPoolLink
               v-if="!loadingPool && pool"
               :poolId="pool.id"
               :tokens="titleTokens"
-            />
+            /> -->
           </div>
           <div class="mb-4">
             <h4

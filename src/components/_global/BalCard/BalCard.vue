@@ -39,6 +39,7 @@ export default defineComponent({
     noContentPad: { type: Boolean, default: false },
     noBorder: { type: Boolean, default: false },
     darkBgColor: { type: String, default: 'card-default' },
+    noBackground: { type: Boolean, default: false },
     imgSrc: { type: String, default: '' },
     hFull: { type: Boolean, default: false },
     growContent: { type: Boolean, default: false },
@@ -73,7 +74,7 @@ export default defineComponent({
       return {
         'rounded-default': !props.square,
         'overflow-hidden': !props.exposeOverflow,
-        [`bg-white dark:bg-polaris-${props.darkBgColor}`]: true,
+        [`bg-white dark:bg-polaris-${props.darkBgColor}`]: !props.noBackground,
         [`shadow${props.shadow ? '-' : ''}${props.shadow}`]: true,
         [borderClasses.value]: !props.noBorder,
         'h-full': props.hFull,

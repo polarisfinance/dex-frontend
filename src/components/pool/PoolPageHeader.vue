@@ -133,21 +133,46 @@ function symbolFor(titleTokenIndex: number): string {
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-wrap items-center -mt-2">
-      <div v-if="hasMetadata">
-        <h3 class="pool-title">
-          {{ poolMetadata.name }}
-        </h3>
-        <h5 class="text-sm">
+  <div class="flex">
+    <div class="flex flex-col flex-1">
+      <div class="flex flex-wrap items-center -mt-2 dark:text-polaris-white">
+        <div v-if="hasMetadata">
+          <h3 class="pool-title text-xxl">
+            {{ poolMetadata.name }}
+          </h3>
+          <h5 class="text-sm">
+            {{ poolTypeLabel }}
+          </h5>
+        </div>
+        <h3 v-else class="pool-title text-xxl">
           {{ poolTypeLabel }}
-        </h5>
+        </h3>
       </div>
-      <h3 v-else class="pool-title">
-        {{ poolTypeLabel }}
-      </h3>
+      <div class="flex items-center mt-2">
+        <div class="mr-1 text-sm text-secondary" v-html="poolFeeLabel" />
+        <BalTooltip>
+          <template #activator>
+            <BalLink
+              v-if="feesManagedByGauntlet"
+              :href="EXTERNAL_LINKS.Gauntlet.Home"
+              external
+            >
+              <GauntletIcon />
+            </BalLink>
+            <BalIcon
+              v-else
+              name="info"
+              size="xs"
+              class="text-gray-400 dark:text-gray-500"
+            />
+          </template>
+          <span>
+            {{ swapFeeToolTip }}
+          </span>
+        </BalTooltip>
+      </div>
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center ">
       <div
         v-for="({ address, weight }, i) in titleTokens"
         :key="i"
@@ -188,29 +213,6 @@ function symbolFor(titleTokenIndex: number): string {
           class="mt-2 ml-2 text-gray-500 hover:text-blue-500 transition-colors"
         />
       </BalLink>
-    </div>
-    <div class="flex items-center mt-2">
-      <div class="mr-1 text-sm text-secondary" v-html="poolFeeLabel" />
-      <BalTooltip>
-        <template #activator>
-          <BalLink
-            v-if="feesManagedByGauntlet"
-            :href="EXTERNAL_LINKS.Gauntlet.Home"
-            external
-          >
-            <GauntletIcon />
-          </BalLink>
-          <BalIcon
-            v-else
-            name="info"
-            size="xs"
-            class="text-gray-400 dark:text-gray-500"
-          />
-        </template>
-        <span>
-          {{ swapFeeToolTip }}
-        </span>
-      </BalTooltip>
     </div>
   </div>
 

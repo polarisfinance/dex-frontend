@@ -89,7 +89,7 @@ const stats = computed(() => {
   <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading || !pool" class="h-24" />
-      <BalCard v-else>
+      <BalCard noBorder noBackground v-else>
         <div class="flex mb-2 text-sm font-medium text-secondary">
           <span>{{ stat.label }}</span>
           <template v-if="stat.id === 'apr' && poolApr">

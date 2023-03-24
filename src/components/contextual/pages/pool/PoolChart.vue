@@ -326,7 +326,16 @@ function getVolumeData(
       : Number(periodSnapshots[pariodLastSnapshotIdx].swapVolume));
 
   return {
-    color: [tailwind.theme.colors.green['400']],
+    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        {
+          offset: 0,
+          color: '#3DDEED',
+        },
+        {
+          offset: 1,
+          color: 'rgba(61, 222, 237, 0)',
+        },
+      ]),
     chartType: 'bar',
     hoverColor: tailwind.theme.colors.pink['500'],
     data: [
@@ -439,7 +448,7 @@ function addLaggingTimestamps() {
 
   <div v-else-if="snapshotValues.length >= MIN_CHART_VALUES" class="chart">
     <div
-      class="flex flex-col xs:flex-row xs:flex-wrap justify-between mb-6 dark:border-gray-900"
+      class="flex flex-col xs:flex-row xs:flex-wrap justify-between mb-6 "
     >
       <div class="flex mb-4">
         <BalTabs v-model="activeTab" :tabs="tabs" noPad class="mr-6 -mb-px" />
@@ -452,7 +461,7 @@ function addLaggingTimestamps() {
         </div>
       </div>
       <div
-        class="flex flex-col items-start xs:items-end text-2xl font-semibold tabular-nums"
+        class="flex flex-col items-start xs:items-end text-xxl dark:text-polaris-white font-semibold tabular-nums"
       >
         <p
           class="tracking-tighter"
@@ -522,6 +531,6 @@ function addLaggingTimestamps() {
 }
 
 .chart {
-  @apply sm:border rounded-xl sm:px-5 sm:pt-5 sm:shadow sm:dark:bg-gray-850 dark:border-transparent;
+  @apply sm:px-5 sm:pt-5 ;
 }
 </style>
