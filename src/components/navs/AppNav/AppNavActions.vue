@@ -35,7 +35,7 @@ function connectWalletHandler() {
 <template>
   <div class="grid grid-rows-1 grid-flow-col gap-2">
     <DarkModeToggle v-if="isDesktop" />
-    <AppNavActivityBtn v-if="account" />
+    <!-- <AppNavActivityBtn v-if="account" /> -->
     <AppNavAccountBtn v-if="account" />
     <BalBtn
       v-else
