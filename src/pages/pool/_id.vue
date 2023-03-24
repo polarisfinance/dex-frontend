@@ -252,17 +252,15 @@ watch(
               :tokens="titleTokens"
             /> -->
           </div>
-          <div class="mb-4">
-            <h4
-              class="px-4 lg:px-0 mb-4"
-              v-text="$t('poolComposition.title')"
-            />
+          <div
+            class="container mx-auto flex justify-center gap-8 mt-[120px]"
+          >
             <BalLoadingBlock v-if="loadingPool" class="h-64" />
             <PoolCompositionCard v-else-if="pool" :pool="pool" />
           </div>
 
           <div ref="intersectionSentinel" />
-          <template v-if="isSentinelIntersected && pool">
+          <template v-if="isSentinelIntersected && pool" class="container mx-auto">
             <PoolTransactionsCard :pool="pool" :loading="loadingPool" />
             <PoolContractDetails :pool="pool" />
           </template>

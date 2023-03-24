@@ -9,7 +9,7 @@ import BoostedActivities from '../BoostedPoolActivities/Activities.vue';
 import Activities from '../PoolActivities/Activities.vue';
 import { PoolTransactionsTab } from '../types';
 import useWeb3 from '@/services/web3/useWeb3';
-
+import SwapTransactions from '../SwapTransactions/SwapTransactions.vue';
 /**
  * TYPES
  */
@@ -62,6 +62,10 @@ const tabs = computed(() =>
               },
             ]
           : []),
+          {
+          value: PoolTransactionsTab.TRADES,
+          label: t('poolTransactions.tabs.trades'),
+        },
       ]
 );
 
@@ -91,9 +95,9 @@ const title = computed((): string => {
     <div>
       <h4 class="px-4 lg:px-0 mb-5" v-text="title" />
       <div
-        class="flex justify-between items-end mx-4 lg:mx-0 mb-6 border-b dark:border-gray-900"
+        class="flex w-full"
       >
-        <BalTabs v-model="activeTab" :tabs="tabs" noPad class="-mb-px" />
+        <BalTabsSwitch v-model="activeTab" :tabs="tabs" noPad class="flex-1" />
       </div>
     </div>
 
@@ -122,6 +126,11 @@ const title = computed((): string => {
         <Activities
           v-else-if="activeTab === PoolTransactionsTab.USER_ACTIVITY"
           :poolActivityType="PoolTransactionsTab.USER_ACTIVITY"
+          :pool="pool"
+          :loading="loading"
+        />
+        <SwapTransactions
+          v-else-if="activeTab === PoolTransactionsTab.TRADES && !isStablePhantomPool && !isDeepPool"
           :pool="pool"
           :loading="loading"
         />

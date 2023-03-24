@@ -43,6 +43,7 @@ const { getToken } = useTokens();
 const currentLevel = computed(() => props.parentLevel + 1);
 
 const nestedPaddingClass = computed(() => {
+  return;
   switch (currentLevel.value) {
     case 1:
       return 'level-1';
@@ -66,13 +67,14 @@ function symbolFor(token: PoolToken): string {
 </script>
 
 <template>
-  <div
+  <div class="flex flex-col"
     :class="[
-      'grid gap-y-4 px-4 w-full',
-      isWeighted ? 'grid-cols-5' : 'grid-cols-4',
+      '',
       nestedPaddingClass,
     ]"
   >
+    <div class="dark:bg-polaris-card-medium dark:text-polaris-white text-center text-xsm rounded-[12px] font-bold mb-3">Pool Composition</div>
+
     <BalLink
       :href="explorerLinks.addressLink(token.address)"
       external
@@ -87,7 +89,7 @@ function symbolFor(token: PoolToken): string {
         :size="isDeepPool && currentLevel > 1 ? 28 : 36"
       />
       <span
-        class="group-hover:text-purple-500 dark:group-hover:text-yellow-500 transition-colors"
+        class="dark:text-polaris-white font-semibold text-xl"
         >{{ symbolFor(token) }}</span
       >
       <BalIcon
@@ -96,17 +98,24 @@ function symbolFor(token: PoolToken): string {
         class="ml-1 text-gray-500 group-hover:text-purple-500 dark:group-hover:text-yellow-500 transition-colors"
       />
     </BalLink>
-    <div v-if="isWeighted" class="justify-self-end">
-      {{ tokenData.tokenWeightLabel }}
-    </div>
-    <div class="justify-self-end">
-      {{ showUserShares ? tokenData.userBalanceLabel : tokenData.balanceLabel }}
-    </div>
-    <div class="justify-self-end">
-      {{ showUserShares ? tokenData.userFiatLabel : tokenData.fiatLabel }}
-    </div>
-    <div class="justify-self-end">
-      {{ tokenData.getTokenPercentageLabel() }}
+    <div class="composition-data flex p-2 dark:text-polaris-white font-semibold">
+      <div class="flex-1 text-left">
+        <div class="subheadline">{{ $t('poolComposition.token%') }}</div>
+        {{ tokenData.getTokenPercentageLabel() }}
+      </div>
+      <div v-if="isWeighted" class="flex-1 text-center">
+        <div class="subheadline">{{ $t('weight') }}</div>
+        {{ tokenData.tokenWeightLabel }}
+      </div>
+      <div class="flex-1 text-center">
+        <div class="subheadline">{{ $t('balance') }}</div>
+        {{ showUserShares ? tokenData.userBalanceLabel : tokenData.balanceLabel }}
+      </div>
+      <div class="flex-1 text-right">
+        <div class="subheadline">{{ $t('value') }}</div>
+        {{ showUserShares ? tokenData.userFiatLabel : tokenData.fiatLabel }}
+      </div>
+      
     </div>
   </div>
 
@@ -123,6 +132,22 @@ function symbolFor(token: PoolToken): string {
   </template>
 </template>
 <style scoped>
+
+.composition-data{
+  border-top: 1px solid rgba(65, 54, 94, 0.4);
+  margin-top: 24px;
+  font-size: 16px;
+  line-height: 20px;
+}
+.subheadline{
+  @apply dark:text-polaris-2;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
 .nested-token {
   @apply flex-shrink-0 mr-2 relative ml-1 sm:ml-0;
 }

@@ -75,6 +75,18 @@ onMounted(async () => {
 
 <template>
   <div
+    v-for="token in rootPool.tokens"
+    :key="token.address"
+    class="card w-full w-full rounded-medium dark:bg-polaris-card-dark"
+  >
+    <TokenBreakdown
+      :token="token"
+      :showUserShares="showUserShares"
+      :rootPool="pool"
+      :tokensData="tokenData"
+    />
+  </div>
+  <!-- <div
     class="flex justify-start items-center mx-4 lg:mx-0 mb-6 border-b dark:border-gray-900"
   >
     <BalTabs v-model="activeTab" :tabs="tabs" noPad class="-mb-px">
@@ -124,5 +136,13 @@ onMounted(async () => {
         />
       </div>
     </div>
-  </BalCard>
+  </BalCard> -->
 </template>
+
+<style scoped>
+.card{
+  padding: 12px ;
+  gap: 16px;
+  max-width: 355px;
+}
+</style>

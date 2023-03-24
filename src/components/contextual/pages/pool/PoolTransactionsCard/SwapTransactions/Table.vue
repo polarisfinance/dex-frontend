@@ -146,6 +146,7 @@ const swapRows = computed<SwapRow[]>(() =>
     class="overflow-x-auto"
     :square="upToLargeBreakpoint"
     :noBorder="upToLargeBreakpoint"
+    noBackground
     noPad
   >
     <BalTable
