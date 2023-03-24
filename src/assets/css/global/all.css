@@ -46,6 +46,17 @@ a {
     /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
   border-radius: 12px;
 }
+.polaris-small-button{
+  background: linear-gradient(93.62deg,#c004fe 2.98%,#7e02f5 97.02%);
+  border-radius: 24px;
+  padding: 10px 17px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+}
+.polaris-main-button:hover, .polaris-small-button:hover{
+  background: linear-gradient(93.62deg,rgba(192,4,254,.7) 2.98%,rgba(126,2,245,.7) 97.02%);
+}
 
 /* Hide number input spin/arrows */
 input::-webkit-outer-spin-button,

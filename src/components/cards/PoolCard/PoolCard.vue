@@ -142,7 +142,7 @@ export default defineComponent({
                 :showWeight="false"
               />
             </div>
-            <TokenWeightsPills class="ml-[12px] "
+            <TokenWeightsPills class="w-fit "
               :tokens="orderedPoolTokens(pool, pool.tokens)"
               :isStablePool="isStableLike(pool.poolType)"
               :selectedTokens="selectedTokens"
