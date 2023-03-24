@@ -239,13 +239,30 @@ watch(
               :poolType="pool?.poolType"
               :poolPremintedBptIndex="poolPremintedBptIndex"
             />
-            <PoolStatCards
-              class="dark:bg-polaris-card-medium"
-              :pool="pool"
-              :poolApr="poolApr"
-              :loading="loadingPool"
-              :loadingApr="loadingApr"
-            />
+            <div class="dark:bg-polaris-card-medium p-[24px]">
+              <PoolStatCards
+                :pool="pool"
+                :poolApr="poolApr"
+                :loading="loadingPool"
+                :loadingApr="loadingApr"
+              />
+              <PolLine class=""/>
+              <div class="pool-invest flex-1 text-center  text-polaris-white pt-[24px]">
+                Invest in the pool and earn on swap fees!
+                <router-link
+                  class="polaris-main-button rounded font-semibold text-lg flex w-full items-center mt-[12px] max-w-[520px] m-auto"
+                  :to="'/pool/' + pool?.id + '/invest'"
+                >
+                  <BalIcon
+                    name="plus"
+                    size="lg"
+                    :filled="true"
+                    class="ml-5 flex-none absolute"
+                  />
+                  <div class="w-full text-center">Invest in the pool</div>
+                </router-link>
+              </div>
+            </div>
             <!-- <ApyVisionPoolLink
               v-if="!loadingPool && pool"
               :poolId="pool.id"

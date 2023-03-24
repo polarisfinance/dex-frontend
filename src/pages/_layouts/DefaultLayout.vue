@@ -29,7 +29,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 
   min-height: calc(100vh - 2rem);
 }
-.app-background {
+.dark .app-background {
   background-repeat: no-repeat;
   top: 0px;
   transition: all 0.3s ease-in-out;
