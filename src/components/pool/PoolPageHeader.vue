@@ -191,17 +191,6 @@ function symbolFor(titleTokenIndex: number): string {
           <span class="">
             {{ symbolFor(i) }}
           </span>
-          <span
-            v-if="!isStableLikePool && !!weight && weight !== '0'"
-            class="mt-px ml-1 text-xs font-medium text-gray-400"
-          >
-            {{
-              fNum(weight || '0', {
-                style: 'percent',
-                maximumFractionDigits: 0,
-              })
-            }}
-          </span>
         </div>
         <BalAssetSet
             class="ml-3"

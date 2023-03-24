@@ -56,6 +56,11 @@ const PortfolioPage = () =>
     /* webpackChunkName: "PortfolioPage" */ /* webpackPrefetch: true */ '@/pages/portfolio.vue'
   );
 
+const SunrisesPage = () =>
+  import(/* webpackChunkName: "SunrisesPage" */ '@/pages/sunrise/sunrise.vue');
+const SunrisePage = () =>
+  import(/* webpackChunkName: "SunrisePage" */ '@/pages/sunrise/_id.vue');
+
 declare module 'vue-router' {
   interface RouteMeta {
     layout?: string;
@@ -179,6 +184,16 @@ const routes: RouteRecordRaw[] = [
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     redirect: '/',
+  },
+  {
+    path: '/sunrise',
+    name: 'sunrises',
+    component: SunrisesPage,
+  },
+  {
+    path: '/sunrise/:id',
+    name: 'sunrise',
+    component: SunrisePage,
   },
 ];
 
