@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import useBreakpoints from '@/composables/useBreakpoints';
-import SunrisePageHero from '@/components/heros/SunrisePageHero.vue';
+// import SunrisePageHero from '@/components/heros/SunrisePageHero.vue';
 import polarImg from './polar.svg';
 import orbitalImg from './orbital.svg';
 import uspImg from './usp.svg';
@@ -29,7 +29,7 @@ onMounted(() => {});
 </script>
 
 <template>
-  <SunrisePageHero/>
+  <!-- <SunrisePageHero/> -->
    
   <div class="container mx-auto">
     <div class="grid gap-6 " :class="{'grid-cols-3':isDesktop,'grid-cols-1':isMobile}">
@@ -84,7 +84,7 @@ onMounted(() => {});
 }
 
 .sunriseCard {
-  @apply bg-frame-dark;
+  /* @apply bg-frame-dark; */
   border-radius: 22px;
   padding: 24px 0px;
   flex: 1 1 30%;
@@ -92,7 +92,7 @@ onMounted(() => {});
 }
 
 .sunriseCardMobile {
-  @apply bg-frame-dark;
+  /* @apply bg-frame-dark; */
   border-radius: 16px;
   padding: 24px 52px;
   text-align: center;
