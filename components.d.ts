@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ActivityIcon: typeof import('./src/components/_global/icons/ActivityIcon.vue')['default']
+    AprIcon: typeof import('./src/components/_global/icons/polaris/AprIcon.vue')['default']
     ArrowDownIcon: typeof import('./src/components/_global/icons/ArrowDownIcon.vue')['default']
     BalAccordion: typeof import('./src/components/_global/BalAccordion/BalAccordion.vue')['default']
     BalActionSteps: typeof import('./src/components/_global/BalActionSteps/BalActionSteps.vue')['default']
@@ -58,6 +59,7 @@ declare module '@vue/runtime-core' {
     ChevronDownIcon: typeof import('./src/components/_global/icons/polaris/ChevronDownIcon.vue')['default']
     CompositionIcon: typeof import('./src/components/_global/icons/CompositionIcon.vue')['default']
     DiscordIcon: typeof import('./src/components/_global/icons/brands/DiscordIcon.vue')['default']
+    DollarCoinsStackedIcon: typeof import('./src/components/_global/icons/polaris/DollarCoinsStackedIcon.vue')['default']
     EmailIcon: typeof import('./src/components/_global/icons/EmailIcon.vue')['default']
     GithubIcon: typeof import('./src/components/_global/icons/brands/GithubIcon.vue')['default']
     HoveredSwapIcon: typeof import('./src/components/_global/icons/polaris/HoveredSwapIcon.vue')['default']
@@ -70,6 +72,7 @@ declare module '@vue/runtime-core' {
     PinHeader: typeof import('./src/components/_global/BalTable/PinHeader.vue')['default']
     PlusSquareIcon: typeof import('./src/components/_global/icons/PlusSquareIcon.vue')['default']
     PolLine: typeof import('./src/components/_global/PolLine.vue')['default']
+    PoolStatCards: typeof import('./src/components/_global/icons/polaris/PoolStatCards.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SpinnerIcon: typeof import('./src/components/_global/icons/SpinnerIcon.vue')['default']
@@ -79,7 +82,9 @@ declare module '@vue/runtime-core' {
     TimelockIcon: typeof import('./src/components/_global/icons/TimelockIcon.vue')['default']
     TotalsRow: typeof import('./src/components/_global/BalTable/TotalsRow.vue')['default']
     TwitterIcon: typeof import('./src/components/_global/icons/brands/TwitterIcon.vue')['default']
+    VolumeTimeIcon: typeof import('./src/components/_global/icons/polaris/VolumeTimeIcon.vue')['default']
     WalletIcon: typeof import('./src/components/_global/icons/WalletIcon.vue')['default']
+    WalletNewIcon: typeof import('./src/components/_global/icons/polaris/WalletNewIcon.vue')['default']
     X: typeof import('./src/components/_global/icons/polaris/x.vue')['default']
     YoutubeIcon: typeof import('./src/components/_global/icons/brands/YoutubeIcon.vue')['default']
   }

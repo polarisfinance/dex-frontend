@@ -90,29 +90,39 @@ const stats = computed(() => {
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading || !pool" class="h-24" />
       <BalCard noBorder noBackground shadow="none" v-else>
-        <div class="flex mb-2 text-sm font-medium text-secondary">
-          <span>{{ stat.label }}</span>
-          <template v-if="stat.id === 'apr' && poolApr">
-            <BalTooltip
-              v-if="isLBP(pool.poolType)"
-              width="36"
-              :text="$t('lbpAprTooltip')"
-              iconSize="sm"
-              iconClass="ml-1"
-            />
-            <APRTooltip v-else :pool="pool" :poolApr="poolApr" />
-          </template>
-        </div>
-        <div
-          :class="[
-            'flex items-center text-xl font-medium',
-            {
-              'text-gray-300 dark:text-gray-600 line-through':
-                stat.id === 'apr' && isLBP(pool.poolType),
-            },
-          ]"
-        >
-          {{ stat.value }}
+        <div class="flex justify-center">
+          <div class="mr-4">
+            <WalletNewIcon v-if="stat.id == 'poolValue'" />
+            <VolumeTimeIcon v-if="stat.id == 'volumeTime'" />
+            <DollarCoinsStackedIcon v-if="stat.id == 'feesTime'" />
+            <AprIcon v-if="stat.id == 'apr'" />
+          </div>
+          <div>
+            <div class="flex mb-2 text-sm font-semibold ">
+              <span>{{ stat.label }}</span>
+              <template v-if="stat.id === 'apr' && poolApr">
+                <BalTooltip
+                  v-if="isLBP(pool.poolType)"
+                  width="36"
+                  :text="$t('lbpAprTooltip')"
+                  iconSize="sm"
+                  iconClass="ml-1"
+                />
+                <APRTooltip v-else :pool="pool" :poolApr="poolApr" />
+              </template>
+            </div>
+            <div
+              :class="[
+                'flex items-center text-[32px] font-medium dark:text-polaris-white font-semibold ',
+                {
+                  'text-gray-300 line-through':
+                    stat.id === 'apr' && isLBP(pool.poolType),
+                },
+              ]"
+            >
+              {{ stat.value }}
+            </div>
+          </div>
         </div>
       </BalCard>
     </template>

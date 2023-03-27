@@ -246,7 +246,7 @@ watch(
                 :loading="loadingPool"
                 :loadingApr="loadingApr"
               />
-              <PolLine class=""/>
+              <PolLine class="mt-3"/>
               <div class="pool-invest flex-1 text-center  text-polaris-white pt-[24px]">
                 Invest in the pool and earn on swap fees!
                 <router-link
