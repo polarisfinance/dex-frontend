@@ -112,7 +112,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'uri',
     Header: 'iconColumnHeader',
     Cell: 'iconColumnCell',
-    width: 70,
+    width: 90,
     noGrow: true,
   },
   {
@@ -313,12 +313,12 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #iconColumnCell="pool">
-        <div v-if="!isLoading" class="py-4 px-6">
-          <BalAssetSet :addresses="iconAddresses(pool)" :width="100" />
+        <div v-if="!isLoading" class="py-3 px-6">
+          <BalAssetSet :addresses="iconAddresses(pool)" :width="110" :size="34"/>
         </div>
       </template>
       <template #poolNameCell="pool">
-        <div v-if="!isLoading" class="flex items-center py-4 px-6">
+        <div v-if="!isLoading" class="flex items-center py-3 px-6">
           <div v-if="poolMetadata(pool.id)" class="text-left">
             {{ poolMetadata(pool.id)?.name }}
           </div>
@@ -350,7 +350,7 @@ function iconAddresses(pool: Pool) {
       <template #volumeCell="pool">
         <div
           :key="columnStates.volume"
-          class="flex justify-end py-4 px-6 -mt-1 font-numeric"
+          class="flex justify-end py-3 px-6 -mt-1 font-numeric"
         >
           <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
           <span v-else class="text-right">
@@ -372,7 +372,7 @@ function iconAddresses(pool: Pool) {
         <div
           :key="columnStates.aprs"
           :class="[
-            'flex justify-end py-4 px-6 -mt-1 font-numeric text-right',
+            'flex justify-end py-3 px-6 -mt-1 font-numeric text-right',
             {
               'text-gray-300 dark:text-gray-600 line-through': isLBP(
                 pool.poolType
@@ -395,7 +395,7 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #migrateCell="pool">
-        <div class="flex justify-center py-4 px-2">
+        <div class="flex justify-center py-3 px-2">
           <BalBtn
             v-if="isMigratablePool(pool)"
             color="gradient"
@@ -407,7 +407,7 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #lockEndDateCell="pool">
-        <div class="py-4 px-6 text-right">
+        <div class="py-3 px-6 text-right">
           {{ lockedUntil(pool.lockedEndDate) }}
         </div>
       </template>

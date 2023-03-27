@@ -72,7 +72,8 @@ withDefaults(defineProps<Props>(), {
 
 <style scoped>
 .pill {
-  @apply flex items-center my-1 relative h-10 items-center dark:text-polaris-white font-semibold;
+  @apply flex items-center relative items-center dark:text-polaris-white font-semibold;
+  line-height: 20px;
 }
 
 .pill-migration {

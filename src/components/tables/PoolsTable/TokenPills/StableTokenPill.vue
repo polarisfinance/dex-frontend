@@ -59,8 +59,8 @@ withDefaults(defineProps<Props>(), {
 .pill {
   @apply flex;
   @apply relative;
-  @apply my-1;
-  @apply h-10 items-center;
+  @apply items-center;
+  line-height: 20px;
 }
 
 .pill::before {

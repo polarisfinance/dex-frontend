@@ -94,3 +94,18 @@ function getHorizontalStickyClass(index: number) {
     </td>
   </tr>
 </template>
+
+<style scoped>
+
+.row-bg:hover {
+  @apply hover:dark:bg-polaris-card-medium;
+}
+.dark .row-bg:hover td:first-child{
+  border-bottom-left-radius: 48px;
+  border-top-left-radius: 48px;
+}
+.dark .row-bg:hover td:last-child{
+  border-bottom-right-radius: 48px;
+  border-top-right-radius: 48px;
+}
+</style>
