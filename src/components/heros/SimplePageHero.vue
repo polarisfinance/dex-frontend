@@ -42,8 +42,8 @@ const classes = computed(() => ({
 
 <template>
   <AppHero :class="classes" class="h-64">
-    <h1 class="home-title">{{title}}</h1>
-    <h1 class="home-subtitle">{{subtitle}}</h1>
+    <h1 class="home-title dark:text-polaris-white">{{title}}</h1>
+    <h1 class="home-subtitle dark:text-polaris-2">{{subtitle}}</h1>
   </AppHero>
 </template>
 
@@ -60,7 +60,6 @@ const classes = computed(() => ({
   font-size: 64px;
   line-height: 82px;
   text-align: center;
-  color: #fdfdfd;
 }
 
 .home-subtitle {
@@ -68,6 +67,5 @@ const classes = computed(() => ({
   font-size: 36px;
   line-height: 48px;
   text-align: center;
-  color: #D7B3FF;
 }
 </style>

@@ -74,7 +74,7 @@
         </div>
       </div>
     </div>
-    <div :class="{ data: isDesktop, dataMobile: isMobile }">
+    <div :class="{ data: isDesktop, dataMobile: isMobile }" class="dark:text-polaris-white">
       <div class="data-text text-right">
         <div>Next Epoch:</div>
         <div>Current Epoch:</div>
@@ -94,7 +94,7 @@
         <div>{{ spolarsStaked }}</div>
       </div>
     </div>
-    <div :class="{ card: isDesktop, cardMobile: isMobile }">
+    <div :class="{ card: isDesktop, cardMobile: isMobile } " class="dark:text-polaris-3">
       <img class="logo" :src="logo[sunrise.name]" />
       <div class="num-tokens">{{ earned }}</div>
       <div class="details">${{ earnedAmountInDollars }}</div>
@@ -638,7 +638,6 @@ export default defineComponent({
   font-size: 40px;
   line-height: 51px;
 
-  color: #ffffff;
   margin-top: 32px;
 }
 
@@ -651,7 +650,6 @@ export default defineComponent({
   font-size: 18px;
   line-height: 23px;
 
-  color: rgba(245, 225, 255, 0.7);
 }
 
 .claim-btn {
@@ -730,7 +728,6 @@ export default defineComponent({
   font-size: 18px;
   line-height: 23px;
 
-  color: #ffffff;
   gap: 24px;
 }
 
@@ -746,6 +743,5 @@ textarea {
   font-size: 16px;
   line-height: 15px;
 
-  color: #ffffff;
 }
 </style>

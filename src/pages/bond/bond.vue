@@ -40,15 +40,15 @@ const sunrises = computed(() =>
           :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
         >
           <img :src="logo[sunrise.name]" class="logo" />
-          <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
-          <div class="sunrise-description mt-[12px] p-[10px]">
+          <div class="sunrise-name mt-[34px] dark:text-polaris-white">{{ sunrise.name }}</div>
+          <div class="sunrise-description mt-[12px] p-[10px] dark:text-polaris-2">
             <p>
               Stake your $SPOLAR to earn
               <span class="uppercase">{{ '$' + sunrise.name }}</span>
             </p>
           </div>
           <router-link :to="'/bond/' + sunrise.name">
-            <button class="view-and-stake mt-[34px]">View and Stake</button>
+            <button class="view-and-stake mt-[34px] text-polaris-white">View and Stake</button>
           </router-link>
         </div>
       </div>
@@ -117,8 +117,6 @@ const sunrises = computed(() =>
   font-weight: 600;
   font-size: 40px;
   line-height: 51px;
-
-  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -126,8 +124,6 @@ const sunrises = computed(() =>
   font-weight: 500;
   font-size: 18px;
   line-height: 23px;
-
-  color: rgba(245, 225, 255, 0.7);
 }
 
 .view-and-stake {
@@ -137,8 +133,6 @@ const sunrises = computed(() =>
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-
-  color: #ffffff;
 }
 
 .view-and-stake:hover,

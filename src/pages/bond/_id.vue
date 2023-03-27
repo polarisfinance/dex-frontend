@@ -1,7 +1,7 @@
 <template>
   <div class="sunrise-title py-10">
     <div class="flex-column">
-      <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
+      <div class="sunrise-title-text uppercase dark:text-polaris-white">{{ sunrise.name }}</div>
       <div class="sunrise-subtitle-text">Bond</div>
     </div>
   </div>
@@ -14,22 +14,22 @@
     class="justify-center text-center"
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <div class="bond-title">Purchase {{ sunrise.bond }}</div>
+      <div class="bond-title dark:text-polaris-white">Purchase {{ sunrise.bond }}</div>
       <div
         class="mt-[40px] flex items-center justify-between"
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
+          <div class="token-name mt-[8px] uppercase dark:text-polaris-white">{{ sunrise.name }}</div>
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
           <img :src="bondLogo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
+          <div class="token-name mt-[8px] uppercase dark:text-polaris-white">{{ sunrise.bond }}</div>
         </div>
       </div>
-      <div class="details mt-[32px]">
+      <div class="details mt-[32px] ">
         {{ sunrise.bond }} is available for purchase
       </div>
       <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
@@ -52,7 +52,7 @@
         @update="render"
       />
     </div>
-    <div :class="{ data: isDesktop, dataMobile: isMobile }">
+    <div :class="{ data: isDesktop, dataMobile: isMobile }" class="dark:text-polaris-white">
       <div>
         <div class="bond-h1">
           {{ sunrise.name.toUpperCase() }} = {{ currentTwap }}
@@ -552,7 +552,6 @@ export default defineComponent({
   font-size: 18px;
   line-height: 23px;
 
-  color: #ffffff;
   gap: 24px;
 }
 
@@ -561,7 +560,6 @@ export default defineComponent({
   font-size: 18px;
   line-height: 23px;
 
-  color: #ffffff;
 }
 
 .bond-h2 {
@@ -576,16 +574,12 @@ export default defineComponent({
   font-weight: 600;
   font-size: 20px;
   line-height: 26px;
-
-  color: #ffffff;
 }
 
 .token-name {
   font-weight: 600;
   font-size: 18px;
   line-height: 23px;
-
-  color: #ffffff;
 }
 
 .tokenTransition {
