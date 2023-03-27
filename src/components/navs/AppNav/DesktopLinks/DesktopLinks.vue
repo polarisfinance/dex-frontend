@@ -38,6 +38,12 @@ function isActive(page: string): boolean {
     >
       {{ $t('swap') }}
     </DesktopLinkItem>
+    <DesktopLinkItem to="/sunrise" :active="isActive('sunrise')">
+      {{ $t('Sunrise') }}
+    </DesktopLinkItem>
+    <DesktopLinkItem to="/bond" :active="isActive('bond')">
+      {{ $t('Bond') }}
+    </DesktopLinkItem>
     <DesktopLinkItem
       :to="{ name: 'claim', params: { networkSlug } }"
       :active="isActive('claim')"

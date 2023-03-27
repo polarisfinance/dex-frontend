@@ -58,7 +58,11 @@ module.exports = {
     }),
     screens: {
       xs: '440px',
-      ...defaultTheme.screens,
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      // ...defaultTheme.screens,
     },
     extend: {
       flex: {

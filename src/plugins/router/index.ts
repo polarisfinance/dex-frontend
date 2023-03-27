@@ -61,6 +61,10 @@ const SunrisesPage = () =>
 const SunrisePage = () =>
   import(/* webpackChunkName: "SunrisePage" */ '@/pages/sunrise/_id.vue');
 
+const BondsPage = () =>
+  import(/* webpackChunkName: "BondPage" */ '@/pages/bond/bond.vue');
+const BondPage = () =>
+  import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
 declare module 'vue-router' {
   interface RouteMeta {
     layout?: string;
@@ -194,6 +198,16 @@ const routes: RouteRecordRaw[] = [
     path: '/sunrise/:id',
     name: 'sunrise',
     component: SunrisePage,
+  },
+  {
+    path: '/bond',
+    name: 'bonds',
+    component: BondsPage,
+  },
+  {
+    path: '/bond/:id',
+    name: 'bond',
+    component: BondPage,
   },
 ];
 

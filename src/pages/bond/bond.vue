@@ -2,13 +2,13 @@
 import { computed, onMounted, ref } from 'vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 import SimplePageHero from '@/components/heros/SimplePageHero.vue';
-import polarImg from './polar.svg';
-import orbitalImg from './orbital.svg';
-import uspImg from './usp.svg';
-import ethernalImg from './ethernal.svg';
-import binarisImg from './binaris.svg';
+
+import polarImg from './Pbond.svg';
+import orbitalImg from './Obond.svg';
+import uspImg from './USPbond.svg';
+import ethernalImg from './Ebond.svg';
+import binarisImg from './Bbond.svg';
 import tripolarImg from './tripolar.svg';
-import { sunriseDefinitions } from './config';
 
 const logo = {
   polar: polarImg,
@@ -20,41 +20,41 @@ const logo = {
 };
 
 const { isMobile, isDesktop } = useBreakpoints();
+import { sunriseDefinitions } from './config';
 
 const sunrises = computed(() =>
   Object.values(sunriseDefinitions).filter(sunrise => !sunrise.retired)
 );
-
-onMounted(() => {});
 </script>
 
 <template>
   <SimplePageHero
-    title="Sunrise"
-    subtitle="The right place for your $SPOLAR"
+    title="Bond"
+    subtitle="Earn premiums upon redemption"
   />
-   
   <div class="container mx-auto">
-    <div class="grid gap-6 " :class="{'grid-cols-3':isDesktop,'grid-cols-1':isMobile}">
-      <div
-        v-for="(sunrise, idx) in sunrises"
-        :key="idx"
-        :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
-      >
-        <img :src="logo[sunrise.name]" class="logo" />
-        <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
-        <div class="sunrise-description mt-[12px] p-[10px]">
-          <p>
-            Stake your $SPOLAR to earn
-            <span class="uppercase">{{ '$' + sunrise.name }}</span>
-          </p>
+      <div class="grid gap-6 " :class="{'grid-cols-3':isDesktop,'grid-cols-1':isMobile}">
+        <div
+          v-for="(sunrise, idx) in sunrises"
+          :key="idx"
+          :class="{ sunriseCard: isDesktop, sunriseCardMobile: isMobile }"
+        >
+          <img :src="logo[sunrise.name]" class="logo" />
+          <div class="sunrise-name mt-[34px]">{{ sunrise.name }}</div>
+          <div class="sunrise-description mt-[12px] p-[10px]">
+            <p>
+              Stake your $SPOLAR to earn
+              <span class="uppercase">{{ '$' + sunrise.name }}</span>
+            </p>
+          </div>
+          <router-link :to="'/bond/' + sunrise.name">
+            <button class="view-and-stake mt-[34px]">View and Stake</button>
+          </router-link>
         </div>
-        <router-link :to="'/sunrise/' + sunrise.name">
-          <button class="view-and-stake mt-[34px]">View and Stake</button>
-        </router-link>
       </div>
     </div>
-  </div>
+
+
 </template>
 
 <style scoped>
@@ -66,18 +66,6 @@ onMounted(() => {});
   line-height: 61px;
   text-align: center;
 }
-.pg-bg{
-  background-image: url('./sunrise_bg.svg');
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-repeat: no-repeat;
-  background-position-y: 0%;
-  background-position-x: center;
-  top:0px;
-  padding-top: 100px;
-}
-
 .sunrise-subtitle-text {
   color: rgba(215, 178, 255, 1);
   font-weight: 600;
@@ -87,16 +75,19 @@ onMounted(() => {});
 }
 
 .sunriseCard {
-  @apply dark:bg-polaris-card-dark rounded-medium;
+  @apply dark:bg-polaris-card-dark;
+  border-radius: 22px;
   padding: 24px 0px;
   flex: 1 1 30%;
   text-align: center;
 }
 
 .sunriseCardMobile {
-  @apply dark:bg-polaris-card-dark rounded-small w-full;
+  @apply dark:bg-polaris-card-dark;
+  border-radius: 16px;
   padding: 24px 52px;
   text-align: center;
+  width: 100%;
 }
 
 .sunrisePlaceholder {

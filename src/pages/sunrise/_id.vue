@@ -1,7 +1,7 @@
 <template>
   <div class="sunrise-title py-10">
     <div class="flex-column">
-      <div class="sunrise-title-text uppercase">{{ sunrise.name }}</div>
+      <div class="sunrise-title-text uppercase dark:text-polaris-white">{{ sunrise.name }}</div>
       <div class="sunrise-subtitle-text">Sunrise</div>
     </div>
   </div>
@@ -145,9 +145,9 @@ import tripolarImg from './tripolar.svg';
 
 import useWeb3 from '@/services/web3/useWeb3';
 
-import useSunrise from '../../composables/PolarisFinance/useSunrise';
-import useTreasury from '../../composables/PolarisFinance/useTreasury';
-import useTokens from '../../composables/PolarisFinance/useTokens';
+import useSunrise from '@/composables/PolarisFinance/useSunrise';
+import useTreasury from '@/composables/PolarisFinance/useTreasury';
+import useTokens from '@/composables/PolarisFinance/useTokens';
 
 import SpolarModal from './SpolarModal.vue';
 import { parseFixed } from '@ethersproject/bignumber';
@@ -203,7 +203,9 @@ function formatDate(hours, minutes, seconds) {
 // }
 
 export default defineComponent({
-  components: { SpolarModal },
+  components: { 
+    SpolarModal,
+  },
   setup() {
     const { addTransaction } = useTransactions();
     const { txListener } = useEthers();
@@ -355,7 +357,8 @@ export default defineComponent({
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        return formatDate(hours, minutes, seconds);
+        return '00:00:00';
+        //return formatDate(hours, minutes, seconds);
       } else {
         return '00:00:00';
       }
@@ -599,7 +602,7 @@ export default defineComponent({
 }
 
 .card {
-  @apply bg-frame-dark;
+  @apply dark:bg-polaris-card-dark;
   padding: 24px 50px;
 
   border-radius: 22px;
@@ -610,7 +613,7 @@ export default defineComponent({
 }
 
 .cardMobile {
-  @apply bg-frame-dark;
+  @apply dark:bg-polaris-card-dark;
   gap: 40px;
   border-radius: 22px;
   padding: 24px;
