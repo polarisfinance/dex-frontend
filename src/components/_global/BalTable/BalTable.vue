@@ -234,7 +234,7 @@ watch(
             :key="`header-${column.id}`"
             :ref="columnIndex == 0 ? 'stickyHeaderRef' : undefined"
             :class="[
-              'p-6 headingShadow border-b dark:border-gray-900 dark:text-polaris-2 text-sm font-semibold ',
+              'p-6 headingShadow border-b dark:border-polaris-line dark:text-polaris-2 text-sm font-semibold ',
               column.className,
               getHorizontalStickyClass(columnIndex),
               isColumnStuck ? 'isSticky' : '',

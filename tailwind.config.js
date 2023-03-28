@@ -103,6 +103,7 @@ module.exports = {
           'button-main-from':'#c004fe',
           'button-main-to':'#7e02f5',
           'button-inactive':'#FFFFFF',
+          'line': 'rgba(151,71,255,.4)',
         },
         gray: {
           50: '#F8FAFC',

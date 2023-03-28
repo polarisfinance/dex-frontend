@@ -18,6 +18,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import { AprBreakdown } from '@balancer-labs/sdk';
 import { usePoolStaking } from '@/providers/local/pool-staking.provider';
 import { PoolWithShares } from '@/services/pool/types';
+import useNetwork from '@/composables/useNetwork';
 
 /**
  * TYPES
@@ -52,7 +53,7 @@ const { t } = useI18n();
 const { explorerLinks: explorer } = useWeb3();
 const { balancerTokenListTokens, getToken } = useTokens();
 const { hasNonPrefGaugeBalance } = usePoolStaking();
-
+const { networkSlug } = useNetwork();
 /**
  * STATE
  */
@@ -140,7 +141,7 @@ function symbolFor(titleTokenIndex: number): string {
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex px-7 text-polaris-3">
     <div class="flex flex-col flex-1 mb-5">
       <div class="flex flex-wrap items-center -mt-2 dark:text-polaris-white">
         <div v-if="hasMetadata">
@@ -155,8 +156,8 @@ function symbolFor(titleTokenIndex: number): string {
           {{ poolTypeLabel }}
         </h3>
       </div>
-      <div class="flex items-center mt-2">
-        <div class="mr-1 text-sm text-secondary font-medium" v-html="poolFeeLabel" />
+      <div class="flex items-center mt-2 ">
+        <div class="mr-1 text-sm font-medium" v-html="poolFeeLabel" />
         <BalTooltip>
           <template #activator>
             <BalLink
@@ -196,11 +197,11 @@ function symbolFor(titleTokenIndex: number): string {
             class="ml-3"
             :size="44"
             :addresses="iconAddresses(pool)"
-            :width="130"
+            :width="80"
             :maxOffset="35"
           />
         <BalChipNew v-if="pool?.isNew" class="mt-2 mr-2" />
-        <APRTooltip
+        <!-- <APRTooltip
           v-if="!loadingApr"
           :pool="pool"
           :poolApr="poolApr"
@@ -217,11 +218,11 @@ function symbolFor(titleTokenIndex: number): string {
             size="sm"
             class="mt-2 text-gray-500 hover:text-blue-500 transition-colors"
           />
-        </BalLink>
+        </BalLink> -->
       </div>
       <router-link
-            class="flex detail-link underline"
-            :to="'/pool/' + pool?.id + '/about'"
+            class="flex underline font-medium text-[14px]"
+            :to="{name: 'about',params: { networkSlug, id: pool.id }}"
           >
             Pool details
             <BalIcon
@@ -309,8 +310,7 @@ function symbolFor(titleTokenIndex: number): string {
 </template>
 <style scoped>
 .pool-title {
-  @apply mr-4 capitalize mt-2;
+  @apply mr-4 capitalize;
 
-  font-variation-settings: 'wght' 700;
 }
 </style>

@@ -17,6 +17,7 @@ const classes = computed(() => ({
 <style scoped>
 .pol-line{
   height: 0px;
-  border: 0.5px solid rgba(151,71,255,.4);
+  @apply border-polaris-line;
+  border-width: 0.5px;
 }
 </style>

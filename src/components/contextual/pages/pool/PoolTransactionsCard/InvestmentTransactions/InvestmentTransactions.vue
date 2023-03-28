@@ -93,7 +93,7 @@ const title = computed((): string => {
 <template>
   <div>
     <div>
-      <h4 class="px-4 lg:px-0 mb-5" v-text="title" />
+      <h4 class="px-4 lg:px-0 mb-7 dark:text-polaris-white font-semibold" v-text="title" />
       <div
         class="flex w-full"
       >

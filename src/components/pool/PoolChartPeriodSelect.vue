@@ -60,8 +60,9 @@ defineProps<Props>();
 
 <style scoped>
 .period-select-input {
-  @apply relative w-28 rounded-lg shadow hover:shadow-none focus:shadow-none overflow-hidden px-2
-    bg-gray-50 dark:bg-gray-800 transition-all;
+  @apply relative w-28 rounded-medium shadow hover:shadow-none focus:shadow-none overflow-hidden px-5
+    bg-gray-50 dark:bg-polaris-card-medium transition-all;
+    top:-3px;
 }
 
 .period-select-input__selected {
@@ -74,8 +75,9 @@ defineProps<Props>();
 
 .period-select-input .bal-icon :deep(svg) {
   @apply transition-all;
-
-  stroke: theme('colors.blue.500');
+}
+.dark .period-select-input .bal-icon :deep(svg) {
+  stroke: theme('colors.polaris.white');
 }
 
 .period-select-input:hover .bal-icon :deep(svg),

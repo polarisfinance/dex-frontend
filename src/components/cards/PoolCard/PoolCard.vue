@@ -129,12 +129,12 @@ export default defineComponent({
             :maxOffset="35"
           />
           <div class="w-full">
-            <div v-if="poolMetadata(pool.id)" class="text-left text-xl">
+            <div v-if="poolMetadata(pool.id)" class="text-left text-xl  mb-4 dark:text-polaris-white font-semibold">
               {{ poolMetadata(pool.id)?.name }}
             </div>
             <div v-else>
               <TokenPills
-                class="text-xl"
+                class="text-xl mb-4"
                 :tokens="orderedPoolTokens(pool, pool.tokens)"
                 :isStablePool="isStableLike(pool.poolType)"
                 :selectedTokens="selectedTokens"

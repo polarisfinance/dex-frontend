@@ -37,7 +37,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import BrandedRedirectCard from '@/components/pool/branded-redirect/BrandedRedirectCard.vue';
 import metaService from '@/services/meta/meta.service';
 import PoolMigrationCard from '@/components/contextual/pages/pool/PoolMigrationCard/PoolMigrationCard.vue';
-
+import useNetwork from '@/composables/useNetwork';
 /**
  * STATE
  */
@@ -174,6 +174,7 @@ const poolPremintedBptIndex = computed(() => {
 const showBrandedRedirectCard = computed(() => {
   return POOLS.BrandedRedirect?.[poolId] || false;
 });
+const { networkSlug } = useNetwork();
 
 /**
  * WATCHERS
@@ -251,7 +252,7 @@ watch(
                 Invest in the pool and earn on swap fees!
                 <router-link
                   class="polaris-main-button rounded font-semibold text-lg flex w-full items-center mt-[12px] max-w-[520px] m-auto"
-                  :to="'/pool/' + pool?.id + '/invest'"
+                  :to="{name: 'invest',params: { networkSlug, id: pool?.id }}"
                 >
                   <BalIcon
                     name="plus"
@@ -279,7 +280,6 @@ watch(
           <div ref="intersectionSentinel" />
           <template v-if="isSentinelIntersected && pool" class="container mx-auto">
             <PoolTransactionsCard :pool="pool" :loading="loadingPool" />
-            <PoolContractDetails :pool="pool" />
           </template>
         </div>
       </div>

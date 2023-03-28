@@ -112,9 +112,13 @@ const classes = computed(() => {
 }
 
 .shimmer-dark-mode {
-  --start-color: theme('colors.gray.850');
+  /* --start-color: theme('colors.gray.850');
   --mid-color: theme('colors.gray.800');
-  --end-color: theme('colors.gray.850');
+  --end-color: theme('colors.blue.850'); */
+
+  --start-color: rgba(0,0,0,0);
+  --mid-color: #352959;
+  --end-color: rgba(0,0,0,0);
 
   animation: shimmerBackground 10s infinite;
   background: linear-gradient(

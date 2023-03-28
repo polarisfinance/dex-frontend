@@ -34,6 +34,10 @@ const PoolWithdrawPage = () =>
   import(
     /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/withdraw.vue'
   );
+const PoolInvestPage = () =>
+  import(
+    /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/investNew.vue'
+  );
 const PrivacyPolicyPage = () =>
   import(
     /* webpackChunkName: "PrivacyPolicyPage" */ '@/pages/privacy-policy.vue'
@@ -65,6 +69,10 @@ const BondsPage = () =>
   import(/* webpackChunkName: "BondPage" */ '@/pages/bond/bond.vue');
 const BondPage = () =>
   import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
+const PoolAboutPage = () =>
+  import(/* webpackChunkName: "VexPolarPage" */ '@/pages/pool/about.vue');
+
+  
 declare module 'vue-router' {
   interface RouteMeta {
     layout?: string;
@@ -128,12 +136,17 @@ const routes: RouteRecordRaw[] = [
     component: PoolAddLiquidityPage,
     meta: { layout: 'FocusedLayout' },
   },
+  // {
+  //   path: '/:networkSlug/pool/:id/invest',
+  //   name: 'invest-redirect',
+  //   redirect: to => {
+  //     return `/${to.params.networkSlug}/pool/${to.params.id}/add-liquidity`;
+  //   },
+  // },
   {
     path: '/:networkSlug/pool/:id/invest',
-    name: 'invest-redirect',
-    redirect: to => {
-      return `/${to.params.networkSlug}/pool/${to.params.id}/add-liquidity`;
-    },
+    name: 'invest',
+    component: PoolInvestPage,
   },
   {
     path: '/:networkSlug/pool/:id/withdraw',
@@ -146,6 +159,12 @@ const routes: RouteRecordRaw[] = [
     name: 'migrate-pool',
     component: MigratePoolPage,
     meta: { layout: 'FocusedLayout' },
+  },
+  {
+    path: '/:networkSlug/pool/:id/about',
+    name: 'about',
+    component: PoolAboutPage,
+    // meta: { layout: 'SingleCardLayout' },
   },
   {
     path: '/:networkSlug/vebal',

@@ -175,7 +175,7 @@ function getJoinExitDetails(amounts: PoolActivity['amounts']) {
   <BalCard
     class="overflow-x-auto"
     :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
+    noBorder
     noBackground
     noPad
   >
