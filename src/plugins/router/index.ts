@@ -36,7 +36,7 @@ const PoolWithdrawPage = () =>
   );
 const PoolInvestPage = () =>
   import(
-    /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/investNew.vue'
+    /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/invest.vue'
   );
 const PrivacyPolicyPage = () =>
   import(
@@ -147,12 +147,13 @@ const routes: RouteRecordRaw[] = [
     path: '/:networkSlug/pool/:id/invest',
     name: 'invest',
     component: PoolInvestPage,
+    meta: { layout: 'ProcessLayout' },
   },
   {
     path: '/:networkSlug/pool/:id/withdraw',
     name: 'withdraw',
     component: PoolWithdrawPage,
-    meta: { layout: 'FocusedLayout' },
+    meta: { layout: 'BlankLayout' },    //FocusedLayout
   },
   {
     path: '/:networkSlug/pool/migrate/:from/:to',

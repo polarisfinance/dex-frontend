@@ -4,26 +4,23 @@ import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTra
 import { isStableLike, isStablePhantom, usePool } from '@/composables/usePool';
 import useInvestState from '@/components/forms/pool_actions/InvestForm/composables/useInvestState';
 import { forChange } from '@/lib/utils';
-import TradeSettingsPopover, {
-  TradeSettingsContext,
-} from '@/components/popovers/TradeSettingsPopover.vue';
-import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
+// import TradeSettingsPopover, {
+//   TradeSettingsContext,
+// } from '@/components/popovers/TradeSettingsPopover.vue';
+// import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import { useRoute, useRouter } from 'vue-router';
 import InvestForm from '@/components/forms/pool_actions/InvestForm/InvestForm.vue';
 import InvestPreviewModal from '@/components/forms/pool_actions/InvestForm/components/InvestPreviewModal/InvestPreviewModal.vue';
 import useWeb3 from '@/services/web3/useWeb3';
-import ArrowLeftIcon from '@/components/_global/icons/ArrowLeftIcon.vue';
-import CloseIcon from '@/components/_global/icons/CloseIcon.vue';
-import QuestionIcon from '../../components/_global/icons/QuestionIcon.vue';
-import TickIcon from '../../components/_global/icons/TickIcon.vue';
+import ArrowLeftIcon from '@/components/_global/icons/polaris/ArrowLeftIcon.vue';
+import CloseIcon from '@/components/_global/icons/polaris/CloseIcon.vue';
 import StakeView from './Stake.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
 import useEthers from '@/composables/useEthers';
 import useTokens from '@/composables/useTokens';
-import InvestHero from '@/components/heros/InvestHero.vue';
 import useBreakpoints from '@/composables/useBreakpoints';
 
 const steps = [
@@ -61,17 +58,17 @@ const steps = [
 
 export default defineComponent({
   components: {
-    PoolUserStats,
+    // PoolUserStats,
     InvestForm,
     InvestPreviewModal,
-    QuestionIcon,
-    ArrowLeftIcon,
-    CloseIcon,
     StakeView,
-    TickIcon,
-    InvestHero,
   },
-  props: {},
+  props: {
+    activeStep: {
+      type: Number,
+      default: 1,
+    },
+  },
   watch: {
     isWalletReady(newValue, oldValue) {
       if (newValue == true) this.activeStep = 2;
@@ -91,14 +88,18 @@ export default defineComponent({
       }
     },
   },
+  emits: ['activeStepUpdated'],
   setup(props, { emit }) {
     const { isMobile, isDesktop } = useBreakpoints();
     const { transfersAllowed } = usePoolTransfers();
     const route = useRoute();
-    const id = ref<string>(route.params.id as string);
+    const id = (route.params.id as string).toLowerCase();
 
-    const poolQuery = usePoolQuery(route.params.id as string);
+    // const poolQuery = usePoolQuery(route.params.id as string);
+    // const pool = computed(() => poolQuery.data.value);
+    const poolQuery = usePoolQuery(id, undefined, undefined);
     const pool = computed(() => poolQuery.data.value);
+
     const { isStablePhantomPool } = usePool(pool);
     const { tokenAddresses, amounts, sor, sorReady } = useInvestState();
 
@@ -120,12 +121,10 @@ export default defineComponent({
     });
 
     const poolQueryLoading = computed(
-      () =>
-        poolQuery.isLoading.value ||
-        poolQuery.isIdle.value ||
-        Boolean(poolQuery.error.value)
+      () => poolQuery.isLoading.value || Boolean(poolQuery.error.value)
     );
     const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
+
 
     return {
       id,
@@ -134,7 +133,7 @@ export default defineComponent({
       sorReady,
       sor,
       pool,
-      TradeSettingsContext,
+      // TradeSettingsContext,
       isStablePhantomPool,
       loadingPool,
       investmentTokens,
@@ -158,16 +157,18 @@ export default defineComponent({
     const approval = await isApproved(this.pool?.address!, this.account);
     this.poolApproved = approval;
     this.stakedBalance = await balance(this.pool?.address!, this.account);
+
   },
   beforeMount() {
     if (this.isWalletReady && this.activeStep == 1) {
-      this.activeStep = 2;
+      this.setActiveStep(2) 
     }
   },
-  updated() {},
+  updated() {
+  },
   data() {
     return {
-      activeStep: 1,
+      activeStep: this.$props.activeStep,
       tokenAddresses: [] as string[],
       poolApproved: false,
       stakedBalance: '0',
@@ -178,6 +179,8 @@ export default defineComponent({
       if (this.poolApproved == true && step == 4) {
         this.activeStep = step + 1;
       } else if (step <= steps.length) this.activeStep = step;
+
+      this.$emit('activeStepUpdated',this.activeStep);
     },
     clickActiveStep(step) {
       if (step != steps.length) this.setActiveStep(step);
@@ -206,12 +209,6 @@ export default defineComponent({
     handleStakeConfirmed() {
       this.setActiveStep(this.activeStep + 1);
       //this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
-    },
-    progressPerc() {
-      if (this.activeStep == steps.length) {
-        return 1;
-      }
-      return (1 / (steps.length - 1)) * (this.activeStep - 1) + 0.05;
     },
     goBack() {
       if (this.isWalletReady && this.activeStep == 2) return;
@@ -247,7 +244,6 @@ export default defineComponent({
     },
   },
 
-  emits: [],
 });
 </script>
 <template>
@@ -255,46 +251,6 @@ export default defineComponent({
     <div class="fireworks" v-if="activeStep == steps.length">
       <div class="before" />
       <div class="after" />
-    </div>
-    <div>
-      <InvestHero
-        :step="activeStep"
-        :headline="steps[activeStep - 1].headline"
-      />
-      <div class="container mx-auto">
-        <div class="mt-[40px] w-full items-center self-center">
-          <div class="steps flex justify-between">
-            <template v-for="step in steps">
-              <button @click="clickActiveStep(step.step)" class="self-start">
-                <TickIcon
-                  v-if="step.step < activeStep || activeStep == steps.length"
-                  class=""
-                  :class="{
-                    'mx-auto block': isMobile,
-                    'mr-1 inline': isDesktop,
-                  }"
-                />
-                <QuestionIcon
-                  v-else
-                  class=""
-                  :class="{
-                    'mx-auto block': isMobile,
-                    'mr-1 inline': isDesktop,
-                  }"
-                />
-
-                {{ step.button }}
-              </button>
-            </template>
-          </div>
-          <div class="progress-bar mt-[32px] h-[2px] w-full rounded-[24px]">
-            <div
-              class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
-              :style="{ width: `${(progressPerc() * 100).toFixed(0)}%` }"
-            />
-          </div>
-        </div>
-      </div>
     </div>
     <div class="container mx-auto">
       <div class="card mt-[60px] flex flex-wrap">
@@ -309,13 +265,13 @@ export default defineComponent({
               v-if="loadingPool || !transfersAllowed || !sorReady"
               class="h-96"
             />
-            <PoolUserStats
+            <!-- <PoolUserStats
               v-else
               :pool="pool"
               :xpolarToClaim="`0`"
               :dailyAPR="`1`"
               :stakedBalance="`0`"
-            />
+            /> -->
           </div>
         </div>
         <div class="flex-1 justify-center">
@@ -323,12 +279,13 @@ export default defineComponent({
             <div class="flex-1">
               <button class="back actions" @click="goBack">
                 <template v-if="activeStep < 5"
-                  ><ArrowLeftIcon class="ml-3 mr-[12px] inline" />Go
+                  >
+                  <ArrowLeftIcon class="ml-3 mr-[12px] inline" />Go
                   back</template
                 >
               </button>
             </div>
-            <div class="title flex-1 text-center">Invest in pool</div>
+            <div class="title flex-1 text-center">Invest in pool Step{{ activeStep }}</div>
             <div class="flex-1 text-right">
               <router-link
                 class="actions"
@@ -341,18 +298,15 @@ export default defineComponent({
           <div class="nested-card m-[24px] mx-auto mt-[16px] max-w-[480px]">
             <div class="nested-card mt-[16px]">
               <template v-if="activeStep <= 3">
-                <BalLoadingBlock
-                  v-if="loadingPool || !transfersAllowed || !sorReady"
-                  class="h-96"
-                />
+                <BalLoadingBlock v-if="loadingPool || !pool" class="h-96" />
                 <BalCard exposeOverflow noBorder noPad  v-else>
                   <template #header>
                     <div class="w-full">
                       <div class="flex items-center justify-between">
                         <!-- <h4 class="title ml-[18px] mt-[10px]" >{{ $t('investInPool') }}</h4> -->
-                        <TradeSettingsPopover
+                        <!-- <TradeSettingsPopover
                           :context="TradeSettingsContext.invest"
-                        />
+                        /> -->
                       </div>
                     </div>
                   </template>
