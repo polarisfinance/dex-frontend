@@ -44,6 +44,9 @@ function isActive(page: string): boolean {
     <DesktopLinkItem to="/bond" :active="isActive('bond')">
       {{ $t('Bond') }}
     </DesktopLinkItem>
+    <DesktopLinkItem to="/airdrop" :active="isActive('airdrop')">
+      Airdrop
+    </DesktopLinkItem>
     <DesktopLinkItem
       :to="{ name: 'claim', params: { networkSlug } }"
       :active="isActive('claim')"
