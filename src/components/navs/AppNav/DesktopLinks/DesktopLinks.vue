@@ -77,11 +77,109 @@ function isActive(page: string): boolean {
     >
       veBAL
     </DesktopLinkItem>
+    <div class="dropdown mt-[30px]">
+      <div class="dropdown-title flex w-full gap-[12px]">
+        Bridges 
+        <BalIcon
+                name="chevron-down"
+                size="sm"
+              />
+      </div>
+      <div class="dropdown-content w-full">
+        <a
+          href="https://synapseprotocol.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><div class="flex w-full justify-between">
+            <div>Synapse</div>
+            <BalIcon name="arrow-up-right" size="sm"/>
+          </div>
+        </a>
+        <a
+          href="https://multichain.xyz/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><div class="flex w-full justify-between">
+            <div>Multichain</div>
+            <BalIcon name="arrow-up-right" size="sm"/></div
+        ></a>
+        <a
+          href="https://allbridge.io/classic/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><div class="flex w-full justify-between">
+            <div>Allbridge</div>
+            <BalIcon name="arrow-up-right" size="sm"/></div
+        ></a>
+        <a
+          href="https://cbridge.celer.network/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><div class="flex w-full justify-between">
+            <div>CBridge</div>
+            <BalIcon name="arrow-up-right" size="sm"/></div
+        ></a>
+        <a
+          href="https://rainbowbridge.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><div class="flex w-full justify-between">
+            <div>Rainbow Bridge</div>
+            <BalIcon name="arrow-up-right" size="sm"/></div
+        ></a>
+        <a href="https://meson.fi/" target="_blank" rel="noopener noreferrer"
+          ><div class="flex w-full justify-between">
+            <div>Meson</div>
+            <BalIcon name="arrow-up-right" size="sm"/></div
+        ></a>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .desktop-links {
   @apply grid gap-6 grid-flow-col grid-rows-1 h-full content-center;
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+  .dropdown {
+  @apply dark:text-polaris-white font-semibold;
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  border-radius: 22px;
+  background: #292043;
+  min-width: 200px;
+  z-index: 1;
+  padding: 10px 16px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  padding: 6px 0px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  /* background-color: #f1f1f1; */
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
 }
 </style>
