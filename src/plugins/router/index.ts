@@ -69,6 +69,8 @@ const BondsPage = () =>
   import(/* webpackChunkName: "BondPage" */ '@/pages/bond/bond.vue');
 const BondPage = () =>
   import(/* webpackChunkName: "BondPageID" */ '@/pages/bond/_id.vue');
+const AirdropPage = () =>
+  import(/* webpackChunkName: "AirdropPage" */ '@/pages/airdrop.vue');
 const PoolAboutPage = () =>
   import(/* webpackChunkName: "VexPolarPage" */ '@/pages/pool/about.vue');
 
@@ -228,6 +230,11 @@ const routes: RouteRecordRaw[] = [
     path: '/bond/:id',
     name: 'bond',
     component: BondPage,
+  },
+  {
+    path: '/airdrop',
+    name: 'airdrop',
+    component: AirdropPage,
   },
 ];
 

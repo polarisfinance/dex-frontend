@@ -151,6 +151,9 @@
     "*.{md,json,yaml,html}": "prettier --write",
     "*.{css,vue}": "stylelint --fix"
   },
+  "dependencies": {
+    "@openzeppelin/merkle-tree": "^1.0.2"
+  },
   "license": "MIT",
   "repository": "balancer/frontend-v2"
 }

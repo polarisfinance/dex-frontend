@@ -1,4 +1,3 @@
-import { sendTransaction } from '@/lib/utils/balancer/web3';
 
 import { Contract, utils } from 'ethers';
 
@@ -106,14 +105,14 @@ export default function useAirdrop() {
     }
 
     try {
-      const tx = await sendTransaction(
-        provider,
-        airdropAddress,
-        airdropABI,
-        'claim',
-        [proof, account, amount]
-      );
-      return tx;
+      // const tx = await sendTransaction(
+      //   provider,
+      //   airdropAddress,
+      //   airdropABI,
+      //   'claim',
+      //   [proof, account, amount]
+      // );
+      return undefined;
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
