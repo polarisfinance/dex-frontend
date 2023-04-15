@@ -103,7 +103,7 @@ module.exports = {
           'pill':'#50456E',
           'button-main-from':'#c004fe',
           'button-main-to':'#7e02f5',
-          'button-inactive':'#FFFFFF',
+          'button-inactive':'#41365E',
           'line': 'rgba(151,71,255,.4)',
         },
         gray: {

@@ -229,7 +229,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 </script>
 
 <template>
-  <div class="dark:bg-polaris-card-medium rounded-default">
+  <div class="dark:bg-polaris-card-medium rounded-default overflow-hidden">
     <div class="p-2">
       <BalAlert
         v-if="forceProportionalInputs"
@@ -287,7 +287,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
       </div>
       <WrapStEthLink :pool="pool" class="mt-4" />
     </div>
-    <div class="mt-4">
+    <div class="dark:bg-polaris-card-light pt-4 px-[16px] pb-[12px]">
       <BalBtn
         v-if="!isWalletReady"
         :label="$t('connectWallet')"
@@ -298,10 +298,10 @@ watch(useNativeAsset, shouldUseNativeAsset => {
       <BalBtn
         v-else
         :label="$t('preview')"
-        color="gradient"
         :disabled="
           !hasAmounts || !hasValidInputs || isMismatchedNetwork || loadingData
         "
+        class="w-full text-white font-semibold text-lg"
         block
         @click="showInvestPreview = true"
       />

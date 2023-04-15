@@ -115,7 +115,7 @@ const bgGradientClasses = computed(() => {
   }
 
   if (props.disabled) {
-    return `bg-gray-300 dark:bg-gray-700 text-white dark:text-gray-500`;
+    return `bg-gray-300 dark:bg-polaris-button-inactive text-white dark:text-polaris-2`;
   }
   if (props.loading) {
     return `bg-gradient-to-tr ${loadingFrom(fromColor)} ${loadingTo(toColor)}`;
@@ -147,13 +147,15 @@ const bgColorClasses = computed(() => {
     return 'bg-gray-50 hover:bg-white dark:bg-gray-800';
   } else {
     if (props.disabled) {
-      return `bg-gray-300 dark:bg-gray-700 text-white dark:text-gray-500`;
+      return `bg-gray-300 dark:bg-polaris-button-inactive text-white dark:text-polaris-2`;
     }
     if (props.loading) {
       return `${loadingBackground(props.color)} ${loadingDarkBackground(
         props.color
       )}`;
     }
+    if (props.color === 'primary') 
+      return 'polaris-main-button';
 
     return `
           ${background(props.color)} ${hoverBackground(props.color)}
