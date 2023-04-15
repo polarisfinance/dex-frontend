@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import useDarkMode from '@/composables/useDarkMode';
 import useTailwind from '@/composables/useTailwind';
-
+import logo from '@/components/_global/icons/polaris/Logo.vue';
 /**
  * TYPES
  */
@@ -36,18 +36,10 @@ const fillColor = computed(() => {
 
 <template>
   <div class="flex items-center sm:mr-4 app-logo">
-    <img  src="~@/components/_global/icons/polaris/logo.svg"
-      id="logo"
-      class="logo-svg mr-2"
-      width="35" 
-      height="35"
-      role="img"
-    />
+    <logo class="mr-2 logo-svg" />
     <nobr className="dark:text-polaris-white self-center font-medium">
       POLARIS
-      <nobr className="font-bold">
-        D E X
-      </nobr>
+      <nobr className="font-bold"> D E X </nobr>
     </nobr>
   </div>
 </template>

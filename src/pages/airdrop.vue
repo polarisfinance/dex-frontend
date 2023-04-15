@@ -9,87 +9,90 @@ import useEthers from '@/composables/useEthers';
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import useWeb3 from '@/services/web3/useWeb3';
+import xpolar from '@/components/_global/icons/polaris/Logo.vue';
 
 // const { pendingShare, claim } = airdrop(account.value);
 
 export default defineComponent({
-    data() {
-        return {
-            pendingShare: "--",
-            totalShares: "--",
-            vested: "--",
-            claimDisable: true,
-        };
+  components: { xpolar },
+  setup(props) {
+    const { isDesktop, isMobile } = useBreakpoints();
+    const { isWalletReady, isWalletConnecting } = useWeb3();
+    const totalProgress = ref(1);
+    const startDay: Date = new Date(1676667600 * 1000);
+    const today: Date = new Date();
+    const diffTime = Math.abs((startDay as any) - (today as any));
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
+    diffDays = diffDays > 60 ? 60 : diffDays;
+    const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
+    const diffDaysReverse = 60 - diffDays;
+    const vestedAll = (
+      ((startDay > today ? 0 : diffTime) / 1000) *
+      0.0385802469
+    ).toFixed(0);
+    const { account, getProvider } = useWeb3();
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'claim',
+        summary: 'Claim airdrop',
+      });
+    };
+    return {
+      account,
+      isDesktop,
+      isMobile,
+      isWalletReady,
+      isWalletConnecting,
+      totalProgress,
+      progress,
+      diffDays,
+      diffDaysReverse,
+      getProvider,
+      txListener,
+      vestedAll,
+    };
+  },
+  data() {
+    return {
+      pendingShare: '--',
+      totalShares: '--',
+      vested: '--',
+      claimDisable: true,
+    };
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.render();
     },
-    setup(props) {
-        const { isDesktop, isMobile } = useBreakpoints();
-        const { isWalletReady, isWalletConnecting } = useWeb3();
-        const totalProgress = ref(1);
-        const startDay: Date = new Date(1676667600 * 1000);
-        const today: Date = new Date();
-        const diffTime = Math.abs((startDay as any) - (today as any));
-        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
-        diffDays = diffDays > 60 ? 60 : diffDays;
-        const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
-        const diffDaysReverse = 60 - diffDays;
-        const vestedAll = (((startDay > today ? 0 : diffTime) / 1000) *
-            0.0385802469).toFixed(0);
-        const { account, getProvider } = useWeb3();
-        const { addTransaction } = useTransactions();
-        const { txListener } = useEthers();
-        const txHandler = (tx: TransactionResponse): void => {
-            addTransaction({
-                id: tx.hash,
-                type: "tx",
-                action: "claim",
-                summary: "Claim airdrop",
-            });
-        };
-        return {
-            account,
-            isDesktop,
-            isMobile,
-            isWalletReady,
-            isWalletConnecting,
-            totalProgress,
-            progress,
-            diffDays,
-            diffDaysReverse,
-            getProvider,
-            txListener,
-            vestedAll,
-        };
+  },
+  async created() {
+    await this.render();
+  },
+  methods: {
+    async render() {
+      const { getPendingShare, totalShares, getVested } = useAirdrop();
+      this.vested = await getVested(this.account);
+      this.pendingShare = await getPendingShare(this.account);
+      this.totalShares = await totalShares(this.account);
+      if (Number(this.pendingShare) > 0) {
+        this.claimDisable = false;
+      }
     },
-    methods: {
-        async render() {
-            const { getPendingShare, totalShares, getVested } = useAirdrop();
-            this.vested = await getVested(this.account);
-            this.pendingShare = await getPendingShare(this.account);
-            this.totalShares = await totalShares(this.account);
-            if (Number(this.pendingShare) > 0) {
-                this.claimDisable = false;
-            }
+    async claim() {
+      const { claim } = useAirdrop();
+      const tx = await claim(this.getProvider(), this.account);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
         },
-        async claim() {
-            const { claim } = useAirdrop();
-            const tx = await claim(this.getProvider(), this.account);
-            this.txListener(tx, {
-                onTxConfirmed: () => {
-                    this.render();
-                },
-                onTxFailed: () => { },
-            });
-        },
+        onTxFailed: () => {},
+      });
     },
-    async created() {
-        await this.render();
-    },
-    watch: {
-        async account(newAccount, oldAccount) {
-            await this.render();
-        },
-    },
-    components: {  }
+  },
 });
 </script>
 
@@ -108,44 +111,43 @@ export default defineComponent({
           <div class="subtitle">Claim your airdrop!</div>
           <!-- <div class="subtitle">Claim will soon be available!</div> -->
 
-          <div :style="{ paddingBottom: '40px', paddingTop: '40px' }">
-          </div>
+          <div :style="{ paddingBottom: '40px', paddingTop: '40px' }"></div>
         </div>
       </div>
-      <div class="summary mx-auto flex">
-        <div class="info-token flex-none" v-if="isDesktop">
-          <img class="w-[124px]" src="./xpolar.svg" />
+      <div class="flex mx-auto summary">
+        <div v-if="isDesktop" class="flex-none info-token">
+          <xpolar class="w-[124px] h-[124px]" />
         </div>
-        <div class="total w-full pt-[24px] pl-[55px]">
+        <div class="w-full total pt-[24px] pl-[55px]">
           Total xPolars
           <h3>200,000</h3>
         </div>
-        <div class="share w-full pt-[24px] pl-5">
+        <div class="pl-5 w-full share pt-[24px]">
           Your share
           <h3>{{ totalShares }}</h3>
         </div>
       </div>
-      <div class="vesting mx-10">
+      <div class="mx-10 vesting">
         <div class="flex">
           <div class="mr-10 w-full">
             <span class="inp-label">In progress</span>
             <h2 :style="{ marginBottom: 0 }">60 Days vesting</h2>
           </div>
-          <div class="w-fit flex items-end" :class="{ 'flex-wrap': isMobile }">
+          <div class="flex items-end w-fit" :class="{ 'flex-wrap': isMobile }">
             <div class="basic-label w-[300px]">
               Full information about airdrop can <br />be found on our medium
             </div>
             <a
               href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c"
               target="_blank"
-              class="read-btn flex-none"
+              class="flex-none read-btn"
               >Read our medium</a
             >
           </div>
         </div>
         <div class="progress-bar mt-[100px] h-[2px] rounded-[24px]">
           <div
-            class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
+            class="absolute bottom-0 left-0 w-0 opacity-80 transition duration-300 ease-linear progress h-[2px] rounded-[24px] bg-styling-teal dark:bg-styling-teal"
             :style="{ width: `${(progress * 100).toFixed(0)}%` }"
           />
           <div
@@ -331,13 +333,13 @@ export default defineComponent({
         </svg>
       </div>
       <div
-        class="claim-container mx-5"
+        class="mx-5 claim-container"
         :class="{ 'flex flex-wrap': isDesktop }"
       >
-        <div class="stats grid flex-none" :class="{ 'stats-mobile': isMobile }">
-          <div class="flex items-center justify-center" v-if="false">
+        <div class="grid flex-none stats" :class="{ 'stats-mobile': isMobile }">
+          <div v-if="false" class="flex justify-center items-center">
             <div class="flex py-5">
-              <div class="mr-4 mt-3">
+              <div class="mt-3 mr-4">
                 <WalletNewIcon />
               </div>
               <div>
@@ -346,9 +348,9 @@ export default defineComponent({
               </div>
             </div>
           </div>
-          <div class="flex items-center justify-center">
+          <div class="flex justify-center items-center">
             <div class="flex py-5">
-              <div class="mr-4 mt-3">
+              <div class="mt-3 mr-4">
                 <DollarCoinsStackedIcon />
               </div>
               <div>
@@ -358,8 +360,8 @@ export default defineComponent({
             </div>
           </div>
         </div>
-        <div class="card-claim flex-1">
-          <h3 class="h-my-airdrop w-full">My Airdrop</h3>
+        <div class="flex-1 card-claim">
+          <h3 class="w-full h-my-airdrop">My Airdrop</h3>
           <div class="w-full text-center">
             <h2>
               <span class="claim-amount">{{ vested }}</span> / {{ totalShares }}
@@ -367,9 +369,9 @@ export default defineComponent({
             In the next {{ diffDaysReverse }} days
           </div>
           <div>
-            <div class="progress-bar mx-10 mt-[32px] h-[2px] rounded-[24px]">
+            <div class="mx-10 progress-bar mt-[32px] h-[2px] rounded-[24px]">
               <div
-                class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
+                class="absolute bottom-0 left-0 w-0 opacity-80 transition duration-300 ease-linear progress h-[2px] rounded-[24px] bg-styling-teal dark:bg-styling-teal"
                 :style="{ width: `${(progress * 100).toFixed(0)}%` }"
               />
               <div
@@ -379,13 +381,13 @@ export default defineComponent({
                 <span>{{ vested }} xPolars</span>
               </div>
             </div>
-            <div class="mx-10 flex">
+            <div class="flex mx-10">
               <div class="w-full text-left">Already vested xPolars</div>
               <div class="w-full text-right">{{ totalShares }} xPolars</div>
             </div>
           </div>
           <div class="text-center">
-            <button class="claim-btn" @click="claim" :disabled="claimDisable">
+            <button class="claim-btn" :disabled="claimDisable" @click="claim">
               Claim xPolars
               <svg
                 style="display: inline; margin-left: 28px"
@@ -413,19 +415,16 @@ export default defineComponent({
 <style scoped>
 .claim-button {
   @apply cursor-pointer;
+
   display: flex;
   align-items: flex-start;
   padding: 8px 12px 8px 16px;
   gap: 10px;
-
   width: 89px;
   height: 36px;
-
   margin: auto;
-
   background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 24px;
-
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
@@ -435,18 +434,19 @@ export default defineComponent({
 .claim-button:hover {
   background: linear-gradient(
     92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
+    rgb(192 4 254 / 70%) 4.85%,
+    rgb(126 2 245 / 70%) 95.15%
   );
 }
 
 .claim-button:active {
   background: linear-gradient(
     92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
+    rgb(192 4 254 / 70%) 4.85%,
+    rgb(126 2 245 / 70%) 95.15%
   );
 }
+
 .summary {
   max-width: 700px;
   background: #292043;
@@ -458,12 +458,14 @@ export default defineComponent({
   line-height: 20px;
   color: #bdb2dd;
 }
+
 .summary h3 {
   font-weight: 600;
   font-size: 40px;
   line-height: 52px;
   color: #fdfdfd;
 }
+
 .title {
   font-weight: 600;
   font-size: 84px;
@@ -472,6 +474,7 @@ export default defineComponent({
   max-width: 600px;
   margin: auto;
 }
+
 .subtitle {
   margin-top: 32px;
   font-weight: 500;
@@ -488,6 +491,7 @@ export default defineComponent({
   text-align: center;
   color: #fdfdfd;
 }
+
 .vesting {
   margin-top: 160px;
   font-weight: 600;
@@ -495,21 +499,23 @@ export default defineComponent({
   line-height: 18px;
   color: #bdb2dd;
 }
+
 h2 {
   font-weight: 600;
   font-size: 40px;
   line-height: 52px;
-  color: #ffffff;
+  color: #fff;
   margin-bottom: 37px;
 }
+
 .progress-bar {
   background: #41365e;
   position: relative;
   margin-bottom: 10px;
 }
+
 .inp-label {
   background: linear-gradient(95.72deg, #43cea2 -16.04%, #185a9d 100.53%);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
@@ -517,6 +523,7 @@ h2 {
   font-size: 12px;
   line-height: 18px;
 }
+
 .read-btn {
   padding: 8px 20px;
   width: fit-content;
@@ -524,29 +531,34 @@ h2 {
   border-radius: 16px;
   color: #fdfdfd;
   background: linear-gradient(#241234, #241234) padding-box,
-    linear-gradient(90deg, rgba(67, 206, 162, 1), rgba(24, 90, 157, 1))
+    linear-gradient(90deg, rgb(67 206 162 / 100%), rgb(24 90 157 / 100%))
       border-box;
   border: 1px solid transparent;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
 }
+
 .basic-label {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
   color: #fdfdfd;
 }
+
 .stats {
   min-width: 300px;
   color: #bdb2dd;
 }
+
 .stats > div:first-child {
   background-color: #41365e;
 }
+
 .stats > div:last-child {
   background-color: #50456e;
 }
+
 .claim-container {
   background-color: #292043;
   border-radius: 32px;
@@ -555,30 +567,35 @@ h2 {
 }
 
 .card-claim {
-  padding: 24px 24px 32px 24px;
+  padding: 24px 24px 32px;
 }
+
 .container {
   max-width: 920px;
 }
+
 .card-title {
   font-weight: 600;
   font-size: 32px;
   color: #fdfdfd;
 }
+
 .claim-amount {
   color: #0ce6b5;
 }
+
 .h-my-airdrop {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   text-align: center;
   color: #fdfdfd;
-  border-bottom: 1px solid rgba(65, 54, 94, 0.4);
+  border-bottom: 1px solid rgb(65 54 94 / 40%);
   height: fit-content;
   padding-bottom: 16px;
   margin-bottom: 24px;
 }
+
 .claim-btn {
   background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 24px;
@@ -593,24 +610,26 @@ h2 {
 .claim-btn:hover {
   background: linear-gradient(
     92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
+    rgb(192 4 254 / 70%) 4.85%,
+    rgb(126 2 245 / 70%) 95.15%
   );
 }
 
 .claim-btn:active {
   background: linear-gradient(
     92.92deg,
-    rgba(192, 4, 254, 0.7) 4.85%,
-    rgba(126, 2, 245, 0.7) 95.15%
+    rgb(192 4 254 / 70%) 4.85%,
+    rgb(126 2 245 / 70%) 95.15%
   );
 }
+
 .claim-btn:disabled,
 claim-btn[disabled] {
-  background: rgba(65, 54, 94, 1);
+  background: rgb(65 54 94 / 100%);
   color: #a99bc6;
   cursor: not-allowed;
 }
+
 .progress-tracker {
   width: 12px;
   height: 12px;
@@ -618,6 +637,7 @@ claim-btn[disabled] {
   position: relative;
   top: -5px;
 }
+
 .progress-tracker span {
   position: relative;
   top: -35px;

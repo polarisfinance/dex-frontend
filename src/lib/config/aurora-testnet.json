@@ -11,8 +11,7 @@
   "ws": "wss://testnet.aurora.dev",
   "explorer": "https://explorer.testnet.aurora.dev",
   "explorerName": "Aurora Explorer",
-  "subgraph": "https://api.thegraph.com/subgraphs/name/polarisfinance/polaris-dex-testnet",
-  "balancerApi": "",
+  "subgraph": "https://graph.polarisfinance.io/subgraphs/name/polarisfinance/polaris-dex-testnet",
   "poolsUrlV2": "",
   "subgraphs": {
     "main": [
@@ -20,7 +19,7 @@
     ],
     "aave": "",
     "gauge": "https://graph.polarisfinance.io/subgraphs/name/polarisfinance/gauges-testnet",
-    "blocks": "https://api.thegraph.com/subgraphs/name/polarisfinance/auroratestnet-blocks"
+    "blocks": "https://graph.polarisfinance.io/subgraphs/name/polarisfinance/auroratestnet-blocks"
   },
   "supportsEIP1559": true,
   "supportsElementPools": true,
