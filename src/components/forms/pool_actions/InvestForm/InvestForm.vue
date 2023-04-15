@@ -4,7 +4,7 @@ import { computed, nextTick, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import WrapStEthLink from '@/components/contextual/pages/pool/invest/WrapStEthLink.vue';
-import StakePreviewModal from '@/components/contextual/pages/pool/staking/StakePreviewModal.vue';
+// import StakePreviewModal from '@/components/contextual/pages/pool/staking/StakePreviewModal.vue';
 // Components
 import TokenInput from '@/components/inputs/TokenInput/TokenInput.vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
@@ -229,63 +229,64 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 </script>
 
 <template>
-  <div>
-    <BalAlert
-      v-if="forceProportionalInputs"
-      type="warning"
-      :title="$t('investment.warning.managedPoolSwappingHalted.title')"
-      :description="
-        $t('investment.warning.managedPoolSwappingHalted.description')
-      "
-      class="mb-4"
-    />
+  <div class="dark:bg-polaris-card-medium rounded-default">
+    <div class="p-2">
+      <BalAlert
+        v-if="forceProportionalInputs"
+        type="warning"
+        :title="$t('investment.warning.managedPoolSwappingHalted.title')"
+        :description="
+          $t('investment.warning.managedPoolSwappingHalted.description')
+        "
+        class="mb-4"
+      />
 
-    <BalAlert
-      v-if="poolHasLowLiquidity"
-      type="warning"
-      :title="$t('investment.warning.lowLiquidity.title')"
-      :description="$t('investment.warning.lowLiquidity.description')"
-      class="mb-4"
-    />
+      <BalAlert
+        v-if="poolHasLowLiquidity"
+        type="warning"
+        :title="$t('investment.warning.lowLiquidity.title')"
+        :description="$t('investment.warning.lowLiquidity.description')"
+        class="mb-4"
+      />
 
-    <TokenInput
-      v-for="(n, i) in tokenAddresses.length"
-      :key="i"
-      v-model:address="tokenAddresses[i]"
-      v-model:amount="amounts[i]"
-      v-model:isValid="validInputs[i]"
-      :name="tokenAddresses[i]"
-      :weight="tokenWeight(tokenAddresses[i])"
-      :hintAmount="propAmountFor(i)"
-      :hint="hint(i)"
-      class="mb-4"
-      fixedToken
-      :options="tokenOptions(i)"
-      @update:amount="handleAmountChange($event, i)"
-      @update:address="handleAddressChange($event)"
-    />
-
-    <InvestFormTotals
-      :math="investMath"
-      @maximize="maximizeAmounts"
-      @optimize="optimizeAmounts"
-    />
-
-    <div
-      v-if="highPriceImpact"
-      class="p-2 pb-2 mt-4 rounded-lg border dark:border-gray-700"
-    >
-      <BalCheckbox
-        v-model="highPriceImpactAccepted"
-        :rules="[isRequired($t('priceImpactCheckbox'))]"
-        name="highPriceImpactAccepted"
-        size="sm"
-        :label="$t('priceImpactAccept', [$t('depositing')])"
+      <TokenInput
+        v-for="(n, i) in tokenAddresses.length"
+        :key="i"
+        v-model:address="tokenAddresses[i]"
+        v-model:amount="amounts[i]"
+        v-model:isValid="validInputs[i]"
+        :name="tokenAddresses[i]"
+        :weight="tokenWeight(tokenAddresses[i])"
+        :hintAmount="propAmountFor(i)"
+        :hint="hint(i)"
+        class="mb-4"
+        fixedToken
+        :options="tokenOptions(i)"
+        @update:amount="handleAmountChange($event, i)"
+        @update:address="handleAddressChange($event)"
       />
     </div>
+    <div class="dark:bg-polaris-card-light p-2">
+      <InvestFormTotals
+        :math="investMath"
+        @maximize="maximizeAmounts"
+        @optimize="optimizeAmounts"
+      />
 
-    <WrapStEthLink :pool="pool" class="mt-4" />
-
+      <div
+        v-if="highPriceImpact"
+        class="p-2 pb-2 mt-4 rounded-lg border dark:border-gray-700"
+      >
+        <BalCheckbox
+          v-model="highPriceImpactAccepted"
+          :rules="[isRequired($t('priceImpactCheckbox'))]"
+          name="highPriceImpactAccepted"
+          size="sm"
+          :label="$t('priceImpactAccept', [$t('depositing')])"
+        />
+      </div>
+      <WrapStEthLink :pool="pool" class="mt-4" />
+    </div>
     <div class="mt-4">
       <BalBtn
         v-if="!isWalletReady"
@@ -315,12 +316,12 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         @close="showInvestPreview = false"
         @show-stake-modal="showStakeModal = true"
       />
-      <StakePreviewModal
+      <!-- <StakePreviewModal
         :pool="pool"
         :isVisible="showStakeModal"
         action="stake"
         @close="showStakeModal = false"
-      />
+      /> -->
     </teleport>
   </div>
 </template>

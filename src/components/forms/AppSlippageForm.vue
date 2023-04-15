@@ -44,7 +44,7 @@ const isFixedSlippage = computed(() => {
 const customInputClasses = computed(() => ({
   ' dark:bg-[#50456E] rounded-small dark:text-polaris-white font-semibold':
     !isFixedSlippage.value && state.isCustomInput,
-  ' dark:bg-polaris-card-light dark:text-polaris-2 font-semibold rounded-small': isFixedSlippage.value && !state.isCustomInput,
+  ' dark:bg-polaris-card-default dark:text-polaris-2 font-semibold rounded-small': isFixedSlippage.value && !state.isCustomInput,
 }));
 
 /**

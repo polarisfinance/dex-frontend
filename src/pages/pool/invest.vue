@@ -22,6 +22,7 @@ import useTransactions from '@/composables/useTransactions';
 import useEthers from '@/composables/useEthers';
 import useTokens from '@/composables/useTokens';
 import useBreakpoints from '@/composables/useBreakpoints';
+import InvestPage from '@/components/contextual/pages/pool/invest/InvestPage.vue';
 
 const steps = [
   {
@@ -62,6 +63,7 @@ export default defineComponent({
     InvestForm,
     InvestPreviewModal,
     StakeView,
+    InvestPage,
   },
   props: {
     activeStep: {

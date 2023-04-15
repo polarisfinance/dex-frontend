@@ -87,7 +87,7 @@ function onColumnSort(columnId: string) {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full dark:bg-polaris-card-light rounded-big"
+            class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full dark:bg-polaris-card-default rounded-big"
           >
             <TokenSearchInput
               v-model="selectedTokens"

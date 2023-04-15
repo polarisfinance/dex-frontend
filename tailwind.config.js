@@ -98,7 +98,7 @@ module.exports = {
           'card-dark':'#292043',
           'card-default':'#292043',
           'card-medium':'#41365E',
-          'card-light':'#292043',
+          'card-light':'#50456E',
           'back-main':'#150128',
           'pill':'#50456E',
           'button-main-from':'#c004fe',
