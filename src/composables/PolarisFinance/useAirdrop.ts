@@ -59,7 +59,7 @@ export default function useAirdrop() {
             startTime.add(runningTime)
           )
         ) {
-          pending = v[1];
+          pending = BigNumber.from(v[1]);
         } else {
           pending = BigNumber.from(Math.floor(Date.now() / 1000))
             .sub(startTime)
