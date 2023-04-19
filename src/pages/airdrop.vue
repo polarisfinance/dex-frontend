@@ -15,85 +15,86 @@ import useWeb3 from '@/services/web3/useWeb3';
 // const { pendingShare, claim } = airdrop(account.value);
 
 export default defineComponent({
-    data() {
-        return {
-            pendingShare: "--",
-            totalShares: "--",
-            vested: "--",
-            claimDisable: true,
-        };
+  data() {
+    return {
+      pendingShare: '--',
+      totalShares: '--',
+      vested: '--',
+      claimDisable: true,
+    };
+  },
+  setup(props) {
+    const { isDesktop, isMobile } = useBreakpoints();
+    const { isWalletReady, isWalletConnecting } = useWeb3();
+    const totalProgress = ref(1);
+    const startDay: Date = new Date(1676667600 * 1000);
+    const today: Date = new Date();
+    const diffTime = Math.abs((startDay as any) - (today as any));
+    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
+    diffDays = diffDays > 60 ? 60 : diffDays;
+    const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
+    const diffDaysReverse = 60 - diffDays;
+    // const vestedAll = (((startDay > today ? 0 : diffTime) / 1000) *
+    //     0.0385802469).toFixed(0);
+    const vestedAll = '200 000';
+    const { account, getProvider } = useWeb3();
+    const { addTransaction } = useTransactions();
+    const { txListener } = useEthers();
+    const txHandler = (tx: TransactionResponse): void => {
+      addTransaction({
+        id: tx.hash,
+        type: 'tx',
+        action: 'claim',
+        summary: 'Claim airdrop',
+      });
+    };
+    return {
+      account,
+      airdropbg,
+      claimArrow,
+      isDesktop,
+      isMobile,
+      isWalletReady,
+      isWalletConnecting,
+      totalProgress,
+      progress,
+      diffDays,
+      diffDaysReverse,
+      getProvider,
+      txListener,
+      vestedAll,
+    };
+  },
+  methods: {
+    async render() {
+      const { getPendingShare, totalShares, getVested } = useAirdrop();
+      this.vested = await getVested(this.account);
+      this.pendingShare = await getPendingShare(this.account);
+      this.totalShares = await totalShares(this.account);
+      if (Number(this.pendingShare) > 0) {
+        this.claimDisable = false;
+      }
     },
-    setup(props) {
-        const { isDesktop, isMobile } = useBreakpoints();
-        const { isWalletReady, isWalletConnecting } = useWeb3();
-        const totalProgress = ref(1);
-        const startDay: Date = new Date(1676667600 * 1000);
-        const today: Date = new Date();
-        const diffTime = Math.abs((startDay as any) - (today as any));
-        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
-        diffDays = diffDays > 60 ? 60 : diffDays;
-        const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
-        const diffDaysReverse = 60 - diffDays;
-        const vestedAll = (((startDay > today ? 0 : diffTime) / 1000) *
-            0.0385802469).toFixed(0);
-        const { account, getProvider } = useWeb3();
-        const { addTransaction } = useTransactions();
-        const { txListener } = useEthers();
-        const txHandler = (tx: TransactionResponse): void => {
-            addTransaction({
-                id: tx.hash,
-                type: "tx",
-                action: "claim",
-                summary: "Claim airdrop",
-            });
-        };
-        return {
-            account,
-            airdropbg,
-            claimArrow,
-            isDesktop,
-            isMobile,
-            isWalletReady,
-            isWalletConnecting,
-            totalProgress,
-            progress,
-            diffDays,
-            diffDaysReverse,
-            getProvider,
-            txListener,
-            vestedAll,
-        };
-    },
-    methods: {
-        async render() {
-            const { getPendingShare, totalShares, getVested } = useAirdrop();
-            this.vested = await getVested(this.account);
-            this.pendingShare = await getPendingShare(this.account);
-            this.totalShares = await totalShares(this.account);
-            if (Number(this.pendingShare) > 0) {
-                this.claimDisable = false;
-            }
+    async claim() {
+      const { claim } = useAirdrop();
+      const tx = await claim(this.getProvider(), this.account);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.render();
         },
-        async claim() {
-            const { claim } = useAirdrop();
-            const tx = await claim(this.getProvider(), this.account);
-            this.txListener(tx, {
-                onTxConfirmed: () => {
-                    this.render();
-                },
-                onTxFailed: () => { },
-            });
-        },
+        onTxFailed: () => {},
+      });
     },
-    async created() {
-        await this.render();
+  },
+  async created() {
+    await this.render();
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.render();
     },
-    watch: {
-        async account(newAccount, oldAccount) {
-            await this.render();
-        },
-    },
-    components: {  }
+  },
+  components: {},
 });
 </script>
 
