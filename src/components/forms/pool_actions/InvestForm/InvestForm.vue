@@ -22,16 +22,20 @@ import {
   indexOfAddress,
   isSameAddress,
 } from '@/lib/utils';
+import InvestActions from '@/components/forms/pool_actions/InvestForm/components/InvestPreview/InvestActions.vue';
+import InvestSummary from '@/components/forms/pool_actions/InvestForm/components/InvestPreview/InvestSummary.vue';
+import TokenAmounts from '@/components/forms/pool_actions/shared/TokenAmounts.vue';
 import { isRequired } from '@/lib/utils/validations';
+import useNumbers from '@/composables/useNumbers';
 // Types
 import { Pool } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
+import { TokenInfoMap } from '@/types/TokenList';
 
 import InvestFormTotals from './components/InvestFormTotals.vue';
 import InvestPreviewModal from './components/InvestPreviewModal/InvestPreviewModal.vue';
 import useInvestMath from './composables/useInvestMath';
 import useInvestState from './composables/useInvestState';
-
 /**
  * TYPES
  */
@@ -42,13 +46,14 @@ enum NativeAsset {
 
 type Props = {
   pool: Pool;
+  step: number;
 };
 
 /**
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-
+const emits = defineEmits(['close', 'preview', 'confirmInvestment']);
 /**
  * STATE
  */
@@ -71,6 +76,8 @@ const {
 } = useInvestState();
 
 const pool = computed(() => props.pool);
+const { getToken } = useTokens();
+const { toFiat } = useNumbers();
 
 const investMath = useInvestMath(
   pool,
@@ -81,6 +88,9 @@ const investMath = useInvestMath(
 );
 
 const {
+  fullAmounts,
+  priceImpact,
+  rektPriceImpact,
   hasAmounts,
   highPriceImpact,
   maximizeAmounts,
@@ -123,6 +133,9 @@ const investmentTokens = computed((): string[] => {
   return tokensListExclBpt(props.pool);
 });
 
+type AmountMap = {
+  [address: string]: string;
+};
 /**
  * METHODS
  */
@@ -207,6 +220,37 @@ function setNativeAsset(to: NativeAsset): void {
   }
 }
 
+const amountMap = computed((): AmountMap => {
+  const amountMap = {};
+  fullAmounts.value.forEach((amount, i) => {
+    amountMap[tokenAddresses.value[i]] = amount;
+  });
+  return amountMap;
+});
+
+const tokenMap = computed((): TokenInfoMap => {
+  const tokenMap = {};
+  Object.keys(amountMap.value).forEach(address => {
+    tokenMap[address] = getToken(address);
+  });
+  return tokenMap;
+});
+
+const fiatAmountMap = computed((): AmountMap => {
+  const fiatAmountMap = {};
+  Object.keys(amountMap.value).forEach(address => {
+    fiatAmountMap[address] = toFiat(amountMap.value[address], address);
+  });
+  return fiatAmountMap;
+});
+
+const fiatTotal = computed((): string =>
+  Object.values(fiatAmountMap.value).reduce(
+    (total, amount) => bnum(total).plus(amount).toString(),
+    '0'
+  )
+);
+
 /**
  * CALLBACKS
  */
@@ -229,99 +273,137 @@ watch(useNativeAsset, shouldUseNativeAsset => {
 </script>
 
 <template>
-  <div class="dark:bg-polaris-card-medium rounded-default overflow-hidden">
-    <div class="p-2">
-      <BalAlert
-        v-if="forceProportionalInputs"
-        type="warning"
-        :title="$t('investment.warning.managedPoolSwappingHalted.title')"
-        :description="
-          $t('investment.warning.managedPoolSwappingHalted.description')
-        "
-        class="mb-4"
-      />
+  <div v-if="props.step <= 2" class="invest">
+    <div class="overflow-hidden dark:bg-polaris-card-medium rounded-default">
+      <div class="p-2">
+        <BalAlert
+          v-if="forceProportionalInputs"
+          type="warning"
+          :title="$t('investment.warning.managedPoolSwappingHalted.title')"
+          :description="
+            $t('investment.warning.managedPoolSwappingHalted.description')
+          "
+          class="mb-4"
+        />
 
-      <BalAlert
-        v-if="poolHasLowLiquidity"
-        type="warning"
-        :title="$t('investment.warning.lowLiquidity.title')"
-        :description="$t('investment.warning.lowLiquidity.description')"
-        class="mb-4"
-      />
+        <BalAlert
+          v-if="poolHasLowLiquidity"
+          type="warning"
+          :title="$t('investment.warning.lowLiquidity.title')"
+          :description="$t('investment.warning.lowLiquidity.description')"
+          class="mb-4"
+        />
 
-      <TokenInput
-        v-for="(n, i) in tokenAddresses.length"
-        :key="i"
-        v-model:address="tokenAddresses[i]"
-        v-model:amount="amounts[i]"
-        v-model:isValid="validInputs[i]"
-        :name="tokenAddresses[i]"
-        :weight="tokenWeight(tokenAddresses[i])"
-        :hintAmount="propAmountFor(i)"
-        :hint="hint(i)"
-        class="mb-4"
-        fixedToken
-        :options="tokenOptions(i)"
-        @update:amount="handleAmountChange($event, i)"
-        @update:address="handleAddressChange($event)"
-      />
-    </div>
-    <div class="dark:bg-polaris-card-light p-2">
-      <InvestFormTotals
-        :math="investMath"
-        @maximize="maximizeAmounts"
-        @optimize="optimizeAmounts"
-      />
-
-      <div
-        v-if="highPriceImpact"
-        class="p-2 pb-2 mt-4 rounded-lg border dark:border-gray-700"
-      >
-        <BalCheckbox
-          v-model="highPriceImpactAccepted"
-          :rules="[isRequired($t('priceImpactCheckbox'))]"
-          name="highPriceImpactAccepted"
-          size="sm"
-          :label="$t('priceImpactAccept', [$t('depositing')])"
+        <TokenInput
+          v-for="(n, i) in tokenAddresses.length"
+          :key="i"
+          v-model:address="tokenAddresses[i]"
+          v-model:amount="amounts[i]"
+          v-model:isValid="validInputs[i]"
+          :name="tokenAddresses[i]"
+          :weight="tokenWeight(tokenAddresses[i])"
+          :hintAmount="propAmountFor(i)"
+          :hint="hint(i)"
+          class="mb-4"
+          fixedToken
+          :options="tokenOptions(i)"
+          @update:amount="handleAmountChange($event, i)"
+          @update:address="handleAddressChange($event)"
         />
       </div>
-      <WrapStEthLink :pool="pool" class="mt-4" />
-    </div>
-    <div class="dark:bg-polaris-card-light pt-4 px-[16px] pb-[12px]">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
-        block
-        @click="startConnectWithInjectedProvider"
-      />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
-        :disabled="
-          !hasAmounts || !hasValidInputs || isMismatchedNetwork || loadingData
-        "
-        class="w-full text-white font-semibold text-lg"
-        block
-        @click="showInvestPreview = true"
-      />
-    </div>
+      <div class="p-2 dark:bg-polaris-card-light">
+        <InvestFormTotals
+          :math="investMath"
+          @maximize="maximizeAmounts"
+          @optimize="optimizeAmounts"
+        />
 
-    <teleport to="#modal">
-      <InvestPreviewModal
-        v-if="showInvestPreview"
+        <div
+          v-if="highPriceImpact"
+          class="p-2 pb-2 mt-4 rounded-lg border dark:border-gray-700"
+        >
+          <BalCheckbox
+            v-model="highPriceImpactAccepted"
+            :rules="[isRequired($t('priceImpactCheckbox'))]"
+            name="highPriceImpactAccepted"
+            size="sm"
+            :label="$t('priceImpactAccept', [$t('depositing')])"
+          />
+        </div>
+        <WrapStEthLink :pool="pool" class="mt-4" />
+      </div>
+      <div class="pt-4 dark:bg-polaris-card-light px-[16px] pb-[12px]">
+        <BalBtn
+          v-if="!isWalletReady"
+          :label="$t('connectWallet')"
+          color="gradient"
+          block
+          @click="startConnectWithInjectedProvider"
+        />
+        <BalBtn
+          v-else
+          :label="$t('preview')"
+          :disabled="
+            !hasAmounts || !hasValidInputs || isMismatchedNetwork || loadingData
+          "
+          class="w-full text-lg font-semibold text-white"
+          block
+          @click="emits('preview')"
+        />
+      </div>
+
+      <!-- <teleport to="#modal">
+        <InvestPreviewModal
+          v-if="showInvestPreview"
+          :pool="pool"
+          :math="investMath"
+          :tokenAddresses="tokenAddresses"
+          @close="showInvestPreview = false"
+          @show-stake-modal="showStakeModal = true"
+        />
+        <StakePreviewModal COMMENTED
+          :pool="pool"
+          :isVisible="showStakeModal"
+          action="stake"
+          @close="showStakeModal = false"
+        /> 
+      </teleport> -->
+    </div>
+  </div>
+  <div
+    v-if="props.step == 3"
+    class="overflow-hidden dark:bg-polaris-card-medium rounded-default"
+  >
+    <div class="p-3">
+      <TokenAmounts
+        :amountMap="amountMap"
+        :tokenMap="tokenMap"
+        :fiatAmountMap="fiatAmountMap"
+        :fiatTotal="fiatTotal"
+      />
+
+      <InvestSummary
+        :pool="pool"
+        :fiatTotal="fiatTotal"
+        :priceImpact="priceImpact"
+        :highPriceImpact="highPriceImpact"
+      />
+
+      <BalAlert
+        v-if="rektPriceImpact"
+        type="error"
+        :title="$t('investment.error.rektPriceImpact.title')"
+        :description="$t('investment.error.rektPriceImpact.description')"
+        class="mt-6 mb-2"
+      />
+      <InvestActions
         :pool="pool"
         :math="investMath"
         :tokenAddresses="tokenAddresses"
-        @close="showInvestPreview = false"
-        @show-stake-modal="showStakeModal = true"
+        :disabled="rektPriceImpact"
+        class="mt-4"
+        @success="emits('confirmInvestment')"
       />
-      <!-- <StakePreviewModal
-        :pool="pool"
-        :isVisible="showStakeModal"
-        action="stake"
-        @close="showStakeModal = false"
-      /> -->
-    </teleport>
+    </div>
   </div>
 </template>

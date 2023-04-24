@@ -16,8 +16,9 @@ import { BigNumber } from 'ethers';
 import { TransactionResponse } from '@ethersproject/providers';
 import useWeb3 from '@/services/web3/useWeb3';
 import useTransactions from '@/composables/useTransactions';
-import useEthers from '@/composables/useEthers'
+import useEthers from '@/composables/useEthers';
 import useBreakpoints from '@/composables/useBreakpoints';
+import useNetwork from '@/composables/useNetwork';
 
 /**
  * TYPES
@@ -32,7 +33,6 @@ type Props = {
   xpolarPrice: string;
   xpolarToClaim: string;
 };
-
 
 /**
  * PROPS & EMITS
@@ -65,9 +65,8 @@ const rewardFiat = computed(() => {
     FNumFormats.fiat
   );
 });
-
+const { networkSlug } = useNetwork();
 const { account } = useWeb3();
-
 
 const stats = computed(() => {
   if (!props.pool) return [];
@@ -123,19 +122,27 @@ async function claimXpolar(address) {
   const tx = await withdraw(address, BigNumber.from(0), getProvider());
   txHandler(tx);
   txListener(tx, {
-    onTxConfirmed: () => {
-      
-    },
+    onTxConfirmed: () => {},
     onTxFailed: () => {},
   });
 }
 </script>
 
 <template>
-  <div class="flex w-full" :class="{'flex-wrap':isMobile,'mb-[24px]':isDesktop}">
+  <div
+    class="flex w-full"
+    :class="{ 'flex-wrap': isMobile, 'mb-[24px]': isDesktop }"
+  >
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading" class="h-24" />
-      <div v-else class="card-container flex flex-1" :class="{'justify-center':isDesktop,'justify-start mb-10':isMobile}"  >
+      <div
+        v-else
+        class="flex flex-1 card-container"
+        :class="{
+          'justify-center': isDesktop,
+          'justify-start mb-10': isMobile,
+        }"
+      >
         <div>
           <WalletNewIcon v-if="stat.id == 'poolValue'" />
           <VolumeTimeIcon v-if="stat.id == 'volumeTime'" />
@@ -143,7 +150,7 @@ async function claimXpolar(address) {
           <AprIcon v-if="stat.id == 'apr'" />
         </div>
         <div class="ml-[16px]">
-          <div class="text-secondary mb-[4px] flex text-sm font-medium">
+          <div class="flex text-sm font-medium text-secondary mb-[4px]">
             <div class="label">{{ stat.label }}</div>
             <!-- <APRTooltip
                 v-if="stat.id === 'apr'"
@@ -152,95 +159,115 @@ async function claimXpolar(address) {
               /> -->
           </div>
           <div
-            class="funds flex items-center truncate text-xl font-medium"
             v-if="stat.label != 'APR'"
+            class="flex items-center text-xl font-medium truncate funds"
           >
             {{ stat.value }} <span v-if="stat.label == 'APR'">%</span>
           </div>
           <div
-            class="funds flex items-center truncate text-xl font-medium"
             v-else
+            class="flex items-center text-xl font-medium truncate funds"
           >
             {{ aprString }} <span v-if="stat.label == 'APR'">%</span>
           </div>
         </div>
       </div>
     </template>
-    <div class="pool-invest w-full text-center" v-if="isMobile">
+    <div v-if="isMobile" class="w-full text-center pool-invest">
       Invest in the pool and earn on swap fees!
       <router-link
-        class="invest-btn flex w-full items-center"
-        :to="'/pool/' + pool?.id + '/invest'"
+        class="flex items-center w-full invest-btn"
+        :to="{
+          name: 'invest',
+          params: { id: pool?.id, networkSlug },
+        }"
       >
-        <PlusIcon class="ml-3 flex-none" />
+        <PlusIcon class="flex-none ml-3" />
         <div class="w-full text-center">Invest in the pool</div>
       </router-link>
     </div>
     <template v-if="account && Number(stakedBalance) > 0">
-        <div class="card-container flex flex-1" :class="{'my-8':isMobile}">
-          <div class="card-container flex flex-1">
-            <div>
-              <DollarCircledIcon />
+      <div class="flex flex-1 card-container" :class="{ 'my-8': isMobile }">
+        <div class="flex flex-1 card-container">
+          <div>
+            <DollarCircledIcon />
+          </div>
+          <div class="ml-[16px]">
+            <div class="flex text-sm font-medium text-secondary mb-[4px]">
+              <div class="label">Your total value in $</div>
             </div>
-            <div class="ml-[16px]">
-              <div class="text-secondary mb-[4px] flex text-sm font-medium">
-                <div class="label">Your total value in $</div>
-              </div>
-              <div class="funds flex items-center truncate text-xl font-medium">
-                <MyPoolInvsetmentFiat :pool="pool" :tokens="Number(stakedBalance)" />
-              </div>
+            <div class="flex items-center text-xl font-medium truncate funds">
+              <MyPoolInvsetmentFiat
+                :pool="pool"
+                :tokens="Number(stakedBalance)"
+              />
             </div>
           </div>
         </div>
-        <div class="card-container flex flex-1"  :class="{'my-8':isMobile}" v-if="account && Number(stakedBalance) > 0">
-          <div class="card-container flex flex-1">
-            <div>
-              <DollarCoinsStackedIcon />
+      </div>
+      <div
+        v-if="account && Number(stakedBalance) > 0"
+        class="flex flex-1 card-container"
+        :class="{ 'my-8': isMobile }"
+      >
+        <div class="flex flex-1 card-container">
+          <div>
+            <DollarCoinsStackedIcon />
+          </div>
+          <div class="ml-[16px]">
+            <div class="flex text-sm font-medium text-secondary mb-[4px]">
+              <div class="label">Your reward in $</div>
             </div>
-            <div class="ml-[16px]">
-              <div class="text-secondary mb-[4px] flex text-sm font-medium">
-                <div class="label">Your reward in $</div>
-              </div>
-              <div
-                class="funds claim flex items-center truncate text-xl font-medium"
-              >
-                {{ rewardFiat }}
-              </div>
+            <div
+              class="flex items-center text-xl font-medium truncate funds claim"
+            >
+              {{ rewardFiat }}
             </div>
           </div>
         </div>
+      </div>
     </template>
   </div>
-  <div class="buttons-panel flex text-center" :class="{'flex-wrap':isMobile}" >
-    <div class="pool-invest flex-1" v-if="isDesktop">
+  <div
+    class="flex text-center buttons-panel"
+    :class="{ 'flex-wrap': isMobile }"
+  >
+    <div v-if="isDesktop" class="flex-1 pool-invest">
       Invest in the pool and earn on swap fees!
       <router-link
-        class="invest-btn flex w-full items-center"
-        :to="'/pool/' + pool?.id + '/invest'"
+        class="flex items-center w-full invest-btn"
+        :to="{
+          name: 'invest',
+          params: { id: pool?.id, networkSlug },
+        }"
       >
-        <PlusIcon class="ml-3 flex-none" />
+        <PlusIcon class="flex-none ml-3" />
         <div class="w-full text-center">Invest in the pool</div>
       </router-link>
     </div>
-    <div class="my-panel flex flex-1 gap-4" v-if="account && Number(stakedBalance) > 0" :class="{'l-border pl-[24px]':isDesktop,'flex-col':isMobile}">
-      <div class="pool-invest flex-1">
+    <div
+      v-if="account && Number(stakedBalance) > 0"
+      class="flex flex-1 gap-4 my-panel"
+      :class="{ 'l-border pl-[24px]': isDesktop, 'flex-col': isMobile }"
+    >
+      <div class="flex-1 pool-invest">
         You can claim in any time
         <button
-                class="invest-btn block flex w-full items-center"
-                @click="claimXpolar(pool.address)"
-              >
-                <div class="w-full text-center">Claim reward</div>
-                <ArrowRightIcon class="ml-3 flex-none" />
-              </button>
+          class="block flex items-center w-full invest-btn"
+          @click="claimXpolar(pool.address)"
+        >
+          <div class="w-full text-center">Claim reward</div>
+          <ArrowRightIcon class="flex-none ml-3" />
+        </button>
       </div>
-      <div class="pool-invest flex-1">
+      <div class="flex-1 pool-invest">
         View more details about investment
         <router-link
-          class="goto-btn flex w-full items-center"
+          class="flex items-center w-full goto-btn"
           :to="'#dashboard'"
         >
           <div class="w-full text-center">View dashboard</div>
-          <ArrowDownIcon2 class="ml-3 flex-none" />
+          <ArrowDownIcon2 class="flex-none ml-3" />
         </router-link>
       </div>
     </div>
@@ -278,11 +305,14 @@ async function claimXpolar(address) {
   line-height: 32px;
   color: #fdfdfd;
 }
+
 .funds.claim {
   color: #0ce6b5;
 }
+
 .pool-invest {
 }
+
 .goto-btn,
 .invest-btn {
   border-radius: 50px;
@@ -290,21 +320,24 @@ async function claimXpolar(address) {
   font-size: 20px;
   line-height: 24px;
   padding: 12px 20px;
-  margin: 12px auto 0px auto;
+  margin: 12px auto 0;
   max-width: 520px;
   background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   color: #fdfdfd;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
 }
+
 .goto-btn {
   background: #50456e;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
 }
+
 .my-panel.l-border {
-  border-left: 1px solid rgba(151, 71, 255, 0.4);
+  border-left: 1px solid rgb(151 71 255 / 40%);
 }
+
 .buttons-panel {
-  border-top: 1px solid rgba(151, 71, 255, 0.4);
+  border-top: 1px solid rgb(151 71 255 / 40%);
   text-align: center;
   padding-top: 24px;
 }

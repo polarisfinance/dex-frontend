@@ -207,9 +207,7 @@ watch(
 
 <template>
   <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
-    <div
-      class=""
-    >
+    <div class="">
       <div class="px-4 lg:px-0">
         <BalLoadingBlock
           v-if="loadingPool || !pool"
@@ -230,7 +228,9 @@ watch(
       </div>
       <div class="order-2 lg:order-1">
         <div class="">
-          <div class="px-4 lg:px-0 dark:bg-polaris-card-dark rounded-main overflow-hidden">
+          <div
+            class="overflow-hidden px-4 lg:px-0 dark:bg-polaris-card-dark rounded-main"
+          >
             <PoolChart
               :historicalPrices="historicalPrices"
               :snapshots="snapshots"
@@ -247,21 +247,33 @@ watch(
                 :loading="loadingPool"
                 :loadingApr="loadingApr"
               />
-              <PolLine class="mt-3"/>
-              <div class="pool-invest flex-1 text-center  text-polaris-white pt-[24px]">
+              <PolLine class="mt-3" />
+              <div
+                class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
+              >
                 Invest in the pool and earn on swap fees!
-                <router-link
-                  class="polaris-main-button rounded font-semibold text-lg flex w-full items-center mt-[12px] max-w-[520px] m-auto"
-                  :to="{name: 'invest',params: { networkSlug, id: pool?.id }}"
+                <BalBtn
+                  tag="router-link"
+                  :to="{ name: 'invest', params: { networkSlug, id: poolId } }"
+                  block
+                  class="items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
                 >
+                  <!-- <router-link
+                  class="flex items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
+                  :to="{
+                    name: 'invest',
+                    params: {networkSlug, id: pool?.id },
+                  }"
+                > -->
                   <BalIcon
                     name="plus"
                     size="lg"
                     :filled="true"
-                    class="ml-5 flex-none absolute"
+                    class="flex-1 ml-5"
                   />
                   <div class="w-full text-center">Invest in the pool</div>
-                </router-link>
+                  <!-- </router-link> -->
+                </BalBtn>
               </div>
             </div>
             <!-- <ApyVisionPoolLink
@@ -270,15 +282,16 @@ watch(
               :tokens="titleTokens"
             /> -->
           </div>
-          <div
-            class="container mx-auto flex justify-center gap-8 mt-[120px]"
-          >
+          <div class="container flex gap-8 justify-center mx-auto mt-[120px]">
             <BalLoadingBlock v-if="loadingPool" class="h-64" />
             <PoolCompositionCard v-else-if="pool" :pool="pool" />
           </div>
 
           <div ref="intersectionSentinel" />
-          <template v-if="isSentinelIntersected && pool" class="container mx-auto">
+          <template
+            v-if="isSentinelIntersected && pool"
+            class="container mx-auto"
+          >
             <PoolTransactionsCard :pool="pool" :loading="loadingPool" />
           </template>
         </div>

@@ -66,31 +66,12 @@ export default defineComponent({
     InvestPage,
   },
   props: {
-    activeStep: {
+    step: {
       type: Number,
       default: 1,
     },
   },
-  watch: {
-    isWalletReady(newValue, oldValue) {
-      if (newValue == true) this.activeStep = 2;
-    },
-    async account() {
-      const { isApproved } = useStake();
-      this.poolApproved = await isApproved(this.pool?.address!, this.account);
-      if (this.activeStep == 4) {
-        this.activeStep = 5;
-      }
-    },
-    async pool() {
-      const { isApproved } = useStake();
-      this.poolApproved = await isApproved(this.pool?.address!, this.account);
-      if (this.activeStep == 4) {
-        this.activeStep = 5;
-      }
-    },
-  },
-  emits: ['activeStepUpdated'],
+  emits: ['active-step-updated'],
   setup(props, { emit }) {
     const { isMobile, isDesktop } = useBreakpoints();
     const { transfersAllowed } = usePoolTransfers();
@@ -127,7 +108,6 @@ export default defineComponent({
     );
     const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
 
-
     return {
       id,
       account,
@@ -148,6 +128,33 @@ export default defineComponent({
       isMobile,
     };
   },
+  data() {
+    return {
+      activeStep: this.$props.step,
+      tokenAddresses: [] as string[],
+      poolApproved: false,
+      stakedBalance: '0',
+    };
+  },
+  watch: {
+    isWalletReady(newValue, oldValue) {
+      if (newValue == true) this.activeStep = 2;
+    },
+    async account() {
+      const { isApproved } = useStake();
+      this.poolApproved = await isApproved(this.pool?.address!, this.account);
+      if (this.activeStep == 4) {
+        this.activeStep = 5;
+      }
+    },
+    async pool() {
+      const { isApproved } = useStake();
+      this.poolApproved = await isApproved(this.pool?.address!, this.account);
+      if (this.activeStep == 4) {
+        this.activeStep = 5;
+      }
+    },
+  },
   async mounted() {
     if (this.pool != undefined && this.isStablePhantomPool) {
       // Initialise SOR for batch swap queries
@@ -156,33 +163,23 @@ export default defineComponent({
       this.sorReady = true;
     }
     const { balance, isApproved } = useStake();
-    const approval = await isApproved(this.pool?.address!, this.account);
+    const approval = await isApproved(this.pool.address!, this.account);
     this.poolApproved = approval;
     this.stakedBalance = await balance(this.pool?.address!, this.account);
-
   },
   beforeMount() {
     if (this.isWalletReady && this.activeStep == 1) {
-      this.setActiveStep(2) 
+      this.setActiveStep(2);
     }
   },
-  updated() {
-  },
-  data() {
-    return {
-      activeStep: this.$props.activeStep,
-      tokenAddresses: [] as string[],
-      poolApproved: false,
-      stakedBalance: '0',
-    };
-  },
+  updated() {},
   methods: {
     setActiveStep(step) {
       if (this.poolApproved == true && step == 4) {
         this.activeStep = step + 1;
       } else if (step <= steps.length) this.activeStep = step;
 
-      this.$emit('activeStepUpdated',this.activeStep);
+      this.$emit('active-step-updated', this.activeStep);
     },
     clickActiveStep(step) {
       if (step != steps.length) this.setActiveStep(step);
@@ -245,66 +242,66 @@ export default defineComponent({
       });
     },
   },
-
 });
 </script>
 <template>
   <div class="pb-16">
-    <div class="fireworks" v-if="activeStep == steps.length">
+    <div v-if="activeStep == steps.length" class="fireworks">
       <div class="before" />
       <div class="after" />
     </div>
     <div class="container mx-auto">
-      <div class="card mt-[60px] flex flex-wrap">
-        <div class="flex flex-col" v-if="isDesktop">
-          <div class="stats-header flex-none">
+      <div class="flex flex-wrap card mt-[60px]">
+        <div v-if="isDesktop" class="flex flex-col">
+          <div class="flex-none stats-header">
             <div>
               <h3>My pool balance</h3>
             </div>
           </div>
-          <div class="stats flex-1">
+          <div class="flex-1 stats">
             <BalLoadingBlock
               v-if="loadingPool || !transfersAllowed || !sorReady"
               class="h-96"
             />
-            <!-- <PoolUserStats
+            <PoolUserStats
               v-else
               :pool="pool"
               :xpolarToClaim="`0`"
               :dailyAPR="`1`"
               :stakedBalance="`0`"
-            /> -->
+            />
           </div>
         </div>
         <div class="flex-1 justify-center">
-          <div class="header flex">
+          <div class="flex header">
             <div class="flex-1">
               <button class="back actions" @click="goBack">
-                <template v-if="activeStep < 5"
-                  >
-                  <ArrowLeftIcon class="ml-3 mr-[12px] inline" />Go
+                <template v-if="activeStep < 5">
+                  <ArrowLeftIcon class="inline ml-3 mr-[12px]" />Go
                   back</template
                 >
               </button>
             </div>
-            <div class="title flex-1 text-center">Invest in pool Step{{ activeStep }}</div>
+            <div class="flex-1 text-center title">
+              Invest in pool Step {{ activeStep }}
+            </div>
             <div class="flex-1 text-right">
               <router-link
                 class="actions"
                 :to="{ name: 'pool', params: { id: id } }"
               >
-                Exit <CloseIcon class="ml-[12px] inline" />
+                Exit <CloseIcon class="inline ml-[12px]" />
               </router-link>
             </div>
           </div>
-          <div class="nested-card m-[24px] mx-auto mt-[16px] max-w-[480px]">
+          <div class="mx-auto nested-card m-[24px] mt-[16px] max-w-[480px]">
             <div class="nested-card mt-[16px]">
               <template v-if="activeStep <= 3">
                 <BalLoadingBlock v-if="loadingPool || !pool" class="h-96" />
-                <BalCard exposeOverflow noBorder noPad  v-else>
+                <BalCard v-else exposeOverflow noBorder noPad>
                   <template #header>
                     <div class="w-full">
-                      <div class="flex items-center justify-between">
+                      <div class="flex justify-between items-center">
                         <!-- <h4 class="title ml-[18px] mt-[10px]" >{{ $t('investInPool') }}</h4> -->
                         <!-- <TradeSettingsPopover
                           :context="TradeSettingsContext.invest"
@@ -313,21 +310,23 @@ export default defineComponent({
                     </div>
                   </template>
                   <InvestForm
+                    ref="investForm"
                     :pool="pool"
                     :step="activeStep"
                     @preview="handleLPPreview"
-                    @confirmInvestment="handleInvestConfirm"
-                    ref="investForm"
+                    @confirm-investment="handleInvestConfirm"
                   />
                 </BalCard>
               </template>
               <transition name="fade">
                 <template v-if="activeStep == 4">
-                  <div class="finished text-center">
+                  <div class="text-center finished">
                     <h1>Pool staking approval</h1>
-                    <h3>Please, approve staking for this pool in your wallet!</h3>
+                    <h3>
+                      Please, approve staking for this pool in your wallet!
+                    </h3>
                     <button
-                      class="exit mt-[20px] inline-block"
+                      class="inline-block exit mt-[20px]"
                       @click="approvePool"
                     >
                       Approve staking
@@ -341,15 +340,15 @@ export default defineComponent({
                     :balance="balanceFor(pool?.address!)"
                     :token="``"
                     :address="pool?.address"
-                    @stakeConfirmed="handleStakeConfirmed"
+                    @stake-confirmed="handleStakeConfirmed"
                   />
                 </template>
               </transition>
               <transition name="fade">
                 <template v-if="activeStep == 6">
-                  <div class="finished text-center">
+                  <div class="text-center finished">
                     <svg
-                      class="mx-auto mt-[70px] mb-5"
+                      class="mx-auto mb-5 mt-[70px]"
                       width="64"
                       height="64"
                       viewBox="0 0 64 64"
@@ -371,7 +370,7 @@ export default defineComponent({
                     <h1>Good job!</h1>
                     <h3>Now, you are earning!</h3>
                     <router-link
-                      class="exit mt-[20px] inline-block"
+                      class="inline-block exit mt-[20px]"
                       :to="{ name: 'pool', params: { id: id } }"
                     >
                       Return to pool
@@ -401,23 +400,27 @@ export default defineComponent({
   line-height: 18px;
   color: #bdb2dd;
 }
+
 .header {
   background: #292043;
   padding: 10px 24px;
   border-bottom-right-radius: 21px;
 }
+
 .header .title {
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
   color: #fdfdfd;
 }
+
 .card {
   background-color: #1d0d33;
   border-radius: 21px;
-  min-height: 0px;
+  min-height: 0;
   overflow: hidden;
 }
+
 .stats {
   min-width: 300px;
   background-color: #34264e;
@@ -427,6 +430,7 @@ export default defineComponent({
   line-height: 20px;
   color: #bdb2dd;
 }
+
 h3 {
   font-weight: 600;
   font-size: 18px;
@@ -434,27 +438,32 @@ h3 {
   color: #fdfdfd;
   padding-bottom: 16px;
 }
+
 .break {
   flex-basis: 100%;
   height: 1px;
   background: linear-gradient(
     90deg,
-    rgba(151, 71, 255, 0.4),
-    rgba(59, 68, 189, 0.4)
+    rgb(151 71 255 / 40%),
+    rgb(59 68 189 / 40%)
   );
 }
+
 .progress-bar {
   background: #41365e;
   position: relative;
   margin-bottom: 10px;
 }
+
 .stats-header {
   background: #292043;
 }
+
 .stats-header div {
   background: #34264f;
   border-top-right-radius: 32px;
 }
+
 .stats-header h3 {
   background: #41365e;
   border-radius: 32px;
@@ -464,6 +473,7 @@ h3 {
   line-height: 20px;
   color: #bdb2dd;
 }
+
 .exit {
   padding: 6px 50px;
   gap: 10px;
@@ -471,29 +481,35 @@ h3 {
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(rgba(41, 32, 67, 1), rgba(41, 32, 67, 1))
+  background: linear-gradient(rgb(41 32 67 / 100%), rgb(41 32 67 / 100%))
       padding-box,
-    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
+    linear-gradient(90deg, rgb(192 4 254 / 100%), rgb(126 2 245 / 100%))
       border-box;
   border: 1px solid transparent;
 }
+
 .finished h1 {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   color: #fdfdfd;
 }
+
 .actions:hover {
   color: #fdfdfd;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
+
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0; height: 0px;
+  opacity: 0;
+  height: 0;
 }
-.fade-leave{
-  height: 0px;
+
+.fade-leave {
+  height: 0;
 }
 </style>

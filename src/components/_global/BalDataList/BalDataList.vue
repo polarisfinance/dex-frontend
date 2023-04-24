@@ -11,10 +11,8 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div
-    class="mt-4 rounded-lg border dark:border-gray-700 divide-y dark:divide-gray-700"
-  >
-    <component :is="hTag" class="p-2">
+  <div class="divide-y">
+    <component :is="hTag" v-if="title != null" class="p-2">
       {{ title }}
     </component>
     <div class="flex flex-col py-2">

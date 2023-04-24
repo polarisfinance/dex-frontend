@@ -70,18 +70,19 @@ function amountShare(address: string): string {
     <div v-if="props.title" class="title">
       {{ props.title }}
     </div>
-    <div v-for="token in amountsToShow" :key="token.address" class="relative">
-      <div class="token-amount-table-content">
-        <div class="flex flex-col self-center mr-3">
-          <div class="font-medium">
+    <div v-for="token in amountsToShow" :key="token.address" class="flex">
+      <BalAsset :address="token.address" :size="36" class="flex-none pt-2" />
+      <div class="w-full token-amount-table-content">
+        <div class="flex self-center w-full dark:text-polaris-white">
+          <div class="flex-none text-xl font-medium">
             <span class="font-numeric">
               {{ fNum(token.amount, FNumFormats.token) }}
             </span>
             {{ tokenMap[token.address]?.symbol }}
           </div>
           <div
-            v-if="Number(token.fiatAmount) > 0"
-            class="text-sm text-secondary font-numeric"
+            v-if="Number(token.fiatAmount) > 0 || true"
+            class="w-full text-xl font-medium text-right"
           >
             {{ fNum(token.fiatAmount, FNumFormats.fiat) }}
             <span v-if="!hideAmountShare">
@@ -89,7 +90,6 @@ function amountShare(address: string): string {
             </span>
           </div>
         </div>
-        <BalAsset :address="token.address" :size="36" />
       </div>
     </div>
   </div>
@@ -97,15 +97,15 @@ function amountShare(address: string): string {
   
   <style scoped>
 .token-amount-table {
-  @apply shadow-lg border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg overflow-hidden;
+  @apply divide-y overflow-hidden;
 }
 
 .title {
-  @apply dark:bg-gray-800 bg-gray-50 px-3 py-2;
+  @apply px-3 py-2;
   @apply font-medium text-sm text-gray-600 dark:text-gray-400;
 }
 
 .token-amount-table-content {
-  @apply p-3 flex justify-between;
+  @apply py-3 pl-3 flex justify-between;
 }
 </style>

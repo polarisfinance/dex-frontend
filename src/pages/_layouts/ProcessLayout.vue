@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useReturnRoute } from '@/composables/useReturnRoute';
 import useBreakpoints from '@/composables/useBreakpoints';
 import AppNav from '@/components/navs/AppNav/AppNav.vue';
@@ -6,6 +7,7 @@ import InvestHero from '@/components/heros/InvestHero.vue';
 
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
+const refComponent = ref(null);
 
 const steps = [
   {
@@ -40,85 +42,94 @@ const steps = [
   },
 ];
 
-var activeStep= 1;
+var activeStep = 1;
 function updateStep(step) {
-    const poolApproved = false;
-    if (poolApproved == true && step == 4) {
-        activeStep = step + 1;
-    } else if (step <= steps.length) {
-        activeStep = step;
-    }
-
+  const poolApproved = false;
+  if (poolApproved == true && step == 4) {
+    activeStep = step + 1;
+  } else if (step <= steps.length) {
     activeStep = step;
+  }
+  activeStep = step;
 }
 
 function progressPerc() {
-    if (activeStep == steps.length) {
+  if (activeStep == steps.length) {
     return 1;
-    }
-    return (1 / (steps.length - 1)) * (activeStep - 1) + 0.05;
+  }
+  return (1 / (steps.length - 1)) * (activeStep - 1) + 0.05;
 }
 
 function clickActiveStep(step) {
-    if (step != steps.length) updateStep(step);
-}
+  if (step != steps.length) updateStep(step);
 
+  if (
+    refComponent.value != undefined &&
+    typeof refComponent.value.setActiveStep === 'function'
+  )
+    refComponent.value.setActiveStep(activeStep);
+}
 </script>
 
 
 
 <template>
-    <div class="app-background">
-        <div class="app-body">
-            <AppNav />
-            <div class="pb-16">
-                <InvestHero
-                    :step="activeStep"
-                    :headline="steps[activeStep - 1].headline"
-                />
-                <div class="container mx-auto">
-                    <div class="mt-[40px] w-full items-center self-center">
-                    <div class="steps flex justify-between">
-                        <template v-for="step in steps">
-                            <button @click="clickActiveStep(step.step)" class="self-start">
-                                <TickIcon
-                                v-if="step.step < activeStep || activeStep == steps.length"
-                                class=""
-                                :class="{
-                                    'mx-auto block': isMobile,
-                                    'mr-1 inline': isDesktop,
-                                }"
-                                />
-                                <QuestionIcon
-                                v-else
-                                class=""
-                                :class="{
-                                    'mx-auto block': isMobile,
-                                    'mr-1 inline': isDesktop,
-                                }"
-                                />
+  <div class="app-background">
+    <div class="app-body">
+      <AppNav />
+      <div class="pb-16">
+        <InvestHero
+          :step="activeStep"
+          :headline="steps[activeStep - 1].headline"
+        />
+        <div class="container mx-auto">
+          <div class="items-center self-center w-full mt-[40px]">
+            <div class="flex justify-between steps">
+              <template v-for="step in steps">
+                <button class="self-start" @click="clickActiveStep(step.step)">
+                  <TickIcon
+                    v-if="step.step < activeStep || activeStep == steps.length"
+                    class=""
+                    :class="{
+                      'mx-auto block': isMobile,
+                      'mr-1 inline': isDesktop,
+                    }"
+                  />
+                  <QuestionIcon
+                    v-else
+                    class=""
+                    :class="{
+                      'mx-auto block': isMobile,
+                      'mr-1 inline': isDesktop,
+                    }"
+                  />
 
-                                {{ step.button }}
-                            </button>
-                        </template>
-                    </div>
-                    <div class="progress-bar mt-[32px] h-[2px] w-full rounded-[24px]">
-                        <div
-                        class="progress absolute bottom-0 left-0 h-[2px] w-0 rounded-[24px] bg-styling-teal opacity-80 transition duration-300 ease-linear dark:bg-styling-teal"
-                        :style="{ width: `${(progressPerc() * 100).toFixed(0)}%` }"
-                        />
-                    </div>
-                    </div>
-                </div>
-                <router-view v-slot="{ Component }" :key="$route.path">
-                <transition appear name="appear">
-                    <component :is="Component" :activeStep="activeStep" @activeStepUpdated="updateStep" />
-                </transition>
-                </router-view>
+                  {{ step.button }}
+                </button>
+              </template>
             </div>
+            <div class="w-full progress-bar mt-[32px] h-[2px] rounded-[24px]">
+              <div
+                class="absolute bottom-0 left-0 w-0 opacity-80 transition duration-300 ease-linear progress h-[2px] rounded-[24px] bg-styling-teal dark:bg-styling-teal"
+                :style="{ width: `${(progressPerc() * 100).toFixed(0)}%` }"
+              />
+            </div>
+          </div>
         </div>
+        <router-view v-slot="{ Component }" :key="$route.path">
+          <transition appear name="appear">
+            <component
+              :is="Component"
+              ref="refComponent"
+              :step="activeStep"
+              @active-step-updated="updateStep"
+            />
+          </transition>
+        </router-view>
+      </div>
     </div>
-  </template>
+  </div>
+</template>
   
 
 <style scoped>

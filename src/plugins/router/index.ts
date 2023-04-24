@@ -35,9 +35,7 @@ const PoolWithdrawPage = () =>
     /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/withdraw.vue'
   );
 const PoolInvestPage = () =>
-  import(
-    /* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/invest.vue'
-  );
+  import(/* webpackChunkName: "PoolWithdrawPage" */ '@/pages/pool/invest.vue');
 const PrivacyPolicyPage = () =>
   import(
     /* webpackChunkName: "PrivacyPolicyPage" */ '@/pages/privacy-policy.vue'
@@ -74,7 +72,6 @@ const AirdropPage = () =>
 const PoolAboutPage = () =>
   import(/* webpackChunkName: "VexPolarPage" */ '@/pages/pool/about.vue');
 
-  
 declare module 'vue-router' {
   interface RouteMeta {
     layout?: string;
@@ -150,12 +147,13 @@ const routes: RouteRecordRaw[] = [
     name: 'invest',
     component: PoolInvestPage,
     meta: { layout: 'ProcessLayout' },
+    props: { step: 1 },
   },
   {
     path: '/:networkSlug/pool/:id/withdraw',
     name: 'withdraw',
     component: PoolWithdrawPage,
-    meta: { layout: 'BlankLayout' },    //FocusedLayout
+    meta: { layout: 'BlankLayout' }, //FocusedLayout
   },
   {
     path: '/:networkSlug/pool/migrate/:from/:to',
