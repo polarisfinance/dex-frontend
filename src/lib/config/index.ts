@@ -9,6 +9,7 @@ import optimism from './optimism';
 import polygon from './polygon';
 import gnosisChain from './gnosis-chain';
 import test from './test';
+import auroraTest from './auroraTest';
 
 const config: Record<Network | number, Config> = {
   [Network.MAINNET]: mainnet,
@@ -17,6 +18,7 @@ const config: Record<Network | number, Config> = {
   [Network.ARBITRUM]: arbitrum,
   [Network.OPTIMISM]: optimism,
   [Network.GNOSIS]: gnosisChain,
+  [Network.AURORATEST]: auroraTest,
   // @ts-ignore
   12345: test,
   // @ts-ignore

@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@aave/protocol-js": "^4.3.0",
-    "@balancer-labs/assets": "github:balancer-labs/assets#master",
-    "@balancer-labs/sdk": "^1.0.5-beta.7",
+    "@balancer-labs/assets": "github:polarisfinance/dex-assets#testnet",
+    "@balancer-labs/sdk": "github:polarisfinance/balancer-sdk#latestBalancer",
     "@balancer-labs/typechain": "^1.0.0",
     "@cowprotocol/contracts": "^1.3.1",
     "@ensdomains/content-hash": "^2.5.3",
