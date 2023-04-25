@@ -78,7 +78,7 @@ function getHorizontalStickyClass(index: number) {
           v-else
           :class="
             compact([
-              'mr-6 py-4',
+              'mr-6 py-2',
               column.align === 'right' ? 'text-right' : 'text-left',
               column.cellClassName,
             ])
@@ -96,15 +96,16 @@ function getHorizontalStickyClass(index: number) {
 </template>
 
 <style scoped>
-
 .row-bg:hover {
-  @apply hover:dark:bg-polaris-card-medium;
+  @apply hover:dark:bg-polaris-card-default;
 }
-.dark .row-bg:hover td:first-child{
+
+.dark .row-bg:hover td:first-child {
   border-bottom-left-radius: 48px;
   border-top-left-radius: 48px;
 }
-.dark .row-bg:hover td:last-child{
+
+.dark .row-bg:hover td:last-child {
   border-bottom-right-radius: 48px;
   border-top-right-radius: 48px;
 }

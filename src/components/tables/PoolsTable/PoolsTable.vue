@@ -280,12 +280,7 @@ function iconAddresses(pool: Pool) {
 </script>
 
 <template>
-  <BalCard
-    :square="upToLargeBreakpoint"
-    noBorder
-    noPad
-    darkBgColor="back-main"
-  >
+  <BalCard :square="upToLargeBreakpoint" noBorder noPad darkBgColor="back-main">
     <BalTable
       :columns="visibleColumns"
       :data="data"
@@ -297,7 +292,6 @@ function iconAddresses(pool: Pool) {
       :square="upToLargeBreakpoint"
       :onRowClick="handleRowClick"
       :isPaginated="isPaginated"
-      
       isOnlyDescSort
       :initialState="{
         sortColumn: sortColumn,
@@ -313,8 +307,12 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #iconColumnCell="pool">
-        <div v-if="!isLoading" class="py-3 px-6">
-          <BalAssetSet :addresses="iconAddresses(pool)" :width="110" :size="34"/>
+        <div v-if="!isLoading" class="py-2 px-6">
+          <BalAssetSet
+            :addresses="iconAddresses(pool)"
+            :width="110"
+            :size="34"
+          />
         </div>
       </template>
       <template #poolNameCell="pool">
@@ -337,12 +335,13 @@ function iconAddresses(pool: Pool) {
             color="amber"
           />
           <BalChipNew v-else-if="pool?.isNew" class="mt-1" />
-          <TokenWeightsPills class="ml-[12px]"
-              :tokens="orderedPoolTokens(pool, pool.tokens)"
-              :isStablePool="isStableLike(pool.poolType)"
-              :selectedTokens="selectedTokens"
-              :pickedTokens="selectedTokens"
-              :boosted="pool.boosted"
+          <TokenWeightsPills
+            class="ml-[12px]"
+            :tokens="orderedPoolTokens(pool, pool.tokens)"
+            :isStablePool="isStableLike(pool.poolType)"
+            :selectedTokens="selectedTokens"
+            :pickedTokens="selectedTokens"
+            :boosted="pool.boosted"
           />
           <PoolWarningTooltip :pool="pool" />
         </div>

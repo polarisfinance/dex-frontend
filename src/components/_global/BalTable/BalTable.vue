@@ -228,7 +228,7 @@ watch(
           />
         </colgroup>
         <!-- header is rendered as a row - seperated by columns -->
-        <thead class="z-10 ">
+        <thead class="z-10">
           <th
             v-for="(column, columnIndex) in filteredColumns"
             :key="`header-${column.id}`"
@@ -285,7 +285,7 @@ watch(
         </thead>
       </table>
     </div>
-    <div ref="bodyRef" class="overflow-auto">
+    <div ref="bodyRef" class="overflow-auto pt-6">
       <BalLoadingBlock
         v-if="isLoading"
         :class="[skeletonClass, 'min-w-full']"
