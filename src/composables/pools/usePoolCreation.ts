@@ -558,6 +558,7 @@ export default function usePoolCreation() {
   }
 
   function isUnlistedToken(tokenAddress: string) {
+    console.log(balancerTokenListTokens.value);
     return tokenAddress !== '' && !balancerTokenListTokens.value[tokenAddress];
   }
 

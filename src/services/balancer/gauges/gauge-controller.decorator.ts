@@ -70,6 +70,8 @@ export class GaugeControllerDecorator {
     userAddress: string
   ): Promise<VotingGaugeWithVotes[]> {
     this.multicaller = this.resetMulticaller();
+    console.log(votingGauges);
+    console.log(this.multicaller);
     this.callGaugeWeightThisPeriod(votingGauges);
     this.callGaugeWeightNextPeriod(votingGauges);
     if (userAddress) {
@@ -114,7 +116,10 @@ export class GaugeControllerDecorator {
     if (thisWeekTimestamp == FIRST_WEEK_TIMESTAMP) {
       thisWeekTimestamp = thisWeekTimestamp - oneWeekInSecs;
     }
+    console.log(this.config.network.addresses.gaugeController);
+
     votingGauges.forEach(gauge => {
+      console.log(gauge.address);
       this.multicaller.call(
         `gauges.${gauge.address}.gaugeWeightThisPeriod`,
         this.config.network.addresses.gaugeController,
@@ -178,8 +183,8 @@ export class GaugeControllerDecorator {
    * so the network key can only be goerli (5) or mainnet (1).
    */
   private getNetwork(): Network {
-    if (this.config.env.NETWORK === Network.GOERLI) {
-      return Network.GOERLI;
+    if (this.config.env.NETWORK === Network.AURORATEST) {
+      return Network.AURORATEST;
     } else {
       return Network.MAINNET;
     }

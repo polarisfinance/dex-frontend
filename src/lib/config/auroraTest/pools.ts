@@ -8,7 +8,7 @@ const pools: Pools = {
       v1: '0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb20000000000000000000000fe',
       v2: '0xa13a9247ea42d743238089903570127dda72fe4400000000000000000000035d',
     },
-    veBAL: '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014',
+    veBAL: '0x2ce1306842ecf38c3fd910554d8cf9ca5bdee25b000100000000000000000001',
   },
   Pagination: {
     PerPage: 10,
@@ -96,6 +96,7 @@ const pools: Pools = {
     // Only effective after given timestamp here: usePool.ts#createdAfterTimestamp
     // see useDisabledJoinPool.ts#nonAllowedWeightedPoolAfterTimestamp for logic.
     AllowList: [
+      '0x2ce1306842ecf38c3fd910554d8cf9ca5bdee25b000100000000000000000001',
       '0x67f117350eab45983374f4f83d275d8a5d62b1bf0001000000000000000004f2', // GRAIN/OATH/USDC/WETH
       '0x0fadd10f606554fec1574f28398469d98d68d297000200000000000000000503', // 80XEX/20USDC
       '0x42fbd9f666aacc0026ca1b88c94259519e03dd67000200000000000000000507', // COIL/USDC
@@ -124,10 +125,11 @@ const pools: Pools = {
     '0xdba127fbc23fb20f5929c546af220a991b5c6e01': 'composableStablePool',
     '0x5dd94da3644ddd055fcf6b3e1aa310bb7801eb8b': 'weightedPool', // weighted pool v3
     '0x81fe9e5b28da92ae949b705dfdb225f7a7cc5134': 'fx', // fx
-    '0x897888115ada5773e02aa29f775430bfb5f34c51': 'weightedPool', // weighted pool v4
+    '0x6a739Cbf377e1e2C19AbAAC964825f400a04D427': 'weightedPool', // weighted pool v4
   },
   Stakable: {
     VotingGaugePools: [
+      '0x2ce1306842ecf38c3fd910554d8cf9ca5bdee25b000100000000000000000001',
       '0x06df3b2bbb68adc8b0e302443692037ed9f91b42000000000000000000000063',
       '0x072f14b85add63488ddad88f855fda4a99d6ac9b000200000000000000000027',
       '0x0b09dea16768f0799065c475be02919503cb2a3500020000000000000000001a',
