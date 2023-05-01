@@ -3,7 +3,7 @@ import { groupBy, invert, last } from 'lodash';
 
 import { twentyFourHoursInSecs } from '@/composables/useTime';
 import { TOKENS } from '@/constants/tokens';
-import { getAddressFromPoolId, includesAddress } from '@/lib/utils';
+import { getAddressFromPoolId } from '@/lib/utils';
 import { retryPromiseWithDelay } from '@/lib/utils/promise';
 import { configService as _configService } from '@/services/config/config.service';
 
@@ -19,9 +19,6 @@ import { getAddress } from '@ethersproject/address';
 /**
  * TYPES
  */
-export type Price = { [fiat: string]: number };
-export type PriceResponse = { [id: string]: Price };
-export type TokenPrices = { [address: string]: Price };
 export interface HistoricalPriceResponse {
   market_caps: number[][];
   prices: number[][];
@@ -35,9 +32,6 @@ export class PriceService {
   fiatParam: string;
   appNetwork: string;
   platformId: string;
-  nativeAssetId: string;
-  nativeAssetAddress: string;
-  appAddresses: { [key: string]: string };
 
   constructor(
     service: CoingeckoService,
@@ -161,18 +155,6 @@ export class PriceService {
       console.error('Unable to fetch token prices', addresses, error);
       throw error;
     }
-  }
-
-  private parsePaginatedTokens(paginatedResults: TokenPrices[]): TokenPrices {
-    const results = paginatedResults.reduce(
-      (result, page) => ({ ...result, ...page }),
-      {}
-    );
-    const entries = Object.entries(results);
-    const parsedEntries = entries
-      .filter(result => Object.keys(result[1]).length > 0)
-      .map(result => [this.addressMapOut(result[0]), result[1]]);
-    return Object.fromEntries(parsedEntries);
   }
 
   private parseHistoricalPrices(

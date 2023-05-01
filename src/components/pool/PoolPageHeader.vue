@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import { computed, toRef, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import BalChipNew from '@/components/chips/BalChipNew.vue';
+import StakePreviewModal from '@/components/contextual/pages/pool/staking/StakePreviewModal.vue';
 import GauntletIcon from '@/components/images/icons/GauntletIcon.vue';
 import APRTooltip from '@/components/tooltips/APRTooltip/APRTooltip.vue';
-import StakePreviewModal from '@/components/contextual/pages/pool/staking/StakePreviewModal.vue';
 import useNumbers from '@/composables/useNumbers';
+import { usePoolHelpers } from '@/composables/usePoolHelpers';
 import { usePoolWarning } from '@/composables/usePoolWarning';
-import { usePool } from '@/composables/usePool';
-import { useTokens } from '@/providers/tokens.provider';
 import { EXTERNAL_LINKS } from '@/constants/links';
 import { POOLS } from '@/constants/pools';
 import { includesAddress } from '@/lib/utils';
+import { usePoolStaking } from '@/providers/local/pool-staking.provider';
+import { useTokens } from '@/providers/tokens.provider';
 import { Pool, PoolToken } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { AprBreakdown } from '@balancer-labs/sdk';
@@ -25,7 +25,6 @@ import useNetwork from '@/composables/useNetwork';
  */
 type Props = {
   loadingApr: boolean;
-  noInitLiquidity: boolean;
   isStableLikePool: boolean;
   pool: Pool;
   poolApr?: AprBreakdown;
@@ -37,7 +36,6 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   loadingApr: true,
-  noInitLiquidity: false,
   poolApr: undefined,
 });
 
@@ -47,7 +45,9 @@ const poolId = computed(() => toRef(props, 'pool').value.id);
  * COMPOSABLES
  */
 const { isAffected, warnings } = usePoolWarning(poolId);
-const { hasNonApprovedRateProviders,orderedTokenAddresses } = usePool(toRef(props, 'pool'));
+const { hasNonApprovedRateProviders, orderedTokenAddresses } = usePool(
+  toRef(props, 'pool')
+);
 const { fNum } = useNumbers();
 const { t } = useI18n();
 const { explorerLinks: explorer } = useWeb3();
@@ -85,10 +85,16 @@ const swapFeeToolTip = computed(() => {
 });
 
 function iconAddresses(pool: PoolWithShares) {
-        return POOLS.Metadata[pool.id]?.hasIcon
-            ? [pool.address]
-            : orderedTokenAddresses(pool);
-    }
+  return POOLS.Metadata[pool.id]?.hasIcon
+    ? [pool.address]
+    : orderedTokenAddresses(pool);
+}
+
+function iconAddresses(pool: PoolWithShares) {
+  return POOLS.Metadata[pool.id]?.hasIcon
+    ? [pool.address]
+    : orderedTokenAddresses(pool);
+}
 
 const poolFeeLabel = computed(() => {
   if (!props.pool || !props.pool?.swapFee) return '';
@@ -145,18 +151,18 @@ function symbolFor(titleTokenIndex: number): string {
     <div class="flex flex-col flex-1 mb-5">
       <div class="flex flex-wrap items-center -mt-2 dark:text-polaris-white">
         <div v-if="hasMetadata">
-          <h3 class="pool-title text-xxl font-semibold">
+          <h3 class="text-xxl font-semibold pool-title">
             {{ poolMetadata.name }}
           </h3>
-          <h5 class="text-sm ">
+          <h5 class="text-sm">
             {{ poolTypeLabel }}
           </h5>
         </div>
-        <h3 v-else class="pool-title text-xxl  font-semibold">
+        <h3 v-else class="text-xxl font-semibold pool-title">
           {{ poolTypeLabel }}
         </h3>
       </div>
-      <div class="flex items-center mt-2 ">
+      <div class="flex items-center mt-2">
         <div class="mr-1 text-sm font-medium" v-html="poolFeeLabel" />
         <BalTooltip>
           <template #activator>
@@ -185,21 +191,21 @@ function symbolFor(titleTokenIndex: number): string {
         <div
           v-for="({ address, weight }, i) in titleTokens"
           :key="i"
-          class="flex items-center dark:text-polaris-white text-xl font-semibold"
+          class="flex items-center text-xl font-semibold dark:text-polaris-white"
         >
-          <span v-if="i!=0">-</Span>
+          <span v-if="i != 0">-</span>
           <!-- <BalAsset :address="address" /> -->
           <span class="">
             {{ symbolFor(i) }}
           </span>
         </div>
         <BalAssetSet
-            class="ml-3"
-            :size="44"
-            :addresses="iconAddresses(pool)"
-            :width="80"
-            :maxOffset="35"
-          />
+          class="ml-3"
+          :size="44"
+          :addresses="iconAddresses(pool)"
+          :width="80"
+          :maxOffset="35"
+        />
         <BalChipNew v-if="pool?.isNew" class="mt-2 mr-2" />
         <!-- <APRTooltip
           v-if="!loadingApr"
@@ -221,16 +227,16 @@ function symbolFor(titleTokenIndex: number): string {
         </BalLink> -->
       </div>
       <router-link
-            class="flex underline font-medium text-[14px]"
-            :to="{name: 'about',params: { networkSlug, id: pool.id }}"
-          >
-            Pool details
-            <BalIcon
+        class="flex font-medium underline text-[14px]"
+        :to="{ name: 'about', params: { networkSlug, id: pool.id } }"
+      >
+        Pool details
+        <BalIcon
           name="arrow-up-right"
           size="sm"
           class="mt-2 ml-2 text-gray-500 hover:text-blue-500 transition-colors"
         />
-          </router-link>
+      </router-link>
     </div>
   </div>
 
@@ -249,8 +255,8 @@ function symbolFor(titleTokenIndex: number): string {
     block
   />
   <BalAlert
-    v-if="hasCustomToken"
-    type="error"
+    v-if="!disableJoinsReason.nonVettedTokensAfterTimestamp && hasCustomToken"
+    type="warning"
     :title="$t('highRiskPool')"
     class="mt-2"
     block
@@ -292,13 +298,50 @@ function symbolFor(titleTokenIndex: number): string {
     </BalAlert>
   </template>
   <BalAlert
-    v-if="noInitLiquidity"
+    v-if="disableJoinsReason.notInitialLiquidity"
     type="warning"
     :title="$t('noInitLiquidity')"
     :description="$t('noInitLiquidityDetail')"
     class="mt-2"
     block
   />
+  <BalAlert
+    v-if="disableJoinsReason.nonVettedTokensAfterTimestamp"
+    type="warning"
+    :title="$t('investment.warning.blockedPool.title', [nonAllowedSymbols])"
+    class="mt-2"
+    block
+  >
+    {{ $t('investment.warning.blockedPool.description') }}
+    <a
+      href="https://github.com/balancer/frontend-v2/wiki/How-tos#add-a-new-pool"
+      target="_blank"
+      class="underline"
+      >{{ $t('here') }}</a
+    >
+    {{ $t('investment.warning.blockedPool.description2') }}
+  </BalAlert>
+
+  <BalAlert
+    v-if="
+      disableJoinsReason.requiresAllowListing ||
+      disableJoinsReason.nonAllowedWeightedPoolAfterTimestamp
+    "
+    type="warning"
+    :title="$t('requiresAllowListing1')"
+    class="mt-2"
+    block
+  >
+    {{ $t('Click') }}
+    <a
+      href="https://github.com/balancer/frontend-v2/wiki/How-tos#add-a-new-pool"
+      target="_blank"
+      class="underline"
+      >{{ $t('here') }}</a
+    >
+    {{ $t('requiresAllowListing2') }}
+  </BalAlert>
+
   <StakePreviewModal
     v-if="!!pool"
     :isVisible="isRestakePreviewVisible"
@@ -311,6 +354,5 @@ function symbolFor(titleTokenIndex: number): string {
 <style scoped>
 .pool-title {
   @apply mr-4 capitalize;
-
 }
 </style>

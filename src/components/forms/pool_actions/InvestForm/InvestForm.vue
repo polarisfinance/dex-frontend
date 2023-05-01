@@ -10,10 +10,10 @@ import TokenInput from '@/components/inputs/TokenInput/TokenInput.vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import {
   isStableLike,
-  usePool,
+  usePoolHelpers,
   isDeep,
   tokensListExclBpt,
-} from '@/composables/usePool';
+} from '@/composables/usePoolHelpers';
 import { useTokens } from '@/providers/tokens.provider';
 import { LOW_LIQUIDITY_THRESHOLD } from '@/constants/poolLiquidity';
 import {
@@ -64,7 +64,7 @@ const showStakeModal = ref(false);
  * COMPOSABLES
  */
 const { t } = useI18n();
-const { balanceFor, nativeAsset, wrappedNativeAsset } = useTokens();
+const { balanceFor, nativeAsset, wrappedNativeAsset, getToken } = useTokens();
 const { useNativeAsset } = usePoolTransfers();
 const {
   tokenAddresses,
@@ -72,20 +72,13 @@ const {
   validInputs,
   highPriceImpactAccepted,
   resetAmounts,
-  sor,
 } = useInvestState();
 
 const pool = computed(() => props.pool);
 const { getToken } = useTokens();
 const { toFiat } = useNumbers();
 
-const investMath = useInvestMath(
-  pool,
-  tokenAddresses,
-  amounts,
-  useNativeAsset,
-  sor
-);
+const investMath = useInvestMath(pool, tokenAddresses, amounts, useNativeAsset);
 
 const {
   fullAmounts,
@@ -102,8 +95,11 @@ const {
 const { isWalletReady, startConnectWithInjectedProvider, isMismatchedNetwork } =
   useWeb3();
 
-const { managedPoolWithSwappingHalted, isWethPool, isStableLikePool } =
-  usePool(pool);
+const {
+  managedPoolWithSwappingHalted,
+  isWrappedNativeAssetPool,
+  isStableLikePool,
+} = usePoolHelpers(pool);
 
 /**
  * COMPUTED
@@ -257,7 +253,7 @@ const fiatTotal = computed((): string =>
 onBeforeMount(() => {
   resetAmounts();
   tokenAddresses.value = [...investmentTokens.value];
-  if (isWethPool.value) setNativeAssetByBalance();
+  if (isWrappedNativeAssetPool.value) setNativeAssetByBalance();
 });
 
 /**

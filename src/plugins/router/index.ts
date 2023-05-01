@@ -107,6 +107,12 @@ const routes: RouteRecordRaw[] = [
     meta: { layout: 'ContentLayout' },
   },
   {
+    path: '/risks',
+    name: 'risks',
+    component: RisksPage,
+    meta: { layout: 'ContentLayout' },
+  },
+  {
     path: '/:networkSlug/swap/:assetIn?/:assetOut?',
     name: 'swap',
     component: SwapPage,
@@ -256,11 +262,14 @@ if (isGoerli.value) {
 //   routes.push();
 // }
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior() {
-    return { top: 0 };
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash) return { el: to.hash };
+
+    return { x: 0, top: 0 };
   },
 });
 
