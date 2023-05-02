@@ -2,6 +2,7 @@ import { SUPPORTED_FIAT } from '@/constants/currency';
 
 import { PriceService } from './api/price.service';
 import { coingeckoClient } from './coingecko.client';
+import { coingeckoCacheClient } from './coingecko.cache.client';
 import config from '@/lib/config';
 
 export const getNativeAssetId = (chainId: string): string => {
