@@ -1,7 +1,11 @@
 <script lang="ts">
 import { ref, defineComponent, computed, toRef, toRefs, reactive } from 'vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
-import { isStableLike, isStablePhantom, usePool } from '@/composables/usePool';
+import {
+  isStableLike,
+  isStablePhantom,
+  usePoolHelpers,
+} from '@/composables/usePoolHelpers';
 import useInvestState from '@/components/forms/pool_actions/InvestForm/composables/useInvestState';
 import { forChange } from '@/lib/utils';
 // import TradeSettingsPopover, {
@@ -83,7 +87,7 @@ export default defineComponent({
     const poolQuery = usePoolQuery(id, undefined, undefined);
     const pool = computed(() => poolQuery.data.value);
 
-    const { isStablePhantomPool } = usePool(pool);
+    const { isStablePhantomPool } = usePoolHelpers(pool);
     const { tokenAddresses, amounts, sor, sorReady } = useInvestState();
 
     const {
