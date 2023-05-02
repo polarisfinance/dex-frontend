@@ -75,7 +75,6 @@ const {
 } = useInvestState();
 
 const pool = computed(() => props.pool);
-const { getToken } = useTokens();
 const { toFiat } = useNumbers();
 
 const investMath = useInvestMath(pool, tokenAddresses, amounts, useNativeAsset);
