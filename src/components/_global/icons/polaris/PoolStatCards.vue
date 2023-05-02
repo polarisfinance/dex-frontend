@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 
 import APRTooltip from '@/components/tooltips/APRTooltip/APRTooltip.vue';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
-import { totalAprLabel } from '@/composables/usePool';
+import { totalAprLabel } from '@/composables/usePoolHelpers';
 import { APR_THRESHOLD } from '@/constants/pools';
 import { Pool, PoolAPRs } from '@/services/pool/types';
 import ArrowDownIcon2 from '@/components/_global/icons/ArrowDownIcon2.vue';

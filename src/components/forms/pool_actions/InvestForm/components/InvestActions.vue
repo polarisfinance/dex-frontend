@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n';
 import BalActionSteps from '@/components/_global/BalActionSteps/BalActionSteps.vue';
 import ConfirmationIndicator from '@/components/web3/ConfirmationIndicator.vue';
 import useEthers from '@/composables/useEthers';
-import { usePool } from '@/composables/usePool';
+import { usePoolHelpers } from '@/composables/usePoolHelpers';
 import { dateTimeLabelFor } from '@/composables/useTime';
 import useTokenApprovalActions from '@/composables/approvals/useTokenApprovalActions';
 import useTransactions from '@/composables/useTransactions';
@@ -82,7 +82,7 @@ const { networkSlug } = useNetwork();
 const { refetchBalances } = useTokens();
 const { boostedJoinBatchSwap } = useSwapper();
 
-const { poolWeightsLabel } = usePool(toRef(props, 'pool'));
+const { poolWeightsLabel } = usePoolHelpers(toRef(props, 'pool'));
 const tokenAddresses = computed(() => props.tokenAddresses);
 const {
   fullAmounts,
