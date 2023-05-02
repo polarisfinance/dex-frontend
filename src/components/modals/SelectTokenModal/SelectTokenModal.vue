@@ -10,6 +10,8 @@ import { useTokens } from '@/providers/tokens.provider';
 import useUrls from '@/composables/useUrls';
 import { TokenInfoMap, TokenList } from '@/types/TokenList';
 import { useMagicKeys } from '@vueuse/core';
+import useBreakpoints from '@/composables/useBreakpoints';
+import PolLine from '@/components/_global/PolLine.vue';
 
 interface Props {
   open?: boolean;
@@ -51,7 +53,7 @@ const state: ComponentState = reactive({
   results: {},
   focussedToken: 0,
 });
-
+const { isMobile, isDesktop } = useBreakpoints();
 /**
  * COMPOSABLES
  */
@@ -182,7 +184,7 @@ watchEffect(() => {
 <template>
   <BalModal show noContentPad @close="$emit('close')">
     <template #header>
-      <div class="flex justify-between items-center w-full">
+      <div class="flex justify-between items-center w-full pb-[24px] px-[2px]">
         <div class="flex items-center">
           <BalBtn
             v-if="state.selectTokenList"
@@ -195,14 +197,13 @@ watchEffect(() => {
           >
             <BalIcon name="arrow-left" size="sm" />
           </BalBtn>
-          <h5>{{ title }}</h5>
+          <h5 class="text-base dark:text-polaris-white font-semibold">{{ title }}</h5>
         </div>
         <div
           v-if="!state.selectTokenList && !hideTokenLists"
           class="group flex items-center mr-2 cursor-pointer"
           @click="toggleSelectTokenList"
         >
-          <span class="text-xs text-secondary">{{ $t('tokenLists') }}</span>
           <div class="flex items-center ml-2">
             <span class="mr-1">
               <img
@@ -212,12 +213,16 @@ watchEffect(() => {
                 class="inline-block w-6 h-6 bg-white rounded-full shadow"
               />
             </span>
+            <span class="text-sm font-medium">{{ $t('tokenLists') }}</span>
             <BalIcon
-              name="chevron-down"
+              name="chevron-right"
               size="sm"
-              class="ml-1 text-blue-500 group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
+              class="ml-1 text-blue-500 dark:text-polaris-white group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
             />
           </div>
+          <button class="flex text-polaris-2 hover:text-polaris-white ml-5" @click="$emit('close')">
+            <BalIcon class="flex" name="x" />
+          </button>
         </div>
       </div>
     </template>
@@ -228,10 +233,13 @@ watchEffect(() => {
           name="tokenSearchInput"
           :placeholder="$t('searchByName')"
           size="sm"
-          class="w-full"
+          class="w-full dark:bg-polaris-card-medium rounded-[24px] pl-[16px]"
+          placeholderColor="polaris-2"
+          noBorder
+          noShadow
           autoFocus
         >
-          <template #prepend>
+          <template #append>
             <div class="flex justify-center items-center w-8 h-full">
               <BalIcon name="search" size="sm" class="mr-2 text-gray-500" />
             </div>
@@ -266,23 +274,89 @@ watchEffect(() => {
           name="tokenSearchInput"
           :placeholder="$t('searchBy')"
           size="sm"
-          class="w-full"
+          class="w-full dark:bg-polaris-card-medium rounded-[24px] pl-[16px] dark:placeholder:text-polaris-2"
+          placeholderColor="polaris-2"
+          noBorder
+          noShadow
           autoFocus
         >
-          <template #prepend>
+          <template #append>
             <div class="flex justify-center items-center w-8 h-full">
               <BalIcon name="search" size="sm" class="mr-2 text-gray-500" />
             </div>
           </template>
         </BalTextInput>
       </div>
+      <div class="px-[16px] pb-[12px] pt-[24px]">
+          <div class="dark:text-polaris-3 font-semibold mb-[12px]">Common bases</div>
+          <div class="flex gap-[8px] overflow-hidden" >
+            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-none">
+                <div class="common-asset flex items-center">
+                  <BalAsset
+                    :address="tokens[2].address"
+                    :iconURI="tokens[2].logoURI"
+                    :size="24"
+                    class="mr-[4px]"
+                  />
+                  <div class="token-name">{{ tokens[2].symbol }}</div>
+                </div>
+              </a>
+            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]" class="flex-none">
+              <div class="common-asset flex items-center">
+                <BalAsset
+                  :address="tokens[1].address"
+                  :iconURI="tokens[1].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[1].symbol }}</div>
+              </div>
+            </a>
+            <a @click="onSelectToken(tokens[4].address)" v-if="tokens[4]" class="flex-none">
+              <div class="common-asset flex items-center">
+                <BalAsset
+                  :address="tokens[4].address"
+                  :iconURI="tokens[4].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[4].symbol }}</div>
+              </div>
+            </a>
+            <template v-if="isDesktop">
+              <a @click="onSelectToken(tokens[3].address)" v-if="tokens[3]"  class="flex-none">
+                <div class="common-asset flex items-center">
+                  <BalAsset
+                    :address="tokens[3].address"
+                    :iconURI="tokens[3].logoURI"
+                    :size="24"
+                    class="mr-[4px]"
+                  />
+                  <div class="token-name">{{ tokens[3].symbol }}</div>
+                </div>
+              </a>
+              <a @click="onSelectToken(tokens[0].address)" v-if="tokens[0]"  class="flex-none">
+                <div class="common-asset flex items-center">
+                  <BalAsset
+                    :address="tokens[0].address"
+                    :iconURI="tokens[0].logoURI"
+                    :size="24"
+                    class="mr-[4px]"
+                  />
+                  <div class="token-name">{{ tokens[0].symbol }}</div>
+                </div>
+              </a>
+            </template>
+          </div>
+        </div>
+        <PolLine class="mx-[16px] mt-2"/>
       <div class="overflow-hidden">
         <RecycleScroller
           v-if="tokens.length > 0"
           v-slot="{ item: token, index }"
-          class="overflow-y-scroll list-height"
+          class="h-[530px] py-[24px] px-[16px] overflow-y-scroll"
           :items="tokens"
-          :itemSize="70"
+          :itemSize="57"
           keyField="address"
           :buffer="100"
         >
@@ -315,6 +389,13 @@ watchEffect(() => {
 <style scoped>
 .list-height {
   height: 70vh;
+}
+.common-asset {
+  @apply text-sm text-polaris-white rounded-small font-medium;
+  padding: 4px 12px 4px 4px;
+}
+.common-asset:hover{
+  @apply text-polaris-white rounded-small bg-polaris-pill;
 }
 </style>
 

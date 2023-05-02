@@ -255,6 +255,7 @@ watch(_address, async (newAddress, oldAddress) => {
     spellcheck="false"
     v-bind="$attrs"
     inputAlignRight
+    noRadius noShadow noBorder
     @blur="emit('blur', $event)"
     @focus="emit('focus', $event)"
     @input="emit('input', $event)"
@@ -285,28 +286,30 @@ watch(_address, async (newAddress, oldAddress) => {
           class="flex justify-between items-center text-sm leading-none text-gray-600 dark:text-gray-400"
         >
           <div v-if="!isWalletReady || disableBalance" />
-          <button v-else class="flex items-center" @click="setMax">
-            {{ balanceLabel ? balanceLabel : $t('balance') }}:
-
-            <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />
-            <span v-else class="mx-1">
-              {{ fNum(tokenBalance, FNumFormats.token) }}
-            </span>
-
+          <button v-else class="flex items-center text-sm font-medium" @click="setMax">
             <template v-if="hasBalance && !noMax && !disableMax">
               <span
                 v-if="!isMaxed"
-                class="text-blue-600 hover:text-purple-600 focus:text-purple-600 dark:text-blue-400 dark:hover:text-yellow-500 dark:focus:text-yellow-500 transition-colors"
+                class="polaris-max-button mr-[8px] text-polaris-white rounded-medium transition-colors"
               >
                 {{ $t('max') }}
               </span>
               <span
                 v-else
-                class="text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                class="polaris-max-button mr-[8px] text-polaris-white rounded-medium transition-colors"
               >
                 {{ $t('maxed') }}
               </span>
             </template>
+            <span class="dark:text-polaris-3">
+              {{ balanceLabel ? balanceLabel : $t('balance') }}:
+
+              <BalLoadingBlock v-if="balanceLoading" class="mx-2 w-12 h-4" />
+              <span v-else class="mx-1">
+                {{ fNum(tokenBalance, FNumFormats.token) }}
+              </span>
+            </span>
+
           </button>
           <div class="pl-2 truncate">
             <template v-if="hasAmount && hasToken">
@@ -340,7 +343,7 @@ watch(_address, async (newAddress, oldAddress) => {
           :color="barColor"
           class="mt-2"
         />
-        <div
+        <!-- <div
           v-if="shouldShowTxBufferMessage"
           class="mt-2 text-xs text-orange-600 dark:text-orange-400"
         >
@@ -350,8 +353,18 @@ watch(_address, async (newAddress, oldAddress) => {
               nativeAsset.symbol,
             ])
           }}
-        </div>
+        </div> -->
       </div>
     </template>
   </BalTextInput>
 </template>
+<style scoped>
+.polaris-max-button{
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+  padding: 0px 8px;
+  line-height: 18px;
+}
+.polaris-max-button:hover{
+  background: linear-gradient(92.92deg, rgba(192, 4, 254, 0.7) 4.85%, rgba(126, 2, 245, 0.7) 95.15%);
+}
+</style>

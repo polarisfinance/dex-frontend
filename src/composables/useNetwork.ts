@@ -35,6 +35,7 @@ export const networkLabelMap = {
   [Network.GOERLI]: 'Goerli',
   [Network.OPTIMISM]: 'Optimism',
   [Network.GNOSIS]: 'Gnosis chain',
+  [Network.AURORATEST]: 'Aurora testnet',
 };
 
 /**

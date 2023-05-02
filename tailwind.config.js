@@ -12,11 +12,16 @@ module.exports = {
     // https://github.com/tailwindlabs/tailwindcss/discussions/10079
     { pattern: /^mr/ },
     { pattern: /^w/ },
+    {
+      pattern: /.polaris./,
+      variants: ['dark'],
+    },
   ],
   darkMode: 'class',
   theme: {
     fontFamily: {
       body: [
+        'Rajdhani',
         'Inter-Variable',
         '-apple-system',
         'BlinkMacSystemFont',
@@ -53,7 +58,12 @@ module.exports = {
     }),
     screens: {
       xs: '440px',
-      ...defaultTheme.screens,
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1280px',
+      // ...defaultTheme.screens,
     },
     extend: {
       flex: {
@@ -64,13 +74,44 @@ module.exports = {
       },
       borderRadius: {
         '2xl': '1.25rem',
+        small: '16px',
+        medium: '20px',
+        default: '22px',
+        main: '33px',
+        big: '44px',
+      },
+      fontSize: {
+        xsm: ['12px', '15px'],
+        sm: ['14px', '20px'],
+        base: ['16px', '20px'],
+        lg: ['20px', '28px'],
+        xl: ['24px', '32px'],
+        xxl: ['40px', '52px'],
+        hero: ['84px', '104px'],
       },
       colors: {
+        polaris: {
+          2: '#A99BC6',
+          3: '#BDB2DD',
+          1: '#FDFDFD',
+          white: '#FDFDFD',
+          'card-dark': '#292043',
+          'card-default': '#292043',
+          'card-medium': '#41365E',
+          'card-light': '#50456E',
+          'back-main': '#150128',
+          pill: '#50456E',
+          'button-main-from': '#c004fe',
+          'button-main-to': '#7e02f5',
+          'button-inactive': '#41365E',
+          line: 'rgba(151,71,255,.4)',
+        },
         gray: {
           50: '#F8FAFC',
           100: '#EAF0F6',
           200: '#E2E8F0',
           300: '#CBD5E1',
+
           400: '#94A3B8',
           500: '#64748B',
           600: '#475569',

@@ -40,22 +40,22 @@ type GaugeInfo = {
 };
 
 async function getGaugeRelativeWeight(gaugeAddresses: string[]) {
-  const rpcUrl = configService.getNetworkRpc(Network.MAINNET);
-  if (rpcUrl.includes('INFURA_KEY'))
-    throw Error('VITE_INFURA_PROJECT_ID not found!');
+  const rpcUrl = configService.getNetworkRpc(Network.AURORATEST);
+  // if (rpcUrl.includes('INFURA_KEY'))
+  //   throw Error('VITE_INFURA_PROJECT_ID not found!');
 
   const provider = new StaticJsonRpcBatchProvider(rpcUrl);
 
   const multicaller = new Multicaller(
-    config[Network.MAINNET].addresses.multicall,
-    config[Network.MAINNET].key,
+    config[Network.AURORATEST].addresses.multicall,
+    config[Network.AURORATEST].key,
     provider
   );
 
   for (const gaugeAddress of gaugeAddresses) {
     multicaller.call({
       key: gaugeAddress,
-      address: config[Network.MAINNET].addresses.veBALHelpers,
+      address: config[Network.AURORATEST].addresses.veBALHelpers,
       function: 'gauge_relative_weight',
       abi: VEBalHelpersABI,
       params: [getAddress(gaugeAddress)],
@@ -396,7 +396,7 @@ async function getRootGaugeInfo(
   retries = 5
 ): Promise<GaugeInfo[] | null> {
   log(`getRootGaugeAddress. network: ${network} streamer: ${streamer}`);
-  const subgraphEndpoint = config[Network.MAINNET].subgraphs.gauge;
+  const subgraphEndpoint = config[Network.AURORATEST].subgraphs.gauge;
 
   const query = `
     {

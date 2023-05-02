@@ -38,7 +38,7 @@ import TokenPills from './TokenPills/TokenPills.vue';
 import PoolWarningTooltip from '@/components/pool/PoolWarningTooltip.vue';
 import TokensWhite from '@/assets/images/icons/tokens_white.svg';
 import TokensBlack from '@/assets/images/icons/tokens_black.svg';
-
+import TokenWeightsPills from './TokenPills/TokenWeightsPills.vue';
 /**
  * TYPES
  */
@@ -113,7 +113,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'uri',
     Header: 'iconColumnHeader',
     Cell: 'iconColumnCell',
-    width: 125,
+    width: 90,
     noGrow: true,
   },
   {
@@ -281,12 +281,7 @@ function iconAddresses(pool: Pool) {
 </script>
 
 <template>
-  <BalCard
-    shadow="lg"
-    :square="upToLargeBreakpoint"
-    :noBorder="upToLargeBreakpoint"
-    noPad
-  >
+  <BalCard :square="upToLargeBreakpoint" noBorder noPad darkBgColor="back-main">
     <BalTable
       :columns="visibleColumns"
       :data="data"
@@ -313,12 +308,16 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #iconColumnCell="pool">
-        <div v-if="!isLoading" class="py-4 px-6" :data-testid="pool?.id">
-          <BalAssetSet :addresses="iconAddresses(pool)" :width="100" />
+        <div v-if="!isLoading" class="py-2 px-6">
+          <BalAssetSet
+            :addresses="iconAddresses(pool)"
+            :width="110"
+            :size="34"
+          />
         </div>
       </template>
       <template #poolNameCell="pool">
-        <div v-if="!isLoading" class="flex items-center py-4 px-6">
+        <div v-if="!isLoading" class="flex items-center py-3 px-6">
           <div v-if="poolMetadata(pool.id)" class="text-left">
             {{ poolMetadata(pool.id)?.name }}
           </div>
@@ -328,6 +327,7 @@ function iconAddresses(pool: Pool) {
               :isStablePool="isStableLike(pool.poolType)"
               :selectedTokens="selectedTokens"
               :pickedTokens="selectedTokens"
+              :showWeight="false"
             />
           </div>
           <BalChip
@@ -336,13 +336,21 @@ function iconAddresses(pool: Pool) {
             color="amber"
           />
           <BalChipNew v-else-if="pool?.isNew" class="mt-1" />
+          <TokenWeightsPills
+            class="ml-[12px]"
+            :tokens="orderedPoolTokens(pool, pool.tokens)"
+            :isStablePool="isStableLike(pool.poolType)"
+            :selectedTokens="selectedTokens"
+            :pickedTokens="selectedTokens"
+            :boosted="pool.boosted"
+          />
           <PoolWarningTooltip :pool="pool" />
         </div>
       </template>
       <template #volumeCell="pool">
         <div
           :key="columnStates.volume"
-          class="flex justify-end py-4 px-6 -mt-1 font-numeric"
+          class="flex justify-end py-3 px-6 -mt-1 font-numeric"
         >
           <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
           <span v-else class="text-right">
@@ -364,7 +372,7 @@ function iconAddresses(pool: Pool) {
         <div
           :key="columnStates.aprs"
           :class="[
-            'flex justify-end py-4 px-6 -mt-1 font-numeric text-right',
+            'flex justify-end py-3 px-6 -mt-1 font-numeric text-right',
             {
               'text-gray-300 dark:text-gray-600 line-through': isLBP(
                 pool.poolType
@@ -387,7 +395,7 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #migrateCell="pool">
-        <div class="flex justify-center py-4 px-2">
+        <div class="flex justify-center py-3 px-2">
           <BalBtn
             v-if="isMigratablePool(pool)"
             color="gradient"
@@ -399,7 +407,7 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #lockEndDateCell="pool">
-        <div class="py-4 px-6 text-right">
+        <div class="py-3 px-6 text-right">
           {{ lockedUntil(pool.lockedEndDate) }}
         </div>
       </template>

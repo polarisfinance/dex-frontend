@@ -42,7 +42,7 @@ function getHorizontalStickyClass(index: number) {
 <template>
   <tr
     :class="[
-      'bg-white z-10 row-bg group',
+      'z-10 row-bg group',
       {
         'cursor-pointer': handleRowClick,
         'border-b dark:border-gray-700': pinned,
@@ -78,7 +78,7 @@ function getHorizontalStickyClass(index: number) {
           v-else
           :class="
             compact([
-              'mr-6 py-4',
+              'mr-6 py-2',
               column.align === 'right' ? 'text-right' : 'text-left',
               column.cellClassName,
             ])
@@ -94,3 +94,19 @@ function getHorizontalStickyClass(index: number) {
     </td>
   </tr>
 </template>
+
+<style scoped>
+.row-bg:hover {
+  @apply hover:dark:bg-polaris-card-default;
+}
+
+.dark .row-bg:hover td:first-child {
+  border-bottom-left-radius: 48px;
+  border-top-left-radius: 48px;
+}
+
+.dark .row-bg:hover td:last-child {
+  border-bottom-right-radius: 48px;
+  border-top-right-radius: 48px;
+}
+</style>

@@ -23,6 +23,7 @@ export type HistoricalPrices = { [timestamp: string]: number[] };
 
 export class PriceService {
   client: CoingeckoClient;
+  cacheClient: CoingeckoCacheClient;
   fiatParam: string;
   appNetwork: string;
   platformId: string;
@@ -32,6 +33,7 @@ export class PriceService {
     private readonly configService = _configService
   ) {
     this.client = service.client;
+    this.cacheClient = service.cacheClient;
     this.fiatParam = service.supportedFiat;
     this.appNetwork = this.configService.network.key;
     this.platformId = getPlatformId(this.appNetwork);
@@ -64,7 +66,8 @@ export class PriceService {
           this.fiatParam
         }&from=${start}&to=${end}`;
         const request = retryPromiseWithDelay(
-          this.client.get<HistoricalPriceResponse>(endpoint),
+          // this.client.get<HistoricalPriceResponse>(endpoint),
+          this.cacheClient.get<HistoricalPriceResponse>(endpoint),
           2, // retryCount
           2000 // delayTime
         );

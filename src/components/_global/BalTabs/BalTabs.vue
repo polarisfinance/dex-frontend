@@ -34,9 +34,9 @@ const containerClasses = computed(() => {
 
 function stateClasses(tab: Tab): Record<string, boolean> {
   return {
-    'border-b-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:border-blue-500 font-semibold':
+    'border-b-2  dark:text-polaris-white dark:border-polaris-white':
       isActiveTab(tab),
-    'hover:text-purple-600 dark:hover:text-yellow-500 dark:border-gray-700 transition-colors':
+    'dark:hover:text-polaris-white  transition-colors':
       !isActiveTab(tab),
   };
 }
@@ -46,16 +46,16 @@ const lastTab = computed(() => props.tabs[props.tabs.length - 1]);
 
 <template>
   <div>
-    <div :class="['bal-tab-container text-secondary', containerClasses]">
+    <div :class="['bal-tab-container', containerClasses]">
       <div
         v-for="(tab, i) in props.tabs"
         :key="i"
-        :class="['bal-tab font-medium', stateClasses(tab)]"
+        :class="['bal-tab', stateClasses(tab)]"
         @click="onClick(tab)"
       >
         {{ tab.label }}
       </div>
-      <div :class="['bal-tab font-medium -ml-6 pl-2', stateClasses(lastTab)]">
+      <div :class="['bal-tab -ml-6 pl-2', stateClasses(lastTab)]">
         <slot></slot>
       </div>
     </div>
@@ -72,6 +72,6 @@ const lastTab = computed(() => props.tabs[props.tabs.length - 1]);
 }
 
 .bal-tab-container {
-  @apply flex border-b dark:border-gray-700;
+  @apply flex border-b dark:border-transparent;
 }
 </style>

@@ -8,19 +8,21 @@ type Props = {
   isSelected: boolean;
   isPicked: boolean;
   token: PoolToken;
+  separator: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   hasBalance: false,
   isSelected: false,
   isPicked: false,
+  separator: false,
 });
 </script>
 
 <template>
   <BalTooltip
     :disabled="!hasBalance"
-    class="mr-1 last:mr-0 leading-normal cursor-pointer"
+    class="leading-normal cursor-pointer"
     textAlign="left"
     :delayMs="50"
   >
@@ -35,6 +37,7 @@ withDefaults(defineProps<Props>(), {
           },
         ]"
       >
+        <div v-if="separator" class="pill-text px-1">-</div>
         <div v-if="hasBalance" class="balance-indicator" />
         <div
           :class="[
@@ -56,34 +59,20 @@ withDefaults(defineProps<Props>(), {
 .pill {
   @apply flex;
   @apply relative;
-  @apply my-1;
-  @apply h-10 items-center;
+  @apply items-center;
+  line-height: 20px;
 }
 
 .pill::before {
   @apply w-full h-full;
   @apply absolute;
-  @apply bg-gray-100 dark:bg-gray-700;
 
   content: '';
-  transform: skew(-16deg);
-}
-
-.pill:first-child::before {
-  border-radius: 4px 0 0 4px;
-}
-
-.pill:last-child::before {
-  border-radius: 0 4px 4px 0;
-}
-
-.pill:only-child::before {
-  border-radius: 4px;
+  /*transform: skew(-16deg);*/
 }
 
 .pill-text {
-  @apply px-2 py-1;
-
+  @apply dark:text-polaris-white font-semibold;
   z-index: 1;
 }
 

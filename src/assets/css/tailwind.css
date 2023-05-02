@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer components {
+  .bg-gray-default {
+    background-color: #292043;
+  }
+}
+
 @layer utilities {
   .text-primary {
     @apply text-gray-900 dark:text-gray-100;
@@ -42,18 +49,22 @@
 
   .font-normal {
     font-variation-settings: 'wght' 400;
+    font-weight: 400;
   }
 
   .font-medium {
     font-variation-settings: 'wght' 500;
+    font-weight: 500;
   }
 
   .font-semibold {
     font-variation-settings: 'wght' 600;
+    font-weight: 600;
   }
 
   .font-bold {
     font-variation-settings: 'wght' 700;
+    font-weight: 700;
   }
 
   .font-extrabold {
@@ -101,3 +112,5 @@
     text-shadow: 0 1px 0 rgb(0 0 0 / 10%), 4px 4px 8px rgb(0 0 0 / 15%);
   }
 }
+
+

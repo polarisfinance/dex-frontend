@@ -11,19 +11,21 @@ type Props = {
   token: PoolToken;
   isOnMigrationCard?: boolean;
   isHovered?: boolean;
+  separator: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   hasBalance: false,
   isSelected: false,
   isPicked: false,
+  separator: false,
 });
 </script>
 
 <template>
   <BalTooltip
     :disabled="!hasBalance"
-    class="mr-2 last:mr-0 leading-normal cursor-pointer"
+    class="leading-normal cursor-pointer"
     textAlign="left"
     :delayMs="50"
   >
@@ -40,6 +42,7 @@ withDefaults(defineProps<Props>(), {
           },
         ]"
       >
+        <div v-if="separator" class="px-1">-</div>
         <div v-if="hasBalance" class="balance-indicator" />
         <span
           :class="[
@@ -69,7 +72,8 @@ withDefaults(defineProps<Props>(), {
 
 <style scoped>
 .pill {
-  @apply flex items-center px-2 my-1 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 relative h-10 items-center;
+  @apply flex items-center relative items-center dark:text-polaris-white font-semibold;
+  line-height: 20px;
 }
 
 .pill-migration {

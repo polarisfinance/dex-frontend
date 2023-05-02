@@ -75,6 +75,18 @@ onMounted(async () => {
 
 <template>
   <div
+    v-for="token in rootPool.tokens"
+    :key="token.address"
+    class="w-full dark:bg-polaris-card-dark rounded-medium card"
+  >
+    <TokenBreakdown
+      :token="token"
+      :showUserShares="showUserShares"
+      :rootPool="pool"
+      :tokensData="tokenData"
+    />
+  </div>
+  <!-- <div
     class="flex justify-start items-center mx-4 lg:mx-0 mb-6 border-b dark:border-gray-900"
   >
     <BalTabs v-model="activeTab" :tabs="tabs" noPad class="-mb-px">
@@ -124,14 +136,16 @@ onMounted(async () => {
         />
       </div>
     </div>
-  </BalCard>
+  </BalCard> -->
 </template>
 <style scoped>
 :deep(.card-container) {
   min-width: 600px;
 }
 
-.nested-group:has(.level-2) {
-  @apply dark:border-gray-900 border-t first:border-0;
+<style scoped > .card {
+  padding: 12px;
+  gap: 16px;
+  max-width: 355px;
 }
 </style>

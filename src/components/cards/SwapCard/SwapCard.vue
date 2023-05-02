@@ -1,8 +1,8 @@
 <template>
-  <BalCard class="relative card-container" :shadow="swapCardShadow" noBorder>
+  <BalCard class="relative card-container" :shadow="swapCardShadow" noBorder noPad :exposeOverflow="false">
     <template #header>
-      <div class="flex justify-between items-center w-full">
-        <h4>{{ title }}</h4>
+      <div class="flex justify-between items-center w-full dark:bg-polaris-card-medium pb-[30px]">
+        <h4 class="dark:text-polaris-white pl-[18px] pt-[14px] font-[600] text-base">{{ title }}</h4>
         <SwapSettingsPopover
           :context="SwapSettingsContext.swap"
           :isGasless="swapping.swapGasless.value"
@@ -43,25 +43,28 @@
         :description="warning.body"
         block
       />
-      <BalBtn
-        v-if="swapping.isLoading.value"
-        loading
-        disabled
-        :loadingLabel="
-          swapping.isCowswapSwap.value ? $t('loadingBestPrice') : $t('loading')
-        "
-        block
-      />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
-        :disabled="swapDisabled"
-        color="gradient"
-        block
-        @click.prevent="handlePreviewButton"
-      />
+      <div class="px-[12px] mb-[12px]">
+        <BalBtn
+          v-if="swapping.isLoading.value"
+          loading
+          disabled
+          :loadingLabel="
+            swapping.isCowswapSwap.value ? $t('loadingBestPrice') : $t('loading')
+          "
+          block
+        />
+        <button
+            v-else
+            :disabled="swapDisabled"
+            class="polaris-main-button w-full text-white font-semibold text-lg"
+            block
+            @click.prevent="handlePreviewButton"
+        >
+            Swap
+        </button>
+      </div>
       <div
-        v-if="swapping.isCowswapSupportedOnNetwork.value"
+        v-if="swapping.isCowswapSupportedOnNetwork.value && false"
         class="flex items-center mt-5 h-8 text-sm"
       >
         <Transition name="fade" mode="out-in">
@@ -133,6 +136,7 @@
           </div>
         </Transition>
       </div>
+      <PolLine/>
       <SwapRoute
         v-if="alwaysShowRoutes"
         :addressIn="swapping.tokenIn.value.address"
@@ -215,7 +219,7 @@ export default defineComponent({
     const dismissedErrors = ref({
       highPriceImpact: false,
     });
-    const alwaysShowRoutes = lsGet('alwaysShowRoutes', false);
+    const alwaysShowRoutes = lsGet('alwaysShowRoutes', true);
     const swapCardShadow = computed(() => {
       switch (bp.value) {
         case 'xs':
@@ -442,9 +446,6 @@ export default defineComponent({
 </script>
 <style scoped>
 /* This is needed because the swap settings popover overflows */
-.card-container {
-  overflow: unset;
-}
 
 .swap-gasless :deep(.bal-toggle) {
   width: 3rem;

@@ -8,12 +8,12 @@ const ClaimPage = () => import('@/pages/claim/index.vue');
 const LegacyClaimPage = () => import('@/pages/claim/legacy.vue');
 const CookiesPolicyPage = () => import('@/pages/cookies-policy.vue');
 const GetVeBalPage = () => import('@/pages/get-vebal.vue');
-const HomePage = () => import('@/pages/index.vue');
-const PoolPage = () =>
-  import(/* webpackPrefetch: true */ '@/pages/pool/_id.vue');
+const HomePage = () => import('@/pages/earn.vue');
+const PoolPage = () => import('@/pages/pool/_id.vue');
 const CreatePoolPage = () => import('@/pages/pool/create.vue');
 const PoolAddLiquidityPage = () => import('@/pages/pool/add-liquidity.vue');
 const PoolWithdrawPage = () => import('@/pages/pool/withdraw.vue');
+const PoolInvestPage = () => import('@/pages/pool/invest.vue');
 const PrivacyPolicyPage = () => import('@/pages/privacy-policy.vue');
 const TermsOfUsePage = () => import('@/pages/terms-of-use.vue');
 const RisksPage = () => import('@/pages/risks.vue');
@@ -27,6 +27,14 @@ const VeBalPage = () => import('@/pages/vebal.vue');
 const FaucetPage = () => import('@/pages/faucet.vue');
 
 const PortfolioPage = () => import('@/pages/portfolio.vue');
+
+const SunrisesPage = () => import('@/pages/sunrise/sunrise.vue');
+const SunrisePage = () => import('@/pages/sunrise/_id.vue');
+
+const BondsPage = () => import('@/pages/bond/bond.vue');
+const BondPage = () => import('@/pages/bond/_id.vue');
+const AirdropPage = () => import('@/pages/airdrop.vue');
+const PoolAboutPage = () => import('@/pages/pool/about.vue');
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -97,18 +105,31 @@ const routes: RouteRecordRaw[] = [
     component: PoolAddLiquidityPage,
     meta: { layout: 'FocusedLayout' },
   },
+  // {
+  //   path: '/:networkSlug/pool/:id/invest',
+  //   name: 'invest-redirect',
+  //   redirect: to => {
+  //     return `/${to.params.networkSlug}/pool/${to.params.id}/add-liquidity`;
+  //   },
+  // },
   {
     path: '/:networkSlug/pool/:id/invest',
-    name: 'invest-redirect',
-    redirect: to => {
-      return `/${to.params.networkSlug}/pool/${to.params.id}/add-liquidity`;
-    },
+    name: 'invest',
+    component: PoolInvestPage,
+    meta: { layout: 'ProcessLayout' },
+    props: { step: 1 },
   },
   {
     path: '/:networkSlug/pool/:id/withdraw',
     name: 'withdraw',
     component: PoolWithdrawPage,
-    meta: { layout: 'FocusedLayout' },
+    meta: { layout: 'BlankLayout' }, //FocusedLayout
+  },
+  {
+    path: '/:networkSlug/pool/:id/about',
+    name: 'about',
+    component: PoolAboutPage,
+    // meta: { layout: 'SingleCardLayout' },
   },
   {
     path: '/:networkSlug/vebal',
@@ -151,6 +172,31 @@ const routes: RouteRecordRaw[] = [
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     redirect: '/',
+  },
+  {
+    path: '/sunrise',
+    name: 'sunrises',
+    component: SunrisesPage,
+  },
+  {
+    path: '/sunrise/:id',
+    name: 'sunrise',
+    component: SunrisePage,
+  },
+  {
+    path: '/bond',
+    name: 'bonds',
+    component: BondsPage,
+  },
+  {
+    path: '/bond/:id',
+    name: 'bond',
+    component: BondPage,
+  },
+  {
+    path: '/airdrop',
+    name: 'airdrop',
+    component: AirdropPage,
   },
 ];
 

@@ -14,7 +14,7 @@ export default function useInputStyles(
       case 'lg':
         return 'p-3';
       default:
-        return 'p-2';
+        return '';
     }
   };
 
@@ -31,6 +31,13 @@ export default function useInputStyles(
     }
   };
 
+  const placeholderColor = (): string => {
+    if (props.placeholderColor!=undefined) {
+      return 'placeholder:text-'+props.placeholderColor;
+    }
+    return 'placeholder:text-polaris-white';
+  };
+
   const inputTextSize = (): string => {
     switch (props.size) {
       case 'xs':
@@ -38,7 +45,7 @@ export default function useInputStyles(
       case 'sm':
         return 'text-base';
       case 'lg':
-        return 'text-2xl';
+        return 'text-lg';
       default:
         return 'text-xl';
     }
@@ -66,8 +73,8 @@ export default function useInputStyles(
   }));
 
   const inputContainerClasses = computed(() => ({
-    'bg-white dark:bg-gray-800': !props.disabled,
-    'bg-gray-100 dark:bg-gray-800': props.disabled,
+    // 'bg-white dark:bg-gray-800': !props.disabled,
+    // 'bg-gray-100 dark:bg-gray-800': props.disabled,
     [extPaddingClass()]: true,
     border: !props.noBorder,
     'border-gray-100 dark:border-gray-800': !isInvalid.value && !isActive.value,
@@ -93,6 +100,7 @@ export default function useInputStyles(
   const inputClasses = computed(() => ({
     [inputHeightClass()]: true,
     [inputTextSize()]: true,
+    [placeholderColor()]:true,
     'text-right': props.inputAlignRight,
     'font-numeric': props.type === 'number',
     'text-red-500': isInvalid.value,

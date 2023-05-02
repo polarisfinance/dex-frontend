@@ -17,6 +17,8 @@ import { Pool, PoolToken } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
 import { AprBreakdown } from '@balancer-labs/sdk';
 import { useDisabledJoinPool } from '@/composables/useDisabledJoinPool';
+import { PoolWithShares } from '@/services/pool/types';
+import useNetwork from '@/composables/useNetwork';
 
 /**
  * TYPES
@@ -43,7 +45,9 @@ const poolId = computed(() => toRef(props, 'pool').value.id);
  * COMPOSABLES
  */
 const { isAffected, warnings } = usePoolWarning(poolId);
-const { hasNonApprovedRateProviders } = usePoolHelpers(toRef(props, 'pool'));
+const { hasNonApprovedRateProviders, orderedTokenAddresses } = usePoolHelpers(
+  toRef(props, 'pool')
+);
 const { fNum } = useNumbers();
 const { t } = useI18n();
 const { explorerLinks: explorer } = useWeb3();
@@ -52,7 +56,7 @@ const { hasNonPrefGaugeBalance } = usePoolStaking();
 const { disableJoinsReason, nonAllowedSymbols } = useDisabledJoinPool(
   props.pool
 );
-
+const { networkSlug } = useNetwork();
 /**
  * STATE
  */
@@ -82,6 +86,12 @@ const swapFeeToolTip = computed(() => {
     return t('ownerFeesTooltip');
   }
 });
+
+function iconAddresses(pool: PoolWithShares) {
+  return POOLS.Metadata[pool.id]?.hasIcon
+    ? [pool.address]
+    : orderedTokenAddresses(pool);
+}
 
 const poolFeeLabel = computed(() => {
   if (!props.pool || !props.pool?.swapFee) return '';
@@ -134,94 +144,99 @@ function symbolFor(titleTokenIndex: number): string {
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-wrap items-center -mt-2">
-      <div v-if="hasMetadata">
-        <h3 class="pool-title">
-          {{ poolMetadata.name }}
-        </h3>
-        <h5 class="text-sm">
+  <div class="flex px-7 text-polaris-3">
+    <div class="flex flex-col flex-1 mb-5">
+      <div class="flex flex-wrap items-center -mt-2 dark:text-polaris-white">
+        <div v-if="hasMetadata">
+          <h3 class="text-xxl font-semibold pool-title">
+            {{ poolMetadata.name }}
+          </h3>
+          <h5 class="text-sm">
+            {{ poolTypeLabel }}
+          </h5>
+        </div>
+        <h3 v-else class="text-xxl font-semibold pool-title">
           {{ poolTypeLabel }}
-        </h5>
+        </h3>
       </div>
-      <h3 v-else class="pool-title">
-        {{ poolTypeLabel }}
-      </h3>
+      <div class="flex items-center mt-2">
+        <div class="mr-1 text-sm font-medium" v-html="poolFeeLabel" />
+        <BalTooltip>
+          <template #activator>
+            <BalLink
+              v-if="feesManagedByGauntlet"
+              :href="EXTERNAL_LINKS.Gauntlet.Home"
+              external
+            >
+              <GauntletIcon />
+            </BalLink>
+            <BalIcon
+              v-else
+              name="info"
+              size="xs"
+              class="text-gray-400 dark:text-gray-500"
+            />
+          </template>
+          <span>
+            {{ swapFeeToolTip }}
+          </span>
+        </BalTooltip>
+      </div>
     </div>
-    <div class="flex flex-wrap items-center">
-      <div
-        v-for="({ address, weight }, i) in titleTokens"
-        :key="i"
-        class="flex items-center px-2 mt-2 mr-2 h-10 bg-gray-50 dark:bg-gray-850 rounded-lg"
-      >
-        <BalAsset :address="address" />
-        <span class="ml-2">
-          {{ symbolFor(i) }}
-        </span>
-        <span
-          v-if="!isStableLikePool && !!weight && weight !== '0'"
-          class="mt-px ml-1 text-xs font-medium text-gray-400"
+    <div class="flex flex-col">
+      <div class="flex items-center">
+        <div
+          v-for="({ address, weight }, i) in titleTokens"
+          :key="i"
+          class="flex items-center text-xl font-semibold dark:text-polaris-white"
         >
-          {{
-            fNum(weight || '0', {
-              style: 'percent',
-              maximumFractionDigits: 0,
-            })
-          }}
-        </span>
+          <span v-if="i != 0">-</span>
+          <!-- <BalAsset :address="address" /> -->
+          <span class="">
+            {{ symbolFor(i) }}
+          </span>
+        </div>
+        <BalAssetSet
+          class="ml-3"
+          :size="44"
+          :addresses="iconAddresses(pool)"
+          :width="80"
+          :maxOffset="35"
+        />
+        <BalChipNew v-if="pool?.isNew" class="mt-2 mr-2" />
+        <!-- <APRTooltip
+          v-if="!loadingApr"
+          :pool="pool"
+          :poolApr="poolApr"
+          class="mt-1"
+        />
+        <BalLink
+          :href="explorer.addressLink(pool?.address || '')"
+          external
+          noStyle
+          class="flex items-center"
+        >
+          <BalIcon
+            name="arrow-up-right"
+            size="sm"
+            class="mt-2 text-gray-500 hover:text-blue-500 transition-colors"
+          />
+        </BalLink> -->
       </div>
-      <BalChipNew v-if="pool?.isNew" class="mt-2 mr-2" />
-      <APRTooltip
-        v-if="!loadingApr"
-        :pool="pool"
-        :poolApr="poolApr"
-        class="mt-1 -ml-1"
-      />
-      <BalLink
-        :href="explorer.addressLink(pool?.address || '')"
-        external
-        noStyle
-        class="flex items-center"
+      <router-link
+        class="flex font-medium underline text-[14px]"
+        :to="{ name: 'about', params: { networkSlug, id: pool.id } }"
       >
+        Pool details
         <BalIcon
           name="arrow-up-right"
           size="sm"
           class="mt-2 ml-2 text-gray-500 hover:text-blue-500 transition-colors"
         />
-      </BalLink>
-    </div>
-    <div class="flex items-center mt-2">
-      <div class="mr-1 text-sm text-secondary" v-html="poolFeeLabel" />
-      <BalTooltip>
-        <template #activator>
-          <BalLink
-            v-if="feesManagedByGauntlet"
-            :href="EXTERNAL_LINKS.Gauntlet.Home"
-            external
-          >
-            <GauntletIcon />
-          </BalLink>
-          <BalIcon
-            v-else
-            name="info"
-            size="xs"
-            class="text-gray-400 dark:text-gray-500"
-          />
-        </template>
-        <span>
-          {{ swapFeeToolTip }}
-        </span>
-      </BalTooltip>
+      </router-link>
     </div>
   </div>
-  <BalAlert
-    v-if="pool.isInRecoveryMode"
-    type="warning"
-    :title="$t('recoveryMode')"
-    :description="$t('recoveryModeDescription')"
-    class="mt-2"
-    block
-  />
+
   <BalAlert
     v-if="hasNonApprovedRateProviders"
     type="warning"
@@ -335,8 +350,6 @@ function symbolFor(titleTokenIndex: number): string {
 </template>
 <style scoped>
 .pool-title {
-  @apply mr-4 capitalize mt-2;
-
-  font-variation-settings: 'wght' 700;
+  @apply mr-4 capitalize;
 }
 </style>

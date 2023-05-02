@@ -39,12 +39,12 @@ onMounted(() => {
 <template>
   <div>
     <Col3Layout offsetGutters mobileHideGutters class="mt-8">
-      <template #gutterLeft>
+      <!-- <template #gutterLeft>
         <MyWallet />
-      </template>
+      </template> -->
 
       <SwapCard />
-      <div class="p-4 sm:p-0 lg:p-0 mt-8">
+      <!-- <div class="p-4 sm:p-0 lg:p-0 mt-8">
         <BalAccordion
           v-if="upToLargeBreakpoint"
           class="w-full"
@@ -60,12 +60,12 @@ onMounted(() => {
             <BridgeLink />
           </template>
         </BalAccordion>
-      </div>
+      </div> -->
 
-      <template #gutterRight>
+      <!-- <template #gutterRight>
         <PairPriceGraph />
         <BridgeLink v-if="hasBridge" class="mt-4" />
-      </template>
+      </template> -->
     </Col3Layout>
   </div>
 </template>

@@ -46,8 +46,10 @@ type Props = {
   block?: boolean;
   circle?: boolean;
   outline?: boolean;
+  noBackground?: boolean;
   flat?: boolean;
   rounded?: boolean;
+  switcher?: boolean;
   loading?: boolean;
   loadingLabel?: string;
   disabled?: boolean;
@@ -61,8 +63,10 @@ const props = withDefaults(defineProps<Props>(), {
   block: false,
   circle: false,
   outline: false,
+  noBackground:false,
   flat: false,
   rounded: false,
+  switcher: false,
   loading: false,
   loadingLabel: 'loading...',
   disabled: false,
@@ -111,7 +115,7 @@ const bgGradientClasses = computed(() => {
   }
 
   if (props.disabled) {
-    return `bg-gray-300 dark:bg-gray-700 text-white dark:text-gray-500`;
+    return `bg-gray-300 dark:bg-polaris-button-inactive text-white dark:text-polaris-2`;
   }
   if (props.loading) {
     return `bg-gradient-to-tr ${loadingFrom(fromColor)} ${loadingTo(toColor)}`;
@@ -132,19 +136,26 @@ const bgFlatClasses = computed(() => {
 
 const bgColorClasses = computed(() => {
   if (props.color.includes('gradient')) return bgGradientClasses.value;
+  else if(props.noBackground) return 'ng-none';
   else if (props.outline) return 'bg-transparent';
   else if (props.flat) return bgFlatClasses.value;
+  else if (props.color === 'transparent') 
+    return 'bg-transparent';
+  else if (props.color === 'gray' && props.switcher)
+    return 'dark:bg-[#50456E]';
   else if (props.color === 'white') {
     return 'bg-gray-50 hover:bg-white dark:bg-gray-800';
   } else {
     if (props.disabled) {
-      return `bg-gray-300 dark:bg-gray-700 text-white dark:text-gray-500`;
+      return `bg-gray-300 dark:bg-polaris-button-inactive text-white dark:text-polaris-2`;
     }
     if (props.loading) {
       return `${loadingBackground(props.color)} ${loadingDarkBackground(
         props.color
       )}`;
     }
+    if (props.color === 'primary') 
+      return 'polaris-main-button';
 
     return `
           ${background(props.color)} ${hoverBackground(props.color)}
@@ -174,6 +185,10 @@ const textColorClasses = computed(() => {
       return 'text-white hover:text-yellow-500 dark:hover:text-yellow-500';
     else return 'text-gray-800 hover:text-blue-600 dark:text-gray-100';
   }
+  if(props.color === 'gray' && props.switcher)
+    return 'dark:text-polaris-white font-semibold';
+  if(props.color==='transparent' && props.switcher)
+    return 'dark:text-polaris-2 font-semibold';
   if (props.outline || props.flat)
     return `${text(props.color)} ${darkText(props.color)}`;
   return 'text-white';
@@ -187,6 +202,7 @@ const displayClasses = computed(() => {
 
 const shapeClasses = computed(() => {
   if (props.circle || props.rounded) return 'rounded-full';
+  if (props.size === 'sm') return 'rounded-small';
   return 'rounded-lg';
 });
 

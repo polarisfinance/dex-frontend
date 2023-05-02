@@ -71,88 +71,91 @@ function copyAddress() {
 </script>
 
 <template>
-  <div>
-    <div class="p-4 border-b dark:border-gray-900">
-      <div class="flex justify-between items-center mb-6">
-        <h5 class="tracking-tight leading-none" v-text="$t('account')" />
-        <div class="flex gap-2 items-center">
-          <BalBtn color="gray" size="xs" @click="toggleWalletSelectModal">
-            {{ $t('change') }}
-          </BalBtn>
-          <div v-if="!hideDisconnect">
-            <BalBtn
-              outline
-              color="gray"
-              size="xs"
-              class="capitalize"
-              @click="disconnectWallet"
-            >
-              {{ $t('disconnect') }}
-            </BalBtn>
-          </div>
+    <div>
+      <div class="p-4">
+        <div class="flex justify-between items-center mb-6">
+          <h5 class="tracking-tight leading-none dark:text-polaris-white font-semibold text-base" v-text="$t('account')" />
+          
         </div>
-      </div>
-      <div class="flex mt-1 mb-1">
-        <div class="flex">
-          <div class="relative">
-            <Avatar :iconURI="avatarUri" :address="account" :size="44" />
-            <div class="connector-icon-wrapper">
-              <img
-                :src="connectorLogo"
-                class="flex absolute right-0 bottom-0 justify-center items-center p-0.5 w-5 h-5 bg-white rounded-full"
-              />
-            </div>
-          </div>
-          <div class="ml-2">
-            <div class="flex items-baseline address">
-              <div
-                class="font-bold text-black dark:text-white"
-                v-text="shorten(account)"
-              />
-              <div class="flex ml-3">
-                <BalTooltip width="auto">
-                  <template #activator>
-                    <BalBtn
-                      circle
-                      color="gray"
-                      size="xs"
-                      flat
-                      @click="copyAddress"
-                    >
-                      <BalIcon
-                        v-if="data.copiedAddress"
-                        name="check"
-                        size="xs"
-                      />
-                      <BalIcon v-else name="clipboard" size="xs" />
-                    </BalBtn>
-                  </template>
-                  <div
-                    class="text-center"
-                    v-text="
-                      data.copiedAddress ? $t('copied') : $t('copyAddress')
-                    "
-                  />
-                </BalTooltip>
-                <BalBtn
-                  circle
-                  flat
-                  color="gray"
-                  size="xs"
-                  tag="a"
-                  :href="explorerLinks.addressLink(account)"
-                  target="_blank"
-                  rel="noreferrer"
-                  class="ml-2"
-                >
-                  <BalIcon name="arrow-up-right" size="xs" />
-                </BalBtn>
+        <div class="dark:bg-polaris-card-medium rounded-small">
+          <div class="flex">
+          <div class="flex p-3 ">
+            <div class="relative">
+              <Avatar :iconURI="avatarUri" :address="account" :size="44" />
+              <div class="connector-icon-wrapper">
+                <img
+                  :src="connectorLogo"
+                  class="flex absolute right-0 bottom-0 justify-center items-center p-0.5 w-5 h-5 bg-white rounded-full"
+                />
               </div>
             </div>
-            <div class="text-sm">
-              {{ connectorName }}
+            <div class="ml-2">
+              <div class="flex items-baseline address">
+                <div
+                  class="font-bold text-black dark:text-white"
+                  v-text="shorten(account)"
+                />
+                <div class="flex ml-3 gap-2 items-center">
+                  <BalBtn color="gray" size="xs" @click="toggleWalletSelectModal">
+                    {{ $t('change') }}
+                  </BalBtn>
+                  <div v-if="!hideDisconnect">
+                    <BalBtn
+                      outline
+                      color="gray"
+                      size="xs"
+                      class="capitalize"
+                      @click="disconnectWallet"
+                    >
+                      {{ $t('disconnect') }}
+                    </BalBtn>
+                  </div>
+                </div>
+              </div>
+              <div class="text-sm">
+                {{ connectorName }}
+              </div>
             </div>
           </div>
+        </div>
+        <div class="flex ml-3">
+          <BalTooltip width="auto">
+            <template #activator>
+              <BalBtn
+                circle
+                color="gray"
+                size="xs"
+                flat
+                @click="copyAddress"
+              >
+                <BalIcon
+                  v-if="data.copiedAddress"
+                  name="check"
+                  size="xs"
+                />
+                <BalIcon v-else name="clipboard" size="xs" />
+              </BalBtn>
+            </template>
+            <div
+              class="text-center"
+              v-text="
+                data.copiedAddress ? $t('copied') : $t('copyAddress')
+              "
+            />
+          </BalTooltip>
+          <BalBtn
+            circle
+            flat
+            color="gray"
+            size="xs"
+            tag="a"
+            :href="explorerLinks.addressLink(account)"
+            target="_blank"
+            rel="noreferrer"
+            class="ml-2"
+          >
+            <BalIcon name="arrow-up-right" size="xs" />
+          </BalBtn>
         </div>
       </div>
     </div>
@@ -175,7 +178,7 @@ function copyAddress() {
         </div>
       </div>
     </div>
-    <div class="px-4 mt-4">
+    <!-- <div class="px-4 mt-4">
       <div class="flex items-baseline">
         <span class="mb-2 font-medium" v-text="$t('slippageTolerance')" />
         <BalTooltip>
@@ -202,7 +205,7 @@ function copyAddress() {
         :options="ethereumTxTypeOptions"
         @update:model-value="setEthereumTxType"
       />
-    </div>
+    </div> -->
     <div
       class="p-4 mt-4 text-sm rounded-b-xl border-t dark:border-gray-900 network"
     >

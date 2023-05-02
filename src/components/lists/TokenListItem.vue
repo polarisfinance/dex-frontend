@@ -2,11 +2,11 @@
   <div
     ref="animateRef"
     :class="[
-      `flex items-center py-3 border border-transparent ml-4 mr-2 px-2 text-base
-  leading-5 opacity-0 highlight hover:bg-blue-50 dark:hover:bg-blue-900
-  rounded-lg transition-colors ease-in duration-300`,
+      `flex items-center border border-transparent text-base
+  leading-2 opacity-0 highlight 
+   transition-colors ease-in duration-300`,
       {
-        'bg-blue-50 dark:bg-blue-900 border-blue-200 dark:border-blue-500':
+        '':
           focussed,
       },
     ]"
@@ -18,12 +18,12 @@
       class="mr-3"
     />
     <div
-      :class="['flex-auto', { 'text-blue-500 dark:text-blue-200': focussed }]"
+      :class="['flex-auto', { '': focussed }]"
     >
-      {{ token.symbol }}
-      <div class="w-40 md:w-60 text-sm truncate text-gray">
+      <div class="w-40 md:w-60 text-xsm truncate dark:text-polaris-3 font-medium">
         {{ token.name }}
-      </div>
+      </div>  
+      <div class="text-lg dark:text-polaris-white font-semibold">{{ token.symbol }}</div>
     </div>
     <span
       v-if="!hideBalance"
@@ -31,15 +31,15 @@
     >
       <BalLoadingBlock v-if="balanceLoading" class="w-14 h-4" />
       <template v-else>
-        <template v-if="balance > 0">
+        <template v-if="balance > -1">
           <template v-if="balance >= 0.0001">
-            {{ fNum(balance, FNumFormats.token) }}
+            <div class="text-lg dark:text-polaris-white font-semibold">{{ fNum(balance, FNumFormats.token) }}</div>
           </template>
-          <template v-else> &#60; 0.0001 </template>
+          <template v-else><div class="text-lg dark:text-polaris-white font-semibold"> &#60; 0.0001 </div></template>
         </template>
-        <div v-if="value > 0" class="text-sm font-normal text-secondary">
+        <!-- <div v-if="value > 0" class="text-sm font-normal text-secondary">
           {{ fNum(value, FNumFormats.fiat) }}
-        </div>
+        </div> -->
       </template>
     </span>
   </div>

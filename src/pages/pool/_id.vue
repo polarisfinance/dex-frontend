@@ -37,7 +37,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import BrandedRedirectCard from '@/components/pool/branded-redirect/BrandedRedirectCard.vue';
 import metaService from '@/services/meta/meta.service';
 import PoolMigrationCard from '@/components/contextual/pages/pool/PoolMigrationCard/PoolMigrationCard.vue';
-
+import useNetwork from '@/composables/useNetwork';
 /**
  * STATE
  */
@@ -169,6 +169,7 @@ const poolPremintedBptIndex = computed(() => {
 const showBrandedRedirectCard = computed(() => {
   return POOLS.BrandedRedirect?.[poolId] || false;
 });
+const { networkSlug } = useNetwork();
 
 /**
  * WATCHERS
@@ -201,10 +202,8 @@ watch(
 
 <template>
   <div class="xl:container lg:px-4 pt-8 xl:mx-auto">
-    <div
-      class="grid grid-cols-1 lg:grid-cols-3 gap-x-0 lg:gap-x-4 xl:gap-x-8 gap-y-8"
-    >
-      <div class="col-span-2 px-4 lg:px-0">
+    <div class="">
+      <div class="px-4 lg:px-0">
         <BalLoadingBlock
           v-if="loadingPool || !pool"
           class="header-loading-block"
@@ -221,10 +220,11 @@ watch(
           :isComposableStableLikePool="isComposableStableLikePool"
         />
       </div>
-      <div class="hidden lg:block" />
-      <div class="order-2 lg:order-1 col-span-2">
-        <div class="grid grid-cols-1 gap-y-8">
-          <div class="px-4 lg:px-0">
+      <div class="order-2 lg:order-1">
+        <div class="">
+          <div
+            class="overflow-hidden px-4 lg:px-0 dark:bg-polaris-card-dark rounded-main"
+          >
             <PoolChart
               :historicalPrices="historicalPrices"
               :snapshots="snapshots"
@@ -234,33 +234,59 @@ watch(
               :poolType="pool?.poolType"
               :poolPremintedBptIndex="poolPremintedBptIndex"
             />
-          </div>
-          <div class="px-4 lg:px-0 mb-4">
-            <PoolStatCards
-              :pool="pool"
-              :poolApr="poolApr"
-              :loading="loadingPool"
-              :loadingApr="loadingApr"
-            />
-            <ApyVisionPoolLink
+            <div class="dark:bg-polaris-card-medium p-[24px]">
+              <PoolStatCards
+                :pool="pool"
+                :poolApr="poolApr"
+                :loading="loadingPool"
+                :loadingApr="loadingApr"
+              />
+              <PolLine class="mt-3" />
+              <div
+                class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
+              >
+                Invest in the pool and earn on swap fees!
+                <BalBtn
+                  tag="router-link"
+                  :to="{ name: 'invest', params: { networkSlug, id: poolId } }"
+                  block
+                  class="items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
+                >
+                  <!-- <router-link
+                  class="flex items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
+                  :to="{
+                    name: 'invest',
+                    params: {networkSlug, id: pool?.id },
+                  }"
+                > -->
+                  <BalIcon
+                    name="plus"
+                    size="lg"
+                    :filled="true"
+                    class="flex-1 ml-5"
+                  />
+                  <div class="w-full text-center">Invest in the pool</div>
+                  <!-- </router-link> -->
+                </BalBtn>
+              </div>
+            </div>
+            <!-- <ApyVisionPoolLink
               v-if="!loadingPool && pool"
               :poolId="pool.id"
               :tokens="titleTokens"
-            />
+            /> -->
           </div>
-          <div class="mb-4">
-            <h4
-              class="px-4 lg:px-0 mb-4"
-              v-text="$t('poolComposition.title')"
-            />
+          <div class="container flex gap-8 justify-center mx-auto mt-[120px]">
             <BalLoadingBlock v-if="loadingPool" class="h-64" />
             <PoolCompositionCard v-else-if="pool" :pool="pool" />
           </div>
 
           <div ref="intersectionSentinel" />
-          <template v-if="isSentinelIntersected && pool">
+          <template
+            v-if="isSentinelIntersected && pool"
+            class="container mx-auto"
+          >
             <PoolTransactionsCard :pool="pool" :loading="loadingPool" />
-            <PoolContractDetails :pool="pool" />
           </template>
         </div>
       </div>

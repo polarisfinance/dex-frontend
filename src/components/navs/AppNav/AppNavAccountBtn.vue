@@ -24,6 +24,7 @@ const avatarSize = computed(() => {
 
 <template>
   <BalPopover
+    class="dark:bg-polaris-card-dark"
     noPad
     :align="isMobile ? 'center' : undefined"
     :detached="isMobile ? true : undefined"

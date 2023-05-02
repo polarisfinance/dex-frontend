@@ -11,6 +11,7 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 html {
@@ -26,11 +27,38 @@ input {
 }
 
 #app {
-  @apply text-gray-900 dark:text-gray-50;
+  @apply text-gray-900;
 }
-
+.dark #app{
+  @apply text-polaris-3;
+  background: #150128;
+}
 a {
   @apply cursor-pointer;
+}
+
+.polaris-main-button{
+  padding: 12px 0px;
+  gap: 12px;
+  left: 10px;
+
+  background: linear-gradient(93.62deg, #C004FE 2.98%, #7E02F5 97.02%);
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 12px;
+}
+.polaris-main-button.rounded{
+  border-radius: 50px;
+}
+.polaris-small-button{
+  background: linear-gradient(93.62deg,#c004fe 2.98%,#7e02f5 97.02%);
+  border-radius: 24px;
+  padding: 10px 17px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+}
+.polaris-main-button:hover, .polaris-small-button:hover{
+  background: linear-gradient(93.62deg,rgba(192,4,254,.7) 2.98%,rgba(126,2,245,.7) 97.02%);
 }
 
 /* Hide number input spin/arrows */

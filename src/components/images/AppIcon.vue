@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 
 import useDarkMode from '@/composables/useDarkMode';
+import logo from '@/components/_global/icons/polaris/Logo.vue';
 
 /**
  * TYPES
@@ -29,11 +30,5 @@ const useDarkLogo = computed(() => (props.forceDark ? true : darkMode.value));
 </script>
 
 <template>
-  <img
-    v-if="useDarkLogo"
-    src="~@/assets/images/logo-dark.svg"
-    width="30"
-    class="mr-2"
-  />
-  <img v-else src="~@/assets/images/logo-light.svg" width="30" class="mr-2" />
+  <logo class="mr-2" />
 </template>

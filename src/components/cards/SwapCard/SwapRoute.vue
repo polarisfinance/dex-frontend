@@ -224,18 +224,17 @@ function formatShare(share: number): string {
 </script>
 
 <template>
-  <BalCard v-if="routes.length > 0" shadow="none">
+  <BalCard v-if="routes.length > 0" shadow="none" noBorder>
     <div
-      class="flex items-center cursor-pointer text-secondary"
-      @click="toggleVisibility"
+      class="flex items-center cursor-pointer text-sm font-semibold dark:text-polaris-white"
     >
       <div class="mr-2">
         {{ $t('swapRoute') }}
       </div>
-      <BalIcon v-if="visible" name="chevron-up" size="sm" />
-      <BalIcon v-else name="chevron-down" size="sm" />
+      <!-- <BalIcon v-if="visible" name="chevron-up" size="sm" />
+      <BalIcon v-else name="chevron-down" size="sm" /> -->
     </div>
-    <div v-if="visible" class="mt-5">
+    <div class="mt-5">
       <div
         v-if="routes.length === 0"
         class="mt-5 text-sm text-secondary"
@@ -243,17 +242,17 @@ function formatShare(share: number): string {
       />
       <div v-else>
         <div>
-          <div class="flex justify-between text-xs">
+          <div class="flex text-sm font-semibold justify-between">
             <div>
-              <div class="font-semibold">
+              <div class="dark:text-polaris-white">
                 {{ input.amount }}
               </div>
               <div>
                 {{ input.symbol }}
               </div>
             </div>
-            <div class="flex flex-col items-end">
-              <div class="font-semibold">
+            <div class="flex text-sm font-semibold  flex-col items-end">
+              <div class="dark:text-polaris-white">
                 {{ output.amount }}
               </div>
               <div>
@@ -317,7 +316,7 @@ function formatShare(share: number): string {
                 <div
                   v-for="hop in route.hops"
                   :key="hop?.pool?.address"
-                  class="flex ml-4 first:ml-0 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-xl border border-gray-100 hover:border-gray-300 dark:border-gray-600 dark:hover:border-gray-400 shadow transition-colors"
+                  class="flex ml-4 first:ml-0 bg-white hover:bg-gray-50 dark:bg-polaris-card-medium dark:hover:bg-gray-800 rounded-small  border-gray-100 hover:border-gray-300  dark:hover:border-gray-400 shadow transition-colors"
                 >
                   <a
                     class="flex p-1.5"

@@ -1,7 +1,7 @@
 <template>
   <footer v-once>
     <div
-      class="xl:container lg:px-4 xl:mx-auto dark:border-t dark:border-gray-800"
+      class="xl:container lg:px-4 xl:mx-auto "
     >
       <div
         class="flex flex-col md:flex-row gap-8 md:justify-between py-12 px-4 lg:px-0 text-primary"
@@ -155,32 +155,11 @@
                   <IconMedium />
                 </BalLink>
                 <BalLink
-                  :href="EXTERNAL_LINKS.Balancer.Social.Youtube"
-                  external
-                  noStyle
-                >
-                  <IconYoutube />
-                </BalLink>
-                <BalLink
                   :href="EXTERNAL_LINKS.Balancer.Social.Github"
                   external
                   noStyle
                 >
                   <IconGithub />
-                </BalLink>
-                <BalLink
-                  :href="EXTERNAL_LINKS.Balancer.Social.Linkedin"
-                  external
-                  noStyle
-                >
-                  <IconLinkedin />
-                </BalLink>
-                <BalLink
-                  :href="EXTERNAL_LINKS.Balancer.Social.Mail"
-                  external
-                  noStyle
-                >
-                  <IconMail />
                 </BalLink>
               </div>
             </div>
@@ -268,7 +247,7 @@ export default {
 
 <style scoped>
 footer {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply bg-gray-50 dark:bg-polaris-back-main ;
 }
 
 footer :deep(.logotype) {
@@ -278,7 +257,7 @@ footer :deep(.logotype) {
 }
 
 .link {
-  @apply text-black dark:text-white transition-colors flex items-center no-underline hover:text-purple-600;
+  @apply text-black text-sm font-semibold dark:text-[#5F5564] transition-colors flex items-center no-underline hover:text-purple-600;
 }
 
 .link--external {
@@ -287,7 +266,7 @@ footer :deep(.logotype) {
 
 .link:hover,
 .link:focus-visible {
-  @apply text-purple-600 dark:text-yellow-500 no-underline;
+  @apply text-purple-600 dark:text-polaris-white no-underline;
 }
 
 .link:focus:not(:focus-visible) {
@@ -295,7 +274,7 @@ footer :deep(.logotype) {
 }
 
 .policy {
-  @apply text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-yellow-500;
+  @apply text-sm text-gray-600 dark:text-[#5F5564] hover:text-purple-600 dark:hover:text-polaris-white font-semibold;
 }
 
 .arrow {

@@ -228,13 +228,13 @@ watch(
           />
         </colgroup>
         <!-- header is rendered as a row - seperated by columns -->
-        <thead class="z-10 bg-white dark:bg-gray-900">
+        <thead class="z-10">
           <th
             v-for="(column, columnIndex) in filteredColumns"
             :key="`header-${column.id}`"
             :ref="columnIndex == 0 ? 'stickyHeaderRef' : undefined"
             :class="[
-              'p-6 bg-white dark:bg-gray-850 headingShadow border-b dark:border-gray-900',
+              'p-6 headingShadow border-b dark:border-polaris-line dark:text-polaris-2 text-sm font-semibold ',
               column.className,
               getHorizontalStickyClass(columnIndex),
               isColumnStuck ? 'isSticky' : '',
@@ -243,10 +243,10 @@ watch(
                 ? 'cursor-pointer'
                 : '',
               column.sortKey && currentSortColumn !== column.id
-                ? 'text-gray-800 hover:text-purple-600 focus:text-blue-500 dark:text-gray-100 dark:hover:text-yellow-500 dark:focus:text-yellow-500 transition-colors'
+                ? 'text-gray-800 hover:text-purple-600 focus:text-blue-500 dark:text-polaris-2  text-sm font-semibold dark:hover:text-polaris-white dark:focus:text-polaris-white transition-colors'
                 : '',
               currentSortColumn === column.id && currentSortDirection
-                ? 'text-blue-600 hover:text-blue-500 focus:text-purple-600 dark:text-blue-400 dark:hover:text-blue-600 dark:focus:text-blue-600 transition-colors'
+                ? 'text-blue-600 hover:text-blue-500 focus:text-purple-600 dark:text-polaris-2  text-sm font-semibold dark:hover:text-blue-600 dark:focus:text-blue-600 transition-colors'
                 : '',
             ]"
             @click="handleSort(column.id)"
@@ -285,7 +285,7 @@ watch(
         </thead>
       </table>
     </div>
-    <div ref="bodyRef" class="overflow-auto">
+    <div ref="bodyRef" class="overflow-auto pt-6">
       <BalLoadingBlock
         v-if="isLoading"
         :class="[skeletonClass, 'min-w-full']"
@@ -294,7 +294,7 @@ watch(
       />
       <div
         v-else-if="!isLoading && !tableData.length"
-        class="flex justify-start items-center p-6 max-w-full h-24 bg-white dark:bg-gray-850 row-bg text-secondary"
+        class="flex justify-start items-center p-6 max-w-full h-24 row-bg text-secondary"
       >
         {{ noResultsLabel || $t('noResults') }}
       </div>
@@ -315,7 +315,7 @@ watch(
               column.align === 'right' ? 'text-left' : 'text-right',
               getHorizontalStickyClass(columnIndex),
               isColumnStuck ? 'isSticky' : '',
-              'bg-white dark:bg-gray-850 p-0 m-0 h-0',
+              ' p-0 m-0 h-0',
             ]"
           />
         </tr>
@@ -422,13 +422,13 @@ watch(
 }
 
 .row-bg {
-  @apply bg-white dark:bg-gray-850 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ease-in duration-300;
+  @apply hover:bg-gray-50  transition-colors ease-in duration-100 dark:text-polaris-white font-semibold text-lg;
 }
 
 .bal-table-pagination-btn {
   @apply flex items-center justify-center h-16 transition-all;
   @apply font-medium hover:text-purple-600 dark:hover:text-yellow-500;
   @apply border-t dark:border-gray-900 rounded-b-lg;
-  @apply hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer;
+  @apply hover:bg-gray-50 dark:hover:bg-polaris-card-medium cursor-pointer;
 }
 </style>

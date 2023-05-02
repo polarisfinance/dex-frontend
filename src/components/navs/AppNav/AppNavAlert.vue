@@ -13,9 +13,9 @@
         </p>
         <BalBtn
           v-if="alert.action && alert.actionLabel"
-          class="cursor-pointer"
+          class="cursor-pointer font-semibold"
           color="white"
-          size="xs"
+          size="sm"
           :label="alert.actionLabel"
           @click="alert.action"
         />
@@ -90,7 +90,7 @@ export default defineComponent({
 <style>
 .app-nav-alert {
   @apply flex content-start justify-between py-2 xs:py-4 px-4;
-
+  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
   min-height: 54px;
 }
 

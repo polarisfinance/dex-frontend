@@ -32,6 +32,7 @@ type Props = {
   noShadow?: boolean;
   noBorder?: boolean;
   autoFocus?: boolean;
+  placeholderColor?: string;
   format?: (input: string | number) => string | number;
 };
 
@@ -52,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   noShadow: false,
   noBorder: false,
   autoFocus: false,
+  placeholderColor: undefined,
 });
 
 const emit = defineEmits<{
@@ -141,6 +143,7 @@ onMounted(() => {
           v-bind="inputAttrs"
           :disabled="disabled"
           :class="['input', inputClasses]"
+          class="dark:text-polaris-white font-medium"
           @blur="onBlur"
           @input="onInput"
           @keydown="onKeydown"
@@ -154,9 +157,9 @@ onMounted(() => {
       <div v-if="$slots.footer" :class="['footer', footerClasses]">
         <slot name="footer" />
       </div>
-      <div v-if="isInvalid && !!errors[0]" :class="['error']">
+      <!-- <div v-if="isInvalid && !!errors[0]" :class="['error']">
         {{ errors[0] }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
