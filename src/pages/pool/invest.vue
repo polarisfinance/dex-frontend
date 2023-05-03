@@ -20,6 +20,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import ArrowLeftIcon from '@/components/_global/icons/polaris/ArrowLeftIcon.vue';
 import CloseIcon from '@/components/_global/icons/polaris/CloseIcon.vue';
 import StakeView from './Stake.vue';
+import StakePreview from './StakePreview.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
@@ -27,6 +28,7 @@ import useEthers from '@/composables/useEthers';
 import useTokens from '@/composables/useTokens';
 import useBreakpoints from '@/composables/useBreakpoints';
 import InvestPage from '@/components/contextual/pages/pool/invest/InvestPage.vue';
+import { usePoolStaking } from '@/providers/local/pool-staking.provider';
 
 const steps = [
   {
@@ -68,6 +70,7 @@ export default defineComponent({
     InvestPreviewModal,
     StakeView,
     InvestPage,
+    StakePreview,
   },
   props: {
     step: {
@@ -99,6 +102,14 @@ export default defineComponent({
     } = useWeb3();
     const { addTransaction } = useTransactions();
     const { balanceFor } = useTokens();
+
+    const {
+      stake,
+      unstake,
+      stakedShares,
+      refetchAllPoolStakingData,
+      preferentialGaugeAddress,
+    } = usePoolStaking();
 
     const investmentTokens = computed((): string[] => {
       if (isStablePhantom(pool.value!.poolType)) {
@@ -167,9 +178,9 @@ export default defineComponent({
       this.sorReady = true;
     }
     const { balance, isApproved } = useStake();
-    const approval = await isApproved(this.pool.address!, this.account);
-    this.poolApproved = approval;
-    this.stakedBalance = await balance(this.pool?.address!, this.account);
+    // const approval = await isApproved(this.pool.address!, this.account);
+    // this.poolApproved = approval;
+    // this.stakedBalance = await balance(this.pool?.address!, this.account);
   },
   beforeMount() {
     if (this.isWalletReady && this.activeStep == 1) {
@@ -340,11 +351,17 @@ export default defineComponent({
               </transition>
               <transition name="fade">
                 <template v-if="activeStep == 5">
-                  <StakeView
+                  <!-- <StakeView
                     :balance="balanceFor(pool?.address!)"
                     :token="``"
                     :address="pool?.address"
                     @stake-confirmed="handleStakeConfirmed"
+                  /> -->
+                  <StakePreview
+                    :pool="pool"
+                    :action="action"
+                    @close="handleClose"
+                    @success="handleStakeConfirmed"
                   />
                 </template>
               </transition>

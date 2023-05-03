@@ -53,7 +53,7 @@ type Props = {
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-const emits = defineEmits(['close', 'preview', 'confirmInvestment']);
+const emits = defineEmits(['close', 'preview', 'confirm-investment']);
 /**
  * STATE
  */
@@ -403,7 +403,7 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         :tokenAddresses="tokenAddresses"
         :disabled="rektPriceImpact"
         class="mt-4"
-        @success="emits('confirmInvestment')"
+        @success="emits('confirm-investment')"
       />
     </div>
   </div>

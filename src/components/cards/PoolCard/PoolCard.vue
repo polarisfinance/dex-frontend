@@ -14,6 +14,7 @@ import { PoolToken } from '@/services/pool/types';
 import TokenWeightsPills from '@/components/tables/PoolsTable/TokenPills/TokenWeightsPills.vue';
 import TokenPills from '@/components/tables/PoolsTable/TokenPills/TokenPills.vue';
 import { POOLS } from '@/constants/pools';
+import useNetwork from '@/composables/useNetwork';
 import {
   absMaxApr,
   fiatValueOf,
@@ -61,6 +62,7 @@ export default defineComponent({
      * COMPUTED
      */
     const { isMobile, isDesktop } = useBreakpoints();
+    const { networkSlug } = useNetwork();
     /**
      * METHODS
      */
@@ -87,6 +89,7 @@ export default defineComponent({
       poolMetadata,
       isStableLike,
       props,
+      networkSlug,
     };
   },
   data() {
@@ -125,7 +128,16 @@ export default defineComponent({
   
 <template>
   <div class="card-container">
-    <router-link :to="'/pool/' + pool.id" class="flex header">
+    <router-link
+      :to="{
+        name: 'pool',
+        params: {
+          networkSlug,
+          id: pool.id,
+        },
+      }"
+      class="flex header"
+    >
       <BalAssetSet
         :size="44"
         :addresses="iconAddresses(pool)"
@@ -180,7 +192,13 @@ export default defineComponent({
         <div v-if="isMobile" class="title">APR</div>
         <div class="flex-1 text-right">
           <router-link
-            :to="'/pool/' + pool.id"
+            :to="{
+              name: 'pool',
+              params: {
+                networkSlug,
+                id: pool.id,
+              },
+            }"
             class="block items-center mt-[12px]"
           >
             <button class="earn-button">

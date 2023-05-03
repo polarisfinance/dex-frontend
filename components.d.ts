@@ -60,6 +60,7 @@ declare module '@vue/runtime-core' {
     'ChevronDownIcon copy': typeof import('./src/components/_global/icons/polaris/ChevronDownIcon copy.vue')['default']
     CloseIcon: typeof import('./src/components/_global/icons/polaris/CloseIcon.vue')['default']
     CompositionIcon: typeof import('./src/components/_global/icons/CompositionIcon.vue')['default']
+    copy: typeof import('./src/components/_global/icons/polaris/ChevronDownIcon copy.vue')['default']
     DiscordIcon: typeof import('./src/components/_global/icons/brands/DiscordIcon.vue')['default']
     DollarCoinsStackedIcon: typeof import('./src/components/_global/icons/polaris/DollarCoinsStackedIcon.vue')['default']
     EmailIcon: typeof import('./src/components/_global/icons/EmailIcon.vue')['default']
