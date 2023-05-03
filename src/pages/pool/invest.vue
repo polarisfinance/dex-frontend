@@ -20,7 +20,6 @@ import useWeb3 from '@/services/web3/useWeb3';
 import ArrowLeftIcon from '@/components/_global/icons/polaris/ArrowLeftIcon.vue';
 import CloseIcon from '@/components/_global/icons/polaris/CloseIcon.vue';
 import StakeView from './Stake.vue';
-import StakePreview from './StakePreview.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
@@ -28,7 +27,15 @@ import useEthers from '@/composables/useEthers';
 import useTokens from '@/composables/useTokens';
 import useBreakpoints from '@/composables/useBreakpoints';
 import InvestPage from '@/components/contextual/pages/pool/invest/InvestPage.vue';
+import { providePoolStaking } from '@/providers/local/pool-staking.provider';
+import StakePreview, { StakeAction } from './StakePreview.vue';
+import { trackLoading } from '@/lib/utils';
 import { usePoolStaking } from '@/providers/local/pool-staking.provider';
+import useTokenApprovalActions from '@/composables/approvals/useTokenApprovalActions';
+import useTokenApprovals, {
+  ApprovalStateMap,
+} from '@/composables/approvals/useTokenApprovals';
+import { ApprovalAction } from '@/composables/approvals/types';
 
 const steps = [
   {
@@ -90,6 +97,8 @@ export default defineComponent({
     const poolQuery = usePoolQuery(id, undefined, undefined);
     const pool = computed(() => poolQuery.data.value);
 
+    providePoolStaking(pool.value?.id);
+
     const { isStablePhantomPool } = usePoolHelpers(pool);
     const { tokenAddresses, amounts, sor, sorReady } = useInvestState();
 
@@ -100,16 +109,9 @@ export default defineComponent({
       startConnectWithInjectedProvider,
       isMismatchedNetwork,
     } = useWeb3();
-    const { addTransaction } = useTransactions();
     const { balanceFor } = useTokens();
 
-    const {
-      stake,
-      unstake,
-      stakedShares,
-      refetchAllPoolStakingData,
-      preferentialGaugeAddress,
-    } = usePoolStaking();
+    const { addTransaction } = useTransactions();
 
     const investmentTokens = computed((): string[] => {
       if (isStablePhantom(pool.value!.poolType)) {
@@ -178,7 +180,7 @@ export default defineComponent({
       this.sorReady = true;
     }
     const { balance, isApproved } = useStake();
-    // const approval = await isApproved(this.pool.address!, this.account);
+    // const approval = await isApproved(this.pool?.address!, this.account);
     // this.poolApproved = approval;
     // this.stakedBalance = await balance(this.pool?.address!, this.account);
   },
@@ -217,44 +219,19 @@ export default defineComponent({
         this.setActiveStep(this.activeStep + 2);
       } else {
         this.setActiveStep(this.activeStep + 1);
-        this.approvePool();
+        // this.approvePool();
       }
     },
     handleStakeConfirmed() {
       this.setActiveStep(this.activeStep + 1);
       //this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
     },
+    approvePool() {},
     goBack() {
       if (this.isWalletReady && this.activeStep == 2) return;
       if (!this.isWalletReady && this.activeStep == 1) return;
 
       this.setActiveStep(this.activeStep - 1);
-    },
-    async approvePool() {
-      const { approve } = useStake();
-      let poolAddress = '';
-      if (this.pool) {
-        poolAddress = this.pool.address;
-      }
-      const tx = await approve(poolAddress, this.getProvider());
-
-      (tx: TransactionResponse): void => {
-        this.addTransaction({
-          id: tx.hash,
-          type: 'tx',
-          action: 'approve',
-          summary: 'approve for staking',
-        });
-      };
-
-      const { txListener } = useEthers();
-      txListener(tx, {
-        onTxConfirmed: () => {
-          this.setActiveStep(this.activeStep + 1);
-          this.poolApproved = true;
-        },
-        onTxFailed: () => {},
-      });
     },
   },
 });
@@ -334,7 +311,7 @@ export default defineComponent({
                 </BalCard>
               </template>
               <transition name="fade">
-                <template v-if="activeStep == 4">
+                <template v-if="activeStep == 4 && false">
                   <div class="text-center finished">
                     <h1>Pool staking approval</h1>
                     <h3>
@@ -350,17 +327,10 @@ export default defineComponent({
                 </template>
               </transition>
               <transition name="fade">
-                <template v-if="activeStep == 5">
-                  <!-- <StakeView
-                    :balance="balanceFor(pool?.address!)"
-                    :token="``"
-                    :address="pool?.address"
-                    @stake-confirmed="handleStakeConfirmed"
-                  /> -->
+                <template v-if="activeStep == 4 || activeStep == 5">
                   <StakePreview
                     :pool="pool"
-                    :action="action"
-                    @close="handleClose"
+                    action="stake"
                     @success="handleStakeConfirmed"
                   />
                 </template>

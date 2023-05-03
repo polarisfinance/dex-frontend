@@ -4,8 +4,7 @@ import { computed, nextTick, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import WrapStEthLink from '@/components/contextual/pages/pool/invest/WrapStEthLink.vue';
-// import StakePreviewModal from '@/components/contextual/pages/pool/staking/StakePreviewModal.vue';
-// Components
+
 import TokenInput from '@/components/inputs/TokenInput/TokenInput.vue';
 import usePoolTransfers from '@/composables/contextual/pool-transfers/usePoolTransfers';
 import {
@@ -362,12 +361,12 @@ watch(useNativeAsset, shouldUseNativeAsset => {
           @close="showInvestPreview = false"
           @show-stake-modal="showStakeModal = true"
         />
-        <StakePreviewModal COMMENTED
+        <StakePreviewModal
           :pool="pool"
           :isVisible="showStakeModal"
           action="stake"
           @close="showStakeModal = false"
-        /> 
+        />
       </teleport> -->
     </div>
   </div>

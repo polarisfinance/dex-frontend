@@ -27,7 +27,7 @@ import { InvestMathResponse } from '../../../composables/useInvestMath';
 import { Goals, trackGoal } from '@/composables/useFathom';
 import { bnum } from '@/lib/utils';
 import { useTokens } from '@/providers/tokens.provider';
-// import { usePoolStaking } from '@/providers/local/pool-staking.provider';
+import { usePoolStaking } from '@/providers/local/pool-staking.provider';
 
 /**
  * TYPES
@@ -75,7 +75,7 @@ const { getSigner } = useWeb3();
 const { addTransaction } = useTransactions();
 const { txListener, getTxConfirmedAt } = useEthers();
 const { lockablePoolId } = useVeBal();
-// const { isStakablePool } = usePoolStaking();
+const { isStakablePool } = usePoolStaking();
 const { networkSlug } = useNetwork();
 const { refetchBalances } = useTokens();
 
