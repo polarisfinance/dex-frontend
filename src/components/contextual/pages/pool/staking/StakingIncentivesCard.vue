@@ -69,13 +69,13 @@ const isStakeDisabled = computed(() => {
  * METHODS
  */
 function showStakePreview() {
-  if (fiatValueOfUnstakedShares.value === '0') return;
+  // if (fiatValueOfUnstakedShares.value === '0') return;
   stakeAction.value = 'stake';
   isStakePreviewVisible.value = true;
 }
 
 function showUnstakePreview() {
-  if (fiatValueOfStakedShares.value === '0') return;
+  // if (fiatValueOfStakedShares.value === '0') return;
   stakeAction.value = 'unstake';
   isStakePreviewVisible.value = true;
 }
@@ -168,19 +168,26 @@ function handlePreviewClose() {
                   </BalStack>
                 </BalStack>
                 <BalStack horizontal spacing="sm" class="mt-2">
-                  <BalBtn
+                  <!-- <BalBtn
                     color="gradient"
                     size="sm"
                     :disabled="isStakeDisabled"
                     @click="showStakePreview"
-                  >
+                  > -->
+                  <BalBtn color="gradient" size="sm" @click="showStakePreview">
                     {{ $t('stake') }}
                   </BalBtn>
-                  <BalBtn
+                  <!-- <BalBtn
                     outline
                     color="blue"
                     size="sm"
                     :disabled="fiatValueOfStakedShares === '0'"
+                    @click="showUnstakePreview"
+                  > -->
+                  <BalBtn
+                    outline
+                    color="blue"
+                    size="sm"
                     @click="showUnstakePreview"
                   >
                     {{ $t('unstake') }}
