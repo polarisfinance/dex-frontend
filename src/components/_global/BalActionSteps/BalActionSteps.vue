@@ -246,6 +246,7 @@ async function handleTransaction(
         block
         class="mb-4"
       />
+
       <BalStack vertical>
         <BalHorizSteps
           v-if="actions.length > 1 && !lastActionState?.confirmed"
@@ -256,7 +257,7 @@ async function handleTransaction(
         <BalBtn
           v-if="!lastActionState?.confirmed"
           :disabled="props.disabled"
-          color="gradient"
+          class="w-full text-lg font-semibold text-white"
           :loading="currentAction?.pending || isLoading"
           :loadingLabel="
             isLoading

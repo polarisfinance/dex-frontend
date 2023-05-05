@@ -88,16 +88,16 @@ export default defineComponent({
   emits: ['active-step-updated'],
   setup(props, { emit }) {
     const { isMobile, isDesktop } = useBreakpoints();
-    const { transfersAllowed } = usePoolTransfers();
+
     const route = useRoute();
     const id = (route.params.id as string).toLowerCase();
+    providePoolStaking(id);
 
+    const { transfersAllowed } = usePoolTransfers();
     // const poolQuery = usePoolQuery(route.params.id as string);
     // const pool = computed(() => poolQuery.data.value);
     const poolQuery = usePoolQuery(id, undefined, undefined);
     const pool = computed(() => poolQuery.data.value);
-
-    providePoolStaking(pool.value?.id);
 
     const { isStablePhantomPool } = usePoolHelpers(pool);
     const { tokenAddresses, amounts, sor, sorReady } = useInvestState();
@@ -180,6 +180,9 @@ export default defineComponent({
       this.sorReady = true;
     }
     const { balance, isApproved } = useStake();
+    const { setCurrentPool } = usePoolStaking();
+
+    setCurrentPool(this.id);
     // const approval = await isApproved(this.pool?.address!, this.account);
     // this.poolApproved = approval;
     // this.stakedBalance = await balance(this.pool?.address!, this.account);

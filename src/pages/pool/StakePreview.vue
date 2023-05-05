@@ -183,63 +183,52 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <BalStack vertical>
-    <BalStack horizontal spacing="sm" align="center">
-      <BalCircle
-        v-if="isActionConfirmed"
-        size="8"
-        color="green"
-        class="text-white"
-      >
-        <BalIcon name="check" />
-      </BalCircle>
-      <h4>{{ $t(`${action}`) }} {{ $t('lpTokens') }}</h4>
-    </BalStack>
-    <div
-      class="py-2 px-4 rounded-lg border dark:border-gray-700 divide-y dark:divide-gray-700"
-    >
-      <BalStack horizontal justify="between" align="center">
+  <BalStack
+    vertical
+    class="overflow-hidden font-semibold dark:text-polaris-white dark:bg-polaris-card-medium rounded-default"
+  >
+    <div>
+      <BalStack horizontal justify="between" align="center" class="p-5">
         <BalStack vertical spacing="none">
-          <h5>{{ fNum(currentShares) }} {{ $t('lpTokens') }}</h5>
-          <span class="text-secondary">
-            {{ getToken(pool.address)?.symbol }}
+          LP Tokens to stake
+          <span class="text-sm font-medium dark:text-polaris-2">
+            Amount of available LP tokens on your wallet
           </span>
         </BalStack>
-        <BalAssetSet
-          :addresses="tokensListExclBpt(pool)"
-          :width="assetRowWidth"
-          :size="32"
-        />
+        {{ fNum(currentShares) }}
       </BalStack>
     </div>
-    <StakeSummary
-      :action="action"
-      :fiatValue="fiatValueOf(pool, currentShares)"
-      :sharePercentage="totalUserPoolSharePct"
-    />
-    <BalActionSteps
-      v-if="!isActionConfirmed"
-      :actions="stakeActions"
-      :isLoading="isLoadingApprovalsForGauge"
-      :disabled="isStakeAndZero"
-      @success="handleSuccess"
-    />
-    <BalStack v-if="isActionConfirmed && confirmationReceipt" vertical>
-      <ConfirmationIndicator :txReceipt="confirmationReceipt" />
-      <AnimatePresence :isVisible="isActionConfirmed">
-        <BalBtn
-          v-if="action === 'stake'"
-          color="gradient"
-          block
-          class="mb-2"
-          @click="$router.push({ name: 'claim' })"
-        >
-          {{ $t('viewClaims') }}
-        </BalBtn>
-        <BalBtn color="gray" outline block @click="handleClose">
-          {{ $t('close') }}
-        </BalBtn>
-      </AnimatePresence>
-    </BalStack>
+    <div class="dark:bg-polaris-card-light">
+      <StakeSummary
+        :action="action"
+        :fiatValue="fiatValueOf(pool, currentShares)"
+        :sharePercentage="totalUserPoolSharePct"
+      />
+      <div class="pt-4 mb-4 dark:bg-polaris-card-light px-[16px]">
+        <BalActionSteps
+          v-if="!isActionConfirmed"
+          :actions="stakeActions"
+          :isLoading="isLoadingApprovalsForGauge"
+          :disabled="isStakeAndZero"
+          @success="handleSuccess"
+        />
+        <BalStack v-if="isActionConfirmed && confirmationReceipt" vertical>
+          <ConfirmationIndicator :txReceipt="confirmationReceipt" />
+          <AnimatePresence :isVisible="isActionConfirmed">
+            <BalBtn
+              v-if="action === 'stake'"
+              color="gradient"
+              block
+              @click="$router.push({ name: 'claim' })"
+            >
+              {{ $t('viewClaims') }}
+            </BalBtn>
+            <BalBtn color="gray" outline block @click="handleClose">
+              {{ $t('close') }}
+            </BalBtn>
+          </AnimatePresence>
+        </BalStack>
+      </div>
+    </div>
   </BalStack>
 </template>
