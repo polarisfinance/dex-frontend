@@ -149,11 +149,11 @@ onUnmounted(() => {
 
 /* Dark mode radial gradient shadow */
 .dark .tooltip::before {
-  background-blend-mode: soft-light, soft-light, normal;
+  /* background-blend-mode: soft-light, soft-light, normal;
   background: radial-gradient(ellipse at left, yellow, transparent),
     radial-gradient(ellipse at bottom right, blue, transparent),
     radial-gradient(ellipse at top, red, transparent);
-  content: '';
+  content: ''; */
 }
 
 .tooltip[data-show] {
@@ -161,7 +161,7 @@ onUnmounted(() => {
 }
 
 .tooltip-content {
-  @apply rounded-md text-xs text-black dark:text-white bg-white dark:bg-gray-900;
+  @apply rounded-medium text-xs text-black dark:text-white bg-white dark:bg-polaris-background;
 }
 
 .tooltip[data-popper-placement='top'] .tooltip-content {
