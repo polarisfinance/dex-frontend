@@ -138,8 +138,17 @@ function goBack() {
                       >
                     </button>
                   </div>
-                  <div class="flex-1 text-center title">
+                  <div
+                    v-if="route.name == 'invest'"
+                    class="flex-1 text-center title"
+                  >
                     Invest in pool Step
+                  </div>
+                  <div
+                    v-if="route.name == 'withdraw'"
+                    class="flex-1 text-center title"
+                  >
+                    Withdraw from pool
                   </div>
                   <div class="flex-1 text-right">
                     <router-link
