@@ -123,7 +123,9 @@ const routes: RouteRecordRaw[] = [
     path: '/:networkSlug/pool/:id/withdraw',
     name: 'withdraw',
     component: PoolWithdrawPage,
-    meta: { layout: 'BlankLayout' }, //FocusedLayout
+    // meta: { layout: 'BlankLayout' }, //FocusedLayout
+    meta: { layout: 'ProcessLayout' },
+    props: { step: 1 },
   },
   {
     path: '/:networkSlug/pool/:id/about',

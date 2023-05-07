@@ -67,14 +67,11 @@ const priceImpactClasses = computed(() => ({
 
 <style scoped>
 .data-table {
-  @apply rounded-lg divide-y dark:divide-gray-700;
+  @apply text-polaris-white;
 }
 
 .data-table-row {
   @apply flex;
-  @apply rounded-lg;
-  @apply divide-x dark:divide-gray-900 border dark:border-gray-900;
-  @apply dark:bg-gray-800;
 }
 
 .data-table-number-col {

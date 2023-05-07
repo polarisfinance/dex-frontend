@@ -145,13 +145,13 @@ onBeforeMount(() => {
       <div
         v-for="(token, address, i) in tokens"
         :key="address"
-        class="p-4 last:mb-0"
+        class="py-3 px-5 last:mb-0 text-lg font-semibold dark:text-polaris-white"
       >
         <div class="flex justify-between items-center">
           <div class="flex items-center">
             <BalAsset :address="address" class="mr-2" />
             <div class="flex flex-col leading-none">
-              <span class="text-lg font-medium">
+              <span class="">
                 {{ token.symbol }}
                 <span v-if="!isStableLikePool">
                   {{
@@ -185,17 +185,10 @@ onBeforeMount(() => {
 
 <style scoped>
 .proportional-input {
-  @apply shadow-lg rounded-lg mb-4 w-full dark:bg-gray-800;
+  @apply mb-4 w-full;
 }
 
 .proportional-input-container {
-  @apply shadow-inner p-3 pb-1 rounded-lg;
-  @apply border border-gray-100 dark:border-gray-800;
-}
-
-.token-amounts {
-  @apply rounded-lg;
-  @apply bg-gray-50 dark:bg-gray-800;
-  @apply border dark:border-gray-900 divide-y dark:divide-gray-900;
+  @apply p-3 pb-1;
 }
 </style>

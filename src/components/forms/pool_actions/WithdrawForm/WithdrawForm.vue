@@ -10,7 +10,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 
 import ProportionalWithdrawalInput from './components/ProportionalWithdrawalInput.vue';
 import WithdrawalTokenSelect from './components/WithdrawalTokenSelect.vue';
-import WithdrawPreviewModal from './components/WithdrawPreviewModal/WithdrawPreviewModal.vue';
+import WithdrawPreview from './components/WithdrawPreview/WithdrawPreview.vue';
 import WithdrawTotals from './components/WithdrawTotals.vue';
 import useWithdrawalState from './composables/useWithdrawalState';
 // Composables
@@ -27,7 +27,7 @@ type Props = {
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-
+const emit = defineEmits<{ (e: 'preview'): void }>();
 const showPreview = ref(false);
 
 /**
@@ -87,6 +87,10 @@ const singleAssetRules = computed(() => [
   isLessThanOrEqualTo(tokenOutPoolBalance.value, t('exceedsPoolBalance')),
 ]);
 
+function onPreview() {
+  emit('preview');
+  showPreview.value = true;
+}
 /**
  * WATCHERS
  */
@@ -119,84 +123,88 @@ onBeforeMount(() => {
 
 <template>
   <div data-testid="withdraw-form">
-    <ProportionalWithdrawalInput
-      v-if="isProportional"
-      :pool="pool"
-      :tokenAddresses="tokensOut"
-      :math="withdrawMath"
-    />
-    <TokenInput
-      v-else
-      v-model:amount="tokenOutAmount"
-      v-model:isValid="validInput"
-      :name="tokenOut"
-      :address="tokenOut"
-      :disableBalance="singleAssetMaxes[tokenOutIndex] === '-'"
-      :customBalance="singleAssetMaxes[tokenOutIndex] || '0'"
-      :rules="singleAssetRules"
-      :balanceLabel="$t('singleTokenMax')"
-      :balanceLoading="loadingData"
-      fixedToken
-      disableNativeAssetBuffer
-    >
-      <template #tokenSelect>
-        <WithdrawalTokenSelect :pool="pool" :initToken="tokenOut" />
-      </template>
-    </TokenInput>
-
-    <WithdrawTotals :math="withdrawMath" class="mt-4" />
-
-    <div
-      v-if="highPriceImpact"
-      class="p-2 pb-2 mt-4 rounded-lg border dark:border-gray-700"
-    >
-      <BalCheckbox
-        v-model="highPriceImpactAccepted"
-        :rules="[isRequired($t('priceImpactCheckbox'))]"
-        name="highPriceImpactAccepted"
-        size="sm"
-        :label="$t('priceImpactAccept', [$t('withdrawing')])"
-      />
-    </div>
-
-    <BalAlert
-      v-if="error !== null"
-      type="error"
-      :title="parseError(error).title"
-      :description="parseError(error).description"
-      class="mt-4"
-      block
-      actionLabel="Dismiss"
-      @action-click="setError(null)"
-    />
-
-    <div class="mt-4">
-      <BalBtn
-        v-if="!isWalletReady"
-        :label="$t('connectWallet')"
-        color="gradient"
-        block
-        @click="startConnectWithInjectedProvider"
-      />
-      <BalBtn
-        v-else
-        :label="$t('preview')"
-        color="gradient"
-        :disabled="
-          !hasAmounts || !hasValidInputs || isMismatchedNetwork || loadingData
-        "
-        block
-        @click="showPreview = true"
-      />
-    </div>
-
-    <teleport to="#modal">
-      <WithdrawPreviewModal
-        v-if="showPreview"
+    <div v-if="!showPreview">
+      <ProportionalWithdrawalInput
+        v-if="isProportional"
         :pool="pool"
+        :tokenAddresses="tokensOut"
         :math="withdrawMath"
-        @close="showPreview = false"
       />
-    </teleport>
+      <TokenInput
+        v-else
+        v-model:amount="tokenOutAmount"
+        v-model:isValid="validInput"
+        :name="tokenOut"
+        :address="tokenOut"
+        :disableBalance="singleAssetMaxes[tokenOutIndex] === '-'"
+        :customBalance="singleAssetMaxes[tokenOutIndex] || '0'"
+        :rules="singleAssetRules"
+        :balanceLabel="$t('singleTokenMax')"
+        :balanceLoading="loadingData"
+        fixedToken
+        disableNativeAssetBuffer
+      >
+        <template #tokenSelect>
+          <WithdrawalTokenSelect :pool="pool" :initToken="tokenOut" />
+        </template>
+      </TokenInput>
+
+      <div class="p-3 dark:bg-polaris-card-light">
+        <WithdrawTotals :math="withdrawMath" class="mt-4" />
+
+        <div v-if="highPriceImpact" class="p-2 pb-2 mt-4">
+          <BalCheckbox
+            v-model="highPriceImpactAccepted"
+            :rules="[isRequired($t('priceImpactCheckbox'))]"
+            name="highPriceImpactAccepted"
+            size="sm"
+            :label="$t('priceImpactAccept', [$t('withdrawing')])"
+          />
+        </div>
+
+        <BalAlert
+          v-if="error !== null"
+          type="error"
+          :title="parseError(error).title"
+          :description="parseError(error).description"
+          class="mt-4"
+          block
+          actionLabel="Dismiss"
+          @action-click="setError(null)"
+        />
+
+        <div class="mt-4">
+          <BalBtn
+            v-if="!isWalletReady"
+            :label="$t('connectWallet')"
+            color="gradient"
+            block
+            @click="startConnectWithInjectedProvider"
+          />
+          <BalBtn
+            v-else
+            :label="$t('preview')"
+            color="gradient"
+            :disabled="
+              !hasAmounts ||
+              !hasValidInputs ||
+              isMismatchedNetwork ||
+              loadingData
+            "
+            block
+            @click="onPreview()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- <teleport to="#modal"> -->
+    <WithdrawPreview
+      v-if="showPreview"
+      :pool="pool"
+      :math="withdrawMath"
+      @close="showPreview = false"
+    />
+    <!-- </teleport> -->
   </div>
 </template>

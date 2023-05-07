@@ -7,6 +7,7 @@ import VueSlider, { DefineComponent as TVueSlider } from 'vue-slider-component';
 // because we need to use ES modules but tailwind + tailwind intellisense require commonJS import style to work properly.
 import tailwindConfig from 'tailwind.config.js';
 import useDarkMode from '@/composables/useDarkMode';
+import { color } from 'echarts/core';
 
 export interface BalRangeInputProps extends TVueSlider {
   modelValue: number;
@@ -35,10 +36,9 @@ function onDragEnd() {
 
 const dotStyle = computed(() => {
   return {
-    backgroundColor: colors.blue['500'],
+    backgroundColor: '#0CE6B5',
     borderColor: colors.blue['500'],
     borderWidth: 0,
-    backgroundImage: `linear-gradient(to top right, ${colors.blue['500']}, ${colors.pink['500']})`,
   };
 });
 
@@ -50,7 +50,7 @@ const railSyle = computed(() => {
 
 const proccessStyle = computed(() => {
   return {
-    backgroundImage: `linear-gradient(to top right, ${colors.blue['500']}, ${colors.pink['500']})`,
+    backgroundColor: '#0CE6B5',
   };
 });
 </script>
@@ -83,6 +83,5 @@ const proccessStyle = computed(() => {
 
 <style>
 .vue-slider-dot-handle-focus {
-  box-shadow: 0 0 0 5px rgb(0 0 0 / 20%);
 }
 </style>

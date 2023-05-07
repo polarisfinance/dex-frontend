@@ -95,6 +95,7 @@ module.exports = {
           3: '#BDB2DD',
           1: '#FDFDFD',
           white: '#FDFDFD',
+          green: '#0CE6B5',
           'card-dark': '#292043',
           'card-default': '#292043',
           'card-medium': '#41365E',

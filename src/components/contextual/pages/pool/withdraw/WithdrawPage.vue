@@ -19,7 +19,7 @@ type Props = {
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-
+const emit = defineEmits<{ (e: 'preview'): void }>();
 /**
  * COMPUTED
  */
@@ -37,9 +37,9 @@ onMounted(() => resetTabs());
 </script>
 
 <template>
-  <BalCard shadow="xl" exposeOverflow noBorder>
+  <BalCard noBorder noPad :darkBgColor="'card-medium'">
     <template #header>
-      <div class="w-full">
+      <!-- <div class="w-full">
         <div class="text-xs leading-none text-secondary">
           {{ network.chainName }}
         </div>
@@ -48,9 +48,9 @@ onMounted(() => resetTabs());
           <SwapSettingsPopover :context="SwapSettingsContext.invest" />
         </div>
         <WithdrawPageTabs v-if="isDeepPool" />
-      </div>
+      </div> -->
     </template>
     <WithdrawFormV2 v-if="isDeepPool" />
-    <WithdrawForm v-else :pool="pool" />
+    <WithdrawForm v-else :pool="pool" @preview="emit('preview')" />
   </BalCard>
 </template>

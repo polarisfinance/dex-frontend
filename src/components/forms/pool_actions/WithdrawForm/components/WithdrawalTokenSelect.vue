@@ -100,14 +100,14 @@ function handleSelected(newToken: string): void {
             class="mr-2 shadow"
           />
         </div>
-        <span class="text-base font-medium">
+        <span class="text-lg font-semibold">
           <span v-if="isProportional">All tokens</span>
           <span v-else>{{ selectedToken.symbol }}</span>
         </span>
         <BalIcon
           name="chevron-down"
-          size="sm"
-          class="ml-2 text-blue-500 group-hover:text-pink-500 dark:text-blue-400 dark:group-hover:text-yellow-500 transition-colors"
+          size="lg"
+          class="ml-1 text-blue-500 group-hover:text-pink-500 dark:text-polaris-white dark:group-hover:text-polaris-white transition-colors"
         />
       </div>
     </template>
@@ -140,7 +140,7 @@ function handleSelected(newToken: string): void {
 
 <style scoped>
 .token-select-input {
-  @apply shadow rounded-lg flex items-center h-10 px-2 whitespace-nowrap;
+  @apply shadow rounded-small flex items-center h-10 px-2 whitespace-nowrap dark:bg-polaris-card-medium;
   @apply text-sm;
 
   font-variation-settings: 'wght' 700;
@@ -151,6 +151,6 @@ function handleSelected(newToken: string): void {
 }
 
 .selected {
-  @apply bg-gray-50 dark:bg-gray-700 text-black dark:text-white;
+  @apply bg-gray-50 dark:bg-polaris-pill text-black dark:text-polaris-white;
 }
 </style>

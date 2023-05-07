@@ -1,0 +1,27 @@
+[
+  {
+    "step": 1,
+    "headline": "Connect your wallet to unstake & withdraw",
+    "button": "Connect wallet"
+  },
+  {
+    "step": 2,
+    "headline": "Unstake liquidity pool tokens",
+    "button": "Unstake LP Position"
+  },
+  {
+    "step": 3,
+    "headline": "Withdraw your liquidity pool tokens",
+    "button": "Withdraw"
+  },
+  {
+    "step": 4,
+    "headline": "Preview withdrawal",
+    "button": "Preview & confirmation"
+  },
+  {
+    "step": 5,
+    "headline": "Everything is set and done!",
+    "button": "Done"
+  }
+]
