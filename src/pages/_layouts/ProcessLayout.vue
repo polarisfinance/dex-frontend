@@ -7,6 +7,7 @@ import InvestHero from '@/components/heros/InvestHero.vue';
 
 import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
 import withdrawSteps from '@/components/contextual/pages/pool/withdraw/ProcessSteps.json';
+import { ERC20Multicaller } from '@/services/multicalls/erc20.multicaller';
 
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
@@ -94,7 +95,7 @@ function goBack() {
             </div>
             <div class="w-full progress-bar mt-[32px] h-[2px] rounded-[24px]">
               <div
-                class="absolute bottom-0 left-0 w-0 opacity-80 transition duration-300 ease-linear progress h-[2px] rounded-[24px] bg-styling-teal dark:bg-styling-teal"
+                class="absolute bottom-0 left-0 w-0 bg-polaris-green dark:bg-polaris-green opacity-80 transition duration-300 ease-linear progress h-[2px] rounded-[24px]"
                 :style="{ width: `${(progressPerc() * 100).toFixed(0)}%` }"
               />
             </div>
