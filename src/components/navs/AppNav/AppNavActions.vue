@@ -39,6 +39,7 @@ function connectWalletHandler() {
     <AppNavAccountBtn v-if="account" />
     <BalBtn
       v-else
+      noBackground
       color="white"
       :size="isMobile ? 'md' : 'sm'"
       @click="connectWalletHandler"

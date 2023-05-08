@@ -94,8 +94,10 @@ module.exports = {
           2: '#A99BC6',
           3: '#BDB2DD',
           1: '#FDFDFD',
+          4: '#34264E',
           white: '#FDFDFD',
           green: '#0CE6B5',
+          'card-ultradark': '#1d0d33',
           'card-dark': '#292043',
           'card-default': '#292043',
           'card-medium': '#41365E',
@@ -106,7 +108,6 @@ module.exports = {
           'button-main-to': '#7e02f5',
           'button-inactive': '#41365E',
           line: 'rgba(151,71,255,.4)',
-          background: '#150128',
         },
         gray: {
           50: '#F8FAFC',

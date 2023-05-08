@@ -24,13 +24,14 @@ const avatarSize = computed(() => {
 
 <template>
   <BalPopover
-    class="dark:bg-polaris-card-dark"
+    class=""
     noPad
     :align="isMobile ? 'center' : undefined"
     :detached="isMobile ? true : undefined"
   >
     <template #activator>
       <BalBtn
+        noBackground
         class="text-base"
         :class="{ btn: upToLargeBreakpoint }"
         :loading="isLoadingProfile"

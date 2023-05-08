@@ -161,7 +161,7 @@ onUnmounted(() => {
 }
 
 .tooltip-content {
-  @apply rounded-medium text-xs text-black dark:text-white bg-white dark:bg-polaris-background;
+  @apply rounded-medium text-xs text-black dark:text-white bg-white dark:bg-polaris-back-main;
 }
 
 .tooltip[data-popper-placement='top'] .tooltip-content {

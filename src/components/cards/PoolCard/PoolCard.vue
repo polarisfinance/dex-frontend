@@ -201,7 +201,7 @@ export default defineComponent({
             }"
             class="block items-center mt-[12px]"
           >
-            <button class="earn-button">
+            <button class="text-polaris-white earn-button">
               Earn
               <ArrowRightIcon class="inline mx-1" />
             </button>
@@ -214,7 +214,7 @@ export default defineComponent({
   
   <style scoped>
 .card-container {
-  background-color: #292043;
+  @apply bg-gray-100 dark:bg-polaris-card-default;
   padding: 24px 12px;
   border-radius: 24px;
 }

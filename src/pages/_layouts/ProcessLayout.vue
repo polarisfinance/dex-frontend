@@ -188,7 +188,7 @@ function goBack() {
 <style scoped>
 .stats {
   min-width: 300px;
-  background-color: #34264e;
+  @apply bg-gray-300 dark:bg-polaris-4;
   padding: 24px;
   font-weight: 500;
   font-size: 16px;
@@ -196,16 +196,16 @@ function goBack() {
   color: #bdb2dd;
 }
 .stats-header {
-  background: #292043;
+  @apply bg-gray-500 dark:bg-polaris-card-default;
 }
 
 .stats-header div {
-  background: #34264f;
+  @apply bg-gray-300 dark:bg-polaris-4;
   border-top-right-radius: 32px;
 }
 
 .stats-header h3 {
-  background: #41365e;
+  @apply bg-gray-200 dark:bg-polaris-button-inactive;
   border-radius: 32px;
   padding: 12px 24px;
   font-weight: 600;
@@ -242,7 +242,7 @@ function goBack() {
 }
 
 .header {
-  background: #292043;
+  @apply bg-gray-500 dark:bg-polaris-card-default;
   padding: 10px 24px;
   border-bottom-right-radius: 21px;
 }
@@ -253,7 +253,7 @@ function goBack() {
   color: #fdfdfd;
 }
 .card {
-  background-color: #1d0d33;
+  @apply bg-gray-200 dark:bg-polaris-card-ultradark;
   border-radius: 21px;
   min-height: 0;
   overflow: hidden;

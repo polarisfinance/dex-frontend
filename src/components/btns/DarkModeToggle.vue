@@ -11,6 +11,7 @@ const { darkMode, toggleDarkMode } = useDarkMode();
 
 <template>
   <BalBtn
+    noBackground
     color="white"
     :size="isMobile ? 'md' : 'sm'"
     :circle="isMobile"
