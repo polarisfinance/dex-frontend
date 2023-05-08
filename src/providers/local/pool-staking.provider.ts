@@ -167,7 +167,22 @@ const provider = (_poolId?: string) => {
     const userBptBalance = parseUnits(
       balanceFor(getAddress(poolAddress.value))
     );
+    return await gauge.stake(userBptBalance);
+  }
+  /**
+   * custom stake
+   *
+   * Trigger stake transaction using the user's amount - kayaba
+   */
+  async function stakeValue(value: string): Promise<TransactionResponse> {
+    if (!poolAddress.value) throw new Error('No pool to stake.');
+    if (!preferentialGaugeAddress.value) {
+      throw new Error(`No preferential gauge found for this pool.`);
+    }
 
+    console.log('poolAddress.value', poolAddress.value);
+    const gauge = new LiquidityGauge(preferentialGaugeAddress.value);
+    const userBptBalance = parseUnits(value);
     return await gauge.stake(userBptBalance);
   }
 
@@ -249,6 +264,7 @@ const provider = (_poolId?: string) => {
     setCurrentPool,
     refetchAllPoolStakingData,
     stake,
+    stakeValue,
     unstake,
   };
 };

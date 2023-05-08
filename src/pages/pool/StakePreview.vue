@@ -47,6 +47,7 @@ const { t } = useI18n();
 const { addTransaction } = useTransactions();
 const {
   stake,
+  stakeValue,
   unstake,
   stakedShares,
   refetchAllPoolStakingData,
@@ -59,6 +60,8 @@ const currentShares =
     ? balanceFor(getAddress(props.pool.address))
     : stakedShares.value;
 
+const inputValue = ref('0.0');
+
 const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
   ref<string[]>([props.pool.address]),
   ref<string[]>([currentShares]),
@@ -69,7 +72,7 @@ const stakeAction = {
   label: t('stake'),
   loadingLabel: t('staking.staking'),
   confirmingLabel: t('confirming'),
-  action: () => txWithNotification(stake),
+  action: () => txWithNotification(stakeValue(inputValue.value)),
   stepTooltip: t('staking.stakeTooltip'),
 };
 
@@ -123,10 +126,12 @@ async function txWithNotification(action: () => Promise<TransactionResponse>) {
       action: props.action,
       summary: t(`transactionSummary.${props.action}`, {
         pool: props.pool.symbol,
-        amount: fNum(fiatValueOf(props.pool, currentShares), FNumFormats.fiat),
+        // amount: fNum(fiatValueOf(props.pool, currentShares), FNumFormats.fiat),
+        amount: fNum(inputValue.value, FNumFormats.fiat),
       }),
       details: {
-        total: fNum(fiatValueOf(props.pool, currentShares), FNumFormats.fiat),
+        // total: fNum(fiatValueOf(props.pool, currentShares), FNumFormats.fiat),
+        total: fNum(inputValue.value, FNumFormats.fiat),
         pool: props.pool,
       },
     });
@@ -153,6 +158,9 @@ function handleClose() {
   isActionConfirmed.value = false;
   confirmationReceipt.value = undefined;
   emit('close');
+}
+function maxBalance() {
+  inputValue.value = currentShares;
 }
 
 /**
@@ -199,11 +207,22 @@ onBeforeMount(async () => {
       </BalStack>
     </div>
     <div class="dark:bg-polaris-card-light">
-      <StakeSummary
+      <div class="flex p-5 text-xl">
+        <div class="flex-1">Total to stake</div>
+        <div class="flex-1 text-right">
+          <input
+            ref="textInput"
+            v-model="inputValue"
+            class="inline text-right bg-transparent total"
+          />
+          <button class="inline max" @click="maxBalance">MAX</button>
+        </div>
+      </div>
+      <!-- <StakeSummary
         :action="action"
         :fiatValue="fiatValueOf(pool, currentShares)"
         :sharePercentage="totalUserPoolSharePct"
-      />
+      /> -->
       <div class="pt-4 mb-4 dark:bg-polaris-card-light px-[16px]">
         <BalActionSteps
           v-if="!isActionConfirmed"
@@ -232,3 +251,16 @@ onBeforeMount(async () => {
     </div>
   </BalStack>
 </template>
+
+<style scoped>
+.max {
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
+  border-radius: 20px;
+  padding: 0px 8px;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: #fdfdfd;
+}
+</style>
