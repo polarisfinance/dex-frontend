@@ -80,62 +80,59 @@ function isActive(page: string): boolean {
       prefetch
       @click="trackGoal(Goals.ClickNavVebal)"
     >
-      veBAL
+      VexPolar
     </DesktopLinkItem>
     <div class="dropdown mt-[30px]">
-      <div class="dropdown-title flex w-full gap-[12px]">
-        Bridges 
-        <BalIcon
-                name="chevron-down"
-                size="sm"
-              />
+      <div class="flex w-full dropdown-title gap-[12px]">
+        Bridges
+        <BalIcon name="chevron-down" size="sm" />
       </div>
-      <div class="dropdown-content w-full">
+      <div class="w-full dropdown-content">
         <a
           href="https://synapseprotocol.com/"
           target="_blank"
           rel="noopener noreferrer"
-          ><div class="flex w-full justify-between">
+          ><div class="flex justify-between w-full">
             <div>Synapse</div>
-            <BalIcon name="arrow-up-right" size="sm"/>
+            <BalIcon name="arrow-up-right" size="sm" />
           </div>
         </a>
         <a
           href="https://multichain.xyz/"
           target="_blank"
           rel="noopener noreferrer"
-          ><div class="flex w-full justify-between">
+          ><div class="flex justify-between w-full">
             <div>Multichain</div>
-            <BalIcon name="arrow-up-right" size="sm"/></div
+            <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
         <a
           href="https://allbridge.io/classic/"
           target="_blank"
           rel="noopener noreferrer"
-          ><div class="flex w-full justify-between">
+          ><div class="flex justify-between w-full">
             <div>Allbridge</div>
-            <BalIcon name="arrow-up-right" size="sm"/></div
+            <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
         <a
           href="https://cbridge.celer.network/"
           target="_blank"
           rel="noopener noreferrer"
-          ><div class="flex w-full justify-between">
+          ><div class="flex justify-between w-full">
             <div>CBridge</div>
-            <BalIcon name="arrow-up-right" size="sm"/></div
+            <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
         <a
           href="https://rainbowbridge.app/"
           target="_blank"
           rel="noopener noreferrer"
-          ><div class="flex w-full justify-between">
+          ><div class="flex justify-between w-full">
             <div>Rainbow Bridge</div>
-            <BalIcon name="arrow-up-right" size="sm"/></div
+            <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
         <a href="https://meson.fi/" target="_blank" rel="noopener noreferrer"
-          ><div class="flex w-full justify-between">
+          ><div class="flex justify-between w-full">
             <div>Meson</div>
-            <BalIcon name="arrow-up-right" size="sm"/></div
+            <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
       </div>
     </div>
@@ -147,9 +144,8 @@ function isActive(page: string): boolean {
   @apply grid gap-6 grid-flow-col grid-rows-1 h-full content-center;
 }
 
-
 /* The container <div> - needed to position the dropdown content */
-  .dropdown {
+.dropdown {
   @apply dark:text-polaris-white font-semibold;
   position: relative;
   display: inline-block;

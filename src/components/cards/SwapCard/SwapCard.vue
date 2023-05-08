@@ -1,8 +1,20 @@
 <template>
-  <BalCard class="relative card-container" :shadow="swapCardShadow" noBorder noPad :exposeOverflow="false">
+  <BalCard
+    class="relative card-container"
+    :shadow="swapCardShadow"
+    noBorder
+    noPad
+    :exposeOverflow="false"
+  >
     <template #header>
-      <div class="flex justify-between items-center w-full dark:bg-polaris-card-medium pb-[30px]">
-        <h4 class="dark:text-polaris-white pl-[18px] pt-[14px] font-[600] text-base">{{ title }}</h4>
+      <div
+        class="flex justify-between items-center w-full dark:bg-polaris-card-medium pb-[30px]"
+      >
+        <h4
+          class="text-base dark:text-polaris-white pl-[18px] pt-[14px] font-[600]"
+        >
+          {{ title }}
+        </h4>
         <SwapSettingsPopover
           :context="SwapSettingsContext.swap"
           :isGasless="swapping.swapGasless.value"
@@ -49,18 +61,20 @@
           loading
           disabled
           :loadingLabel="
-            swapping.isCowswapSwap.value ? $t('loadingBestPrice') : $t('loading')
+            swapping.isCowswapSwap.value
+              ? $t('loadingBestPrice')
+              : $t('loading')
           "
           block
         />
         <button
-            v-else
-            :disabled="swapDisabled"
-            class="polaris-main-button w-full text-white font-semibold text-lg"
-            block
-            @click.prevent="handlePreviewButton"
+          v-else
+          :disabled="swapDisabled"
+          class="w-full text-lg font-semibold text-white polaris-main-button"
+          block
+          @click.prevent="handlePreviewButton"
         >
-            Swap
+          Swap
         </button>
       </div>
       <div
@@ -136,7 +150,7 @@
           </div>
         </Transition>
       </div>
-      <PolLine/>
+      <PolLine />
       <SwapRoute
         v-if="alwaysShowRoutes"
         :addressIn="swapping.tokenIn.value.address"

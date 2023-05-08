@@ -289,7 +289,7 @@ function iconAddresses(pool: Pool) {
       :isLoading="isLoading"
       :isLoadingMore="isLoadingMore"
       :skeletonClass="skeletonClass"
-      sticky="both"
+      sticky="none"
       :square="upToLargeBreakpoint"
       :onRowClick="handleRowClick"
       :isPaginated="isPaginated"

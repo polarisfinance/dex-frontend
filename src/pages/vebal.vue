@@ -3,6 +3,7 @@
  * veBAL page
  */
 import Hero from '@/components/contextual/pages/vebal/Hero.vue';
+import VexPolarHero from '@/components/contextual/pages/vebal/VexPolarHero.vue';
 import LMVoting from '@/components/contextual/pages/vebal/LMVoting/LMVoting.vue';
 import MyVeBAL from '@/components/contextual/pages/vebal/MyVeBAL/MyVeBAL.vue';
 import { isVeBalSupported } from '@/composables/useVeBAL';
@@ -10,10 +11,12 @@ import { isVeBalSupported } from '@/composables/useVeBAL';
 
 <template>
   <div>
-    <Hero v-if="isVeBalSupported" v-once />
-
-    <div class="py-16 xl:py-20 bg-gray-50 dark:bg-gray-900">
-      <div v-if="isVeBalSupported" class="lg:container lg:mx-auto">
+    <VexPolarHero v-if="isVeBalSupported" v-once />
+    <div class="py-16 xl:py-20">
+      <div
+        v-if="isVeBalSupported"
+        class="lg:container py-4 px-10 lg:mx-auto dark:bg-polaris-card-default rounded-small"
+      >
         <div class="px-4">
           <MyVeBAL />
         </div>

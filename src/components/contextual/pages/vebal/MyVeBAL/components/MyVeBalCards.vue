@@ -153,7 +153,14 @@ const cards = computed(() => {
 </script>
 
 <template>
-  <BalCard v-for="card in cards" :key="card.id">
+  <BalCard
+    v-for="card in cards"
+    :key="card.id"
+    noBorder
+    shadow="none"
+    noPad
+    square
+  >
     <div class="font-medium label">
       {{ card.label }}
     </div>
@@ -217,11 +224,11 @@ const cards = computed(() => {
 
 <style scoped>
 .label {
-  @apply text-sm mb-2;
+  @apply dark:text-polaris-white text-lg mb-2 font-semibold;
 }
 
 .value {
-  @apply text-xl font-medium flex flex-wrap items-center justify-between mb-0.5;
+  @apply dark:text-polaris-white text-base font-medium flex flex-wrap items-center justify-between mb-0.5;
 }
 
 .secondary-value {
