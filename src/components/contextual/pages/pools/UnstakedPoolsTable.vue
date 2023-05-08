@@ -69,7 +69,7 @@ onMounted(() => {
 <template>
   <div>
     <BalStack vertical spacing="sm">
-      <h5 class="px-4 xl:px-0">
+      <h5 class="px-4 xl:px-0 font-semibold dark:text-polaris-white d">
         {{ $t('staking.unstakedPools') }}
       </h5>
       <PoolsTable

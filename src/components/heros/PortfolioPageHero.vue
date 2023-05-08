@@ -7,6 +7,7 @@ import { useLock } from '@/composables/useLock';
 import useNetwork from '@/composables/useNetwork';
 import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import useWeb3 from '@/services/web3/useWeb3';
+import useBreakpoints from '@/composables/useBreakpoints';
 
 import HeroConnectWalletButton from './HeroConnectWalletButton.vue';
 import { useUserPools } from '@/providers/local/user-pools.provider';
@@ -21,13 +22,14 @@ const { isWalletReady, isWalletConnecting } = useWeb3();
 const { totalFiatValue, isLoading: isLoadingPools } = useUserPools();
 const { totalLockedValue } = useLock();
 const { networkSlug } = useNetwork();
+const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 
 /**
  * COMPUTED
  */
 const classes = computed(() => ({
-  ['h-48']: !isWalletReady.value && !isWalletConnecting.value,
-  ['h-44']: isWalletReady.value || isWalletConnecting.value,
+  // ['h-48']: !isWalletReady.value && !isWalletConnecting.value,
+  // ['h-44']: isWalletReady.value || isWalletConnecting.value,
 }));
 
 const totalInvestedLabel = computed((): string =>
@@ -43,6 +45,15 @@ const isLoadingTotalValue = computed((): boolean => isLoadingPools.value);
 
 <template>
   <AppHero :class="classes">
+    <h1
+      class="mx-auto font-semibold headline mt-[100px]"
+      :class="{
+        'text-hero': isDesktop,
+        'text-[44px] leading-[50px]': isMobile,
+      }"
+    >
+      Portfolio
+    </h1>
     <h1
       class="mb-2 font-body text-base font-medium text-white opacity-90"
       v-text="$t('myBalancerBalance')"
@@ -85,6 +96,9 @@ const isLoadingTotalValue = computed((): boolean => isLoadingPools.value);
 </template>
 
 <style>
+.headline {
+  @apply text-gray-800 dark:text-polaris-white;
+}
 .vebal-banner::before {
   @apply border border-yellow-500;
 

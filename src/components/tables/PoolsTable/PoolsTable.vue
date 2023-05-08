@@ -100,7 +100,7 @@ const { networkSlug } = useNetwork();
 
 const wideCompositionWidth = computed(() => {
   if (upToSmallBreakpoint.value) return 250;
-  return 350;
+  return 420;
 });
 
 /**
