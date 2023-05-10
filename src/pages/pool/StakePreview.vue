@@ -68,11 +68,16 @@ const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
   ref<string[]>([currentShares.value]),
   ApprovalAction.Staking
 );
+
+const stakeValueWithParams = () => {
+  return stakeValue(inputValue.value);
+};
+
 const stakeAction = {
   label: t('stake'),
   loadingLabel: t('staking.staking'),
   confirmingLabel: t('confirming'),
-  action: () => txWithNotification(stakeValue(inputValue.value)),
+  action: () => txWithNotification(stakeValueWithParams),
   stepTooltip: t('staking.stakeTooltip'),
 };
 
