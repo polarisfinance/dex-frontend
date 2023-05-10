@@ -38,7 +38,7 @@ const router = useRouter();
 const blockIcon = ref<HTMLDivElement>();
 
 const navLinks = [
-  { label: t('pool'), path: '/', goal: Goals.ClickNavPools },
+  { label: t('earn'), path: '/', goal: Goals.ClickNavPools },
   { label: t('swap'), path: `/${networkSlug}/swap`, goal: Goals.ClickNavSwap },
   {
     label: t('claim'),
@@ -50,7 +50,11 @@ const navLinks = [
     path: `/${networkSlug}/portfolio`,
     goal: Goals.ClickNavPortfolio,
   },
-  { label: 'veBAL', path: `/${networkSlug}/vebal`, goal: Goals.ClickNavVebal },
+  {
+    label: 'VexPolar',
+    path: `/${networkSlug}/vebal`,
+    goal: Goals.ClickNavVebal,
+  },
 ];
 
 const ecosystemLinks = [
@@ -133,7 +137,7 @@ watch(blockNumber, async () => {
       </div>
     </div>
 
-    <div class="grid mt-5 text-sm grid-col-1">
+    <!-- <div class="grid mt-5 text-sm grid-col-1">
       <span class="px-4 pb-1 font-medium text-secondary">Ecosystem</span>
       <BalLink
         v-for="link in ecosystemLinks"
@@ -146,7 +150,7 @@ watch(blockNumber, async () => {
         {{ link.label }}
         <BalIcon name="arrow-up-right" size="sm" class="ml-1 text-secondary" />
       </BalLink>
-    </div>
+    </div> -->
 
     <div class="px-4 mt-6">
       <div class="mt-2 side-bar-btn" @click="toggleDarkMode">
@@ -156,7 +160,7 @@ watch(blockNumber, async () => {
       </div>
     </div>
 
-    <div class="grid grid-rows-1 grid-flow-col auto-cols-min gap-2 px-4 mt-4">
+    <!-- <div class="grid grid-rows-1 grid-flow-col auto-cols-min gap-2 px-4 mt-4">
       <BalLink
         v-for="(link, componentName) in socialLinks"
         :key="componentName"
@@ -174,7 +178,7 @@ watch(blockNumber, async () => {
       >
         <EmailIcon />
       </BalLink>
-    </div>
+    </div> -->
 
     <div class="px-4 mt-6 text-xs">
       <div class="flex items-center">

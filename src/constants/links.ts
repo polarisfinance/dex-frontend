@@ -1,11 +1,11 @@
 export const EXTERNAL_LINKS = {
   Balancer: {
-    Home: 'https://balancer.fi',
+    Home: 'https://polarisfinance.io/',
     Analytics: 'https://dune.xyz/balancerlabs',
     BalForGas:
       'https://docs.balancer.finance/core-concepts/bal-balancer-governance-token/bal-for-gas',
     BugBounty: 'https://immunefi.com/bounty/balancer/',
-    Docs: 'https://docs.balancer.fi',
+    Docs: 'https://docs.polarisfinance.io/',
     Forum: 'https://forum.balancer.finance/',
     Grants: 'http://grants.balancer.community/',
     Social: {
@@ -17,7 +17,7 @@ export const EXTERNAL_LINKS = {
       Twitter: 'https://twitter.com/PolarisFinance_',
       Youtube: 'https://www.youtube.com/channel/UCBRHug6Hu3nmbxwVMt8x_Ow',
     },
-    Vote: 'https://vote.balancer.finance/',
+    Vote: 'https://vote.polarisfinance.io/',
   },
   Gauntlet: {
     Home: 'https://gauntlet.network',

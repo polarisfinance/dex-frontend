@@ -1,8 +1,6 @@
 <template>
   <footer v-once>
-    <div
-      class="xl:container lg:px-4 xl:mx-auto "
-    >
+    <div class="xl:container lg:px-4 xl:mx-auto">
       <div
         class="flex flex-col md:flex-row gap-8 md:justify-between py-12 px-4 lg:px-0 text-primary"
       >
@@ -79,52 +77,12 @@
             </BalLink>
 
             <BalLink
-              :href="EXTERNAL_LINKS.Balancer.Forum"
-              external
-              noStyle
-              class="group link link--external"
-            >
-              {{ $t('forum') }}
-              <BalIcon name="arrow-up-right" size="sm" class="arrow" />
-            </BalLink>
-
-            <BalLink
               :href="EXTERNAL_LINKS.Balancer.Vote"
               external
               noStyle
               class="group link link--external"
             >
               {{ $t('vote') }}
-              <BalIcon name="arrow-up-right" size="sm" class="arrow" />
-            </BalLink>
-
-            <BalLink
-              :href="EXTERNAL_LINKS.Balancer.Grants"
-              external
-              noStyle
-              class="group link link--external"
-            >
-              {{ $t('grants') }}
-              <BalIcon name="arrow-up-right" size="sm" class="arrow" />
-            </BalLink>
-
-            <BalLink
-              :href="EXTERNAL_LINKS.Balancer.BugBounty"
-              external
-              noStyle
-              class="group link link--external"
-            >
-              {{ $t('bugBounty') }}
-              <BalIcon name="arrow-up-right" size="sm" class="arrow" />
-            </BalLink>
-
-            <BalLink
-              :href="EXTERNAL_LINKS.Balancer.Analytics"
-              external
-              noStyle
-              class="group link link--external"
-            >
-              {{ $t('analytics') }}
               <BalIcon name="arrow-up-right" size="sm" class="arrow" />
             </BalLink>
           </div>
@@ -247,7 +205,7 @@ export default {
 
 <style scoped>
 footer {
-  @apply bg-gray-50 dark:bg-polaris-back-main ;
+  @apply bg-gray-50 dark:bg-polaris-back-main;
 }
 
 footer :deep(.logotype) {
