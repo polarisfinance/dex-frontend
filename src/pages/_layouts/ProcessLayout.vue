@@ -6,8 +6,10 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 import InvestHero from '@/components/heros/InvestHero.vue';
 
 import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
+import investVeBalSteps from '@/components/contextual/pages/pool/invest/ProcessVeBalSteps.json';
 import withdrawSteps from '@/components/contextual/pages/pool/withdraw/ProcessSteps.json';
 import { ERC20Multicaller } from '@/services/multicalls/erc20.multicaller';
+import { isVeBalPool } from '@/composables/usePoolHelpers';
 
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
@@ -17,7 +19,10 @@ const route = useRoute();
 const id = (route.params.id as string).toLowerCase();
 
 var steps = [{}];
-if (route.name == 'invest') steps = investSteps;
+if (route.name == 'invest') {
+  if (isVeBalPool(id)) steps = investVeBalSteps;
+  else steps = investSteps;
+}
 if (route.name == 'withdraw') steps = withdrawSteps;
 
 const activeStep = ref(1);

@@ -1,0 +1,22 @@
+[
+  {
+    "step": 1,
+    "headline": "Connect your wallet to start earning",
+    "button": "Connect wallet"
+  },
+  {
+    "step": 2,
+    "headline": "Choose your token amounts to invest",
+    "button": "Create LP"
+  },
+  {
+    "step": 3,
+    "headline": "Preview your investment",
+    "button": "Preview & confirmation"
+  },
+  {
+    "step": 4,
+    "headline": "Lock your liquidity pool tokens",
+    "button": "Lock LP"
+  }
+]

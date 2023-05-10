@@ -38,7 +38,9 @@ import useTokenApprovals, {
 } from '@/composables/approvals/useTokenApprovals';
 import { ApprovalAction } from '@/composables/approvals/types';
 
-import steps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
+import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
+import investVeBalSteps from '@/components/contextual/pages/pool/invest/ProcessVeBalSteps.json';
+var steps = [{}];
 
 export default defineComponent({
   components: {
@@ -110,9 +112,9 @@ export default defineComponent({
       getProvider,
       addTransaction,
       balanceFor,
-      steps,
       isDesktop,
       isMobile,
+      isVeBalPool,
     };
   },
   data() {
@@ -152,6 +154,8 @@ export default defineComponent({
     // const approval = await isApproved(this.pool?.address!, this.account);
     // this.poolApproved = approval;
     // this.stakedBalance = await balance(this.pool?.address!, this.account);
+    if (isVeBalPool(this.id)) steps = investVeBalSteps;
+    else steps = investSteps;
   },
   beforeMount() {
     if (this.isWalletReady && this.activeStep == 1) {
@@ -228,12 +232,17 @@ export default defineComponent({
     </template>
   </transition> -->
   <transition name="fade">
-    <template v-if="activeStep == 4">
-      <StakePreview
-        :pool="pool"
-        action="stake"
-        @success="handleStakeConfirmed"
-      />
+    <template v-if="activeStep == 4"
+      ><div>
+        asdas
+        <StakePreview
+          v-if="!isVeBalPool(id)"
+          :pool="pool"
+          action="stake"
+          @success="handleStakeConfirmed"
+        />
+        <div v-else>toto je 3pool. Lockni radsej</div>
+      </div>
     </template>
   </transition>
   <transition name="fade">
