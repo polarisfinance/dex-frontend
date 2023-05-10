@@ -41,6 +41,18 @@ const navLinks = [
   { label: t('earn'), path: '/', goal: Goals.ClickNavPools },
   { label: t('swap'), path: `/${networkSlug}/swap`, goal: Goals.ClickNavSwap },
   {
+    label: t('sunrise'),
+    path: `/sunrise`,
+  },
+  {
+    label: t('bond'),
+    path: `/bond`,
+  },
+  {
+    label: t('airdrop'),
+    path: `/airdrop`,
+  },
+  {
     label: t('claim'),
     path: `/${networkSlug}/claim`,
     goal: Goals.ClickNavClaim,
