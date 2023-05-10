@@ -460,14 +460,15 @@ async function getGaugeInfo(
   network: Network
 ): Promise<GaugeInfo[] | null> {
   log(`getGaugeAddress. network: ${network} poolId: ${poolId}`);
-  if ([Network.MAINNET, Network.GOERLI].includes(network)) {
+  if ([Network.AURORATEST].includes(network)) {
     const gauges = await getLiquidityGaugesInfo(poolId, network);
     return gauges;
-  } else {
-    const streamer = await getStreamerAddress(poolId, network);
-    const gauges = await getRootGaugeInfo(streamer, poolId, network);
-    return gauges;
   }
+  // else {
+  //   const streamer = await getStreamerAddress(poolId, network);
+  //   const gauges = await getRootGaugeInfo(streamer, poolId, network);
+  //   return gauges;
+  // }
 }
 
 (async () => {

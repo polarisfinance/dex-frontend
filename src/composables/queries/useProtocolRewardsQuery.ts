@@ -64,11 +64,13 @@ export default function useProtocolRewardsQuery(options: QueryOptions = {}) {
    */
   const queryFn = async () => {
     try {
-      const [v1, v2] = await Promise.all([
-        feeDistributorV1.getClaimableBalances(account.value),
-        feeDistributorV2.getClaimableBalances(account.value),
-      ]);
-      return { v1, v2 };
+      // const [v1, v2] = await Promise.all([
+      //   feeDistributorV1.getClaimableBalances(account.value),
+      //   feeDistributorV2.getClaimableBalances(account.value),
+      // ]);
+      // return { v1, v2 };
+      const v2 = await feeDistributorV2.getClaimableBalances(account.value);
+      return { v2 };
     } catch (error) {
       console.error('Failed to fetch claimable protocol balances', error);
       return {};

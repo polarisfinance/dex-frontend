@@ -1,38 +1,154 @@
 [
   {
-    "address": "0x4c6bbDc311eDdA0ba9EdfbA67f6e16DB1e0e1E9E",
+    "address": "0xE85a38632bD996652CcCa5E9C4Ea6a6D745Ad31c",
     "network": 1313161555,
     "isKilled": false,
-    "addedTimestamp": 1648465251,
+    "addedTimestamp": 1683673650,
     "relativeWeightCap": "null",
     "pool": {
-      "id": "0x2ce1306842ecf38c3fd910554d8cf9ca5bdee25b000100000000000000000001",
-      "address": "0x2ce1306842ecf38c3FD910554D8cF9cA5Bdee25B",
+      "id": "0xbd708c4dd937207393e2e25e047f749c1f29755f000100000000000000000002",
+      "address": "0xbd708c4dd937207393e2e25e047f749c1f29755f",
       "poolType": "Stable",
       "symbol": "veBAL",
       "tokens": [
         {
-          "address": "0xF793F57f4E174b1974ECd2eCEdfc1B49DAAfb53F",
+          "address": "0x86989e569bc9ccF08bd3Cf9840C47c07C55be4cA",
           "weight": "null",
           "symbol": "veBAL"
         }
       ]
     },
     "tokenLogoURIs": {
-      "0xF793F57f4E174b1974ECd2eCEdfc1B49DAAfb53F": "https://raw.githubusercontent.com/balancer/assets/master/assets/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56.png"
+      "0x86989e569bc9ccF08bd3Cf9840C47c07C55be4cA": "https://raw.githubusercontent.com/balancer/assets/master/assets/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56.png"
     }
   },
   {
-    "address": "0x744dfb30d77120fc28061f37c3b0b64c47994456",
+    "address": "0x8340bAA23b9D0513f3d9888286062A2778c81783",
     "network": 1313161555,
     "isKilled": false,
-    "addedTimestamp": 1648465251,
-    "relativeWeightCap": "null",
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
     "pool": {
-      "id": "0x1b557200bcf2edcc8eddc8ef6c5e602ca816b077000200000000000000000002",
-      "address": "0x1b557200bcF2edCc8EddC8Ef6C5E602ca816b077",
+      "id": "0x402347ee5a1f71d6ab0f9f744ed627d4023a2da9000200000000000000000003",
+      "address": "0x402347eE5a1f71D6aB0F9f744ed627D4023a2DA9",
       "poolType": "Weighted",
       "symbol": "50WBTC-50USDC",
+      "tokens": [
+        {
+          "address": "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF",
+          "weight": "0.5",
+          "symbol": "BTC"
+        },
+        {
+          "address": "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B",
+          "weight": "0.5",
+          "symbol": "USDC"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744",
+      "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
+    }
+  },
+  {
+    "address": "0x910040c0757517c3C730E83456059c9d55E20Ee0",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0x51e89c4322edef278e2f121f956629a3609a5b02000200000000000000000009",
+      "address": "0x51E89c4322EDef278E2F121f956629A3609a5B02",
+      "poolType": "Weighted",
+      "symbol": "50SPOLAR-50USDC",
+      "tokens": [
+        {
+          "address": "0x39EE5F95A5e3B86161818f419f959264C22193B8",
+          "weight": "0.5",
+          "symbol": "SPOLAR"
+        },
+        {
+          "address": "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B",
+          "weight": "0.5",
+          "symbol": "USDC"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x39EE5F95A5e3B86161818f419f959264C22193B8": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847",
+      "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
+    }
+  },
+  {
+    "address": "0xcDFACC3a8659898b7D179e4645E83Ebb4F877681",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0x540f10d7518724903565e786d086a2cec2b457fa000200000000000000000004",
+      "address": "0x540F10D7518724903565E786D086a2cEC2b457fA",
+      "poolType": "Weighted",
+      "symbol": "50WBTC-50pNEAR",
+      "tokens": [
+        {
+          "address": "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF",
+          "weight": "0.5",
+          "symbol": "BTC"
+        },
+        {
+          "address": "0xf4A8b365cD410308d581574e35D412D82726a251",
+          "weight": "0.5",
+          "symbol": "pNEAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744",
+      "0xf4A8b365cD410308d581574e35D412D82726a251": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046"
+    }
+  },
+  {
+    "address": "0x7f30E90A2E21dCb7f813bB0fB7C30123B873E4bC",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0x945a701568ee7ae5cd8b42a7fe7fb18cc00dec50000200000000000000000007",
+      "address": "0x945A701568EE7ae5cD8B42a7fE7Fb18Cc00DEC50",
+      "poolType": "Weighted",
+      "symbol": "50SPOLAR-50WBTC",
+      "tokens": [
+        {
+          "address": "0x39EE5F95A5e3B86161818f419f959264C22193B8",
+          "weight": "0.5",
+          "symbol": "SPOLAR"
+        },
+        {
+          "address": "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF",
+          "weight": "0.5",
+          "symbol": "BTC"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x39EE5F95A5e3B86161818f419f959264C22193B8": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847",
+      "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744"
+    }
+  },
+  {
+    "address": "0xdbB4180414914E701c126c99F9f0208a3Eba50D9",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0xc11b6fc0b9acc2f923f4883a4e6ac3b11140d58900020000000000000000000a",
+      "address": "0xC11B6fc0b9ACc2F923F4883A4E6AC3b11140d589",
+      "poolType": "Weighted",
+      "symbol": "50USDC-50XPOLAR",
       "tokens": [
         {
           "address": "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B",
@@ -40,15 +156,102 @@
           "symbol": "USDC"
         },
         {
-          "address": "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF",
+          "address": "0xbADdAab20345a0E6607469949f069e8482f9AFC0",
           "weight": "0.5",
-          "symbol": "WBTC"
+          "symbol": "XPOLAR"
         }
       ]
     },
     "tokenLogoURIs": {
       "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
-      "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744"
+      "0xbADdAab20345a0E6607469949f069e8482f9AFC0": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png"
+    }
+  },
+  {
+    "address": "0x054f3f5a2866105DaB7F0e61FE447A5B2dEf4398",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0xd8d31bd2e037d0047e7f6a4a3a846a93f5ce36c200020000000000000000000b",
+      "address": "0xd8D31bD2e037D0047E7F6a4a3A846A93F5Ce36c2",
+      "poolType": "Weighted",
+      "symbol": "50WBTC-50XPOLAR",
+      "tokens": [
+        {
+          "address": "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF",
+          "weight": "0.5",
+          "symbol": "BTC"
+        },
+        {
+          "address": "0xbADdAab20345a0E6607469949f069e8482f9AFC0",
+          "weight": "0.5",
+          "symbol": "XPOLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744",
+      "0xbADdAab20345a0E6607469949f069e8482f9AFC0": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png"
+    }
+  },
+  {
+    "address": "0x15C4044fDD77933167880bd3ef98C108321D3324",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0xf472db88a05b778248233e7bb79f1a97d6c61f2a000200000000000000000008",
+      "address": "0xF472dB88A05B778248233e7bb79F1a97d6c61F2A",
+      "poolType": "Weighted",
+      "symbol": "50USDC-50pNEAR",
+      "tokens": [
+        {
+          "address": "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B",
+          "weight": "0.5",
+          "symbol": "USDC"
+        },
+        {
+          "address": "0xf4A8b365cD410308d581574e35D412D82726a251",
+          "weight": "0.5",
+          "symbol": "pNEAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "0xf4A8b365cD410308d581574e35D412D82726a251": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046"
+    }
+  },
+  {
+    "address": "0x2ff20b5E4050EAC319e6E2932225e07bF3613f12",
+    "network": 1313161555,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1683673867,
+    "pool": {
+      "id": "0xf4e8d878c92aafbe2a1662e2a37eb1335944f1d1000200000000000000000006",
+      "address": "0xf4E8D878c92AAfBe2a1662e2A37eB1335944f1D1",
+      "poolType": "Weighted",
+      "symbol": "50WETH-50USDC",
+      "tokens": [
+        {
+          "address": "0x8886E7A8883e9A40b30Bd4E16e0e25C2C3f29Cd8",
+          "weight": "0.5",
+          "symbol": "WETH"
+        },
+        {
+          "address": "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B",
+          "weight": "0.5",
+          "symbol": "USDC"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x8886E7A8883e9A40b30Bd4E16e0e25C2C3f29Cd8": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295",
+      "0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
     }
   }
 ]
