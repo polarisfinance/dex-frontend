@@ -16,16 +16,11 @@
   },
   {
     "step": 4,
-    "headline": "Approve staking of your invested LP tokens",
-    "button": "Approve staking"
-  },
-  {
-    "step": 5,
     "headline": "Stake your liquidity pool tokens",
     "button": "Stake LP"
   },
   {
-    "step": 6,
+    "step": 5,
     "headline": "Everything is set and done!",
     "button": "Done"
   }

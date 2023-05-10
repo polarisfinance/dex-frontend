@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { reactive, computed } from 'vue';
 import {
   TransactionReceipt,
   TransactionResponse,
@@ -37,15 +38,15 @@ const isLoadingApprovalsForGauge = ref(false);
 const isActionConfirmed = ref(false);
 const confirmationReceipt = ref<TransactionReceipt>();
 const stakeActions = ref<TransactionActionInfo[]>([]);
-
 /**
  * COMPOSABLES
  */
-const { balanceFor, getToken, refetchBalances } = useTokens();
+const { balanceFor, refetchBalances } = useTokens();
 const { fNum } = useNumbers();
 const { t } = useI18n();
 const { addTransaction } = useTransactions();
 const {
+  setCurrentPool,
   stake,
   stakeValue,
   unstake,
@@ -55,19 +56,18 @@ const {
 } = usePoolStaking();
 
 // Staked or unstaked shares depending on action type.
-const currentShares =
-  props.action === 'stake'
+const currentShares = computed(() => {
+  return props.action === 'stake'
     ? balanceFor(getAddress(props.pool.address))
     : stakedShares.value;
-
+});
 const inputValue = ref('0.0');
-
+const inputValueFormated = computed(() => fNum(inputValue.value));
 const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
   ref<string[]>([props.pool.address]),
-  ref<string[]>([currentShares]),
+  ref<string[]>([currentShares.value]),
   ApprovalAction.Staking
 );
-
 const stakeAction = {
   label: t('stake'),
   loadingLabel: t('staking.staking'),
@@ -96,7 +96,8 @@ const assetRowWidth = computed(
 
 const isStakeAndZero = computed(
   () =>
-    props.action === 'stake' && (currentShares === '0' || currentShares === '')
+    props.action === 'stake' &&
+    (currentShares.value === '0' || currentShares.value === '')
 );
 
 const totalUserPoolSharePct = ref(
@@ -151,7 +152,9 @@ async function loadApprovalsForGauge() {
     );
   }, isLoadingApprovalsForGauge);
 
-  if (approvalActions) stakeActions.value.unshift(...approvalActions);
+  if (approvalActions) {
+    stakeActions.value.unshift(...approvalActions);
+  }
 }
 
 function handleClose() {
@@ -160,7 +163,7 @@ function handleClose() {
   emit('close');
 }
 function maxBalance() {
-  inputValue.value = currentShares;
+  inputValue.value = currentShares.value;
 }
 
 /**
@@ -181,10 +184,21 @@ watch(preferentialGaugeAddress, async () => {
   if (props.action === 'unstake') return;
   await loadApprovalsForGauge();
 });
+watch(
+  () => props.pool,
+  newPool => {
+    setCurrentPool(newPool.id);
+  }
+);
 
 /**
  * LIFECYCLE
  */
+
+onMounted(() => {
+  setCurrentPool(props.pool.id);
+});
+
 onBeforeMount(async () => {
   if (props.action !== 'unstake') await loadApprovalsForGauge();
 });
@@ -212,7 +226,7 @@ onBeforeMount(async () => {
         <div class="flex-1 text-right">
           <input
             ref="textInput"
-            v-model="inputValue"
+            v-model="inputValueFormated"
             class="inline text-right bg-transparent total"
           />
           <button class="inline max" @click="maxBalance">MAX</button>

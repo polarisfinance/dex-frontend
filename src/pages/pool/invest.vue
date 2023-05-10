@@ -30,6 +30,7 @@ import InvestPage from '@/components/contextual/pages/pool/invest/InvestPage.vue
 import { providePoolStaking } from '@/providers/local/pool-staking.provider';
 import { usePoolStaking } from '@/providers/local/pool-staking.provider';
 import StakePreview, { StakeAction } from './StakePreview.vue';
+import { isVeBalPool } from '@/composables/usePoolHelpers';
 import { trackLoading } from '@/lib/utils';
 import useTokenApprovalActions from '@/composables/approvals/useTokenApprovalActions';
 import useTokenApprovals, {
@@ -128,10 +129,6 @@ export default defineComponent({
     },
     async account() {
       const { isApproved } = useStake();
-      this.poolApproved = await isApproved(this.pool?.address!, this.account);
-      if (this.activeStep == 4) {
-        this.activeStep = 5;
-      }
     },
     async pool() {
       const { isApproved } = useStake();
@@ -164,9 +161,7 @@ export default defineComponent({
   updated() {},
   methods: {
     setActiveStep(step) {
-      if (this.poolApproved == true && step == 4) {
-        this.activeStep = step + 1;
-      } else if (step <= steps.length) this.activeStep = step;
+      if (step <= steps.length) this.activeStep = step;
 
       this.$emit('active-step-updated', this.activeStep);
     },
@@ -187,12 +182,8 @@ export default defineComponent({
     },
     handleInvestConfirm() {
       // const poolApproved = false;      //TESTING
-      if (this.poolApproved) {
-        this.setActiveStep(this.activeStep + 2);
-      } else {
-        this.setActiveStep(this.activeStep + 1);
-        // this.approvePool();
-      }
+      this.setActiveStep(this.activeStep + 1);
+      // this.approvePool();
     },
     handleStakeConfirmed() {
       this.setActiveStep(this.activeStep + 1);
@@ -225,8 +216,8 @@ export default defineComponent({
       />
     </BalCard>
   </template>
-  <transition name="fade">
-    <template v-if="activeStep == 4 && false">
+  <!-- <transition name="fade">
+    <template v-if="activeStep == 4 ">
       <div class="text-center finished">
         <h1>Pool staking approval</h1>
         <h3>Please, approve staking for this pool in your wallet!</h3>
@@ -235,9 +226,9 @@ export default defineComponent({
         </button>
       </div>
     </template>
-  </transition>
+  </transition> -->
   <transition name="fade">
-    <template v-if="activeStep == 4 || activeStep == 5">
+    <template v-if="activeStep == 4">
       <StakePreview
         :pool="pool"
         action="stake"
@@ -246,7 +237,7 @@ export default defineComponent({
     </template>
   </transition>
   <transition name="fade">
-    <template v-if="activeStep == 6">
+    <template v-if="activeStep == 5">
       <div class="text-center finished">
         <svg
           class="mx-auto mb-5 mt-[70px]"

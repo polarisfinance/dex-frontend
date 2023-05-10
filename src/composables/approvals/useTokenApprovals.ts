@@ -157,13 +157,11 @@ export default function useTokenApprovals(
     spender: string
   ): Promise<ApprovalStateMap> {
     const customTokenMap = getTokens(tokenAddresses.value);
-
     const allowances = await tokenService.allowances.get(
       account.value,
       [spender],
       customTokenMap
     );
-
     const requiredApprovals = tokenAddresses.value
       .filter((tokenAddress, i) => {
         const allowance = bnum(
@@ -175,7 +173,6 @@ export default function useTokenApprovals(
         tokenAddress,
         { init: false, confirming: false, approved: false },
       ]);
-
     const approvalMap = Object.fromEntries(requiredApprovals);
     return approvalMap;
   }

@@ -58,7 +58,7 @@ const currentShares =
   props.action === 'stake'
     ? balanceFor(getAddress(props.pool.address))
     : stakedShares.value;
-
+console.log(currentShares);
 const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
   ref<string[]>([props.pool.address]),
   ref<string[]>([currentShares]),

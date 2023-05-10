@@ -19,21 +19,19 @@ onMounted(() => {
   textInput.value?.focus();
 });
 export default defineComponent({
-  components: {
-  },
+  components: {},
   props: {
     balance: { type: String, default: '0' },
     token: String,
     address: { type: String, default: '' },
-    unstake: { type: Boolean, default: false},
-    
+    unstake: { type: Boolean, default: false },
   },
+
+  emits: ['close', 'stakeConfirmed', 'unstakeConfirmed'],
   setup(props, { emit }) {
-    
     const { getProvider } = useWeb3();
     const { addTransaction } = useTransactions();
-    
-    
+
     const address = props.address;
     const { account } = useWeb3();
     const { txListener } = useEthers();
@@ -45,40 +43,40 @@ export default defineComponent({
       account,
     };
   },
-  async beforeMount(){
-    const { balance } = useStake();
-    this.stakedBalance = await balance(this.poolAddress, this.account);
-  },
   data() {
     return {
       inputValue: '0.0',
       stakedBalance: '0',
-      poolAddress:this.address,
-      confirming:false,
+      poolAddress: this.address,
+      confirming: false,
     };
   },
-  computed:{
-    
+  computed: {},
+  async beforeMount() {
+    const { balance } = useStake();
+    this.stakedBalance = await balance(this.poolAddress, this.account);
   },
   methods: {
-    maxUnstake(){
+    maxUnstake() {
       this.inputValue = this.stakedBalance;
     },
     maxBalance() {
       this.inputValue = this.balance;
     },
     async confirm(amount: string) {
-
-      
       const formatedAmount = parseFixed(amount, 18);
       console.log(formatedAmount);
-      const {withdraw, deposit } = useStake();
+      const { withdraw, deposit } = useStake();
       console.log(this.poolAddress);
 
-      this.confirming=true;
+      this.confirming = true;
 
-      if(this.unstake){
-        const tx = await withdraw(this.poolAddress, formatedAmount, this.getProvider());
+      if (this.unstake) {
+        const tx = await withdraw(
+          this.poolAddress,
+          formatedAmount,
+          this.getProvider()
+        );
         const txHandler = (tx: TransactionResponse): void => {
           this.addTransaction({
             id: tx.hash,
@@ -90,16 +88,20 @@ export default defineComponent({
         txHandler(tx);
         this.txListener(tx, {
           onTxConfirmed: () => {
-            this.confirming=false;
+            this.confirming = false;
             this.emit('close');
             this.emit('unstakeConfirmed');
           },
           onTxFailed: () => {
-            this.confirming=false;
+            this.confirming = false;
           },
         });
-      }else{
-        const tx = await deposit(this.poolAddress, formatedAmount, this.getProvider());
+      } else {
+        const tx = await deposit(
+          this.poolAddress,
+          formatedAmount,
+          this.getProvider()
+        );
         const txHandler = (tx: TransactionResponse): void => {
           this.addTransaction({
             id: tx.hash,
@@ -111,84 +113,77 @@ export default defineComponent({
         txHandler(tx);
         this.txListener(tx, {
           onTxConfirmed: () => {
-            this.confirming=false;
+            this.confirming = false;
             this.emit('close');
             this.emit('stakeConfirmed');
           },
           onTxFailed: () => {
-            this.confirming=false;
+            this.confirming = false;
           },
         });
       }
-      
     },
   },
-
-  emits: ['close', 'stakeConfirmed','unstakeConfirmed'],
 });
 </script>
 
 <template>
-  <div class="stake-card flex flex-col mt-8">
-    <div class="flex available px-[22px] py-[22px]" v-if="unstake==true">
-      <div class="flex-1 flex flex-col">
+  <div class="flex flex-col mt-8 stake-card">
+    <div v-if="unstake == true" class="flex available px-[22px] py-[22px]">
+      <div class="flex flex-col flex-1">
         <div class="main">LP Tokens to unstake</div>
         <div>Amount of staked LP tokens in pool</div>
       </div>
-      
+
       <div class="flex-1 text-right main">{{ stakedBalance }}</div>
     </div>
-    <div class="flex available px-[22px] py-[22px]" v-else>
-      <div class="flex-1 flex flex-col">
+    <div v-else class="flex available px-[22px] py-[22px]">
+      <div class="flex flex-col flex-1">
         <div class="main">LP Tokens to stake</div>
         <div>Amount of available LP tokens on your wallet</div>
       </div>
       <div class="flex-1 text-right main">{{ balance }}</div>
     </div>
-    
-    <div class="flex total px-[12px] pb-[12px] pt-[22px] flex-col">
-      <div class="flex px-[10px]" v-if="unstake==true">
+
+    <div class="flex flex-col total px-[12px] pb-[12px] pt-[22px]">
+      <div v-if="unstake == true" class="flex px-[10px]">
         <div class="flex-1">Total to unstake</div>
         <div class="flex-1 text-right">
           <input
             ref="textInput"
-            class="bg-transparent total text-right inline"
             v-model="inputValue"
+            class="inline text-right bg-transparent total"
           />
-          <button
-            class="max inline"
-            @click="maxUnstake"
-          >
-            MAX
-          </button>
+          <button class="inline max" @click="maxUnstake">MAX</button>
         </div>
       </div>
-      <div class="flex px-[10px]" v-else>
-        <div class="flex-1" >Total to stake</div>
+      <div v-else class="flex px-[10px]">
+        <div class="flex-1">Total to stake</div>
         <div class="flex-1 text-right">
           <input
             ref="textInput"
-            class="bg-transparent total text-right inline"
             v-model="inputValue"
+            class="inline text-right bg-transparent total"
           />
-          <button
-            class="max inline"
-            @click="maxBalance"
-          >
-            MAX
-          </button>
+          <button class="inline max" @click="maxBalance">MAX</button>
         </div>
       </div>
 
-      <button class="confirm-btn mt-8  w-full" disabled  v-if="confirming==true" >
+      <button
+        v-if="confirming == true"
+        class="mt-8 w-full confirm-btn"
+        disabled
+      >
         Confirming...
       </button>
-      <button class="confirm-btn mt-8  w-full" @click="confirm(inputValue)" v-else>
+      <button
+        v-else
+        class="mt-8 w-full confirm-btn"
+        @click="confirm(inputValue)"
+      >
         Confirm
       </button>
     </div>
-
-    
   </div>
 </template>
 
@@ -200,52 +195,52 @@ export default defineComponent({
   background: linear-gradient(94.4deg, #9747ff 6.17%, #3b44bd 137.17%);
 }
 
-.available{
+.available {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  color: #BDB2DD;
+  color: #bdb2dd;
 }
-.available .main{
+.available .main {
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-.confirm-btn{
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+.confirm-btn {
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 12px;
   padding: 12px 0px;
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
-button.confirm-btn[disabled]{
-  background: #41365E;
-  color: #A99BC6;
+button.confirm-btn[disabled] {
+  background: #41365e;
+  color: #a99bc6;
 }
-.stake-card{
-  background:#41365E;
+.stake-card {
+  background: #41365e;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
   border-radius: 22px;
   overflow: hidden;
 }
-.total{
+.total {
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
-  color: #FDFDFD;
-  background: #50456E;
+  color: #fdfdfd;
+  background: #50456e;
 }
-.max{
-  background: linear-gradient(92.92deg, #C004FE 4.85%, #7E02F5 95.15%);
+.max {
+  background: linear-gradient(92.92deg, #c004fe 4.85%, #7e02f5 95.15%);
   border-radius: 20px;
   padding: 0px 8px;
   gap: 10px;
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
-  color: #FDFDFD;
+  color: #fdfdfd;
 }
 </style>
