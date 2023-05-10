@@ -37,9 +37,13 @@ function navigateToGetVeBAL() {
   <div class="title">
     <img src="./bubble.svg" />
     <div class="title-text">
-      <div>Extra earnings <br />& voting power</div>
+      <div class="leading-[82px]">Extra earnings <br />& voting power</div>
       <div class="flex justify-center gap-[28px] mt-[16px]">
-        <button class="get-btn">Get VexPolar</button>
+        <BalLink :href="`/#/${networkSlug}/get-vebal?returnRoute=vebal`">
+          <BalBtn color="gradient" class="leading-4 get-btn">
+            Lock LP to get VexPolar
+          </BalBtn>
+        </BalLink>
         <a
           href="https://medium.com/@PolarisFinance/polaris-dex-917e45c4869c"
           target="_blank"
@@ -101,7 +105,6 @@ function navigateToGetVeBAL() {
   position: absolute;
   font-weight: 600;
   font-size: 64px;
-  line-height: 82px;
   text-align: center;
   color: #fdfdfd;
 }
