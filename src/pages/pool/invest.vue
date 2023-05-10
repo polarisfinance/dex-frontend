@@ -40,15 +40,11 @@ import { ApprovalAction } from '@/composables/approvals/types';
 
 import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
 import investVeBalSteps from '@/components/contextual/pages/pool/invest/ProcessVeBalSteps.json';
-var steps = [{}];
 
 export default defineComponent({
   components: {
     // PoolUserStats,
     InvestForm,
-    InvestPreviewModal,
-    StakeView,
-    InvestPage,
     StakePreview,
   },
   props: {
@@ -64,6 +60,10 @@ export default defineComponent({
     const route = useRoute();
     const id = (route.params.id as string).toLowerCase();
     providePoolStaking(id);
+
+    const steps = isVeBalPool((route.params.id as string).toLowerCase())
+      ? investVeBalSteps
+      : investSteps;
 
     const { transfersAllowed } = usePoolTransfers();
     // const poolQuery = usePoolQuery(route.params.id as string);
@@ -112,6 +112,7 @@ export default defineComponent({
       getProvider,
       addTransaction,
       balanceFor,
+      steps,
       isDesktop,
       isMobile,
       isVeBalPool,
@@ -154,8 +155,6 @@ export default defineComponent({
     // const approval = await isApproved(this.pool?.address!, this.account);
     // this.poolApproved = approval;
     // this.stakedBalance = await balance(this.pool?.address!, this.account);
-    if (isVeBalPool(this.id)) steps = investVeBalSteps;
-    else steps = investSteps;
   },
   beforeMount() {
     if (this.isWalletReady && this.activeStep == 1) {
@@ -165,12 +164,12 @@ export default defineComponent({
   updated() {},
   methods: {
     setActiveStep(step) {
-      if (step <= steps.length) this.activeStep = step;
+      if (step <= this.steps.length) this.activeStep = step;
 
       this.$emit('active-step-updated', this.activeStep);
     },
     clickActiveStep(step) {
-      if (step != steps.length) this.setActiveStep(step);
+      if (step != this.steps.length) this.setActiveStep(step);
     },
     handleLPPreview() {
       this.setActiveStep(this.activeStep + 1); //THIS WILL BE OK. TESTING BELOW
@@ -232,16 +231,15 @@ export default defineComponent({
     </template>
   </transition> -->
   <transition name="fade">
-    <template v-if="activeStep == 4"
-      ><div>
-        asdas
+    <template v-if="activeStep == 4">
+      <div>
         <StakePreview
           v-if="!isVeBalPool(id)"
           :pool="pool"
           action="stake"
           @success="handleStakeConfirmed"
         />
-        <div v-else>toto je 3pool. Lockni radsej</div>
+        <div v-else>3Pool. Lockni</div>
       </div>
     </template>
   </transition>
