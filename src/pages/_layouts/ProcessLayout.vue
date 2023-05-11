@@ -10,13 +10,17 @@ import investVeBalSteps from '@/components/contextual/pages/pool/invest/ProcessV
 import withdrawSteps from '@/components/contextual/pages/pool/withdraw/ProcessSteps.json';
 import { ERC20Multicaller } from '@/services/multicalls/erc20.multicaller';
 import { isVeBalPool } from '@/composables/usePoolHelpers';
-
+import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
+import usePoolQuery from '@/composables/queries/usePoolQuery';
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
 const refComponent = ref(null);
 
 const route = useRoute();
 const id = (route.params.id as string).toLowerCase();
+
+const poolQuery = usePoolQuery(id, undefined, undefined);
+const pool = computed(() => poolQuery.data.value);
 
 var steps = [{}];
 if (route.name == 'invest') {
@@ -28,10 +32,7 @@ if (route.name == 'withdraw') steps = withdrawSteps;
 const activeStep = ref(1);
 
 function updateStep(step) {
-  const poolApproved = false;
-  if (poolApproved == true && step == 4) {
-    activeStep.value = step + 1;
-  } else if (step <= steps.length) {
+  if (step <= steps.length) {
     activeStep.value = step;
   }
   activeStep.value = step;
@@ -62,6 +63,8 @@ function goBack() {
 
   updateStep(activeStep.value - 1);
 }
+
+onMounted(() => {});
 </script>
 
 
@@ -120,17 +123,8 @@ function goBack() {
                   </div>
                 </div>
                 <div class="flex-1 stats">
-                  <BalLoadingBlock
-                    v-if="loadingPool || !transfersAllowed || !sorReady"
-                    class="h-96"
-                  />
-                  <PoolUserStats
-                    v-else
-                    :pool="pool"
-                    :xpolarToClaim="`0`"
-                    :dailyAPR="`1`"
-                    :stakedBalance="`0`"
-                  />
+                  <BalLoadingBlock v-if="pool == undefined" class="h-96" />
+                  <PoolUserStats v-else :pool="pool" />
                 </div>
               </div>
               <div class="flex-1 justify-center">

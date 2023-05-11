@@ -23,20 +23,12 @@ import StakeView from './Stake.vue';
 import useStake from '@/composables/PolarisFinance/useStake';
 import { TransactionResponse } from '@ethersproject/providers';
 import useTransactions from '@/composables/useTransactions';
-import useEthers from '@/composables/useEthers';
 import useTokens from '@/composables/useTokens';
 import useBreakpoints from '@/composables/useBreakpoints';
-import InvestPage from '@/components/contextual/pages/pool/invest/InvestPage.vue';
 import { providePoolStaking } from '@/providers/local/pool-staking.provider';
 import { usePoolStaking } from '@/providers/local/pool-staking.provider';
 import StakePreview, { StakeAction } from './StakePreview.vue';
 import { isVeBalPool } from '@/composables/usePoolHelpers';
-import { trackLoading } from '@/lib/utils';
-import useTokenApprovalActions from '@/composables/approvals/useTokenApprovalActions';
-import useTokenApprovals, {
-  ApprovalStateMap,
-} from '@/composables/approvals/useTokenApprovals';
-import { ApprovalAction } from '@/composables/approvals/types';
 import useNetwork from '@/composables/useNetwork';
 
 import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
