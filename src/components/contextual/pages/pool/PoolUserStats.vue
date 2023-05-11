@@ -11,7 +11,9 @@ import PoolCalculator from '@/services/pool/calculator/calculator.sevice';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import { bnum } from '@/lib/utils';
 import { getAddress } from '@ethersproject/address';
-import { Pool } from 'src/services/pool/types';
+import { Pool, PoolToken } from 'src/services/pool/types';
+import { usePoolStaking } from '@/providers/local/pool-staking.provider';
+
 export default defineComponent({
   components: {
     BalAsset,
@@ -69,19 +71,30 @@ export default defineComponent({
       ref(false)
     );
     const bptBalance = computed((): string => balanceFor(props.pool.address));
-    // const totalUserPoolSharePct = ref(
-    //   bnum(
-    //     bnum(stakedShares.value).plus(
-    //       balanceFor(getAddress(pool.value?.address))
-    //     )
-    //   )
-    //     .div(pool.value?.totalShares)
-    //     .toString()
-    // );
+    const { stakedShares } = usePoolStaking();
+    const totalUserPoolSharePct = ref(
+      bnum(
+        bnum(stakedShares.value).plus(
+          balanceFor(getAddress(props.pool.address))
+        )
+      )
+        .div(props.pool.totalShares)
+        .toString()
+    );
+
+    const currentShares = computed(() => {
+      return balanceFor(getAddress(props.pool.address));
+    });
 
     /**
      * METHODS
      */
+
+    function weightFor(token: PoolToken): string {
+      return fNum(token.weight * 100 || '0', {
+        maximumFractionDigits: 2,
+      });
+    }
 
     return {
       props,
@@ -93,12 +106,21 @@ export default defineComponent({
       fNum,
       FNumFormats,
       tokenAddresses,
+      weightFor,
+      currentShares,
+      stakedShares,
+      totalUserPoolSharePct,
     };
   },
   data() {
-    return {};
+    return {
+      poolData: this.$props.pool,
+    };
   },
-  watch: {},
+
+  watch: {
+    poolData(newVal, oldVal) {},
+  },
   created() {},
   beforeUpdate() {},
   beforeMount() {},
@@ -110,16 +132,12 @@ export default defineComponent({
 
 <template>
   <div class="mt-[12px]">
-    <div
-      v-for="(address, idx) in tokenAddresses"
-      :key="idx"
-      class="flex py-[12px]"
-    >
+    <div v-for="(token, idx) in pool.tokens" :key="idx" class="flex py-[12px]">
       <div class="flex flex-1">
-        <BalAsset :address="address" :size="33" class="mr-[12px]" />
+        <BalAsset :address="token.address" :size="33" class="mr-[12px]" />
         <div class="flex flex-col">
-          <div class="token">{{ symbolFor(address) }}</div>
-          <div>%</div>
+          <div class="token">{{ symbolFor(token.address) }}</div>
+          <div>{{ weightFor(token) }}%</div>
         </div>
       </div>
       <div class="flex flex-col flex-1 text-right token-value">
@@ -131,11 +149,13 @@ export default defineComponent({
   <div class="break my-[12px]"></div>
   <div class="grid grid-cols-2 mt-[24px] gap-[8px]">
     <div class="">Pool Share</div>
-    <div class="text-right"></div>
+    <div class="text-right">
+      {{ fNum(totalUserPoolSharePct, FNumFormats.percent) }}
+    </div>
     <div class="">Staked LP Tokens</div>
-    <div class="text-right"></div>
+    <div class="text-right">{{ stakedShares }}</div>
     <div class="">Unstaked LP Tokens</div>
-    <div class="text-right"></div>
+    <div class="text-right">{{ currentShares }}</div>
     <div class="">Daily earning</div>
     <div class="text-right">$</div>
     <div class="">xPolar to Claim</div>

@@ -67,9 +67,9 @@ function symbolFor(token: PoolToken): string {
 </script>
 
 <template>
-  <div class="flex flex-col" :class="['', nestedPaddingClass]">
+  <div class="flex flex-col p-3" :class="['', nestedPaddingClass]">
     <div
-      class="mb-3 text-xsm font-bold text-center dark:text-polaris-white dark:bg-polaris-card-medium rounded-[12px]"
+      class="py-1 mb-3 text-xsm font-bold text-center dark:text-polaris-white dark:bg-polaris-card-medium rounded-[12px]"
     >
       Pool Composition
     </div>

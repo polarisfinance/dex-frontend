@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, provide } from 'vue';
 import { useReturnRoute } from '@/composables/useReturnRoute';
 import useBreakpoints from '@/composables/useBreakpoints';
 import AppNav from '@/components/navs/AppNav/AppNav.vue';
@@ -12,6 +12,10 @@ import { ERC20Multicaller } from '@/services/multicalls/erc20.multicaller';
 import { isVeBalPool } from '@/composables/usePoolHelpers';
 import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
+import {
+  usePoolStaking,
+  providePoolStaking,
+} from '@/providers/local/pool-staking.provider';
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
 const refComponent = ref(null);
@@ -63,6 +67,8 @@ function goBack() {
 
   updateStep(activeStep.value - 1);
 }
+provide('provider.poolStaking', providePoolStaking(pool.value?.id));
+// providePoolStaking(pool.value?.id);
 
 onMounted(() => {});
 </script>

@@ -77,7 +77,7 @@ onMounted(async () => {
   <div
     v-for="token in rootPool.tokens"
     :key="token.address"
-    class="w-full dark:bg-polaris-card-dark rounded-medium card"
+    class="w-full dark:bg-polaris-card-dark rounded-medium card max-w-[355px]"
   >
     <TokenBreakdown
       :token="token"

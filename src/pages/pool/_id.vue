@@ -276,7 +276,9 @@ watch(
               :tokens="titleTokens"
             /> -->
           </div>
-          <div class="container flex gap-8 justify-center mx-auto mt-[120px]">
+          <div
+            class="container flex gap-8 justify-center mx-auto mb-[120px] mt-[120px]"
+          >
             <BalLoadingBlock v-if="loadingPool" class="h-64" />
             <PoolCompositionCard v-else-if="pool" :pool="pool" />
           </div>
