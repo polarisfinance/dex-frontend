@@ -97,7 +97,7 @@ function amountShare(address: string): string {
   
   <style scoped>
 .token-amount-table {
-  @apply divide-y overflow-hidden;
+  @apply overflow-hidden;
 }
 
 .title {

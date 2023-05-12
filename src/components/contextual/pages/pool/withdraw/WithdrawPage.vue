@@ -19,7 +19,7 @@ type Props = {
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-const emit = defineEmits<{ (e: 'preview'): void }>();
+const emit = defineEmits<{ (e: ['preview', 'confirm-withdraw']): void }>();
 /**
  * COMPUTED
  */
@@ -51,6 +51,11 @@ onMounted(() => resetTabs());
       </div> -->
     </template>
     <WithdrawFormV2 v-if="isDeepPool" />
-    <WithdrawForm v-else :pool="pool" @preview="emit('preview')" />
+    <WithdrawForm
+      v-else
+      :pool="pool"
+      @preview="emit('preview')"
+      @success="emit('confirm-withdraw')"
+    />
   </BalCard>
 </template>

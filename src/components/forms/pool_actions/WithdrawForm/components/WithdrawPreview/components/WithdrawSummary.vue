@@ -25,8 +25,11 @@ const { currency } = useUserSettings();
 </script>
 
 <template>
-  <BalDataList :title="$t('summary')">
-    <BalDataListRow :label="$t('total')">
+  <BalDataList :title="``" :divide="false">
+    <BalDataListRow
+      :label="$t('total')"
+      class="text-xl font-semibold dark:text-polaris-white"
+    >
       <template #value>
         {{ fNum(fiatTotal, FNumFormats.fiat) }}
         <BalTooltip
@@ -36,7 +39,7 @@ const { currency } = useUserSettings();
         />
       </template>
     </BalDataListRow>
-    <BalDataListRow :label="$t('priceImpact')">
+    <BalDataListRow :label="$t('priceImpact')" class="font-semibold">
       <template #value>
         {{ fNum(priceImpact, FNumFormats.percent) }}
         <BalTooltip

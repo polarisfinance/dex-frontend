@@ -27,7 +27,7 @@ type Props = {
  * PROPS & EMITS
  */
 const props = defineProps<Props>();
-const emit = defineEmits<{ (e: 'preview'): void }>();
+const emit = defineEmits<{ (e: ['preview', '']): void }>();
 const showPreview = ref(false);
 
 /**
@@ -90,6 +90,10 @@ const singleAssetRules = computed(() => [
 function onPreview() {
   emit('preview');
   showPreview.value = true;
+}
+function onSuccess() {
+  emit('success');
+  showPreview.value = false;
 }
 /**
  * WATCHERS
@@ -204,6 +208,7 @@ onBeforeMount(() => {
       :pool="pool"
       :math="withdrawMath"
       @close="showPreview = false"
+      @success="onSuccess"
     />
     <!-- </teleport> -->
   </div>

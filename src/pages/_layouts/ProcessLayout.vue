@@ -26,12 +26,14 @@ const id = (route.params.id as string).toLowerCase();
 const poolQuery = usePoolQuery(id, undefined, undefined);
 const pool = computed(() => poolQuery.data.value);
 
+export type Processes = 'invest' | 'withdraw';
+
 var steps = [{}];
-if (route.name == 'invest') {
+if (route.name === 'invest') {
   if (isVeBalPool(id)) steps = investVeBalSteps;
   else steps = investSteps;
 }
-if (route.name == 'withdraw') steps = withdrawSteps;
+if (route.name === 'withdraw') steps = withdrawSteps;
 
 const activeStep = ref(1);
 

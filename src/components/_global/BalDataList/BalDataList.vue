@@ -2,16 +2,23 @@
 type Props = {
   title: string;
   hTag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  divide: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: 'Summary',
   hTag: 'h6',
+  divide: true,
+});
+const Classes = computed(() => {
+  return {
+    'divide-y': props.divide,
+  };
 });
 </script>
 
 <template>
-  <div class="divide-y">
+  <div :class="[Classes]">
     <component :is="hTag" v-if="title != null" class="p-2">
       {{ title }}
     </component>

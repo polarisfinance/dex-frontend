@@ -50,6 +50,7 @@ const {
   stake,
   stakeValue,
   unstake,
+  unstakeValue,
   stakedShares,
   refetchAllPoolStakingData,
   preferentialGaugeAddress,
@@ -71,6 +72,9 @@ const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
 const stakeValueWithParams = () => {
   return stakeValue(inputValue.value);
 };
+const unstakeValueWithParams = () => {
+  return unstakeValue(inputValue.value);
+};
 
 const stakeAction = {
   label: t('stake'),
@@ -84,7 +88,7 @@ const unstakeAction = {
   label: t('unstake'),
   loadingLabel: t('staking.unstaking'),
   confirmingLabel: t('confirming'),
-  action: () => txWithNotification(unstake),
+  action: () => txWithNotification(unstakeValueWithParams),
   stepTooltip:
     props.action === 'restake'
       ? t('staking.restakeTooltip')
@@ -216,17 +220,26 @@ onBeforeMount(async () => {
     <div>
       <BalStack horizontal justify="between" align="center" class="p-5">
         <BalStack vertical spacing="none">
-          LP Tokens to stake
-          <span class="text-sm font-medium dark:text-polaris-2">
-            Amount of available LP tokens on your wallet
-          </span>
+          <div v-if="props.action === 'stake'">
+            <div>LP Tokens to stake</div>
+            <span class="text-sm font-medium dark:text-polaris-2">
+              Amount of available LP tokens on your wallet
+            </span>
+          </div>
+          <div v-if="props.action === 'unstake'">
+            <div>Staked LP Tokens</div>
+            <span class="text-sm font-medium dark:text-polaris-2">
+              Amount of staked LP tokens in pool
+            </span>
+          </div>
         </BalStack>
         {{ fNum(currentShares) }}
       </BalStack>
     </div>
     <div class="dark:bg-polaris-card-light">
       <div class="flex p-5 text-xl">
-        <div class="flex-1">Total to stake</div>
+        <div v-if="action === 'stake'" class="flex-1">Total to stake</div>
+        <div v-if="action === 'unstake'" class="flex-1">Total to unstake</div>
         <div class="flex-1 text-right">
           <input
             ref="textInput"

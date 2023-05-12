@@ -36,7 +36,7 @@ type AmountMap = {
 const props = withDefaults(defineProps<Props>(), {});
 
 const emit = defineEmits<{
-  (e: 'close'): void;
+  (e: ['close', 'success']): void;
 }>();
 
 /**
@@ -115,6 +115,10 @@ function handleClose(): void {
   }
   emit('close');
 }
+function onSuccess() {
+  emit('success');
+  withdrawalConfirmed.value = true;
+}
 
 /**
  * WATCHERS
@@ -123,24 +127,26 @@ watch(account, () => emit('close'));
 </script>
 
 <template>
-  <TokenAmounts
-    :amountMap="amountMap"
-    :tokenMap="tokenMap"
-    :fiatAmountMap="fiatAmountMap"
-    :fiatTotal="fiatTotal"
-  />
+  <div class="p-3">
+    <TokenAmounts
+      :amountMap="amountMap"
+      :tokenMap="tokenMap"
+      :fiatAmountMap="fiatAmountMap"
+      :fiatTotal="fiatTotal"
+    />
 
-  <WithdrawSummary
-    :pool="pool"
-    :fiatTotal="fiatTotal"
-    :priceImpact="_priceImpact"
-  />
+    <WithdrawSummary
+      :pool="pool"
+      :fiatTotal="fiatTotal"
+      :priceImpact="_priceImpact"
+    />
 
-  <WithdrawActions
-    :pool="pool"
-    :math="math"
-    class="mt-4"
-    @error="$emit('close')"
-    @success="withdrawalConfirmed = true"
-  />
+    <WithdrawActions
+      :pool="pool"
+      :math="math"
+      class="mt-4"
+      @error="$emit('close')"
+      @success="onSuccess"
+    />
+  </div>
 </template>

@@ -217,6 +217,37 @@ const provider = (_poolId?: string) => {
     const balance = await gauge.balance(account.value);
     return await gauge.unstake(balance);
   }
+  /**
+   * custom unstake
+   *
+   * Trigger unstake transaction using the user's amount - kayaba
+   */
+  async function unstakeValue(value: string): Promise<TransactionResponse> {
+    if (!poolGauges.value?.pool?.gauges)
+      throw new Error('Unable to unstake, no pool gauges');
+
+    const gaugesWithBalance = await Promise.all(
+      poolGauges.value.pool.gauges.map(async gauge => {
+        const gaugeInstance = new LiquidityGauge(gauge.id);
+        const balance = await gaugeInstance.balance(account.value);
+        return { ...gauge, balance: balance?.toString() };
+      })
+    );
+
+    const gaugeWithBalance = gaugesWithBalance.find(
+      gauge => gauge.balance !== '0'
+    );
+    if (!gaugeWithBalance) {
+      throw new Error(
+        `Attempted to call unstake, user doesn't have any balance for any gauges.`
+      );
+    }
+
+    const gauge = new LiquidityGauge(gaugeWithBalance.id);
+    // const balance = await gauge.balance(account.value);
+    // return await gauge.unstake(balance);
+    return await gauge.unstake(parseUnits(value));
+  }
 
   /**
    * Fetch preferential gauge address for pool.
@@ -266,6 +297,7 @@ const provider = (_poolId?: string) => {
     stake,
     stakeValue,
     unstake,
+    unstakeValue,
   };
 };
 
