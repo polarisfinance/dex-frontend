@@ -9,6 +9,7 @@ import { Pool } from '@/services/pool/types';
 import { useUserPools } from '@/providers/local/user-pools.provider';
 import StakePreviewModal from '../pool/staking/StakePreviewModal.vue';
 import { providePoolStaking } from '@/providers/local/pool-staking.provider';
+import { useRouter } from 'vue-router';
 
 /**
  * STATE
@@ -30,7 +31,7 @@ const { refetchAllUserPools } = useUserPools();
 const { isWalletReady, isWalletConnecting } = useWeb3();
 const { t } = useI18n();
 const networkName = configService.network.shortName;
-
+const router = useRouter();
 /**
  * COMPUTED
  */
@@ -53,8 +54,9 @@ const poolsToRenderKey = computed(() => JSON.stringify(stakedPools.value));
  * METHODS
  */
 function handleUnstake(pool: Pool) {
-  showUnstakeModal.value = true;
-  poolToUnstake.value = pool;
+  // showUnstakeModal.value = true;
+  // poolToUnstake.value = pool;
+  router.push({ name: 'withdraw', params: { id: pool.id } });
 }
 
 function handleModalClose() {

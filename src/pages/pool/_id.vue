@@ -242,32 +242,54 @@ watch(
                 :loadingApr="loadingApr"
               />
               <PolLine class="mt-3" />
-              <div
-                class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
-              >
-                Invest in the pool and earn on swap fees!
-                <BalBtn
-                  tag="router-link"
-                  :to="{ name: 'invest', params: { networkSlug, id: poolId } }"
-                  block
-                  class="items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
+              <div class="flex flex-1">
+                <div
+                  class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
                 >
-                  <!-- <router-link
+                  Invest in the pool and earn on swap fees!
+                  <BalBtn
+                    tag="router-link"
+                    :to="{
+                      name: 'invest',
+                      params: { networkSlug, id: poolId },
+                    }"
+                    block
+                    class="items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
+                  >
+                    <!-- <router-link
                   class="flex items-center m-auto w-full text-lg font-semibold rounded polaris-main-button mt-[12px] max-w-[520px]"
                   :to="{
                     name: 'invest',
                     params: {networkSlug, id: pool?.id },
                   }"
                 > -->
-                  <BalIcon
-                    name="plus"
-                    size="lg"
-                    :filled="true"
-                    class="flex-1 ml-5"
-                  />
-                  <div class="w-full text-center">Invest in the pool</div>
-                  <!-- </router-link> -->
-                </BalBtn>
+                    <BalIcon
+                      name="plus"
+                      size="lg"
+                      :filled="true"
+                      class="flex-1 ml-5"
+                    />
+                    <div class="w-full text-center">Invest in the pool</div>
+                    <!-- </router-link> -->
+                  </BalBtn>
+                </div>
+                <div
+                  class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
+                >
+                  Unstake & Withdraw your position
+                  <BalBtn
+                    tag="router-link"
+                    :to="{
+                      name: 'withdraw',
+                      params: { networkSlug, id: poolId },
+                    }"
+                    block
+                    class="items-center m-auto w-full text-lg font-semibold rounded withdraw-button mt-[12px] max-w-[520px]"
+                  >
+                    <div class="w-full text-center">Unstake & Withdraw</div>
+                    <!-- </router-link> -->
+                  </BalBtn>
+                </div>
               </div>
             </div>
             <!-- <ApyVisionPoolLink
@@ -293,7 +315,7 @@ watch(
         </div>
       </div>
 
-      <BrandedRedirectCard
+      <!-- <BrandedRedirectCard
         v-if="showBrandedRedirectCard"
         :poolId="poolId"
         class="order-1 lg:order-2 px-4 lg:px-0"
@@ -331,7 +353,7 @@ watch(
             :poolId="poolId"
           />
         </BalStack>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -353,5 +375,20 @@ watch(
 
 .header-loading-block {
   height: 6.75rem;
+}
+
+.withdraw-button {
+  padding: 8px 20px;
+  gap: 10px;
+  border-radius: 24px;
+  line-height: 18px;
+  color: #fdfdfd;
+  background: linear-gradient(rgb(65, 54, 94), rgb(65, 54, 94)) padding-box,
+    linear-gradient(90deg, rgba(192, 4, 254, 1), rgba(126, 2, 245, 1))
+      border-box;
+  border: 1px solid transparent;
+}
+.withdraw-button:hover {
+  background: linear-gradient(93.62deg, #c004fe 2.98%, #7e02f5 97.02%);
 }
 </style>

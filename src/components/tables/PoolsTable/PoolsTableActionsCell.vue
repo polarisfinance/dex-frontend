@@ -67,9 +67,10 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
       size="sm"
       @click.prevent.stop="emit('click:unstake', pool)"
     >
-      {{ $t('unstake') }}
+      <!-- {{ $t('unstake') }} -->
+      Withdraw
     </BalBtn>
-    <BalBtn
+    <!-- <BalBtn
       v-else-if="showVeBalLock"
       tag="router-link"
       :to="{
@@ -80,7 +81,15 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
       size="sm"
     >
       {{ $t('transactionAction.createLock') }}
-    </BalBtn>
+    </BalBtn> -->
+    <BalLink
+      v-else-if="showVeBalLock"
+      href="/#/aurora-testnet/get-vebal?returnRoute=vebal"
+    >
+      <BalBtn color="gradient" size="sm">
+        {{ $t('transactionAction.createLock') }}
+      </BalBtn>
+    </BalLink>
     <div v-else>-</div>
   </div>
 </template>
