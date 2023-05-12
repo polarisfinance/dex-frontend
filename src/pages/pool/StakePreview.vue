@@ -62,7 +62,6 @@ const currentShares = computed(() => {
     : stakedShares.value;
 });
 const inputValue = ref('0.0');
-const inputValueFormated = computed(() => fNum(inputValue.value));
 const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
   ref<string[]>([props.pool.address]),
   ref<string[]>([currentShares.value]),
@@ -231,7 +230,7 @@ onBeforeMount(async () => {
         <div class="flex-1 text-right">
           <input
             ref="textInput"
-            v-model="inputValueFormated"
+            v-model="inputValue"
             class="inline text-right bg-transparent total"
           />
           <button class="inline max" @click="maxBalance">MAX</button>
