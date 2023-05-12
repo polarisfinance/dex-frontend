@@ -42,7 +42,7 @@ const poolShares = computed(
 
 const poolsToRenderKey = computed(() => JSON.stringify(lockPools.value));
 
-const hiddenColumns = ['poolVolume', 'migrate', 'actions', 'myBoost'];
+const hiddenColumns = ['poolVolume', 'migrate', 'actions', 'myBoost', 'volume'];
 </script>
 
 <template>

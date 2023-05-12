@@ -130,7 +130,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     id: 'myBoost',
     hidden: !props.showBoost,
     sortKey: pool => Number(boostFor(pool)),
-    width: 150,
+    // width: 100,
     cellClassName: 'font-numeric',
   },
   {
@@ -145,7 +145,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     id: 'myBalance',
     hidden: !props.showPoolShares,
     sortKey: pool => Number(balanceValue(pool)),
-    width: 160,
+    // width: 100,
     cellClassName: 'font-numeric',
   },
   {
@@ -162,7 +162,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
       if (apr === Infinity || isNaN(apr)) return 0;
       return apr;
     },
-    width: 150,
+    // width: 150,
     cellClassName: 'font-numeric',
   },
   {
@@ -177,7 +177,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
         return 0;
       return volume;
     },
-    width: 175,
+    // width: 150,
     cellClassName: 'font-numeric',
   },
   {
@@ -197,7 +197,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
         ? apr
         : 0;
     },
-    width: 220,
+    // width: 120,
   },
   {
     name: t('expiryDate'),
@@ -205,7 +205,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'lockedEndDate',
     align: 'right',
     id: 'lockEndDate',
-    width: 150,
+    // width: 110,
   },
   {
     name: t('migrate'),
@@ -213,7 +213,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'migrate',
     align: 'center',
     id: 'migrate',
-    width: 150,
+    // width: 100,
   },
   {
     name: t('actions'),
