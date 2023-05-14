@@ -10,6 +10,7 @@ import { useUserPools } from '@/providers/local/user-pools.provider';
 import StakePreviewModal from '../pool/staking/StakePreviewModal.vue';
 import { providePoolStaking } from '@/providers/local/pool-staking.provider';
 import { useRouter } from 'vue-router';
+import useBreakpoints from '@/composables/useBreakpoints';
 
 /**
  * STATE
@@ -25,6 +26,7 @@ providePoolStaking();
 /**
  * COMPOSABLES
  */
+const { isMobile } = useBreakpoints();
 const { stakedPools, poolBoostsMap, stakedShares, isLoading } =
   useUserStaking();
 const { refetchAllUserPools } = useUserPools();
@@ -44,6 +46,8 @@ const noPoolsLabel = computed(() => {
 const hiddenColumns = computed(() => {
   const _hiddenColumns = ['poolVolume', 'migrate', 'lockEndDate', 'volume'];
   if (!isPoolBoostsEnabled.value) _hiddenColumns.push('myBoost');
+
+  if (isMobile.value) _hiddenColumns.push('totalLiquidity');
 
   return _hiddenColumns;
 });

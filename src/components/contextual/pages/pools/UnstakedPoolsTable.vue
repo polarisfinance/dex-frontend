@@ -7,6 +7,7 @@ import useWeb3 from '@/services/web3/useWeb3';
 import { useUserPools } from '@/providers/local/user-pools.provider';
 import StakePreviewModal from '@/components/contextual/pages/pool/staking/StakePreviewModal.vue';
 import { providePoolStaking } from '@/providers/local/pool-staking.provider';
+import useBreakpoints from '@/composables/useBreakpoints';
 
 /**
  * STATE
@@ -14,7 +15,6 @@ import { providePoolStaking } from '@/providers/local/pool-staking.provider';
 const showStakeModal = ref(false);
 const stakePool = ref<Pool | undefined>();
 const networkName = configService.network.shortName;
-const hiddenColumns = ['poolVolume', 'migrate', 'lockEndDate', 'volume'];
 
 /**
  * PROVIDERS
@@ -33,6 +33,8 @@ const {
   isLoading: isLoadingPools,
 } = useUserPools();
 
+const { isMobile } = useBreakpoints();
+
 /**
  * COMPUTED
  */
@@ -40,6 +42,15 @@ const noPoolsLabel = computed(() => {
   return isWalletReady.value || isWalletConnecting.value
     ? t('noUnstakedInvestments', [networkName])
     : t('connectYourWallet');
+});
+
+const hiddenColumns = computed(() => {
+  const _hiddenColumns = ['poolVolume', 'migrate', 'lockEndDate', 'volume'];
+  if (isMobile.value) {
+    _hiddenColumns.push('icons');
+    _hiddenColumns.push('totalLiquidity');
+  }
+  return _hiddenColumns;
 });
 
 const poolsToRenderKey = computed(() => JSON.stringify(unstakedPools.value));

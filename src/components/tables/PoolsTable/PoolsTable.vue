@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-
 import { ColumnDefinition } from '@/components/_global/BalTable/types';
 
 import BalChipNew from '@/components/chips/BalChipNew.vue';
@@ -95,7 +94,8 @@ const router = useRouter();
 const { t } = useI18n();
 const { trackGoal, Goals } = useFathom();
 const { darkMode } = useDarkMode();
-const { upToLargeBreakpoint, upToSmallBreakpoint } = useBreakpoints();
+const { upToLargeBreakpoint, upToSmallBreakpoint, isDesktop, isMobile } =
+  useBreakpoints();
 const { networkSlug } = useNetwork();
 
 const wideCompositionWidth = computed(() => {
@@ -113,7 +113,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'uri',
     Header: 'iconColumnHeader',
     Cell: 'iconColumnCell',
-    width: 90,
+    width: isDesktop.value ? 90 : 0,
     noGrow: true,
   },
   {
@@ -121,7 +121,8 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     id: 'poolName',
     accessor: 'id',
     Cell: 'poolNameCell',
-    width: props.hiddenColumns.length >= 2 ? wideCompositionWidth.value : 350,
+    // width: props.hiddenColumns.length >= 2 ? wideCompositionWidth.value : 350,
+    width: isDesktop.value ? 420 : -1,
   },
   {
     name: t('myBoost'),
@@ -149,7 +150,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     cellClassName: 'font-numeric',
   },
   {
-    name: t('poolValue'),
+    name: t('tvl'),
     accessor: pool =>
       fNum(pool.totalLiquidity || 0, {
         style: 'currency',
@@ -222,7 +223,6 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     align: 'center',
     id: 'actions',
     hidden: !props.showActions,
-    width: 150,
   },
 ]);
 
@@ -302,13 +302,13 @@ function iconAddresses(pool: Pool) {
       @load-more="emit('loadMore')"
     >
       <template #iconColumnHeader>
-        <div class="flex items-center">
+        <div v-if="isDesktop" class="flex items-center">
           <img v-if="darkMode" :src="TokensWhite" alt="token" />
           <img v-else :src="TokensBlack" alt="token" />
         </div>
       </template>
       <template #iconColumnCell="pool">
-        <div v-if="!isLoading" class="py-2 px-6">
+        <div v-if="!isLoading && isDesktop" class="py-2 px-6">
           <BalAssetSet
             :addresses="iconAddresses(pool)"
             :width="110"
@@ -317,7 +317,14 @@ function iconAddresses(pool: Pool) {
         </div>
       </template>
       <template #poolNameCell="pool">
-        <div v-if="!isLoading" class="flex items-center py-3 px-6">
+        <div v-if="!isLoading && isMobile" class="py-2 px-6">
+          <BalAssetSet
+            :addresses="iconAddresses(pool)"
+            :width="110"
+            :size="34"
+          />
+        </div>
+        <div v-if="!isLoading" class="flex flex-wrap items-center py-3 px-6">
           <div v-if="poolMetadata(pool.id)" class="text-left">
             {{ poolMetadata(pool.id)?.name }}
           </div>
@@ -336,8 +343,9 @@ function iconAddresses(pool: Pool) {
             color="amber"
           />
           <BalChipNew v-else-if="pool?.isNew" class="mt-1" />
+          <div v-if="isMobile" class="flex-break"></div>
           <TokenWeightsPills
-            class="ml-[12px]"
+            :class="{ 'ml-0': isMobile, 'ml-[12px]': isDesktop }"
             :tokens="orderedPoolTokens(pool, pool.tokens)"
             :isStablePool="isStableLike(pool.poolType)"
             :selectedTokens="selectedTokens"
@@ -423,3 +431,9 @@ function iconAddresses(pool: Pool) {
     </BalTable>
   </BalCard>
 </template>
+<style scoped>
+.flex-break {
+  flex-basis: 100%;
+  height: 0;
+}
+</style>

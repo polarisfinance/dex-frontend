@@ -45,7 +45,7 @@ const classes = computed(() => ({
           :href="`#hot-pools`"
           rel="noreferrer"
           color="white"
-          outline
+          class="font-semibold"
           @click="trackGoal(Goals.ClickHeroLearnMore)"
         >
           Start earning

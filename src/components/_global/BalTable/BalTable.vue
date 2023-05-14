@@ -224,7 +224,12 @@ watch(
           <col
             v-for="column in filteredColumns"
             :key="column.id"
-            :style="{ width: `${column?.width}px` }"
+            :style="{
+              width:
+                column?.width == undefined || column?.width == -1
+                  ? `auto`
+                  : `${column?.width}px`,
+            }"
           />
         </colgroup>
         <!-- header is rendered as a row - seperated by columns -->
@@ -303,7 +308,12 @@ watch(
           <col
             v-for="column in filteredColumns"
             :key="column.id"
-            :style="{ width: `${column?.width}px` }"
+            :style="{
+              width:
+                column?.width == undefined || column?.width == -1
+                  ? `auto`
+                  : `${column?.width}px`,
+            }"
           />
         </colgroup>
         <!-- begin measurement row -->

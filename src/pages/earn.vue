@@ -35,6 +35,11 @@ const { networkSlug, networkConfig } = useNetwork();
 
 const isPaginated = computed(() => pools.value.length >= 10);
 
+const hiddenColumns = computed(() => {
+  if (isDesktop.value) return ['migrate', 'actions', 'lockEndDate'];
+  else return ['icons', 'migrate', 'actions', 'lockEndDate', 'volume'];
+});
+
 /**
  * METHODS
  */
@@ -45,23 +50,27 @@ function navigateToCreatePool() {
 function onColumnSort(columnId: string) {
   poolsSortField.value = columnId;
 }
-
-
-
 </script>
 
 <template>
   <div>
     <HomePageHero />
 
-    <div class="container mx-auto" id="hot-pools">
-      <h3 class="mx-7 my-7 dark:text-polaris-white font-semibold">Super Hot Pools</h3>
-      <div class="grid gap-6" :class="{'grid-cols-1':isMobile, 'grid-cols-3':isDesktop}">
-        <template v-for="(pool, idx)      in      (isDesktop) ? pools.slice(0, 6) :pools.slice(0, 3)  " :key="idx">
-          <PoolCard
-          :pool="pool"
-          :selectedTokens="selectedTokens"
-          ></PoolCard>
+    <div id="hot-pools" class="container mx-auto">
+      <h3 class="my-7 mx-7 font-semibold dark:text-polaris-white">
+        Super Hot Pools
+      </h3>
+      <div
+        class="grid gap-6"
+        :class="{ 'grid-cols-1': isMobile, 'grid-cols-3': isDesktop }"
+      >
+        <template
+          v-for="(pool, idx) in isDesktop
+            ? pools.slice(0, 6)
+            : pools.slice(0, 3)"
+          :key="idx"
+        >
+          <PoolCard :pool="pool" :selectedTokens="selectedTokens"></PoolCard>
         </template>
       </div>
     </div>
@@ -91,19 +100,19 @@ function onColumnSort(columnId: string) {
           >
             <TokenSearchInput
               v-model="selectedTokens"
-              class="w-full md:w-2/3 "
+              class="w-full md:w-2/3"
               @add="addSelectedToken"
               @remove="removeSelectedToken"
             />
             <button
               v-if="!upToMediumBreakpoint"
-              class="polaris-small-button text-white font-semibold"
+              class="font-semibold text-white polaris-small-button"
               :class="{ 'mt-4': upToMediumBreakpoint }"
               :block="upToMediumBreakpoint"
               @click="navigateToCreatePool"
-          >
-            {{ $t('createAPool.title') }}
-          </button>
+            >
+              {{ $t('createAPool.title') }}
+            </button>
           </div>
         </div>
         <PoolsTable
@@ -112,7 +121,7 @@ function onColumnSort(columnId: string) {
           :isLoading="isLoading"
           :selectedTokens="selectedTokens"
           class="mb-8"
-          :hiddenColumns="['migrate', 'actions', 'lockEndDate']"
+          :hiddenColumns="hiddenColumns"
           :isLoadingMore="poolsIsFetchingNextPage"
           :isPaginated="isPaginated"
           skeletonClass="pools-table-loading-height"
