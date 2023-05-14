@@ -780,6 +780,7 @@
   },
   "poolType": "Pool type",
   "poolValue": "Pool value",
+  "tvl": "TVL",
   "poolManager": "Pool Manager",
   "poolManagement": "Pool management",
   "poolDetails": "Pool details",
