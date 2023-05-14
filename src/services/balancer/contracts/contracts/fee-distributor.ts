@@ -13,9 +13,7 @@ import { getOldMulticaller } from '@/dependencies/OldMulticaller';
 
 export class FeeDistributor {
   public claimableTokens: string[] = [
-    '0x7B50775383d3D6f0215A8F290f2C9e2eEBBEceb2', // bb-a-USD v1
-    '0xA13a9247ea42D743238089903570127DdA72fE44', // bb-a-USD v2
-    '0xba100000625a3754423978a60c9317c58a424e3D', // BAL
+    '0xbADdAab20345a0E6607469949f069e8482f9AFC0', // XPOLAR
   ];
 
   constructor(
