@@ -1,5 +1,5 @@
 import { getAddress, isAddress } from '@ethersproject/address';
-import { compact, pick } from 'lodash';
+import { compact, forEach, pick } from 'lodash';
 import {
   computed,
   InjectionKey,
@@ -42,6 +42,8 @@ import {
   TokenListMap,
 } from '@/types/TokenList';
 import useWeb3 from '@/services/web3/useWeb3';
+
+import { coingeckoService } from '@/services/coingecko/coingecko.service';
 
 /**
  * TYPES
@@ -460,6 +462,30 @@ export const tokensProvider = (
     // Inject veBAL because it's not in tokenlists.
     const { veBAL } = configService.network.addresses;
     await injectTokens([veBAL]);
+
+    console.log('Fetching Custom Token Prices');
+    const customPrices: TokenPrices = await coingeckoService.prices.getTokens(
+      Object.getOwnPropertyNames(tokens.value)
+    );
+
+    Object.getOwnPropertyNames(customPrices).forEach(tokenAddress => {
+      if (
+        customPrices[tokenAddress] != undefined &&
+        customPrices[tokenAddress].usd != undefined
+      ) {
+        // console.log(tokenAddress + ': ' + customPrices[tokenAddress].usd);
+
+        const p = {};
+        Object.defineProperty(p, tokenAddress.trim(), {
+          value: customPrices[tokenAddress].usd,
+          enumerable: true,
+          configurable: true,
+        });
+        const price = ref<TokenPrices>(p);
+        injectPrices(price.value);
+      }
+    });
+
     state.loading = false;
   });
 

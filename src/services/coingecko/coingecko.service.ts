@@ -11,6 +11,7 @@ export const getNativeAssetId = (chainId: string): string => {
       return [c.chainId.toString(), c.thirdParty.coingecko.nativeAssetId];
     })
   );
+  if (chainId == '1313161555') return 'aurora';
 
   return mapping[chainId] || 'ethereum';
 };
@@ -21,7 +22,7 @@ export const getPlatformId = (chainId: string): string => {
       return [c.chainId.toString(), c.thirdParty.coingecko.platformId];
     })
   );
-
+  if (chainId == '1313161555') return 'aurora';
   return mapping[chainId] || 'ethereum';
 };
 
