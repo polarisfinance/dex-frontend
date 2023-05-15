@@ -88,7 +88,7 @@ export class PriceService {
             addressString[i] = '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729';
           }
 
-          //SPOLAR
+          //XPOLAR
           if (
             addressString[i] == '0xbADdAab20345a0E6607469949f069e8482f9AFC0'
           ) {
@@ -130,12 +130,16 @@ export class PriceService {
         if ('0x9d6fc90b25976e40adad5a3edd08af9ed7a21729' == elem)
           results['0x39EE5F95A5e3B86161818f419f959264C22193B8'] = results[elem];
 
-        if ('0xeaf7665969f1daA3726ceada7c40Ab27b3245993' == elem)
+        if ('0xeaf7665969f1daA3726ceada7c40Ab27b3245993' == elem) {
           results['0xbADdAab20345a0E6607469949f069e8482f9AFC0'] = results[elem];
-
+        }
         if ('0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6' == elem)
           results['0xf4A8b365cD410308d581574e35D412D82726a251'] = results[elem];
       });
+      //MOCKS XPOLAR SPOLAR pNEAR
+      results['0xbADdAab20345a0E6607469949f069e8482f9AFC0'] = { usd: 0.075 };
+      results['0x39EE5F95A5e3B86161818f419f959264C22193B8'] = { usd: 3.59231 };
+      results['0xf4A8b365cD410308d581574e35D412D82726a251'] = { usd: 1.35157 };
 
       return results;
     } catch (error) {
