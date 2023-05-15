@@ -140,7 +140,7 @@
   "claimPage": {
     "tips": {
       "BalIncentives": "Incentives for LPs who stake in eligible pools (based on the previous week's voting). This doesn't include swap fees or intrinsic yield from certain yield bearing tokens which accumulate into LP positions automatically.",
-      "ProtocolAndVebal": "Additional incentives for vexPOLAR holders: For locking in the B-80BAL-20WETH pool (based on the previous week's voting), and their share of protocol revenue.",
+      "ProtocolAndVebal": "Additional incentives for vexPOLAR holders: For locking in the XPOLAR/SPOLAR/pNEAR pool (based on the previous week's voting), and their share of protocol revenue.",
       "OtherIncentives": "Incentives from third parties who want to further incentivize liquidity on top of any BAL liquidity incentives."
     }
   },
@@ -577,7 +577,7 @@
   "locked": "Locked",
   "locking": {
     "expiredLockLpTokens": "Expired lock LP tokens",
-    "expiredLockTooltip": "Your previous locking period has expired, so you no longer have any vexPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or vexPOLAR incentives. However, you'll still get the minimum 1.0x rate. Redeem your expired locked B-80BAL-20WETH LP tokens and then create a new lock to get vexPOLAR.",
+    "expiredLockTooltip": "Your previous locking period has expired, so you no longer have any vexPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or vexPOLAR incentives. However, you'll still get the minimum 1.0x rate. Redeem your expired locked XPOLAR/SPOLAR/pNEAR LP tokens and then create a new lock to get vexPOLAR.",
     "lockBptForVeBal": "Lock LP for vexPOLAR",
     "lockedLpTokensTooltip": "The USD value of your vexPOLAR. These are your locked LP tokens in the BAL 80% / WETH 20% pool.",
     "unlockedLpTokensTooltip": "The USD value of your liquidity provided to the BAL 80% / WETH 20% pool that has not been locked."
@@ -609,7 +609,7 @@
   "modals": {
     "veBalRedirectModal": {
       "title": "Proceed to mainnet",
-      "description": "Getting and using vexPOLAR to vest and vote must be performed on the Ethereum mainnet. \n\n You can still earn liquidity mining incentives on Arbitrum, Polygon and Gnosis by adding liquidity to eligible pools. However to vote to direct emissions to your favored pools and to earn the protocol fees, you will need to use vexPOLAR on Ethereum Mainnet by locking B-80BAL-20WETH."
+      "description": "Getting and using vexPOLAR to vest and vote must be performed on the Ethereum mainnet. \n\n You can still earn liquidity mining incentives on Arbitrum, Polygon and Gnosis by adding liquidity to eligible pools. However to vote to direct emissions to your favored pools and to earn the protocol fees, you will need to use vexPOLAR on Ethereum Mainnet by locking XPOLAR/SPOLAR/pNEAR."
     }
   },
   "month": "month",
@@ -943,11 +943,11 @@
       },
       "tokens": {
         "balWETH": "BAL + WETH",
-        "lpToken": "B-80BAL-20WETH",
+        "lpToken": "XPOLAR/SPOLAR/pNEAR",
         "veBAL": "vexPOLAR"
       },
       "tokenInfo": {
-        "balWETH": "Add liquidity to the 80% BAL / 20% WETH pool to get the B-80BAL-20WETH LP token.",
+        "balWETH": "Add liquidity to the 80% BAL / 20% WETH pool to get the XPOLAR/SPOLAR/pNEAR LP token.",
         "lpToken": "Lock up the LP tokens from the 80% BAL / 20% WETH pool for up to a year to get vexPOLAR. The longer you lock, the more vexPOLAR you get.",
         "veBAL": "Use vexPOLAR to earn extra on your staked pools. Only some pools are eligible for staking. Check any pools that you are in, and stake it to earn liquidity mining incentives. You can also use vexPOLAR to vote to direct future liquidity mining emissions"
       },
@@ -960,10 +960,10 @@
       "title": "My vexPolar",
       "cards": {
         "myLpToken": {
-          "label": "My B-80BAL-20WETH"
+          "label": "My XPOLAR/SPOLAR/pNEAR"
         },
         "myLockedLpToken": {
-          "label": "My locked B-80BAL-20WETH"
+          "label": "My locked XPOLAR/SPOLAR/pNEAR"
         },
         "lockedEndDate": {
           "label": "Locked until",
@@ -973,7 +973,7 @@
           "label": "My vexPolar",
           "secondaryText": "{0} of all vexPOLAR"
         },
-        "myExpiredLockTooltip": "Your previous lockup period has expired, so you no longer have any vexPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or vexPOLAR incentives. However, you’ll still get the minimum 1.0x rate. Tap the minus icon to redeem your expired locked B-80BAL-20WETH LP tokens and then create a new lock to get vexPOLAR."
+        "myExpiredLockTooltip": "Your previous lockup period has expired, so you no longer have any vexPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or vexPOLAR incentives. However, you’ll still get the minimum 1.0x rate. Tap the minus icon to redeem your expired locked XPOLAR/SPOLAR/pNEAR LP tokens and then create a new lock to get vexPOLAR."
       }
     },
     "communityVeBAL": {
