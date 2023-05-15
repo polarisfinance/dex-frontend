@@ -245,7 +245,7 @@ onBeforeMount(async () => {
             <div class="px-4 xl:px-0">
               <div class="flex items-center mt-6 mb-2">
                 <h3 class="inline-block mr-1.5 text-xl">
-                  BAL {{ $t('incentives') }}
+                  XPOLAR {{ $t('incentives') }}
                 </h3>
                 <BalTooltip
                   iconSize="xs"
@@ -325,7 +325,7 @@ onBeforeMount(async () => {
         >
           {{ $t('noClaimableIncentives') }}
         </BalBlankSlate>
-        <div class="px-4 xl:px-0 mb-16">
+        <!-- <div class="px-4 xl:px-0 mb-16">
           <h2 class="mt-8 font-body text-2xl font-semibold">
             {{ $t('pages.claim.titles.incentivesOnOtherNetworks') }}
           </h2>
@@ -353,7 +353,7 @@ onBeforeMount(async () => {
             >{{ $t('legacyClaims') }}
             <BalIcon name="arrow-right" size="sm" class="mx-1"
           /></BalLink>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
