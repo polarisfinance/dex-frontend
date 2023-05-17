@@ -71,12 +71,12 @@ const columns = ref<ColumnDefinition<RewardRow>[]>([
     width: 350,
   },
   {
-    name: t('amount'),
+    name: `${t('amount')} (XPOLAR)`,
     id: 'amount',
     align: 'right',
     width: 150,
     totalsCell: 'totalAmountCell',
-    accessor: ({ amount }) => `${fNum(amount, FNumFormats.token)} BAL`,
+    accessor: ({ amount }) => `${fNum(amount, FNumFormats.token)}`,
   },
   {
     name: t('value'),
@@ -169,7 +169,7 @@ function redirectToPool({ pool }: { pool: GaugePool }) {
       </template>
       <template #totalAmountCell>
         <div class="flex justify-end">
-          {{ fNum(totalClaimAmount, FNumFormats.token) }} BAL
+          {{ fNum(totalClaimAmount, FNumFormats.token) }}
         </div>
       </template>
       <template #totalValueCell>

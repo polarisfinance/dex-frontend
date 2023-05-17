@@ -63,7 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   block: false,
   circle: false,
   outline: false,
-  noBackground:false,
+  noBackground: false,
   flat: false,
   rounded: false,
   switcher: false,
@@ -136,13 +136,11 @@ const bgFlatClasses = computed(() => {
 
 const bgColorClasses = computed(() => {
   if (props.color.includes('gradient')) return bgGradientClasses.value;
-  else if(props.noBackground) return 'ng-none';
+  else if (props.noBackground) return 'ng-none';
   else if (props.outline) return 'bg-transparent';
   else if (props.flat) return bgFlatClasses.value;
-  else if (props.color === 'transparent') 
-    return 'bg-transparent';
-  else if (props.color === 'gray' && props.switcher)
-    return 'dark:bg-[#50456E]';
+  else if (props.color === 'transparent') return 'bg-transparent';
+  else if (props.color === 'gray' && props.switcher) return 'dark:bg-[#50456E]';
   else if (props.color === 'white') {
     return 'bg-gray-50 hover:bg-white dark:bg-gray-800';
   } else {
@@ -150,12 +148,11 @@ const bgColorClasses = computed(() => {
       return `bg-gray-300 dark:bg-polaris-button-inactive text-white dark:text-polaris-2`;
     }
     if (props.loading) {
-      return `${loadingBackground(props.color)} ${loadingDarkBackground(
+      return `${loadingBackground(
         props.color
-      )}`;
+      )} dark:bg-polaris-button-inactive`;
     }
-    if (props.color === 'primary') 
-      return 'polaris-main-button';
+    if (props.color === 'primary') return 'polaris-main-button';
 
     return `
           ${background(props.color)} ${hoverBackground(props.color)}
@@ -178,16 +175,16 @@ const borderClasses = computed(() => {
 
 const textColorClasses = computed(() => {
   if (props.outline && props.disabled)
-    return 'text-gray-400 dark:text-gray-700';
+    return 'text-gray-400 dark:text-polaris-2';
   if (props.outline && props.color === 'gradient') return 'text-purple-700';
   if (props.color === 'white') {
     if (props.outline)
       return 'text-white hover:text-yellow-500 dark:hover:text-yellow-500';
     else return 'text-gray-800 hover:text-blue-600 dark:text-gray-100';
   }
-  if(props.color === 'gray' && props.switcher)
+  if (props.color === 'gray' && props.switcher)
     return 'dark:text-polaris-white font-semibold';
-  if(props.color==='transparent' && props.switcher)
+  if (props.color === 'transparent' && props.switcher)
     return 'dark:text-polaris-2 font-semibold';
   if (props.outline || props.flat)
     return `${text(props.color)} ${darkText(props.color)}`;

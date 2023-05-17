@@ -201,7 +201,7 @@ async function submit(): Promise<TransactionResponse> {
       </BalBtn>
       <BalBtn
         v-else-if="isStakablePool"
-        color="gradient"
+        color="gray"
         block
         class="flex mt-2"
         @click="emit('showStakeModal')"

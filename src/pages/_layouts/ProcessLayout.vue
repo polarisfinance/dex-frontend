@@ -41,7 +41,6 @@ function updateStep(step) {
   if (step <= steps.length) {
     activeStep.value = step;
   }
-  activeStep.value = step;
 }
 
 function progressPerc() {

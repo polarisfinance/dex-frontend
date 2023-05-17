@@ -262,7 +262,7 @@ onBeforeMount(async () => {
           :disabled="isStakeAndZero"
           @success="handleSuccess"
         />
-        <BalStack v-if="isActionConfirmed && confirmationReceipt" vertical>
+        <!-- <BalStack v-if="isActionConfirmed && confirmationReceipt" vertical>
           <ConfirmationIndicator :txReceipt="confirmationReceipt" />
           <AnimatePresence :isVisible="isActionConfirmed">
             <BalBtn
@@ -277,7 +277,7 @@ onBeforeMount(async () => {
               {{ $t('close') }}
             </BalBtn>
           </AnimatePresence>
-        </BalStack>
+        </BalStack> -->
       </div>
     </div>
   </BalStack>
