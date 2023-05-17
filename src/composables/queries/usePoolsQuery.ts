@@ -235,7 +235,6 @@ export default function usePoolsQuery(
       skip = poolsRepository.currentProvider?.skip
         ? poolsRepository.currentProvider.skip
         : poolsStoreService.pools.value?.length || 0;
-
       return {
         pools,
         skip,

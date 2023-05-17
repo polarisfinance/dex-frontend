@@ -94,10 +94,10 @@ export default defineComponent({
   },
   data() {
     return {
-      aprs: {},
-      xpolarPoolQuery: usePoolQuery(
-        '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
-      ),
+      // aprs: {},
+      // xpolarPoolQuery: usePoolQuery(
+      //   '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015'
+      // ),
     };
   },
   created() {

@@ -49,7 +49,7 @@ export default class PoolService {
       );
       // if totalLiquidity can be computed from coingecko prices, use that
       // else, use the value retrieved from the subgraph
-      if (bnum(totalLiquidity).gt(0)) {
+      if (bnum(sdkTotalLiquidity).gt(0)) {
         totalLiquidity = sdkTotalLiquidity;
       }
     } catch (error) {
