@@ -43,7 +43,7 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
   <div class="flex justify-center py-4 px-2">
     <BalBtn
       v-if="isMigratablePool(pool)"
-      color="white"
+      color="gray"
       class="polaris-small-button"
       size="sm"
       @click.prevent.stop="emit('click:migrate', pool)"
@@ -52,7 +52,7 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
     </BalBtn>
     <BalBtn
       v-else-if="poolsType === 'unstaked' && stakablePoolIds.includes(pool.id)"
-      color="white"
+      color="gray"
       class="polaris-small-button"
       size="sm"
       :disabled="isMigratablePool(pool)"
@@ -62,7 +62,7 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
     </BalBtn>
     <BalBtn
       v-else-if="poolsType === 'staked'"
-      color="white"
+      color="gray"
       class="polaris-small-button"
       size="sm"
       @click.prevent.stop="emit('click:unstake', pool)"
@@ -86,7 +86,7 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
       v-else-if="showVeBalLock"
       href="/#/aurora-testnet/get-vebal?returnRoute=vebal"
     >
-      <BalBtn color="gradient" size="sm">
+      <BalBtn color="gray" size="sm" class="polaris-small-button">
         {{ $t('transactionAction.createLock') }}
       </BalBtn>
     </BalLink>

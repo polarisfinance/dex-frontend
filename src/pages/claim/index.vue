@@ -236,7 +236,9 @@ onBeforeMount(async () => {
     />
     <div>
       <div class="xl:container py-12 xl:px-4 xl:mx-auto">
-        <h2 class="px-4 xl:px-0 font-body text-2xl font-semibold">
+        <h2
+          class="px-4 xl:px-0 font-body text-2xl font-semibold text-polaris-white"
+        >
           {{ configService.network.chainName }} {{ $t('liquidityIncentives') }}
         </h2>
 
@@ -244,7 +246,7 @@ onBeforeMount(async () => {
           <div class="mb-16">
             <div class="px-4 xl:px-0">
               <div class="flex items-center mt-6 mb-2">
-                <h3 class="inline-block mr-1.5 text-xl">
+                <h3 class="inline-block mr-1.5 text-xl text-polaris-white">
                   XPOLAR {{ $t('incentives') }}
                 </h3>
                 <BalTooltip
@@ -266,7 +268,9 @@ onBeforeMount(async () => {
         </template>
         <template v-if="networkHasProtocolRewards">
           <div class="mb-16">
-            <h3 class="inline-block xl:px-0 pl-4 mt-8 mr-1.5 mb-3 text-xl">
+            <h3
+              class="inline-block xl:px-0 pl-4 mt-8 mr-1.5 mb-3 text-xl text-polaris-white"
+            >
               {{ $t('protocolIncentives') }}
             </h3>
             <BalTooltip
@@ -291,7 +295,9 @@ onBeforeMount(async () => {
           </div>
         </template>
         <div v-if="networkHasNativeGauges">
-          <h3 class="inline-block px-4 xl:px-0 mt-8 mr-1.5 text-xl">
+          <h3
+            class="inline-block px-4 xl:px-0 mt-8 mr-1.5 text-xl text-polaris-white"
+          >
             {{ $t('otherTokenIncentives') }}
           </h3>
           <BalTooltip
