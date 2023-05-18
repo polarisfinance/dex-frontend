@@ -358,7 +358,7 @@ function iconAddresses(pool: Pool) {
       <template #volumeCell="pool">
         <div
           :key="columnStates.volume"
-          class="flex justify-end py-3 px-6 -mt-1 font-numeric"
+          class="flex justify-end py-3 px-6 mt-1 font-numeric"
         >
           <BalLoadingBlock v-if="!pool?.volumeSnapshot" class="w-12 h-4" />
           <span v-else class="text-right">
@@ -380,7 +380,7 @@ function iconAddresses(pool: Pool) {
         <div
           :key="columnStates.aprs"
           :class="[
-            'flex justify-end py-3 px-6 -mt-1 font-numeric text-right',
+            'flex justify-end py-3 px-1 mt-1 font-numeric text-right',
             {
               'text-gray-300 dark:text-gray-600 line-through': isLBP(
                 pool.poolType
