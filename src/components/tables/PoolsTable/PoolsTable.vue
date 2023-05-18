@@ -122,7 +122,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     accessor: 'id',
     Cell: 'poolNameCell',
     // width: props.hiddenColumns.length >= 2 ? wideCompositionWidth.value : 350,
-    width: isDesktop.value ? 420 : -1,
+    width: isDesktop.value ? 320 : -1,
   },
   {
     name: t('myBoost'),
