@@ -23,7 +23,7 @@
     "pools-fetch-error": "Failed to fetch pools.",
     "price-fetch-error": "Our pricing provider, CoinGecko, is currently down.",
     "retry-label": "Refresh to try again",
-    "boostedPools": "Increased yields, greater capital efficiency, deeper liquidity. Try Balancer Boosted pools now →",
+    "boostedPools": "Increased yields, greater capital efficiency, deeper liquidity. Try Polaris Finance Boosted pools now →",
     "vebalL2": "Staking is live on Polygon and Arbitrum. Incentives for eligible pools will resume on April 28."
   },
   "allow": "Allow",
@@ -46,7 +46,7 @@
     "InsufficientValidTo": "The order you are signing is already expired. This can happen if you set a short expiration in the settings and waited too long before signing the transaction. Please try again.",
     "InsufficientFunds": "The account doesn't have enough funds.",
     "UnsupportedToken": "One of the tokens you are swapping is unsupported.",
-    "WrongOwner": "The signature is invalid.\n\nIt's likely that the signing method provided by your wallet doesn't comply with the standards required by Balancer.\n\nCheck whether your Wallet app supports off-chain signing (EIP-712 or ETHSIGN).",
+    "WrongOwner": "The signature is invalid.\n\nIt's likely that the signing method provided by your wallet doesn't comply with the standards required by Polaris Finance.\n\nCheck whether your Wallet app supports off-chain signing (EIP-712 or ETHSIGN).",
     "NotFound": "Token pair selected has insufficient liquidity.",
     "OrderNotFound": "The order you are trying to cancel does not exist.",
     "AlreadyCancelled": "Order is already cancelled.",
@@ -92,7 +92,7 @@
   "available": "Available",
   "availableToClaim": "Available to claim:",
   "balance": "Balance",
-  "balancerGovernance": "Balancer governance",
+  "balancerGovernance": "Polaris Finance governance",
   "balances": "Balances",
   "basedOnLast24h": "based on the last 24h",
   "basedOnTokensInWallet": "Based on pool tokens in your wallet",
@@ -104,8 +104,8 @@
   "buy": "Buy",
   "build": "Build",
   "blog": "Blog",
-  "boostedPool": "Balancer Boosted pool",
-  "byConnectingWallet": "By connecting a wallet, I agree to Balancer Foundation’s",
+  "boostedPool": "Polaris Finance Boosted pool",
+  "byConnectingWallet": "By connecting a wallet, I agree to Polaris Finance’s",
   "brandedRedirect": {
     "xave": {
       "title": "Xave Finance",
@@ -122,8 +122,8 @@
   "claimHero": {
     "title": "Claim liquidity incentives",
     "legacyTitle": "Claim legacy incentives",
-    "description": "Balancer Protocol liquidity incentives are directed to pools by vexPOLAR voters. Stake in these pools to earn incentives. Boost with vexPOLAR for up to 2.5x extra on Mainnet pools.",
-    "legacyDescription": "Liquidity mining incentive systems before the launch of ve8020-tokenomics have been deprecated. If you provided liquidity before this change and have outstanding incentives you can claim them here.",
+    "description": "Polaris Finance Protocol liquidity incentives are directed to pools by vexPOLAR voters. Stake in these pools to earn incentives. Boost with vexPOLAR for up to 2.5x extra on Mainnet pools.",
+    "legacyDescription": "Liquidity mining incentive systems before the launch of vexPOLAR-tokenomics have been deprecated. If you provided liquidity before this change and have outstanding incentives you can claim them here.",
     "tipLabel": {
       "addLiquidity": "Add liquidity",
       "stake": "Stake your LP",
@@ -134,20 +134,20 @@
       "addLiquidity": "To earn liquidity mining incentives, add liquidity to eligible pools across Ethereum Mainnet and supported Layer 2's like Polygon and Arbitrum (see the table on the vexPOLAR page). Note: You'll earn swap fees with or without staking but you don't need to claim these as they are automatically added to your position.",
       "stake": "If you've provided liquidity in an eligible pool, you'll have an option to stake your Liquidity Provider (LP) tokens from that pool. Stake them to receive liquidity mining incentives in addition to any swap fees.",
       "boost": "Get vexPOLAR to boost your liquidity mining incentives by up to 2.5x (on Ethereum Mainnet only). The more vexPOLAR you hold, the larger your boost. vexPOLAR holders also earn protocol fees and can vote to direct future pool emissions. Note, there is no additional boost from holding vexPOLAR on Layer 2 pools like Polygon and Arbitrum.",
-      "claim": "Token earnings from liquidity mining accumulate every block and can be claimed at any time. Some pools offer multiple token incentives (not just BAL). Additionally, vexPOLAR holders also get a share of protocol revenue, in both bb-a-USD and BAL."
+      "claim": "Token earnings from liquidity mining accumulate every block and can be claimed at any time. Some pools offer multiple token incentives (not just XPOLAR). Additionally, vexPOLAR holders also get a share of protocol revenue, in both bb-a-USD and XPOLAR."
     }
   },
   "claimPage": {
     "tips": {
       "BalIncentives": "Incentives for LPs who stake in eligible pools (based on the previous week's voting). This doesn't include swap fees or intrinsic yield from certain yield bearing tokens which accumulate into LP positions automatically.",
       "ProtocolAndVebal": "Additional incentives for vexPOLAR holders: For locking in the XPOLAR/SPOLAR/pNEAR pool (based on the previous week's voting), and their share of protocol revenue.",
-      "OtherIncentives": "Incentives from third parties who want to further incentivize liquidity on top of any BAL liquidity incentives."
+      "OtherIncentives": "Incentives from third parties who want to further incentivize liquidity on top of any XPOLAR liquidity incentives."
     }
   },
   "claimAll": "Claim all",
-  "claimBAL": "Claim $BAL for",
+  "claimBAL": "Claim $XPOLAR for",
   "claiming": "Claiming...",
-  "claimSuccess": "You successfully claimed $BAL!",
+  "claimSuccess": "You successfully claimed $XPOLAR!",
   "classic": "Classic",
   "clearForms": "Clear forms",
   "clearTransactions": "Clear transactions",
@@ -191,8 +191,8 @@
     "enterTokenPrice": "Enter the estimated current price of {0} in $USD",
     "existingPoolInfo": "There’s already another pool with exactly the same tokens and fee structure. It’s recommended to add your liquidity to the other pool or to go back and change your Pool Creation parameters in a material way to avoid fractured liquidity and lower profits for both pools.",
     "fixedFeeRadioLabel": "Permanently fix fees to the initial rate",
-    "governanceFees": "Allow Balancer governance to manage fees",
-    "governanceFeesTooltip": "Enable this to give Balancer governance the ability to dynamically manage the fees of this pool in order to maximize profits. But note, Balancer governance is under no obligation to actually manage the fees and will likely only do so if there is significant swap volume.",
+    "governanceFees": "Allow Polaris Finance governance to manage fees",
+    "governanceFeesTooltip": "Enable this to give Polaris Finance governance the ability to dynamically manage the fees of this pool in order to maximize profits. But note, Polaris Finance governance is under no obligation to actually manage the fees and will likely only do so if there is significant swap volume.",
     "invalidInitialWeightsInfo": "One or more tokens has an initial weight less than 1% which may cause funding to fail. If the token has a missing price, enter in a price. Otherwise, adjust the initial balances in the previous step.",
     "invalidInitialWeightsTitle": "Invalid initial weight",
     "maxInitialLiquidity": "Max initial liquidity",
@@ -246,7 +246,7 @@
     },
     "migrateReason": {
       "title": "Migrate to avoid vulnerability",
-      "description": "A security vulnerability was recently disclosed. Although, no funds are a risk, insofar as the exploit could only be executed by pool owners or Balancer Governance itself which is composed of known participants in the Balancer ecosystem, it is recommended to migrate your funds asap."
+      "description": "A security vulnerability was recently disclosed. Although, no funds are a risk, insofar as the exploit could only be executed by pool owners or Polaris Finance Governance itself which is composed of known participants in the Polaris Finance ecosystem, it is recommended to migrate your funds asap."
     },
     "stabal3Pool": {
       "whyMigrate": {
@@ -441,7 +441,7 @@
       "header": "The fees on this transaction exceed 20% of the swap amount."
     }
   },
-  "goToBalancerV1Site": "Go to the Balancer V1 site ->",
+  "goToBalancerV1Site": "Go to the Polaris Finance V1 site ->",
   "goToMigratedPool": "Go to migrated pool",
   "governance": "Governance",
   "grants": "Grants",
@@ -460,7 +460,7 @@
   },
   "highPriceImpact": "High price impact",
   "highPriceImpactDetailed": "This swap is significantly moving the market price.",
-  "highRiskPool": "This is a higher-risk pool that contains one or more unlisted tokens. A liquidity pool is only as good as its weakest token! If a token were blacklisted, infinitely minted, frozen, or exploited in any other way, the value of this pool could go to 0. Balancer Foundation is never liable for losses incurred through using our UI or the Balancer protocol. Be careful, and do your own research!",
+  "highRiskPool": "This is a higher-risk pool that contains one or more unlisted tokens. A liquidity pool is only as good as its weakest token! If a token were blacklisted, infinitely minted, frozen, or exploited in any other way, the value of this pool could go to 0. Polaris Finance is never liable for losses incurred through using our UI or the Polaris Finance protocol. Be careful, and do your own research!",
   "home": "Home",
   "hourAbbrev": "h",
   "incentives": "incentives",
@@ -500,7 +500,7 @@
         "default": "Add liquidity preview"
       },
       "tooltips": {
-        "approval": "You must approve {0} to add liquidity for this token on Balancer. Approvals are required once per token, per wallet."
+        "approval": "You must approve {0} to add liquidity for this token on Polaris Finance. Approvals are required once per token, per wallet."
       }
     },
     "warning": {
@@ -519,7 +519,7 @@
         "paragraph2": "However, since your connected wallet doesn’t have any pool tokens, go to the ‘Single token’ tab above to add liquidity to this pool with non-pool tokens."
       },
       "blockedPool": {
-        "title": "This pool contains one or more tokens that have not been vetted by the Balancer community: {0}.",
+        "title": "This pool contains one or more tokens that have not been vetted by the Polaris Finance community: {0}.",
         "description": "For the protection of LPs, adding liquidity to the pool has been disabled. Click",
         "description2": "to learn how to submit the token(s) for review."
       }
@@ -533,7 +533,7 @@
   },
   "investmentPool": "Liquidity pool",
   "investmentPools": "Liquidity pools",
-  "investmentPoolsAbout": "Stake your assets to get $BAL tokens for participating in Balancer V2 liquidity mining.",
+  "investmentPoolsAbout": "Stake your assets to get $BAL tokens for participating in Polaris Finance V2 liquidity mining.",
   "investmentPoolsAboutLink": "Learn more ->",
   "investmentSettled": "Your liquidity add has settled",
   "investmentSuccess": "Your tokens have been added to this pool, and you have received a new LP token representing this action.",
@@ -552,7 +552,7 @@
   "liquidityMiningIncentives": "Liquidity mining incentives",
   "liquidityMiningIncentivesCopy": "Liquidity incentives on {0} are paused for 1 week during its upgrade to the vexPOLAR system. Incentives will resume on April 28.",
   "liquidityMiningPopover": {
-    "airdropEligibility": "People who provide liquidity to eligible pools or swap on eligible token pairs receive weekly $BAL distributions as incentives. $BAL token holders own the Balancer Protocol and can help shape its future by voting on governance proposals.",
+    "airdropEligibility": "People who provide liquidity to eligible pools or swap on eligible token pairs receive weekly $BAL distributions as incentives. $BAL token holders own the Polaris Finance Protocol and can help shape its future by voting on governance proposals.",
     "airdropExplainer": "Weekly distributions from liquidity mining on {0} are airdropped on Wednesdays, sent directly to your wallet using disperse.app",
     "claimFreezeWarning": {
       "description": "Since you have several weeks' worth of tokens unclaimed, your screen may appear to freeze after pressing the claim button while it is processed. Just leave your browser open and your wallet will eventually pop open for you to complete the claim.",
@@ -568,7 +568,7 @@
     },
     "title": "Token incentives"
   },
-  "liquidityProviderCopy": "People who provide liquidity to eligible pools or swap on eligible token pairs receive weekly $BAL distributions as incentives. $BAL token holders own the Balancer Protocol and can help shape its future by voting on governance proposals.",
+  "liquidityProviderCopy": "People who provide liquidity to eligible pools or swap on eligible token pairs receive weekly $BAL distributions as incentives. $BAL token holders own the Polaris Finance Protocol and can help shape its future by voting on governance proposals.",
   "liquidityProvision": "Liquidity provision",
   "loading": "Loading...",
   "loadingBestPrice": "Looking for the best price...",
@@ -625,11 +625,11 @@
   "mustBeValidAddress": "This is not a valid Ethereum address",
   "myApr": "My APR",
   "myBalance": "My balance",
-  "myBalancerBalance": "My Balancer balance",
+  "myBalancerBalance": "My Polaris Finance balance",
   "myBoost": "My boost",
   "myPortfolio": "My portfolio",
   "myShare": "My share",
-  "myLiquidityInBalancerPools": "My liquidity in Balancer pools",
+  "myLiquidityInBalancerPools": "My liquidity in Polaris Finance pools",
   "myWallet": "My Ethereum wallet",
   "myWallet2": "My wallet",
   "name": "Name",
@@ -658,7 +658,7 @@
   "noUnstakedInvestments": "You have no unstaked liquidity on {0}",
   "noStakedInvestments": "You have no staked liquidity on {0}",
   "noNativeCurrency": "You’ll need some {0} for gas fees in order to transact on {1}.",
-  "noNativeCurrencyEthereum": "You’ll need some {0} for gas fees in order to do most basic transactions on {1}. However, you may continue to swap any tokens you’ve previously approved for use on Balancer with this wallet, by using the ‘swap gasless’ option.",
+  "noNativeCurrencyEthereum": "You’ll need some {0} for gas fees in order to do most basic transactions on {1}. However, you may continue to swap any tokens you’ve previously approved for use on Polaris Finance with this wallet, by using the ‘swap gasless’ option.",
   "noPoolsFound": "No pools found",
   "noPriceImpact": "Best price",
   "noPriceImpactTip": "Adding tokens proportionally gets you the best price.",
@@ -689,7 +689,7 @@
   "pages": {
     "claim": {
       "title": "Claim your liquidity mining incentives",
-      "description": "Incentives to attract liquidity are set by the Balancer protocol and partners. Stakers in eligible pools can claim incentives every block. People with vexPOLAR get a boosted rate—up to 2.5x extra.",
+      "description": "Incentives to attract liquidity are set by the Polaris Finance protocol and partners. Stakers in eligible pools can claim incentives every block. People with vexPOLAR get a boosted rate—up to 2.5x extra.",
       "titles": {
         "incentivesOnOtherNetworks": "Incentives on other networks",
         "legacyIncentives": "Legacy incentives"
@@ -707,7 +707,7 @@
   "pendingEstimate": "Pending: (estimate)",
   "perWeek": "per week",
   "policies": {
-    "balancerThirdPartyInfo": "Balancer is an open source, permissionless, decentralized protocol. The smart contracts that power the ecosystem may be used by anyone. This website is the Balancer Foundation's front-end to the ecosystem and it is also open-source. You are free to fork it on Github and modify it as you wish",
+    "balancerThirdPartyInfo": "Balancer is an open source, permissionless, decentralized protocol. The smart contracts that power the ecosystem may be used by anyone. This website is the Polaris Finance's front-end to the ecosystem and it is also open-source. You are free to fork it on Github and modify it as you wish",
     "cookiesPolicy": "Cookies Policy",
     "privacyPolicy": "Privacy Policy",
     "risks": "Risks",
@@ -870,7 +870,7 @@
   "seeMore": "See more",
   "seeOnExplorer": "See on explorer",
   "seePools": "See pools",
-  "seeV1BalancerInvestments": "Want to see your funds on Balancer V1?",
+  "seeV1BalancerInvestments": "Want to see your funds on Polaris Finance V1?",
   "select": "Select",
   "selectToken": "Select token",
   "sell": "Sell",
@@ -884,7 +884,7 @@
     "sentry": "Used for error tracking and performance monitoring."
   },
   "settings": "Settings",
-  "setUpEthereumWallet": "Balancer is a DeFi app on Ethereum. Set up an Ethereum Wallet to swap and provide liquidity here.",
+  "setUpEthereumWallet": "Polaris Finance is a DeFi app on Ethereum. Set up an Ethereum Wallet to swap and provide liquidity here.",
   "singleToken": "Single token",
   "singleTokenMax": "Single token max",
   "slippageTolerance": "Slippage tolerance",
@@ -1290,7 +1290,7 @@
   "tokensLowerCase": "tokens",
   "tokensParen": "Token(s)",
   "tokenPrices": "Token prices",
-  "unlistedTokenWarningTitle": "You have added a token that is not included in the Balancer Tokenlist.",
+  "unlistedTokenWarningTitle": "You have added a token that is not included in the Polaris Finance Tokenlist.",
   "unlistedTokenWarning": "You will not be able to complete pool creation until it's included. To add a token to our Tokenlist please follow our process described",
   "tooltips": {
     "addLiquidity": {
@@ -1324,7 +1324,7 @@
   },
   "swapLiquidity": "Swap liquidity",
   "swapSettled": "Your swap has settled",
-  "swapsThroughWeth": "Swaps from ETH route through Balancer liquidity pools and incur gas fees.",
+  "swapsThroughWeth": "Swaps from ETH route through Polaris Finance liquidity pools and incur gas fees.",
   "swapSubmissionError": {
     "actionLabel": "Dismiss",
     "title": "An error has occurred"
@@ -1364,11 +1364,11 @@
         "title": "Approve Batch relayer"
       },
       "tokenApproval": {
-        "content": "Your permission is required to swap this token on Balancer. Approvals are required once per token, per wallet.",
+        "content": "Your permission is required to swap this token on Polaris Finance. Approvals are required once per token, per wallet.",
         "title": "Approve {0}"
       },
       "sign": {
-        "content": "Upon your signature, the Balancer CoW Protocol will find an optimal route amongst other swappers or from liquidity on other DeFi exchanges, with MEV protection.",
+        "content": "Upon your signature, the Polaris Finance CoW Protocol will find an optimal route amongst other swappers or from liquidity on other DeFi exchanges, with MEV protection.",
         "title": "Sign a free message to swap"
       },
       "swap": {
@@ -1466,15 +1466,15 @@
     "migratePool": "{0} {1} to {2}",
     "wrapUnwrap": "{0} {1} to {2}",
     "tooltips": {
-      "approveForInvesting": "You must approve {0} to add liquidity for this token on Balancer. Approvals are required once per token, per wallet.",
+      "approveForInvesting": "You must approve {0} to add liquidity for this token on Polaris Finance. Approvals are required once per token, per wallet.",
       "approveForLocking": "You must approve {0} to lock this token. Approvals are required once per token, per wallet.",
-      "approveForStaking": "You must approve {0} to stake this token on Balancer. Approvals are required once per token, per wallet."
+      "approveForStaking": "You must approve {0} to stake this token on Polaris Finance. Approvals are required once per token, per wallet."
     }
   },
   "transactionType": "Transaction type",
   "unallocated": "Unallocated",
-  "unavailableOnNetwork": "Sorry! Balancer is not available on this network",
-  "unavailableOnNetworkWithName": "Sorry! Balancer is not available on {0}",
+  "unavailableOnNetwork": "Sorry! Polaris Finance is not available on this network",
+  "unavailableOnNetworkWithName": "Sorry! Polaris Finance is not available on {0}",
   "unsupportedNetwork": "Unsupported network",
   "unknown": "Unknown",
   "unknownPoolType": "Unknown pool type",
