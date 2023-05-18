@@ -71,15 +71,17 @@ function copyAddress() {
 </script>
 
 <template>
-    <div>
-      <div class="p-4">
-        <div class="flex justify-between items-center mb-6">
-          <h5 class="tracking-tight leading-none dark:text-polaris-white font-semibold text-base" v-text="$t('account')" />
-          
-        </div>
-        <div class="dark:bg-polaris-card-medium rounded-small">
-          <div class="flex">
-          <div class="flex p-3 ">
+  <div>
+    <div class="p-4">
+      <div class="flex justify-between items-center mb-6">
+        <h5
+          class="text-base font-semibold tracking-tight leading-none dark:text-polaris-white"
+          v-text="$t('account')"
+        />
+      </div>
+      <div class="dark:bg-polaris-card-medium rounded-small">
+        <div class="flex">
+          <div class="flex p-3">
             <div class="relative">
               <Avatar :iconURI="avatarUri" :address="account" :size="44" />
               <div class="connector-icon-wrapper">
@@ -95,16 +97,22 @@ function copyAddress() {
                   class="font-bold text-black dark:text-white"
                   v-text="shorten(account)"
                 />
-                <div class="flex ml-3 gap-2 items-center">
-                  <BalBtn color="gray" size="xs" @click="toggleWalletSelectModal">
+                <div class="flex gap-2 items-center ml-10">
+                  <BalBtn
+                    flat
+                    color="transparent"
+                    size="xs"
+                    class="dark:text-polaris-3 dark:bg-polaris-card-light"
+                    @click="toggleWalletSelectModal"
+                  >
                     {{ $t('change') }}
                   </BalBtn>
                   <div v-if="!hideDisconnect">
                     <BalBtn
-                      outline
-                      color="gray"
+                      flat
+                      color="transparent"
                       size="xs"
-                      class="capitalize"
+                      class="dark:text-polaris-3 capitalize dark:bg-polaris-card-light"
                       @click="disconnectWallet"
                     >
                       {{ $t('disconnect') }}
@@ -118,35 +126,28 @@ function copyAddress() {
             </div>
           </div>
         </div>
-        <div class="flex ml-3">
+        <div class="flex pb-2 ml-2">
           <BalTooltip width="auto">
             <template #activator>
-              <BalBtn
-                circle
-                color="gray"
-                size="xs"
-                flat
-                @click="copyAddress"
-              >
+              <BalBtn color="transparent" size="xs" flat @click="copyAddress">
                 <BalIcon
                   v-if="data.copiedAddress"
                   name="check"
                   size="xs"
+                  class="mr-1"
                 />
-                <BalIcon v-else name="clipboard" size="xs" />
+                <BalIcon v-else name="clipboard" size="xs" class="mr-1" />Coppy
+                address
               </BalBtn>
             </template>
             <div
               class="text-center"
-              v-text="
-                data.copiedAddress ? $t('copied') : $t('copyAddress')
-              "
+              v-text="data.copiedAddress ? $t('copied') : $t('copyAddress')"
             />
           </BalTooltip>
           <BalBtn
-            circle
             flat
-            color="gray"
+            color="transparent"
             size="xs"
             tag="a"
             :href="explorerLinks.addressLink(account)"
@@ -154,7 +155,8 @@ function copyAddress() {
             rel="noreferrer"
             class="ml-2"
           >
-            <BalIcon name="arrow-up-right" size="xs" />
+            <BalIcon name="arrow-up-right" size="xs" class="mr-1" />View on
+            explorer
           </BalBtn>
         </div>
       </div>
