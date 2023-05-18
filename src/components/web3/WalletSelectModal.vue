@@ -36,11 +36,8 @@ function onBalRulesAccepted() {
 </script>
 
 <template>
-  <BalModal
-    :show="props.isVisible"
-    title="Connect to a wallet"
-    @close="emit('close')"
-  >
+  <BalModal :show="props.isVisible" class="p-3" @close="emit('close')">
+    <h2 class="mb-3 font-semibold dark:text-polaris-2">Connect to a wallet</h2>
     <BalRadio
       :checked="isBalRulesAccepted"
       value="bal-rules"
@@ -95,10 +92,8 @@ function onBalRulesAccepted() {
       ]"
     >
       <WalletButton v-for="wallet in wallets" :key="wallet" :wallet="wallet" />
-      <div
-        class="p-4 bg-gradient-to-b from-gray-50 dark:from-gray-900 to-gray-100 dark:to-gray-850 rounded-lg"
-      >
-        <h6>{{ $t('newToEthereum') }}</h6>
+      <div class="p-4 mt-5 rounded-lg">
+        <h6 class="font-semibold">{{ $t('newToEthereum') }}</h6>
         <p class="text-sm">
           {{ $t('setUpEthereumWallet') }}
           <BalLink :href="EXTERNAL_LINKS.Ethereum.Wallets" external>
