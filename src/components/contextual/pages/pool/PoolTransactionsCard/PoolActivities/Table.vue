@@ -216,10 +216,10 @@ function getJoinExitDetails(amounts: PoolActivity['amounts']) {
           <template v-for="(tokenAmount, i) in action.tokenAmounts" :key="i">
             <div
               v-if="tokenAmount.amount !== '0'"
-              class="flex items-center p-1 px-2 m-1 bg-gray-50 dark:bg-gray-700 rounded-lg"
+              class="flex items-center p-1 px-2 m-1 bg-gray-50 dark:bg-polaris-card-dark rounded-medium"
             >
               <BalAsset :address="tokenAmount.address" class="mr-2 shrink-0" />
-              <span class="font-numeric">{{ tokenAmount.amount }}</span>
+              <span class="mr-1 font-numeric">{{ tokenAmount.amount }}</span>
             </div>
           </template>
         </div>

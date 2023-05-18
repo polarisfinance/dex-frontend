@@ -45,28 +45,28 @@ const fiatTotal = computed((): string =>
 
 <template>
   <BalCard noPad shadow="none">
-    <div class="p-4 w-full border-b dark:border-gray-900">
+    <div class="p-4 w-full font-semibold dark:text-polaris-white">
       <h6>
         {{ $t('getVeBAL.lockableTokens.title') }}
       </h6>
     </div>
-    <div class="p-4 -mt-2">
+    <div class="p-4 -mt-2 dark:text-polaris-white">
       <div class="flex justify-between">
         <div>{{ lockablePoolTokenInfo.symbol }}</div>
         <div>{{ fNum(bptBalance, FNumFormats.token) }}</div>
       </div>
-      <div class="flex justify-between text-secondary">
+      <div class="flex justify-between dark:text-polaris-white">
         <div>{{ lockablePoolTokenInfo.name }}</div>
-        <div>{{ fNum(fiatTotal, FNumFormats.fiat) }}</div>
+        <div>({{ fNum(fiatTotal, FNumFormats.fiat) }})</div>
       </div>
       <BalLink
         tag="router-link"
         :to="{
-          name: 'add-liquidity',
+          name: 'invest',
           params: { networkSlug, id: lockablePool.id },
         }"
         external
-        class="block mt-2 text-sm"
+        class="block mt-2 text-sm font-semibold"
       >
         {{
           $t('getVeBAL.lockableTokens.getMoreVeBAL', [

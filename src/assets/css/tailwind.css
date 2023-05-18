@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer components {
   .bg-gray-default {
     background-color: #292043;
@@ -99,7 +98,7 @@
   }
 
   .link {
-    @apply text-blue-600 hover:text-purple-600 focus:text-purple-600 dark:text-blue-400 dark:hover:text-yellow-500
+    @apply text-blue-600 hover:text-purple-600 focus:text-purple-600 dark:text-polaris-2 dark:hover:text-polaris-white
       dark:focus:text-yellow-500 hover:underline focus:underline transition-all;
   }
 
@@ -112,5 +111,3 @@
     text-shadow: 0 1px 0 rgb(0 0 0 / 10%), 4px 4px 8px rgb(0 0 0 / 15%);
   }
 }
-
-

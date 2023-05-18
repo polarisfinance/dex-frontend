@@ -44,9 +44,9 @@ const isLoadingTotalValue = computed((): boolean => isLoadingPools.value);
 </script>
 
 <template>
-  <AppHero :class="classes">
+  <AppHero :class="classes" class="mb-10">
     <h1
-      class="mx-auto font-semibold headline mt-[100px]"
+      class="mx-auto font-semibold headline mt-[130px]"
       :class="{
         'text-hero': isDesktop,
         'text-[44px] leading-[50px]': isMobile,

@@ -98,8 +98,8 @@ function symbolFor(token: PoolToken): string {
       }}</span>
       <BalIcon
         name="arrow-up-right"
-        size="sm"
-        class="ml-1 text-gray-500 group-hover:text-purple-500 dark:group-hover:text-yellow-500 transition-colors"
+        size="lg"
+        class="ml-1 text-gray-500 group-hover:text-purple-500 dark:text-polaris-white dark:group-hover:text-yellow-500 transition-colors"
       />
     </BalLink>
     <div

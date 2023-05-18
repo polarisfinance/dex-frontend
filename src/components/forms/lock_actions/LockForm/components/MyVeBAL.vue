@@ -44,18 +44,22 @@ const percentVeBAL = computed(() => {
 
 <template>
   <BalCard noPad shadow="none">
-    <div class="p-4 w-full border-b dark:border-gray-900">
+    <div
+      class="p-4 w-full font-semibold dark:text-polaris-white border-b dark:border-gray-900"
+    >
       <h6>
         {{ $t('getVeBAL.myVeBAL.title') }}
       </h6>
     </div>
     <div class="flex justify-center items-center p-10 -mt-2">
-      <div class="text-2xl font-semibold">
+      <div class="text-2xl font-semibold dark:text-polaris-white">
         {{ fNum(veBalBalance, FNumFormats.token) }}
         {{ veBalTokenInfo?.symbol }}
       </div>
     </div>
-    <div class="flex justify-center border-t dark:border-gray-900">
+    <div
+      class="flex justify-center dark:text-polaris-white border-t dark:border-gray-900"
+    >
       <div class="p-2 w-1/2 text-center border-r dark:border-gray-900">
         <div>
           {{
@@ -67,7 +71,7 @@ const percentVeBAL = computed(() => {
               : '-'
           }}
         </div>
-        <div class="text-gray-400">
+        <div class="text-gray-400 dark:text-polaris-white">
           {{ $t('getVeBAL.myVeBAL.percentVeBAL') }}
         </div>
       </div>
@@ -79,7 +83,7 @@ const percentVeBAL = computed(() => {
               : '-'
           }}
         </div>
-        <div class="text-gray-400">
+        <div class="text-gray-400 dark:text-polaris-white">
           {{
             props.veBalLockInfo?.isExpired
               ? $t('getVeBAL.myVeBAL.expiredOn')

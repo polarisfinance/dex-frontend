@@ -20,7 +20,6 @@ const props = defineProps<Props>();
 const showRemoveVotes = computed(() => {
   return props.isGaugeExpired && props.hasUserVotes;
 });
-
 const disabled = computed(() => {
   return props.isGaugeExpired && !props.hasUserVotes;
 });
@@ -28,12 +27,15 @@ const disabled = computed(() => {
 
 <template>
   <BalBtn
-    :color="showRemoveVotes ? 'red' : 'blue'"
+    class="vote-btn"
+    :class="{
+      'dark:text-polaris-white polaris-small-button': !showRemoveVotes,
+      'vote-btn--red': showRemoveVotes,
+    }"
+    :color="showRemoveVotes ? 'red' : 'gray'"
     :disabled="disabled"
-    :class="`vote-btn
-      ${showRemoveVotes ? 'vote-btn--red' : 'vote-btn--blue'}`"
-    outline
     size="sm"
+    :outline="showRemoveVotes"
     flat
     block
   >

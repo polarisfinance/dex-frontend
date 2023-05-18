@@ -194,12 +194,12 @@ watch(
       class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-end"
     >
       <div class="px-4 xl:px-0 pb-2 max-w-3xl">
-        <h3 class="mb-2">
+        <h3 class="mb-2 font-semibold dark:text-polaris-white">
           {{ $t('veBAL.liquidityMining.title') }}
           <BalTooltip
             :text="$t('veBAL.liquidityMining.description')"
             iconSize="sm"
-            iconClass="text-gray-400 dark:text-gray-600"
+            iconClass="text-gray-400 dark:text-polaris-white"
             width="72"
             class="mt-1"
           />
@@ -214,12 +214,14 @@ watch(
       <div class="flex gap-2 xs:gap-3 mb-3 lg:mb-0">
         <BalCard shadow="none" class="p-0 md:w-48 min-w-max">
           <div class="flex items-center">
-            <p class="inline mr-1 text-sm text-secondary">
+            <p
+              class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
+            >
               My unallocated votes
             </p>
             <BalTooltip
               :text="$t('veBAL.liquidityMining.myUnallocatedVotesTooltip')"
-              iconClass="text-gray-400 dark:text-gray-600"
+              iconClass="text-gray-400 dark:text-polaris-white"
               iconSize="sm"
               width="72"
               class="mt-1"
@@ -229,7 +231,7 @@ watch(
             class="inline mr-1 text-lg font-semibold"
             :class="{ 'text-red-500': hasExpiredLock }"
           >
-            <span v-if="hasLock">
+            <span v-if="hasLock" class="dark:text-polaris-white">
               {{ unallocatedVotesFormatted }}
             </span>
             <span v-else class="mr-1">—</span>
@@ -248,19 +250,19 @@ watch(
           <div class="flex items-center">
             <p
               :class="{ 'text-orange-500 font-medium': votingPeriodLastHour }"
-              class="inline mr-1 text-sm text-secondary"
+              class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
             >
               Voting period ends
             </p>
             <BalTooltip
               :text="$t('veBAL.liquidityMining.votingPeriodTooltip')"
               iconSize="sm"
-              iconClass="text-gray-400 dark:text-gray-600"
+              iconClass="text-gray-400 dark:text-polaris-white"
               width="72"
               class="mt-1"
             />
           </div>
-          <p class="text-lg font-semibold tabular-nums">
+          <p class="text-lg font-semibold tabular-nums dark:text-polaris-white">
             <span
               v-if="votingPeriodEnd.length"
               :class="{ 'text-orange-500': votingPeriodLastHour }"

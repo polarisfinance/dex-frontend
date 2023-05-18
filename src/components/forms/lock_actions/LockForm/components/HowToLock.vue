@@ -38,7 +38,7 @@ const steps = computed(() => [
 
 <template>
   <BalAccordion
-    class="mt-4"
+    class="mt-4 font-medium dark:text-polaris-white"
     :showSectionBorder="false"
     :sections="[
       {
@@ -62,8 +62,8 @@ const steps = computed(() => [
       </button>
     </template>
     <template #how-to-lock>
-      <div class="p-4 border-t dark:border-gray-900">
-        <div class="text-secondary">
+      <div class="p-4 dark:text-polaris-white border-t">
+        <div class="dark:text-polaris-white text-secondary">
           <ol class="text-sm steps">
             <li>
               {{ $t('getVeBAL.howToLock.steps.investPart1') }}

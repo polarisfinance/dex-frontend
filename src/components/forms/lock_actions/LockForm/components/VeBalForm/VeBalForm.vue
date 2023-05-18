@@ -123,7 +123,9 @@ function handleShowPreviewModal() {
         <div class="pb-1.5 text-xs leading-none text-secondary">
           {{ configService.network.chainName }}
         </div>
-        <div class="flex justify-between items-center">
+        <div
+          class="flex justify-between items-center font-semibold dark:text-polaris-white"
+        >
           <h4>
             {{ $t('getVeBAL.lockForm.title') }}
           </h4>
@@ -148,13 +150,15 @@ function handleShowPreviewModal() {
       <BalBtn
         v-if="!isWalletReady"
         :label="$t('connectWallet')"
-        color="gradient"
+        color="transparent"
+        class="text-lg font-semibold polaris-main-button"
         block
         @click="startConnectWithInjectedProvider"
       />
       <BalBtn
         v-else
-        color="gradient"
+        color="transparent"
+        class="text-lg font-semibold polaris-main-button"
         block
         :disabled="submissionDisabled"
         @click="handleShowPreviewModal"

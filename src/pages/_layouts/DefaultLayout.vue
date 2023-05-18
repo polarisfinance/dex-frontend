@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import Footer from '@/components/footer/Footer.vue';
 import AppNav from '@/components/navs/AppNav/AppNav.vue';
+import useBackgrounds from '@/composables/useBackgrounds';
+import useBreakpoints from '@/composables/useBreakpoints';
+
+const { isSunrise, isBond, isDawn, isAirdrop, isVexpolar, isPortfolio } =
+  useBackgrounds();
+const { isDesktop } = useBreakpoints();
 </script>
 
 <template>
-  <div class="app-background">
+  <div
+    class="app-background"
+    :class="{
+      bond: isBond && isDesktop,
+      sunrise: isSunrise && isDesktop,
+      dawn: isDawn && isDesktop,
+      airdrop: isAirdrop && isDesktop,
+      vexpolar: isVexpolar && isDesktop,
+      portfolio: isPortfolio && isDesktop,
+    }"
+  >
     <div class="app-body">
       <AppNav />
       <div class="pb-16">
@@ -34,5 +50,38 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
   top: 0px;
   transition: all 0.3s ease-in-out;
   background-image: url('/images/backgrounds/polaris/index.svg');
+}
+.app-background.sunrise {
+  background-image: url('/images/backgrounds/polaris/sunrise_bg.svg');
+  background-position-y: 0%;
+  background-position-x: center;
+}
+.app-background.dawn {
+  background-image: url('/images/backgrounds/polaris/dawn_bg.svg');
+  background-position-y: 0%;
+  background-size: contain;
+}
+.app-background.bond {
+  background-image: url('/images/backgrounds/polaris/bond_bg.svg');
+  background-position-y: 0%;
+  background-position-x: right;
+}
+
+.app-background.airdrop {
+  background-image: url('/images/backgrounds/polaris/airdrop_bg.svg');
+  background-position-y: 0%;
+  background-position-x: center;
+}
+.app-background.vexpolar {
+  background-image: url('/images/backgrounds/polaris/vexpolar_bg.svg');
+  background-position-y: 0%;
+  background-position-x: center;
+  width: 100%;
+  height: 100%;
+}
+.app-background.portfolio {
+  background-image: url('/images/backgrounds/polaris/portfolio_bg.svg');
+  background-position-y: 5%;
+  background-position-x: center;
 }
 </style>
