@@ -4,7 +4,7 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 import useBackgrounds from '@/composables/useBackgrounds';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-const { isSunrise, isBond, isDawn, isAirdrop, isVexpolar, isPortfolio } =
+const { isSunrise, isBond, isEarn, isAirdrop, isVexpolar, isPortfolio } =
   useBackgrounds();
 const { isDesktop } = useBreakpoints();
 </script>
@@ -13,12 +13,12 @@ const { isDesktop } = useBreakpoints();
   <div
     class="app-background"
     :class="{
-      bond: isBond && isDesktop,
-      sunrise: isSunrise && isDesktop,
-      dawn: isDawn && isDesktop,
-      airdrop: isAirdrop && isDesktop,
-      vexpolar: isVexpolar && isDesktop,
-      portfolio: isPortfolio && isDesktop,
+      bond: isBond,
+      sunrise: isSunrise,
+      earn: isEarn,
+      airdrop: isAirdrop,
+      vexpolar: isVexpolar,
+      portfolio: isPortfolio,
     }"
   >
     <div class="app-body">
@@ -56,8 +56,8 @@ const { isDesktop } = useBreakpoints();
   background-position-y: 0%;
   background-position-x: center;
 }
-.app-background.dawn {
-  background-image: url('/images/backgrounds/polaris/dawn_bg.svg');
+.app-background.earn {
+  background-image: url('/images/backgrounds/polaris/index.svg');
   background-position-y: 0%;
   background-size: contain;
 }

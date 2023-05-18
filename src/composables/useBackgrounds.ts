@@ -17,7 +17,7 @@ import { useRoute } from 'vue-router';
 const defaultBg = 'default';
 const sunriseBg = 'sunrise';
 const bondBg = 'bond';
-const dawnBg = 'dawn';
+const earnBg = 'earn';
 const airdropBg = 'airdrop';
 const vexpolarBg = 'vexpolar';
 const portfolioBg = 'portfolio';
@@ -44,8 +44,8 @@ const isBond = computed(() => {
   return backgroundImage.value == bondBg;
 });
 
-const isDawn = computed(() => {
-  return backgroundImage.value == dawnBg;
+const isEarn = computed(() => {
+  return backgroundImage.value == earnBg;
 });
 
 const isAirdrop = computed(() => {
@@ -67,7 +67,7 @@ export default function useBackgrounds() {
   const route = useRoute();
   watch(route, newRoute => {
     if (route.path === '/') {
-      setBackgroundImage(dawnBg);
+      setBackgroundImage(earnBg);
     } else if (route.path.includes('/sunrise')) {
       setBackgroundImage(sunriseBg);
     } else if (route.path.includes('/bond')) {
@@ -85,7 +85,7 @@ export default function useBackgrounds() {
   return {
     isSunrise,
     isBond,
-    isDawn,
+    isEarn,
     isAirdrop,
     isVexpolar,
     isPortfolio,
