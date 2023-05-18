@@ -2,17 +2,16 @@
   <footer v-once>
     <div class="xl:container lg:px-4 xl:mx-auto">
       <div
-        class="flex flex-col md:flex-row gap-8 md:justify-between py-12 px-4 lg:px-0 text-primary"
+        class="flex flex-col sm:flex-row flex-grow gap-8 justify-evenly md:justify-between py-12 px-4 lg:px-0 mx-auto min-w-min max-w-[1000px] text-primary"
       >
-        <div class="flex flex-col gap-8">
-          <router-link
-            class="font-medium link"
-            :to="{ name: 'home', params: { networkSlug } }"
-          >
-            <AppLogo class="mb-4" />
-          </router-link>
+        <router-link
+          class="font-medium link"
+          :to="{ name: 'home', params: { networkSlug } }"
+        >
+          <AppLogo class="mb-4" />
+        </router-link>
 
-          <div class="flex md:hidden flex-col gap-2">
+        <!-- <div class="flex md:hidden flex-col gap-2">
             <p>
               <router-link
                 class="text-lg font-medium link"
@@ -54,7 +53,6 @@
               </router-link>
             </p>
           </div>
-
           <div class="flex flex-wrap md:order-3 gap-3 md:gap-4">
             <BalLink
               :href="EXTERNAL_LINKS.Balancer.Home"
@@ -85,11 +83,54 @@
               {{ $t('vote') }}
               <BalIcon name="arrow-up-right" size="sm" class="arrow" />
             </BalLink>
+          </div> -->
+
+        <div className="flex w-full sm:justify-evenly space-x-[20px]">
+          <div
+            className="flex flex-col space-y-[30px] pt-[85px] text-[14px] font-semibold leading-[18px] text-white"
+          >
+            <span>Protocol</span>
+            <div className="flex flex-col space-y-[16px] text-[#5F5564]">
+              <a
+                href="https://docs.polarisfinance.io"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Docs</a
+              >
+
+              <a
+                href="https://vote.polarisfinance.io/#/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Vote</a
+              >
+              <a
+                href="https://old.polarisfinance.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Old Website</a
+              >
+            </div>
           </div>
-        </div>
-        <div class="flex flex-col gap-8">
-          <div class="md:order-2">
-            <div class="flex lg:flex-col md:justify-end">
+          <div
+            className="flex flex-col space-y-[30px] pt-[85px] text-[14px] font-semibold leading-[18px] text-white"
+          >
+            <span>Help</span>
+            <div className="flex flex-col space-y-[16px] text-[#5F5564]">
+              <a
+                href="https://www.apeoclock.com/launch/polaris-finance-genesis-pools-launch/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                KYC
+              </a>
+            </div>
+          </div>
+          <div
+            className="flex flex-col space-y-[30px] pt-[85px] text-[14px] font-semibold leading-[18px] text-white"
+          >
+            <span>Social media</span>
+            <div className="flex flex-col space-y-[16px] text-[#5F5564]">
               <div class="flex gap-3 md:justify-end">
                 <BalLink
                   :href="EXTERNAL_LINKS.Balancer.Social.Twitter"
@@ -122,41 +163,13 @@
               </div>
             </div>
           </div>
-
-          <div
-            class="flex flex-wrap md:order-3 gap-x-3 lg:gap-x-4 gap-y-2 md:justify-end"
-          >
-            <p>
-              <router-link class="policy" :to="{ name: 'terms-of-use' }">
-                {{ $t('policies.termsOfUse') }}
-              </router-link>
-            </p>
-            <p>
-              <router-link class="policy" :to="{ name: 'privacy-policy' }">
-                {{ $t('policies.privacyPolicy') }}
-              </router-link>
-            </p>
-            <p>
-              <router-link class="policy" :to="{ name: 'cookies-policy' }">
-                {{ $t('policies.cookiesPolicy') }}
-              </router-link>
-            </p>
-            <p>
-              <router-link class="policy" :to="{ name: 'risks' }">
-                {{ $t('policies.risks') }}
-              </router-link>
-            </p>
-            <p>
-              <span
-                class="cursor-pointer policy"
-                @click="isThirdPartyServicesModalVisible = true"
-              >
-                {{ $t('policies.thirdPartyServices') }}
-              </span>
-            </p>
-          </div>
         </div>
       </div>
+    </div>
+    <div className="mx-auto max-w-[1000px] pb-[139px] pt-[60px]">
+      <span className="text-[13px] font-medium leading-[14px] text-[#5F5564]">
+        Copyright © {{ year }} Polaris Finance. All rights reserved.
+      </span>
     </div>
   </footer>
 </template>

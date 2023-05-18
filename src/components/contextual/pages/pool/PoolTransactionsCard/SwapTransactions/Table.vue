@@ -156,7 +156,7 @@ const swapRows = computed<SwapRow[]>(() =>
       :isLoadingMore="isLoadingMore"
       :isPaginated="isPaginated"
       skeletonClass="h-64"
-      sticky="both"
+      sticky="vertical"
       :noResultsLabel="noResultsLabel"
       :initialState="{
         sortColumn: 'timeAgo',
@@ -230,6 +230,6 @@ const swapRows = computed<SwapRow[]>(() =>
 
 <style scoped>
 .token-item {
-  @apply m-1 flex items-center p-1 px-2 bg-gray-50 dark:bg-gray-700 rounded-lg;
+  @apply m-1 flex items-center p-1 px-2 bg-gray-50 dark:bg-polaris-card-dark rounded-medium;
 }
 </style>

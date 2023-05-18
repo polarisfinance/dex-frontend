@@ -186,7 +186,7 @@ function getJoinExitDetails(amounts: PoolActivity['amounts']) {
       :isLoadingMore="isLoadingMore"
       :isPaginated="isPaginated"
       skeletonClass="h-64"
-      sticky="both"
+      sticky="vertical"
       :noResultsLabel="noResultsLabel"
       :initialState="{
         sortColumn: 'timeAgo',

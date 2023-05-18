@@ -299,7 +299,7 @@ watch(
             /> -->
           </div>
           <div
-            class="container flex gap-8 justify-center mx-auto mb-[120px] mt-[120px]"
+            class="container flex flex-wrap gap-8 justify-center mx-auto mb-[120px] mt-[120px]"
           >
             <BalLoadingBlock v-if="loadingPool" class="h-64" />
             <PoolCompositionCard v-else-if="pool" :pool="pool" />
