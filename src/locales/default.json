@@ -741,7 +741,8 @@
       "myTransactions": "My transactions",
       "allInvestments": "All liquidity provision",
       "myInvestments": "My liquidity",
-      "swaps": "Swaps"
+      "swaps": "Swaps",
+      "trades": "Trades"
     },
     "noResults": {
       "allTransactions": "No transactions in this pool",
