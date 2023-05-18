@@ -9,12 +9,12 @@
       "id": "0xbd708c4dd937207393e2e25e047f749c1f29755f000100000000000000000002",
       "address": "0xbd708c4dd937207393e2e25e047f749c1f29755f",
       "poolType": "Stable",
-      "symbol": "veBAL",
+      "symbol": "vexPOLAR",
       "tokens": [
         {
           "address": "0x86989e569bc9ccF08bd3Cf9840C47c07C55be4cA",
           "weight": "null",
-          "symbol": "veBAL"
+          "symbol": "vexPOLAR"
         }
       ]
     },
