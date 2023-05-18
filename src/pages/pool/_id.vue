@@ -19,6 +19,7 @@ import usePoolAprQuery from '@/composables/queries/usePoolAprQuery';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import usePoolSnapshotsQuery from '@/composables/queries/usePoolSnapshotsQuery';
 import useAlerts, { AlertPriority, AlertType } from '@/composables/useAlerts';
+import useBreakpoints from '@/composables/useBreakpoints';
 import {
   isVeBalPool,
   preMintedBptIndex,
@@ -66,7 +67,7 @@ const poolQueryLoading = computed(
   () => poolQuery.isLoading.value || Boolean(poolQuery.error.value)
 );
 const loadingPool = computed(() => poolQueryLoading.value || !pool.value);
-
+const { isDesktop, isMobile } = useBreakpoints();
 const {
   isStableLikePool,
   isLiquidityBootstrappingPool,
@@ -242,7 +243,7 @@ watch(
                 :loadingApr="loadingApr"
               />
               <PolLine class="mt-3" />
-              <div class="flex flex-1">
+              <div class="flex flex-1" :class="{ 'flex-col': isMobile }">
                 <div
                   class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
                 >
