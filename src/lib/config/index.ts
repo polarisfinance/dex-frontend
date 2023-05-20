@@ -10,6 +10,7 @@ import polygon from './polygon';
 import gnosisChain from './gnosis-chain';
 import test from './test';
 import auroraTest from './auroraTest';
+import aurora from './aurora';
 
 const config: Record<Network | number, Config> = {
   [Network.MAINNET]: mainnet,
@@ -19,10 +20,11 @@ const config: Record<Network | number, Config> = {
   [Network.OPTIMISM]: optimism,
   [Network.GNOSIS]: gnosisChain,
   [Network.AURORATEST]: auroraTest,
-  // @ts-ignore
-  12345: test,
-  // @ts-ignore
-  17: docker,
+  [Network.AURORA]: aurora,
+  // // @ts-ignore
+  // 12345: test,
+  // // @ts-ignore
+  // 17: docker,
 };
 
 export default config;
