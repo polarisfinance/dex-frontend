@@ -40,22 +40,22 @@ type GaugeInfo = {
 };
 
 async function getGaugeRelativeWeight(gaugeAddresses: string[]) {
-  const rpcUrl = configService.getNetworkRpc(Network.AURORATEST);
+  const rpcUrl = configService.getNetworkRpc(Network.AURORA);
   // if (rpcUrl.includes('INFURA_KEY'))
   //   throw Error('VITE_INFURA_PROJECT_ID not found!');
 
   const provider = new StaticJsonRpcBatchProvider(rpcUrl);
 
   const multicaller = new Multicaller(
-    config[Network.AURORATEST].addresses.multicall,
-    config[Network.AURORATEST].key,
+    config[Network.AURORA].addresses.multicall,
+    config[Network.AURORA].key,
     provider
   );
 
   for (const gaugeAddress of gaugeAddresses) {
     multicaller.call({
       key: gaugeAddress,
-      address: config[Network.AURORATEST].addresses.veBALHelpers,
+      address: config[Network.AURORA].addresses.veBALHelpers,
       function: 'gauge_relative_weight',
       abi: VEBalHelpersABI,
       params: [getAddress(gaugeAddress)],
@@ -396,7 +396,7 @@ async function getRootGaugeInfo(
   retries = 5
 ): Promise<GaugeInfo[] | null> {
   log(`getRootGaugeAddress. network: ${network} streamer: ${streamer}`);
-  const subgraphEndpoint = config[Network.AURORATEST].subgraphs.gauge;
+  const subgraphEndpoint = config[Network.AURORA].subgraphs.gauge;
 
   const query = `
     {
@@ -460,7 +460,7 @@ async function getGaugeInfo(
   network: Network
 ): Promise<GaugeInfo[] | null> {
   log(`getGaugeAddress. network: ${network} poolId: ${poolId}`);
-  if ([Network.AURORATEST].includes(network)) {
+  if ([Network.AURORA].includes(network)) {
     const gauges = await getLiquidityGaugesInfo(poolId, network);
     return gauges;
   }
