@@ -54,7 +54,7 @@ const percentVeBAL = computed(() => {
     <div class="flex justify-center items-center p-10 -mt-2">
       <div class="text-2xl font-semibold dark:text-polaris-white">
         {{ fNum(veBalBalance, FNumFormats.token) }}
-        {{ veBalTokenInfo?.symbol }}
+        {{ 'vexPOLAR' }}
       </div>
     </div>
     <div

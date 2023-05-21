@@ -112,7 +112,7 @@ const isIncreaseLockOnly = computed(
         <div>{{ $t('getVeBAL.previewModal.summary.totalVotingEscrow') }}</div>
         <div class="flex items-center">
           {{ fNum(expectedVeBalAmount, FNumFormats.token) }}
-          {{ veBalTokenInfo.symbol }}
+          {{ 'vexPOLAR' }}
           <VeBalTooltipExplainer
             :expectedVeBalAmount="expectedVeBalAmount"
             :lockEndDate="lockEndDate"

@@ -54,7 +54,7 @@ const conversationTableRows = computed(() => [
       <div class="p-3 bg-gray-50 dark:bg-gray-700 rounded-t">
         <h5>
           {{ fNum(expectedVeBalAmount, FNumFormats.token) }}
-          {{ veBalTokenInfo.symbol }}
+          {{ 'vexPOLAR' }}
         </h5>
       </div>
       <div class="p-3">
