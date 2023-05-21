@@ -75,7 +75,7 @@ watch(iconSRC, newURL => {
       v-if="iconSRC && !error"
       :src="iconSRC"
       alt="icon"
-      class="bg-white rounded-full"
+      class="bg-transparent rounded-full"
       @error="error = true"
     />
     <Avatar v-else-if="!!address" :address="address" :size="size" />

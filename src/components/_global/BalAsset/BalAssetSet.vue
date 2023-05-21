@@ -17,7 +17,7 @@
         v-bind="{ ...assetAttrsFor(addressOrURI), ...balAssetProps }"
         :size="size"
         :class="[
-          'token-icon ring-2 ring-white dark:ring-gray-800 group-hover:ring-gray-50 dark:group-hover:ring-gray-800',
+          'token-icon ring-2  dark:ring-[#C004FE]',
           { absolute: !wrap, relative: wrap },
         ]"
         :style="getBalAssetStyle(assetChunkIndex, i)"
