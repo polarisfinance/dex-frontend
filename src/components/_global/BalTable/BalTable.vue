@@ -432,7 +432,7 @@ watch(
 }
 
 .row-bg {
-  @apply hover:bg-gray-50  transition-colors ease-in duration-100 dark:text-polaris-white font-semibold text-lg;
+  @apply hover:bg-polaris-card-medium  transition-colors ease-in duration-100 dark:text-polaris-white font-semibold text-lg;
 }
 
 .bal-table-pagination-btn {
