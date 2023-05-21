@@ -53,7 +53,7 @@ class MetaService implements IMetaService {
   private setDefaultMeta(): void {
     const descriptionMeta = document.querySelector('meta[name=description]');
 
-    document.title = 'Balancer';
+    document.title = 'Polaris';
     descriptionMeta?.setAttribute(
       'content',
       'A UI that supports core Balancer protocol functionality. Explore & create pools, manage liquidity, swap tokens, get veBAL and claim incentives.'
