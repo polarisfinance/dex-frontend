@@ -183,8 +183,8 @@ export class GaugeControllerDecorator {
    * so the network key can only be goerli (5) or mainnet (1).
    */
   private getNetwork(): Network {
-    if (this.config.env.NETWORK === Network.AURORATEST) {
-      return Network.AURORATEST;
+    if (this.config.env.NETWORK === Network.AURORA) {
+      return Network.AURORA;
     } else {
       return Network.MAINNET;
     }
