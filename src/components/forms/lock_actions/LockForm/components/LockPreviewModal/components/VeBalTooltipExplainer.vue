@@ -25,22 +25,22 @@ defineProps<Props>();
 const { fNum } = useNumbers();
 const { veBalTokenInfo } = useVeBal();
 const { t } = useI18n();
-
+const symbol = 'vexPOLAR'; //${veBalTokenInfo.value.symbol}
 /**
  * COMPUTED
  */
 const conversationTableRows = computed(() => [
   {
     label: t('getVeBAL.lockForm.lockPeriods.1y'),
-    value: `~1 ${veBalTokenInfo.value.symbol}`,
+    value: `~1 ${symbol}`,
   },
   {
     label: t('getVeBAL.lockForm.lockPeriods.6m'),
-    value: `~0.5 ${veBalTokenInfo.value.symbol}`,
+    value: `~0.5 ${symbol}`,
   },
   {
     label: t('getVeBAL.lockForm.lockPeriods.3m'),
-    value: `~0.25 ${veBalTokenInfo.value.symbol}`,
+    value: `~0.25 ${symbol}`,
   },
 ]);
 </script>

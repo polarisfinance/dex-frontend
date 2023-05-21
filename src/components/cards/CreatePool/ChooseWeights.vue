@@ -317,15 +317,15 @@ function onAlertMountChange() {
       <BalStack vertical spacing="sm">
         <BalStack vertical spacing="xs">
           <span class="text-xs text-secondary">{{ networkName }}</span>
-          <h5 class="font-semibold dark:text-gray-300">
+          <h5 class="font-semibold dark:text-polaris-white">
             {{ $t('createAPool.chooseTokenWeights') }}
           </h5>
         </BalStack>
-        <BalCard shadow="none" noPad>
+        <BalCard shadow="none" noPad noBorder>
           <div ref="tokenWeightListWrapper">
             <div class="flex flex-col">
               <div
-                class="flex justify-between p-2 px-4 w-full bg-gray-50 dark:bg-gray-850"
+                class="flex justify-between p-2 px-4 w-full bg-gray-50 dark:bg-transparent"
               >
                 <h6>{{ $t('token') }}</h6>
                 <h6>{{ $t('weight') }}</h6>
@@ -359,9 +359,10 @@ function onAlertMountChange() {
               <div ref="addTokenRowElement" class="p-3">
                 <BalBtn
                   :disabled="maxTokenAmountReached"
-                  outline
-                  :color="maxTokenAmountReached ? 'gray' : 'blue'"
+                  flat
+                  :color="maxTokenAmountReached ? 'gray' : 'white'"
                   size="sm"
+                  class="polaris-small-button"
                   @click="addTokenToPool"
                 >
                   {{ $t('addToken') }}
@@ -369,7 +370,7 @@ function onAlertMountChange() {
               </div>
               <div
                 ref="totalsRowElement"
-                class="p-2 px-4 w-full bg-gray-50 dark:bg-gray-850"
+                class="p-2 px-4 w-full bg-gray-50 dark:bg-transparent"
               >
                 <div class="flex justify-between w-full">
                   <h6>{{ $t('totalAllocated') }}</h6>
@@ -457,7 +458,8 @@ function onAlertMountChange() {
         </AnimatePresence>
         <BalBtn
           block
-          color="gradient"
+          color="white"
+          class="text-lg font-semibold polaris-main-button"
           :disabled="isProceedDisabled"
           @click="handleProceed"
         >

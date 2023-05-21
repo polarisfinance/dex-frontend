@@ -223,8 +223,8 @@ onBeforeMount(async () => {
         class="flex justify-between items-center mt-4 text-sm text-gray-400 dark:text-gray-600"
       >
         <div class="flex items-center">
-          <BalIcon name="clock" />
-          <span class="ml-2">
+          <BalIcon name="clock" class="dark:text-polaris-white" />
+          <span class="ml-2 dark:text-polaris-white">
             {{ lockActionState.confirmedAt }}
           </span>
         </div>
@@ -233,7 +233,7 @@ onBeforeMount(async () => {
           :href="explorerLinks.txLink(lockActionState.receipt.transactionHash)"
           external
           noStyle
-          class="group flex items-center"
+          class="group flex items-center dark:text-polaris-white"
         >
           {{ networkConfig.explorerName }}
           <BalIcon

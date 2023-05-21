@@ -238,12 +238,7 @@ function saveAndProceed() {
             </h5>
           </BalStack>
           <AnimatePresence :isVisible="isOptimised" unmountInstantly>
-            <BalStack
-              horizontal
-              align="center"
-              spacing="sm"
-              class="p-2 mt-2 rounded-lg border"
-            >
+            <BalStack horizontal align="center" spacing="sm" class="p-2 mt-2">
               <BalIcon name="zap" size="sm" class="mt-1 text-secondary" />
               <span class="font-medium dark:text-gray-400">
                 {{ t('optimizedPrefilled') }}
@@ -297,7 +292,7 @@ function saveAndProceed() {
             />
           </div>
         </BalStack>
-        <div class="p-3 rounded-lg border">
+        <div class="p-3">
           <BalStack horizontal justify="between">
             <BalStack vertical spacing="none">
               <h6>{{ t('total') }}</h6>
@@ -362,7 +357,8 @@ function saveAndProceed() {
         <BalBtn
           :disabled="isExceedingWalletBalance || hasZeroAmount"
           block
-          color="gradient"
+          color="white"
+          class="text-lg font-semibold polaris-main-button"
           @click="saveAndProceed"
         >
           {{ t('preview') }}

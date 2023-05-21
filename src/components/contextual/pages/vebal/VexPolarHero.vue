@@ -39,7 +39,7 @@ function navigateToGetVeBAL() {
     <div class="title-text">
       <div class="leading-[82px]">Extra earnings <br />& voting power</div>
       <div class="flex justify-center gap-[28px] mt-[16px]">
-        <BalLink :href="`/#/${networkSlug}/get-vebal?returnRoute=vebal`">
+        <BalLink :href="`/#/${networkSlug}/get-vexpolar?returnRoute=vebal`">
           <BalBtn color="gradient" class="leading-4 get-btn">
             Lock LP to get VexPolar
           </BalBtn>

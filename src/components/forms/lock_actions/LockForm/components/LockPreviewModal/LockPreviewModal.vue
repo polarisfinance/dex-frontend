@@ -90,9 +90,9 @@ function handleSuccess() {
 </script>
 
 <template>
-  <BalModal show :fireworks="lockConfirmed" @close="handleClose">
+  <BalModal show :fireworks="lockConfirmed" noPad @close="handleClose">
     <template #header>
-      <div class="flex items-center">
+      <div class="flex items-center p-5">
         <BalCircle
           v-if="lockConfirmed"
           size="8"
@@ -101,32 +101,34 @@ function handleSuccess() {
         >
           <BalIcon name="check" />
         </BalCircle>
-        <h4>
+        <h4 class="font-semibold dark:text-polaris-white">
           {{ title }}
         </h4>
       </div>
     </template>
-
-    <LockAmount :lockablePool="lockablePool" :totalLpTokens="totalLpTokens" />
-
-    <LockSummary
-      :lockablePool="lockablePool"
-      :totalLpTokens="totalLpTokens"
-      :lockAmount="lockAmount"
-      :lockEndDate="lockEndDate"
-      :expectedVeBalAmount="expectedVeBalAmount"
-      :lockType="lockType"
-      :veBalLockInfo="veBalLockInfo"
-    />
-    <LockActions
-      :veBalLockInfo="veBalLockInfo"
-      :lockConfirmed="lockConfirmed"
-      :lockAmount="lockAmount"
-      :lockEndDate="lockEndDate"
-      :lockType="lockType"
-      :lockablePoolTokenInfo="lockablePoolTokenInfo"
-      class="mt-4"
-      @success="handleSuccess"
-    />
+    <div class="px-3">
+      <LockAmount :lockablePool="lockablePool" :totalLpTokens="totalLpTokens" />
+    </div>
+    <div class="dark:bg-polaris-card-light">
+      <LockSummary
+        :lockablePool="lockablePool"
+        :totalLpTokens="totalLpTokens"
+        :lockAmount="lockAmount"
+        :lockEndDate="lockEndDate"
+        :expectedVeBalAmount="expectedVeBalAmount"
+        :lockType="lockType"
+        :veBalLockInfo="veBalLockInfo"
+      />
+      <LockActions
+        :veBalLockInfo="veBalLockInfo"
+        :lockConfirmed="lockConfirmed"
+        :lockAmount="lockAmount"
+        :lockEndDate="lockEndDate"
+        :lockType="lockType"
+        :lockablePoolTokenInfo="lockablePoolTokenInfo"
+        class="p-3 mt-4"
+        @success="handleSuccess"
+      />
+    </div>
   </BalModal>
 </template>

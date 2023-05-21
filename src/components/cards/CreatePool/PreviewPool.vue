@@ -171,185 +171,201 @@ function getInitialWeightHighlightClass(tokenAddress: string) {
 
 <template>
   <BalStack vertical spacing="xs" class="mb-24">
-    <BalCard shadow="xl" noBorder>
-      <BalStack vertical spacing="xs">
+    <BalCard noBorder noPad>
+      <BalStack vertical spacing="xs" class="px-8 pt-3">
         <span class="text-xs text-secondary">{{ networkConfig?.name }}</span>
       </BalStack>
       <BalStack vertical>
-        <div class="flex items-center mt-2">
-          <BalCircle
-            v-if="poolCreated"
-            size="8"
-            color="green"
-            class="mr-2 text-white"
-          >
-            <BalIcon name="check" />
-          </BalCircle>
-          <BalStack horizontal align="center" spacing="xs">
-            <button
-              class="flex text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-              @click="goBack"
+        <div class="px-3">
+          <div class="flex items-center mt-2">
+            <BalCircle
+              v-if="poolCreated"
+              size="8"
+              color="green"
+              class="mr-2 text-white"
             >
-              <BalIcon class="flex" name="chevron-left" />
-            </button>
+              <BalIcon name="check" />
+            </BalCircle>
+            <BalStack horizontal align="center" spacing="xs">
+              <button
+                class="flex text-blue-600 hover:text-blue-700 dark:text-polaris-white dark:hover:text-blue-300 transition-colors"
+                @click="goBack"
+              >
+                <BalIcon class="flex" name="chevron-left" />
+              </button>
 
-            <h5 class="font-semibold dark:text-gray-300">
-              {{ title }}
-            </h5>
-          </BalStack>
-        </div>
-        <BalCard shadow="none" noPad>
-          <div class="p-2 bg-gray-50 dark:bg-gray-700">
-            <h6 class="text-sm">
-              {{ $t('createAPool.tokensAndSeedLiquidity') }}
-            </h6>
+              <h5 class="font-semibold dark:text-polaris-white">
+                {{ title }}
+              </h5>
+            </BalStack>
           </div>
-          <BalStack vertical spacing="none" withBorder>
-            <div
-              v-for="token in seedTokens"
-              :key="`tokenpreview-${token.tokenAddress}`"
-              class="p-4"
+          <BalCard shadow="none" noPad noBorder noBackground>
+            <div class="p-2 bg-gray-50 dark:bg-transparent">
+              <h6 class="text-sm">
+                {{ $t('createAPool.tokensAndSeedLiquidity') }}
+              </h6>
+            </div>
+            <BalStack
+              vertical
+              spacing="none"
+              withBorder
+              class="dark:text-polaris-white"
             >
-              <BalStack horizontal justify="between">
-                <BalStack horizontal align="center">
-                  <BalAsset :address="token.tokenAddress" :size="36" />
-                  <BalStack vertical spacing="none">
+              <div
+                v-for="token in seedTokens"
+                :key="`tokenpreview-${token.tokenAddress}`"
+                class="p-4"
+              >
+                <BalStack horizontal justify="between">
+                  <BalStack horizontal align="center">
+                    <BalAsset :address="token.tokenAddress" :size="36" />
+                    <BalStack vertical spacing="none">
+                      <span class="font-semibold">
+                        {{ fNum(token.weight / 100, FNumFormats.percent) }}
+                        {{ getToken(token.tokenAddress)?.symbol }}
+                      </span>
+                      <span
+                        :class="[
+                          'text-sm',
+                          getInitialWeightHighlightClass(token.tokenAddress),
+                        ]"
+                      >
+                        {{ initialWeightLabel }}:
+                        {{
+                          fNum(
+                            initialWeights[token.tokenAddress].toString(),
+                            FNumFormats.percent
+                          )
+                        }}
+                      </span>
+                    </BalStack>
+                  </BalStack>
+                  <BalStack vertical spacing="none" align="end">
                     <span class="font-semibold">
-                      {{ fNum(token.weight / 100, FNumFormats.percent) }}
-                      {{ getToken(token.tokenAddress)?.symbol }}
+                      {{ fNum(token.amount, FNumFormats.token) }}
                     </span>
-                    <span
-                      :class="[
-                        'text-sm',
-                        getInitialWeightHighlightClass(token.tokenAddress),
-                      ]"
-                    >
-                      {{ initialWeightLabel }}:
+                    <span class="text-sm text-secondary">
                       {{
                         fNum(
-                          initialWeights[token.tokenAddress].toString(),
-                          FNumFormats.percent
+                          bnum(token.amount)
+                            .times(priceFor(token.tokenAddress))
+                            .toString(),
+                          FNumFormats.fiat
                         )
                       }}
                     </span>
                   </BalStack>
                 </BalStack>
-                <BalStack vertical spacing="none" align="end">
-                  <span class="font-semibold">
-                    {{ fNum(token.amount, FNumFormats.token) }}
-                  </span>
-                  <span class="text-sm text-secondary">
-                    {{
-                      fNum(
-                        bnum(token.amount)
-                          .times(priceFor(token.tokenAddress))
-                          .toString(),
-                        FNumFormats.fiat
-                      )
-                    }}
-                  </span>
+              </div>
+            </BalStack>
+            <BalStack
+              horizontal
+              justify="between"
+              class="p-4 font-semibold dark:text-polaris-white border-t dark:border-none"
+            >
+              <h6>{{ $t('total') }}</h6>
+              <h6>
+                {{ fNum(poolLiquidity.toString(), FNumFormats.fiat) }}
+              </h6>
+            </BalStack>
+          </BalCard>
+        </div>
+        <div class="px-3 dark:bg-polaris-card-light">
+          <BalCard shadow="none" noPad noBorder noBackground>
+            <div class="p-3 bg-gray-50 dark:bg-transparent">
+              <h6 class="font-semibold dark:text-polaris-white text-md">
+                {{ $t('summary') }}
+              </h6>
+            </div>
+            <BalStack vertical spacing="xs" class="p-3">
+              <BalStack horizontal justify="between">
+                <span class="text-sm">{{ $t('poolName') }}:</span>
+                <BalInlineInput
+                  v-model="poolName"
+                  name="poolName"
+                  size="xs"
+                  inputAlignRight
+                  @save="saveState"
+                />
+              </BalStack>
+              <BalStack horizontal justify="between">
+                <span class="text-sm">{{ $t('poolSymbol') }}:</span>
+                <BalInlineInput
+                  v-model="poolSymbol"
+                  name="poolSymbol"
+                  size="xs"
+                  inputAlignRight
+                  @save="saveState"
+                />
+              </BalStack>
+              <BalStack horizontal justify="between">
+                <span class="text-sm">{{ $t('poolType') }}:</span>
+                <span class="text-sm capitalize">{{ poolTypeString }}</span>
+              </BalStack>
+              <BalStack horizontal justify="between" class="mt-1">
+                <span class="text-sm">{{ $t('swapFee') }}:</span>
+                <BalStack horizontal spacing="sm">
+                  <span class="text-sm">{{
+                    fNum(initialFee, FNumFormats.percent)
+                  }}</span>
+                  <button
+                    class="hover:text-blue-500"
+                    @click="navigateToPoolFee"
+                  >
+                    <BalIcon name="edit" size="xs" />
+                  </button>
                 </BalStack>
               </BalStack>
-            </div>
-          </BalStack>
-          <BalStack
-            horizontal
-            justify="between"
-            class="p-4 border-t dark:border-gray-600"
-          >
-            <h6>{{ $t('total') }}</h6>
-            <h6>
-              {{ fNum(poolLiquidity.toString(), FNumFormats.fiat) }}
-            </h6>
-          </BalStack>
-        </BalCard>
-        <BalCard shadow="none" noPad>
-          <div class="p-2 bg-gray-50 dark:bg-gray-700">
-            <h6 class="text-sm">
-              {{ $t('summary') }}
-            </h6>
-          </div>
-          <BalStack vertical spacing="xs" class="p-3">
-            <BalStack horizontal justify="between">
-              <span class="text-sm">{{ $t('poolName') }}:</span>
-              <BalInlineInput
-                v-model="poolName"
-                name="poolName"
-                size="xs"
-                inputAlignRight
-                @save="saveState"
-              />
-            </BalStack>
-            <BalStack horizontal justify="between">
-              <span class="text-sm">{{ $t('poolSymbol') }}:</span>
-              <BalInlineInput
-                v-model="poolSymbol"
-                name="poolSymbol"
-                size="xs"
-                inputAlignRight
-                @save="saveState"
-              />
-            </BalStack>
-            <BalStack horizontal justify="between">
-              <span class="text-sm">{{ $t('poolType') }}:</span>
-              <span class="text-sm capitalize">{{ poolTypeString }}</span>
-            </BalStack>
-            <BalStack horizontal justify="between" class="mt-1">
-              <span class="text-sm">{{ $t('swapFee') }}:</span>
-              <BalStack horizontal spacing="sm">
-                <span class="text-sm">{{
-                  fNum(initialFee, FNumFormats.percent)
-                }}</span>
-                <button class="hover:text-blue-500" @click="navigateToPoolFee">
-                  <BalIcon name="edit" size="xs" />
-                </button>
+              <BalStack horizontal justify="between">
+                <span class="text-sm">{{ $t('swapFeeManager') }}:</span>
+                <BalStack horizontal spacing="sm">
+                  <span class="text-sm">{{ getSwapFeeManager() }}</span>
+                  <button
+                    class="hover:text-blue-500"
+                    @click="navigateToPoolFee"
+                  >
+                    <BalIcon name="edit" size="xs" />
+                  </button>
+                </BalStack>
               </BalStack>
             </BalStack>
-            <BalStack horizontal justify="between">
-              <span class="text-sm">{{ $t('swapFeeManager') }}:</span>
-              <BalStack horizontal spacing="sm">
-                <span class="text-sm">{{ getSwapFeeManager() }}</span>
-                <button class="hover:text-blue-500" @click="navigateToPoolFee">
-                  <BalIcon name="edit" size="xs" />
-                </button>
-              </BalStack>
-            </BalStack>
-          </BalStack>
-        </BalCard>
-        <AnimatePresence
-          :isVisible="hasMissingPoolNameOrSymbol"
-          unmountInstantly
-        >
-          <BalAlert :title="$t('missingPoolNameOrSymbol')" type="error">
-            {{ $t('missingPoolNameOrSymbolInfo') }}
-          </BalAlert>
-        </AnimatePresence>
-        <AnimatePresence
-          :isVisible="hasInvalidInitialWeight && createPoolTxHash !== ''"
-          unmountInstantly
-        >
-          <BalAlert
-            :title="$t('createAPool.invalidInitialWeightsTitle')"
-            type="warning"
+          </BalCard>
+          <AnimatePresence
+            :isVisible="hasMissingPoolNameOrSymbol"
+            unmountInstantly
           >
-            {{ $t('createAPool.invalidInitialWeightsInfo') }}
-          </BalAlert>
-        </AnimatePresence>
-        <AnimatePresence :isVisible="showNativeAssetWarning" unmountInstantly>
-          <BalAlert
-            :title="$t('createAPool.invalidInitialWeightsTitle')"
-            type="warning"
+            <BalAlert :title="$t('missingPoolNameOrSymbol')" type="error">
+              {{ $t('missingPoolNameOrSymbolInfo') }}
+            </BalAlert>
+          </AnimatePresence>
+          <AnimatePresence
+            :isVisible="hasInvalidInitialWeight && createPoolTxHash !== ''"
+            unmountInstantly
           >
-            {{ $t('createAPool.nativeAssetWarning') }}
-          </BalAlert>
-        </AnimatePresence>
+            <BalAlert
+              :title="$t('createAPool.invalidInitialWeightsTitle')"
+              type="warning"
+            >
+              {{ $t('createAPool.invalidInitialWeightsInfo') }}
+            </BalAlert>
+          </AnimatePresence>
+          <AnimatePresence :isVisible="showNativeAssetWarning" unmountInstantly>
+            <BalAlert
+              :title="$t('createAPool.invalidInitialWeightsTitle')"
+              type="warning"
+            >
+              {{ $t('createAPool.nativeAssetWarning') }}
+            </BalAlert>
+          </AnimatePresence>
 
-        <CreateActions
-          :createDisabled="hasMissingPoolNameOrSymbol"
-          :tokenAddresses="tokenAddresses"
-          :amounts="tokenAmounts"
-          @success="handleSuccess"
-        />
+          <CreateActions
+            class="mb-3"
+            :createDisabled="hasMissingPoolNameOrSymbol"
+            :tokenAddresses="tokenAddresses"
+            :amounts="tokenAmounts"
+            @success="handleSuccess"
+          />
+        </div>
       </BalStack>
     </BalCard>
   </BalStack>

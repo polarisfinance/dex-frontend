@@ -53,25 +53,29 @@ function formatWeightLabel(weight: PoolToken['weight']) {
 <template>
   <div class="container">
     <div class="flex justify-between items-center p-3">
+      <div class="flex flex-col">
+        <div>
+          <BalAsset
+            v-for="tokenAddress in lockablePool.tokensList"
+            :key="tokenAddress"
+            :address="tokenAddress"
+            :size="30"
+          />
+        </div>
+        <div
+          class="ml-2 text-lg font-semibold text-gray-400 dark:text-polaris-white"
+        >
+          {{ poolWeightsLabel }}
+        </div>
+      </div>
       <div>
-        <div class="font-semibold">
+        <div class="text-lg font-semibold text-right dark:text-polaris-white">
           {{
             $t('getVeBAL.previewModal.lpTokens', [
               fNum(totalLpTokens, FNumFormats.token),
             ])
           }}
         </div>
-        <div class="text-gray-400 dark:text-gray-600">
-          {{ poolWeightsLabel }}
-        </div>
-      </div>
-      <div class="grid grid-cols-2 gap-1">
-        <BalAsset
-          v-for="tokenAddress in lockablePool.tokensList"
-          :key="tokenAddress"
-          :address="tokenAddress"
-          :size="30"
-        />
       </div>
     </div>
   </div>
@@ -79,6 +83,6 @@ function formatWeightLabel(weight: PoolToken['weight']) {
 
 <style scoped>
 .container {
-  @apply shadow-lg border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg;
+  @apply divide-y dark:divide-gray-700;
 }
 </style>
