@@ -16,6 +16,7 @@ import useTokens from '@/composables/useTokens';
 import PoolCard from '@/components/cards/PoolCard/PoolCard.vue';
 
 const { prices } = useTokens();
+import { POOLS } from '@/constants/pools';
 
 // COMPOSABLES
 const router = useRouter();
@@ -33,7 +34,9 @@ const { pools, isLoading, poolsIsFetchingNextPage, loadMorePools } = usePools(
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const { networkSlug, networkConfig } = useNetwork();
 
-const isPaginated = computed(() => pools.value.length >= 10);
+const isPaginated = computed(
+  () => pools.value.length >= POOLS.Pagination.PerPage
+);
 
 const hiddenColumns = computed(() => {
   if (isDesktop.value) return ['migrate', 'actions', 'lockEndDate'];
