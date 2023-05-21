@@ -95,7 +95,7 @@ const cards = computed(() => {
         : '—',
       showPlusIcon: isWalletReady.value ? true : false,
       plusIconTo: {
-        name: 'add-liquidity',
+        name: 'invest',
         params: { id: lockablePoolId.value, networkSlug },
         query: { returnRoute: 'vebal' },
       },
@@ -195,7 +195,7 @@ const cards = computed(() => {
           <router-link
             v-if="card.showPlusIcon && card.plusIconTo"
             :to="card.plusIconTo"
-            class="flex items-center text-blue-600 dark:text-blue-400"
+            class="flex items-center text-blue-600 dark:text-polaris-2"
           >
             <BalIcon
               name="plus-circle"

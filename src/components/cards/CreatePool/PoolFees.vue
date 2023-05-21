@@ -294,7 +294,8 @@ watch(fee, onCustomInput, { immediate: true });
           :disabled="isProceedDisabled || isLoadingSimilarPools"
           type="submit"
           block
-          color="gradient"
+          color="white"
+          class="text-lg font-semibold polaris-main-button"
           :loading="isLoadingSimilarPools"
           @click="proceed"
         >

@@ -90,7 +90,7 @@ function toggleModal(): void {
         }}
       </span>
       <span v-if="!fixed" class="mr-[7px]">
-        <ChevronDownIcon/>
+        <ChevronDownIcon />
       </span>
       <!-- <BalIcon
         v-if="!fixed"
@@ -189,7 +189,7 @@ function toggleModal(): void {
 }
 
 .unselected {
-  @apply bg-blue-500 dark:bg-blue-400 text-white;
+  @apply bg-blue-500 dark:bg-polaris-card-medium text-white;
 }
 
 .selected {

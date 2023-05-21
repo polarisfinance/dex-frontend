@@ -71,7 +71,7 @@ const isIncreaseLockOnly = computed(
 
 <template>
   <div class="summary-table">
-    <h6 class="p-2">
+    <h6 class="p-2 font-semibold dark:text-polaris-white">
       {{ $t('getVeBAL.previewModal.summary.title') }}
     </h6>
     <div class="p-2">
@@ -132,7 +132,7 @@ const isIncreaseLockOnly = computed(
 
 <style scoped>
 .summary-table {
-  @apply border dark:border-gray-700 divide-y dark:divide-gray-700 rounded-lg mt-4;
+  @apply mt-4 px-5 pt-4;
 }
 
 .summary-item-row {
