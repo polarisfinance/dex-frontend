@@ -68,6 +68,7 @@ export const networkMap = {
   [Network.ARBITRUM]: 'arbitrum-one',
   [Network.GNOSIS]: 'gnosis-chain',
   [Network.AURORATEST]: 'aurora-testnet',
+  [Network.AURORA]: 'aurora',
 };
 
 type WalletState = 'connecting' | 'connected' | 'disconnected';
