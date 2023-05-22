@@ -70,7 +70,7 @@ const steps = computed(() => [
               <BalLink
                 tag="router-link"
                 :to="{
-                  name: 'add-liquidity',
+                  name: 'pool',
                   params: { networkSlug, id: lockablePool.id },
                 }"
                 external
