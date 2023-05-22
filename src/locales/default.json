@@ -122,8 +122,8 @@
   "claimHero": {
     "title": "Claim liquidity incentives",
     "legacyTitle": "Claim legacy incentives",
-    "description": "Polaris Finance Protocol liquidity incentives are directed to pools by vexPOLAR voters. Stake in these pools to earn incentives. Boost with vexPOLAR for up to 2.5x extra on Mainnet pools.",
-    "legacyDescription": "Liquidity mining incentive systems before the launch of vexPOLAR-tokenomics have been deprecated. If you provided liquidity before this change and have outstanding incentives you can claim them here.",
+    "description": "Polaris Finance Protocol liquidity incentives are directed to pools by veXPOLAR voters. Stake in these pools to earn incentives. Boost with veXPOLAR for up to 2.5x extra on Mainnet pools.",
+    "legacyDescription": "Liquidity mining incentive systems before the launch of veXPOLAR-tokenomics have been deprecated. If you provided liquidity before this change and have outstanding incentives you can claim them here.",
     "tipLabel": {
       "addLiquidity": "Add liquidity",
       "stake": "Stake your LP",
@@ -131,16 +131,16 @@
       "claim": "Claim anytime"
     },
     "tips": {
-      "addLiquidity": "To earn liquidity mining incentives, add liquidity to eligible pools across Ethereum Mainnet and supported Layer 2's like Polygon and Arbitrum (see the table on the vexPOLAR page). Note: You'll earn swap fees with or without staking but you don't need to claim these as they are automatically added to your position.",
+      "addLiquidity": "To earn liquidity mining incentives, add liquidity to eligible pools across Ethereum Mainnet and supported Layer 2's like Polygon and Arbitrum (see the table on the veXPOLAR page). Note: You'll earn swap fees with or without staking but you don't need to claim these as they are automatically added to your position.",
       "stake": "If you've provided liquidity in an eligible pool, you'll have an option to stake your Liquidity Provider (LP) tokens from that pool. Stake them to receive liquidity mining incentives in addition to any swap fees.",
-      "boost": "Get vexPOLAR to boost your liquidity mining incentives by up to 2.5x (on Ethereum Mainnet only). The more vexPOLAR you hold, the larger your boost. vexPOLAR holders also earn protocol fees and can vote to direct future pool emissions. Note, there is no additional boost from holding vexPOLAR on Layer 2 pools like Polygon and Arbitrum.",
-      "claim": "Token earnings from liquidity mining accumulate every block and can be claimed at any time. Some pools offer multiple token incentives (not just XPOLAR). Additionally, vexPOLAR holders also get a share of protocol revenue, in both bb-a-USD and XPOLAR."
+      "boost": "Get veXPOLAR to boost your liquidity mining incentives by up to 2.5x (on Ethereum Mainnet only). The more veXPOLAR you hold, the larger your boost. veXPOLAR holders also earn protocol fees and can vote to direct future pool emissions. Note, there is no additional boost from holding veXPOLAR on Layer 2 pools like Polygon and Arbitrum.",
+      "claim": "Token earnings from liquidity mining accumulate every block and can be claimed at any time. Some pools offer multiple token incentives (not just XPOLAR). Additionally, veXPOLAR holders also get a share of protocol revenue, in both bb-a-USD and XPOLAR."
     }
   },
   "claimPage": {
     "tips": {
       "BalIncentives": "Incentives for LPs who stake in eligible pools (based on the previous week's voting). This doesn't include swap fees or intrinsic yield from certain yield bearing tokens which accumulate into LP positions automatically.",
-      "ProtocolAndVebal": "Additional incentives for vexPOLAR holders: For locking in the XPOLAR/SPOLAR/pNEAR pool (based on the previous week's voting), and their share of protocol revenue.",
+      "ProtocolAndVebal": "Additional incentives for veXPOLAR holders: For locking in the XPOLAR/SPOLAR/pNEAR pool (based on the previous week's voting), and their share of protocol revenue.",
       "OtherIncentives": "Incentives from third parties who want to further incentivize liquidity on top of any XPOLAR liquidity incentives."
     }
   },
@@ -466,7 +466,7 @@
   "incentives": "incentives",
   "incentiveToken": "Incentive token",
   "incentivizedPool": "incentivized pool",
-  "inclXInVeBal": "{0} in vexPOLAR",
+  "inclXInVeBal": "{0} in veXPOLAR",
   "initialBPT": "Initial BPT",
   "initialWeight": "Initial weight",
   "insufficientBalance": "Not enough funds",
@@ -543,14 +543,14 @@
   "joinPool": "Join pool",
   "language": "Language",
   "learnMore": "Learn more",
-  "lockToGetVeBAL": "Lock this to get vexPOLAR",
+  "lockToGetVeBAL": "Lock this to get veXPOLAR",
   "light": "Light",
   "liquidityBootstrappingPool": "Liquidity Bootstrapping Pool",
   "liquidityIncentives": "liquidity incentives",
   "liquidityMining": "Liquidity mining",
   "liquidityMiningAPR": "Liquidity Mining APR",
   "liquidityMiningIncentives": "Liquidity mining incentives",
-  "liquidityMiningIncentivesCopy": "Liquidity incentives on {0} are paused for 1 week during its upgrade to the vexPOLAR system. Incentives will resume on April 28.",
+  "liquidityMiningIncentivesCopy": "Liquidity incentives on {0} are paused for 1 week during its upgrade to the veXPOLAR system. Incentives will resume on April 28.",
   "liquidityMiningPopover": {
     "airdropEligibility": "People who provide liquidity to eligible pools or swap on eligible token pairs receive weekly $XPOLAR distributions as incentives. $XPOLAR token holders own the Polaris Finance Protocol and can help shape its future by voting on governance proposals.",
     "airdropExplainer": "Weekly distributions from liquidity mining on {0} are airdropped on Wednesdays, sent directly to your wallet using disperse.app",
@@ -577,9 +577,9 @@
   "locked": "Locked",
   "locking": {
     "expiredLockLpTokens": "Expired lock LP tokens",
-    "expiredLockTooltip": "Your previous locking period has expired, so you no longer have any vexPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or vexPOLAR incentives. However, you'll still get the minimum 1.0x rate. Redeem your expired locked XPOLAR/SPOLAR/pNEAR LP tokens and then create a new lock to get vexPOLAR.",
-    "lockBptForVeBal": "Lock LP for vexPOLAR",
-    "lockedLpTokensTooltip": "The USD value of your vexPOLAR. These are your locked LP tokens in the XPOLAR 80%  / SPOLAR 40% / pNEAR 20% pool.",
+    "expiredLockTooltip": "Your previous locking period has expired, so you no longer have any veXPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or veXPOLAR incentives. However, you'll still get the minimum 1.0x rate. Redeem your expired locked XPOLAR/SPOLAR/pNEAR LP tokens and then create a new lock to get veXPOLAR.",
+    "lockBptForVeBal": "Lock LP for veXPOLAR",
+    "lockedLpTokensTooltip": "The USD value of your veXPOLAR. These are your locked LP tokens in the XPOLAR 80%  / SPOLAR 40% / pNEAR 20% pool.",
     "unlockedLpTokensTooltip": "The USD value of your liquidity provided to the XPOLAR 80%  / SPOLAR 40% / pNEAR 20% pool that has not been locked."
   },
   "logOut": "Log out",
@@ -609,7 +609,7 @@
   "modals": {
     "veBalRedirectModal": {
       "title": "Proceed to mainnet",
-      "description": "Getting and using vexPOLAR to vest and vote must be performed on the Ethereum mainnet. \n\n You can still earn liquidity mining incentives on Arbitrum, Polygon and Gnosis by adding liquidity to eligible pools. However to vote to direct emissions to your favored pools and to earn the protocol fees, you will need to use vexPOLAR on Ethereum Mainnet by locking XPOLAR/SPOLAR/pNEAR."
+      "description": "Getting and using veXPOLAR to vest and vote must be performed on the Ethereum mainnet. \n\n You can still earn liquidity mining incentives on Arbitrum, Polygon and Gnosis by adding liquidity to eligible pools. However to vote to direct emissions to your favored pools and to earn the protocol fees, you will need to use veXPOLAR on Ethereum Mainnet by locking XPOLAR/SPOLAR/pNEAR."
     }
   },
   "month": "month",
@@ -668,7 +668,7 @@
   "noResults": "No results",
   "noResultsTable": {
     "noBalIncentives": "No XPOLAR incentives to claim from staking",
-    "noProtocolRevenue": "Nothing to claim from holding vexPOLAR"
+    "noProtocolRevenue": "Nothing to claim from holding veXPOLAR"
   },
   "noSwapsPool": "No swaps in this pool.",
   "noTokensInWallet": "You don't have any tokens in your connected wallet on {0}",
@@ -689,7 +689,7 @@
   "pages": {
     "claim": {
       "title": "Claim your liquidity mining incentives",
-      "description": "Incentives to attract liquidity are set by the Polaris Finance protocol and partners. Stakers in eligible pools can claim incentives every block. People with vexPOLAR get a boosted rate—up to 2.5x extra.",
+      "description": "Incentives to attract liquidity are set by the Polaris Finance protocol and partners. Stakers in eligible pools can claim incentives every block. People with veXPOLAR get a boosted rate—up to 2.5x extra.",
       "titles": {
         "incentivesOnOtherNetworks": "Incentives on other networks",
         "legacyIncentives": "Legacy incentives"
@@ -852,7 +852,7 @@
   "proportionalSuggestion": "Proportional suggestion",
   "proportionalWithdrawal": "Proportional withdrawal",
   "protocolFees": "Protocol fees",
-  "protocolIncentives": "Protocol revenue & vexPOLAR incentives",
+  "protocolIncentives": "Protocol revenue & veXPOLAR incentives",
   "rank": "Rank (1{0})",
   "receipt": "Receipt",
   "receive": "Receive",
@@ -945,20 +945,20 @@
       "tokens": {
         "balWETH": "BAL + WETH",
         "lpToken": "XPOLAR/SPOLAR/pNEAR",
-        "veBAL": "vexPOLAR"
+        "veBAL": "veXPOLAR"
       },
       "tokenInfo": {
         "balWETH": "Add liquidity to the 40% XPOLAR / 40% SPOLAR / 20% pNEAR pool to get the XPOLAR/SPOLAR/pNEAR LP token.",
-        "lpToken": "Lock up the LP tokens from the 40% XPOLAR / 40% SPOLAR / 20% pNEAR pool for up to a year to get vexPOLAR. The longer you lock, the more vexPOLAR you get.",
-        "veBAL": "Use vexPOLAR to earn extra on your staked pools. Only some pools are eligible for staking. Check any pools that you are in, and stake it to earn liquidity mining incentives. You can also use vexPOLAR to vote to direct future liquidity mining emissions"
+        "lpToken": "Lock up the LP tokens from the 40% XPOLAR / 40% SPOLAR / 20% pNEAR pool for up to a year to get veXPOLAR. The longer you lock, the more veXPOLAR you get.",
+        "veBAL": "Use veXPOLAR to earn extra on your staked pools. Only some pools are eligible for staking. Check any pools that you are in, and stake it to earn liquidity mining incentives. You can also use veXPOLAR to vote to direct future liquidity mining emissions"
       },
       "buttons": {
-        "getVeBAL": "Get vexPOLAR",
+        "getVeBAL": "Get veXPOLAR",
         "learnMore": "Learn more"
       }
     },
     "myVeBAL": {
-      "title": "My vexPolar",
+      "title": "My veXPOLAR",
       "cards": {
         "myLpToken": {
           "label": "My XPOLAR/SPOLAR/pNEAR"
@@ -971,16 +971,16 @@
           "secondaryText": "{0} days"
         },
         "myVeBAL": {
-          "label": "My vexPolar",
-          "secondaryText": "{0} of all vexPOLAR"
+          "label": "My veXPOLAR",
+          "secondaryText": "{0} of all veXPOLAR"
         },
-        "myExpiredLockTooltip": "Your previous lockup period has expired, so you no longer have any vexPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or vexPOLAR incentives. However, you’ll still get the minimum 1.0x rate. Tap the minus icon to redeem your expired locked XPOLAR/SPOLAR/pNEAR LP tokens and then create a new lock to get vexPOLAR."
+        "myExpiredLockTooltip": "Your previous lockup period has expired, so you no longer have any veXPOLAR or voting power. You will no longer earn protocol fees, boosted yields on staked Ethereum Mainnet pools or veXPOLAR incentives. However, you’ll still get the minimum 1.0x rate. Tap the minus icon to redeem your expired locked XPOLAR/SPOLAR/pNEAR LP tokens and then create a new lock to get veXPOLAR."
       }
     },
     "communityVeBAL": {
-      "title": "Community vexPOLAR",
+      "title": "Community veXPOLAR",
       "cards": {
-        "totalVeBAL": "Total vexPOLAR",
+        "totalVeBAL": "Total veXPOLAR",
         "avgLockUpPeriod": "Ave. lock-up period",
         "effectiveBalLocked": "Effective XPOLAR locked",
         "shareOfBalLocked": "Share of XPOLAR locked"
@@ -998,14 +998,14 @@
     },
     "liquidityMining": {
       "title": "Pools eligible for liquidity mining",
-      "description": "Liquidity incentives are directed by the community of vexPOLAR holders. If you hold vexPOLAR, vote below on any pools across Ethereum and Layer 2’s. Your vote will persist until you change it and editing a pool can only be done once in 10 days.",
+      "description": "Liquidity incentives are directed by the community of veXPOLAR holders. If you hold veXPOLAR, vote below on any pools across Ethereum and Layer 2’s. Your vote will persist until you change it and editing a pool can only be done once in 10 days.",
       "myUnallocatedVotes": "My unallocated votes:",
-      "myUnallocatedVotesTooltip": "vexPOLAR holders can vote for a single pool or multiple pools in whatever weights they choose, up to their max of 100%. Note: If you’ve previously voted for a pool but no longer have any vexPOLAR, your votes will not count.",
+      "myUnallocatedVotesTooltip": "veXPOLAR holders can vote for a single pool or multiple pools in whatever weights they choose, up to their max of 100%. Note: If you’ve previously voted for a pool but no longer have any veXPOLAR, your votes will not count.",
       "unallocatedVotes": "My unallocated votes: {0}.",
       "votingPeriod": "Voting period ends: {0}d {1}h {2}m {3}s",
-      "votingPeriodTooltip": "There is a weekly vote for vexPOLAR holders which ends at 0:00 UTC on Thursdays. This vote determines the XPOLAR incentives allocation for all Stakers in these pools for the next week. Although you don’t have to vote to get a boosted yield, your vote can help you earn more by voting on pools where you are a staker.",
+      "votingPeriodTooltip": "There is a weekly vote for veXPOLAR holders which ends at 0:00 UTC on Thursdays. This vote determines the XPOLAR incentives allocation for all Stakers in these pools for the next week. Although you don’t have to vote to get a boosted yield, your vote can help you earn more by voting on pools where you are a staker.",
       "votingPeriodCountdown": "{0}d : {1}h : {2}m : {3}s",
-      "votingPowerExpiredTooltip": "Your previous lock period has expired, so you no longer have any vexPOLAR or voting power. Any votes that have been allocated in the past will no longer count. Lock up XPOLAR, SPOLAR, pNEAR LP tokens to get vexPOLAR for higher yields and voting power.",
+      "votingPowerExpiredTooltip": "Your previous lock period has expired, so you no longer have any veXPOLAR or voting power. Any votes that have been allocated in the past will no longer count. Lock up XPOLAR, SPOLAR, pNEAR LP tokens to get veXPOLAR for higher yields and voting power.",
       "table": {
         "chain": "Chain",
         "assets": "Assets",
@@ -1021,7 +1021,7 @@
         "nextPeriod": "Next period: {0}"
       },
       "limitsTooltip": {
-        "distributionsCappedVeBAL": "Distributions to the vexPOLAR gauge are capped at 10%",
+        "distributionsCappedVeBAL": "Distributions to the veXPOLAR gauge are capped at 10%",
         "distributionsCappedAt": "Distributions to this gauge are capped at {0}%"
       },
       "popover": {
@@ -1044,7 +1044,7 @@
         "remainingVotes": "Your remaining votes: {0}",
         "remainingVotesEditing": "Your remaining votes: {0} ({1} current allocation in this pool + {2} unallocated votes)",
         "remainingVotesExceeded": "This exceeds your remaining votes of: {0}",
-        "resubmitVote": "Voting power is set at the time of the vote. If you get more vexPOLAR later, resubmit your vote to use your increased power.",
+        "resubmitVote": "Voting power is set at the time of the vote. If you get more veXPOLAR later, resubmit your vote to use your increased power.",
         "voteLockInfo": "Votes are timelocked for 10 days. If you vote now, no edits can be made until {0}.",
         "warnings": {
           "votedTooRecently": {
@@ -1052,17 +1052,17 @@
             "description": "You won't be able to make any edits to this vote allocation for {0}"
           },
           "noVeBal": {
-            "title": "You need some vexPOLAR to vote on gauges",
-            "description": "Get vexPOLAR by locking up LP tokens from the 40% XPOLAR / 30% SPOLAR / 30% pNEAR pool.",
-            "inputHintText": "You can't vote since you have no vexPOLAR"
+            "title": "You need some veXPOLAR to vote on gauges",
+            "description": "Get veXPOLAR by locking up LP tokens from the 40% XPOLAR / 30% SPOLAR / 30% pNEAR pool.",
+            "inputHintText": "You can't vote since you have no veXPOLAR"
           },
           "veBalLockTooShort": {
-            "title": "vexPOLAR not locked for 7 days",
-            "description": "You must have vexPOLAR locked for more than 7 days to vote on gauges."
+            "title": "veXPOLAR not locked for 7 days",
+            "description": "You must have veXPOLAR locked for more than 7 days to vote on gauges."
           },
           "veBalVoteOverLimitWarning": {
-            "title": "You may be wasting your vote: vexPOLAR cap hit",
-            "description": "Distributions to vexPOLAR holders of weekly emissions are capped at 10%. Any votes exceeding this amount at Thursday 0:00 UTC will not be counted."
+            "title": "You may be wasting your vote: veXPOLAR cap hit",
+            "description": "Distributions to veXPOLAR holders of weekly emissions are capped at 10%. Any votes exceeding this amount at Thursday 0:00 UTC will not be counted."
           },
           "lpVoteOverLimitWarning": {
             "title": "You may be wasting your vote",
@@ -1087,17 +1087,17 @@
         },
         "hint": {
           "title": "Resubmit your votes to utilize your full voting power",
-          "description": "Votes on pools are set at the time of your last vote. Since you’ve added new vexPOLAR after your original vote, the additional voting power is not being used."
+          "description": "Votes on pools are set at the time of your last vote. Since you’ve added new veXPOLAR after your original vote, the additional voting power is not being used."
         },
-        "resubmitWarning": "Votes on pools are set at the time of the vote. Since you’ve added new vexPOLAR since your original vote, you have additional voting power which is not being used. To use your full voting power, resubmit your votes.",
+        "resubmitWarning": "Votes on pools are set at the time of the vote. Since you’ve added new veXPOLAR since your original vote, you have additional voting power which is not being used. To use your full voting power, resubmit your votes.",
         "btn": "Resubmit votes"
       }
     },
     "notSupported": {
       "title": "Locking is unavailable on this network",
-      "description": "Get vexPOLAR on Ethereum Mainnet"
+      "description": "Get veXPOLAR on Ethereum Mainnet"
     },
-    "votingTransitionDescription": "Liquidity mining emissions as directed by vexPOLAR holders start on 7 April 2022 at 0:00 UTC! Voting is now live, so get vexPOLAR and vote for pools. Your vote will persist until you edit. Editing can only be done once in 10 days."
+    "votingTransitionDescription": "Liquidity mining emissions as directed by veXPOLAR holders start on 7 April 2022 at 0:00 UTC! Voting is now live, so get veXPOLAR and vote for pools. Your vote will persist until you edit. Editing can only be done once in 10 days."
   },
   "getVeBAL": {
     "lockableTokens": {
@@ -1109,27 +1109,27 @@
       "steps": {
         "investPart1": "Add liquidity to the",
         "investPart2": "pool.",
-        "lock": "Lock-up the resulting LP token ({0}). The longer you lock (1 year max), the more vexPOLAR you get."
+        "lock": "Lock-up the resulting LP token ({0}). The longer you lock (1 year max), the more veXPOLAR you get."
       },
       "earn": {
-        "boost": "vexPOLAR holders get boosted liquidity mining yields (up to 2.5x) and increased voting power.",
+        "boost": "veXPOLAR holders get boosted liquidity mining yields (up to 2.5x) and increased voting power.",
         "voting": "Use this voting power to choose which pool gauges get allocated liquidity mining incentives. Vote on the pools where you have added liquidity to earn more yield."
       }
     },
     "myVeBAL": {
-      "title": "My vexPOLAR",
+      "title": "My veXPOLAR",
       "lockedEndDate": "Locked until",
       "expiredOn": "Expired on",
-      "percentVeBAL": "% of total vexPOLAR"
+      "percentVeBAL": "% of total veXPOLAR"
     },
     "lockForm": {
-      "title": "Lock to get vexPOLAR",
+      "title": "Lock to get veXPOLAR",
       "lockAmount": {
         "title": "How much do you want to lock?"
       },
       "lockEndDate": {
         "title": "Lock until",
-        "tooltip": "The longer you lock your stake, the more vexPOLAR voting power you get (up to 4 years). You can extend the lock later. Be careful, locking is not reversible."
+        "tooltip": "The longer you lock your stake, the more veXPOLAR voting power you get (up to 4 years). You can extend the lock later. Be careful, locking is not reversible."
       },
       "summary": {
         "receive": {
@@ -1177,7 +1177,7 @@
           "explainer": "Lock-up end dates can only be on Thursdays at 0:00 UTC. To get as close as possible to a 1 year lock, locking on Thursday is recommended.",
           "table": {
             "lockPeriod": "Lock period",
-            "totalVeBAL": "Total vexPOLAR"
+            "totalVeBAL": "Total veXPOLAR"
           }
         },
         "increasedLockAmount": "Increased lock amount",
@@ -1208,18 +1208,18 @@
           "loadingLabel": "Confirm lock in wallet"
         }
       },
-      "returnToVeBalPage": "Return to vexPOLAR page",
+      "returnToVeBalPage": "Return to veXPOLAR page",
       "firstVeBALReceived": {
         "title": "Vote on pools to direct liquidity incentives",
-        "description": "Your voting weight is set at the time of the vote. If you acquire additional vexPOLAR, resubmit your votes to utilize your newly acquired voting power. Voting per pool can only be done once every 10 days."
+        "description": "Your voting weight is set at the time of the vote. If you acquire additional veXPOLAR, resubmit your votes to utilize your newly acquired voting power. Voting per pool can only be done once every 10 days."
       }
     },
     "notSupported": {
       "title": "Locking is unavailable on this network",
-      "description": "Get vexPOLAR on Ethereum Mainnet"
+      "description": "Get veXPOLAR on Ethereum Mainnet"
     }
   },
-  "getVeBALToVote": "Get vexPOLAR to vote",
+  "getVeBALToVote": "Get veXPOLAR to vote",
   "unlockVeBAL": {
     "expiredLockableTokens": {
       "title": "Expired locked tokens"
@@ -1252,7 +1252,7 @@
           "loadingLabel": "Confirm unlock in wallet"
         }
       },
-      "returnToVeBalPage": "Return to vexPOLAR page"
+      "returnToVeBalPage": "Return to veXPOLAR page"
     },
     "notSupported": {
       "title": "Unlocking is unavailable on this network",
@@ -1265,7 +1265,7 @@
     "apr": {
       "token": "Token APR",
       "boosted": "Boosted APR",
-      "veBAL": "vexPOLAR APR"
+      "veBAL": "veXPOLAR APR"
     },
     "fiat": {
       "token": "Token rewards",
@@ -1302,7 +1302,7 @@
       "total": "The total value in {0} you’ll be withdrawing from this pool."
     },
     "veBalApr": {
-      "title": "Max locking/vexPOLAR APR",
+      "title": "Max locking/veXPOLAR APR",
       "breakdown1": "XPOLAR",
       "breakdown2": "bb-a-USD"
     }
@@ -1493,8 +1493,8 @@
   "v2": "V2",
   "value": "Value",
   "vault": "Vault",
-  "vebal": "vexPOLAR",
-  "vexPolarProtocolLiquidity": "vexPolar protocol liquidity",
+  "vebal": "veXPOLAR",
+  "veXPOLARProtocolLiquidity": "veXPOLAR protocol liquidity",
   "vestVote": "Vest+Vote",
   "viewAllAssets": "View all assets ({0})",
   "viewAndManangeOnElement": "View and manage all pools on Element.fi",
