@@ -24,8 +24,8 @@ export default class ConfigService {
     return {
       APP_ENV: import.meta.env.VITE_ENV || 'development',
       NETWORK: networkId.value,
-      APP_DOMAIN: import.meta.env.VITE_DOMAIN || 'app.balancer.fi',
-      APP_HOST: import.meta.env.VITE_HOST || 'balancer.fi',
+      APP_DOMAIN: import.meta.env.VITE_DOMAIN || 'app.polarisfiance.io',
+      APP_HOST: import.meta.env.VITE_HOST || 'polarisfiance.io',
       API_URL:
         import.meta.env.VITE_API_URL || 'https://api-v3.balancer.fi/graphql',
       IPFS_NODE: import.meta.env.VITE_IPFS_NODE || 'cloudflare-ipfs.com',
@@ -51,6 +51,7 @@ export default class ConfigService {
   }
 
   public get network(): Config {
+    console.log('networkId', networkId.value);
     return configs[networkId.value];
   }
 
