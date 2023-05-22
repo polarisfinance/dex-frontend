@@ -33,6 +33,7 @@ const networkFilters = [
   Network.OPTIMISM,
   Network.GNOSIS,
   Network.AURORATEST,
+  Network.AURORA,
 ];
 
 /**

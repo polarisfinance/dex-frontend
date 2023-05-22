@@ -17,7 +17,7 @@ type Props = {
   pickedTokens?: string[];
   isOnMigrationCard?: boolean;
   isHovered?: boolean;
-  showWeight:boolean;
+  showWeight: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,11 +59,14 @@ const isSelectedInPickedTokens = computed(() =>
  * METHODS
  */
 function symbolFor(token: PoolToken): string {
+  if (token.symbol === 'veXPOLAR') {
+    return token.symbol;
+  }
   return getToken(token.address)?.symbol || token.symbol || '---';
 }
 
 function weightFor(token: PoolToken): string {
-  if(props.showWeight===true){
+  if (props.showWeight === true) {
     return fNum(token.weight || '0', {
       style: 'percent',
       maximumFractionDigits: 0,
@@ -79,19 +82,19 @@ const MAX_PILLS = 8;
   <div class="flex flex-wrap -mt-1">
     <template v-if="isStablePool">
       <StableTokenPill
-        v-for="(token,idx) in visibleTokens"
+        v-for="(token, idx) in visibleTokens"
         :key="token.address"
         :hasBalance="hasBalance(token.address)"
         :symbol="symbolFor(token)"
         :token="token"
         :isSelected="includesAddress(selectedTokens, token.address)"
         :isPicked="includesAddress(pickedTokens, token.address)"
-        :separator="idx==0 ? false:true"
+        :separator="idx == 0 ? false : true"
       />
     </template>
     <template v-else>
       <WeightedTokenPill
-        v-for="(token,idx) in visibleTokens"
+        v-for="(token, idx) in visibleTokens"
         :key="token.address"
         :hasBalance="hasBalance(token.address)"
         :symbol="symbolFor(token)"
@@ -101,7 +104,7 @@ const MAX_PILLS = 8;
         :isPicked="includesAddress(pickedTokens, token.address)"
         :isOnMigrationCard="isOnMigrationCard"
         :isHovered="isHovered"
-        :separator="idx==0 ? false:true"
+        :separator="idx == 0 ? false : true"
       />
       <HiddenTokensPills
         v-if="hiddenTokens.length > 0"
