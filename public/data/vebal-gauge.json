@@ -1,25 +1,25 @@
 [
   {
-    "address": "0xE85a38632bD996652CcCa5E9C4Ea6a6D745Ad31c",
-    "network": 1313161555,
+    "address": "0x78F38DBC113de874c9b93Ed4206312aa433Fe091",
+    "network": 1313161554,
     "isKilled": false,
     "addedTimestamp": 1683673650,
-    "relativeWeightCap": "null",
+    "relativeWeightCap": "0.1",
     "pool": {
-      "id": "0xbd708c4dd937207393e2e25e047f749c1f29755f000100000000000000000002",
-      "address": "0xbd708c4dd937207393e2e25e047f749c1f29755f",
+      "id": "0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015",
+      "address": "0x23A8a6E5d468E7aCF4cC00Bd575DBecF13BC7F78",
       "poolType": "Stable",
-      "symbol": "veBAL",
+      "symbol": "veXPOLAR",
       "tokens": [
         {
-          "address": "0x86989e569bc9ccF08bd3Cf9840C47c07C55be4cA",
+          "address": "0xBe96730583b46140210efA92AC6039EF11247657",
           "weight": "null",
-          "symbol": "veBAL"
+          "symbol": "veXPOLAR"
         }
       ]
     },
     "tokenLogoURIs": {
-      "0x86989e569bc9ccF08bd3Cf9840C47c07C55be4cA": "https://raw.githubusercontent.com/balancer/assets/master/assets/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56.png"
+      "0xBe96730583b46140210efA92AC6039EF11247657": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png"
     }
   }
 ]
