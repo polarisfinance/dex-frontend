@@ -69,10 +69,13 @@ defineExpose({ hide });
     </transition>
     <div class="content-container">
       <Transition name="modal" @after-leave="$emit('close')">
-        <div v-if="showContent" :class="{
+        <div
+          v-if="showContent"
+          :class="{
             contentMobile: upToSmallBreakpoint,
             content: !upToSmallBreakpoint,
-          }">
+          }"
+        >
           <BalCard
             :title="title"
             shadow="lg"
@@ -118,7 +121,7 @@ defineExpose({ hide });
 }
 
 .modal-card {
-  @apply mx-auto h-full  dark:border-0 dark:bg-polaris-card-dark;
+  @apply mx-auto h-full  dark:border-0 dark:bg-polaris-card-dark relative;
   overflow: none;
 }
 
