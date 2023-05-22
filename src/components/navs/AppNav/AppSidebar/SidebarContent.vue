@@ -64,7 +64,7 @@ const navLinks = [
   },
   {
     label: 'VexPolar',
-    path: `/${networkSlug}/vebal`,
+    path: `/${networkSlug}/vexpolar`,
     goal: Goals.ClickNavVebal,
   },
 ];

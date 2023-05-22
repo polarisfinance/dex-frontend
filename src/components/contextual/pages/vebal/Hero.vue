@@ -27,7 +27,7 @@ const benefits = computed(() => [
  */
 function navigateToGetVeBAL() {
   router.push({
-    name: 'get-vebal',
+    name: 'get-vexpolar',
     query: {
       returnRoute: 'vexpolar',
     },

@@ -74,7 +74,7 @@ export default function useBackgrounds() {
       setBackgroundImage(bondBg);
     } else if (route.path.includes('/airdrop')) {
       setBackgroundImage(airdropBg);
-    } else if (route.path.includes('/vebal')) {
+    } else if (route.path.includes('/vexpolar')) {
       setBackgroundImage(vexpolarBg);
     } else if (route.path.includes('/portfolio')) {
       setBackgroundImage(portfolioBg);

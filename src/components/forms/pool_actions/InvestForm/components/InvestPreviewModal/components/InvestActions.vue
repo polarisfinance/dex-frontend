@@ -192,7 +192,7 @@ async function submit(): Promise<TransactionResponse> {
       <BalBtn
         v-if="lockablePoolId === pool.id"
         tag="router-link"
-        :to="{ name: 'get-vebal', params: { networkSlug } }"
+        :to="{ name: 'get-vexpolar', params: { networkSlug } }"
         color="gradient"
         block
         class="flex mt-2"

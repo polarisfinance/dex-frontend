@@ -77,7 +77,7 @@ const isLoadingTotalValue = computed((): boolean => isLoadingPools.value);
         <div
           v-else
           class="group flex items-center px-3 h-8 text-sm font-medium text-yellow-500 hover:text-white focus:text-white rounded-tr rounded-bl border border-yellow-500 transition-colors cursor-pointer vebal-banner"
-          @click="router.push({ name: 'vebal', params: { networkSlug } })"
+          @click="router.push({ name: 'vexpolar', params: { networkSlug } })"
         >
           <span v-if="totalLockedValue === '0'"
             >{{ totalLockedValue }} {{ $t('veBAL.hero.tokens.veBAL') }}</span

@@ -135,12 +135,12 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:networkSlug/vexpolar',
-    name: 'vebal',
+    name: 'vexpolar',
     component: VeBalPage,
   },
   {
     path: '/:networkSlug/get-vexpolar',
-    name: 'get-vebal',
+    name: 'get-vexpolar',
     component: GetVeBalPage,
     meta: { layout: 'FocusedLayout' },
   },

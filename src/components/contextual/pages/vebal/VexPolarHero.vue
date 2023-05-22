@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import useBreakpoints from '@/composables/useBreakpoints';
+import { networkSlug } from '@/composables/useNetwork';
 
 /**
  * COMPOSABLES
@@ -25,7 +26,7 @@ const benefits = computed(() => [
  */
 function navigateToGetVeBAL() {
   router.push({
-    name: 'get-vebal',
+    name: 'get-vexpolar',
     query: {
       returnRoute: 'vexpolar',
     },

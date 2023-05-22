@@ -261,7 +261,7 @@ onBeforeMount(async () => {
       </BalAlert>
       <BalBtn
         tag="router-link"
-        :to="{ name: 'vebal', params: { networkSlug } }"
+        :to="{ name: 'vexpolar', params: { networkSlug } }"
         color="gray"
         outline
         block

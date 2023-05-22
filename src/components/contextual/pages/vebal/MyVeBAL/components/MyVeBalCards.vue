@@ -110,7 +110,7 @@ const cards = computed(() => {
         ? fNum(props.veBalLockInfo?.lockedAmount ?? '0', FNumFormats.token)
         : '—',
       showPlusIcon: isWalletReady.value && !isExpired ? true : false,
-      plusIconTo: { name: 'get-vebal', query: { returnRoute: 'vexpolar' } },
+      plusIconTo: { name: 'get-vexpolar', query: { returnRoute: 'vexpolar' } },
       showUnlockIcon: isExpired ? true : false,
     },
     {
@@ -124,7 +124,7 @@ const cards = computed(() => {
             ])
           : '-',
       showPlusIcon: hasExistingLock && !isExpired ? true : false,
-      plusIconTo: { name: 'get-vebal', query: { returnRoute: 'vexpolar' } },
+      plusIconTo: { name: 'get-vexpolar', query: { returnRoute: 'vexpolar' } },
     },
     {
       id: 'myVeBAL',

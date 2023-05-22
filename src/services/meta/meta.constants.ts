@@ -17,17 +17,17 @@ export const ROUTE_META_DATA = {
   claim: {
     metaTitle: 'Claim liquidity mining incentives from staking',
     metaDescription:
-      'LPs who stake can claim liquidity mining incentives. veBAL holders can boost incentives and claim their share of protocol revenue',
+      'LPs who stake can claim liquidity mining incentives. veXPOLAR holders can boost incentives and claim their share of protocol revenue',
   },
   portfolio: {
     metaTitle: 'Your Polaris DEX Portfolio',
     metaDescription:
       'Track your Polaris Finance Portfolio, including your unstaked and stake LP positions',
   },
-  vebal: {
+  vexpolar: {
     metaTitle: 'Lock and Vote for Polaris DEX Gauges',
     metaDescription:
-      'Get veBAL (voter escrowed B-80BAL-20WETH) for extra liquidity mining incentives, governance voting power and a share of protocol revenue',
+      'Get veXPOLAR (voter escrowed 20pNEAR-40XPOLAR-40SPOLAR) for extra liquidity mining incentives, governance voting power and a share of protocol revenue',
   },
   'terms-of-use': {
     metaTitle: 'Polaris Finance Terms of Use',
