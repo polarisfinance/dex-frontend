@@ -255,7 +255,7 @@ export default defineComponent({
           </svg>
           <h1>Good job!</h1>
           <h3>Now, you can lock you LP to get VexPolar!</h3>
-          <BalLink :href="`/#/${networkSlug}/get-vexpolar?returnRoute=vebal`">
+          <BalLink :href="`/#/${networkSlug}/get-vexpolar`">
             <BalBtn
               color="gradient"
               size="sm"
