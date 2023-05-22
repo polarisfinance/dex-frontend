@@ -23,6 +23,35 @@
     }
   },
   {
+    "address": "0x00EBD98D869aAE0Ee67E8b48753905DAc472d542",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798860,
+    "pool": {
+      "id": "0x5f5f57abf920a88e77513a28d41df39a0e0b4b6a000200000000000000000035",
+      "address": "0x5F5F57Abf920a88e77513a28D41df39a0e0B4b6a",
+      "poolType": "Weighted",
+      "symbol": "50ETHERNAL-50BINARIS",
+      "tokens": [
+        {
+          "address": "0x17cbd9C274e90C537790C51b4015a65cD015497e",
+          "weight": "0.5",
+          "symbol": "ETHERNAL"
+        },
+        {
+          "address": "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370",
+          "weight": "0.5",
+          "symbol": "BINARIS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x17cbd9C274e90C537790C51b4015a65cD015497e": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x17cbd9C274e90C537790C51b4015a65cD015497e.svg",
+      "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xafE0d6ca6AAbB43CDA024895D203120831Ba0370.svg"
+    }
+  },
+  {
     "address": "0x04BD0aa428d0B33D765285813a066bC3b51A6839",
     "network": 1313161554,
     "isKilled": false,
@@ -49,6 +78,35 @@
     "tokenLogoURIs": {
       "0x17cbd9C274e90C537790C51b4015a65cD015497e": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x17cbd9C274e90C537790C51b4015a65cD015497e.svg",
       "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
+    }
+  },
+  {
+    "address": "0x0bca926aaD197501be228d8A0cAe14c58bFE0b71",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798813,
+    "pool": {
+      "id": "0x2ec560ba933e8994482af76d63378bdc5354402100020000000000000000002a",
+      "address": "0x2Ec560ba933E8994482aF76D63378bDC53544021",
+      "poolType": "Weighted",
+      "symbol": "50PBOND-50POLAR",
+      "tokens": [
+        {
+          "address": "0x3a4773e600086A753862621A26a2E3274610da43",
+          "weight": "0.5",
+          "symbol": "PBOND"
+        },
+        {
+          "address": "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86",
+          "weight": "0.5",
+          "symbol": "POLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x3a4773e600086A753862621A26a2E3274610da43": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x3a4773e600086A753862621A26a2E3274610da43.svg",
+      "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86.svg"
     }
   },
   {
@@ -110,6 +168,151 @@
     }
   },
   {
+    "address": "0x1d74335Ae3436FE6d60Fa2807Cfe4Cd586884F6F",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798830,
+    "pool": {
+      "id": "0xec0fac82d2aac483871874407d25614cf6dd9ce5000200000000000000000030",
+      "address": "0xEC0FaC82D2aac483871874407D25614Cf6dd9Ce5",
+      "poolType": "Weighted",
+      "symbol": "50ORBITAL-50USP",
+      "tokens": [
+        {
+          "address": "0x3AC55eA8D2082fAbda674270cD2367dA96092889",
+          "weight": "0.5",
+          "symbol": "ORBITAL"
+        },
+        {
+          "address": "0xa69d9Ba086D41425f35988613c156Db9a88a1A96",
+          "weight": "0.5",
+          "symbol": "USP"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x3AC55eA8D2082fAbda674270cD2367dA96092889": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x3AC55eA8D2082fAbda674270cD2367dA96092889.svg",
+      "0xa69d9Ba086D41425f35988613c156Db9a88a1A96": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xa69d9Ba086D41425f35988613c156Db9a88a1A96.svg"
+    }
+  },
+  {
+    "address": "0x24f7cD2e85F2A1E0A570ebf1f30f42586fF4f3B4",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798781,
+    "pool": {
+      "id": "0x6e7c170f95aba8ffbccaf5155706be0682cc5bd900020000000000000000002b",
+      "address": "0x6E7C170f95Aba8FfBcCaF5155706Be0682Cc5bD9",
+      "poolType": "Weighted",
+      "symbol": "50BINARIS-50BBOND",
+      "tokens": [
+        {
+          "address": "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370",
+          "weight": "0.5",
+          "symbol": "BINARIS"
+        },
+        {
+          "address": "0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9",
+          "weight": "0.5",
+          "symbol": "BBOND"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xafE0d6ca6AAbB43CDA024895D203120831Ba0370.svg",
+      "0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xfa32616447C51F056Db97BC1d0E2D4C0c4D059C9.svg"
+    }
+  },
+  {
+    "address": "0x35Bab55e3f7a56451bDdd3395129E48e732634E3",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798892,
+    "pool": {
+      "id": "0xae4d320cc49f57a2bf6f628a749f5aba19d2c7ea000200000000000000000031",
+      "address": "0xAe4D320cC49F57A2BF6F628a749f5aBa19d2C7eA",
+      "poolType": "Weighted",
+      "symbol": "50ETHERNAL-50USP",
+      "tokens": [
+        {
+          "address": "0x17cbd9C274e90C537790C51b4015a65cD015497e",
+          "weight": "0.5",
+          "symbol": "ETHERNAL"
+        },
+        {
+          "address": "0xa69d9Ba086D41425f35988613c156Db9a88a1A96",
+          "weight": "0.5",
+          "symbol": "USP"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x17cbd9C274e90C537790C51b4015a65cD015497e": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x17cbd9C274e90C537790C51b4015a65cD015497e.svg",
+      "0xa69d9Ba086D41425f35988613c156Db9a88a1A96": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xa69d9Ba086D41425f35988613c156Db9a88a1A96.svg"
+    }
+  },
+  {
+    "address": "0x3e44240251170707ED69fd3aC4E6fdFE9A225697",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798875,
+    "pool": {
+      "id": "0xf53a4381f3a4f08726970bc6bb23c4ee3ef101ed000200000000000000000033",
+      "address": "0xf53a4381F3a4F08726970BC6bb23c4ee3Ef101eD",
+      "poolType": "Weighted",
+      "symbol": "50ETHERNAL-50ORBITAL",
+      "tokens": [
+        {
+          "address": "0x17cbd9C274e90C537790C51b4015a65cD015497e",
+          "weight": "0.5",
+          "symbol": "ETHERNAL"
+        },
+        {
+          "address": "0x3AC55eA8D2082fAbda674270cD2367dA96092889",
+          "weight": "0.5",
+          "symbol": "ORBITAL"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x17cbd9C274e90C537790C51b4015a65cD015497e": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x17cbd9C274e90C537790C51b4015a65cD015497e.svg",
+      "0x3AC55eA8D2082fAbda674270cD2367dA96092889": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x3AC55eA8D2082fAbda674270cD2367dA96092889.svg"
+    }
+  },
+  {
+    "address": "0x4a7b68FE17387A69b8b2789cf9b4631fBba3edc8",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798734,
+    "pool": {
+      "id": "0xa6ac7ce1d7aefd7abd06d93e6b89489aedf03d14000200000000000000000029",
+      "address": "0xa6Ac7cE1d7AeFd7aBD06d93E6B89489aeDF03D14",
+      "poolType": "Weighted",
+      "symbol": "50USP-50USPBOND",
+      "tokens": [
+        {
+          "address": "0xa69d9Ba086D41425f35988613c156Db9a88a1A96",
+          "weight": "0.5",
+          "symbol": "USP"
+        },
+        {
+          "address": "0xcE32b28c19C61B19823395730A0c7d91C671E54b",
+          "weight": "0.5",
+          "symbol": "USPBOND"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xa69d9Ba086D41425f35988613c156Db9a88a1A96": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xa69d9Ba086D41425f35988613c156Db9a88a1A96.svg",
+      "0xcE32b28c19C61B19823395730A0c7d91C671E54b": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xcE32b28c19C61B19823395730A0c7d91C671E54b.svg"
+    }
+  },
+  {
     "address": "0x50fb1b6b4F60662c4D0601AbE010aA0800b678Cb",
     "network": 1313161554,
     "isKilled": false,
@@ -139,6 +342,64 @@
     }
   },
   {
+    "address": "0x5879c1aCb42EF7213A350dbdcFBd914fdff56a02",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798845,
+    "pool": {
+      "id": "0x4652df40de98c20e73d88983a8b74e4aa014bdf3000200000000000000000032",
+      "address": "0x4652Df40de98c20E73d88983A8b74E4AA014bDf3",
+      "poolType": "Weighted",
+      "symbol": "50USP-50BINARIS",
+      "tokens": [
+        {
+          "address": "0xa69d9Ba086D41425f35988613c156Db9a88a1A96",
+          "weight": "0.5",
+          "symbol": "USP"
+        },
+        {
+          "address": "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370",
+          "weight": "0.5",
+          "symbol": "BINARIS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xa69d9Ba086D41425f35988613c156Db9a88a1A96": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xa69d9Ba086D41425f35988613c156Db9a88a1A96.svg",
+      "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xafE0d6ca6AAbB43CDA024895D203120831Ba0370.svg"
+    }
+  },
+  {
+    "address": "0x689C417BC4A24119F717fD079cFcfEa05a9613d1",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798927,
+    "pool": {
+      "id": "0x3c5b26cde094fe7e5c75651a7ab5e9520ec06e5700020000000000000000002e",
+      "address": "0x3c5b26cdE094Fe7E5C75651a7ab5e9520ec06E57",
+      "poolType": "Weighted",
+      "symbol": "50BINARIS-50POLAR",
+      "tokens": [
+        {
+          "address": "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370",
+          "weight": "0.5",
+          "symbol": "BINARIS"
+        },
+        {
+          "address": "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86",
+          "weight": "0.5",
+          "symbol": "POLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xafE0d6ca6AAbB43CDA024895D203120831Ba0370.svg",
+      "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86.svg"
+    }
+  },
+  {
     "address": "0x6b1c74234a1d7Af8eB638B48649eb5830F4C7D11",
     "network": 1313161554,
     "isKilled": false,
@@ -165,6 +426,35 @@
     "tokenLogoURIs": {
       "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
       "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
+    }
+  },
+  {
+    "address": "0x78216760Ba76B0577ebc10D174265d03d8cb9B62",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798766,
+    "pool": {
+      "id": "0x0fb037f35f5a00f66e3fc9a29f2dca59c12bfc5f000200000000000000000027",
+      "address": "0x0FB037f35F5a00f66E3fC9A29f2dca59c12BfC5f",
+      "poolType": "Weighted",
+      "symbol": "50OBOND-50ORBITAL",
+      "tokens": [
+        {
+          "address": "0x192bdcdd7b95A97eC66dE5630a85967F6B79e695",
+          "weight": "0.5",
+          "symbol": "OBOND"
+        },
+        {
+          "address": "0x3AC55eA8D2082fAbda674270cD2367dA96092889",
+          "weight": "0.5",
+          "symbol": "ORBITAL"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x192bdcdd7b95A97eC66dE5630a85967F6B79e695": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x192bdcdd7b95A97eC66dE5630a85967F6B79e695.svg",
+      "0x3AC55eA8D2082fAbda674270cD2367dA96092889": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x3AC55eA8D2082fAbda674270cD2367dA96092889.svg"
     }
   },
   {
@@ -284,6 +574,35 @@
     }
   },
   {
+    "address": "0x9B7d432748452FEecc59e3879DCAa234d9dF6c8F",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798751,
+    "pool": {
+      "id": "0x435de7d1c13cfec80997510bd38bcb45282e6a0f000200000000000000000034",
+      "address": "0x435de7d1C13cfEc80997510BD38Bcb45282e6a0F",
+      "poolType": "Weighted",
+      "symbol": "50ORBITAL-50BINARIS",
+      "tokens": [
+        {
+          "address": "0x3AC55eA8D2082fAbda674270cD2367dA96092889",
+          "weight": "0.5",
+          "symbol": "ORBITAL"
+        },
+        {
+          "address": "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370",
+          "weight": "0.5",
+          "symbol": "BINARIS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x3AC55eA8D2082fAbda674270cD2367dA96092889": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x3AC55eA8D2082fAbda674270cD2367dA96092889.svg",
+      "0xafE0d6ca6AAbB43CDA024895D203120831Ba0370": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xafE0d6ca6AAbB43CDA024895D203120831Ba0370.svg"
+    }
+  },
+  {
     "address": "0x9DE562eA26AB379253C3800F6788208F02fc56c1",
     "network": 1313161554,
     "isKilled": false,
@@ -400,6 +719,93 @@
     }
   },
   {
+    "address": "0xd62D66be250E5333d60ABa9200058d86B2d4EC3B",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798797,
+    "pool": {
+      "id": "0x9127442d0a170cc0efb5d164582948f21c37312e000200000000000000000028",
+      "address": "0x9127442d0A170Cc0EfB5D164582948f21C37312E",
+      "poolType": "Weighted",
+      "symbol": "50ETHERNAL-50EBOND",
+      "tokens": [
+        {
+          "address": "0x17cbd9C274e90C537790C51b4015a65cD015497e",
+          "weight": "0.5",
+          "symbol": "ETHERNAL"
+        },
+        {
+          "address": "0x266437E6c7500A947012F19A3dE96a3881a0449E",
+          "weight": "0.5",
+          "symbol": "EBOND"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x17cbd9C274e90C537790C51b4015a65cD015497e": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x17cbd9C274e90C537790C51b4015a65cD015497e.svg",
+      "0x266437E6c7500A947012F19A3dE96a3881a0449E": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x266437E6c7500A947012F19A3dE96a3881a0449E.svg"
+    }
+  },
+  {
+    "address": "0xD6c63C43aed5CDA052717709114c8e39c42Bf97a",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798911,
+    "pool": {
+      "id": "0xe03dc509b05e7d80ee863c0d4144ddc5a03e652300020000000000000000002d",
+      "address": "0xe03dc509b05E7D80Ee863C0D4144DDC5A03E6523",
+      "poolType": "Weighted",
+      "symbol": "50ETHERNAL-50POLAR",
+      "tokens": [
+        {
+          "address": "0x17cbd9C274e90C537790C51b4015a65cD015497e",
+          "weight": "0.5",
+          "symbol": "ETHERNAL"
+        },
+        {
+          "address": "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86",
+          "weight": "0.5",
+          "symbol": "POLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x17cbd9C274e90C537790C51b4015a65cD015497e": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x17cbd9C274e90C537790C51b4015a65cD015497e.svg",
+      "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86.svg"
+    }
+  },
+  {
+    "address": "0xDCBC3fFA4C09Ea39aCe6FC986b1ba5c7984B536a",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798943,
+    "pool": {
+      "id": "0x20169fb10ca8635f4f5c487f7ce811aa5ae08a7300020000000000000000002f",
+      "address": "0x20169fB10ca8635f4F5C487f7cE811Aa5Ae08a73",
+      "poolType": "Weighted",
+      "symbol": "50USP-50POLAR",
+      "tokens": [
+        {
+          "address": "0xa69d9Ba086D41425f35988613c156Db9a88a1A96",
+          "weight": "0.5",
+          "symbol": "USP"
+        },
+        {
+          "address": "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86",
+          "weight": "0.5",
+          "symbol": "POLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xa69d9Ba086D41425f35988613c156Db9a88a1A96": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xa69d9Ba086D41425f35988613c156Db9a88a1A96.svg",
+      "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86.svg"
+    }
+  },
+  {
     "address": "0xE8d0Ac922491189F9263cf93d35dDF26fa214f95",
     "network": 1313161554,
     "isKilled": false,
@@ -426,6 +832,35 @@
     "tokenLogoURIs": {
       "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
       "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744"
+    }
+  },
+  {
+    "address": "0xf51d63dbe5CD3524373aDa3FDa02fd762014eA17",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1684798958,
+    "pool": {
+      "id": "0x089352cdc9d23ab490317ad5aa838e4e0780165d00020000000000000000002c",
+      "address": "0x089352Cdc9d23Ab490317ad5AA838E4e0780165d",
+      "poolType": "Weighted",
+      "symbol": "50ORBITAL-50POLAR",
+      "tokens": [
+        {
+          "address": "0x3AC55eA8D2082fAbda674270cD2367dA96092889",
+          "weight": "0.5",
+          "symbol": "ORBITAL"
+        },
+        {
+          "address": "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86",
+          "weight": "0.5",
+          "symbol": "POLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x3AC55eA8D2082fAbda674270cD2367dA96092889": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0x3AC55eA8D2082fAbda674270cD2367dA96092889.svg",
+      "0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86.svg"
     }
   },
   {
