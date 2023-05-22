@@ -60,7 +60,10 @@ const pools: Pools = {
     ],
   },
   Factories: {
-    '0x98b5584A0c40F2c50CBa0Adb40E51A8caD79b9AC': 'weightedPool', // weighted pool v4
+    '0x98b5584a0c40f2c50cba0adb40e51a8cad79b9ac': 'weightedPool', // weighted pool v4
+    '0x5fbee5bb890cd665f0b05fefd9b0e207328415f9': 'weightedPool', // weighted pool v1
+    '0xc92dc3d6547625fa9c5b1837edf632943a5c4ceb': 'oracleWeightedPool', // oracle weighted pool v1
+    '0x16506f300a7d22b16d4b2d01568d565ec840c753': 'stablePool', // stable pool v2
   },
   Stakable: {
     VotingGaugePools: [
