@@ -18,7 +18,8 @@ export function useReturnRoute() {
       }
 
       return { name: queryReturnRoute };
-    } else if (to) return to;
+    } else if (to == 'vexpolar') return 'vebal';
+    else if (to) return to;
 
     const prevPath = router.options.history.state.back;
     if (prevPath && typeof prevPath === 'string') {

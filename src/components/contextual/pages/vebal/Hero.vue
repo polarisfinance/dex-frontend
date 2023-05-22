@@ -29,7 +29,7 @@ function navigateToGetVeBAL() {
   router.push({
     name: 'get-vebal',
     query: {
-      returnRoute: 'vebal',
+      returnRoute: 'vexpolar',
     },
   });
 }

@@ -84,7 +84,7 @@ const showVeBalLock = computed(() => isVeBalPool(props.pool.id));
     </BalBtn> -->
     <BalLink
       v-else-if="showVeBalLock"
-      href="/#/aurora/get-vexpolar?returnRoute=vebal"
+      href="/#/aurora/get-vexpolar?returnRoute=vexpolar"
     >
       <BalBtn color="gray" size="sm" class="polaris-small-button">
         {{ $t('transactionAction.createLock') }}
