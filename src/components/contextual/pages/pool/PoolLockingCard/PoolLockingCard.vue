@@ -146,7 +146,7 @@ const fiatTotalExpiredLpTokens = computed(() =>
                 <BalStack horizontal spacing="sm" class="mt-2">
                   <BalLink
                     v-if="Number(bptBalance) > 0"
-                    href="/#/aurora/get-vebal?returnRoute=vebal"
+                    href="/#/aurora/get-vexpolar?returnRoute=vebal"
                   >
                     <BalBtn
                       :disabled="Number(bptBalance) === 0"
