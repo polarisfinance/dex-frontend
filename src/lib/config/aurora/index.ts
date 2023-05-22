@@ -50,8 +50,8 @@ const config: Config = {
   },
   thirdParty: {
     coingecko: {
-      nativeAssetId: 'ethereum',
-      platformId: 'ethereum',
+      nativeAssetId: 'aurora',
+      platformId: 'aurora',
     },
     apyVision: {
       networkName: 'eth',

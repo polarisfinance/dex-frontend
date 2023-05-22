@@ -61,45 +61,17 @@ export class PriceService {
           addressesPerRequest * (page + 1)
         );
         for (let i = 0; i < addressString.length; i++) {
-          //usdc
+          //pNEAR
           if (
-            addressString[i] == '0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B'
+            addressString[i] == '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'
           ) {
-            addressString[i] = '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802';
+            addressString[i] = '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d';
           }
-
-          //weth
+          //pSTNEAR
           if (
-            addressString[i] == '0x8886E7A8883e9A40b30Bd4E16e0e25C2C3f29Cd8'
+            addressString[i] == '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'
           ) {
-            addressString[i] = '0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB';
-          }
-          //WBTC
-          if (
-            addressString[i] == '0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF'
-          ) {
-            addressString[i] = '0xF4eB217Ba2454613b15dBdea6e5f22276410e89e';
-          }
-
-          //SPOLAR
-          if (
-            addressString[i] == '0x39EE5F95A5e3B86161818f419f959264C22193B8'
-          ) {
-            addressString[i] = '0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729';
-          }
-
-          //XPOLAR
-          if (
-            addressString[i] == '0xbADdAab20345a0E6607469949f069e8482f9AFC0'
-          ) {
-            addressString[i] = '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993';
-          }
-
-          //PNEAR
-          if (
-            addressString[i] == '0xf4A8b365cD410308d581574e35D412D82726a251'
-          ) {
-            addressString[i] = '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6';
+            addressString[i] = '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30';
           }
         }
 
@@ -118,28 +90,12 @@ export class PriceService {
 
       const res = Object.getOwnPropertyNames(results);
       res.forEach(elem => {
-        if ('0xb12bfca5a55806aaf64e99521918a4bf0fc40802' == elem)
-          results['0xa80b2AD8Aaf625F6AA8134f292DcA53fA4df527B'] = results[elem];
-
-        if ('0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb' == elem)
-          results['0x8886E7A8883e9A40b30Bd4E16e0e25C2C3f29Cd8'] = results[elem];
-
-        if ('0xf4eb217ba2454613b15dbdea6e5f22276410e89e' == elem)
-          results['0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF'] = results[elem];
-
-        if ('0x9d6fc90b25976e40adad5a3edd08af9ed7a21729' == elem)
-          results['0x39EE5F95A5e3B86161818f419f959264C22193B8'] = results[elem];
-
-        if ('0xeaf7665969f1daA3726ceada7c40Ab27b3245993' == elem) {
-          results['0xbADdAab20345a0E6607469949f069e8482f9AFC0'] = results[elem];
+        if ('0xc42c30ac6cc15fac9bd938618bcaa1a1fae8501d' == elem) {
+          results['0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6'] = results[elem];
         }
-        if ('0x990e50e781004ea75e2ba3a67eb69c0b1cd6e3a6' == elem)
-          results['0xf4A8b365cD410308d581574e35D412D82726a251'] = results[elem];
+        if ('0x07f9f7f963c5cd2bbffd30ccfb964be114332e30' == elem)
+          results['0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465'] = results[elem];
       });
-      //MOCKS XPOLAR SPOLAR pNEAR
-      results['0xbADdAab20345a0E6607469949f069e8482f9AFC0'] = { usd: 0.075 };
-      results['0x39EE5F95A5e3B86161818f419f959264C22193B8'] = { usd: 3.59231 };
-      results['0xf4A8b365cD410308d581574e35D412D82726a251'] = { usd: 1.35157 };
 
       return results;
     } catch (error) {
