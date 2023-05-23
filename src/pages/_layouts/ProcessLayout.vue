@@ -4,7 +4,8 @@ import { useReturnRoute } from '@/composables/useReturnRoute';
 import useBreakpoints from '@/composables/useBreakpoints';
 import AppNav from '@/components/navs/AppNav/AppNav.vue';
 import InvestHero from '@/components/heros/InvestHero.vue';
-
+import { useRouter } from 'vue-router';
+import useNetwork from '@/composables/useNetwork';
 import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
 import investVeBalSteps from '@/components/contextual/pages/pool/invest/ProcessVeBalSteps.json';
 import withdrawSteps from '@/components/contextual/pages/pool/withdraw/ProcessSteps.json';
@@ -19,10 +20,10 @@ import {
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
 const refComponent = ref(null);
-
+const router = useRouter();
 const route = useRoute();
 const id = (route.params.id as string).toLowerCase();
-
+const { networkSlug } = useNetwork();
 const poolQuery = usePoolQuery(id, undefined, undefined);
 const pool = computed(() => poolQuery.data.value);
 
@@ -51,6 +52,14 @@ function progressPerc() {
 }
 
 function clickActiveStep(step) {
+  //Lock Button
+  if (isVeBalPool(id) && step == steps.length) {
+    router.push({
+      name: 'get-vexpolar',
+      params: { networkSlug },
+      query: { returnRoute: 'vexpolar' },
+    });
+  }
   if (step == steps.length) return;
 
   activeStep.value = step;
