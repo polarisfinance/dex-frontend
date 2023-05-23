@@ -336,7 +336,8 @@ watch(useNativeAsset, shouldUseNativeAsset => {
         <BalBtn
           v-if="!isWalletReady"
           :label="$t('connectWallet')"
-          color="gradient"
+          color="gray"
+          class="text-lg font-semibold text-polaris-white polaris-main-button"
           block
           @click="startConnectWithInjectedProvider"
         />
