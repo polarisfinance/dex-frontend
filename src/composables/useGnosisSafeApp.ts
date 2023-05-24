@@ -38,7 +38,7 @@ export default function useGnosisSafeApp() {
         hardRedirectTo(`/#/${getNetworkSlug(chainId.value)}`);
       }
       // Disable darkmode by default
-      if (darkMode) toggleDarkMode();
+      // if (darkMode) toggleDarkMode(); // dont disable dark mode
     }
   });
 

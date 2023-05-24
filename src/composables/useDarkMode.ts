@@ -7,7 +7,8 @@ import { lsGet, lsSet } from '@/lib/utils';
 const osDarkMode = true; // force dark mode for now
 const lsDarkMode =
   lsGet(LS_KEYS.App.DarkMode, osDarkMode.toString()) === 'true';
-
+console.log(lsDarkMode);
+console.log(LS_KEYS.App.DarkMode);
 // STATE
 const darkMode = ref<boolean>(lsDarkMode);
 
@@ -18,6 +19,7 @@ function setDarkMode(val: boolean): void {
   if (darkMode.value) {
     document.documentElement.classList.add('dark');
   } else {
+    console.log('removing dark mode');
     document.documentElement.classList.remove('dark');
   }
 }
