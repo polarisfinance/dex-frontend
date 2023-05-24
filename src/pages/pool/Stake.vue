@@ -65,9 +65,7 @@ export default defineComponent({
     },
     async confirm(amount: string) {
       const formatedAmount = parseFixed(amount, 18);
-      console.log(formatedAmount);
       const { withdraw, deposit } = useStake();
-      console.log(this.poolAddress);
 
       this.confirming = true;
 

@@ -51,7 +51,6 @@ export default class ConfigService {
   }
 
   public get network(): Config {
-    console.log('networkId', networkId.value);
     return configs[networkId.value];
   }
 

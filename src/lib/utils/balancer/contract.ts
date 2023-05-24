@@ -48,7 +48,6 @@ export async function multicall<T>(
       return decodedResult.length > 1 ? decodedResult : decodedResult[0];
     });
   } catch (e) {
-    console.log(calls);
     return Promise.reject(e);
   }
 }
