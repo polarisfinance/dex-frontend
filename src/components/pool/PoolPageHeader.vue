@@ -241,28 +241,28 @@ function symbolFor(titleTokenIndex: number): string {
     v-if="hasNonApprovedRateProviders"
     type="warning"
     :title="$t('hasNonApprovedRateProviders')"
-    class="mt-2"
+    class="my-2"
     block
   />
   <BalAlert
     v-if="missingPrices"
     type="warning"
     :title="$t('noPriceInfo')"
-    class="mt-2"
+    class="my-2"
     block
   />
   <BalAlert
     v-if="!disableJoinsReason.nonVettedTokensAfterTimestamp && hasCustomToken"
     type="warning"
     :title="$t('highRiskPool')"
-    class="mt-2"
+    class="my-2"
     block
   />
   <BalAlert
     v-if="hasNonPrefGaugeBalance && !isAffected"
     :title="$t('staking.restakeGauge')"
     :type="'warning'"
-    class="mt-2"
+    class="my-2"
   >
     <BalStack spacing="sm">
       <span>{{ $t('staking.restakeGaugeDescription') }}</span>
