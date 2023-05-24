@@ -12,11 +12,9 @@ const emit = defineEmits<{
 </script>
 <template>
   <div
-    class="flex overflow-x-auto flex-wrap gap-3 items-center px-3 text-gray-900 dark:text-gray-400 bg-white dark:bg-gray-850 rounded-lg border border-gray-100 dark:border-gray-900"
+    class="flex overflow-x-auto flex-wrap gap-3 items-center px-3 mx-auto text-gray-900 dark:text-polaris-white bg-white dark:bg-transparent"
   >
-    <span
-      class="flex items-center self-stretch py-2 md:py-1 pr-3 border-r border-gray-100 dark:border-gray-900"
-    >
+    <span class="flex items-center self-stretch py-2 md:py-1 pr-3">
       {{ props.label }}
     </span>
     <BalAsset

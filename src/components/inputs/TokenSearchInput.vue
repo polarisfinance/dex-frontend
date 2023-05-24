@@ -108,9 +108,11 @@ function onClick() {
 </script>
 <template>
   <div>
-    <div class="flex flex-wrap gap-x-6 gap-y-3 items-stretch">
+    <div
+      class="flex flex-wrap gap-x-6 gap-y-3 items-stretch font-semibold dark:text-polaris-white"
+    >
       <BalBtn
-        color="white"
+        noBackground
         size="sm"
         :block="upToMediumBreakpoint"
         @click="onClick"

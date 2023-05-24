@@ -88,9 +88,7 @@ function onColumnSort(columnId: string) {
             </h3>
             <BalBtn
               v-if="upToMediumBreakpoint"
-              color="blue"
-              size="sm"
-              outline
+              class="font-semibold text-white polaris-small-button"
               :class="{ 'mt-4': upToMediumBreakpoint }"
               @click="navigateToCreatePool"
             >
@@ -99,7 +97,8 @@ function onColumnSort(columnId: string) {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full dark:bg-polaris-card-default rounded-big"
+            class="flex flex-col md:flex-row justify-between items-end lg:items-center w-full dark:bg-polaris-card-default"
+            :class="{ 'rounded-big': isDesktop, 'rounded-small': isMobile }"
           >
             <TokenSearchInput
               v-model="selectedTokens"
