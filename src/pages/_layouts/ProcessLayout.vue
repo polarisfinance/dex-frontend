@@ -4,7 +4,8 @@ import { useReturnRoute } from '@/composables/useReturnRoute';
 import useBreakpoints from '@/composables/useBreakpoints';
 import AppNav from '@/components/navs/AppNav/AppNav.vue';
 import InvestHero from '@/components/heros/InvestHero.vue';
-
+import { useRouter } from 'vue-router';
+import useNetwork from '@/composables/useNetwork';
 import investSteps from '@/components/contextual/pages/pool/invest/ProcessSteps.json';
 import investVeBalSteps from '@/components/contextual/pages/pool/invest/ProcessVeBalSteps.json';
 import withdrawSteps from '@/components/contextual/pages/pool/withdraw/ProcessSteps.json';
@@ -12,6 +13,7 @@ import { ERC20Multicaller } from '@/services/multicalls/erc20.multicaller';
 import { isVeBalPool } from '@/composables/usePoolHelpers';
 import PoolUserStats from '@/components/contextual/pages/pool/PoolUserStats.vue';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
+import useWeb3 from '@/services/web3/useWeb3';
 import {
   usePoolStaking,
   providePoolStaking,
@@ -19,13 +21,13 @@ import {
 const { getReturnRoute } = useReturnRoute();
 const { isMobile, isDesktop } = useBreakpoints();
 const refComponent = ref(null);
-
+const router = useRouter();
 const route = useRoute();
 const id = (route.params.id as string).toLowerCase();
-
+const { networkSlug } = useNetwork();
 const poolQuery = usePoolQuery(id, undefined, undefined);
 const pool = computed(() => poolQuery.data.value);
-
+const { isWalletReady } = useWeb3();
 export type Processes = 'invest' | 'withdraw';
 
 var steps = [{}];
@@ -38,7 +40,7 @@ if (route.name === 'withdraw') steps = withdrawSteps;
 const activeStep = ref(1);
 
 function updateStep(step) {
-  if (step <= steps.length) {
+  if (step >= 0 && step <= steps.length) {
     activeStep.value = step;
   }
 }
@@ -51,6 +53,14 @@ function progressPerc() {
 }
 
 function clickActiveStep(step) {
+  //Lock Button
+  if (isVeBalPool(id) && step == steps.length) {
+    router.push({
+      name: 'get-vexpolar',
+      params: { networkSlug },
+      query: { returnRoute: 'vexpolar' },
+    });
+  }
   if (step == steps.length) return;
 
   activeStep.value = step;
@@ -67,6 +77,11 @@ function goBack() {
   // if (!this.isWalletReady && this.activeStep == 1) return;
 
   updateStep(activeStep.value - 1);
+  if (
+    refComponent.value != undefined &&
+    typeof refComponent.value.setActiveStep === 'function'
+  )
+    refComponent.value.setActiveStep(activeStep.value);
 }
 provide('provider.poolStaking', providePoolStaking(pool.value?.id));
 // providePoolStaking(pool.value?.id);
@@ -137,7 +152,11 @@ onMounted(() => {});
               <div class="flex-1 justify-center">
                 <div class="flex header">
                   <div class="flex-1">
-                    <button class="back actions" @click="goBack">
+                    <button
+                      v-if="activeStep > 2"
+                      class="back actions"
+                      @click="goBack"
+                    >
                       <template v-if="activeStep < 5">
                         <ArrowLeftIcon class="inline ml-3 mr-[12px]" />Go
                         back</template
