@@ -80,7 +80,7 @@ function isActive(page: string): boolean {
       prefetch
       @click="trackGoal(Goals.ClickNavVebal)"
     >
-      VexPolar
+      veXPOLAR
     </DesktopLinkItem>
     <div class="dropdown mt-[30px]">
       <div class="flex w-full dropdown-title gap-[12px]">

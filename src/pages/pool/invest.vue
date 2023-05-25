@@ -254,14 +254,14 @@ export default defineComponent({
             />
           </svg>
           <h1>Good job!</h1>
-          <h3>Now, you can lock you LP to get VexPolar!</h3>
+          <h3>Now, you can lock you LP to get veXPOLAR!</h3>
           <BalLink :href="`/#/${networkSlug}/get-vexpolar`">
             <BalBtn
               color="gradient"
               size="sm"
               class="inline-block exit mt-[20px]"
             >
-              Lock LP to get VexPolar
+              Lock LP to get veXPOLAR
             </BalBtn>
           </BalLink>
         </div>

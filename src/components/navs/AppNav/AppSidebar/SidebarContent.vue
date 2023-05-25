@@ -63,7 +63,7 @@ const navLinks = [
     goal: Goals.ClickNavPortfolio,
   },
   {
-    label: 'VexPolar',
+    label: 'veXPOLAR',
     path: `/${networkSlug}/vexpolar`,
     goal: Goals.ClickNavVebal,
   },
