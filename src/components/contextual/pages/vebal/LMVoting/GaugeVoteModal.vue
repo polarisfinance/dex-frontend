@@ -351,7 +351,7 @@ onMounted(() => {
         >
           <BalIcon name="check" />
         </BalCircle>
-        <h4>
+        <h4 class="font-semibold dark:text-polaris-white">
           {{ voteTitle }}
         </h4>
       </div>

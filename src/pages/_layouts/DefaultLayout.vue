@@ -25,9 +25,10 @@ const { isDesktop } = useBreakpoints();
       <AppNav />
       <div class="pb-16">
         <router-view v-slot="{ Component }" :key="$route.path">
-          <transition appear name="appear">
+          <!-- <transition appear name="appear">
             <component :is="Component" />
-          </transition>
+          </transition> -->
+          <component :is="Component" />
         </router-view>
       </div>
     </div>
@@ -48,7 +49,7 @@ const { isDesktop } = useBreakpoints();
 .dark .app-background {
   background-repeat: no-repeat;
   top: 0px;
-  transition: all 0.3s ease-in-out;
+  /* transition: all 0.3s ease-in-out; */
   background-image: url('/images/backgrounds/polaris/index.svg');
 }
 .app-background.sunrise {
