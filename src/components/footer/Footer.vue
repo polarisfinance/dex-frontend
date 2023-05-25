@@ -105,6 +105,12 @@
                 >Vote</a
               >
               <a
+                href="https://oldv1.polarisfinance.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Old v1 Website</a
+              >
+              <a
                 href="https://old.polarisfinance.io/"
                 target="_blank"
                 rel="noopener noreferrer"
