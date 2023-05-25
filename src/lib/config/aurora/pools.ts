@@ -44,7 +44,9 @@ const pools: Pools = {
     'FX',
   ],
   Stable: {
-    AllowList: [],
+    AllowList: [
+      '0xceecce984f498ee00832670e9ca6d372f6ce155a000200000000000000000014',
+    ],
   },
   Investment: {
     AllowList: [],
