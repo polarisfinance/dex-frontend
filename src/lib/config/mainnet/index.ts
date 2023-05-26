@@ -18,7 +18,7 @@ const config: Config = {
   visibleInUI: true,
   testNetwork: false,
   rpc: `https://mainnet.infura.io/v3/${keys.infura}`,
-  ws: `wss://mainnet.aurora.dev`,
+  ws: `wss://mainnet.infura.io/ws/v3/${keys.infura}`,
   explorer: 'https://etherscan.io',
   explorerName: 'Etherscan',
   subgraph: 'https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-v2',
