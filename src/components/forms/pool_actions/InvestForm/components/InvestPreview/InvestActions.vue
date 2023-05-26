@@ -132,7 +132,6 @@ async function handleTransaction(tx): Promise<void> {
 
   await txListener(tx, {
     onTxConfirmed: async (receipt: TransactionReceipt) => {
-      emit('success', receipt);
       investmentState.receipt = receipt;
 
       const confirmedAt = await getTxConfirmedAt(receipt);
@@ -144,6 +143,7 @@ async function handleTransaction(tx): Promise<void> {
         bnum(fiatTotal.value).times(100).toNumber() || 0
       );
       await refetchBalances();
+      emit('success', receipt);
     },
     onTxFailed: () => {
       console.error('Add liquidity failed');

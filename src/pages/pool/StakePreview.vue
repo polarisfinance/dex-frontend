@@ -12,7 +12,7 @@ import useNumbers, { FNumFormats } from '@/composables/useNumbers';
 import { useTokens } from '@/providers/tokens.provider';
 import useTokenApprovalActions from '@/composables/approvals/useTokenApprovalActions';
 import { bnum, trackLoading } from '@/lib/utils';
-import { AnyPool } from '@/services/pool/types';
+import { Pool } from '@/services/pool/types';
 import { TransactionActionInfo } from '@/types/transactions';
 import useTransactions from '@/composables/useTransactions';
 import { fiatValueOf, tokensListExclBpt } from '@/composables/usePoolHelpers';
@@ -25,7 +25,7 @@ import { ApprovalAction } from '@/composables/approvals/types';
  */
 export type StakeAction = 'stake' | 'unstake' | 'restake';
 type Props = {
-  pool: AnyPool;
+  pool: Pool;
   action: StakeAction;
 };
 const props = defineProps<Props>();
@@ -57,15 +57,14 @@ const {
 } = usePoolStaking();
 
 // Staked or unstaked shares depending on action type.
-const currentShares = computed(() => {
-  return props.action === 'stake'
+const currentShares =
+  props.action === 'stake'
     ? balanceFor(getAddress(props.pool.address))
     : stakedShares.value;
-});
 const inputValue = ref('0.0');
 const { getTokenApprovalActionsForSpender } = useTokenApprovalActions(
   ref<string[]>([props.pool.address]),
-  ref<string[]>([currentShares.value]),
+  ref<string[]>([currentShares]),
   ApprovalAction.Staking
 );
 

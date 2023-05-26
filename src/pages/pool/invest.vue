@@ -116,23 +116,12 @@ export default defineComponent({
     return {
       activeStep: this.$props.step,
       tokenAddresses: [] as string[],
-      poolApproved: false,
       stakedBalance: '0',
     };
   },
   watch: {
-    isWalletReady(newValue, oldValue) {
+    isWalletReady(newValue) {
       if (newValue == true) this.activeStep = 2;
-    },
-    async account() {
-      const { isApproved } = useStake();
-    },
-    async pool() {
-      const { isApproved } = useStake();
-      this.poolApproved = await isApproved(this.pool?.address!, this.account);
-      if (this.activeStep == 4) {
-        this.activeStep = 5;
-      }
     },
   },
   async mounted() {
@@ -142,20 +131,15 @@ export default defineComponent({
     } else {
       this.sorReady = true;
     }
-    const { balance, isApproved } = useStake();
     const { setCurrentPool } = usePoolStaking();
 
     setCurrentPool(this.id);
-    // const approval = await isApproved(this.pool?.address!, this.account);
-    // this.poolApproved = approval;
-    // this.stakedBalance = await balance(this.pool?.address!, this.account);
   },
   beforeMount() {
     if (this.isWalletReady && this.activeStep == 1) {
       this.setActiveStep(2);
     }
   },
-  updated() {},
   methods: {
     setActiveStep(step) {
       if (step <= this.steps.length) this.activeStep = step;
@@ -167,26 +151,16 @@ export default defineComponent({
     },
     handleLPPreview() {
       this.setActiveStep(this.activeStep + 1); //THIS WILL BE OK. TESTING BELOW
-
-      // this.handleStakeConfirmed();
-      // this.activeStep = 3;
-      // if(this.poolApproved){
-      //   this.activeStep = this.activeStep+2;
-      // }else{
-      //   this.approvePool();
-      //   this.activeStep = this.activeStep+1;
-      // }
     },
     handleInvestConfirm() {
       // const poolApproved = false;      //TESTING
+
       this.setActiveStep(this.activeStep + 1);
-      // this.approvePool();
     },
     handleStakeConfirmed() {
       this.setActiveStep(this.activeStep + 1);
       //this.$router.push({ name: 'pool', params: { id: this.pool?.id }});
     },
-    approvePool() {},
   },
 });
 </script>
@@ -226,7 +200,8 @@ export default defineComponent({
   </transition> -->
   <transition name="fade">
     <template v-if="activeStep == 4">
-      <div>
+      <BalLoadingBlock v-if="loadingPool || !pool" class="h-96" />
+      <BalCard v-else exposeOverflow noBorder noPad>
         <StakePreview
           v-if="!isVeBalPool(id)"
           :pool="pool"
@@ -265,7 +240,7 @@ export default defineComponent({
             </BalBtn>
           </BalLink>
         </div>
-      </div>
+      </BalCard>
     </template>
   </transition>
   <transition name="fade">
