@@ -18,7 +18,7 @@ const config: Config = {
   visibleInUI: true,
   testNetwork: false,
   rpc: `https://aurora-mainnet.infura.io/v3/${keys.infura}`,
-  ws: `https://aurora-mainnet.infura.io/v3/${keys.infura}`,
+  ws: `wss://aurora-mainnet.infura.io/v3/${keys.infura}`,
   explorer: 'https://explorer.aurora.dev',
   explorerName: 'Aurora Explorer',
   subgraph:
