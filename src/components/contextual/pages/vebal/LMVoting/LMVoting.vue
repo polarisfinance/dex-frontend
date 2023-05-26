@@ -281,7 +281,6 @@ watch(
       <div class="flex mb-3 lg:mb-0">
         <BalTextInput
           v-model="tokenFilter"
-          class="mr-5"
           name="tokenSearch"
           type="text"
           :placeholder="$t('filterByToken')"
@@ -294,13 +293,13 @@ watch(
           </template>
         </BalTextInput>
 
-        <GaugesFilters
+        <!-- <GaugesFilters
           :networkFilters="networkFilters"
           :showExpiredGauges="showExpiredGauges"
           :activeNetworkFilters="activeNetworkFilters"
           @update:show-expired-gauges="showExpiredGauges = $event"
           @update:active-network-filters="activeNetworkFilters = $event"
-        />
+        /> -->
       </div>
     </div>
 
