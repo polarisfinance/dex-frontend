@@ -170,7 +170,8 @@ function handleClose() {
   emit('close');
 }
 function maxBalance() {
-  inputValue.value = fNum(currentShares);
+  // inputValue.value = fNum(currentShares);
+  inputValue.value = currentShares;
 }
 
 /**
