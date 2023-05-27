@@ -25,7 +25,8 @@ export const isNativeAssetWrap = (
 
 export const getWrapAction = (tokenIn: string, tokenOut: string): WrapType => {
   const nativeAddress = configService.network.nativeAsset.address;
-  const { weth, stETH, wstETH } = configService.network.addresses;
+  const { weth, stETH, wstETH, NEAR, pNEAR, STNEAR, pSTNEAR } =
+    configService.network.addresses;
 
   if (tokenIn === nativeAddress && tokenOut === weth) return WrapType.Wrap;
   if (tokenIn === stETH && tokenOut === wstETH) return WrapType.Wrap;
@@ -33,6 +34,13 @@ export const getWrapAction = (tokenIn: string, tokenOut: string): WrapType => {
   if (tokenOut === nativeAddress && tokenIn === weth) return WrapType.Unwrap;
   if (tokenOut === stETH && tokenIn === wstETH) return WrapType.Unwrap;
 
+  if (NEAR && pNEAR && STNEAR && pSTNEAR) {
+    if (tokenIn === NEAR && tokenOut === pNEAR) return WrapType.Wrap;
+    if (tokenIn === STNEAR && tokenOut === pSTNEAR) return WrapType.Wrap;
+
+    if (tokenOut === NEAR && tokenIn === pNEAR) return WrapType.Unwrap;
+    if (tokenOut === STNEAR && tokenIn === pSTNEAR) return WrapType.Unwrap;
+  }
   return WrapType.NonWrap;
 };
 
@@ -42,9 +50,10 @@ export const getWrapOutput = async (
   wrapAmount: BigNumber
 ): Promise<BigNumber> => {
   if (wrapType === WrapType.NonWrap) throw new Error('Invalid wrap type');
-  const { weth, wstETH } = configService.network.addresses;
+  const { weth, wstETH, pNEAR, pSTNEAR } = configService.network.addresses;
 
-  if (wrapper === weth) return BigNumber.from(wrapAmount);
+  if (wrapper === weth || wrapper === pNEAR || wrapper === pSTNEAR)
+    return BigNumber.from(wrapAmount);
   if (wrapper === wstETH) {
     return convertStEthWrap({
       amount: wrapAmount,
@@ -65,6 +74,11 @@ export async function wrap(
       return wrapNative(network, web3, amount);
     } else if (wrapper === configs[network].addresses.wstETH) {
       return wrapLido(network, web3, amount);
+    } else if (
+      wrapper === configs[network].addresses.pNEAR ||
+      wrapper === configs[network].addresses.pSTNEAR
+    ) {
+      return wrapPolaris(web3, wrapper, amount);
     }
     throw new Error('Unrecognised wrapper contract');
   } catch (e) {
@@ -84,6 +98,11 @@ export async function unwrap(
       return unwrapNative(network, web3, amount);
     } else if (wrapper === configs[network].addresses.wstETH) {
       return unwrapLido(network, web3, amount);
+    } else if (
+      wrapper === configs[network].addresses.pNEAR ||
+      wrapper === configs[network].addresses.pSTNEAR
+    ) {
+      return unwrapPolaris(web3, wrapper, amount);
     }
     throw new Error('Unrecognised wrapper contract');
   } catch (e) {
@@ -145,5 +164,37 @@ const unwrapLido = async (
     abi: ['function unwrap(uint256 _wstETHAmount) returns (uint256)'],
     action: 'unwrap',
     params: [amount],
+  });
+};
+
+const wrapPolaris = async (
+  web3: WalletProvider,
+  wrapper: string,
+  amount: BigNumber
+): Promise<TransactionResponse> => {
+  const txBuilder = new TransactionBuilder(web3.getSigner());
+  return await txBuilder.contract.sendTransaction({
+    contractAddress: wrapper,
+    abi: [
+      'function depositFor(address account, uint256 amount) returns (bool)',
+    ],
+    action: 'depositFor',
+    params: [web3.getSigner().getAddress(), amount],
+  });
+};
+
+const unwrapPolaris = async (
+  web3: WalletProvider,
+  wrapper: string,
+  amount: BigNumber
+): Promise<TransactionResponse> => {
+  const txBuilder = new TransactionBuilder(web3.getSigner());
+  return await txBuilder.contract.sendTransaction({
+    contractAddress: wrapper,
+    abi: [
+      'function withdrawTo(address account, uint256 amount) returns (bool)',
+    ],
+    action: 'withdrawTo',
+    params: [web3.getSigner().getAddress(), amount],
   });
 };

@@ -51,6 +51,10 @@ export interface Contracts {
   feeDistributorDeprecated: string;
   faucet: string;
   gaugeRewardsHelper?: string;
+  NEAR?: string;
+  pNEAR?: string;
+  STNEAR?: string;
+  pSTNEAR?: string;
 }
 
 export interface RateProviders {

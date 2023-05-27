@@ -27,6 +27,10 @@ const contracts: Contracts = {
   feeDistributor: '0xd30b72Ff398DE0fF24934fFdb49B28D738076302',
   feeDistributorDeprecated: '',
   faucet: '',
+  NEAR: '0xC42C30aC6Cc15faC9bD938618BcaA1a1FaE8501d',
+  pNEAR: '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6',
+  STNEAR: '0x07F9F7f963C5cD2BBFFd30CcfB964Be114332E30',
+  pSTNEAR: '0xFbE0Ec68483c0B0a9D4bCea3CCf33922225B8465',
 };
 
 export default contracts;

@@ -99,10 +99,18 @@ export default class BalancesConcern {
     tokens: TokenInfoMap
   ): BalanceMap {
     return Object.fromEntries(
-      addresses.map((address, i) => [
-        getAddress(address),
-        formatUnits(balances[i], tokens[address].decimals),
-      ])
+      addresses.map((address, i) => {
+        if (tokens[address].decimals > 18) {
+          balances[i] = BigNumber.from(
+            balances[i].toString().slice(0, 18 - tokens[address].decimals) +
+              '0'.repeat(tokens[address].decimals - 18)
+          );
+        }
+        return [
+          getAddress(address),
+          formatUnits(balances[i], tokens[address].decimals),
+        ];
+      })
     );
   }
 }
