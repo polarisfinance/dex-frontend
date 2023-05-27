@@ -891,5 +891,63 @@
       "0x4988a896b1227218e4A686fdE5EabdcAbd91571f": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707",
       "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
     }
+  },
+  {
+    "address": "0x3b7594FFeA41bc4c86F0B6bf3B5f8db413B620d8",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1685199809,
+    "pool": {
+      "id": "0xb615c4febfe88b2c93774bcff32b5a5be25e66ec000200000000000000000037",
+      "address": "0xb615C4FEbfe88B2C93774BcFF32b5a5BE25E66EC",
+      "poolType": "Weighted",
+      "symbol": "50pNEAR-50SPOLAR",
+      "tokens": [
+        {
+          "address": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+          "weight": "0.5",
+          "symbol": "pNEAR"
+        },
+        {
+          "address": "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729",
+          "weight": "0.5",
+          "symbol": "SPOLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
+      "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847"
+    }
+  },
+  {
+    "address": "0x285598cEedBaAE9a026cBB9674c92Ff3B52F5Af0",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1685199895,
+    "pool": {
+      "id": "0x8afc3d8ddbcc76de12a219f6ec7226e7a7c190fc000200000000000000000036",
+      "address": "0x8aFC3D8DdBcc76de12a219f6EC7226e7A7C190FC",
+      "poolType": "Weighted",
+      "symbol": "50pNEAR-50XPOLAR",
+      "tokens": [
+        {
+          "address": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+          "weight": "0.5",
+          "symbol": "pNEAR"
+        },
+        {
+          "address": "0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993",
+          "weight": "0.5",
+          "symbol": "XPOLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
+      "0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png"
+    }
   }
 ]
