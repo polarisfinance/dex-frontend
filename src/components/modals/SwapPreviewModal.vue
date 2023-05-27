@@ -369,10 +369,18 @@ const actions = computed((): TransactionActionInfo[] => {
   }
 
   if (showTokenApprovalStep.value) {
-    actions.push({
-      label: t('transactionSummary.approveForSwapping', [
+    let label: string;
+    if (props.swapping.isWrap.value) {
+      label = t('transactionSummary.approveForWrapping', [
         props.swapping.tokenIn.value.symbol,
-      ]),
+      ]);
+    } else {
+      label = t('transactionSummary.approveForSwapping', [
+        props.swapping.tokenIn.value.symbol,
+      ]);
+    }
+    actions.push({
+      label: label,
       loadingLabel: t('actionSteps.approve.loadingLabel'),
       confirmingLabel: t('confirming'),
       action: approveToken,
@@ -486,17 +494,33 @@ watch(blockNumber, () => {
 </script>
 
 <template>
-  <BalModal show @close="onClose" noBorder noPad >
+  <BalModal show noBorder noPad @close="onClose">
     <div>
-      <BalStack horizontal align="center" spacing="xs" class="pb-4 py-[14px] pl-[18px] dark:bg-polaris-card-medium">
-        <button class="flex text-polaris-2 hover:text-polaris-white pr-[12px]" @click="onClose">
+      <BalStack
+        horizontal
+        align="center"
+        spacing="xs"
+        class="pb-4 dark:bg-polaris-card-medium py-[14px] pl-[18px]"
+      >
+        <button
+          class="flex text-polaris-2 hover:text-polaris-white pr-[12px]"
+          @click="onClose"
+        >
           <BalIcon class="flex" name="x" />
         </button>
-        <h4 class="dark:text-polaris-white text-base font-semibold order-first w-full ">
+        <h4
+          class="order-first w-full text-base font-semibold dark:text-polaris-white"
+        >
           {{ labels.modalTitle }}
         </h4>
       </BalStack>
-      <BalCard noPad square noBorder shadow="none" class="overflow-auto relative mb-6 dark:bg-polaris-card-medium">
+      <BalCard
+        noPad
+        square
+        noBorder
+        shadow="none"
+        class="overflow-auto relative mb-6 dark:bg-polaris-card-medium"
+      >
         <template #header>
           <div class="w-full">
             <div>
@@ -535,20 +559,20 @@ watch(blockNumber, () => {
             block
             square
           />
-          <div
-            class="relative p-3 border-gray-100 "
-          >
-            <div class="flex items-center font-medium text-xl dark:text-polaris-white">
+          <div class="relative p-3 border-gray-100">
+            <div
+              class="flex items-center text-xl font-medium dark:text-polaris-white"
+            >
               <div class="mr-3">
                 <BalAsset
                   :address="swapping.tokenIn.value.address"
                   :size="36"
                 />
               </div>
-              <div >
+              <div>
                 {{ swapping.tokenIn.value.symbol }}
               </div>
-              <div class="text-right w-full">
+              <div class="w-full text-right">
                 <div>
                   {{
                     fNum(swapping.tokenInAmountInput.value, FNumFormats.token)
@@ -564,7 +588,9 @@ watch(blockNumber, () => {
             <ArrowDownIcon />
           </div>
           <div class="p-3 dark:bg-polaris-card-dark">
-            <div class="flex items-center font-medium text-xl dark:text-polaris-white">
+            <div
+              class="flex items-center text-xl font-medium dark:text-polaris-white"
+            >
               <div class="mr-3">
                 <BalAsset
                   :address="swapping.tokenOut.value.address"
@@ -574,7 +600,7 @@ watch(blockNumber, () => {
               <div>
                 {{ swapping.tokenOut.value.symbol }}
               </div>
-              <div class="text-right w-full">
+              <div class="w-full text-right">
                 <div>
                   {{
                     fNum(swapping.tokenOutAmountInput.value, FNumFormats.token)
@@ -588,10 +614,8 @@ watch(blockNumber, () => {
           </div>
         </div>
       </BalCard>
-      <PolLine class="px-[12px]"/>
-      <div
-        class="flex w-full text-sm "
-      >
+      <PolLine class="px-[12px]" />
+      <div class="flex w-full text-sm">
         <span>
           {{ $t('effectivePrice') }}
           {{
@@ -601,26 +625,20 @@ watch(blockNumber, () => {
           }}
         </span>
       </div>
-      <div class="flex w-full text-sm "
-        v-if="
-          swapping.isBalancerSwap.value ||
-          swapping.isWrapUnwrapSwap.value
-        "
+      <div
+        v-if="swapping.isBalancerSwap.value || swapping.isWrapUnwrapSwap.value"
+        class="flex w-full text-sm"
       >
         {{ $t('priceImpact') }}:
-        {{
-          fNum(swapping.sor.priceImpact.value, FNumFormats.percent)
-        }}
+        {{ fNum(swapping.sor.priceImpact.value, FNumFormats.percent) }}
       </div>
       <BalCard noBorder square noPad shadow="none" class="mb-3">
         <template #header>
-          <div
-            class="flex justify-between items-center p-3 w-full"
-          >
+          <div class="flex justify-between items-center p-3 w-full">
             <div class="font-semibold">
               {{ labels.swapSummary.title }}
             </div>
-            <div class="flex text-xs uppercase divide-x ">
+            <div class="flex text-xs uppercase divide-x">
               <div
                 :class="[
                   'pr-2 cursor-pointer font-medium',
@@ -667,9 +685,7 @@ watch(blockNumber, () => {
           </div>
         </div>
         <template #footer>
-          <div
-            class="p-3 w-full text-sm "
-          >
+          <div class="p-3 w-full text-sm">
             <div class="font-medium summary-item-row">
               <div class="w-64">
                 {{ labels.swapSummary.totalAfterFees }}

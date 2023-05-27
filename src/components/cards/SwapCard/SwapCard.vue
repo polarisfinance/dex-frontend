@@ -74,7 +74,7 @@
           block
           @click.prevent="handlePreviewButton"
         >
-          Swap
+          {{ buttonLabel }}
         </button>
       </div>
       <div
@@ -287,6 +287,15 @@ export default defineComponent({
       }
       return t('swap');
     });
+    const buttonLabel = computed(() => {
+      if (swapping.wrapType.value === WrapType.Wrap) {
+        return t('wrap');
+      }
+      if (swapping.wrapType.value === WrapType.Unwrap) {
+        return t('unwrap');
+      }
+      return t('swap');
+    });
     const pools = computed<SubgraphPoolBase[]>(
       // @ts-ignore-next-line -- Fix types incompatibility error. Related to BigNumber?
       () => {
@@ -454,6 +463,7 @@ export default defineComponent({
       // methods
       switchToWETH,
       handleErrorButtonClick,
+      buttonLabel,
     };
   },
 });

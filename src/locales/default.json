@@ -1455,6 +1455,7 @@
     "approveForSwapping": "Approve {0} for swapping",
     "approveForLocking": "Approve {0} for locking",
     "approveForStaking": "Approve {0} for staking",
+    "approveForWrapping": "Approve {0} for wrapping",
     "extendLock": "Lock until {0}",
     "unlock": "Unlock {0}",
     "approveRelayer": "Approve {0} relayer",
