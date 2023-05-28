@@ -11,7 +11,7 @@ import PoolCalculator from '@/services/pool/calculator/calculator.sevice';
 import usePoolQuery from '@/composables/queries/usePoolQuery';
 import { bnum } from '@/lib/utils';
 import { getAddress } from '@ethersproject/address';
-import { Pool, PoolToken } from 'src/services/pool/types';
+import { Pool, PoolToken } from '@/services/pool/types';
 import { usePoolStaking } from '@/providers/local/pool-staking.provider';
 
 export default defineComponent({

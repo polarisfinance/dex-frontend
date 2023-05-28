@@ -12,7 +12,6 @@ class MetaService implements IMetaService {
   constructor(private readonly config = configService) {}
 
   public setMeta(route: RouteLocationNormalized, pool?: Pool): void {
-    console.log(route.name);
     if (!route.name || !ROUTE_META_DATA[route.name]) {
       this.setDefaultMeta();
       return;

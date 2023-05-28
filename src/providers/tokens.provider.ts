@@ -139,7 +139,6 @@ export const tokensProvider = (
   const wrappedNativeAsset = computed(
     (): TokenInfo => getToken(TOKENS.Addresses.wNativeAsset)
   );
-  console.log(TOKENS.Addresses.wNativeAsset);
 
   /****************************************************************
    * Dynamic metadata
