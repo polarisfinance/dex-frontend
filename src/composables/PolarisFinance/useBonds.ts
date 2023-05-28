@@ -1,4 +1,3 @@
-// import { sendTransaction } from '@/lib/utils/balancer/web3';
 import { MaxUint256 } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { Contract } from 'ethers';
@@ -14,114 +13,110 @@ import {
 } from './utils';
 import { rpcProviderService } from '@/services/rpc-provider/rpc-provider.service';
 import { Network } from '@balancer-labs/sdk';
-import { Web3Provider } from '@ethersproject/providers';
 import { treasuryABI, polarTreasuryABI } from './ABI';
 
-export default function useBonds(account: string, tokenName: string) {
+import useWeb3 from '@/services/web3/useWeb3';
+import { TransactionBuilder } from '@/services/web3/transactions/transaction.builder';
+
+export default function useBonds(tokenName: string) {
+  const { account, getSigner } = useWeb3();
+
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
-  const bondAddress = bondNameToAddress[tokenName];
-  const tokenAddress = tokenNameToAddress[tokenName];
+
   const treasuryAddress = treasuryNameToAddress[tokenName];
-  const tokenContract = new Contract(tokenAddress, tokenABI, w3);
-  const bondContract = new Contract(bondAddress, bondABI, w3);
-  const isApprovedPurchase = async () => {
-    const _owner = account;
-    const _spender = treasuryAddress;
-    const approval = await tokenContract.allowance(_owner, _spender);
-    return approval != 0 ? true : false;
+  const tokenContract = new Contract(
+    tokenNameToAddress[tokenName],
+    tokenABI,
+    w3
+  );
+  const bondContract = new Contract(bondNameToAddress[tokenName], bondABI, w3);
+
+  const isApprovedPurchase = async (amount: BigNumber) => {
+    const approval = await tokenContract.allowance(
+      account.value,
+      treasuryAddress
+    );
+    return approval.gte(amount) ? true : false;
   };
 
-  const isApprovedRedeem = async () => {
-    const _owner = account;
-    const _spender = treasuryAddress;
-    const approval = await bondContract.allowance(_owner, _spender);
-    return approval != 0 ? true : false;
-  };
-
-  const approvePurchase = async (provider: Web3Provider) => {
-    const amount = MaxUint256.toString();
-    const spender = treasuryNameToAddress[tokenName];
-
-    try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   tokenNameToAddress[tokenName],
-      //   tokenABI,
-      //   'approve',
-      //   [spender, amount]
-      // );
-
-      return undefined;
-    } catch (error) {
-      console.error(error);
-      return Promise.reject(error);
-    }
-  };
-
-  const approveRedeem = async (provider: Web3Provider) => {
-    const amount = MaxUint256.toString();
-    const spender = treasuryNameToAddress[tokenName];
-
-    try {
-      const tx = await sendTransaction(
-        provider,
-        tokenNameToAddress[tokenName],
-        tokenABI,
-        'approve',
-        [spender, amount]
-      );
-
-      return tx;
-    } catch (error) {
-      console.error(error);
-      return Promise.reject(error);
-    }
+  const isApprovedRedeem = async (amount: BigNumber) => {
+    const approval = await bondContract.allowance(
+      account.value,
+      treasuryAddress
+    );
+    return approval.gte(amount) ? true : false;
   };
 
   const getTokenBalance = async () => {
-    const balance = await tokenContract.balanceOf(account);
+    const balance = await tokenContract.balanceOf(account.value);
     return BigNumberToString(balance, 14, 4);
   };
 
   const getBondBalance = async () => {
-    const balance = await bondContract.balanceOf(account);
+    const balance = await bondContract.balanceOf(account.value);
     return BigNumberToString(balance, 14, 4);
   };
 
-  const purchase = async (amount: BigNumber, provider: Web3Provider) => {
+  const approvePurchase = async () => {
+    try {
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: tokenNameToAddress[tokenName],
+        abi: tokenABI,
+        action: 'approve',
+        params: [treasuryNameToAddress[tokenName], MaxUint256.toString()],
+      });
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
+  const approveRedeem = async () => {
+    try {
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: bondNameToAddress[tokenName],
+        abi: tokenABI,
+        action: 'approve',
+        params: [treasuryNameToAddress[tokenName], MaxUint256.toString()],
+      });
+    } catch (error) {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  };
+
+  const purchase = async (amount: BigNumber) => {
     const { getCurrentPrice } = useTreasury(tokenName);
     const targetPrice = await getCurrentPrice();
     const localABI =
       tokenName != 'polar' ? treasuryABI(tokenName) : polarTreasuryABI;
     try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   treasuryNameToAddress[tokenName],
-      //   localABI,
-      //   'buyBonds',
-      //   [amount, targetPrice]
-      // );
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: treasuryNameToAddress[tokenName],
+        abi: localABI,
+        action: 'buyBonds',
+        params: [amount, targetPrice],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   };
 
-  const redeem = async (amount: BigNumber, provider: Web3Provider) => {
+  const redeem = async (amount: BigNumber) => {
     const { getCurrentTWAPBigNumber } = useTreasury(tokenName);
-
     const targetPrice = await getCurrentTWAPBigNumber();
-
     try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   treasuryNameToAddress[tokenName],
-      //   bondABI,
-      //   'redeemBonds',
-      //   [amount, BigNumber.from(targetPrice)]
-      // );
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: treasuryNameToAddress[tokenName],
+        abi: bondABI,
+        action: 'redeemBonds',
+        params: [amount, targetPrice],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);

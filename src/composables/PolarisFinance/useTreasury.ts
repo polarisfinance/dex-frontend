@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers';
 import { Contract } from 'ethers';
 
 import { treasuryABI, polarTreasuryABI } from './ABI';

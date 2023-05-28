@@ -1,7 +1,9 @@
 <template>
-  <div class="sunrise-title py-10">
+  <div class="py-10 sunrise-title">
     <div class="flex-column">
-      <div class="sunrise-title-text uppercase dark:text-polaris-white">{{ sunrise.name }}</div>
+      <div class="dark:text-polaris-white uppercase sunrise-title-text">
+        {{ sunrise.name }}
+      </div>
       <div class="sunrise-subtitle-text">Bond</div>
     </div>
   </div>
@@ -14,33 +16,36 @@
     class="justify-center text-center"
   >
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
-      <div class="bond-title dark:text-polaris-white">Purchase {{ sunrise.bond }}</div>
+      <div class="dark:text-polaris-white bond-title">
+        Purchase {{ sunrise.bond }}
+      </div>
       <div
-        class="mt-[40px] flex items-center justify-between"
+        class="flex justify-between items-center mt-[40px]"
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase dark:text-polaris-white">{{ sunrise.name }}</div>
+          <div class="dark:text-polaris-white uppercase token-name mt-[8px]">
+            {{ sunrise.name }}
+          </div>
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
           <img :src="bondLogo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase dark:text-polaris-white">{{ sunrise.bond }}</div>
+          <div class="dark:text-polaris-white uppercase token-name mt-[8px]">
+            {{ sunrise.bond }}
+          </div>
         </div>
       </div>
-      <div class="details mt-[32px] ">
+      <div class="details mt-[32px]">
         {{ sunrise.bond }} is available for purchase
       </div>
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="approved">
+      <div class="flex justify-center mt-[24px] gap-[12px]">
         <button class="purchase-button" @click="togglePurchaseBondModal">
           Purchase
         </button>
       </div>
 
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-else>
-        <button class="purchase-button" @click="approve">Approve</button>
-      </div>
       <BondModal
         :purchaseBol="true"
         :isVisible="isPurchaseBondModalVisible"
@@ -52,7 +57,10 @@
         @update="render"
       />
     </div>
-    <div :class="{ data: isDesktop, dataMobile: isMobile }" class="dark:text-polaris-white">
+    <div
+      :class="{ data: isDesktop, dataMobile: isMobile }"
+      class="dark:text-polaris-white"
+    >
       <div>
         <div class="bond-h1">
           {{ sunrise.name.toUpperCase() }} = {{ currentTwap }}
@@ -79,31 +87,31 @@
     <div :class="{ card: isDesktop, cardMobile: isMobile }">
       <div class="bond-title">Redeem {{ sunrise.lpToken.toUpperCase() }}</div>
       <div
-        class="mt-[40px] flex items-center justify-between px-[70px]"
+        class="flex justify-between items-center mt-[40px] px-[70px]"
         :class="{ tokenTransition: isDesktop, tokenTransitionMobile: isMobile }"
       >
         <div class="flex-column">
           <img :src="bondLogo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.bond }}</div>
+          <div class="uppercase token-name mt-[8px]">{{ sunrise.bond }}</div>
         </div>
         <img src="./arrow.svg" />
         <div class="flex-column">
           <img :src="logo[sunrise.name]" />
-          <div class="token-name mt-[8px] uppercase">{{ sunrise.name }}</div>
+          <div class="uppercase token-name mt-[8px]">{{ sunrise.name }}</div>
         </div>
       </div>
       <div class="details mt-[32px]">
         {{ bondBalance }} {{ sunrise.bond }} Redeemable
       </div>
-      <div class="mt-[24px] flex justify-center">
+      <div class="flex justify-center mt-[24px]">
         <button
+          v-if="redeemEnabled"
           class="purchase-button"
           @click="toggleRedeemBondModal"
-          v-if="redeemEnabled"
         >
           Redeem
         </button>
-        <button class="claim-btn" v-else>
+        <button v-else class="claim-btn">
           Enabled when <span class="uppercase">{{ sunrise.name }}</span> > 1.01
         </button>
       </div>
@@ -182,7 +190,7 @@ export default defineComponent({
 
     const { isMobile, isDesktop } = useBreakpoints();
 
-    const { account, getProvider } = useWeb3();
+    const { account, getProvider, isWalletReady } = useWeb3();
 
     const logo = {
       polar: polarImg,
@@ -221,6 +229,9 @@ export default defineComponent({
       isRedeemBondModalVisible.value = !isRedeemBondModalVisible.value;
     };
 
+    const { getTokenBalance, getBondBalance } = useBonds(sunriseName);
+    const { approvePurchase } = useBonds(sunriseName);
+
     return {
       // data
       ...toRefs(data),
@@ -241,27 +252,35 @@ export default defineComponent({
       isRedeemBondModalVisible,
       toggleRedeemBondModal,
       bondLogo,
+      getTokenBalance,
+      getBondBalance,
+
+      approvePurchase,
+
+      isWalletReady,
     };
   },
-  methods: {
-    async approve() {
-      const { approvePurchase } = useBonds(this.account, this.sunriseName);
 
-      const tx = await approvePurchase(this.getProvider());
-      this.txHandler(tx);
-      this.txListener(tx, {
-        onTxConfirmed: () => {
-          this.render();
-        },
-        onTxFailed: () => {},
-      });
+  data() {
+    return {
+      redeemEnabled: false,
+      previousEpochTwap: '-',
+      currentTwap: '-',
+      bondPrice: '-',
+      tokenBalance: '-',
+      bondBalance: '-',
+    };
+  },
+  watch: {
+    async account() {
+      await this.render();
     },
-
+  },
+  async created() {
+    await this.render();
+  },
+  methods: {
     async render() {
-      const { isApprovedPurchase, getTokenBalance, getBondBalance } = useBonds(
-        this.account,
-        this.sunriseName
-      );
       const { getCurrentTWAP, getLastEpochTWAP } = useTreasury(
         this.sunriseName
       );
@@ -283,15 +302,13 @@ export default defineComponent({
         [
           this.previousEpochTwap,
           this.currentTwap,
-          this.approved,
           this.tokenBalance,
           this.bondBalance,
         ] = await Promise.all([
           getLastEpochTWAP(),
           getCurrentTWAP(),
-          isApprovedPurchase(),
-          getTokenBalance(),
-          getBondBalance(),
+          this.getTokenBalance(),
+          this.getBondBalance(),
         ]);
         const twap = parseFloat(this.currentTwap);
 
@@ -304,26 +321,6 @@ export default defineComponent({
         this.bondPrice = bondPrice.toString();
       }
       this.redeemEnabled = parseFloat(this.previousEpochTwap) > 1.01;
-    },
-  },
-  async created() {
-    await this.render();
-  },
-
-  data() {
-    return {
-      approved: false,
-      redeemEnabled: false,
-      previousEpochTwap: '-',
-      currentTwap: '-',
-      bondPrice: '-',
-      tokenBalance: '-',
-      bondBalance: '-',
-    };
-  },
-  watch: {
-    async account(newAccount, oldAccount) {
-      await this.render();
     },
   },
 });
@@ -559,7 +556,6 @@ export default defineComponent({
   font-weight: 600;
   font-size: 18px;
   line-height: 23px;
-
 }
 
 .bond-h2 {
