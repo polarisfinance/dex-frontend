@@ -108,10 +108,16 @@ function onColumnSort(columnId: string) {
         class="grid gap-6"
         :class="{ 'grid-cols-1': isMobile, 'grid-cols-3': isDesktop }"
       >
+        <BalLoadingBlock
+          v-for="n in isDesktop ? 6 : 3"
+          v-if="isLoading"
+          class="h-56"
+        />
         <template
           v-for="(pool, idx) in isDesktop
             ? hotPools.slice(0, 6)
             : hotPools.slice(0, 3)"
+          v-else
           :key="idx"
         >
           <PoolCard :pool="pool" :selectedTokens="selectedTokens"></PoolCard>
