@@ -195,7 +195,7 @@ watch(
       class="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-end"
     >
       <div class="px-4 xl:px-0 pb-2 max-w-3xl">
-        <h3 class="mb-2 font-semibold dark:text-polaris-white">
+        <h3 class="mb-7 font-semibold dark:text-polaris-white">
           {{ $t('veBAL.liquidityMining.title') }}
           <BalTooltip
             :text="$t('veBAL.liquidityMining.description')"
@@ -205,103 +205,111 @@ watch(
             class="mt-1"
           />
         </h3>
-      </div>
-    </div>
-    <ResubmitVotesAlert
-      v-if="shouldResubmitVotes"
-      class="mx-4 xl:mx-0 mb-7"
-    ></ResubmitVotesAlert>
-    <div class="flex flex-wrap justify-between items-end px-4 lg:px-0">
-      <div class="flex gap-2 xs:gap-3 mb-3 lg:mb-0">
-        <BalCard shadow="none" class="p-0 md:w-48 min-w-max">
-          <div class="flex items-center">
-            <p
-              class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
-            >
-              My unallocated votes
-            </p>
-            <BalTooltip
-              :text="$t('veBAL.liquidityMining.myUnallocatedVotesTooltip')"
-              iconClass="text-gray-400 dark:text-polaris-white"
-              iconSize="sm"
-              width="72"
-              class="mt-1"
-            />
-          </div>
-          <p
-            class="inline mr-1 text-lg font-semibold"
-            :class="{ 'text-red-500': hasExpiredLock }"
+        <div class="flex mb-3 lg:mb-0">
+          <BalTextInput
+            v-model="tokenFilter"
+            name="tokenSearch"
+            type="text"
+            :placeholder="$t('filterByToken')"
+            size="sm"
           >
-            <span v-if="hasLock" class="dark:text-polaris-white">
-              {{ unallocatedVotesFormatted }}
-            </span>
-            <span v-else class="mr-1">—</span>
-          </p>
-          <BalTooltip
-            v-if="hasExpiredLock"
-            :text="$t('veBAL.liquidityMining.votingPowerExpiredTooltip')"
-            iconSize="sm"
-            :iconName="'alert-triangle'"
-            :iconClass="'text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors'"
-            width="72"
-            class="relative top-0.5"
-          />
-        </BalCard>
-        <BalCard shadow="none" class="md:w-48 min-w-max">
-          <div class="flex items-center">
-            <p
-              :class="{ 'text-orange-500 font-medium': votingPeriodLastHour }"
-              class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
-            >
-              Voting period ends
-            </p>
-            <BalTooltip
-              :text="$t('veBAL.liquidityMining.votingPeriodTooltip')"
-              iconSize="sm"
-              iconClass="text-gray-400 dark:text-polaris-white"
-              width="72"
-              class="mt-1"
-            />
-          </div>
-          <p class="text-lg font-semibold tabular-nums dark:text-polaris-white">
-            <span
-              v-if="votingPeriodEnd.length"
-              :class="{ 'text-orange-500': votingPeriodLastHour }"
-            >
-              {{
-                $t(
-                  'veBAL.liquidityMining.votingPeriodCountdown',
-                  votingPeriodEnd
-                )
-              }}
-            </span>
-          </p>
-        </BalCard>
-      </div>
-      <div class="flex mb-3 lg:mb-0">
-        <BalTextInput
-          v-model="tokenFilter"
-          name="tokenSearch"
-          type="text"
-          :placeholder="$t('filterByToken')"
-          size="sm"
-        >
-          <template #prepend>
-            <div class="flex items-center h-full">
-              <BalIcon name="search" size="md" class="px-2 text-gray-600" />
-            </div>
-          </template>
-        </BalTextInput>
+            <template #prepend>
+              <div class="flex items-center h-full">
+                <BalIcon name="search" size="md" class="px-2 text-gray-600" />
+              </div>
+            </template>
+          </BalTextInput>
 
-        <!-- <GaugesFilters
+          <!-- <GaugesFilters
           :networkFilters="networkFilters"
           :showExpiredGauges="showExpiredGauges"
           :activeNetworkFilters="activeNetworkFilters"
           @update:show-expired-gauges="showExpiredGauges = $event"
           @update:active-network-filters="activeNetworkFilters = $event"
         /> -->
+        </div>
+      </div>
+      <div class="flex flex-wrap justify-between items-end px-4 lg:px-0">
+        <div
+          class="flex flex-wrap gap-2 py-5 px-10 dark:bg-polaris-card-default rounded-big"
+        >
+          <div class="flex flex-col mr-5">
+            <div class="flex flex-1 items-center">
+              <p
+                class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
+              >
+                My unallocated votes
+              </p>
+              <BalTooltip
+                :text="$t('veBAL.liquidityMining.myUnallocatedVotesTooltip')"
+                iconClass="text-gray-400 dark:text-polaris-white"
+                iconSize="sm"
+                width="72"
+                class="mt-1"
+              />
+            </div>
+            <div>
+              <p
+                class="inline mr-1 text-xxl font-semibold"
+                :class="{ 'text-red-500': hasExpiredLock }"
+              >
+                <span v-if="hasLock" class="dark:text-polaris-white">
+                  {{ unallocatedVotesFormatted }}
+                </span>
+                <span v-else class="mr-1">—</span>
+              </p>
+              <BalTooltip
+                v-if="hasExpiredLock"
+                :text="$t('veBAL.liquidityMining.votingPowerExpiredTooltip')"
+                iconSize="sm"
+                :iconName="'alert-triangle'"
+                :iconClass="'text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors'"
+                width="72"
+                class="relative top-0.5"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <div class="flex items-center">
+              <p
+                :class="{ 'text-orange-500 font-medium': votingPeriodLastHour }"
+                class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
+              >
+                Voting period ends
+              </p>
+              <BalTooltip
+                :text="$t('veBAL.liquidityMining.votingPeriodTooltip')"
+                iconSize="sm"
+                iconClass="text-gray-400 dark:text-polaris-white"
+                width="72"
+                class="mt-1"
+              />
+            </div>
+            <div>
+              <p
+                class="text-xxl font-semibold tabular-nums dark:text-polaris-white"
+              >
+                <span
+                  v-if="votingPeriodEnd.length"
+                  :class="{ 'text-orange-500': votingPeriodLastHour }"
+                >
+                  {{
+                    $t(
+                      'veBAL.liquidityMining.votingPeriodCountdown',
+                      votingPeriodEnd
+                    )
+                  }}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <ResubmitVotesAlert
+      v-if="shouldResubmitVotes"
+      class="mx-4 xl:mx-0 mb-7"
+    ></ResubmitVotesAlert>
 
     <GaugesTable
       :key="gaugesTableKey"

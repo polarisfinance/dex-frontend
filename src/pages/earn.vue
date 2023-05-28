@@ -18,6 +18,36 @@ import PoolCard from '@/components/cards/PoolCard/PoolCard.vue';
 const { prices } = useTokens();
 import { POOLS } from '@/constants/pools';
 
+const polarisPoolsIds = [
+  '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
+  '0x2ec560ba933e8994482af76d63378bdc5354402100020000000000000000002a',
+  '0x4200333dc021ea5fb1050b8e4f8f3ed7cb1d22ed00020000000000000000000c',
+  '0xb3a04902b78fbe61185b766866193630db4db8a300020000000000000000000d',
+  '0xd88a378abfe6b6e232525dfb03fbe01ecc863c10000200000000000000000004',
+  '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020',
+  '0x244caf21eaa7029db9d6b42ddf2d95800a2f5eb500020000000000000000000a',
+  '0x9127442d0a170cc0efb5d164582948f21c37312e000200000000000000000028',
+  '0x9cd44e44e8a61bc7dc34b04c762a3c0137a3707c000200000000000000000002',
+  '0x0993fa12d3256e85da64866354ec3532f187e178000200000000000000000008',
+  '0xceecce984f498ee00832670e9ca6d372f6ce155a000200000000000000000014',
+  '0xf53a4381f3a4f08726970bc6bb23c4ee3ef101ed000200000000000000000033',
+  '0xa6ac7ce1d7aefd7abd06d93e6b89489aedf03d14000200000000000000000029',
+  '0x454adaa07eec2c432c0df4379a709b1fa4c800ed000200000000000000000016',
+  '0x293bbbef6087f681a8110f08bbdedadd13599fc3000200000000000000000007',
+  '0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015',
+  '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e',
+  '0x0fb037f35f5a00f66e3fc9a29f2dca59c12bfc5f000200000000000000000027',
+  '0xa215a58225b344cbb62fcf762e8e884dbedfbe58000200000000000000000006',
+  '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b00020000000000000000000f',
+  '0xa83f9fa9b51fc26e9925a07bc3375617b473e051000200000000000000000005',
+  '0x435de7d1c13cfec80997510bd38bcb45282e6a0f000200000000000000000034',
+  '0x6e7c170f95aba8ffbccaf5155706be0682cc5bd900020000000000000000002b',
+  '0xe03dc509b05e7d80ee863c0d4144ddc5a03e652300020000000000000000002d',
+  '0x5f5f57abf920a88e77513a28d41df39a0e0b4b6a000200000000000000000035',
+  '0x3c5b26cde094fe7e5c75651a7ab5e9520ec06e5700020000000000000000002e',
+  '0x4652df40de98c20e73d88983a8b74e4aa014bdf3000200000000000000000032',
+];
+
 // COMPOSABLES
 const router = useRouter();
 const { appNetworkConfig } = useWeb3();
@@ -31,13 +61,24 @@ const { pools, isLoading, poolsIsFetchingNextPage, loadMorePools } = usePools(
   selectedTokens,
   poolsSortField
 );
+
 const { upToMediumBreakpoint, isMobile, isDesktop } = useBreakpoints();
 const { networkSlug, networkConfig } = useNetwork();
 
 const isPaginated = computed(
   () => pools.value.length >= POOLS.Pagination.PerPage
 );
+const polarisPools = computed(() => {
+  return pools.value.filter(pool => polarisPoolsIds.includes(pool.id));
+});
+const communityPools = computed(() => {
+  return pools.value.filter(pool => !polarisPoolsIds.includes(pool.id));
+});
 
+const hotPools = computed(() => {
+  return pools.value.sort((a, b) => b.apr?.max - a.apr?.max).slice(0, 6);
+});
+console.log(pools.value);
 const hiddenColumns = computed(() => {
   if (isDesktop.value) return ['migrate', 'actions', 'lockEndDate'];
   else return ['icons', 'migrate', 'actions', 'lockEndDate', 'volume'];
@@ -67,10 +108,16 @@ function onColumnSort(columnId: string) {
         class="grid gap-6"
         :class="{ 'grid-cols-1': isMobile, 'grid-cols-3': isDesktop }"
       >
+        <BalLoadingBlock
+          v-for="n in isDesktop ? 6 : 3"
+          v-if="isLoading"
+          class="h-56"
+        />
         <template
           v-for="(pool, idx) in isDesktop
-            ? pools.slice(0, 6)
-            : pools.slice(0, 3)"
+            ? hotPools.slice(0, 6)
+            : hotPools.slice(0, 3)"
+          v-else
           :key="idx"
         >
           <PoolCard :pool="pool" :selectedTokens="selectedTokens"></PoolCard>
@@ -84,10 +131,10 @@ function onColumnSort(columnId: string) {
           <div
             class="flex justify-between items-end mb-2 font-semibold dark:text-polaris-white"
           >
-            <h3>
+            <!-- <h3>
               {{ networkConfig.chainName }}
               <span class="lowercase">{{ $t('pools') }}</span>
-            </h3>
+            </h3> -->
             <BalBtn
               v-if="upToMediumBreakpoint"
               class="font-semibold text-white polaris-small-button"
@@ -120,15 +167,30 @@ function onColumnSort(columnId: string) {
           </div>
         </div>
         <PoolsTable
-          :data="pools"
+          :data="polarisPools"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoading="isLoading"
           :selectedTokens="selectedTokens"
-          class="mb-8"
+          class="mt-7 mb-8"
           :hiddenColumns="hiddenColumns"
           :isLoadingMore="poolsIsFetchingNextPage"
           :isPaginated="isPaginated"
           skeletonClass="pools-table-loading-height"
+          firstColumnHeading="Polaris Finance pools"
+          @on-column-sort="onColumnSort"
+          @load-more="loadMorePools"
+        />
+        <PoolsTable
+          :data="communityPools"
+          :noPoolsLabel="$t('noPoolsFound')"
+          :isLoading="isLoading"
+          :selectedTokens="selectedTokens"
+          class="mt-7 mb-8"
+          :hiddenColumns="hiddenColumns"
+          :isLoadingMore="poolsIsFetchingNextPage"
+          :isPaginated="isPaginated"
+          skeletonClass="pools-table-loading-height"
+          firstColumnHeading="Community pools"
           @on-column-sort="onColumnSort"
           @load-more="loadMorePools"
         />

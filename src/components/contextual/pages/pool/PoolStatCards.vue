@@ -89,7 +89,7 @@ const stats = computed(() => {
   <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
     <template v-for="stat in stats" :key="stat.id">
       <BalLoadingBlock v-if="stat.loading || !pool" class="h-24" />
-      <BalCard noBorder noBackground shadow="none" v-else>
+      <BalCard v-else noBorder noBackground shadow="none">
         <div class="flex justify-center">
           <div class="mr-4">
             <WalletNewIcon v-if="stat.id == 'poolValue'" />
@@ -98,7 +98,7 @@ const stats = computed(() => {
             <AprIcon v-if="stat.id == 'apr'" />
           </div>
           <div>
-            <div class="flex mb-2 text-sm font-semibold ">
+            <div class="flex mb-2 text-sm font-semibold">
               <span>{{ stat.label }}</span>
               <template v-if="stat.id === 'apr' && poolApr">
                 <BalTooltip
@@ -113,7 +113,7 @@ const stats = computed(() => {
             </div>
             <div
               :class="[
-                'flex items-center text-[32px] font-medium dark:text-polaris-white font-semibold ',
+                'stat-val flex items-center text-[32px] font-medium dark:text-polaris-white font-semibold ',
                 {
                   'text-gray-300 line-through':
                     stat.id === 'apr' && isLBP(pool.poolType),
@@ -128,3 +128,8 @@ const stats = computed(() => {
     </template>
   </div>
 </template>
+<style scoped>
+.stat-val {
+  line-height: 35px;
+}
+</style>
