@@ -38,6 +38,7 @@ import PoolWarningTooltip from '@/components/pool/PoolWarningTooltip.vue';
 import TokensWhite from '@/assets/images/icons/tokens_white.svg';
 import TokensBlack from '@/assets/images/icons/tokens_black.svg';
 import TokenWeightsPills from './TokenPills/TokenWeightsPills.vue';
+
 /**
  * TYPES
  */
@@ -58,12 +59,12 @@ type Props = {
   skeletonClass?: string;
   shares?: Record<string, string>;
   boosts?: Record<string, string>;
+  firstColumnHeading?: string;
 };
 
 /**
  * PROPS & EMITS
  */
-
 const props = withDefaults(defineProps<Props>(), {
   poolsType: 'unstaked',
   isLoadingMore: false,
@@ -78,6 +79,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => [],
   selectedTokens: () => [],
   skeletonClass: 'h-64',
+  firstColumnHeading: 'Composition',
 });
 
 const emit = defineEmits<{
@@ -89,9 +91,10 @@ const emit = defineEmits<{
 /**
  * COMPOSABLES
  */
+const { t } = useI18n();
 const { fNum } = useNumbers();
 const router = useRouter();
-const { t } = useI18n();
+
 const { trackGoal, Goals } = useFathom();
 const { darkMode } = useDarkMode();
 const { upToLargeBreakpoint, upToSmallBreakpoint, isDesktop, isMobile } =
@@ -117,7 +120,7 @@ const columns = computed<ColumnDefinition<Pool>[]>(() => [
     noGrow: true,
   },
   {
-    name: t('composition'),
+    name: props.firstColumnHeading,
     id: 'poolName',
     accessor: 'id',
     Cell: 'poolNameCell',

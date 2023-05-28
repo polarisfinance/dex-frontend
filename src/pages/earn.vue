@@ -166,35 +166,31 @@ function onColumnSort(columnId: string) {
             </button>
           </div>
         </div>
-        <h3 class="my-7 mx-7 font-semibold dark:text-polaris-white">
-          Polaris Finance pools
-        </h3>
         <PoolsTable
           :data="polarisPools"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoading="isLoading"
           :selectedTokens="selectedTokens"
-          class="mb-8"
+          class="mt-7 mb-8"
           :hiddenColumns="hiddenColumns"
           :isLoadingMore="poolsIsFetchingNextPage"
           :isPaginated="isPaginated"
           skeletonClass="pools-table-loading-height"
+          firstColumnHeading="Polaris Finance pools"
           @on-column-sort="onColumnSort"
           @load-more="loadMorePools"
         />
-        <h3 class="my-7 mx-7 font-semibold dark:text-polaris-white">
-          Community pools
-        </h3>
         <PoolsTable
           :data="communityPools"
           :noPoolsLabel="$t('noPoolsFound')"
           :isLoading="isLoading"
           :selectedTokens="selectedTokens"
-          class="mb-8"
+          class="mt-7 mb-8"
           :hiddenColumns="hiddenColumns"
           :isLoadingMore="poolsIsFetchingNextPage"
           :isPaginated="isPaginated"
           skeletonClass="pools-table-loading-height"
+          firstColumnHeading="Community pools"
           @on-column-sort="onColumnSort"
           @load-more="loadMorePools"
         />
