@@ -78,7 +78,6 @@ const communityPools = computed(() => {
 const hotPools = computed(() => {
   return pools.value.sort((a, b) => b.apr?.max - a.apr?.max).slice(0, 6);
 });
-console.log(pools.value);
 const hiddenColumns = computed(() => {
   if (isDesktop.value) return ['migrate', 'actions', 'lockEndDate'];
   else return ['icons', 'migrate', 'actions', 'lockEndDate', 'volume'];
@@ -92,7 +91,8 @@ function navigateToCreatePool() {
 }
 
 function onColumnSort(columnId: string) {
-  poolsSortField.value = columnId;
+  //This causes page to freeze. When there is no pagination, this is useless
+  // poolsSortField.value = columnId;
 }
 </script>
 
