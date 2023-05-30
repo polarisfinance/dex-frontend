@@ -37,16 +37,21 @@ import {
   getWalletconnectConnector,
   initWalletconnectConnector,
 } from '@/dependencies/wallets/walletconnect';
-
+import {
+  getSenderConnector,
+  initSenderConnector,
+} from '@/dependencies/wallets/sender';
 export type Wallet =
   | 'metamask'
   | 'walletconnect'
   | 'safe'
   | 'walletlink'
-  | 'tally';
+  | 'tally'
+  | 'sender';
 
 export const SupportedWallets = [
   'metamask',
+  'sender',
   'walletconnect',
   'tally',
   'safe',
@@ -59,6 +64,7 @@ export const WalletNameMap: Record<Wallet, string> = {
   safe: 'Safe',
   walletlink: 'Coinbase Wallet',
   tally: 'Tally',
+  sender: 'Sender Wallet',
 };
 
 export const networkMap = {
@@ -175,6 +181,11 @@ export const wallets = () => {
     if (wallet === 'tally') {
       await initTallyConnector();
       Connector = getTallyConnector();
+    }
+
+    if (wallet === 'sender') {
+      await initSenderConnector();
+      Connector = getSenderConnector();
     }
     //@ts-ignore
     return new Connector(alreadyConnectedAccount.value);

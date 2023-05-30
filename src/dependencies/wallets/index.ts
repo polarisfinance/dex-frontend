@@ -3,6 +3,7 @@ import { initMetamaskConnector } from './metamask';
 import { initTallyConnector } from './tally';
 import { initWalletconnectConnector } from './walletconnect';
 import { initWalletLinkConnector } from './walletlink';
+import { initSenderConnector } from './sender';
 
 export function initWalletConnectors() {
   initWalletconnectConnector();
@@ -10,4 +11,5 @@ export function initWalletConnectors() {
   initSafeConnector();
   initWalletLinkConnector();
   initTallyConnector();
+  initSenderConnector();
 }

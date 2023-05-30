@@ -43,6 +43,10 @@ export function getConnectorName(
   if (connectorId === ConnectorId.Gnosis) {
     return 'Gnosis Safe';
   }
+  if (connectorId === ConnectorId.InjectedSender) {
+    console.log('sender wallet');
+    return 'Sender Wallet';
+  }
   return t('unknown');
 }
 

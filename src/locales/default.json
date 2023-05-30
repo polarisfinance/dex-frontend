@@ -641,7 +641,7 @@
   "poolDoesntExist": "Pool doesn't exist on",
   "new": "New",
   "newTotal": "New total",
-  "newToEthereum": "New to Ethereum?",
+  "newToEthereum": "New to Aurora?",
   "newWithdrawal": "New withdrawal",
   "next": "Next",
   "noContent": "No content",
@@ -884,7 +884,7 @@
     "sentry": "Used for error tracking and performance monitoring."
   },
   "settings": "Settings",
-  "setUpEthereumWallet": "Polaris Finance is a DeFi app on Ethereum. Set up an Ethereum Wallet to swap and provide liquidity here.",
+  "setUpEthereumWallet": "Polaris Finance is a DeFi app on Aurora. Set up an Aurora Wallet to swap and provide liquidity here.",
   "singleToken": "Single token",
   "singleTokenMax": "Single token max",
   "slippageTolerance": "Slippage tolerance",

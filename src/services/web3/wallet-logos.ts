@@ -7,6 +7,7 @@ import tallyLogo from '@/assets/images/connectors/tally.svg';
 import trustwalletLogo from '@/assets/images/connectors/trustwallet.svg';
 import walletconnectLogo from '@/assets/images/connectors/walletconnect.svg';
 import walletlinkLogo from '@/assets/images/connectors/walletlink.svg';
+import senderLogo from '@/assets/images/connectors/sender.svg';
 import { ConnectorId } from './connectors/connector';
 
 export function getConnectorLogo(
@@ -46,6 +47,9 @@ export function getConnectorLogo(
   }
   if (connectorId === ConnectorId.WalletLink) {
     return walletlinkLogo;
+  }
+  if (connectorId === ConnectorId.InjectedSender) {
+    return senderLogo;
   }
   return defaultLogo;
 }
