@@ -51,7 +51,7 @@ export type Wallet =
 
 export const SupportedWallets = [
   'metamask',
-  'sender',
+  // 'sender',
   'walletconnect',
   'tally',
   'safe',
