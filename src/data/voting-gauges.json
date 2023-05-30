@@ -949,5 +949,34 @@
       "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
       "0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png"
     }
+  },
+  {
+    "address": "0x59E1dBb8F394986283017d2745FB5BDF24Fc8588",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1685487075,
+    "pool": {
+      "id": "0x80cba127d820f0138d252009b7a073955a4e7d75000200000000000000000039",
+      "address": "0x80cBA127D820f0138D252009b7A073955A4E7d75",
+      "poolType": "Weighted",
+      "symbol": "50FTM-50USDC",
+      "tokens": [
+        {
+          "address": "0x1fE622E91e54D6AD00B01917351Ea6081426764A",
+          "weight": "0.5",
+          "symbol": "FTM"
+        },
+        {
+          "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
+          "weight": "0.5",
+          "symbol": "USDC.e"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x1fE622E91e54D6AD00B01917351Ea6081426764A": "https://cryptologos.cc/logos/fantom-ftm-logo.svg?v=025",
+      "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
+    }
   }
 ]
