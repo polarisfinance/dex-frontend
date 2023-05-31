@@ -162,9 +162,9 @@ watch(
       state.loading = false;
     });
 
-    for (const [key, value] of Object.entries(state.results)) {
-      if (value.symbol.includes('-')) delete state.results[key];
-    }
+    // for (const [key, value] of Object.entries(state.results)) {
+    //   if (value.symbol.includes('-')) delete state.results[key];
+    // }
 
     // state.results = state.results.filter(token =>
     //   token.symbol.includes('BOND')
