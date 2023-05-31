@@ -9,7 +9,7 @@ export const EXTERNAL_LINKS = {
     Forum: 'https://forum.balancer.finance/',
     Grants: 'http://grants.balancer.community/',
     Social: {
-      Discord: 'https://discord.gg/polaris-finance',
+      Discord: 'https://discord.gg/gFEaCXACF4',
       Github: 'https://github.com/polarisfinance',
       Mail: 'mailto:contact@balancer.finance',
       Medium: 'https://medium.com/@PolarisFinance',
