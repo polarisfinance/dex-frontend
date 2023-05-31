@@ -132,7 +132,8 @@ async function onToggleList(uri: string): Promise<void> {
   toggleTokenList(uri);
   state.results = await searchTokens(state.query, {
     excluded: excludedTokens.value,
-    disableInjection: props.disableInjection,
+    // disableInjection: props.disableInjection,
+    disableInjection: true,
     subset: props.subset,
   });
 }
@@ -156,19 +157,12 @@ watch(
     state.loading = true;
     state.results = await searchTokens(newQuery, {
       excluded: excludedTokens.value,
+      // disableInjection: props.disableInjection,
       disableInjection: true,
       subset: props.subset,
     }).finally(() => {
       state.loading = false;
     });
-
-    // for (const [key, value] of Object.entries(state.results)) {
-    //   if (value.symbol.includes('-')) delete state.results[key];
-    // }
-
-    // state.results = state.results.filter(token =>
-    //   token.symbol.includes('BOND')
-    // );
   },
   { immediate: true }
 );
