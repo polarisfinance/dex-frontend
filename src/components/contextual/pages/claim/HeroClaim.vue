@@ -32,11 +32,54 @@ const classes = computed(() => ({
       {{ title }}
     </h1>
     <div class="flex icons">
-      <div><AddLiquidityIcon />Add Liquidity</div>
-
-      <div><StakeIcon />Stake your LP</div>
-      <div><BoostIcon />Get boost</div>
-      <div><ClaimIcon />Claim anytime</div>
+      <div>
+        <AddLiquidityIcon />Add Liquidity
+        <BalTooltip
+          iconSize="xs"
+          textAlign="left"
+          class="relative top-px"
+          iconClass="text-white"
+          width="60"
+        >
+          {{ $t('claimHero.tips.addLiquidity') }}
+        </BalTooltip>
+      </div>
+      <div>
+        <StakeIcon />Stake your LP
+        <BalTooltip
+          iconSize="xs"
+          textAlign="left"
+          class="relative top-px"
+          iconClass="text-white"
+          width="60"
+        >
+          {{ $t('claimHero.tips.stake') }}
+        </BalTooltip>
+      </div>
+      <div>
+        <BoostIcon />Get boost
+        <BalTooltip
+          iconSize="xs"
+          textAlign="left"
+          class="relative top-px"
+          iconClass="text-white"
+          width="60"
+        >
+          {{ $t('claimHero.tips.boost') }}
+        </BalTooltip>
+      </div>
+      <div>
+        <ClaimIcon />Claim anytime
+        <BalTooltip
+          iconSize="xs"
+          textAlign="left"
+          class="relative top-px"
+          iconClass="text-white"
+          width="60"
+        >
+          {{ $t('claimHero.tips.claim') }}
+        </BalTooltip>
+      </div>
     </div>
     <div class="mt-20 text-xl font-medium dark:text-polaris-3">
       Polaris Finance Protocol liquidity incentives are directed to pools by
