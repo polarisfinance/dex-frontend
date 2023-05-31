@@ -21,6 +21,7 @@ const earnBg = 'earn';
 const airdropBg = 'airdrop';
 const vexpolarBg = 'vexpolar';
 const portfolioBg = 'portfolio';
+const claimBg = 'claim';
 /**
  * STATE
  */
@@ -57,6 +58,9 @@ const isVexpolar = computed(() => {
 const isPortfolio = computed(() => {
   return backgroundImage.value == portfolioBg;
 });
+const isClaim = computed(() => {
+  return backgroundImage.value == claimBg;
+});
 
 /**
  * INIT
@@ -78,6 +82,8 @@ export default function useBackgrounds() {
       setBackgroundImage(vexpolarBg);
     } else if (route.path.includes('/portfolio')) {
       setBackgroundImage(portfolioBg);
+    } else if (route.path.includes('/claim')) {
+      setBackgroundImage(claimBg);
     } else {
       setBackgroundImage(defaultBg);
     }
@@ -89,5 +95,6 @@ export default function useBackgrounds() {
     isAirdrop,
     isVexpolar,
     isPortfolio,
+    isClaim,
   };
 }

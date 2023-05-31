@@ -4,8 +4,15 @@ import AppNav from '@/components/navs/AppNav/AppNav.vue';
 import useBackgrounds from '@/composables/useBackgrounds';
 import useBreakpoints from '@/composables/useBreakpoints';
 
-const { isSunrise, isBond, isEarn, isAirdrop, isVexpolar, isPortfolio } =
-  useBackgrounds();
+const {
+  isSunrise,
+  isBond,
+  isEarn,
+  isAirdrop,
+  isVexpolar,
+  isPortfolio,
+  isClaim,
+} = useBackgrounds();
 const { isDesktop } = useBreakpoints();
 </script>
 
@@ -19,6 +26,7 @@ const { isDesktop } = useBreakpoints();
       airdrop: isAirdrop,
       vexpolar: isVexpolar,
       portfolio: isPortfolio,
+      claim: isClaim,
     }"
   >
     <div class="app-body">
@@ -82,6 +90,11 @@ const { isDesktop } = useBreakpoints();
 }
 .app-background.portfolio {
   background-image: url('/images/backgrounds/polaris/portfolio_bg.svg');
+  background-position-y: 5%;
+  background-position-x: center;
+}
+.app-background.claim {
+  background-image: url('/images/backgrounds/polaris/claim_bg.svg');
   background-position-y: 5%;
   background-position-x: center;
 }
