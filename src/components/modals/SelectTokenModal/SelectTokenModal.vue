@@ -156,11 +156,19 @@ watch(
     state.loading = true;
     state.results = await searchTokens(newQuery, {
       excluded: excludedTokens.value,
-      disableInjection: props.disableInjection,
+      disableInjection: true,
       subset: props.subset,
     }).finally(() => {
       state.loading = false;
     });
+
+    for (const [key, value] of Object.entries(state.results)) {
+      if (value.symbol.includes('-')) delete state.results[key];
+    }
+
+    // state.results = state.results.filter(token =>
+    //   token.symbol.includes('BOND')
+    // );
   },
   { immediate: true }
 );
@@ -197,7 +205,9 @@ watchEffect(() => {
           >
             <BalIcon name="arrow-left" size="sm" />
           </BalBtn>
-          <h5 class="text-base dark:text-polaris-white font-semibold">{{ title }}</h5>
+          <h5 class="text-base font-semibold dark:text-polaris-white">
+            {{ title }}
+          </h5>
         </div>
         <div
           v-if="!state.selectTokenList && !hideTokenLists"
@@ -217,10 +227,13 @@ watchEffect(() => {
             <BalIcon
               name="chevron-right"
               size="sm"
-              class="ml-1 text-blue-500 dark:text-polaris-white group-hover:text-pink-500 group-focus:text-pink-500 dark:text-blue-400 transition-all duration-200 ease-out"
+              class="ml-1 text-blue-500 group-hover:text-pink-500 group-focus:text-pink-500 dark:text-polaris-white dark:text-blue-400 transition-all duration-200 ease-out"
             />
           </div>
-          <button class="flex text-polaris-2 hover:text-polaris-white ml-5" @click="$emit('close')">
+          <button
+            class="flex ml-5 text-polaris-2 hover:text-polaris-white"
+            @click="$emit('close')"
+          >
             <BalIcon class="flex" name="x" />
           </button>
         </div>
@@ -274,7 +287,7 @@ watchEffect(() => {
           name="tokenSearchInput"
           :placeholder="$t('searchBy')"
           size="sm"
-          class="w-full dark:bg-polaris-card-medium rounded-[24px] pl-[16px] dark:placeholder:text-polaris-2"
+          class="w-full dark:placeholder:text-polaris-2 dark:bg-polaris-card-medium rounded-[24px] pl-[16px]"
           placeholderColor="polaris-2"
           noBorder
           noShadow
@@ -288,73 +301,95 @@ watchEffect(() => {
         </BalTextInput>
       </div>
       <div class="px-[16px] pb-[12px] pt-[24px]">
-          <div class="dark:text-polaris-3 font-semibold mb-[12px]">Common bases</div>
-          <div class="flex gap-[8px] overflow-hidden" >
-            <a @click="onSelectToken(tokens[2].address)" v-if="tokens[2]"  class="flex-none">
-                <div class="common-asset flex items-center">
-                  <BalAsset
-                    :address="tokens[2].address"
-                    :iconURI="tokens[2].logoURI"
-                    :size="24"
-                    class="mr-[4px]"
-                  />
-                  <div class="token-name">{{ tokens[2].symbol }}</div>
-                </div>
-              </a>
-            <a @click="onSelectToken(tokens[1].address)" v-if="tokens[1]" class="flex-none">
-              <div class="common-asset flex items-center">
-                <BalAsset
-                  :address="tokens[1].address"
-                  :iconURI="tokens[1].logoURI"
-                  :size="24"
-                  class="mr-[4px]"
-                />
-                <div class="token-name">{{ tokens[1].symbol }}</div>
-              </div>
-            </a>
-            <a @click="onSelectToken(tokens[4].address)" v-if="tokens[4]" class="flex-none">
-              <div class="common-asset flex items-center">
-                <BalAsset
-                  :address="tokens[4].address"
-                  :iconURI="tokens[4].logoURI"
-                  :size="24"
-                  class="mr-[4px]"
-                />
-                <div class="token-name">{{ tokens[4].symbol }}</div>
-              </div>
-            </a>
-            <template v-if="isDesktop">
-              <a @click="onSelectToken(tokens[3].address)" v-if="tokens[3]"  class="flex-none">
-                <div class="common-asset flex items-center">
-                  <BalAsset
-                    :address="tokens[3].address"
-                    :iconURI="tokens[3].logoURI"
-                    :size="24"
-                    class="mr-[4px]"
-                  />
-                  <div class="token-name">{{ tokens[3].symbol }}</div>
-                </div>
-              </a>
-              <a @click="onSelectToken(tokens[0].address)" v-if="tokens[0]"  class="flex-none">
-                <div class="common-asset flex items-center">
-                  <BalAsset
-                    :address="tokens[0].address"
-                    :iconURI="tokens[0].logoURI"
-                    :size="24"
-                    class="mr-[4px]"
-                  />
-                  <div class="token-name">{{ tokens[0].symbol }}</div>
-                </div>
-              </a>
-            </template>
-          </div>
+        <div class="font-semibold dark:text-polaris-3 mb-[12px]">
+          Common bases
         </div>
-        <PolLine class="mx-[16px] mt-2"/>
+        <div class="flex overflow-hidden gap-[8px]">
+          <a
+            v-if="tokens[2]"
+            class="flex-none"
+            @click="onSelectToken(tokens[2].address)"
+          >
+            <div class="flex items-center common-asset">
+              <BalAsset
+                :address="tokens[2].address"
+                :iconURI="tokens[2].logoURI"
+                :size="24"
+                class="mr-[4px]"
+              />
+              <div class="token-name">{{ tokens[2].symbol }}</div>
+            </div>
+          </a>
+          <a
+            v-if="tokens[1]"
+            class="flex-none"
+            @click="onSelectToken(tokens[1].address)"
+          >
+            <div class="flex items-center common-asset">
+              <BalAsset
+                :address="tokens[1].address"
+                :iconURI="tokens[1].logoURI"
+                :size="24"
+                class="mr-[4px]"
+              />
+              <div class="token-name">{{ tokens[1].symbol }}</div>
+            </div>
+          </a>
+          <a
+            v-if="tokens[4]"
+            class="flex-none"
+            @click="onSelectToken(tokens[4].address)"
+          >
+            <div class="flex items-center common-asset">
+              <BalAsset
+                :address="tokens[4].address"
+                :iconURI="tokens[4].logoURI"
+                :size="24"
+                class="mr-[4px]"
+              />
+              <div class="token-name">{{ tokens[4].symbol }}</div>
+            </div>
+          </a>
+          <template v-if="isDesktop">
+            <a
+              v-if="tokens[3]"
+              class="flex-none"
+              @click="onSelectToken(tokens[3].address)"
+            >
+              <div class="flex items-center common-asset">
+                <BalAsset
+                  :address="tokens[3].address"
+                  :iconURI="tokens[3].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[3].symbol }}</div>
+              </div>
+            </a>
+            <a
+              v-if="tokens[0]"
+              class="flex-none"
+              @click="onSelectToken(tokens[0].address)"
+            >
+              <div class="flex items-center common-asset">
+                <BalAsset
+                  :address="tokens[0].address"
+                  :iconURI="tokens[0].logoURI"
+                  :size="24"
+                  class="mr-[4px]"
+                />
+                <div class="token-name">{{ tokens[0].symbol }}</div>
+              </div>
+            </a>
+          </template>
+        </div>
+      </div>
+      <PolLine class="mt-2 mx-[16px]" />
       <div class="overflow-hidden">
         <RecycleScroller
           v-if="tokens.length > 0"
           v-slot="{ item: token, index }"
-          class="h-[530px] py-[24px] px-[16px] overflow-y-scroll"
+          class="overflow-y-scroll h-[530px] py-[24px] px-[16px]"
           :items="tokens"
           :itemSize="57"
           keyField="address"
@@ -394,7 +429,7 @@ watchEffect(() => {
   @apply text-sm text-polaris-white rounded-small font-medium;
   padding: 4px 12px 4px 4px;
 }
-.common-asset:hover{
+.common-asset:hover {
   @apply text-polaris-white rounded-small bg-polaris-pill;
 }
 </style>
