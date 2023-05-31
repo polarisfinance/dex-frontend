@@ -38,14 +38,14 @@ const classes = computed(() => ({
       <div><BoostIcon />Get boost</div>
       <div><ClaimIcon />Claim anytime</div>
     </div>
-    <div class="my-20 text-xl font-medium dark:text-polaris-3">
+    <div class="mt-20 text-xl font-medium dark:text-polaris-3">
       Polaris Finance Protocol liquidity incentives are directed to pools by
       veXPOLAR voters. Stake in these pools to earn incentives. Boost with
       veXPOLAR for up to 2.5x extra on Mainnet pools.
     </div>
 
     <template v-if="!isWalletReady && !isWalletConnecting">
-      <div class="text-3xl font-semibold text-white"></div>
+      <div class="mt-20 text-3xl font-semibold text-white"></div>
       <HeroConnectWalletButton class="mt-4" />
     </template>
   </AppHero>
