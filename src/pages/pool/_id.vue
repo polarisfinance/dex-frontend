@@ -243,7 +243,25 @@ watch(
                 :loadingApr="loadingApr"
               />
               <PolLine class="mt-3" />
-              <div class="flex flex-1" :class="{ 'flex-col': isMobile }">
+              <div class="flex flex-1 gap-4" :class="{ 'flex-col': isMobile }">
+                <div
+                  v-if="
+                    poolId ==
+                    '0x80cba127d820f0138d252009b7a073955a4e7d75000200000000000000000039'
+                  "
+                  class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
+                >
+                  Bridge FTM from FANTOM via cBridge
+                  <BalBtn
+                    tag="a"
+                    href="https://cbridge.celer.network/250/1313161554/FTM"
+                    block
+                    target="_blank"
+                    class="items-center m-auto w-full text-lg font-semibold rounded withdraw-button mt-[12px] max-w-[520px]"
+                  >
+                    <div class="w-full text-center">Bridge FTM via cBridge</div>
+                  </BalBtn>
+                </div>
                 <div
                   class="flex-1 text-center text-polaris-white pool-invest pt-[24px]"
                 >
