@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ActivityIcon: typeof import('./src/components/_global/icons/ActivityIcon.vue')['default']
+    AddLiquidityIcon: typeof import('./src/components/_global/icons/polaris/AddLiquidityIcon.vue')['default']
     AprIcon: typeof import('./src/components/_global/icons/polaris/AprIcon.vue')['default']
     ArrowDownIcon: typeof import('./src/components/_global/icons/ArrowDownIcon.vue')['default']
     ArrowLeftIcon: typeof import('./src/components/_global/icons/polaris/ArrowLeftIcon.vue')['default']
@@ -55,9 +56,11 @@ declare module '@vue/runtime-core' {
     BalToggle: typeof import('./src/components/_global/BalToggle/BalToggle.vue')['default']
     BalTooltip: typeof import('./src/components/_global/BalTooltip/BalTooltip.vue')['default']
     BalVerticalSteps: typeof import('./src/components/_global/BalVerticalSteps/BalVerticalSteps.vue')['default']
+    BoostIcon: typeof import('./src/components/_global/icons/polaris/BoostIcon.vue')['default']
     CheckIcon: typeof import('./src/components/_global/icons/CheckIcon.vue')['default']
     ChevronDownIcon: typeof import('./src/components/_global/icons/polaris/ChevronDownIcon.vue')['default']
     'ChevronDownIcon copy': typeof import('./src/components/_global/icons/polaris/ChevronDownIcon copy.vue')['default']
+    ClaimIcon: typeof import('./src/components/_global/icons/polaris/ClaimIcon.vue')['default']
     CloseIcon: typeof import('./src/components/_global/icons/polaris/CloseIcon.vue')['default']
     CompositionIcon: typeof import('./src/components/_global/icons/CompositionIcon.vue')['default']
     copy: typeof import('./src/components/_global/icons/polaris/ChevronDownIcon copy.vue')['default']
@@ -79,6 +82,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SpinnerIcon: typeof import('./src/components/_global/icons/SpinnerIcon.vue')['default']
+    StakeIcon: typeof import('./src/components/_global/icons/polaris/StakeIcon.vue')['default']
     StarsIcon: typeof import('./src/components/_global/icons/StarsIcon.vue')['default']
     SunIcon: typeof import('./src/components/_global/icons/SunIcon.vue')['default']
     TickIcon: typeof import('./src/components/_global/icons/polaris/TickIcon.vue')['default']
