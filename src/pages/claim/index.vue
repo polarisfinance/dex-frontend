@@ -224,7 +224,7 @@ watch(gaugePools, async newPools => {
  * LIFECYCLE
  */
 onBeforeMount(async () => {
-  await getBBaUSDPrice();
+  // await getBBaUSDPrice(); // we are not using bbausd
 });
 </script>
 
