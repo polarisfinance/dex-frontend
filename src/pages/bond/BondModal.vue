@@ -96,13 +96,14 @@ export default defineComponent({
 
     const txHandler = (
       tx: TransactionResponse,
-      action: TransactionAction
+      action: TransactionAction,
+      summary: string
     ): void => {
       addTransaction({
         id: tx.hash,
         type: 'tx',
-        action: 'stake',
-        summary: 'deposit for sunrise',
+        action: action,
+        summary: summary,
       });
     };
 
@@ -153,7 +154,7 @@ export default defineComponent({
       } else {
         tx = await this.approveRedeem();
       }
-      this.txHandler(tx);
+      this.txHandler(tx, 'approve', 'Approve for bonds');
       this.txListener(tx, {
         onTxConfirmed: () => {
           this.fetchApproval();
@@ -171,7 +172,11 @@ export default defineComponent({
         const formatedAmount = parseFixed(amount, 18);
         tx = await this.redeem(formatedAmount);
       }
-      this.txHandler(tx);
+      this.txHandler(
+        tx,
+        this.purchaseBol ? 'purchase' : 'redeem',
+        this.purchaseBol ? 'Purchase bonds' : 'Redeem bonds'
+      );
       this.txListener(tx, {
         onTxConfirmed: () => {
           this.emit('close');
