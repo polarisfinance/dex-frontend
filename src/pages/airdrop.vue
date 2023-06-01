@@ -11,11 +11,11 @@ import { TransactionResponse } from '@ethersproject/providers';
 import useWeb3 from '@/services/web3/useWeb3';
 import xpolar from '@/components/_global/icons/polaris/Logo.vue';
 
-// const { pendingShare, claim } = airdrop(account.value);
-
 export default defineComponent({
   components: { xpolar },
-  setup(props) {
+  setup() {
+    const { getPendingShare, getTotalShares, getVested, submitClaim } =
+      useAirdrop();
     const { isDesktop, isMobile } = useBreakpoints();
     const { isWalletReady, isWalletConnecting } = useWeb3();
     const totalProgress = ref(1);
@@ -26,10 +26,7 @@ export default defineComponent({
     diffDays = diffDays > 60 ? 60 : diffDays;
     const progress = diffDays / 60 > 1 ? 1 : diffDays / 60;
     const diffDaysReverse = 60 - diffDays;
-    const vestedAll = (
-      ((startDay > today ? 0 : diffTime) / 1000) *
-      0.0385802469
-    ).toFixed(0);
+    const vestedAll = '200 000';
     const { account, getProvider } = useWeb3();
     const { addTransaction } = useTransactions();
     const { txListener } = useEthers();
@@ -54,6 +51,12 @@ export default defineComponent({
       getProvider,
       txListener,
       vestedAll,
+      txHandler,
+
+      getPendingShare,
+      getTotalShares,
+      getVested,
+      submitClaim,
     };
   },
   data() {
@@ -65,7 +68,7 @@ export default defineComponent({
     };
   },
   watch: {
-    async account(newAccount, oldAccount) {
+    async account() {
       await this.render();
     },
   },
@@ -74,17 +77,26 @@ export default defineComponent({
   },
   methods: {
     async render() {
-      const { getPendingShare, totalShares, getVested } = useAirdrop();
-      this.vested = await getVested(this.account);
-      this.pendingShare = await getPendingShare(this.account);
-      this.totalShares = await totalShares(this.account);
+      if (!this.account) {
+        this.vested = '--';
+        this.pendingShare = '--';
+        this.totalShares = '--';
+        this.claimDisable = true;
+        return;
+      }
+      [this.vested, this.pendingShare, this.totalShares] = await Promise.all([
+        this.getVested(this.account),
+        this.getPendingShare(this.account),
+        this.getTotalShares(this.account),
+      ]);
+
       if (Number(this.pendingShare) > 0) {
         this.claimDisable = false;
       }
     },
     async claim() {
-      const { claim } = useAirdrop();
-      const tx = await claim(this.getProvider(), this.account);
+      const tx = await this.submitClaim(this.account);
+      this.txHandler(tx);
       this.txListener(tx, {
         onTxConfirmed: () => {
           this.render();

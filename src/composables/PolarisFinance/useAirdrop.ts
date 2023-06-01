@@ -1,4 +1,3 @@
-
 import { Contract, utils } from 'ethers';
 
 import { BigNumberToString } from './utils';
@@ -10,25 +9,13 @@ import { airdropABI } from './ABI';
 import { BigNumber } from 'ethers';
 
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree';
-
 import merkleTree from './merkletree.json';
-// // (1)
-// const tree = StandardMerkleTree.load(JSON.parse(merkleTree.toString()));
 
-// // (2)
-// for (const [i, v] of tree.entries()) {
-//   if (v[0] === '0x0075e788eb9cd476c2f2c13c0c7ef6e52da8fcbf') {
-//     // (3)
-//     const proof = tree.getProof(i);
-//     console.log('Value:', v);
-//     console.log('Proof:', proof);
-//     console.log(tree.verify(i, proof))
-//     console.log(i)
-//     console.log(tree.render())
-//   }
-// }
+import useWeb3 from '@/services/web3/useWeb3';
+import { TransactionBuilder } from '@/services/web3/transactions/transaction.builder';
 
 export default function useAirdrop() {
+  const { getSigner } = useWeb3();
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
   const airdropAddress = '0x3F1F62b6363D11Bd90f2be776A74E0F0C26705D0';
 
@@ -58,7 +45,7 @@ export default function useAirdrop() {
             startTime.add(runningTime)
           )
         ) {
-          pending = v[1];
+          pending = BigNumber.from(v[1]);
         } else {
           pending = BigNumber.from(Math.floor(Date.now() / 1000))
             .sub(startTime)
@@ -74,7 +61,7 @@ export default function useAirdrop() {
     const vested = await airdropContract.vested(account);
     return Number(BigNumberToString(vested, 14, 4)).toFixed(2);
   };
-  const totalShares = async (account: string) => {
+  const getTotalShares = async (account: string) => {
     const tree = StandardMerkleTree.load(
       JSON.parse(JSON.stringify(merkleTree))
     );
@@ -90,7 +77,7 @@ export default function useAirdrop() {
     return '0';
   };
 
-  const claim = async (provider: Web3Provider, account: string) => {
+  const submitClaim = async (account: string) => {
     const tree = StandardMerkleTree.load(
       JSON.parse(JSON.stringify(merkleTree))
     );
@@ -105,14 +92,13 @@ export default function useAirdrop() {
     }
 
     try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   airdropAddress,
-      //   airdropABI,
-      //   'claim',
-      //   [proof, account, amount]
-      // );
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: airdropAddress,
+        abi: airdropABI,
+        action: 'claim',
+        params: [proof, account, amount],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
@@ -121,8 +107,8 @@ export default function useAirdrop() {
 
   return {
     getPendingShare,
-    claim,
-    totalShares,
+    submitClaim,
+    getTotalShares,
     getVested,
   };
 }

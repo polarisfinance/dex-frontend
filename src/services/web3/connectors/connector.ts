@@ -48,10 +48,8 @@ export abstract class Connector {
             `Previously connected account [${this.selectedAccount}] was not found in the connection. Defaulting to the first.`
           );
         }
-        console.log('accountsChanged', this.selectedAccount);
         this.account.value = getAddress(this.selectedAccount);
       }
-      console.log('accountsChanged', accounts);
       this.account.value = getAddress(accounts[0]);
     }
   };
