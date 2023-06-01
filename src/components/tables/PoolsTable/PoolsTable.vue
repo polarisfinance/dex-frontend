@@ -355,8 +355,22 @@ function iconAddresses(pool: Pool) {
             :pickedTokens="selectedTokens"
             :boosted="pool.boosted"
           />
+
           <PoolWarningTooltip :pool="pool" />
         </div>
+        <BalLink
+          v-if="
+            pool.id ==
+            '0x80cba127d820f0138d252009b7a073955a4e7d75000200000000000000000039'
+          "
+          tag="a"
+          href="https://cbridge.celer.network/250/1313161554/FTM"
+          block
+          target="_blank"
+          class="block flex-1 pl-6 text-xs text-left mt-[-12px]"
+        >
+          Bridge FTM via cBridge
+        </BalLink>
       </template>
       <template #volumeCell="pool">
         <div
