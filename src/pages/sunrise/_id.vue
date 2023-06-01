@@ -1,7 +1,9 @@
 <template>
-  <div class="sunrise-title py-10">
+  <div class="py-10 sunrise-title">
     <div class="flex-column">
-      <div class="sunrise-title-text uppercase dark:text-polaris-white">{{ sunrise.name }}</div>
+      <div class="dark:text-polaris-white uppercase sunrise-title-text">
+        {{ sunrise.name }}
+      </div>
       <div class="sunrise-subtitle-text">Sunrise</div>
     </div>
   </div>
@@ -30,13 +32,13 @@
       <div class="details">${{ depositedInDollars }}</div>
       <div class="details">SPOLAR Staked</div>
 
-      <div class="mt-[24px] flex justify-center gap-[12px]" v-if="!approved">
+      <!-- <div v-if="!approved" class="flex justify-center mt-[24px] gap-[12px]">
         <button class="claim-btn" @click="approve">Approve Spolar</button>
         <div class="absolute mt-[80px]">
           Withdraw possible in: {{ withdrawTime }}
         </div>
-      </div>
-      <div class="container mt-[24px] flex justify-center gap-[12px]" v-else>
+      </div> -->
+      <div class="container flex justify-center mt-[24px] gap-[12px]">
         <!-- <button class="claim-btn" @click="depositToken(depositAmount)">
           Deposit
         </button> -->
@@ -74,8 +76,11 @@
         </div>
       </div>
     </div>
-    <div :class="{ data: isDesktop, dataMobile: isMobile }" class="dark:text-polaris-white">
-      <div class="data-text text-right">
+    <div
+      :class="{ data: isDesktop, dataMobile: isMobile }"
+      class="dark:text-polaris-white"
+    >
+      <div class="text-right data-text">
         <div>Next Epoch:</div>
         <div>Current Epoch:</div>
         <div>{{ sunrise.name.toUpperCase() }} Price (TWAP):</div>
@@ -94,18 +99,21 @@
         <div>{{ spolarsStaked }}</div>
       </div>
     </div>
-    <div :class="{ card: isDesktop, cardMobile: isMobile } " class="dark:text-polaris-3">
+    <div
+      :class="{ card: isDesktop, cardMobile: isMobile }"
+      class="dark:text-polaris-3"
+    >
       <img class="logo" :src="logo[sunrise.name]" />
       <div class="num-tokens">{{ earned }}</div>
       <div class="details">${{ earnedAmountInDollars }}</div>
       <div class="details">
         <span class="uppercase">{{ sunrise.name }}</span> Earned
       </div>
-      <div class="mt-[24px] flex justify-center gap-[12px]">
+      <div class="flex justify-center mt-[24px] gap-[12px]">
         <button
           class="claim-btn"
-          @click="claim"
           :disabled="!(parseFloat(earned) > 0) || !canClaim"
+          @click="claim"
         >
           Claim
         </button>
@@ -121,8 +129,8 @@
       <button
         class="claim-btn"
         text-center
-        @click="withdrawAll"
         :disabled="!canWithdraw || !(parseFloat(depositedBalance) > 0)"
+        @click="withdrawAll"
       >
         Claim and withdraw
       </button>
@@ -203,7 +211,7 @@ function formatDate(hours, minutes, seconds) {
 // }
 
 export default defineComponent({
-  components: { 
+  components: {
     SpolarModal,
   },
   setup() {
@@ -262,6 +270,23 @@ export default defineComponent({
         value ?? !isSpolarWithdrawModalVisible.value;
       depositToken.value = depositProp;
     };
+    const {
+      getEpoch,
+      getRewardsEarned,
+      canWithdraw,
+      canClaimReward,
+      getSpolarStaked,
+      getBalance,
+      getSunriseAPR,
+      getUnstakePeriod,
+      getClaimPeriod,
+    } = useSunrise(sunriseName);
+
+    const { getLastEpochTWAP, getPrintTWAP, getCurrentTWAP, getNextEpochTime } =
+      useTreasury(sunriseName);
+
+    const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
+
     return {
       // data
       ...toRefs(data),
@@ -282,11 +307,28 @@ export default defineComponent({
       sunriseName,
       txHandler,
       txListener,
+
+      getEpoch,
+      getRewardsEarned,
+      canWithdraw,
+      canClaimReward,
+      getSpolarStaked,
+      getBalance,
+      getSunriseAPR,
+      getUnstakePeriod,
+      getClaimPeriod,
+
+      getLastEpochTWAP,
+      getPrintTWAP,
+      getCurrentTWAP,
+      getNextEpochTime,
+
+      getSpolarPrice,
+      getTokenPriceInUSD,
     };
   },
   data() {
     return {
-      approved: false,
       depositAmount: '0',
       withdrawAmount: '0',
       epoch: '-',
@@ -309,6 +351,32 @@ export default defineComponent({
       depositedBalance: '-',
       balance: '-',
     };
+  },
+  watch: {
+    async account(newAccount, oldAccount) {
+      await this.render();
+    },
+    async nextEpoch(newEpoch, oldEpoch) {
+      if (newEpoch === '00:00:00') {
+        await this.render();
+      }
+    },
+  },
+  async created() {
+    setInterval(
+      async () => (this.claimTime = await this.setDate(this.claimTimeDate)),
+      1000
+    );
+    setInterval(
+      async () =>
+        (this.withdrawTime = await this.setDate(this.withdrawTimeDate)),
+      1000
+    );
+    setInterval(
+      async () => (this.nextEpoch = await this.setDate(this.nextEpochDate)),
+      1000
+    );
+    await this.render();
   },
   methods: {
     async claim() {
@@ -364,29 +432,7 @@ export default defineComponent({
       }
     },
     async render() {
-      const {
-        isApproved,
-        getEpoch,
-        getRewardsEarned,
-        canWithdraw,
-        canClaimReward,
-        getSpolarStaked,
-        getBalance,
-        getSunriseAPR,
-        getUnstakePeriod,
-        getClaimPeriod,
-      } = useSunrise(this.sunriseName);
-
-      const {
-        getLastEpochTWAP,
-        getPrintTWAP,
-        getCurrentTWAP,
-        getNextEpochTime,
-      } = useTreasury(this.sunriseName);
-
       const { getSpolarBalance } = useTokens();
-
-      const { getSpolarPrice, getTokenPriceInUSD } = useTokens();
 
       // this.nextEpochDate = await getNextEpochTime();
       // this.epoch = await getEpoch();
@@ -405,13 +451,13 @@ export default defineComponent({
           this.twap,
           this.APR,
         ] = await Promise.all([
-          getNextEpochTime(),
-          getEpoch(),
-          getSpolarStaked(),
-          getLastEpochTWAP(),
-          getPrintTWAP(),
-          getCurrentTWAP(),
-          getSunriseAPR(),
+          this.getNextEpochTime(),
+          this.getEpoch(),
+          this.getSpolarStaked(),
+          this.getLastEpochTWAP(),
+          this.getPrintTWAP(),
+          this.getCurrentTWAP(),
+          this.getSunriseAPR(),
         ]);
       } else {
         let spolarPrice: number;
@@ -424,7 +470,6 @@ export default defineComponent({
           this.printTwap,
           this.twap,
           this.APR,
-          this.approved,
           this.earned,
           this.canWithdraw,
           this.canClaim,
@@ -434,22 +479,21 @@ export default defineComponent({
           this.claimTimeDate,
           this.withdrawTimeDate,
         ] = await Promise.all([
-          getNextEpochTime(),
-          getEpoch(),
-          getSpolarStaked(),
-          getLastEpochTWAP(),
-          getPrintTWAP(),
-          getCurrentTWAP(),
-          getSunriseAPR(),
-          isApproved(this.account),
-          getRewardsEarned(this.account),
-          canWithdraw(this.account),
-          canClaimReward(this.account),
-          getBalance(this.account),
-          getSpolarPrice(),
-          getTokenPriceInUSD(this.sunriseName),
-          getClaimPeriod(this.account),
-          getUnstakePeriod(this.account),
+          this.getNextEpochTime(),
+          this.getEpoch(),
+          this.getSpolarStaked(),
+          this.getLastEpochTWAP(),
+          this.getPrintTWAP(),
+          this.getCurrentTWAP(),
+          this.getSunriseAPR(),
+          this.getRewardsEarned(this.account),
+          this.canWithdraw(this.account),
+          this.canClaimReward(this.account),
+          this.getBalance(this.account),
+          this.getSpolarPrice(),
+          this.getTokenPriceInUSD(this.sunriseName),
+          this.getClaimPeriod(this.account),
+          this.getUnstakePeriod(this.account),
         ]);
         this.depositedInDollars = (
           parseFloat(this.depositedBalance) * spolarPrice
@@ -466,32 +510,6 @@ export default defineComponent({
 
       // await setDate(getClaimPeriod, this, 'claimTime');
       // await setDate(getNextEpochTime, this, 'nextEpoch');
-    },
-  },
-  async created() {
-    setInterval(
-      async () => (this.claimTime = await this.setDate(this.claimTimeDate)),
-      1000
-    );
-    setInterval(
-      async () =>
-        (this.withdrawTime = await this.setDate(this.withdrawTimeDate)),
-      1000
-    );
-    setInterval(
-      async () => (this.nextEpoch = await this.setDate(this.nextEpochDate)),
-      1000
-    );
-    await this.render();
-  },
-  watch: {
-    async account(newAccount, oldAccount) {
-      await this.render();
-    },
-    async nextEpoch(newEpoch, oldEpoch) {
-      if (newEpoch === '00:00:00') {
-        await this.render();
-      }
     },
   },
 });
@@ -649,7 +667,6 @@ export default defineComponent({
   font-weight: 500;
   font-size: 18px;
   line-height: 23px;
-
 }
 
 .claim-btn {
@@ -742,6 +759,5 @@ textarea {
   font-weight: 600;
   font-size: 16px;
   line-height: 15px;
-
 }
 </style>

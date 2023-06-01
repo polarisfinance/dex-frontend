@@ -2,35 +2,47 @@
   <BalModal :show="isVisible" noPad @close="$emit('close')">
     <div class="p-[12px]">
       <div class="header px-[12px]">
-        <div v-if="depositBol" class="title text-white">Deposit SPOLAR</div>
-        <div v-else class="title text-white">Withdraw SPOLAR</div>
-        <button class="flex text-polaris-2 hover:text-polaris-white pt-[4px]" @click="$emit('close')">
+        <div v-if="depositBol" class="text-white title">Deposit SPOLAR</div>
+        <div v-else class="text-white title">Withdraw SPOLAR</div>
+        <button
+          class="flex text-polaris-2 hover:text-polaris-white pt-[4px]"
+          @click="$emit('close')"
+        >
           <BalIcon class="flex" name="x" />
         </button>
       </div>
       <div class="grid justify-items-start pt-[24px]">
         <span
-          class="pl-[12px] text-[14px] font-medium leading-[18px] text-pink-third"
+          class="font-medium pl-[12px] text-[14px] leading-[18px] text-pink-third"
           >Available: {{ balance }}</span
         >
         <div
-          class="input-container mt-[8px] flex w-full justify-between rounded-[16px] bg-[#2E2433] p-[12px]"
+          class="flex justify-between w-full input-container mt-[8px] rounded-[16px] bg-[#2E2433] p-[12px]"
         >
           <button
-            class="button-style my-[1.5px] rounded-[10px] px-[12px] py-[4px] font-semibold leading-[20px] text-white"
+            class="font-semibold text-white button-style my-[1.5px] rounded-[10px] px-[12px] py-[4px] leading-[20px]"
             @click="maxBalance"
           >
             MAX
           </button>
+
           <input
             ref="textInput"
-            placeholder="0.0"
-            class="bg-transparent text-right text-[24px] font-medium leading-[31px]"
             v-model="inputValue"
+            placeholder="0.0"
+            class="font-medium text-right bg-transparent text-[24px] leading-[31px]"
           />
         </div>
         <button
-          class="button-style mt-[12px] h-[44px] w-full rounded-[16px] text-white"
+          v-if="!isApproved && depositBol"
+          class="w-full text-white button-style mt-[12px] h-[44px] rounded-[16px]"
+          @click="approve()"
+        >
+          Approve
+        </button>
+        <button
+          v-else
+          class="w-full text-white button-style mt-[12px] h-[44px] rounded-[16px]"
           @click="depositBol ? deposit(inputValue) : withdraw(inputValue)"
         >
           Confirm
@@ -50,6 +62,7 @@ import { parseFixed } from '@ethersproject/bignumber';
 import useTransactions from '@/composables/useTransactions';
 import { TransactionResponse } from '@ethersproject/providers';
 import useEthers from '../../composables/useEthers';
+import { TransactionAction } from '@/composables/useTransactions';
 
 /**
  * STATE
@@ -62,77 +75,112 @@ onMounted(() => {
   textInput.value?.focus();
 });
 export default defineComponent({
-  components: {
-  },
+  components: {},
   props: {
     isVisible: Boolean,
     depositBol: Boolean,
     balance: { type: String, default: '0' },
   },
+
+  emits: ['close', 'update'],
   setup(props, { emit }) {
     const { getProvider } = useWeb3();
 
     const route = useRoute();
     const { addTransaction } = useTransactions();
     const { txListener } = useEthers();
+    const tokenName = route.params.id.toString();
+    const { submitDeposit, submitWithdraw, getApproval, submitApprove } =
+      useSunrise(tokenName);
 
-    const txHandler = (tx: TransactionResponse): void => {
+    const txHandler = (
+      tx: TransactionResponse,
+      action: TransactionAction,
+      summary: string
+    ): void => {
       addTransaction({
         id: tx.hash,
         type: 'tx',
-        action: 'stake',
-        summary: 'deposit for sunrise',
+        action: action,
+        summary: summary,
       });
     };
 
-    async function deposit(amount: string) {
-      const formatedAmount = parseFixed(amount, 18);
-      const tokenName = route.params.id.toString();
-      const { deposit } = useSunrise(tokenName);
-      const tx = await deposit(formatedAmount, getProvider());
-      txHandler(tx);
-      txListener(tx, {
-        onTxConfirmed: () => {
-          emit('close');
-          emit('update');
-        },
-        onTxFailed: () => {},
-      });
-    }
-
-    async function withdraw(amount: string) {
-      const formatedAmount = parseFixed(amount, 18);
-      const tokenName = route.params.id.toString();
-      const { withdraw } = useSunrise(tokenName);
-      const tx = await withdraw(formatedAmount, getProvider());
-      txHandler(tx);
-      txListener(tx, {
-        onTxConfirmed: () => {
-          emit('close');
-          emit('update');
-        },
-        onTxFailed: () => {},
-      });
-    }
-
     return {
-      deposit,
-      withdraw,
+      txListener,
+      txHandler,
+      submitDeposit,
+      submitWithdraw,
+      getApproval,
+      submitApprove,
+      getProvider,
     };
   },
 
   data() {
     return {
       inputValue: '0',
+      isApproved: true,
     };
   },
+  watch: {
+    async inputValue() {
+      await this.fetchApproval();
+    },
+  },
   methods: {
+    async fetchApproval() {
+      if (this.inputValue !== '') {
+        const formatedAmount = parseFixed(this.inputValue, 18);
+        this.isApproved = await this.getApproval(formatedAmount);
+      }
+    },
     maxBalance() {
       this.inputValue = this.balance;
     },
+    async approve() {
+      const tx = await this.submitApprove();
+      this.txHandler(tx, 'approve', `Approve SPOLAR`);
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.fetchApproval();
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async deposit(amount: string) {
+      const formatedAmount = parseFixed(amount, 18);
+      const tx = await this.submitDeposit(formatedAmount);
+      this.txHandler(
+        tx,
+        'stake',
+        `Deposit ${formatedAmount.toString()} SPOLAR`
+      );
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.$emit('close');
+          this.$emit('update');
+        },
+        onTxFailed: () => {},
+      });
+    },
+    async withdraw(amount: string) {
+      const formatedAmount = parseFixed(amount, 18);
+      const tx = await this.submitWithdraw(formatedAmount);
+      this.txHandler(
+        tx,
+        'unstake',
+        `Withdraw ${formatedAmount.toString()} SPOLAR`
+      );
+      this.txListener(tx, {
+        onTxConfirmed: () => {
+          this.$emit('close');
+          this.$emit('update');
+        },
+        onTxFailed: () => {},
+      });
+    },
   },
-
-  emits: ['close', 'update'],
 });
 </script>
 <style scoped>

@@ -21,22 +21,22 @@ import useTransactions from '../useTransactions';
 import useWeb3 from '@/services/web3/useWeb3';
 import { computed } from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
+import { TransactionBuilder } from '@/services/web3/transactions/transaction.builder';
 
 export default function useSunrise(sunriseName) {
+  const { account, getSigner } = useWeb3();
   const w3 = rpcProviderService.getJsonProvider(Network.AURORA);
 
   const sunriseAddress = sunriseNameToAddress[sunriseName];
   const spolarContract = new Contract(SPOLAR, spolarABI, w3);
   const sunriseContract = new Contract(sunriseAddress, sunriseABI, w3);
-  // const spolarContractSigned = new Contract(SPOLAR, spolarABI, provider);
-  // const sunriseContractSigned = new Contract(sunriseAddress, sunriseABI, provider);
 
-  const isApproved = async (account: string) => {
-    const _owner = account;
+  const getApproval = async (amount: BigNumber) => {
+    const _owner = account.value;
     const _spender = sunriseAddress;
     const approval = await spolarContract.allowance(_owner, _spender);
 
-    return approval != 0 ? true : false;
+    return approval.gte(amount) ? true : false;
   };
 
   const getEpoch = async () => {
@@ -62,73 +62,70 @@ export default function useSunrise(sunriseName) {
     return BigNumberToString(spolarsStaked, 14, 4);
   };
 
-  const getSpolarStakedBigNumber = async () => {
-    return await spolarContract.balanceOf(sunriseAddress);
-  };
+  // const getSpolarStakedBigNumber = async () => {
+  //   return await spolarContract.balanceOf(sunriseAddress);
+  // };
 
   const getBalance = async (account: string) => {
     const balance = await sunriseContract.balanceOf(account);
     return BigNumberToString(balance, 14, 4);
   };
 
-  const deposit = async (amount: BigNumber, provider: Web3Provider) => {
+  const submitDeposit = async (amount: BigNumber) => {
     try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   sunriseAddress,
-      //   sunriseABI,
-      //   'stake',
-      //   [amount]
-      // );
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: sunriseAddress,
+        abi: sunriseABI,
+        action: 'stake',
+        params: [amount],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   };
 
-  const approve = async (provider: Web3Provider) => {
+  const submitApprove = async () => {
     const amount = MaxUint256.toString();
     try {
-      // const tx = await sendTransaction(provider, SPOLAR, spolarABI, 'approve', [
-      //   sunriseAddress,
-      //   amount,
-      // ]);
-
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: SPOLAR,
+        abi: spolarABI,
+        action: 'approve',
+        params: [sunriseAddress, amount],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   };
 
-  const withdraw = async (amount: BigNumber, provider: Web3Provider) => {
+  const submitWithdraw = async (amount: BigNumber) => {
     try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   sunriseAddress,
-      //   sunriseABI,
-      //   'withdraw',
-      //   [amount]
-      // );
-
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: sunriseAddress,
+        abi: sunriseABI,
+        action: 'withdraw',
+        params: [amount],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
     }
   };
 
-  const claim = async (provider: Web3Provider) => {
+  const submitClaim = async () => {
     try {
-      // const tx = await sendTransaction(
-      //   provider,
-      //   sunriseAddress,
-      //   sunriseABI,
-      //   'claimReward',
-      //   []
-      // );
-      return undefined;
+      const txBuilder = new TransactionBuilder(getSigner());
+      return await txBuilder.contract.sendTransaction({
+        contractAddress: sunriseAddress,
+        abi: sunriseABI,
+        action: 'claimReward',
+        params: [],
+      });
     } catch (error) {
       console.error(error);
       return Promise.reject(error);
@@ -191,7 +188,7 @@ export default function useSunrise(sunriseName) {
     //   .add(delta * PeriodInHours, 'hours')
     //   .toDate();
 
-    return new Date();;
+    return new Date();
   };
 
   const getClaimPeriod = async (account: string) => {
@@ -221,17 +218,17 @@ export default function useSunrise(sunriseName) {
   };
 
   return {
-    isApproved,
+    getApproval,
     getEpoch,
     getRewardsEarned,
     canWithdraw,
     canClaimReward,
     getSpolarStaked,
     getBalance,
-    deposit,
-    approve,
-    claim,
-    withdraw,
+    submitDeposit,
+    submitApprove,
+    submitClaim,
+    submitWithdraw,
     getSunriseAPR,
     getUnstakePeriod,
     getClaimPeriod,
