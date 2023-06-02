@@ -101,7 +101,10 @@ onMounted(() => {});
           <div class="items-center self-center w-full mt-[40px]">
             <div class="flex justify-between steps">
               <template v-for="step in steps">
-                <button class="self-start" @click="clickActiveStep(step.step)">
+                <button
+                  class="self-start font-medium"
+                  @click="clickActiveStep(step.step)"
+                >
                   <TickIcon
                     v-if="step.step < activeStep || activeStep == steps.length"
                     class=""
