@@ -16,6 +16,7 @@ import { configService } from '../config/config.service';
 import { rpcProviderService } from '../rpc-provider/rpc-provider.service';
 import { switchToAppNetwork } from './utils/helpers';
 import { walletService } from './wallet.service';
+import { FETCH_ONCE_OPTIONS } from '@/constants/vue-query';
 
 /** STATE */
 const blockNumber = ref(0);
@@ -137,6 +138,7 @@ export default function useWeb3() {
     () => walletService.getProfile(account.value),
     reactive({
       enabled: canLoadProfile,
+      ...FETCH_ONCE_OPTIONS,
     })
   );
 
