@@ -17,12 +17,12 @@ const isModalOpen = ref<boolean>(false);
     <div
       class="flex flex-col lg:flex-row gap-2 lg:gap-4 justify-between items-baseline lg:items-start pb-1 lg:pb-0"
     >
-      <div class="mr-auto max-w-3xl">
+      <div class="mr-auto max-w-3xl dark:text-polaris-white">
         {{ t('veBAL.liquidityMining.resubmit.resubmitWarning') }}
       </div>
 
       <BalBtn
-        color="gradient"
+        color="primary"
         class="flex-shrink-0"
         size="sm"
         @click="isModalOpen = true"

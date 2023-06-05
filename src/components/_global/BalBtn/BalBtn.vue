@@ -136,7 +136,7 @@ const bgFlatClasses = computed(() => {
 
 const bgColorClasses = computed(() => {
   if (props.color.includes('gradient')) return bgGradientClasses.value;
-  else if (props.noBackground) return 'ng-none';
+  else if (props.noBackground) return 'bg-none';
   else if (props.outline) return 'bg-transparent';
   else if (props.flat) return bgFlatClasses.value;
   else if (props.color === 'transparent') return 'bg-transparent';
