@@ -79,22 +79,12 @@ function toggleText(this) {
   var button = moreButton;
 
   if (dots.value.classList.contains('hidden')) {
-    // Show the dots
     dots.value.classList.remove('hidden');
-
-    // Hide the more text
     more.value.classList.add('hidden');
-
-    // change text of the button
     moreButton.value.innerHTML = 'Read more';
   } else {
-    // Hide the dots
     dots.value.classList.add('hidden');
-
-    // hide the more text
     more.value.classList.remove('hidden');
-
-    // change text of the button
     moreButton.value.innerHTML = 'Read less';
   }
 }
@@ -137,8 +127,7 @@ function toggleText(this) {
     </BalLink>
     <template v-if="tokenInfo != undefined">
       <div class="mt-2 font-medium">
-        {{ tokenInfo?.Info.substring(0, 80) }}
-        <span ref="dots">...</span>
+        <span ref="dots">{{ tokenInfo?.Info.substring(0, 80) }} ...</span>
         <span ref="more" class="hidden">{{ tokenInfo?.Info }} </span>
       </div>
       <div class="flex">
