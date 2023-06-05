@@ -270,7 +270,7 @@ watch(
             </div>
           </div>
           <div class="flex flex-col">
-            <div class="flex items-center">
+            <div class="flex items-center min-w-[310px]">
               <p
                 :class="{ 'text-orange-500 font-medium': votingPeriodLastHour }"
                 class="inline mr-1 text-sm font-medium dark:text-polaris-2 text-secondary"
@@ -308,7 +308,7 @@ watch(
     </div>
     <ResubmitVotesAlert
       v-if="shouldResubmitVotes"
-      class="mx-4 xl:mx-0 mb-7"
+      class="mx-4 xl:mx-0 mt-7 mb-3"
     ></ResubmitVotesAlert>
 
     <GaugesTable
