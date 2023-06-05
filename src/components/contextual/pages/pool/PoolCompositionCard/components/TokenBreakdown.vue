@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Pool, PoolToken } from '@/services/pool/types';
 import useWeb3 from '@/services/web3/useWeb3';
-import { computed, toRefs } from 'vue';
+import { computed, toRefs, ref, onMounted, onBeforeMount } from 'vue';
 import { TokensData } from './composables/useTokenBreakdown';
 
 import { isWeightedLike, usePoolHelpers } from '@/composables/usePoolHelpers';
 import { useTokens } from '@/providers/tokens.provider';
-
+import { tokenInfo as tokenInfoFunc } from '@/lib/config/aurora/tokensInfo';
 /**
  * TYPES
  */
@@ -35,13 +35,13 @@ const { explorerLinks } = useWeb3();
 const { isDeepPool } = usePoolHelpers(rootPool);
 const isWeighted = isWeightedLike(rootPool.value.poolType);
 const { getToken } = useTokens();
-
+// const tokenInfo: typeof TokenInfo = getTokenInfo(token.value.address);
 /**
  * COMPUTED
  */
 // The nested level, the top level being 0, the level below that 1, etc.
 const currentLevel = computed(() => props.parentLevel + 1);
-
+const tokenInfo = tokenInfoFunc(token.value.address);
 const nestedPaddingClass = computed(() => {
   return;
   switch (currentLevel.value) {
@@ -61,8 +61,42 @@ const nestedPaddingClass = computed(() => {
 /**
  * METHODS
  */
+const dots = ref(null);
+const more = ref(null);
+const moreButton = ref(null);
+onMounted(() => {});
 function symbolFor(token: PoolToken): string {
   return getToken(token.address)?.symbol || token.symbol || '---';
+}
+function getSocialIcon(link: string): string | undefined {
+  if (link.includes('twitter.com')) return 'twitter';
+  if (link.includes('facebook.com')) return 'facebook';
+  if (link.includes('coingecko.com')) return 'trending-up';
+  if (link.includes('discord.com')) return 'message-circle';
+  return 'link-2';
+}
+function toggleText(this) {
+  var button = moreButton;
+
+  if (dots.value.classList.contains('hidden')) {
+    // Show the dots
+    dots.value.classList.remove('hidden');
+
+    // Hide the more text
+    more.value.classList.add('hidden');
+
+    // change text of the button
+    moreButton.value.innerHTML = 'Read more';
+  } else {
+    // Hide the dots
+    dots.value.classList.add('hidden');
+
+    // hide the more text
+    more.value.classList.remove('hidden');
+
+    // change text of the button
+    moreButton.value.innerHTML = 'Read less';
+  }
 }
 </script>
 
@@ -73,7 +107,6 @@ function symbolFor(token: PoolToken): string {
     >
       Pool Composition
     </div>
-
     <BalLink
       :href="explorerLinks.addressLink(token.address)"
       external
@@ -102,6 +135,32 @@ function symbolFor(token: PoolToken): string {
         class="ml-1 text-gray-500 group-hover:text-purple-500 dark:text-polaris-white dark:group-hover:text-yellow-500 transition-colors"
       />
     </BalLink>
+    <template v-if="tokenInfo != undefined">
+      <div class="mt-2 font-medium">
+        {{ tokenInfo?.Info.substring(0, 80) }}
+        <span ref="dots">...</span>
+        <span ref="more" class="hidden">{{ tokenInfo?.Info }} </span>
+      </div>
+      <div class="flex">
+        <div class="flex-1 pt-4">
+          <template
+            v-for="(link, index) in tokenInfo?.Links"
+            v-if="tokenInfo != undefined"
+          >
+            <BalLink external :href="link" tag="a" class="mr-2">
+              <BalIcon :name="getSocialIcon(link)" size="sm" />
+            </BalLink>
+          </template>
+        </div>
+        <button
+          ref="moreButton"
+          class="mt-3 ml-3 font-semibold dark:text-polaris-white duration-300"
+          @click="toggleText"
+        >
+          Read more
+        </button>
+      </div>
+    </template>
     <div
       class="flex p-2 font-semibold dark:text-polaris-white composition-data"
     >
