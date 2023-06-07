@@ -15,7 +15,7 @@ type Props = {
 /**
  * PROPS & EMITS
  */
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   loading: false,
   receipt: undefined,
@@ -33,7 +33,7 @@ const emit = defineEmits<{
       <ConfirmationIndicator :txReceipt="receipt" class="mb-2" />
       <BalBtn
         v-if="receipt"
-        color="gray"
+        color="primary"
         outline
         v-bind="$attrs"
         block
@@ -44,8 +44,8 @@ const emit = defineEmits<{
     </template>
     <BalBtn
       v-else
-      color="white"
-      class="text-lg font-semibold polaris-main-button"
+      color="primary"
+      class="text-lg font-semibold"
       block
       :disabled="disabled"
       :loading="loading"

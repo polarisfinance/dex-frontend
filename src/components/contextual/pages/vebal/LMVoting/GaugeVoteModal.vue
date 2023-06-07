@@ -358,7 +358,9 @@ onMounted(() => {
     </template>
     <div>
       <div v-if="!voteWarning" class="mb-4 text-sm">
-        <ul class="ml-4 list-disc text-gray-600 dark:text-gray-400">
+        <ul
+          class="ml-4 font-medium list-disc text-gray-600 dark:text-polaris-2"
+        >
           <li class="mb-1">
             {{ t('veBAL.liquidityMining.popover.emissionsInfo') }}
           </li>
@@ -389,58 +391,59 @@ onMounted(() => {
         block
         class="mt-2 mb-4"
       />
-
-      <div
-        class="flex justify-between items-center p-2 mb-4 rounded-lg border dark:border-gray-800"
-      >
-        <div class="flex gap-4 items-center h-full">
-          <BalAssetSet :logoURIs="logoURIs" :width="100" :size="32" />
-          <div>
-            <p class="font-medium text-black dark:text-white">
-              {{ gauge.pool.symbol }}
-            </p>
-          </div>
-        </div>
-        <BalLink
-          :href="poolURL"
-          external
-          noStyle
-          class="group flex items-center"
-        >
-          <BalIcon
-            name="arrow-up-right"
-            class="text-gray-500 group-hover:text-pink-500 transition-colors"
-          />
-        </BalLink>
-      </div>
       <BalForm class="vote-form">
-        <BalTextInput
-          v-model="voteWeight"
-          name="voteWeight"
-          type="number"
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"
-          step="any"
-          placeholder="0"
-          validateOn="input"
-          :rules="inputRules"
-          :disabled="
-            voteInputDisabled ||
-            transactionInProgress ||
-            voteState.state.value === State.CONFIRMED
-          "
-          size="md"
-          autoFocus
+        <div
+          class="flex justify-between items-center p-2 mb-4 rounded-lg border dark:border-gray-800"
         >
-          <template #append>
-            <div
-              class="flex flex-row justify-center items-center px-2 h-full rounded-r-lg border-gray-100 dark:border-gray-800"
-            >
-              <span class="text-xl text-black dark:text-white">%</span>
+          <div class="flex flex-none gap-2 items-center mr-3 h-full">
+            <BalAssetSet :logoURIs="logoURIs" :width="55" :size="32" />
+            <div>
+              <p class="text-lg font-medium text-black dark:text-white">
+                {{ gauge.pool.symbol }}
+              </p>
             </div>
-          </template>
-        </BalTextInput>
+            <BalLink
+              :href="poolURL"
+              external
+              noStyle
+              class="group flex items-center"
+            >
+              <BalIcon
+                name="arrow-up-right"
+                class="text-gray-500 group-hover:text-pink-500 transition-colors"
+              />
+            </BalLink>
+          </div>
+          <BalTextInput
+            v-model="voteWeight"
+            name="voteWeight"
+            type="number"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            step="any"
+            placeholder="0"
+            validateOn="input"
+            :rules="inputRules"
+            :disabled="
+              voteInputDisabled ||
+              transactionInProgress ||
+              voteState.state.value === State.CONFIRMED
+            "
+            inputAlignRight
+            size="md"
+            autoFocus
+          >
+            <template #append>
+              <div
+                class="flex flex-row justify-center items-center px-2 h-full rounded-r-lg border-gray-100 dark:border-gray-800"
+              >
+                <span class="text-xl text-black dark:text-white">%</span>
+              </div>
+            </template>
+          </BalTextInput>
+        </div>
+
         <div v-if="voteError" class="mt-2 text-sm text-secondary">
           {{
             t('veBAL.liquidityMining.popover.warnings.noVeBal.inputHintText')
