@@ -163,6 +163,7 @@ watch(
     }).finally(() => {
       state.loading = false;
     });
+    console.log(excludedTokens.value);
   },
   { immediate: true }
 );
