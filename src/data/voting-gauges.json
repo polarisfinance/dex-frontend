@@ -978,5 +978,92 @@
       "0x1fE622E91e54D6AD00B01917351Ea6081426764A": "https://cryptologos.cc/logos/fantom-ftm-logo.svg?v=025",
       "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
     }
+  },
+  {
+    "address": "0xe21eCb3CcEdF2BC14bd3122158842B7680687533",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1686096768,
+    "pool": {
+      "id": "0x614c884caa52a231d74a3553fdddb0b7be53032300020000000000000000003d",
+      "address": "0x614c884CaA52a231D74a3553fDdDB0b7BE530323",
+      "poolType": "Weighted",
+      "symbol": "20USDT.e-80SPOLAR",
+      "tokens": [
+        {
+          "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
+          "weight": "0.2",
+          "symbol": "USDT.e"
+        },
+        {
+          "address": "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729",
+          "weight": "0.8",
+          "symbol": "SPOLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x4988a896b1227218e4A686fdE5EabdcAbd91571f": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847"
+    }
+  },
+  {
+    "address": "0x53F99e2B4cB9E56cdbb44E03179b8B391f17B005",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1686096785,
+    "pool": {
+      "id": "0xc38d30794c44c39fe6077dc80704d2a501f2a75800020000000000000000003b",
+      "address": "0xc38d30794C44c39FE6077dC80704d2a501f2a758",
+      "poolType": "Weighted",
+      "symbol": "20USDT.e-80pNEAR",
+      "tokens": [
+        {
+          "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
+          "weight": "0.2",
+          "symbol": "USDT.e"
+        },
+        {
+          "address": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+          "weight": "0.8",
+          "symbol": "pNEAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x4988a896b1227218e4A686fdE5EabdcAbd91571f": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046"
+    }
+  },
+  {
+    "address": "0x152EF7eF0598006fc5A13dcbA49418D2F83AD66c",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1686096750,
+    "pool": {
+      "id": "0xdab85176672835e1efc37729540ebc24e18a742500020000000000000000003c",
+      "address": "0xDAB85176672835e1EfC37729540EbC24e18a7425",
+      "poolType": "Weighted",
+      "symbol": "80SPOLAR-20WETH",
+      "tokens": [
+        {
+          "address": "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729",
+          "weight": "0.8",
+          "symbol": "SPOLAR"
+        },
+        {
+          "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
+          "weight": "0.2",
+          "symbol": "WETH"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847",
+      "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
+    }
   }
 ]
