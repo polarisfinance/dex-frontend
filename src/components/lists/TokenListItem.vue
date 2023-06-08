@@ -6,8 +6,7 @@
   leading-2 opacity-0 highlight 
    transition-colors ease-in duration-300`,
       {
-        '':
-          focussed,
+        '': focussed,
       },
     ]"
   >
@@ -17,13 +16,25 @@
       :size="34"
       class="mr-3"
     />
-    <div
-      :class="['flex-auto', { '': focussed }]"
-    >
-      <div class="w-40 md:w-60 text-xsm truncate dark:text-polaris-3 font-medium">
+    <div :class="['flex-auto', { '': focussed }]">
+      <div
+        class="w-40 md:w-60 text-xsm font-medium dark:text-polaris-3 truncate"
+      >
         {{ token.name }}
-      </div>  
-      <div class="text-lg dark:text-polaris-white font-semibold">{{ token.symbol }}</div>
+        <span
+          v-if="token.address == '0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4'"
+        >
+          - CBridge</span
+        >
+        <span
+          v-if="token.address == '0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844'"
+        >
+          - Multichain</span
+        >
+      </div>
+      <div class="text-lg font-semibold dark:text-polaris-white">
+        {{ token.symbol }}
+      </div>
     </div>
     <span
       v-if="!hideBalance"
@@ -33,9 +44,15 @@
       <template v-else>
         <template v-if="balance > -1">
           <template v-if="balance >= 0.0001">
-            <div class="text-lg dark:text-polaris-white font-semibold">{{ fNum(balance, FNumFormats.token) }}</div>
+            <div class="text-lg font-semibold dark:text-polaris-white">
+              {{ fNum(balance, FNumFormats.token) }}
+            </div>
           </template>
-          <template v-else><div class="text-lg dark:text-polaris-white font-semibold"> &#60; 0.0001 </div></template>
+          <template v-else
+            ><div class="text-lg font-semibold dark:text-polaris-white">
+              &#60; 0.0001
+            </div></template
+          >
         </template>
         <!-- <div v-if="value > 0" class="text-sm font-normal text-secondary">
           {{ fNum(value, FNumFormats.fiat) }}
