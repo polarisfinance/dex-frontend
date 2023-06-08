@@ -152,6 +152,15 @@ export default defineComponent({
           {{ poolMetadata(pool.id)?.name }}
         </div>
         <div v-else>
+          <div
+            v-if="
+              pool.id ==
+              '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020'
+            "
+            class="flex-1 mb-1 text-xs text-left text-orange-500 mt-[-12px]"
+          >
+            Deprecated!
+          </div>
           <TokenPills
             class="mb-4 text-xl"
             :tokens="orderedPoolTokens(pool, pool.tokens)"
@@ -161,6 +170,7 @@ export default defineComponent({
             :showWeight="false"
           />
         </div>
+
         <TokenWeightsPills
           class="w-fit"
           :tokens="orderedPoolTokens(pool, pool.tokens)"

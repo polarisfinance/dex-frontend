@@ -371,6 +371,15 @@ function iconAddresses(pool: Pool) {
         >
           Bridge FTM via cBridge
         </BalLink>
+        <div
+          v-if="
+            pool.id ==
+            '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020'
+          "
+          class="block flex-1 pl-6 text-xs text-left text-orange-500 mt-[-12px]"
+        >
+          Deprecated!
+        </div>
       </template>
       <template #volumeCell="pool">
         <div

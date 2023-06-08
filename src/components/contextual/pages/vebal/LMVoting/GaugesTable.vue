@@ -270,6 +270,15 @@ function getPickedTokens(tokens: PoolToken[]) {
           />
           <BalChipNew v-if="getIsGaugeNew(addedTimestamp)" class="ml-2" />
           <BalChipExpired v-if="getIsGaugeExpired(address)" class="ml-2" />
+          <div
+            v-if="
+              pool.id ==
+              '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020'
+            "
+            class="block flex-1 pl-3 text-xs text-left text-orange-500 mt-[-5px]"
+          >
+            Deprecated!
+          </div>
         </div>
       </template>
       <template #nextPeriodVotesCell="gauge">
@@ -312,7 +321,13 @@ function getPickedTokens(tokens: PoolToken[]) {
         </div>
       </template>
       <template #voteColumnCell="gauge">
-        <div v-if="isWalletReady" class="px-4">
+        <div
+          v-if="
+            isWalletReady &&
+            gauge.address != '0x83cbA0e95AA3819794ffe83F7E990125E01c5e97'
+          "
+          class="px-4"
+        >
           <GaugesTableVoteBtn
             :hasUserVotes="getHasUserVotes(gauge.userVotes)"
             :isGaugeExpired="getIsGaugeExpired(gauge.address)"

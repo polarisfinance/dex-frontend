@@ -157,8 +157,7 @@ watch(
     state.loading = true;
     state.results = await searchTokens(newQuery, {
       excluded: excludedTokens.value,
-      // disableInjection: props.disableInjection,
-      disableInjection: true,
+      disableInjection: props.disableInjection,
       subset: props.subset,
     }).finally(() => {
       state.loading = false;
