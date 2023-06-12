@@ -100,7 +100,7 @@ const MAX_PILLS = 8;
       <div class="title">{{ getTitle(tokens) }}</div>
       <div v-for="(token, idx) in visibleTokens">
         <template v-if="idx != 0">:</template
-        >{{ Number(weightFor(token)) * 100 }}
+        >{{ Math.round(Number(weightFor(token)) * 100) }}
       </div>
       <HiddenTokensPills
         v-if="hiddenTokens.length > 0"
