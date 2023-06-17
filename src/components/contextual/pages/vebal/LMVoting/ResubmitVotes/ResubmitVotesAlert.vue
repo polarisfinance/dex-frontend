@@ -20,14 +20,16 @@ const isModalOpen = ref<boolean>(false);
       <div class="mr-auto max-w-3xl dark:text-polaris-white">
         {{ t('veBAL.liquidityMining.resubmit.resubmitWarning') }}
       </div>
-
-      <BalBtn
-        color="primary"
-        class="flex-shrink-0"
-        size="sm"
-        @click="isModalOpen = true"
-        >{{ t('veBAL.liquidityMining.resubmit.btn') }}</BalBtn
-      >
+      <div class="w-[150px]">
+        <BalBtn
+          color="primary"
+          class="flex-shrink-0"
+          size="sm"
+          block
+          @click="isModalOpen = true"
+          >{{ t('veBAL.liquidityMining.resubmit.btn') }}</BalBtn
+        >
+      </div>
     </div>
   </BalAlert>
   <teleport to="#modal">

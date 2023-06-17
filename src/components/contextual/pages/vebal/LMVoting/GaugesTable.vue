@@ -321,13 +321,7 @@ function getPickedTokens(tokens: PoolToken[]) {
         </div>
       </template>
       <template #voteColumnCell="gauge">
-        <div
-          v-if="
-            isWalletReady &&
-            gauge.address != '0x83cbA0e95AA3819794ffe83F7E990125E01c5e97'
-          "
-          class="px-4"
-        >
+        <div v-if="isWalletReady" class="px-4">
           <GaugesTableVoteBtn
             :hasUserVotes="getHasUserVotes(gauge.userVotes)"
             :isGaugeExpired="getIsGaugeExpired(gauge.address)"
