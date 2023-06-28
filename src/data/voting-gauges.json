@@ -1065,5 +1065,34 @@
       "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847",
       "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
     }
+  },
+  {
+    "address": "0x80040Ceffd7CFf04E052d36c3Ee4EC8316322B9F",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1687987129,
+    "pool": {
+      "id": "0xe02e913a4f2e5b87b8b953ee3a26f9b4919a0306000200000000000000000040",
+      "address": "0xe02e913a4f2e5b87b8b953eE3A26f9B4919A0306",
+      "poolType": "Weighted",
+      "symbol": "50AVAX-50USDC",
+      "tokens": [
+        {
+          "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
+          "weight": "0.5",
+          "symbol": "USDC.e"
+        },
+        {
+          "address": "0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4",
+          "weight": "0.5",
+          "symbol": "AVAX"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4": "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=025"
+    }
   }
 ]
