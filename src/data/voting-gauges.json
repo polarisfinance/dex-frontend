@@ -1094,5 +1094,34 @@
       "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
       "0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4": "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=025"
     }
+  },
+  {
+    "address": "0xDF10918c53D0cfb684A7a9d34b5369C4b945C73e",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1688595850,
+    "pool": {
+      "id": "0x381d8ba80b9bb2b7ae09b895bcb4b0ec8d54703f000200000000000000000042",
+      "address": "0x381D8Ba80B9BB2B7aE09B895BCb4B0EC8d54703F",
+      "poolType": "Weighted",
+      "symbol": "1pNEAR-99SPOLAR",
+      "tokens": [
+        {
+          "address": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+          "weight": "0.01",
+          "symbol": "pNEAR"
+        },
+        {
+          "address": "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729",
+          "weight": "0.99",
+          "symbol": "SPOLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
+      "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847"
+    }
   }
 ]
