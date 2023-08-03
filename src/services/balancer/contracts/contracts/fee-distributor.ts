@@ -15,6 +15,7 @@ export class FeeDistributor {
   public claimableTokens: string[] = [
     '0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993', // XPOLAR
     '0xB12BFcA5A55806AaF64E99521918A4bf0fC40802', // USDC
+    '0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6', // pNEAR
   ];
 
   constructor(
