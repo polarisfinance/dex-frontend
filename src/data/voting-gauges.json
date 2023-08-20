@@ -1123,5 +1123,40 @@
       "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
       "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847"
     }
+  },
+  {
+    "address": "0x73BD5A4925D077Dd2ff05356De38a6eAec8c5AA2",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1692560768,
+    "pool": {
+      "id": "0xd2aa7c896eedc8d85a5f46b1c9fc3edbf5a7b91d000100000000000000000043",
+      "address": "0xD2Aa7c896EEDc8d85A5F46B1C9FC3EdBf5a7b91d",
+      "poolType": "Weighted",
+      "symbol": "20FTM-30pNEAR-50SPOLAR",
+      "tokens": [
+        {
+          "address": "0x1fE622E91e54D6AD00B01917351Ea6081426764A",
+          "weight": "0.2",
+          "symbol": "FTM"
+        },
+        {
+          "address": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+          "weight": "0.3",
+          "symbol": "pNEAR"
+        },
+        {
+          "address": "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729",
+          "weight": "0.5",
+          "symbol": "SPOLAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x1fE622E91e54D6AD00B01917351Ea6081426764A": "https://cryptologos.cc/logos/fantom-ftm-logo.svg?v=025",
+      "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
+      "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847"
+    }
   }
 ]
