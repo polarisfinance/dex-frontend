@@ -1,29 +1,29 @@
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { EthereumProvider } from '@walletconnect/ethereum-provider';
 
-import ConfigService from '@/services/config/config.service';
-import config from '@/lib/config';
+import { configService } from '@/services/config/config.service';
 import { WalletError } from '@/types';
-import { Network } from '@balancer-labs/sdk';
 import { Connector, ConnectorId } from '../connector';
-import { Config } from '@/lib/config/types';
+import { Network } from '@balancer-labs/sdk';
+import useDarkMode from '@/composables/useDarkMode';
 
+const { AURORA } = Network;
 export class WalletConnectConnector extends Connector {
   id = ConnectorId.WalletConnect;
   async connect() {
-    const configService = new ConfigService();
-    const rpcUrls: Record<number, string> = {};
-    Object.values(config).forEach((c: Config) => {
-      if (!c.visibleInUI) return;
-      rpcUrls[c.chainId] = configService.getNetworkRpc(c.chainId as Network);
-    });
-    const provider = new WalletConnectProvider({
-      rpc: rpcUrls,
+    const provider = await EthereumProvider.init({
+      projectId: '1637ebb52d304501f23677472349ac09',
+      chains: [AURORA],
+      optionalChains: [],
+      rpcMap: {
+        [AURORA]: configService.getNetworkRpc(AURORA),
+      },
+      showQrModal: true,
+      qrModalOptions: { themeMode: useDarkMode().darkMode ? 'dark' : 'light' },
     });
     this.provider = provider;
 
     try {
       const accounts = await provider.enable();
-
       const chainId = await provider.request({ method: 'eth_chainId' });
       this.handleChainChanged(chainId);
       this.handleAccountsChanged(accounts);
@@ -37,8 +37,7 @@ export class WalletConnectConnector extends Connector {
       }
     }
     return {
-      // TODO type this
-      provider: provider as any,
+      provider,
       account: this.account,
       chainId: this.chainId,
     };
