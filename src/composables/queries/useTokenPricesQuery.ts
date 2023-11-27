@@ -44,13 +44,14 @@ export default function useTokenPricesQuery(
 
   const api = getApi();
   const queryFn = async () => {
-    const { prices } = await api.GetCurrentTokenPrices();
+    // const { prices } = await api.GetCurrentTokenPrices();
 
-    let pricesMap = priceArrayToMap(prices);
-    pricesMap = injectCustomTokens(pricesMap, pricesToInject.value);
-    console.log('Fetching', Object.values(prices).length, 'prices');
+    // let pricesMap = priceArrayToMap(prices);
+    // pricesMap = injectCustomTokens(pricesMap, pricesToInject.value);
+    // console.log('Fetching', Object.values(prices).length, 'prices');
 
-    return pricesMap;
+    // return pricesMap;
+    return pricesToInject.value;
   };
 
   const queryOptions = reactive({
