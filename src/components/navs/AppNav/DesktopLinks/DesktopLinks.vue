@@ -98,14 +98,6 @@ function isActive(page: string): boolean {
           </div>
         </a>
         <a
-          href="https://multichain.xyz/"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><div class="flex justify-between w-full">
-            <div>Multichain</div>
-            <BalIcon name="arrow-up-right" size="sm" /></div
-        ></a>
-        <a
           href="https://allbridge.io/classic/"
           target="_blank"
           rel="noopener noreferrer"
