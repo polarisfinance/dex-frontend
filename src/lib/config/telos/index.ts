@@ -40,12 +40,12 @@ const config: Config = {
   supportsElementPools: true,
   blockTime: 12,
   nativeAsset: {
-    name: 'Ether',
+    name: 'Telos',
     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-    symbol: 'ETH',
+    symbol: 'TLOS',
     decimals: 18,
-    deeplinkId: 'ether',
-    logoURI: 'tokens/eth.png',
+    deeplinkId: 'telos',
+    logoURI: 'tokens/tlos.png',
     minTransactionBuffer: '0.05',
   },
   thirdParty: {
