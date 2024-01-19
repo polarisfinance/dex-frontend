@@ -48,7 +48,7 @@ function connectWalletHandler() {
       <span class="hidden lg:inline-block" v-text="$t('connectWallet')" />
       <span class="lg:hidden" v-text="$t('connect')" />
     </BalBtn>
-    <AppNavNetworkSelect v-if="false" />
+    <AppNavNetworkSelect />
     <BalBtn
       v-if="isMobile"
       color="white"

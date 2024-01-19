@@ -11,16 +11,18 @@ import gnosisChain from './gnosis-chain';
 import test from './test';
 import auroraTest from './auroraTest';
 import aurora from './aurora';
+import telos from './telos';
 
 const config: Record<Network | number, Config> = {
   [Network.MAINNET]: mainnet,
-  [Network.GOERLI]: goerli,
-  [Network.POLYGON]: polygon,
-  [Network.ARBITRUM]: arbitrum,
-  [Network.OPTIMISM]: optimism,
-  [Network.GNOSIS]: gnosisChain,
-  [Network.AURORATEST]: auroraTest,
+  // [Network.GOERLI]: goerli,
+  // [Network.POLYGON]: polygon,
+  // [Network.ARBITRUM]: arbitrum,
+  // [Network.OPTIMISM]: optimism,
+  // [Network.GNOSIS]: gnosisChain,
+  // [Network.AURORATEST]: auroraTest,
   [Network.AURORA]: aurora,
+  [Network.TELOS]: telos,
   // // @ts-ignore
   // 12345: test,
   // // @ts-ignore

@@ -82,6 +82,12 @@ function isActive(page: string): boolean {
     >
       veXPOLAR
     </DesktopLinkItem>
+    <a
+      class="font-semibold dark:text-polaris-white hover:dark:text-polaris-3 mt-[30px]"
+      href="https://bridge.polarisfinance.io/"
+    >
+      Telos Bridge
+    </a>
     <div class="dropdown mt-[30px]">
       <div class="flex w-full dropdown-title gap-[12px]">
         Bridges
