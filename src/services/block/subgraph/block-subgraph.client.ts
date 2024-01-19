@@ -15,7 +15,12 @@ export default class BlockSubgraphClient {
       const payload = this.toPayload(query);
       const {
         data: { data },
-      } = await axios.post(this.url, payload);
+      } = await axios({
+        url: this.url,
+        method: 'post',
+        data: payload,
+        headers: { 'Content-Type': 'application/json' },
+      });
       return data;
     } catch (error) {
       console.error(error);
@@ -23,7 +28,7 @@ export default class BlockSubgraphClient {
   }
 
   public toPayload(query) {
-    return JSON.stringify({ query: jsonToGraphQLQuery({ query }) });
+    return { query: jsonToGraphQLQuery({ query }) };
   }
 }
 

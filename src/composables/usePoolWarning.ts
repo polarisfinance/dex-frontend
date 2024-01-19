@@ -86,6 +86,7 @@ const POOL_ISSUES = {
   [Network.GNOSIS]: {},
   [Network.AURORATEST]: {},
   [Network.AURORA]: {},
+  [Network.TELOS]: {},
 };
 
 const issues = POOL_ISSUES[networkId.value];

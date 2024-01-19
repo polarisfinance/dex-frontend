@@ -148,7 +148,11 @@ watch(blockNumber, async () => {
         {{ link.label }}
       </div>
     </div>
-
+    <div class="grid text-lg grid-col-1">
+      <a class="side-bar-link" href="https://bridge.polarisfinance.io/bridge">
+        Telos Bridge
+      </a>
+    </div>
     <!-- <div class="grid mt-5 text-sm grid-col-1">
       <span class="px-4 pb-1 font-medium text-secondary">Ecosystem</span>
       <BalLink
