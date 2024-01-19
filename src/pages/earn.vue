@@ -17,6 +17,7 @@ import PoolCard from '@/components/cards/PoolCard/PoolCard.vue';
 
 const { prices } = useTokens();
 import { POOLS } from '@/constants/pools';
+import BalModal from '@/components/_global/BalModal/BalModal.vue';
 
 const polarisPoolsIds = [
   '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
@@ -102,10 +103,64 @@ function onColumnSort(columnId: string) {
   //This causes page to freeze. When there is no pagination, this is useless
   // poolsSortField.value = columnId;
 }
+
+const showRedirectModal = networkSlug == 'telos' ? ref(true) : ref(false);
+function setShowRedirectModal(newVal: boolean) {
+  showRedirectModal.value = newVal;
+}
 </script>
 
 <template>
   <div>
+    <BalModal
+      ref="redirectModal"
+      :show="showRedirectModal"
+      @close="setShowRedirectModal(false)"
+    >
+      <template #header>
+        <h3>Greetings Polarians!</h3>
+      </template>
+      <div>
+        <p class="whitespace-pre-line">
+          We're excited to share some important updates with you as we embark on
+          this journey together on Polaris Finance. <br />
+          Deployment Success: We are thrilled to announce that Polaris Finance
+          is now live on the Telos mainnet! Our team has been hard at work, and
+          while we fine-tune a few minor bug fixes, we want to express our
+          gratitude for your patience and support. <br />
+          Liquidity Provision: Currently, users can actively participate by
+          providing liquidity. However, staking functionalities are temporarily
+          disabled. Fear not, as we have exciting news! Staking will go live
+          this Saturday at 22:00 UTC, unlocking even more opportunities for our
+          Polarian community. <br />
+          APR Calculation Update: You may have noticed that APR calculations are
+          not available at the moment. This is because the voting for new pools
+          on Telos is scheduled to commence this Saturday at 22:00 UTC. Until
+          then, rewards will be generated solely from swap fees. Keep an eye out
+          for the vibrant ecosystem that will unfold as we introduce new pools
+          and opportunities. <br />
+          Voting Schedule: Stay engaged! The voting window for pool allocations
+          concludes every Thursday at 00:00 UTC. Your participation in this
+          process is crucial as we collectively shape the future of Polaris
+          Finance. <br />
+          Thank you for being an integral part of our community. Your enthusiasm
+          and support drive us forward. We can't wait to witness the growth and
+          success of Polaris Finance on the Telos network. <br />
+          Happy trading and staking! <br />
+          Best regards, The Polaris Finance Team
+        </p>
+
+        <div class="grid grid-cols-1 grid-rows-1 gap-4 mt-4">
+          <BalBtn
+            color="gray"
+            label="Close"
+            outline
+            @click="setShowRedirectModal(false)"
+          />
+        </div>
+      </div>
+    </BalModal>
+
     <HomePageHero />
 
     <div id="hot-pools" class="container mx-auto">
