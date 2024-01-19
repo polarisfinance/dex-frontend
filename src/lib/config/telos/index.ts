@@ -7,33 +7,33 @@ import tokens from './tokens';
 import rateProviders from './rateProviders';
 
 const config: Config = {
-  key: '41',
-  chainId: 41,
-  chainName: 'Telos Testnet',
-  name: 'Telos Testnet',
-  shortName: 'Telos Testnet',
-  slug: 'telos-testnet',
-  network: 'telos-testnet',
+  key: '40',
+  chainId: 40,
+  chainName: 'Telos',
+  name: 'Telos',
+  shortName: 'Telos',
+  slug: 'telos',
+  network: 'telos',
   unknown: false,
   visibleInUI: true,
   testNetwork: false,
-  rpc: 'https://testnet.telos.net/evm	',
-  ws: 'wss://testnet.telos.net/evm',
-  explorer: 'https://testnet.teloscan.io/',
+  rpc: 'https://mainnet.telos.net/evm	',
+  ws: 'wss://mainnet.telos.net/evm',
+  explorer: 'https://teloscan.io/',
   explorerName: 'Aurora Explorer',
   subgraph:
-    'https://graph.polarisfinance.io/subgraphs/name/polarisfinance/polaris-dex-testnet',
+    'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.1/gn',
   // balancerApi: '',
   poolsUrlV2: '',
   subgraphs: {
     main: [
-      'https://graph.polarisfinance.io/subgraphs/name/polarisfinance/polaris-dex-testnet',
+      'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.1/gn',
     ],
     aave: '',
     gauge:
-      'https://graph.polarisfinance.io/subgraphs/name/polarisfinance/gauges-testnet',
+      'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/gauges-telos/1.0.0/gn',
     blocks:
-      'https://graph.polarisfinance.io/subgraphs/name/polarisfinance/auroratestnet-blocks',
+      'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/blocks-telos/1.0.0/gn',
   },
   bridgeUrl: '',
   supportsEIP1559: true,
@@ -50,8 +50,8 @@ const config: Config = {
   },
   thirdParty: {
     coingecko: {
-      nativeAssetId: 'aurora',
-      platformId: 'aurora',
+      nativeAssetId: 'telos',
+      platformId: 'telos',
     },
     apyVision: {
       networkName: 'eth',

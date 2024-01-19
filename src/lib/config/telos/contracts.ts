@@ -4,7 +4,7 @@ const contracts: Contracts = {
   merkleRedeem: '',
   merkleOrchard: '',
   merkleOrchardV2: '',
-  multicall: '',
+  multicall: '0x69d8D6913Eb2f4d2dCD9E18e7e22a34C15Fb1558',
   authorizer: '0x6060A8adF2016FD70c05099966C71F235e289582',
   vault: '0x9Ced3B4E4DC978265484d1F1f569010E13f911c9',
   weightedPoolFactory: '0x6C13F3df404855a3a3E9aAB5bdf22a1c13962bfC',

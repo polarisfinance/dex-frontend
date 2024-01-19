@@ -20,18 +20,17 @@ const urlNetworkId: Network | null = routeSlug
   ? networkFromSlug(routeSlug)
   : null;
 
-const NETWORK_ID = Network.AURORA;
+const NETWORK_ID =
+  urlNetworkId ||
+  localStorageNetworkId ||
+  (Number(import.meta.env.VITE_NETWORK) as Network) ||
+  Network.AURORA;
 if (windowAvailable) localStorage.setItem('networkId', NETWORK_ID.toString());
 export const networkSlug = config[NETWORK_ID].slug;
 export const networkConfig = config[NETWORK_ID];
 export const networkLabelMap = {
-  [Network.MAINNET]: 'Ethereum',
-  [Network.POLYGON]: 'Polygon',
-  [Network.ARBITRUM]: 'Arbitrum',
-  [Network.GOERLI]: 'Goerli',
-  [Network.OPTIMISM]: 'Optimism',
-  [Network.GNOSIS]: 'Gnosis chain',
-  [Network.AURORATEST]: 'Aurora testnet',
+  [Network.TELOS]: 'Telos',
+  [Network.AURORA]: 'Aurora',
 };
 
 /**
@@ -45,6 +44,7 @@ export const isPolygon = computed(() => networkId.value === Network.POLYGON);
 export const isArbitrum = computed(() => networkId.value === Network.ARBITRUM);
 export const isGnosis = computed(() => networkId.value === Network.GNOSIS);
 export const isGoerli = computed(() => networkId.value === Network.GOERLI);
+export const isTelos = computed(() => networkId.value === Network.TELOS);
 
 export const hasBridge = computed<boolean>(() => !!networkConfig.bridgeUrl);
 export const isTestnet = computed(() => isGoerli.value);
@@ -117,13 +117,15 @@ export function handleNetworkSlug(
     localStorage.getItem('networkId') ?? '1'
   );
   if (!networkFromUrl) {
-    // missing or incorrect network name -> next() withtout network change
+    // missing or incorrect network name -> next() without network change
     return noNetworkChangeCallback();
   }
   if (localStorageNetwork === networkFromUrl) {
     // if on the correct network -> next()
     return noNetworkChangeCallback();
   }
+
+  console.log(localStorageNetwork, networkFromUrl);
 
   // if on different network -> update localstorage and reload
   return networkChangeCallback();

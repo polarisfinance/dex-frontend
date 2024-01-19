@@ -11,7 +11,7 @@ import gnosisChain from './gnosis-chain';
 import test from './test';
 import auroraTest from './auroraTest';
 import aurora from './aurora';
-import telosTest from './telosTest';
+import telos from './telos';
 
 const config: Record<Network | number, Config> = {
   [Network.MAINNET]: mainnet,
@@ -20,9 +20,9 @@ const config: Record<Network | number, Config> = {
   // [Network.ARBITRUM]: arbitrum,
   // [Network.OPTIMISM]: optimism,
   // [Network.GNOSIS]: gnosisChain,
-  [Network.AURORATEST]: auroraTest,
+  // [Network.AURORATEST]: auroraTest,
   [Network.AURORA]: aurora,
-  [Network.TELOSTEST]: telosTest,
+  [Network.TELOS]: telos,
   // // @ts-ignore
   // 12345: test,
   // // @ts-ignore
