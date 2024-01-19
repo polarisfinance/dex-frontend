@@ -51,7 +51,7 @@ function handleInternalClose() {
           @click="
             router.push({
               name: 'vexpolar',
-              params: { networkSlug: getNetworkSlug(Network.MAINNET) },
+              params: { networkSlug: getNetworkSlug(Network.AURORA) },
             })
           "
         />
