@@ -131,7 +131,7 @@ function setShowRedirectModal(newVal: boolean) {
           Liquidity Provision: Currently, users can actively participate by
           providing liquidity. However, staking functionalities are temporarily
           disabled. Fear not, as we have exciting news! Staking will go live
-          this Saturday at 22:00 UTC, unlocking even more opportunities for our
+          this Sunday at 22:00 UTC, unlocking even more opportunities for our
           Polarian community. <br />
           APR Calculation Update: You may have noticed that APR calculations are
           not available at the moment. This is because the voting for new pools
