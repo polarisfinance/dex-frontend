@@ -19,7 +19,7 @@ const config: Config = {
   testNetwork: false,
   rpc: 'https://mainnet.telos.net/evm	',
   ws: 'wss://mainnet.telos.net/evm',
-  explorer: 'https://teloscan.io/',
+  explorer: 'https://teloscan.io',
   explorerName: 'Aurora Explorer',
   subgraph:
     'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.1/gn',
