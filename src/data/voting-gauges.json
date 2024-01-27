@@ -23,6 +23,209 @@
     }
   },
   {
+    "address": "0x13c7cD3102A6Fa34A9c8575757C1b8Fdf1A9f290",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706372974,
+    "pool": {
+      "id": "0xcfcd512c217c584f3bd78bea18eaf1a3e3fca913000200000000000000000003",
+      "address": "0xcFcd512C217C584f3BD78bea18eAf1A3E3FCa913",
+      "poolType": "Weighted",
+      "symbol": "50BNB-50USDT",
+      "tokens": [
+        {
+          "address": "0x26Ed0F16e777C94A6FE798F9E20298034930Bae8",
+          "weight": "0.5",
+          "symbol": "BNB"
+        },
+        {
+          "address": "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f",
+          "weight": "0.5",
+          "symbol": "USDT"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x26Ed0F16e777C94A6FE798F9E20298034930Bae8": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/ftm/0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454/logo.png",
+      "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/avax/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/logo.png"
+    }
+  },
+  {
+    "address": "0xBDdaEE651EE0DCFa018aeFE181a0F2B7AB4e8d9f",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706372990,
+    "pool": {
+      "id": "0xa5e2525631f9581a2db43d7008a4e7777f5a6df3000200000000000000000004",
+      "address": "0xA5E2525631f9581a2DB43d7008a4e7777F5A6Df3",
+      "poolType": "Weighted",
+      "symbol": "50USDT-50ETH",
+      "tokens": [
+        {
+          "address": "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f",
+          "weight": "0.5",
+          "symbol": "USDT"
+        },
+        {
+          "address": "0xA0fB8cd450c8Fd3a11901876cD5f17eB47C6bc50",
+          "weight": "0.5",
+          "symbol": "ETH"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/avax/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/logo.png",
+      "0xA0fB8cd450c8Fd3a11901876cD5f17eB47C6bc50": "https://cryptologos.cc/logos/ethereum-eth-logo.png"
+    }
+  },
+  {
+    "address": "0x4702DDdE6c78A660d4Da8fE253c629611989A74a",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706373007,
+    "pool": {
+      "id": "0xc3a597155e4e33e93341db43623bf90c2ae90752000200000000000000000005",
+      "address": "0xC3A597155e4e33e93341Db43623bF90c2Ae90752",
+      "poolType": "Weighted",
+      "symbol": "50BTC.b-50USDT",
+      "tokens": [
+        {
+          "address": "0x7627b27594bc71e6Ab0fCE755aE8931EB1E12DAC",
+          "weight": "0.5",
+          "symbol": "BTC.b"
+        },
+        {
+          "address": "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f",
+          "weight": "0.5",
+          "symbol": "USDT"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x7627b27594bc71e6Ab0fCE755aE8931EB1E12DAC": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/BTC.b.png",
+      "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/avax/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/logo.png"
+    }
+  },
+  {
+    "address": "0x4d84DCf5FF565FBbdb75a484559fA7439B744623",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706372928,
+    "pool": {
+      "id": "0x21cfce445e0ec8444fd6e9195fea2a43952cbacd000200000000000000000007",
+      "address": "0x21cfce445e0eC8444Fd6e9195FEa2a43952cBacd",
+      "poolType": "Weighted",
+      "symbol": "50STLOS-50WTLOS",
+      "tokens": [
+        {
+          "address": "0xB4B01216a5Bc8F1C8A33CD990A1239030E60C905",
+          "weight": "0.5",
+          "symbol": "STLOS"
+        },
+        {
+          "address": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E",
+          "weight": "0.5",
+          "symbol": "WTLOS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xB4B01216a5Bc8F1C8A33CD990A1239030E60C905": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/stlos.png",
+      "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/wtlos.png"
+    }
+  },
+  {
+    "address": "0x9c5B43F22bC7e4730034968283767d5E4581cD3C",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706372959,
+    "pool": {
+      "id": "0x2621c0c2559a0d04a208f85e9720402ca5fdc779000200000000000000000008",
+      "address": "0x2621C0C2559a0d04a208f85e9720402cA5fDc779",
+      "poolType": "Weighted",
+      "symbol": "50XPOLAR-50WTLOS",
+      "tokens": [
+        {
+          "address": "0x1073E53ac92F711761475Cd30fab157620AFdAb0",
+          "weight": "0.5",
+          "symbol": "XPOLAR"
+        },
+        {
+          "address": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E",
+          "weight": "0.5",
+          "symbol": "WTLOS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x1073E53ac92F711761475Cd30fab157620AFdAb0": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png",
+      "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/wtlos.png"
+    }
+  },
+  {
+    "address": "0x2656503f657E96d05FE43fAb907Ab430878344F7",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706372943,
+    "pool": {
+      "id": "0x6b69bcc57ff6a6de441122bc7bc932834f10442300020000000000000000000a",
+      "address": "0x6B69bCc57ff6a6De441122bC7Bc932834f104423",
+      "poolType": "Weighted",
+      "symbol": "50USDC-50USDT",
+      "tokens": [
+        {
+          "address": "0x8D97Cea50351Fb4329d591682b148D43a0C3611b",
+          "weight": "0.5",
+          "symbol": "USDC"
+        },
+        {
+          "address": "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f",
+          "weight": "0.5",
+          "symbol": "USDT"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x8D97Cea50351Fb4329d591682b148D43a0C3611b": "https://ipfs.telos.net/ipfs/QmXfzKRvjZz3u5JRgC4v5mGVbm9ahrUiB4DgzHBsnWbTMM",
+      "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/avax/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/logo.png"
+    }
+  },
+  {
+    "address": "0x507d49c748346fD05020433CCEd727dDf99Ee160",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706373020,
+    "pool": {
+      "id": "0x1396c11194d7da6f285fcb05886fc15a73f9816500020000000000000000000b",
+      "address": "0x1396c11194D7da6f285fcb05886fc15A73f98165",
+      "poolType": "Weighted",
+      "symbol": "50USDT-50WTLOS",
+      "tokens": [
+        {
+          "address": "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f",
+          "weight": "0.5",
+          "symbol": "USDT"
+        },
+        {
+          "address": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E",
+          "weight": "0.5",
+          "symbol": "WTLOS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/avax/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/logo.png",
+      "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/wtlos.png"
+    }
+  },
+  {
     "address": "0x00EBD98D869aAE0Ee67E8b48753905DAc472d542",
     "network": 1313161554,
     "isKilled": false,

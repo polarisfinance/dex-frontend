@@ -17,7 +17,7 @@ import VEBalHelpersABI from '@/lib/abi/VEBalHelpers.json';
 import vebalGauge from '../../../public/data/vebal-gauge.json';
 import hardcodedGauges from '../../../public/data/hardcoded-gauges.json';
 import config from '../config';
-import { isSameAddress } from '../utils';
+import { isSameAddress, sleep } from '../utils';
 import { formatUnits } from '@ethersproject/units';
 import { flatten, mapValues } from 'lodash';
 import { configService } from '@/services/config/config.service';
@@ -37,6 +37,7 @@ type GaugeInfo = {
   poolId: string;
   addedTimestamp: number;
   relativeWeightCap: string;
+  recipient?: string;
 };
 
 async function getGaugeRelativeWeight(gaugeAddresses: string[]) {
@@ -180,14 +181,14 @@ async function getTokenLogoURI(
   log(`getTokenLogoURI network: ${network} tokenAddress: ${tokenAddress}`);
   let logoUri = '';
 
-  logoUri = getBalancerAssetsURI(tokenAddress);
-  if (await isValidLogo(logoUri)) return logoUri;
+  // logoUri = getBalancerAssetsURI(tokenAddress);
+  // if (await isValidLogo(logoUri)) return logoUri;
 
-  logoUri = getBalancerAssetsURI(tokenAddress, network);
-  if (await isValidLogo(logoUri)) return logoUri;
+  // logoUri = getBalancerAssetsURI(tokenAddress, network);
+  // if (await isValidLogo(logoUri)) return logoUri;
 
-  logoUri = getTrustWalletAssetsURI(tokenAddress, network);
-  if (await isValidLogo(logoUri)) return logoUri;
+  // logoUri = getTrustWalletAssetsURI(tokenAddress, network);
+  // if (await isValidLogo(logoUri)) return logoUri;
 
   logoUri = await getAssetURIFromTokenlists(tokenAddress, network);
   if (await isValidLogo(logoUri)) return logoUri;
@@ -213,6 +214,7 @@ async function getPoolInfo(
 ): Promise<VotingGauge['pool']> {
   log(`getPoolInfo. poolId: network: ${network} poolId: ${poolId}`);
   const subgraphEndpoint = config[network].subgraph;
+  console.log(subgraphEndpoint);
   const query = `
     {
       pool(
@@ -261,7 +263,8 @@ async function getPoolInfo(
       symbol,
       tokens: tokensList,
     };
-  } catch {
+  } catch (error) {
+    console.log(error);
     console.error(
       'Pool not found:',
       poolId,
@@ -390,19 +393,48 @@ async function getStreamerAddress(
 }
 
 async function getRootGaugeInfo(
-  streamer: string,
   poolId: string,
   network: Network,
   retries = 5
 ): Promise<GaugeInfo[] | null> {
-  log(`getRootGaugeAddress. network: ${network} streamer: ${streamer}`);
+  const childChainSubgraphEndpoint = config[network].subgraphs.gauge;
+  let query = `
+  {
+    liquidityGauges(
+      where: {
+        poolId: "${poolId}"
+      }
+    ) {
+      id
+    }
+  }
+  `;
+
+  const response = await fetch(childChainSubgraphEndpoint, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  const { data } = await response.json();
+  let gaugeId = data.liquidityGauges[0].id;
+  if (
+    poolId ==
+    '0x1396c11194d7da6f285fcb05886fc15a73f9816500020000000000000000000b'
+  ) {
+    gaugeId = '0x1189fe3cA912CE73d001EdaAD6B81dbC98feff6B';
+  }
+
   const subgraphEndpoint = config[Network.AURORA].subgraphs.gauge;
 
-  const query = `
+  query = `
     {
       rootGauges(
         where: {
-          recipient: "${streamer}"
+          recipient: "${gaugeId}"
           chain: ${config[network].shortName}
           gauge_not: null
         }
@@ -437,21 +469,15 @@ async function getRootGaugeInfo(
         addedTimestamp: gauge.gauge.addedTimestamp,
         network,
         poolId,
+        recipient: gauge.recipient,
       };
     });
 
     return gaugesInfo;
   } catch {
-    console.error(
-      'RootGauge not found for Streamer:',
-      streamer,
-      'chainId:',
-      network
-    );
+    console.error('RootGauge not found for Streamer:', 'chainId:', network);
 
-    return retries > 0
-      ? getRootGaugeInfo(streamer, poolId, network, retries - 1)
-      : null;
+    return retries > 0 ? getRootGaugeInfo(poolId, network, retries - 1) : null;
   }
 }
 
@@ -463,12 +489,11 @@ async function getGaugeInfo(
   if ([Network.AURORA].includes(network)) {
     const gauges = await getLiquidityGaugesInfo(poolId, network);
     return gauges;
+  } else if (network !== Network.MAINNET) {
+    // const streamer = await getStreamerAddress(poolId, network);
+    const gauges = await getRootGaugeInfo(poolId, network);
+    return gauges;
   }
-  // else {
-  //   const streamer = await getStreamerAddress(poolId, network);
-  //   const gauges = await getRootGaugeInfo(streamer, poolId, network);
-  //   return gauges;
-  // }
 }
 
 (async () => {
@@ -506,24 +531,44 @@ async function getGaugeInfo(
   const killedGaugesWeight = await getGaugeRelativeWeight(killedGaugesList);
   console.timeEnd('getGaugeRelativeWeight');
 
-  const validGauges = filteredGauges.filter(
-    ({ address, isKilled }) =>
-      !isKilled || killedGaugesWeight[address] !== '0.0'
-  );
+  const telosFilter = [
+    '0x1396c11194D7da6f285fcb05886fc15A73f98165',
+    '0x21cfce445e0eC8444Fd6e9195FEa2a43952cBacd',
+    '0x2621C0C2559a0d04a208f85e9720402cA5fDc779',
+    '0x6B69bCc57ff6a6De441122bC7Bc932834f104423',
+    '0xA5E2525631f9581a2DB43d7008a4e7777F5A6Df3',
+    '0xC3A597155e4e33e93341Db43623bF90c2Ae90752',
+    '0xcFcd512C217C584f3BD78bea18eAf1A3E3FCa913',
+  ];
 
+  console.log(filteredGauges);
+
+  // const validGauges = filteredGauges.filter(
+  //   ({ address, isKilled, network }) =>
+  //     (!isKilled || killedGaugesWeight[address] !== '0.0') &&
+  //     !(network === Network.TELOS && !telosFilter.includes(address))
+  // );
+  const validGauges = filteredGauges;
+  console.log(validGauges);
   console.log('\nFetching voting gauges info...');
   console.time('getVotingGauges');
   let votingGauges = await Promise.all(
     validGauges.map(
-      async ({
-        address,
-        poolId,
-        network,
-        isKilled,
-        addedTimestamp,
-        relativeWeightCap,
-      }) => {
+      async (
+        {
+          address,
+          poolId,
+          network,
+          isKilled,
+          addedTimestamp,
+          relativeWeightCap,
+          recipient,
+        },
+        index
+      ) => {
+        await new Promise(resolve => setTimeout(resolve, index * 1000));
         const pool = await getPoolInfo(poolId, network);
+        console.log(recipient, pool.address);
 
         const tokenLogoURIs = {};
         for (let i = 0; i < pool.tokens.length; i++) {

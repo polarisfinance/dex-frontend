@@ -34,6 +34,7 @@ const networkFilters = [
   Network.GNOSIS,
   Network.AURORATEST,
   Network.AURORA,
+  Network.TELOS,
 ];
 
 /**
