@@ -226,6 +226,35 @@
     }
   },
   {
+    "address": "0x390E36B76A2dE4712E2d6eCf17BBD010CbD8eE1a",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1706566856,
+    "pool": {
+      "id": "0x40d708b40d97419d8da1412b08c2358e5bea2f5700020000000000000000000c",
+      "address": "0x40d708b40d97419d8DA1412b08c2358e5BeA2F57",
+      "poolType": "Weighted",
+      "symbol": "50BNB-50WTLOS",
+      "tokens": [
+        {
+          "address": "0x26Ed0F16e777C94A6FE798F9E20298034930Bae8",
+          "weight": "0.5",
+          "symbol": "BNB"
+        },
+        {
+          "address": "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E",
+          "weight": "0.5",
+          "symbol": "WTLOS"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x26Ed0F16e777C94A6FE798F9E20298034930Bae8": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/ftm/0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454/logo.png",
+      "0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/wtlos.png"
+    }
+  },
+  {
     "address": "0x00EBD98D869aAE0Ee67E8b48753905DAc472d542",
     "network": 1313161554,
     "isKilled": false,
