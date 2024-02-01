@@ -44,6 +44,7 @@ import {
 import useWeb3 from '@/services/web3/useWeb3';
 
 import { coingeckoService } from '@/services/coingecko/coingecko.service';
+import useNetwork from '@/composables/useNetwork';
 
 /**
  * TYPES
@@ -461,7 +462,10 @@ export const tokensProvider = (
     // Inject veBAL because it's not in tokenlists.
     const { veBAL } = configService.network.addresses;
     await injectTokens([veBAL]);
-    await injectTokens(['0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4']); //AVAX
+    const { networkSlug } = useNetwork();
+    if (networkSlug == 'aurora') {
+      await injectTokens(['0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4']); //AVAX
+    }
 
     console.log('Fetching Custom Token Prices');
     const customPrices: TokenPrices = await coingeckoService.prices.getTokens(

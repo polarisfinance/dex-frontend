@@ -37,7 +37,7 @@ const router = useRouter();
  */
 const blockIcon = ref<HTMLDivElement>();
 
-const navLinks = [
+let navLinks = [
   { label: t('earn'), path: '/', goal: Goals.ClickNavPools },
   { label: t('swap'), path: `/${networkSlug}/swap`, goal: Goals.ClickNavSwap },
   {
@@ -68,6 +68,14 @@ const navLinks = [
     goal: Goals.ClickNavVebal,
   },
 ];
+if (networkSlug !== 'aurora') {
+  navLinks = navLinks.filter(
+    link =>
+      link.path !== '/sunrise' &&
+      link.path !== '/bond' &&
+      link.path !== '/airdrop'
+  );
+}
 
 const ecosystemLinks = [
   { label: t('build'), url: 'https://balancer.fi/build' },

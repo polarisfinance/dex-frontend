@@ -12,6 +12,7 @@ const { isGoerli } = useWeb3();
  */
 const route = useRoute();
 const { networkSlug } = useNetwork();
+const isAurora = networkSlug === 'aurora';
 
 /**
  * METHODS
@@ -40,13 +41,22 @@ function isActive(page: string): boolean {
     >
       {{ $t('swap') }}
     </DesktopLinkItem>
-    <DesktopLinkItem to="/sunrise" :active="isActive('sunrise')">
+
+    <DesktopLinkItem
+      v-if="isAurora"
+      to="/sunrise"
+      :active="isActive('sunrise')"
+    >
       {{ $t('Sunrise') }}
     </DesktopLinkItem>
-    <DesktopLinkItem to="/bond" :active="isActive('bond')">
+    <DesktopLinkItem v-if="isAurora" to="/bond" :active="isActive('bond')">
       {{ $t('Bond') }}
     </DesktopLinkItem>
-    <DesktopLinkItem to="/airdrop" :active="isActive('airdrop')">
+    <DesktopLinkItem
+      v-if="isAurora"
+      to="/airdrop"
+      :active="isActive('airdrop')"
+    >
       Airdrop
     </DesktopLinkItem>
     <DesktopLinkItem
