@@ -335,6 +335,6 @@ function getPickedTokens(tokens: PoolToken[]) {
 
 <style>
 tr.expired-gauge-row {
-  @apply bg-red-50  hover:bg-red-100 dark:border-red-600 dark:border;
+  @apply dark:border-red-600 dark:border;
 }
 </style>
