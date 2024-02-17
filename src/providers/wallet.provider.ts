@@ -75,6 +75,7 @@ export const networkMap = {
   [Network.GNOSIS]: 'gnosis-chain',
   [Network.AURORATEST]: 'aurora-testnet',
   [Network.AURORA]: 'aurora',
+  [Network.TELOS]: 'telos',
 };
 
 type WalletState = 'connecting' | 'connected' | 'disconnected';

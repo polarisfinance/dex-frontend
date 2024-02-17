@@ -460,11 +460,13 @@ export const tokensProvider = (
    */
   onBeforeMount(async () => {
     // Inject veBAL because it's not in tokenlists.
-    const { veBAL } = configService.network.addresses;
-    await injectTokens([veBAL]);
+
+    await new Promise(resolve => setTimeout(resolve, 1000)); // dont know how to wait until tokens.value are populated
     const { networkSlug } = useNetwork();
     if (networkSlug == 'aurora') {
+      const { veBAL } = configService.network.addresses;
       await injectTokens(['0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4']); //AVAX
+      await injectTokens([veBAL]);
     }
 
     console.log('Fetching Custom Token Prices');

@@ -33,7 +33,7 @@ interface ComponentState {
   results: TokenInfoMap;
   focussedToken: number;
 }
-const { veBalTokenInfo } = useVeBal();
+const { veBalTokenInfo, isVeBalSupported } = useVeBal();
 /**
  * STATE
  */
@@ -68,7 +68,7 @@ watch(
   async newQuery => {
     state.loading = true;
     state.results = await searchTokens(newQuery, {
-      excluded: [veBalTokenInfo.value.address],
+      excluded: [isVeBalSupported ? veBalTokenInfo.value.address : ''],
       // disableInjection: props.disableInjection,
       disableInjection: true,
       subset: [],
