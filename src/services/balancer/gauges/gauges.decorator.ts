@@ -41,8 +41,6 @@ export class GaugesDecorator {
       gaugesDataMap
     );
 
-    console.log(gaugesDataMap);
-
     return subgraphGauges.map(subgraphGauge => ({
       ...subgraphGauge,
       ...this.format(gaugesDataMap[subgraphGauge.id]),
