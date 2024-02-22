@@ -18,7 +18,7 @@ const contracts: Contracts = {
   balancerHelpers: '0xf0f3b9Eee32b1F490A4b8720cf6F005d4aE9eA86',
   batchRelayer: '0x15F707033cA3a44FB3deC7EBC2F3ac5DB3b4e099',
   gaugeFactory: '0xA5dF6D8D59A7fBDb8a11E23FDa9d11c4103dc49f',
-  balancerMinter: '',
+  balancerMinter: '0xA5dF6D8D59A7fBDb8a11E23FDa9d11c4103dc49f',
   gaugeController: '',
   tokenAdmin: '',
   veBAL: '',
@@ -27,7 +27,7 @@ const contracts: Contracts = {
   feeDistributor: '',
   feeDistributorDeprecated: '',
   faucet: '',
-  gaugeRewardsHelper: '0x981071AA1A430fC1b54C3E171608f88975497cF3',
+  gaugeRewardsHelper: '0x5749c1374cc9DE28B94cf054dEb303D4cA3464bF',
 };
 
 export default contracts;
