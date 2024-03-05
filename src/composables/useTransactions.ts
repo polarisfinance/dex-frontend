@@ -50,7 +50,8 @@ export type TransactionAction =
   | 'stake'
   | 'restake'
   | 'purchase'
-  | 'redeem';
+  | 'redeem'
+  | 'sendUserBalance';
 
 export type TransactionType = 'order' | 'tx';
 
