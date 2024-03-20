@@ -313,6 +313,35 @@
     }
   },
   {
+    "address": "0x5Fc3c157F432320cdfAC415258A6a4790b018880",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1710973442,
+    "pool": {
+      "id": "0x25528334ce2f2f77072362f2681251fa05699f5e00020000000000000000000f",
+      "address": "0x25528334ce2f2F77072362F2681251FA05699f5e",
+      "poolType": "Weighted",
+      "symbol": "50BTC.b-50ETH",
+      "tokens": [
+        {
+          "address": "0x7627b27594bc71e6Ab0fCE755aE8931EB1E12DAC",
+          "weight": "0.5",
+          "symbol": "BTC.b"
+        },
+        {
+          "address": "0xA0fB8cd450c8Fd3a11901876cD5f17eB47C6bc50",
+          "weight": "0.5",
+          "symbol": "ETH"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x7627b27594bc71e6Ab0fCE755aE8931EB1E12DAC": "https://raw.githubusercontent.com/telosnetwork/token-list/main/logos/BTC.b.png",
+      "0xA0fB8cd450c8Fd3a11901876cD5f17eB47C6bc50": "https://cryptologos.cc/logos/ethereum-eth-logo.png"
+    }
+  },
+  {
     "address": "0x61f8Dffd86C6e7BF20895422F4a3ab1F68ADBB19",
     "network": 40,
     "isKilled": false,
