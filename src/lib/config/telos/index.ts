@@ -38,7 +38,7 @@ const config: Config = {
   bridgeUrl: '',
   supportsEIP1559: true,
   supportsElementPools: true,
-  blockTime: 12,
+  blockTime: 0.5,
   nativeAsset: {
     name: 'Telos',
     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
