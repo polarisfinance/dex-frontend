@@ -106,7 +106,7 @@ const pools: Pools = {
     '0xc92dc3d6547625fa9c5b1837edf632943a5c4ceb': 'oracleWeightedPool', // oracle weighted pool v1
     '0x16506f300a7d22b16d4b2d01568d565ec840c753': 'stablePool', // stable pool v2
     // '0xA408376E84DedD19616e8Cd79753eb4B594acd85': 'stablePool', // stable pool v4
-    '0xCACD11CDD35d2842e6Ce16fB76920021D8bAb58B': 'stablePool', // stable pool v6
+    '0xcacd11cdd35d2842e6ce16fb76920021d8bab58b': 'composableStablePool', // composable stable pool v6
   },
   Stakable: {
     VotingGaugePools: [
