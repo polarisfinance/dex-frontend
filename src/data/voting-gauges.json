@@ -1651,5 +1651,237 @@
       "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046",
       "0x9D6fc90b25976E40adaD5A3EdD08af9ed7a21729": "https://assets.coingecko.com/coins/images/23673/large/spolar-200px.png?1644994847"
     }
+  },
+  {
+    "address": "0x2232c0e0681f6186Ef42a18e1b7dc800E05ccC94",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0xe84e5418432beeeb543bbcdf9fa54fd7ea3aa65b000200000000000000000049",
+      "address": "0xE84e5418432BeEeB543BBcDF9fa54fd7eA3Aa65b",
+      "poolType": "Weighted",
+      "symbol": "60UsdStablePool-40AURORA",
+      "tokens": [
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.6",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79",
+          "weight": "0.4",
+          "symbol": "AURORA"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
+      "0x8BEc47865aDe3B172A928df8f990Bc7f2A3b9f79": "https://assets.coingecko.com/coins/images/20582/large/aurora.jpeg?1637250883"
+    }
+  },
+  {
+    "address": "0xFF079eEb93afd77cB6d3c63374518e372CeB24c3",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0xf45db6b9ea5a531fbde51e3f2915979e9210246d00020000000000000000004a",
+      "address": "0xf45DB6B9ea5A531FBdE51E3F2915979E9210246D",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70pNEAR",
+      "tokens": [
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6",
+          "weight": "0.7",
+          "symbol": "pNEAR"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
+      "0x990e50E781004EA75e2bA3A67eB69c0B1cD6e3A6": "https://assets.coingecko.com/coins/images/18280/large/EX4mrWMW_400x400.jpg?1631244046"
+    }
+  },
+  {
+    "address": "0x0Ff0978e2736ca017FdCb0Bf730Cd8beA7Db93B6",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0x7c2bb9c37036912228f36449d14f0f7e19c861f200020000000000000000004b",
+      "address": "0x7c2BB9C37036912228F36449d14F0f7e19c861F2",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70Avax",
+      "tokens": [
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4",
+          "weight": "0.7",
+          "symbol": "AVAX"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
+      "0xef3c714c9425a8F3697A9C969Dc1af30ba82e5d4": "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=025"
+    }
+  },
+  {
+    "address": "0x22e3564ae16A2E04Ea5403E4Ce50BFEF31D594Ac",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0x6f6b70c5b9731fe5e4b1ade898dbb50a23dcb61600020000000000000000004c",
+      "address": "0x6F6B70C5b9731fE5E4b1AdE898dbB50a23DCb616",
+      "poolType": "Weighted",
+      "symbol": "70FTM-30UsdStablePool",
+      "tokens": [
+        {
+          "address": "0x1fE622E91e54D6AD00B01917351Ea6081426764A",
+          "weight": "0.7",
+          "symbol": "FTM"
+        },
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x1fE622E91e54D6AD00B01917351Ea6081426764A": "https://cryptologos.cc/logos/fantom-ftm-logo.svg?v=025",
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": ""
+    }
+  },
+  {
+    "address": "0x8635BD228E5287926A55565D93C796d5fDD18D73",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0x1ed3bbef2de9fb1b50827a27ee591f09c1ebda9a00020000000000000000004d",
+      "address": "0x1eD3bbEf2De9fb1B50827A27ee591F09c1eBDa9a",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70WETH",
+      "tokens": [
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
+          "weight": "0.7",
+          "symbol": "WETH"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
+      "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
+    }
+  },
+  {
+    "address": "0x3293Dc0d4232C5672c2b4742236758aB80FE3651",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0xde394782872384aec124ffc034c065efe1979d8d00020000000000000000004f",
+      "address": "0xdE394782872384aEc124fFc034C065EfE1979d8D",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70WBTC",
+      "tokens": [
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e",
+          "weight": "0.7",
+          "symbol": "WBTC"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
+      "0xF4eB217Ba2454613b15dBdea6e5f22276410e89e": "https://assets.coingecko.com/coins/images/7598/large/wrapped_bitcoin_wbtc.png?1548822744"
+    }
+  },
+  {
+    "address": "0xbfA0ab53FeFD06A704e580CaB0D8b18931CfFc0e",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0x01aa7c6ae7d654a669919be766132fe3eafc8ba900020000000000000000004e",
+      "address": "0x01Aa7C6aE7D654A669919Be766132Fe3eaFc8ba9",
+      "poolType": "Weighted",
+      "symbol": "70SOL-30UsdStablePool",
+      "tokens": [
+        {
+          "address": "0x0f00576d07B594Bdc1caf44b6014A6A02E5AFd48",
+          "weight": "0.7",
+          "symbol": "SOL"
+        },
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x0f00576d07B594Bdc1caf44b6014A6A02E5AFd48": "https://cryptologos.cc/logos/solana-sol-logo.svg?v=025",
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": ""
+    }
+  },
+  {
+    "address": "0x7F3fd1cc5C0d642F7f598763074928a0614Df268",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713391563,
+    "pool": {
+      "id": "0x35ff4a0b0d1bf6550e7c4c548f93afec489ae50e000200000000000000000050",
+      "address": "0x35fF4A0b0D1BF6550e7C4C548f93AfeC489aE50e",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70abBNB",
+      "tokens": [
+        {
+          "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0xb14674C7264eC7d948B904Aab2c0E0F906F6e762",
+          "weight": "0.7",
+          "symbol": "abBNB"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
+      "0xb14674C7264eC7d948B904Aab2c0E0F906F6e762": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xb14674c7264ec7d948b904aab2c0e0f906f6e762/logo.svg"
+    }
   }
 ]
