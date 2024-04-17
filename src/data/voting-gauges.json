@@ -1682,6 +1682,47 @@
     }
   },
   {
+    "address": "0xaa397C12704823B4A5cA0430fd64EFe8A4504a46",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1713395593,
+    "pool": {
+      "id": "0x46218d1962f39d96b9295a86d01849f36bf52a3e000000000000000000000047",
+      "address": "0x46218d1962f39D96B9295A86D01849f36Bf52A3E",
+      "poolType": "ComposableStable",
+      "symbol": "UsdStablePool",
+      "tokens": [
+        {
+          "address": "0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7",
+          "weight": "null",
+          "symbol": "USDC"
+        },
+        {
+          "address": "0x4988a896b1227218e4A686fdE5EabdcAbd91571f",
+          "weight": "null",
+          "symbol": "USDT.e"
+        },
+        {
+          "address": "0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF",
+          "weight": "null",
+          "symbol": "USDt"
+        },
+        {
+          "address": "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802",
+          "weight": "null",
+          "symbol": "USDC.e"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x368EBb46ACa6b8D0787C96B2b20bD3CC3F2c45F7": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "0x4988a896b1227218e4A686fdE5EabdcAbd91571f": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "0x80Da25Da4D783E57d2FCdA0436873A193a4BEccF": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "0xB12BFcA5A55806AaF64E99521918A4bf0fC40802": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389"
+    }
+  },
+  {
     "address": "0xFF079eEb93afd77cB6d3c63374518e372CeB24c3",
     "network": 1313161554,
     "isKilled": false,
