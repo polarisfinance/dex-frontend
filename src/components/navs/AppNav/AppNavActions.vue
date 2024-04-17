@@ -21,7 +21,7 @@ const { setSidebarOpen } = useSidebar();
 /**
  * COMPUTED
  */
-const hideNetworkSelect = computed(() => connector.value?.id === 'gnosis');
+const hideNetworkSelect = computed(() => connector.value?.id === 'safe');
 
 /**
  * METHODS

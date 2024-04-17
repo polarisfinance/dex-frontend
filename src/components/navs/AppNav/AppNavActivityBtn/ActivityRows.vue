@@ -22,7 +22,7 @@ const { connector } = useWeb3();
 /**
  * COMPUTED
  */
-const disablePending = computed(() => connector.value?.id === 'gnosis');
+const disablePending = computed(() => connector.value?.id === 'safe');
 </script>
 
 <template>

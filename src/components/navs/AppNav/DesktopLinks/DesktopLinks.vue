@@ -98,6 +98,14 @@ function isActive(page: string): boolean {
     >
       Telos Bridge
     </a>
+    <a
+      v-if="isAurora"
+      class="font-semibold dark:text-polaris-white hover:dark:text-polaris-3 mt-[30px]"
+      href="https://aurora.plus/forwarder?utm_source=twitter&utm_medium=organic_social&utm_campaign=forwarder_launch"
+    >
+      Deposit from CEX
+    </a>
+
     <div class="dropdown mt-[30px]">
       <div class="flex w-full dropdown-title gap-[12px]">
         Bridges

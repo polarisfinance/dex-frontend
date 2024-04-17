@@ -31,7 +31,7 @@ const { networkConfig } = useConfig();
 const { networkSlug } = useNetwork();
 const { t } = useI18n();
 const router = useRouter();
-
+const isAurora = networkSlug === 'aurora';
 /**
  * STATE
  */
@@ -159,6 +159,14 @@ watch(blockNumber, async () => {
     <div class="grid text-lg grid-col-1">
       <a class="side-bar-link" href="https://bridge.polarisfinance.io/bridge">
         Telos Bridge
+      </a>
+    </div>
+    <div v-if="isAurora" class="grid text-lg grid-col-1">
+      <a
+        class="side-bar-link"
+        href="https://aurora.plus/forwarder?utm_source=twitter&utm_medium=organic_social&utm_campaign=forwarder_launch"
+      >
+        Deposit from CEX
       </a>
     </div>
     <!-- <div class="grid mt-5 text-sm grid-col-1">
