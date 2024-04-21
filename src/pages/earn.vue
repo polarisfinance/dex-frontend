@@ -67,6 +67,11 @@ const polarisPoolsIds = [
   '0x01aa7c6ae7d654a669919be766132fe3eafc8ba900020000000000000000004e',
 ];
 
+const hiddenPoolsIds = [
+  '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020',
+  '0x6e7c170f95aba8ffbccaf5155706be0682cc5bd900020000000000000000002b',
+];
+
 // COMPOSABLES
 const router = useRouter();
 const { appNetworkConfig } = useWeb3();
@@ -88,10 +93,16 @@ const isPaginated = computed(
   () => pools.value.length >= POOLS.Pagination.PerPage
 );
 const polarisPools = computed(() => {
-  return pools.value.filter(pool => polarisPoolsIds.includes(pool.id));
+  return pools.value.filter(
+    pool =>
+      polarisPoolsIds.includes(pool.id) && !hiddenPoolsIds.includes(pool.id)
+  );
 });
 const communityPools = computed(() => {
-  return pools.value.filter(pool => !polarisPoolsIds.includes(pool.id));
+  return pools.value.filter(
+    pool =>
+      !polarisPoolsIds.includes(pool.id) && !hiddenPoolsIds.includes(pool.id)
+  );
 });
 
 const hotPools = computed(() => {
