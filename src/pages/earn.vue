@@ -106,7 +106,7 @@ const communityPools = computed(() => {
 });
 
 const hotPools = computed(() => {
-  return pools.value.sort((a, b) => b.apr?.max - a.apr?.max).slice(0, 6);
+  return polarisPools.value.sort((a, b) => b.apr?.max - a.apr?.max).slice(0, 6);
 });
 const hiddenColumns = computed(() => {
   if (isDesktop.value) return ['migrate', 'actions', 'lockEndDate'];
