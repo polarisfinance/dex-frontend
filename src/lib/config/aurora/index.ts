@@ -22,12 +22,12 @@ const config: Config = {
   explorer: 'https://explorer.aurora.dev',
   explorerName: 'Aurora Explorer',
   subgraph:
-    'https://gateway-arbitrum.network.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/2CpCYZ6NNrr5wpFY3KFQb2nDwkZaLcQajMaHcQsDp4yd',
+    'https://api.studio.thegraph.com/query/76824/polaris-dex-v2/version/latest',
   // balancerApi: '',
   poolsUrlV2: '',
   subgraphs: {
     main: [
-      'https://gateway-arbitrum.network.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/2CpCYZ6NNrr5wpFY3KFQb2nDwkZaLcQajMaHcQsDp4yd',
+      'https://api.studio.thegraph.com/query/76824/polaris-dex-v2/version/latest',
     ],
     aave: '',
     gauge:
