@@ -20,14 +20,14 @@ const config: Config = {
   rpc: 'https://mainnet.telos.net/evm	',
   ws: 'wss://mainnet.telos.net/evm',
   explorer: 'https://teloscan.io',
-  explorerName: 'Aurora Explorer',
+  explorerName: 'Telos Explorer',
   subgraph:
-    'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.1/gn',
+    'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.2/gn',
   // balancerApi: '',
   poolsUrlV2: '',
   subgraphs: {
     main: [
-      'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.1/gn',
+      'https://api.goldsky.com/api/public/project_clqbhfggr3ii501w02mp62ver/subgraphs/polaris-dex-v2-telos/1.0.2/gn',
     ],
     aave: '',
     gauge:

@@ -33,7 +33,9 @@ const pools: Pools = {
     'FX',
   ],
   Stable: {
-    AllowList: [],
+    AllowList: [
+      '0xbfb55273488fda258fda2224a5cb117efd01951e000000000000000000000012',
+    ],
   },
   Investment: {
     AllowList: [],
@@ -54,7 +56,8 @@ const pools: Pools = {
     ],
   },
   Factories: {
-    '0x517803476a7434ea83316384d7Af408DE90DB083': 'weightedPool', // weighted pool v4
+    '0x981071aa1a430fc1b54c3e171608f88975497cf3': 'weightedPool', // weighted pool v4
+    '0xbe9cdf92aa7723271408725b9ecf8f7d28596bab': 'composableStablePool',
   },
   Stakable: {
     VotingGaugePools: [
