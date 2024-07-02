@@ -96,15 +96,24 @@ export class GaugesDecorator {
     subgraphGauges: SubgraphGauge[],
     userAddress: string
   ) {
-    subgraphGauges.forEach(gauge => {
-      this.multicaller.call({
-        key: `${gauge.id}.claimableTokens`,
-        address: gauge.id,
-        function: 'claimable_tokens',
-        abi: ['function claimable_tokens(address) view returns (uint256)'],
-        params: [userAddress],
+    const excluded = [
+      '0xf13291e874b539e6729b98609f4661680165a966',
+      '0xf7b6f832cb163d48bc577395954a56756e4d4835',
+      '0x6142b1903afac1c9772813d098c81d22d0038865',
+      '0x42d722b580ffd6fbeeeee9eed8460d602be8ce92',
+      '0x520fd173e5d9a68778a852dd06495a5390950151',
+    ];
+    subgraphGauges
+      .filter(gauge => !excluded.includes(gauge.id))
+      .forEach(gauge => {
+        this.multicaller.call({
+          key: `${gauge.id}.claimableTokens`,
+          address: gauge.id,
+          function: 'claimable_tokens',
+          abi: ['function claimable_tokens(address) view returns (uint256)'],
+          params: [userAddress],
+        });
       });
-    });
   }
 
   /**
