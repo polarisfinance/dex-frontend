@@ -429,6 +429,35 @@
     }
   },
   {
+    "address": "0x948Fc546E66890BeB59A1310F50Ef286Cb54b4E8",
+    "network": 40,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1720049288,
+    "pool": {
+      "id": "0x747cdbc2f2ed7cfa0fad1f19c3fda05aaa252a15000200000000000000000014",
+      "address": "0x747CDBc2F2eD7CfA0fAd1F19C3Fda05AAA252A15",
+      "poolType": "Weighted",
+      "symbol": "50XPOLAR-50USDT",
+      "tokens": [
+        {
+          "address": "0x1073E53ac92F711761475Cd30fab157620AFdAb0",
+          "weight": "0.5",
+          "symbol": "XPOLAR"
+        },
+        {
+          "address": "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f",
+          "weight": "0.5",
+          "symbol": "USDT"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x1073E53ac92F711761475Cd30fab157620AFdAb0": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png",
+      "0x975Ed13fa16857E83e7C493C7741D556eaaD4A3f": "https://raw.githubusercontent.com/elkfinance/tokens/main/logos/avax/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/logo.png"
+    }
+  },
+  {
     "address": "0x00EBD98D869aAE0Ee67E8b48753905DAc472d542",
     "network": 1313161554,
     "isKilled": false,

@@ -102,7 +102,10 @@ export class GaugesDecorator {
       '0x6142b1903afac1c9772813d098c81d22d0038865',
       '0x42d722b580ffd6fbeeeee9eed8460d602be8ce92',
       '0x520fd173e5d9a68778a852dd06495a5390950151',
+      '0x66d1247730141f4d7693a8c74a7fc215032a3bef',
+      '0x0d18271a75d6e18b3a69b239f9d678c3056c878a',
     ];
+    console.log(subgraphGauges.filter(gauge => !excluded.includes(gauge.id)));
     subgraphGauges
       .filter(gauge => !excluded.includes(gauge.id))
       .forEach(gauge => {
