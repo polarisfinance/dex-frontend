@@ -2,9 +2,10 @@ import { BlockNumberResponse } from './types';
 import { blockSubgraphService } from './subgraph/block-subgraph.service';
 import { getSecondsSince, oneHourInSecs } from '@/composables/useTime';
 import { bnum } from '@/lib/utils';
-import { isGnosis, isGoerli, isTelos } from '@/composables/useNetwork';
+import { isGnosis, isGoerli, isTelos, isTaiko } from '@/composables/useNetwork';
 import { rpcProviderService } from '../rpc-provider/rpc-provider.service';
 import { configService } from '../config/config.service';
+import { isMutationKey } from '@tanstack/vue-query/build/lib/utils';
 
 export default class BlockService {
   constructor(
@@ -17,7 +18,7 @@ export default class BlockService {
     timestamp: string,
     useRange = true
   ): Promise<number> {
-    if (isGnosis.value || isGoerli.value || isTelos.value)
+    if (isGnosis.value || isGoerli.value || isTelos.value || isTaiko.value)
       return this.fetchBlockByApprox(timestamp);
     return this.fetchBlockByTimeWithGraph(timestamp, useRange);
   }
