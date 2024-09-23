@@ -33,7 +33,9 @@ const pools: Pools = {
     'FX',
   ],
   Stable: {
-    AllowList: [],
+    AllowList: [
+      '0x7824693029834d294a92c54138e81e94d8d0fd06000000000000000000000006',
+    ],
   },
   Investment: {
     AllowList: [],
@@ -41,7 +43,9 @@ const pools: Pools = {
   Weighted: {
     // Only effective after given timestamp here: usePool.ts#createdAfterTimestamp
     // see useDisabledJoinPool.ts#nonAllowedWeightedPoolAfterTimestamp for logic.
-    AllowList: [],
+    AllowList: [
+      '0x7824693029834d294a92c54138e81e94d8d0fd06000000000000000000000006',
+    ],
   },
   Factories: {
     '0x981071aa1a430fc1b54c3e171608f88975497cf3': 'weightedPool', // weighted pool v4
