@@ -1866,5 +1866,34 @@
       "0x46218d1962f39D96B9295A86D01849f36Bf52A3E": "",
       "0xb14674C7264eC7d948B904Aab2c0E0F906F6e762": "https://raw.githubusercontent.com/trisolaris-labs/tokens/master/assets/0xb14674c7264ec7d948b904aab2c0e0f906f6e762/logo.svg"
     }
+  },
+  {
+    "address": "0xdFB1caEEB8Dc48727AD787c26a668b736b5942b2",
+    "network": 1313161554,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1727643458,
+    "pool": {
+      "id": "0x23a15f4a31c567619388b3234a73921d72cabe3a000200000000000000000053",
+      "address": "0x23a15f4A31C567619388B3234A73921D72cABE3a",
+      "poolType": "Weighted",
+      "symbol": "50SOL-50WETH",
+      "tokens": [
+        {
+          "address": "0x0f00576d07B594Bdc1caf44b6014A6A02E5AFd48",
+          "weight": "0.5",
+          "symbol": "SOL"
+        },
+        {
+          "address": "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB",
+          "weight": "0.5",
+          "symbol": "WETH"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x0f00576d07B594Bdc1caf44b6014A6A02E5AFd48": "https://cryptologos.cc/logos/solana-sol-logo.svg?v=025",
+      "0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
+    }
   }
 ]
