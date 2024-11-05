@@ -175,7 +175,13 @@ const pools: Pools = {
   Metadata: {},
   Deep: [],
   BoostedApr: [],
-  DisabledJoins: [],
+  DisabledJoins: [
+    '0x89cc63050ade84bffafd7ec84d24fc0feb5f96c9000200000000000000000020',
+    '0xf0b6cf745afe642c4565165922ad62d6a93857c100020000000000000000000e',
+    '0xe370d4d0727d4e9b70db1a2f7d2efd1010ff1d6d000200000000000000000021',
+    '0xd8e9e1916a4d98fb0dc6db725a8c8c2af08a329b00020000000000000000000f',
+    '0x23a15f4a31c567619388b3234a73921d72cabe3a000200000000000000000053',
+  ],
   Deprecated: {},
   BrandedRedirect: {},
 };

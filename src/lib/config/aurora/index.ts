@@ -22,18 +22,18 @@ const config: Config = {
   explorer: 'https://explorer.aurora.dev',
   explorerName: 'Aurora Explorer',
   subgraph:
-    'https://gateway-arbitrum.network.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/2CpCYZ6NNrr5wpFY3KFQb2nDwkZaLcQajMaHcQsDp4yd',
+    'https://gateway.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/2CpCYZ6NNrr5wpFY3KFQb2nDwkZaLcQajMaHcQsDp4yd',
   // balancerApi: '',
   poolsUrlV2: '',
   subgraphs: {
     main: [
-      'https://gateway-arbitrum.network.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/2CpCYZ6NNrr5wpFY3KFQb2nDwkZaLcQajMaHcQsDp4yd',
+      'https://gateway.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/2CpCYZ6NNrr5wpFY3KFQb2nDwkZaLcQajMaHcQsDp4yd',
     ],
     aave: '',
     gauge:
-      'https://gateway-arbitrum.network.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/A5rwUeaVVQW6VtJ9AJwbainWXxXfwBh6bgcT6gZZPJeL',
+      'https://gateway.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/A5rwUeaVVQW6VtJ9AJwbainWXxXfwBh6bgcT6gZZPJeL',
     blocks:
-      'https://gateway-arbitrum.network.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/9FTPTBoKPxCeVr3ozrd6jcYZbo3beGPJnpiJnsDnVXA2',
+      'https://gateway.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/9FTPTBoKPxCeVr3ozrd6jcYZbo3beGPJnpiJnsDnVXA2',
   },
   bridgeUrl: '',
   supportsEIP1559: true,
