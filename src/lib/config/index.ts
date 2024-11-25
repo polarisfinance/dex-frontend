@@ -12,6 +12,7 @@ import test from './test';
 import auroraTest from './auroraTest';
 import aurora from './aurora';
 import telos from './telos';
+import taiko from './taiko';
 
 const config: Record<Network | number, Config> = {
   [Network.MAINNET]: mainnet,
@@ -23,6 +24,8 @@ const config: Record<Network | number, Config> = {
   // [Network.AURORATEST]: auroraTest,
   [Network.AURORA]: aurora,
   [Network.TELOS]: telos,
+  [Network.TAIKO]: taiko,
+
   // // @ts-ignore
   // 12345: test,
   // // @ts-ignore

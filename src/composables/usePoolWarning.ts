@@ -87,6 +87,7 @@ const POOL_ISSUES = {
   [Network.AURORATEST]: {},
   [Network.AURORA]: {},
   [Network.TELOS]: {},
+  [Network.TAIKO]: {},
 };
 
 const issues = POOL_ISSUES[networkId.value];

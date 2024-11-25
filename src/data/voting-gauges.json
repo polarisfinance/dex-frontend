@@ -458,6 +458,134 @@
     }
   },
   {
+    "address": "0x0cb0523BE61Be2b378566c7908DF1223CeD3C591",
+    "network": 167000,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1727607627,
+    "pool": {
+      "id": "0x3d965c68fd04caafc90c5a1ee77b3c82a0559d2d000200000000000000000007",
+      "address": "0x3D965c68fd04cAAFC90C5a1EE77B3C82a0559D2d",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70TAIKO",
+      "tokens": [
+        {
+          "address": "0x7824693029834D294A92c54138e81e94d8D0Fd06",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0xA9d23408b9bA935c230493c40C73824Df71A0975",
+          "weight": "0.7",
+          "symbol": "TAIKO"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x7824693029834D294A92c54138e81e94d8D0Fd06": "",
+      "0xA9d23408b9bA935c230493c40C73824Df71A0975": "https://assets.coingecko.com/coins/images/38058/standard/icon.png?1717626867"
+    }
+  },
+  {
+    "address": "0x9766D2476d77F686b093ca68a09990464b113a19",
+    "network": 167000,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1727607627,
+    "pool": {
+      "id": "0x01022516f58b2640f4799d5fba1d9cd538c1e880000200000000000000000008",
+      "address": "0x01022516f58b2640f4799D5fbA1d9Cd538C1E880",
+      "poolType": "Weighted",
+      "symbol": "30UsdStablePool-70WETH",
+      "tokens": [
+        {
+          "address": "0x7824693029834D294A92c54138e81e94d8D0Fd06",
+          "weight": "0.3",
+          "symbol": "UsdStablePool"
+        },
+        {
+          "address": "0xA51894664A773981C6C112C43ce576f315d5b1B6",
+          "weight": "0.7",
+          "symbol": "WETH"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x7824693029834D294A92c54138e81e94d8D0Fd06": "",
+      "0xA51894664A773981C6C112C43ce576f315d5b1B6": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295"
+    }
+  },
+  {
+    "address": "0x4aE6D88CD50EcF8b7acBeE8be4614c9c7c3fB4F9",
+    "network": 167000,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1727607627,
+    "pool": {
+      "id": "0x7824693029834d294a92c54138e81e94d8d0fd06000000000000000000000006",
+      "address": "0x7824693029834D294A92c54138e81e94d8D0Fd06",
+      "poolType": "ComposableStable",
+      "symbol": "UsdStablePool",
+      "tokens": [
+        {
+          "address": "0x07d83526730c7438048D55A4fc0b850e2aaB6f0b",
+          "weight": "null",
+          "symbol": "USDC"
+        },
+        {
+          "address": "0x19e26B0638bf63aa9fa4d14c6baF8D52eBE86C5C",
+          "weight": "null",
+          "symbol": "USDC.e"
+        },
+        {
+          "address": "0x2DEF195713CF4a606B49D07E520e22C17899a736",
+          "weight": "null",
+          "symbol": "USDT"
+        },
+        {
+          "address": "0x9c2dc7377717603eB92b2655c5f2E7997a4945BD",
+          "weight": "null",
+          "symbol": "USDT"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x07d83526730c7438048D55A4fc0b850e2aaB6f0b": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "0x19e26B0638bf63aa9fa4d14c6baF8D52eBE86C5C": "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+      "0x2DEF195713CF4a606B49D07E520e22C17899a736": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707",
+      "0x9c2dc7377717603eB92b2655c5f2E7997a4945BD": "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707"
+    }
+  },
+  {
+    "address": "0xF86088d7b253100a3a0c9c47087Ea6639967a357",
+    "network": 167000,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1727607627,
+    "pool": {
+      "id": "0xed7c9b0f2813a883fe2c58978416344456ef457d000200000000000000000005",
+      "address": "0xEd7c9B0F2813a883fE2C58978416344456ef457D",
+      "poolType": "Weighted",
+      "symbol": "50WETH-50TAIKO",
+      "tokens": [
+        {
+          "address": "0xA51894664A773981C6C112C43ce576f315d5b1B6",
+          "weight": "0.5",
+          "symbol": "WETH"
+        },
+        {
+          "address": "0xA9d23408b9bA935c230493c40C73824Df71A0975",
+          "weight": "0.5",
+          "symbol": "TAIKO"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0xA51894664A773981C6C112C43ce576f315d5b1B6": "https://assets.coingecko.com/coins/images/2518/large/weth.png?1628852295",
+      "0xA9d23408b9bA935c230493c40C73824Df71A0975": "https://assets.coingecko.com/coins/images/38058/standard/icon.png?1717626867"
+    }
+  },
+  {
     "address": "0x00EBD98D869aAE0Ee67E8b48753905DAc472d542",
     "network": 1313161554,
     "isKilled": false,
