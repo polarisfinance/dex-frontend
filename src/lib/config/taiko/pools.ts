@@ -44,7 +44,10 @@ const pools: Pools = {
     // Only effective after given timestamp here: usePool.ts#createdAfterTimestamp
     // see useDisabledJoinPool.ts#nonAllowedWeightedPoolAfterTimestamp for logic.
     AllowList: [
+      '0x3d965c68fd04caafc90c5a1ee77b3c82a0559d2d000200000000000000000007',
+      '0x01022516f58b2640f4799d5fba1d9cd538c1e880000200000000000000000008',
       '0x7824693029834d294a92c54138e81e94d8d0fd06000000000000000000000006',
+      '0xed7c9b0f2813a883fe2c58978416344456ef457d000200000000000000000005',
     ],
   },
   Factories: {
@@ -52,7 +55,12 @@ const pools: Pools = {
     '0xbe9cdf92aa7723271408725b9ecf8f7d28596bab': 'composableStablePool',
   },
   Stakable: {
-    VotingGaugePools: [],
+    VotingGaugePools: [
+      '0x3d965c68fd04caafc90c5a1ee77b3c82a0559d2d000200000000000000000007',
+      '0x01022516f58b2640f4799d5fba1d9cd538c1e880000200000000000000000008',
+      '0x7824693029834d294a92c54138e81e94d8d0fd06000000000000000000000006',
+      '0xed7c9b0f2813a883fe2c58978416344456ef457d000200000000000000000005',
+    ],
     AllowList: [],
   },
   Metadata: {},
