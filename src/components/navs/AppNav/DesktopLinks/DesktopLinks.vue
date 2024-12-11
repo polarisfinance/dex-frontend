@@ -112,21 +112,9 @@ function isActive(page: string): boolean {
         <BalIcon name="chevron-down" size="sm" />
       </div>
       <div class="w-full dropdown-content">
-        <a
-          href="https://synapseprotocol.com/"
-          target="_blank"
-          rel="noopener noreferrer"
+        <a href="https://meson.fi/" target="_blank" rel="noopener noreferrer"
           ><div class="flex justify-between w-full">
-            <div>Synapse</div>
-            <BalIcon name="arrow-up-right" size="sm" />
-          </div>
-        </a>
-        <a
-          href="https://allbridge.io/classic/"
-          target="_blank"
-          rel="noopener noreferrer"
-          ><div class="flex justify-between w-full">
-            <div>Allbridge</div>
+            <div>Meson</div>
             <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
         <a
@@ -143,11 +131,6 @@ function isActive(page: string): boolean {
           rel="noopener noreferrer"
           ><div class="flex justify-between w-full">
             <div>Rainbow Bridge</div>
-            <BalIcon name="arrow-up-right" size="sm" /></div
-        ></a>
-        <a href="https://meson.fi/" target="_blank" rel="noopener noreferrer"
-          ><div class="flex justify-between w-full">
-            <div>Meson</div>
             <BalIcon name="arrow-up-right" size="sm" /></div
         ></a>
       </div>
