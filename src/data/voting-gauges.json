@@ -586,6 +586,35 @@
     }
   },
   {
+    "address": "0xe3f565E54A65a857812B16Fd7BF1cce9352045C8",
+    "network": 167000,
+    "isKilled": false,
+    "relativeWeightCap": "0.1",
+    "addedTimestamp": 1735164125,
+    "pool": {
+      "id": "0x963db913157529a495a7743a98e3f65ea0306b0a00020000000000000000000a",
+      "address": "0x963dB913157529A495a7743A98E3f65eA0306b0A",
+      "poolType": "Weighted",
+      "symbol": "50XPOLAR-50TAIKO",
+      "tokens": [
+        {
+          "address": "0x5fc798A5072CD551b8bB5C51416078bc95499d2B",
+          "weight": "0.5",
+          "symbol": "XPOLAR"
+        },
+        {
+          "address": "0xA9d23408b9bA935c230493c40C73824Df71A0975",
+          "weight": "0.5",
+          "symbol": "TAIKO"
+        }
+      ]
+    },
+    "tokenLogoURIs": {
+      "0x5fc798A5072CD551b8bB5C51416078bc95499d2B": "https://raw.githubusercontent.com/polarisfinance/dex-assets/main/assets/0xeAf7665969f1DaA3726CEADa7c40Ab27B3245993.png",
+      "0xA9d23408b9bA935c230493c40C73824Df71A0975": "https://assets.coingecko.com/coins/images/38058/standard/icon.png?1717626867"
+    }
+  },
+  {
     "address": "0x00EBD98D869aAE0Ee67E8b48753905DAc472d542",
     "network": 1313161554,
     "isKilled": false,

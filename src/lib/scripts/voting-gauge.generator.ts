@@ -528,7 +528,7 @@ async function getGaugeInfo(
 
   console.log('\nFetching killed gauges relative weight...');
   console.time('getGaugeRelativeWeight');
-  const killedGaugesWeight = await getGaugeRelativeWeight(killedGaugesList);
+  //const killedGaugesWeight = await getGaugeRelativeWeight(killedGaugesList);
   console.timeEnd('getGaugeRelativeWeight');
 
   const telosFilter = [
