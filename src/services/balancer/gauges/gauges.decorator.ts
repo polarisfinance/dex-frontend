@@ -32,6 +32,19 @@ export class GaugesDecorator {
 
     let gaugesDataMap = await this.multicaller.execute<OnchainGaugeDataMap>();
 
+    // weird telos fucking issue with claimable tokens
+    if (configService.network.key === '40') {
+      this.callClaimableTokensTelos(userAddress);
+      const telosWeirdGauges =
+        await this.multicaller.execute<OnchainGaugeDataMap>();
+      Object.keys(telosWeirdGauges).forEach(address => {
+        telosWeirdGauges[address].rewardTokens = [
+          '0x0000000000000000000000000000000000000000',
+        ];
+      });
+      gaugesDataMap = { ...gaugesDataMap, ...telosWeirdGauges };
+    }
+
     const nativeGauges = subgraphGauges;
     this.callClaimableRewards(nativeGauges, userAddress, gaugesDataMap, false);
     // const oldL2Gauges = subgraphGauges.filter(gauge => !!gauge.streamer);
@@ -105,7 +118,6 @@ export class GaugesDecorator {
       '0x66d1247730141f4d7693a8c74a7fc215032a3bef',
       '0x0d18271a75d6e18b3a69b239f9d678c3056c878a',
     ];
-    console.log(subgraphGauges.filter(gauge => !excluded.includes(gauge.id)));
     subgraphGauges
       .filter(gauge => !excluded.includes(gauge.id))
       .forEach(gauge => {
@@ -117,6 +129,27 @@ export class GaugesDecorator {
           params: [userAddress],
         });
       });
+  }
+
+  private callClaimableTokensTelos(userAddress: string) {
+    const excluded = [
+      '0xf13291e874b539e6729b98609f4661680165a966',
+      '0xf7b6f832cb163d48bc577395954a56756e4d4835',
+      '0x6142b1903afac1c9772813d098c81d22d0038865',
+      '0x42d722b580ffd6fbeeeee9eed8460d602be8ce92',
+      '0x520fd173e5d9a68778a852dd06495a5390950151',
+      '0x66d1247730141f4d7693a8c74a7fc215032a3bef',
+      '0x0d18271a75d6e18b3a69b239f9d678c3056c878a',
+    ];
+    excluded.forEach(gauge => {
+      this.multicaller.call({
+        key: `${gauge}.claimableTokens`,
+        address: gauge,
+        function: 'claimable_tokens',
+        abi: ['function claimable_tokens(address) view returns (uint256)'],
+        params: [userAddress],
+      });
+    });
   }
 
   /**
