@@ -6,11 +6,6 @@ import VueVirtualScroller from 'vue3-virtual-scroller';
 import { VueQueryPlugin } from '@tanstack/vue-query';
 
 export function registerPlugins(app: App) {
-  app
-    .use(i18n)
-    .use(router)
-    .use(VueQueryPlugin)
-    .use(blocknative)
-    .use(VueVirtualScroller);
+  app.use(i18n).use(router).use(VueQueryPlugin).use(VueVirtualScroller);
   return app;
 }

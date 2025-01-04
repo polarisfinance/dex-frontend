@@ -7,14 +7,14 @@ import { includesAddress } from '@/lib/utils';
 import useWeb3 from '@/services/web3/useWeb3';
 
 import useAlerts, { AlertPriority, AlertType } from '../useAlerts';
-import useBlocknative from '../useBlocknative';
+// import useBlocknative from '../useBlocknative';
 import { useTokens } from '@/providers/tokens.provider';
 import useTransactions, { ReplacementReason } from '../useTransactions';
 
 export default function useWeb3Watchers() {
   // COMPOSABLES
   const { t } = useI18n();
-  const { blocknative, supportsBlocknative } = useBlocknative();
+  // const { blocknative, supportsBlocknative } = useBlocknative();
   const {
     appNetworkConfig,
     chainId,
@@ -67,35 +67,35 @@ export default function useWeb3Watchers() {
   // Watch for user account change:
   // -> Unsubscribe Blocknative from old account if exits
   // -> Listen to new account for transactions and update balances
-  watch(
-    () => account.value,
-    (newAccount, oldAccount) => {
-      if (supportsBlocknative.value) {
-        if (oldAccount) blocknative.unsubscribe(oldAccount);
-        if (!newAccount) return;
+  // watch(
+  //   () => account.value
+  // (newAccount, oldAccount) => {
+  //   if (supportsBlocknative.value) {
+  //     if (oldAccount) blocknative.unsubscribe(oldAccount);
+  //     if (!newAccount) return;
 
-        const { emitter } = blocknative.account(newAccount);
-        emitter.on('txConfirmed', () => {
-          refetchBalances();
-          refetchAllowances();
-        });
+  //     const { emitter } = blocknative.account(newAccount);
+  //     emitter.on('txConfirmed', () => {
+  //       refetchBalances();
+  //       refetchAllowances();
+  //     });
 
-        emitter.on('txSpeedUp', tx =>
-          handleTransactionReplacement(
-            tx as EthereumTransactionData,
-            'txSpeedUp'
-          )
-        );
+  //     emitter.on('txSpeedUp', tx =>
+  //       handleTransactionReplacement(
+  //         tx as EthereumTransactionData,
+  //         'txSpeedUp'
+  //       )
+  //     );
 
-        emitter.on('txCancel', tx =>
-          handleTransactionReplacement(
-            tx as EthereumTransactionData,
-            'txCancel'
-          )
-        );
-      }
-    }
-  );
+  //     emitter.on('txCancel', tx =>
+  //       handleTransactionReplacement(
+  //         tx as EthereumTransactionData,
+  //         'txCancel'
+  //       )
+  //     );
+  //   }
+  // }
+  // );
 
   // Watch for user network switch
   // -> Display alert message if unsupported or not the same as app network.
