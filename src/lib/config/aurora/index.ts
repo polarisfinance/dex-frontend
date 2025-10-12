@@ -33,12 +33,12 @@ const config: Config = {
     gauge:
       'https://gateway.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/A5rwUeaVVQW6VtJ9AJwbainWXxXfwBh6bgcT6gZZPJeL',
     blocks:
-      'https://gateway.thegraph.com/api/45dee7017080a9544513ec90a5814526/subgraphs/id/9FTPTBoKPxCeVr3ozrd6jcYZbo3beGPJnpiJnsDnVXA2',
+      '',
   },
   bridgeUrl: '',
   supportsEIP1559: true,
   supportsElementPools: true,
-  blockTime: 12,
+  blockTime: 1,
   nativeAsset: {
     name: 'Ether',
     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
