@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/vue-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import { subgraphRequest } from '@/lib/utils/subgraph';
 import { configService } from '@/services/config/config.service';
+import { AURORA_POOL_GAUGES } from '@/lib/config/aurora/gauges';
 
 /**
  * TYPES
@@ -65,12 +66,52 @@ export default function usePoolGaugesQuery(
   }));
 
   /**
+   * Helper function to get static gauge data for Aurora
+   */
+  const getStaticGaugeData = (address: string): PoolGauges | null => {
+    // Find the pool ID that matches this address
+    const poolId = Object.keys(AURORA_POOL_GAUGES).find(
+      id => id.toLowerCase().startsWith(address.toLowerCase())
+    );
+
+    if (!poolId) return null;
+
+    const gaugeAddress = AURORA_POOL_GAUGES[poolId];
+    if (!gaugeAddress) return null;
+
+    return {
+      pool: {
+        preferentialGauge: { id: gaugeAddress },
+        gauges: [{ id: gaugeAddress, relativeWeightCap: '0.1' }],
+      },
+      liquidityGauges: [{ id: gaugeAddress }],
+    };
+  };
+
+  /**
    * QUERY FUNCTION
    */
   const queryFn = async () => {
     try {
+      // Check if subgraph URL is empty (Aurora case)
+      const gaugeSubgraphUrl = configService.network.subgraphs.gauge;
+      if (!gaugeSubgraphUrl && poolAddress.value) {
+        const staticData = getStaticGaugeData(poolAddress.value);
+        if (staticData) {
+          return staticData;
+        }
+        // Return empty structure if no static data found
+        return {
+          pool: {
+            preferentialGauge: { id: null },
+            gauges: [],
+          },
+          liquidityGauges: [],
+        };
+      }
+
       return await subgraphRequest<PoolGauges>({
-        url: configService.network.subgraphs.gauge,
+        url: gaugeSubgraphUrl,
         query: subgraphQuery.value,
       });
     } catch (error) {

@@ -44,6 +44,7 @@ import { SwapQuote } from './types';
 import { captureException } from '@sentry/browser';
 import { overflowProtected } from '@/components/_global/BalTextInput/helpers';
 import useTranasactionErrors from '../useTransactionErrors';
+import { directSwapService, DirectSwapQuote } from '@/services/swap/direct-swap.service';
 
 type SorState = {
   validationErrors: {
@@ -169,6 +170,8 @@ export default function useSor({
 }: Props) {
   let sorManager: SorManager | undefined = undefined;
   const pools = ref<SubgraphPoolBase[]>([]);
+  const isDirectSwap = ref(false);
+  const directSwapQuote = ref<DirectSwapQuote | null>(null);
   const sorReturn = ref<SorReturn>({
     hasSwaps: false,
     tokenIn: '',
@@ -355,6 +358,87 @@ export default function useSor({
     sorReturn.value.returnAmount = Zero;
   }
 
+  /**
+   * Handle direct swap quote when SOR is unavailable
+   */
+  async function handleDirectSwapQuote(
+    tokenInAddress: string,
+    tokenOutAddress: string,
+    amount: string,
+    tokenInDecimals: number,
+    tokenOutDecimals: number
+  ): Promise<void> {
+    const inputDecimals = exactIn.value ? tokenInDecimals : tokenOutDecimals;
+    const amountScaled = parseUnits(amount, inputDecimals);
+
+    const quote = await directSwapService.getQuote(
+      tokenInAddress,
+      tokenOutAddress,
+      amountScaled,
+      exactIn.value,
+      tokenInDecimals,
+      tokenOutDecimals
+    );
+
+    if (!quote) {
+      state.validationErrors.noSwaps = true;
+      if (exactIn.value) tokenOutAmountInput.value = '';
+      else tokenInAmountInput.value = '';
+      return;
+    }
+
+    isDirectSwap.value = true;
+    directSwapQuote.value = quote;
+    state.validationErrors.noSwaps = false;
+
+    if (exactIn.value) {
+      const outputDecimals = tokenOutDecimals;
+      tokenOutAmountInput.value = formatAmount(
+        formatUnits(quote.expectedAmountOut, outputDecimals)
+      );
+    } else {
+      const inputTokenDecimals = tokenInDecimals;
+      tokenInAmountInput.value = formatAmount(
+        formatUnits(quote.amountIn, inputTokenDecimals)
+      );
+    }
+
+    // Set price impact from quote
+    priceImpact.value = quote.priceImpact;
+
+    // Create a mock sorReturn for compatibility
+    sorReturn.value = {
+      hasSwaps: true,
+      tokenIn: tokenInAddress,
+      tokenOut: tokenOutAddress,
+      returnDecimals: exactIn.value ? tokenOutDecimals : tokenInDecimals,
+      returnAmount: exactIn.value ? quote.expectedAmountOut : quote.amountIn,
+      marketSpNormalised: '1',
+      result: {
+        tokenAddresses: [tokenInAddress, tokenOutAddress],
+        swaps: [{
+          poolId: quote.poolId,
+          assetInIndex: 0,
+          assetOutIndex: 1,
+          amount: amountScaled.toString(),
+          userData: '0x',
+          returnAmount: quote.expectedAmountOut.toString(),
+        }],
+        swapAmount: amountScaled,
+        returnAmount: quote.expectedAmountOut,
+        returnAmountConsideringFees: quote.expectedAmountOut,
+        tokenIn: tokenInAddress,
+        tokenOut: tokenOutAddress,
+        marketSp: '1',
+        swapAmountForSwaps: amountScaled,
+        returnAmountFromSwaps: quote.expectedAmountOut,
+      },
+    };
+
+    state.validationErrors.highPriceImpact =
+      priceImpact.value >= HIGH_PRICE_IMPACT_THRESHOLD;
+  }
+
   async function handleAmountChange(): Promise<void> {
     if (isCowswapSwap.value) {
       return;
@@ -419,10 +503,27 @@ export default function useSor({
     }
 
     if (!sorManager || !sorManager.hasPoolData()) {
+      // Try direct swap when SOR has no pool data (e.g., Aurora without subgraph)
+      const canDirectSwap = directSwapService.canSwap(tokenInAddress, tokenOutAddress);
+      if (canDirectSwap) {
+        await handleDirectSwapQuote(
+          tokenInAddress,
+          tokenOutAddress,
+          amount,
+          tokenInDecimals,
+          tokenOutDecimals
+        );
+        return;
+      }
+
       if (exactIn.value) tokenOutAmountInput.value = '';
       else tokenInAmountInput.value = '';
       return;
     }
+
+    // Reset direct swap state when using SOR
+    isDirectSwap.value = false;
+    directSwapQuote.value = null;
 
     if (exactIn.value) {
       await setSwapCost(
@@ -660,6 +761,34 @@ export default function useSor({
       return;
     }
 
+    // Handle direct swap when SOR is unavailable (e.g., Aurora without subgraph)
+    if (isDirectSwap.value && directSwapQuote.value) {
+      try {
+        const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes
+        const slippageBsp = Math.round(slippageBufferRate.value * 10000);
+
+        const tx = await directSwapService.swap({
+          tokenIn: tokenInAddress,
+          tokenOut: tokenOutAddress,
+          amount: tokenInAmountScaled,
+          isExactIn: exactIn.value,
+          slippageBsp,
+          deadline,
+        });
+        console.log('Direct swap tx', tx);
+
+        txHandler(tx, 'swap');
+
+        if (successCallback != null) {
+          successCallback();
+        }
+        trackSwapEvent();
+      } catch (error) {
+        handleSwapException(error as Error);
+      }
+      return;
+    }
+
     if (exactIn.value) {
       const tokenOutAmount = parseFixed(
         tokenOutAmountInput.value,
@@ -830,6 +959,9 @@ export default function useSor({
     confirming,
     updateSwapAmounts,
     resetInputAmounts,
+    // Direct swap state (for Aurora without subgraph)
+    isDirectSwap,
+    directSwapQuote,
     // For Tests
     setSwapCost,
   };

@@ -14,6 +14,7 @@ import { safeInject } from '../inject';
 import { useUserData } from '../user-data.provider';
 import { subgraphRequest } from '@/lib/utils/subgraph';
 import { configService } from '@/services/config/config.service';
+import { AURORA_POOL_GAUGES } from '@/lib/config/aurora/gauges';
 
 /**
  * PoolStakingProvider
@@ -259,10 +260,23 @@ const provider = (_poolId?: string) => {
     poolAddress: string
   ): Promise<string> {
     try {
+      // Check if subgraph URL is empty (Aurora case)
+      const gaugeSubgraphUrl = configService.network.subgraphs.gauge;
+      if (!gaugeSubgraphUrl) {
+        // Use static gauge data for Aurora
+        const poolId = Object.keys(AURORA_POOL_GAUGES).find(
+          id => id.toLowerCase().startsWith(poolAddress.toLowerCase())
+        );
+        if (poolId && AURORA_POOL_GAUGES[poolId]) {
+          return AURORA_POOL_GAUGES[poolId];
+        }
+        throw new Error(`No gauge found for pool ${poolAddress}`);
+      }
+
       const data = await subgraphRequest<{
         pool: { preferentialGauge: { id: string } };
       }>({
-        url: configService.network.subgraphs.gauge,
+        url: gaugeSubgraphUrl,
         query: {
           pool: {
             __args: {

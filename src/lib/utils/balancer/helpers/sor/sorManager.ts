@@ -113,7 +113,12 @@ export class SorManager {
     );
     console.timeEnd(`[SorManager] V2 fetchPools`);
 
-    this.selectedPools = this.sorV2.getPools();
+    try {
+      this.selectedPools = this.sorV2.getPools();
+    } catch (err) {
+      console.log(`[SorManager] getPools error: ${(err as Error).message}`);
+      this.selectedPools = [];
+    }
     this.isFetching = false;
   }
   // Format best swap result

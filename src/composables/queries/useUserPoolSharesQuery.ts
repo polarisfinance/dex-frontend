@@ -3,6 +3,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/vue-query';
 import QUERY_KEYS from '@/constants/queryKeys';
 import useWeb3 from '@/services/web3/useWeb3';
 import { balancerSubgraphService } from '@/services/balancer/subgraph/balancer-subgraph.service';
+import { configService } from '@/services/config/config.service';
 
 /**
  * TYPES
@@ -41,6 +42,14 @@ export default function useUserPoolSharesQuery(options: QueryOptions = {}) {
    */
   const queryFn = async () => {
     try {
+      // Check if subgraph URL is empty (Aurora case)
+      const mainSubgraphUrls = configService.network.subgraphs.main;
+      if (!mainSubgraphUrls || mainSubgraphUrls.length === 0 || !mainSubgraphUrls[0]) {
+        // Return empty map when subgraph is unavailable
+        // User balances are tracked via wallet token balances instead
+        return {};
+      }
+
       const poolShares = await balancerSubgraphService.poolShares.get({
         where: {
           userAddress: account.value.toLowerCase(),
@@ -59,7 +68,8 @@ export default function useUserPoolSharesQuery(options: QueryOptions = {}) {
       console.error('Failed users pool shares', {
         cause: error,
       });
-      throw error;
+      // Return empty instead of throwing to prevent cascading failures
+      return {};
     }
   };
 
