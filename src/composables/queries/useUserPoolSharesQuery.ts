@@ -1,9 +1,13 @@
 import { useQuery, UseQueryOptions } from '@tanstack/vue-query';
+import { formatUnits } from '@ethersproject/units';
+import { BigNumber } from '@ethersproject/bignumber';
 
 import QUERY_KEYS from '@/constants/queryKeys';
 import useWeb3 from '@/services/web3/useWeb3';
 import { balancerSubgraphService } from '@/services/balancer/subgraph/balancer-subgraph.service';
 import { configService } from '@/services/config/config.service';
+import { getMulticaller } from '@/dependencies/Multicaller';
+import { AURORA_POOLS } from '@/lib/config/aurora/pools-static';
 
 /**
  * TYPES
@@ -38,6 +42,39 @@ export default function useUserPoolSharesQuery(options: QueryOptions = {}) {
   const enabled = computed((): boolean => isWalletReady.value);
 
   /**
+   * Fetch pool shares on-chain for Aurora (no subgraph)
+   * Queries BPT balances for all known Aurora pools
+   */
+  const fetchPoolSharesOnChain = async (): Promise<PoolShareMap> => {
+    const poolShares: PoolShareMap = {};
+    const Multicaller = getMulticaller();
+    const multicaller = new Multicaller();
+
+    // Setup multicalls for BPT balance checks on all pools
+    AURORA_POOLS.forEach(pool => {
+      multicaller.call({
+        key: pool.id,
+        address: pool.address,
+        function: 'balanceOf',
+        abi: ['function balanceOf(address) view returns (uint256)'],
+        params: [account.value],
+      });
+    });
+
+    const result = await multicaller.execute() as Record<string, BigNumber>;
+
+    // Transform results into PoolShareMap format
+    for (const pool of AURORA_POOLS) {
+      const balance = result[pool.id];
+      if (balance && !balance.isZero()) {
+        poolShares[pool.id] = formatUnits(balance, 18);
+      }
+    }
+
+    return poolShares;
+  };
+
+  /**
    * QUERY FUNCTION
    */
   const queryFn = async () => {
@@ -45,9 +82,8 @@ export default function useUserPoolSharesQuery(options: QueryOptions = {}) {
       // Check if subgraph URL is empty (Aurora case)
       const mainSubgraphUrls = configService.network.subgraphs.main;
       if (!mainSubgraphUrls || mainSubgraphUrls.length === 0 || !mainSubgraphUrls[0]) {
-        // Return empty map when subgraph is unavailable
-        // User balances are tracked via wallet token balances instead
-        return {};
+        // Fetch pool shares on-chain when subgraph is unavailable
+        return await fetchPoolSharesOnChain();
       }
 
       const poolShares = await balancerSubgraphService.poolShares.get({
