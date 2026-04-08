@@ -29,7 +29,8 @@ const pool = computed(() => props.pool);
  * COMPOSABLES
  */
 const { network } = configService;
-const { isDeepPool } = usePoolHelpers(pool);
+// const { isDeepPool } = usePoolHelpers(pool);
+const isDeepPool = ref(false);
 const { resetTabs } = useWithdrawPageTabs();
 provideExitPool(pool);
 

@@ -83,7 +83,7 @@ export default defineComponent({
     );
 
     const currentShares = computed(() => {
-      return balanceFor(getAddress(props.pool.address));
+      return balanceFor(getAddress("0x2232c0e0681f6186Ef42a18e1b7dc800E05ccC94"));
     });
 
     /**
