@@ -21,6 +21,8 @@ import { balancerAPIService } from '@/services/balancer/api/balancer-api.service
 import { poolsStoreService } from '@/services/pool/pools-store.service';
 import { isBalancerApiDefined } from '@/lib/utils/balancer/api';
 import { bnum } from '@/lib/utils';
+import { AURORA_POOLS } from '@/lib/config/aurora/pools-static';
+import { buildPoolFromStaticData } from '@/services/pool/pool-onchain.helper';
 
 type PoolsQueryResponse = {
   pools: Pool[];
@@ -111,14 +113,83 @@ export default function usePoolsQuery(
     };
   }
 
+  /**
+   * On-chain pool repository for networks without subgraph (e.g., Aurora).
+   * Builds pool objects from static data and decorates with on-chain data.
+   */
+  function initializeOnchainRepository() {
+    return {
+      fetch: async (options: PoolsRepositoryFetchOptions): Promise<Pool[]> => {
+        const queryArgs = getQueryArgs(options);
+        const blockList = queryArgs.where?.id?.not_in || [];
+        const poolTypeFilter = queryArgs.where?.poolType?.in || [];
+
+        let staticPools = AURORA_POOLS.filter(p => {
+          if (blockList.includes(p.id)) return false;
+          if (
+            poolTypeFilter.length > 0 &&
+            !poolTypeFilter.includes(p.poolType)
+          )
+            return false;
+          return true;
+        });
+
+        // Apply ID filter if present
+        if (queryArgs.where?.id?.in) {
+          const ids = queryArgs.where.id.in.map((id: string) =>
+            id.toLowerCase()
+          );
+          staticPools = staticPools.filter(p =>
+            ids.includes(p.id.toLowerCase())
+          );
+        }
+
+        // Apply pagination
+        const first = options.first || 150;
+        const skip = options.skip || 0;
+        staticPools = staticPools.slice(skip, skip + first);
+
+        const pools = staticPools.map(buildPoolFromStaticData);
+
+        const poolDecorator = new PoolDecorator(pools);
+        const decoratedPools = await poolDecorator.decorate(
+          tokenMeta.value,
+          false
+        );
+
+        const tokens = flatten(
+          pools.map(pool => [...pool.tokensList, pool.address])
+        );
+        await injectTokens(tokens);
+
+        return decoratedPools;
+      },
+      get skip(): undefined {
+        return undefined;
+      },
+    };
+  }
+
   function buildRepositories() {
     const repositories: SDKPoolRepository[] = [];
     if (isBalancerApiDefined) {
       const balancerApiRepository = initializeDecoratedAPIRepository();
       repositories.push(balancerApiRepository);
     }
-    const subgraphRepository = initializeDecoratedSubgraphRepository();
-    repositories.push(subgraphRepository);
+
+    const mainSubgraphUrls = configService.network.subgraphs.main;
+    const hasSubgraph =
+      mainSubgraphUrls &&
+      mainSubgraphUrls.length > 0 &&
+      mainSubgraphUrls[0] !== '';
+
+    if (hasSubgraph) {
+      const subgraphRepository = initializeDecoratedSubgraphRepository();
+      repositories.push(subgraphRepository);
+    } else {
+      const onchainRepository = initializeOnchainRepository();
+      repositories.push(onchainRepository);
+    }
 
     return repositories;
   }

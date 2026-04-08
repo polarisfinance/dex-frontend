@@ -914,6 +914,19 @@ export const AURORA_POOLS: AuroraPool[] = [
         "weight": "0.5"
       }
     ]
+  },
+  {
+    "id": "0x23a8a6e5d468e7acf4cc00bd575dbecf13bc7f78000100000000000000000015",
+    "address": "0x23A8a6E5d468E7aCF4cC00Bd575DBecF13BC7F78",
+    "poolType": "Weighted",
+    "symbol": "veXPOLAR",
+    "tokens": [
+      {
+        "address": "0xBe96730583b46140210efA92AC6039EF11247657",
+        "symbol": "veXPOLAR",
+        "weight": null
+      }
+    ]
   }
 ];
 

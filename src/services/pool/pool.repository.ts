@@ -13,6 +13,9 @@ import {
   getPoolsFallbackRepository,
   PoolsFallBackFactoryConstructor,
 } from '@/dependencies/PoolsFallbackRepository';
+import { configService } from '@/services/config/config.service';
+import { AURORA_POOLS } from '@/lib/config/aurora/pools-static';
+import { buildPoolFromStaticData } from '@/services/pool/pool-onchain.helper';
 
 export default class PoolRepository {
   repository: PoolsFallBackFactoryConstructor;
@@ -65,14 +68,59 @@ export default class PoolRepository {
     };
   }
 
+  /**
+   * On-chain pool repository for networks without subgraph (e.g., Aurora).
+   * Builds pool objects from static data and decorates with on-chain data.
+   */
+  private initializeOnchainRepository() {
+    return {
+      fetch: async (): Promise<Pool[]> => {
+        const poolId = this.queryArgs.where?.id?.eq;
+        if (!poolId) throw new Error('Pool ID required for on-chain fetch');
+
+        const staticPool = AURORA_POOLS.find(
+          p => p.id.toLowerCase() === poolId.toLowerCase()
+        );
+        if (!staticPool)
+          throw new Error(`Pool ${poolId} not found in static data`);
+
+        const pool = buildPoolFromStaticData(staticPool);
+
+        const poolDecorator = new PoolDecorator([pool]);
+        const decoratedPools = await poolDecorator.decorate(
+          this.tokens.value,
+          false
+        );
+
+        return decoratedPools;
+      },
+      get skip(): number {
+        return 0;
+      },
+    };
+  }
+
   private buildRepositories() {
     const repositories: SDKPoolRepository[] = [];
     if (isBalancerApiDefined) {
       const balancerApiRepository = this.initializeDecoratedAPIRepository();
       repositories.push(balancerApiRepository);
     }
-    const subgraphRepository = this.initializeDecoratedSubgraphRepository();
-    repositories.push(subgraphRepository);
+
+    const mainSubgraphUrls = configService.network.subgraphs.main;
+    const hasSubgraph =
+      mainSubgraphUrls &&
+      mainSubgraphUrls.length > 0 &&
+      mainSubgraphUrls[0] !== '';
+
+    if (hasSubgraph) {
+      const subgraphRepository = this.initializeDecoratedSubgraphRepository();
+      repositories.push(subgraphRepository);
+    } else {
+      // No subgraph available, use on-chain data from static pool config
+      const onchainRepository = this.initializeOnchainRepository();
+      repositories.push(onchainRepository);
+    }
 
     return repositories;
   }

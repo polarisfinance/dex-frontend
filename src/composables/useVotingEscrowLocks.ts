@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import useGraphQuery, { subgraphs } from '@/composables/queries/useGraphQuery';
 import useWeb3 from '@/services/web3/useWeb3';
 import useConfig from '@/composables/useConfig';
@@ -36,35 +36,48 @@ export default function useVotingEscrowLocks() {
   const { votingGauges: allVotingGauges } = useVotingGauges();
   const { veBalBalance } = useVeBal();
 
-  const votingEscrowLocksQueryEnabled = computed(() => !!account.value);
-  const votingEscrowLocksQuery = useGraphQuery<VotingEscrowLockQueryResponse>(
-    subgraphs.gauge,
-    QUERY_KEYS.Gauges.VotingEscrowLocks(
-      veBalLockInfoQuery.data.value?.lockedAmount
-    ),
-    () => ({
-      votingEscrowLocks: {
-        __args: {
-          where: {
-            user: account.value.toLowerCase(),
-            votingEscrowID:
-              configs[networkId.value].addresses.veBAL.toLocaleLowerCase(),
-          },
-        },
-        votingEscrowID: {
-          id: true,
-        },
-        updatedAt: true,
-      },
-    }),
-    reactive({ enabled: votingEscrowLocksQueryEnabled })
+  // Check if gauge subgraph is available
+  const hasGaugeSubgraph = !!subgraphs.gauge;
+
+  const votingEscrowLocksQueryEnabled = computed(
+    () => hasGaugeSubgraph && !!account.value
   );
+
+  // Only create the subgraph query if gauge subgraph URL is available
+  const votingEscrowLocksQuery = hasGaugeSubgraph
+    ? useGraphQuery<VotingEscrowLockQueryResponse>(
+        subgraphs.gauge,
+        QUERY_KEYS.Gauges.VotingEscrowLocks(
+          veBalLockInfoQuery.data.value?.lockedAmount
+        ),
+        () => ({
+          votingEscrowLocks: {
+            __args: {
+              where: {
+                user: account.value.toLowerCase(),
+                votingEscrowID:
+                  configs[
+                    networkId.value
+                  ].addresses.veBAL.toLocaleLowerCase(),
+              },
+            },
+            votingEscrowID: {
+              id: true,
+            },
+            updatedAt: true,
+          },
+        }),
+        reactive({ enabled: votingEscrowLocksQueryEnabled })
+      )
+    : { data: ref(null) };
 
   /**
    * COMPUTED
    */
   const votingEscrowLocks = computed(
-    () => votingEscrowLocksQuery.data.value?.votingEscrowLocks
+    () =>
+      (votingEscrowLocksQuery.data.value as VotingEscrowLockQueryResponse | null)
+        ?.votingEscrowLocks
   );
 
   const votingGaugeAddresses = computed<string[]>(

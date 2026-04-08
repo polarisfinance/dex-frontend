@@ -19,6 +19,9 @@ export class SubgraphFallbackService {
     if (!payload) {
       throw new Error('Payload is required');
     }
+    if (!this.url.value) {
+      throw new Error('No subgraph URL configured for this network');
+    }
     try {
       const response = await axios.post(this.url.value, payload);
       const errorMessage = response?.data.errors?.message;
